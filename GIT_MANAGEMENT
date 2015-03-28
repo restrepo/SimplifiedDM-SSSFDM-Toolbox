@@ -3,3 +3,13 @@ will install SARAH directly in the primary
 directory.
 
 $ ./configure --disable-whizard --disable-higgsbounds --disable-higgssignals
+
+$ rm link
+$ mv real_name link
+
+To update
+$ rm -rf link
+$ mv real_name link
+
+Check status, add possible new files
+

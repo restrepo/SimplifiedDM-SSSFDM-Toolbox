@@ -1,5 +1,5 @@
 : 
-  CALCHEP=  
+  CALCHEP=/home/restrepo/prog/toolbox/toolbox/calchep 
 #---------------
 
 lib=$CALCHEP/lib
