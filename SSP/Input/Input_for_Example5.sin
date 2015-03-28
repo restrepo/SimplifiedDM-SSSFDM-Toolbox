@@ -1,0 +1,35 @@
+model = mssm_sarah
+
+include("WHIZARD.par.MSSM")
+
+Mu1 = 0.
+Md1 = 0.
+
+# read_slha("sps1a.slha")
+alias parton = u1:u1bar:d1:d1bar:G
+alias jet = parton
+alias neutralino = C01
+
+process monojet = parton, parton => jet, neutralino, neutralino
+
+compile
+
+sqrts = 14 TeV
+
+beams = p, p => pdf_builtin
+cuts = all Pt >= 50 GeV [jet]
+integrate (monojet) { iterations = 5:20000 }
+
+$description = "Monojets"
+$y_label = "$N_{\textrm{events}}$"
+$title = "Jet-$p_T$ in $pp\to j\tilde\chi^0\tilde\chi^0$"
+$x_label = "$p_T(j)$/GeV"
+histogram pt_jet (0 GeV, 1000 GeV, 10 GeV)
+$title = "Jet rapidity in $pp\to j\tilde\chi^0\tilde\chi^0$"
+$x_label = "$\eta(j)$"
+histogram eta_jet (-5, 5, 0.1)
+analysis = record pt_jet (eval Pt [extract index 1 [jet]]);
+           record eta_jet (eval Eta [extract index 1 [jet]])
+
+simulate (monojet) { n_events = 100000 }
+compile_analysis { $out_file = "monojet.dat" }

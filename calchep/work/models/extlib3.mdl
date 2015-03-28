@@ -1,0 +1,6 @@
+SM(CKM=1 with hGG/AA)
+Libraries
+External libraries  and citation                                       <|
+%%%%  For LHAPDF
+-L$HOME/Packages/lhapdf-5.8.4/install/lib -lLHAPDF
+=========================================================================

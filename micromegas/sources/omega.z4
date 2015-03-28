@@ -1,0 +1,1958 @@
+#include <sys/utsname.h>
+#include "micromegas.h"
+#include "micromegas_aux.h"
+#include "micromegas_f.h"
+  
+
+double sWidth=0.01;
+double Beps=1.E-4;
+double Mcdm1,Mcdm2;
+char* CDM1,*CDM2;
+double omega1,omega2;
+
+double Besp=1.E-4;
+extern int  WIDTH_FOR_OMEGA;
+
+static int neg_cs_flag;
+
+static int NC=0;
+
+static char ** inP;
+static int  *  inAP;
+static int  *  inG;
+static int  *  inNum;
+
+static numout ** code22;
+static numout ** code22_12;
+static numout ** code22_21;
+ 
+static int *inC;    /* combinatoric coefficients  NCxNC*/
+static int *inC1;
+static int *inC2;   
+
+static double *inDelta; /* inDelta[i]= (inMass[i]-M)/M; */
+static double *inG_;    /* inG[i]*pow(1+inDelta[i],1.5);*/
+static double **inMassAddress;
+static double *inMass;  /* masses */
+static int *sort;
+
+aChannel* omegaCh=NULL;
+aChannel* vSigmaTCh=NULL;
+
+static int LSP;
+
+double M1=0,M2=0;
+static double DeltaXf;
+
+static double pmass[4];
+
+#define XSTEP 1.1
+static double eps=0.001; /* precision of integration */
+
+static int nsub=1;       /*  subprocess number  */
+
+static double MassCut;
+
+static double xf_;   /* to pass the Xf argument   */
+
+#define MPlank 1.22E19 /*GeV*/
+#define IMPROVE
+
+
+double vs1100,vs1120,vs1122,vs1210,vs2200,vs2211;
+static double geff1_(double);
+static double geff2_(double);
+static double geff1(double);
+static double geff2(double);
+
+
+
+static int PDGnum[4];
+
+static int Z4ch( char *name)
+{  if(name[0]!='~') return 0;
+   if(name[1]!='~') return 1;
+   return 2;
+}
+
+
+
+static  double sigma_simpson(double PcmIn)
+{ double r;
+  if(kin22(PcmIn,pmass)) return 0;
+
+
+  r= simpson(dSigma_dCos,-1.,1.,0.3*eps);
+  
+  if(r<0) { neg_cs_flag=1;r=0;}
+  
+#ifdef IMPROVE
+  improveCrossSection(PDGnum[0],PDGnum[1],PDGnum[2],PDGnum[3],PcmIn,&r);
+#endif
+ 
+/*
+printf("PcmIN=%E sigma=%E\n",  PcmIn, r*3.8937966E8); 
+*/
+  return r;
+}
+
+
+
+
+static  double sigma_gauss(double PcmIn)
+{ double r;
+  if(kin22(PcmIn,pmass)) return 0.; 
+  r=gauss(dSigma_dCos,-1.,1.,5);
+  if(r<0) { neg_cs_flag=1;r=0;}
+
+#ifdef IMPROVE
+  improveCrossSection(PDGnum[0],PDGnum[1],PDGnum[2],PDGnum[3],PcmIn,&r);
+#endif
+  
+  return r;
+}  
+
+static double (*sigma)(double)= sigma_gauss;
+
+static double geff(double x)
+{ double sum=0; int l;
+
+  for(l=0;l<NC;l++)
+  { int k=sort[l];
+    double A=x*inDelta[k];
+//    if(A>15 || Mcdm +inMass[k] > MassCut) return sum;
+    sum+=inG_[k]*exp(-A)*K2pol(1/(x+A));
+  }
+  return sum;
+}
+
+
+
+
+static void termod(double t, double * sqrt_gStar, double * heff)
+{
+  const  double table[276][3]=
+  {
+#include"geff_heff.tab"
+  };
+
+  if(t>= table[0][0])
+  { if(sqrt_gStar) *sqrt_gStar=table[0][1];
+    if(heff)             *heff=table[0][2];
+  } else if(t<=0 )
+  { if(sqrt_gStar) *sqrt_gStar=table[275][1];
+    if(heff)             *heff=table[275][2];
+  } else
+  {
+    int hi=0, lo=275, c;
+    double tlo,thi;
+    double slo,shi;
+
+    for(c=138; lo-hi >1; c=(lo+hi)/2) if(table[c][0]< t) lo=c; else hi=c;
+
+    tlo=table[lo][0];
+    thi=table[hi][0];
+
+    if(sqrt_gStar)
+    {
+       slo=table[lo][1];
+       shi=table[hi][1];
+       *sqrt_gStar=( (thi-t)*slo - (tlo-t)*shi)/(thi-tlo);
+    }
+    if(heff)
+    {  slo=table[lo][2];
+       shi=table[hi][2];
+       *heff=( (thi-t)*slo - (tlo-t)*shi)/(thi-tlo);
+    }
+  }
+}
+
+
+static double y_pass;
+
+static double weight_integrand(double v)
+{  double x,gf;
+   double sqrt_gStar;
+
+   if(v==0.) return 0;
+   x=xf_-3*log(v)/(y_pass-2);
+   gf=geff(x);
+
+   
+   termod(Mcdm/x,&sqrt_gStar,NULL);
+   return K1pol(1/(x*y_pass))*3*v*v*sqrt_gStar/(sqrt(x)*gf*gf*(y_pass-2));
+}
+
+static double weightBuff_x[1000];
+static double weightBuff_y[1000];
+static int inBuff=0;
+
+static double weight(double y)
+{ int i;
+  double w;
+  for(i=0;i<inBuff;i++) if(y==weightBuff_x[i]) return weightBuff_y[i];
+  y_pass=y;
+  w=  simpson(weight_integrand,0.,1.,0.3*eps);
+  if(inBuff<1000){weightBuff_x[inBuff]=y; weightBuff_y[inBuff++]=w;}
+  return w;
+}
+
+static int exi;
+
+static double s_integrand( double u)
+{  double z,y,sv_tot,w;
+   double Xf_1;
+   double ms,md,sqrtS,PcmIn;
+   
+   if(u==0. || u==1.) return 0.;
+
+   z=1-u*u;
+   y=2 +(DeltaXf - 3*log(z))/xf_;
+   sqrtS=Mcdm*y;
+
+   ms = M1 + M2;  if(ms>=sqrtS)  return 0;
+   md = M1 - M2;
+   PcmIn = sqrt((sqrtS-ms)*(sqrtS+ms)*(sqrtS-md)*(sqrtS+md))/(2*sqrtS);
+   sv_tot=sigma(PcmIn);         
+
+   if(exi) { w=weight(y); Xf_1=1;} else {w=K1pol(1/(xf_*y)); Xf_1=xf_;}
+
+   return sqrt(2*Xf_1*y/M_PI)*y*(PcmIn*PcmIn/(Mcdm*Mcdm))*sv_tot*w*6*u*z*z;
+}
+
+
+
+static int Npow;
+
+static double s_pow_integrand(double u)
+{
+   double ms,md,sqrtS;
+   double z,y,sv_tot,pp,w,Xf_1;
+   double PcmIn;
+   
+   if(u==0. || u==1.) return 0.;
+
+   z=1-u*u;
+   y=2+(DeltaXf - 3*log(z))/xf_;
+
+   ms = M1 + M2;
+   md = M1 - M2;
+   sqrtS=(Mcdm*y);
+   PcmIn = sqrt((sqrtS-ms)*(sqrtS+ms)*(sqrtS-md)*(sqrtS+md))/(2*sqrtS);
+   pp= PcmIn* PcmIn;
+
+   switch(Npow)
+   { case 0: sv_tot=1; break;
+     case 1: sv_tot= pp; break;
+     case 2: sv_tot= pp*pp; break;
+     case 3: sv_tot= pp*pp*pp; break;
+   }
+
+   if(exi){ w=weight(y); Xf_1=1;} else { w=K1pol(1/(xf_*y)); Xf_1=xf_;}
+   return sqrt(Xf_1*y/(2*M_PI))*y*(PcmIn/Mcdm)*sv_tot*w*6*u*z*z;
+}
+
+static double m2u(double m) {return sqrt(1-exp((DeltaXf+xf_*(2-m/Mcdm))/3));}
+
+typedef struct gridStr
+{  int n;
+   double ul[100];
+   double ur[100];
+   int pow[100];
+}  gridStr;
+
+static double u_max;
+
+static gridStr   makeGrid(double mp,double wp)
+{
+  gridStr grd;
+
+  int n=0,j;
+  int pow_[6]={3,3,4,4,3,3};
+  double c[5]={-8,-3,0,3,8};
+
+  grd.ul[0]=0.;
+  for(j=0;j<5;j++) if(mp+c[j]*wp>Mcdm*(2+DeltaXf/xf_))
+  {  grd.ur[n]=m2u(mp+c[j]*wp);
+     grd.pow[n]=pow_[j];
+     grd.ul[n+1]=grd.ur[n];
+     if( grd.ur[n]>u_max) { grd.ur[n]=u_max;  grd.n=n+1; return grd;}
+     n++;
+  }
+  grd.ur[n]=u_max;
+  grd.pow[n]=pow_[5];
+  grd.n=n+1;
+  return grd;
+}
+
+#ifdef DEBUG
+static void printGrid(gridStr * grd)
+{ int i;
+  printf("~~~~~~~~~~~~~\n");
+  for(i=0;i<grd->n;i++) printf("%E %E %d\n",grd->ul[i],grd->ur[i],grd->pow[i]);
+  printf("~~~~~~~~~~~~~\n");
+}
+#endif
+
+static gridStr  crossGrids(gridStr * grid1, gridStr * grid2)
+{ gridStr grid;
+  int n=0,i0=0,i1=0,i;
+  grid.ul[0]=0.;
+  while(i0<grid1->n && i1<grid2->n)
+  { double d0= grid1->pow[i0]/(grid1->ur[i0]-grid1->ul[i0]);
+    double d1= grid2->pow[i1]/(grid2->ur[i1]-grid2->ul[i1]);
+    double d = ( d0>d1? d0:d1);
+    int m=(grid1->pow[i0] > grid2->pow[i1]? grid1->pow[i0]:grid2->pow[i1]);
+
+    if(grid1->ur[i0] < grid2->ur[i1]) { grid.ur[n]=grid1->ur[i0++];}
+    else                              { grid.ur[n]=grid2->ur[i1++];}
+
+
+    grid.pow[n]=0.999+d*(grid.ur[n]-grid.ul[n]);
+
+    if(grid.pow[n]>m) grid.pow[n]=m;
+    if(grid.pow[n]==1) grid.pow[n]=2;
+
+    n++;
+    grid.ul[n]=grid.ur[n-1];
+  }
+  grid.n=n;
+  for(i=0;i<grid.n;i++) if(grid.ur[i]-grid.ul[i]>0.4
+                         && grid.pow[i]<4)  grid.pow[i]=4;
+  return grid;
+}
+
+
+static int  new_code(int k1,int k2);
+
+
+
+
+static int testSubprocesses(void)
+{
+ static int first=1;
+ int err,k1,k2,i,j;
+ double *Q;
+ double *GG;
+ if(first)
+ {
+    first=0;
+    if(createTableOddPrtcls())
+    { printf("The model contains uncoupled odd patricles\n"); exit(10);}
+
+    for(i=0,NC=0;i<Nodd;i++,NC++) 
+        if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))NC++;
+        
+    inP=(char**)malloc(NC*sizeof(char*));
+    inAP=(int*)malloc(NC*sizeof(int));
+    inG=(int*)malloc(NC*sizeof(int));
+    inDelta=(double*)malloc(NC*sizeof(double)); 
+    inG_=(double*)malloc(NC*sizeof(double));
+    inMassAddress=(double**)malloc(NC*sizeof(double*));
+    inMass=(double*)malloc(NC*sizeof(double));
+    inNum= (int*)malloc(NC*sizeof(int));
+    sort=(int*)malloc(NC*sizeof(int));
+
+    code22    = (numout**)malloc(NC*NC*sizeof(numout*));
+    code22_12 = (numout**)malloc(NC*NC*sizeof(numout*));
+    code22_21 = (numout**)malloc(NC*NC*sizeof(numout*));
+ 
+    inC=(int*)malloc(NC*NC*sizeof(int)); 
+    inC1=(int*)malloc(NC*NC*sizeof(int)); 
+    inC2=(int*)malloc(NC*NC*sizeof(int)); 
+      
+    for(i=0,j=0;i<Nodd;i++)
+    {  
+       inP[j]=OddPrtcls[i].name;
+       inNum[j]=OddPrtcls[i].NPDG;
+       inG[j]=(OddPrtcls[i].spin2+1)*OddPrtcls[i].cdim;
+       if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))
+       {
+         inAP[j]=j+1;
+         j++;
+         inP[j]=OddPrtcls[i].aname;
+         inG[j]=inG[j-1];
+         inAP[j]=j-1;
+         inNum[j]=-OddPrtcls[i].NPDG;
+       } else inAP[j]=j;
+       j++;
+    }
+
+    for(i=0;i<NC;i++) sort[i]=i;
+    for(k1=0;k1<NC;k1++) for(k2=0;k2<NC;k2++) inC[k1*NC+k2]=-1;
+    for(k1=0;k1<NC;k1++) for(k2=0;k2<NC;k2++) if(inC[k1*NC+k2]==-1)
+    {  int kk1=inAP[k1];
+       int kk2=inAP[k2];
+       inC[k1*NC+k2]=1;
+       if(inC[k2*NC+k1]==-1)   {inC[k2*NC+k1]=0;   inC[k1*NC+k2]++;}
+       if(inC[kk1*NC+kk2]==-1) {inC[kk1*NC+kk2]=0; inC[k1*NC+k2]++;}
+       if(inC[kk2*NC+kk1]==-1) {inC[kk2*NC+kk1]=0; inC[k1*NC+k2]++;}
+    }
+    
+    for(k1=0;k1<NC;k1++) for(k2=0;k2<NC;k2++) inC1[k1*NC+k2]=inC2[k1*NC+k2]=inC[k1*NC+k2];
+
+    for(k1=0;k1<NC;k1++) for(k2=0;k2<NC;k2++) {code22[k1*NC+k2]=code22_12[k1*NC+k2]= code22_21[k1*NC+k2]=NULL;}
+
+    for(i=0,j=0;i<Nodd;i++)
+    {
+       inMassAddress[j]=varAddress(OddPrtcls[i].mass);
+       if(!inMassAddress[j]) 
+       { if(strcmp(OddPrtcls[i].mass ,"0")==0)
+         { printf("Error: odd particle '%s' has zero mass.\n",OddPrtcls[i].name);
+           exit(5);
+         }  
+         printf(" Model is not self-consistent:\n "
+                " Mass identifier '%s' for particle '%s' is absent  among parameetrs\n",OddPrtcls[i].mass, OddPrtcls[i].name);
+         exit(5);
+       }
+
+       if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))
+       {
+         j++;
+         inMassAddress[j]=inMassAddress[j-1];
+       }
+       j++;
+    }
+  }
+
+  for(Q=NULL,GG=NULL,i=0;i<nModelVars;i++)  
+  { if(strcmp(varNames[i],"Q")==0) Q=varValues+i;
+    else if(strcmp(varNames[i],"GG")==0) GG=varValues+i;
+  }  
+  if(Q) *Q=100;
+ 
+ err=calcMainFunc();
+ if(err>0) return err;
+
+ Mcdm=fabs(*(inMassAddress[0]));
+ for(i=0;i<NC;i++) 
+ { inMass[i]=fabs(*(inMassAddress[i]));
+   if(Mcdm>inMass[i]) Mcdm=inMass[i];
+ }
+
+ if(Q) 
+ { *Q=2*Mcdm;
+    assignVal("Q",2*Mcdm);
+    err=calcMainFunc();
+    if(err>0) return err;
+ }
+ if(GG) *GG=parton_alpha(2*Mcdm/3.);
+            
+ for(i=0; i<NC-1;)
+ { int i1=i+1;
+   if(inMass[sort[i]] > inMass[sort[i1]])
+   { int c=sort[i]; sort[i]=sort[i1]; sort[i1]=c;
+     if(i) i--; else i++;
+   } else i++;
+ }
+
+ CDM1=CDM2=NULL;
+ Mcdm1=Mcdm2=0;
+ 
+ for(i=0;i<NC;i++) 
+ {
+//printf("%s %d\n",inP[i],Z4ch(inP[i]));
+   if(Z4ch(inP[i])==1) { if(!CDM1) { Mcdm1=inMass[i]; CDM1=inP[i];} else if(Mcdm1>inMass[i]) { Mcdm1=inMass[i];CDM1=inP[i];} }
+    if(Z4ch(inP[i])==2) { if(!CDM2) { Mcdm2=inMass[i]; CDM2=inP[i];} else if(Mcdm2>inMass[i]) { Mcdm2=inMass[i];CDM2=inP[i];} }
+ }
+ 
+ LSP=sort[0];
+ Mcdm=inMass[LSP];
+
+ for(i=0;i<NC;i++)
+ { inDelta[i]= (inMass[i]-Mcdm)/Mcdm;
+   inG_[i]=inG[i]*pow(1+inDelta[i],1.5);
+ }
+
+ for(k1=0;k1<NC;k1++)  for(k2=0;k2<NC;k2++) 
+ {  if(code22[k1*NC+k2])    code22[k1*NC+k2]->init=0;
+     if(code22_12[k1*NC+k2]) code22_12[k1*NC+k2]->init=0;
+     if(code22_21[k1*NC+k2]) code22_21[k1*NC+k2]->init=0;
+ }  
+ cleanDecayTable();
+return 0;
+}
+
+ 
+int sortOddParticles(char * lsp)
+{ int i,err;
+
+  if(!modelNum)
+  {
+    int i,k,L;
+    struct utsname buff;
+
+    L=strlen(WORK);
+    modelDir=malloc(L+15);  sprintf(modelDir,"%s/models",WORK);
+    modelNum=1;
+  
+    calchepDir=malloc(strlen(WORK)+15);strcpy(calchepDir,WORK);
+    for(i=L-1,k=2;i;i--) 
+     {char ch=calchepDir[i]; calchepDir[i]=0; if(ch=='/') k--; if(k==0) break;}  
+    strcat(calchepDir,"/CalcHEP_src");
+    
+    uname(&buff);
+    compDir=malloc(strlen(WORK)+strlen(buff.nodename)+25);  
+    strcpy(compDir,WORK);
+    sprintf(compDir+strlen(compDir),"/_%s_%d_",buff.nodename,getpid());
+      
+    libDir=malloc(L+15); sprintf(libDir,"%s/so_generated",WORK);  
+  }
+  
+  if(omegaCh) {free(omegaCh); omegaCh=NULL;}
+  if(vSigmaTCh) {free(vSigmaTCh); vSigmaTCh=NULL;}
+  if(vSigmaCh)  {free(vSigmaCh);  vSigmaCh=NULL; } 
+  err=testSubprocesses();
+  if(err)
+  {
+    strcpy(lsp,varNames[err]);
+    return err;
+  }
+
+/*  
+  if(Mcdm<0.1) 
+  { sprintf(lsp,"Mcdm(%s)<0.1",inP[LSP]);
+    return -1;
+  } 
+*/  
+  if(sWidth>0) for(i=0;i< Nodd;i++) assignVal(OddPrtcls[i].width,sWidth*Mcdm);
+  if(lsp) strcpy(lsp,inP[LSP]);
+  return 0;
+}
+
+int  wimpPos(void) {return abs(pTabPos(inP[LSP]));}
+
+char * wimpAnnLib(void)
+{ static char out[20];
+  int n=abs(pTabPos(inP[LSP]));
+  if(strcmp(ModelPrtcls[n-1].name,ModelPrtcls[n-1].aname))
+  sprintf(out,"omg_p%da%d",n,n); else sprintf(out,"omg_p%dp%d",n,n);
+  return out;
+}  
+
+char * txtListOddParticles(void)
+{ 
+  static char * out=NULL;
+  int i,len;
+
+  if(out) return out;
+  for(i=0,len=0;i<Nodd;i++) 
+  { 
+    len+=strlen(OddPrtcls[i].name)+1;
+    if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))
+    len+=strlen(OddPrtcls[i].aname)+1;
+  }
+  out=malloc(len); out[0]=0;
+  for(i=0;i<Nodd;i++) 
+  { 
+    if(i) strcat(out,",");
+    strcat(out,OddPrtcls[i].name);
+    if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))
+    { strcat(out,",");
+      strcat(out,OddPrtcls[i].aname);
+    } 
+  }
+  return out;
+}
+
+
+
+
+static char * txtListEvenParticles(void)
+{ 
+  static char * out=NULL;
+  int i,len;
+
+  if(out) return out;
+  for(i=0,len=0;i<nModelParticles;i++) if(ModelPrtcls[i].name[0]!='~')
+  {
+    len+=strlen(ModelPrtcls[i].name)+1;
+    if(strcmp(ModelPrtcls[i].name,ModelPrtcls[i].aname))
+    len+=strlen(ModelPrtcls[i].aname)+1;
+  }
+  out=malloc(len); out[0]=0;
+  for(i=0;i<nModelParticles;i++)if(ModelPrtcls[i].name[0]!='~') 
+  { 
+    if(i) strcat(out,",");
+    strcat(out,ModelPrtcls[i].name);
+    if(strcmp(ModelPrtcls[i].name,ModelPrtcls[i].aname))
+    { strcat(out,",");
+      strcat(out,ModelPrtcls[i].aname);
+    } 
+  }
+  return out;
+}
+
+
+
+
+static int  new_code(int k1,int k2)
+{
+   char lib[40];
+   char process[400];
+   char lib1[12],lib2[12];
+   numout*cc;
+  
+   pname2lib(inP[k1],lib1);
+   pname2lib(inP[k2],lib2); 
+   sprintf(lib,"omg_%s%s",lib1,lib2);
+   sprintf(process,"%s,%s->AllEven,1*x{%s",inP[k1],inP[k2],txtListEvenParticles());
+//   sprintf(process,"%s,%s->2*x",inP[k1],inP[k2]);
+   cc=getMEcode(0,ForceUG,process,NULL,NULL,lib);
+   if(cc) 
+   { (*cc->interface->twidth)=1;
+        code22[k1*NC+k2]=cc;
+   } else inC[k1*NC+k2]=0;
+
+   return 0;
+}   
+
+   
+
+static void gaussC2(double * c, double * x, double * f)
+{
+  double  A[2][2];
+  int i,j;
+  double det;
+  double B[2];
+    
+  for(i=0;i<2;i++)
+  { int l=1; for(j=0;j<2;j++) {A[i][j]=l*c[i+j]; l=-l;}  
+     B[i]=l*c[2+i];
+  }
+  
+  det=A[0][0]*A[1][1] - A[0][1]*A[1][0];
+  
+  f[0]= ( B[0]*A[1][1]-B[1]*A[0][1])/det;
+  f[1]= (-B[0]*A[1][0]+B[1]*A[0][0])/det;
+  
+  det=sqrt(f[0]+f[1]*f[1]/4.);
+   
+  x[0]= -f[1]/2.-det;
+  x[1]= -f[1]/2.+det;
+ 
+  for(i=0;i<2;i++) { B[i]=c[i]; A[0][i]=1; }
+  for(j=0;j<2;j++)   A[1][j]=A[0][j]*x[j];
+
+  det= A[0][0]*A[1][1] - A[0][1]*A[1][0];
+  
+  f[0]= ( B[0]*A[1][1]-B[1]*A[0][1])/det;
+  f[1]= (-B[0]*A[1][0]+B[1]*A[0][0])/det;
+} 
+
+
+static double aRate(double X, int average,int Fast, double * alpha, aChannel ** wPrc,int*NPrc)
+{
+  double Sum=0.;
+  double Sum1=0;
+  int i,l1,l2;
+  int nPrc=0;
+  char* pname[5];
+  gridStr grid,grid1;
+  double MassCutOut=MassCut+Mcdm*log(100.)/X;
+  double Msmall,Mlarge;
+  double T=Mcdm/X;
+  double Beps=1.E-4;
+
+  int nPrcTot=0;
+  if(MassCutOut<Mcdm*(2+10/X)) MassCutOut=Mcdm*(2+10/X); 
+
+  WIDTH_FOR_OMEGA=1;
+  xf_=X;
+  exi=average;
+
+  vs1100=vs1120=vs1210=vs2200=vs2211=vs1122;
+     
+  if(wPrc) *wPrc=NULL;
+
+  for(l1=0;l1<NC;l1++)
+  { int k1=sort[l1];// if(Mcdm+inMass[k1]>MassCut) break;
+  for(l2=0;l2<NC;l2++)
+  {
+    double Sumkk=0.;
+    double Sum1kk=0;
+    double x[2],f[2];
+    double factor;
+    int k2=sort[l2];
+    CalcHEP_interface * CI;
+
+  //  if(inMass[k1]+inMass[k2] > MassCut) break;
+
+    if(inC[k1*NC+k2]<=0) continue;
+    if(code22[k1*NC+k2]==NULL) new_code(k1,k2);
+    if(inC[k1*NC+k2]<=0) continue;
+
+
+    if(!code22[k1*NC+k2]->init)
+    { numout * cd=code22[k1*NC+k2];
+      CalcHEP_interface *cdi=cd->interface;
+      for(i=1;i<=cdi->nvar;i++) if(cd->link[i]) cdi->va[i]=*(cd->link[i]);     
+      if(  cdi->calcFunc()>0 ) {FError=1; WIDTH_FOR_OMEGA=0;  return -1;}
+      cd->init=1;
+    }
+
+    if(wPrc)
+    {  nPrcTot+=code22[k1*NC+k2]->interface->nprc;
+       *wPrc=(aChannel*)realloc(*wPrc,sizeof(aChannel)*(nPrcTot+1));
+    }
+
+    sqme22=code22[k1*NC+k2]->interface->sqme;
+    DeltaXf=(inDelta[k1]+inDelta[k2])*X;
+    inBuff=0;
+
+    M1=inMass[k1];
+    M2=inMass[k2];
+
+    Msmall=M1>M2? M1-Mcdm*(1-sWidth): M2-Mcdm*(1-sWidth);
+    Mlarge=M1>M2? M2+Mcdm*(1-sWidth): M1+Mcdm*(1-sWidth);
+
+    u_max=m2u(MassCutOut);
+    if(Fast)
+    { 
+      if(Fast==1)
+      {  double c[4];
+
+         for(Npow=0;Npow<4;Npow++) c[Npow]=simpson(s_pow_integrand, 0. ,1. ,1.E-4);
+         gaussC2(c,x,f);
+         for(i=0;i<2;i++){ x[i]=sqrt(x[i]); f[i]*=2*x[i]/Mcdm;}
+      }else 
+      {
+         double c[2];
+         for(Npow=0;Npow<2;Npow++) c[Npow]=simpson(s_pow_integrand, 0. ,1. ,1.E-4);
+         x[0]= sqrt(c[1]/c[0]);
+         f[0]= c[0]*2*x[0]/Mcdm;
+      }
+    }
+    factor=inC[k1*NC+k2]*inG[k1]*inG[k2];
+
+    CI=code22[k1*NC+k2]->interface;
+    for(nsub22=1; nsub22<= CI->nprc;nsub22++,nPrc++)
+    { double u_min=0.;
+      double a=0;
+      int z4[4];
+      for(i=0;i<4;i++)  pname[i]=CI->pinf(nsub,i+1,pmass+i,PDGnum+i);
+      for(i=0;i<4;i++) z4[i]=Z4ch(pname[i]);
+      if(z4[0]==z4[2] && z4[1]==z4[3] ) continue;
+      if(z4[0]==z4[3] && z4[1]==z4[2] ) continue;
+      MassCut=0;
+      if(z4[0]==1) MassCut+=Mcdm1*(1-0.5*log(Beps)*T/Mcdm1); else  MassCut+=Mcdm2*(1-0.5*log(Beps)*T/Mcdm2);
+      if(z4[1]==1) MassCut+=Mcdm1*(1-0.5*log(Beps)*T/Mcdm1); else  MassCut+=Mcdm2*(1-0.5*log(Beps)*T/Mcdm2);
+      MassCutOut=MassCut+Mcdm*log(100.)/X;
+      
+      if(wPrc) 
+      { (*wPrc)[nPrc].weight=0;
+        for(i=0;i<4;i++) (*wPrc)[nPrc].prtcl[i]=pname[i];
+      }
+      
+      if(pmass[2]+pmass[3]>MassCutOut) continue;
+
+      if( (pmass[2]>Mlarge && pmass[3]<Msmall)
+        ||(pmass[3]>Mlarge && pmass[2]<Msmall))
+           { *(CI->twidth)=1; *(CI->gtwidth)=1;}
+      else { *(CI->twidth)=0; *(CI->gtwidth)=0;}
+      *(CI->gswidth)=0;
+                             
+      if(pmass[2]+pmass[3] > pmass[0]+pmass[1])
+      { double smin=pmass[2]+pmass[3];
+        if((pmass[0]!=M1 || pmass[1]!=M2)&&(pmass[0]!=M2 || pmass[1]!=M1))
+        { double ms=pmass[0]+pmass[1];
+          double md=pmass[0]-pmass[1];
+          double Pcm=sqrt((smin-ms)*(smin+ms)*(smin-md)*(smin+md))/(2*smin);
+          smin=sqrt(M1*M1+Pcm*Pcm)+sqrt(M2*M2+Pcm*Pcm);
+        }
+        u_min=m2u(smin); 
+      }else  u_min=0;
+      
+repeat:
+      neg_cs_flag=0;
+
+      if(!Fast) a=simpson(s_integrand,u_min,1.,eps); 
+      else if(Fast!=1) a=f[0]*sigma(x[0]); else
+      {
+          int isPole=0;
+          char * s;
+          int m,w,n;
+          double mass,width;
+
+          for(n=1;(s=code22[k1*NC+k2]->interface->den_info(nsub,n,&m,&w));n++)
+          if(m && w && strcmp(s,"\1\2")==0 )
+          { mass=fabs(code22[k1*NC+k2]->interface->va[m]);
+            width=code22[k1*NC+k2]->interface->va[w];
+            if(mass<MassCutOut && mass+8*width > pmass[0]+pmass[1]
+                            && mass+8*width > pmass[2]+pmass[3])
+            { if((pmass[0]!=M1 || pmass[1]!=M2)&&(pmass[0]!=M2 || pmass[1]!=M1))
+              { double ms=pmass[0]+pmass[1];
+                double md=pmass[0]-pmass[1];
+                double Pcm=sqrt((mass-ms)*(mass+ms)*(mass-md)*(mass+md))/(2*mass);
+                mass=sqrt(M1*M1+Pcm*Pcm)+sqrt(M2*M2+Pcm*Pcm);
+              }
+              grid1=makeGrid(mass,width);
+              if(isPole) grid=crossGrids(&grid,&grid1); else grid=grid1;
+              isPole++;
+            }
+          }
+          if(isPole==0)
+          {  grid.n=1;
+             grid.ul[0]=u_min;
+             grid.ur[0]=u_max;
+             grid.pow[0]=3;
+          }
+
+          if(grid.n==1 && pmass[0]+pmass[1]> 1.1*(pmass[2]+pmass[3]))
+                a=f[0]*sigma(x[0])+f[1]*sigma(x[1]);
+          else for(i=0;i<grid.n;i++)if(u_min<=grid.ur[i])
+          {  
+             double ul= u_min<grid.ul[i]? grid.ul[i]:u_min;
+             double da=gauss(s_integrand,ul,grid.ur[i],grid.pow[i]);
+             a+=da;             
+          }
+      }
+      if(neg_cs_flag && *(CI->gswidth)==0)
+      { *(CI->gswidth)=1;
+         goto  repeat;
+      }   
+/*
+ printf("X=%.2E (%d) %.3E %s %s %s %s\n",X,average, a, pname[0],pname[1],pname[2],pname[3]);
+*/
+
+/*
+      for(kk=2;kk<4;kk++)
+      if(pmass[kk]>2*Mcdm)
+      {  txtList LL;
+         double BrSm=1;
+         pWidth(pname[kk],&LL);
+         for(;LL;LL=LL->next)
+         { double b;
+           char proc[40];
+           sscanf(LL->txt,"%lf %[^\n]",&b,proc);
+           if( strchr(proc,'~'))BrSm-=b;
+         }
+         a*=BrSm;
+      }
+*/
+      { int  sIn,sOut;
+        sIn= z4[0]+z4[1];
+        sOut=z4[2]+z4[3];
+        a*=factor;
+        if(z4[0]==1) a*=exp((Mcdm1-inMass[k1])/T)*pow(Mcdm/Mcdm1,1.5); else a*=exp((Mcdm2-inMass[k1])/T)*pow(Mcdm/Mcdm2,1.5);
+        if(z4[1]==1) a*=exp((Mcdm1-inMass[k2])/T)*pow(Mcdm/Mcdm1,1.5); else a*=exp((Mcdm2-inMass[k2])/T)*pow(Mcdm/Mcdm2,1.5);  
+
+        switch(sIn)
+        { case 2: 
+            switch(sOut)
+            { case 0: vs1100+=a;     break;
+              case 2: if(PDGnum[2]==0 || PDGnum[3]==0) vs1120+=a; break;
+              case 4: vs1122+=a;
+            }    
+            break;  
+          case 3: if(sOut==1) vs1210+=a; break;
+          case 4: if(sOut==0) vs2200+=a; else vs2211+=a;  
+        }
+      }          
+      
+      if(pname[2][0]=='~' || pname[3][0]=='~' ) { a/=2; Sum1kk+=a;}  
+      Sumkk+=a;
+      if(wPrc) (*wPrc)[nPrc].weight = a*factor;
+    }
+    Sum+=factor*Sumkk;
+    Sum1+=factor*Sum1kk;
+    
+/*
+printf("Sum=%E\n",Sum);
+*/
+  }
+  }
+  if(wPrc) 
+  { for(i=0; i<nPrc;i++)  (*wPrc)[i].weight/=Sum;
+    for(i=0;i<nPrc-1;)
+    {  if((*wPrc)[i].weight >= (*wPrc)[i+1].weight) i++; 
+       else
+       {  aChannel buff;
+          buff=(*wPrc)[i+1];(*wPrc)[i+1]=(*wPrc)[i];(*wPrc)[i]=buff;
+          if(i)i--;else i++;
+       }
+    }          
+    if(NPrc) *NPrc=nPrc; 
+    (*wPrc)[nPrc].weight=0; for(i=0;i<4;i++) (*wPrc)[nPrc].prtcl[i]=NULL; 
+  }  
+  if(!average){double g1=geff1(X),g2=geff2(X);g1*=g1; g2*=g2; Sum/=g1*g1;Sum1/=g1*g1;
+                vs1100/=g1*g1;
+                vs1120/=g1*g1;
+                vs1122/=g1*g1;
+                vs1210/=g1*g2;
+                vs2200/=g2*g2;
+                vs2211/=g2*g2;
+              }
+/*
+exit(1);
+*/
+  WIDTH_FOR_OMEGA=0;
+  if(alpha) { *alpha=Sum1/Sum;  }
+  return Sum;
+}
+
+
+
+
+
+double vSigma(double T,double Beps ,int Fast,double *alpha)
+{
+    double X=Mcdm/T;
+    assignVal("Q",2*Mcdm); 
+    MassCut=Mcdm*(2-log(Beps)/X);    
+    return  3.8937966E8*aRate(X, 0 ,Fast,alpha,&vSigmaTCh,NULL);
+}
+
+
+static double Yeq(double X)
+{  double heff;
+   termod(Mcdm/X,NULL,&heff);
+   return (45/(4*M_PI*M_PI*M_PI*M_PI))*X*X*
+                    geff(X)*sqrt(M_PI/(2*X))*exp(-X)/heff;
+}
+
+
+
+
+struct {double*data; double *alpha; double xtop; int pow,size;} vSigmaGrid={NULL,NULL,0,0,0}; 
+
+static void checkSgridUpdate(void)
+{
+  if(vSigmaGrid.pow==vSigmaGrid.size)
+  { vSigmaGrid.size+=20;
+    vSigmaGrid.data=(double*)realloc(vSigmaGrid.data,sizeof(double)*vSigmaGrid.size);
+    vSigmaGrid.alpha=(double*)realloc(vSigmaGrid.alpha,sizeof(double)*vSigmaGrid.size);
+  }       
+}
+
+static double vSigmaI(double X, double Beps, int fast,double * alpha_)
+{ double XX,alpha;
+  int i,n;
+  if(vSigmaGrid.pow==0)
+  { checkSgridUpdate();
+    vSigmaGrid.pow=1;
+    vSigmaGrid.xtop=X;
+    MassCut=Mcdm*(2-log(Beps)/X);
+    vSigmaGrid.data[0]= aRate(X,0,fast,&alpha,NULL,NULL);
+    vSigmaGrid.alpha[0]=alpha;
+    if(alpha_) *alpha_=alpha;     
+    return vSigmaGrid.data[0];
+  }
+  
+  n=log(X/vSigmaGrid.xtop)/log(XSTEP); 
+  while(n<0)
+  { XX=vSigmaGrid.xtop/XSTEP;
+    checkSgridUpdate();
+    for(i=vSigmaGrid.pow;i;i--)
+    { vSigmaGrid.data[i]=vSigmaGrid.data[i-1];
+      vSigmaGrid.alpha[i]=vSigmaGrid.alpha[i-1];
+    }
+    vSigmaGrid.xtop=XX;
+    MassCut=Mcdm*(2-log(Beps)/XX);  
+    vSigmaGrid.data[0]=aRate(XX,0,fast,&alpha,NULL,NULL);
+    vSigmaGrid.alpha[0]=alpha; 
+    vSigmaGrid.pow++;
+    n++; 
+  }
+  while(n+2>vSigmaGrid.pow-1)
+  { 
+    XX=vSigmaGrid.xtop* pow(XSTEP,vSigmaGrid.pow)  ;
+    checkSgridUpdate();
+    MassCut=Mcdm*(2-log(Beps)/XX);
+    vSigmaGrid.data[vSigmaGrid.pow]=aRate(XX,0,fast,&alpha,NULL,NULL);
+    vSigmaGrid.alpha[vSigmaGrid.pow]=alpha;
+    vSigmaGrid.pow++;
+  }
+
+  { double X0,X1,X2,X3,sigmav0,sigmav1,sigmav2,sigmav3,alpha0,alpha1,alpha2,alpha3;
+    i=log(X/vSigmaGrid.xtop)/log(XSTEP);
+    if(i<0)i=0; 
+    if(i>vSigmaGrid.pow-2) i=vSigmaGrid.pow-2;
+    X0=vSigmaGrid.xtop*pow(XSTEP,n-1); X1=X0*XSTEP;  X2=X1*XSTEP; X3=X2*XSTEP; 
+
+    sigmav1=log(vSigmaGrid.data[n]);   alpha1=vSigmaGrid.alpha[n];
+    sigmav2=log(vSigmaGrid.data[n+1]); alpha2=vSigmaGrid.alpha[n+1];
+    sigmav3=log(vSigmaGrid.data[n+2]); alpha3=vSigmaGrid.alpha[n+2];
+    X=log(X);X0=log(X0); X1=log(X1); X2=log(X2); X3=log(X3);
+    
+    if(n==0)
+    {
+   
+    if(alpha_)
+    { if(alpha1==0) *alpha_=0; else
+      *alpha_=    alpha1*       (X-X2)*(X-X3)/        (X1-X2)/(X1-X3)
+                 +alpha2*(X-X1)*       (X-X3)/(X2-X1)/        (X2-X3)
+                 +alpha3*(X-X1)*(X-X2)       /(X3-X1)/(X3-X2)        ;
+    }
+    return exp( 
+   +sigmav1*       (X-X2)*(X-X3)/        (X1-X2)/(X1-X3) 
+   +sigmav2*(X-X1)*       (X-X3)/(X2-X1)/        (X2-X3) 
+   +sigmav3*(X-X1)*(X-X2)       /(X3-X1)/(X3-X2)        );                           
+    }
+    sigmav0=log(vSigmaGrid.data[n-1]); alpha0=vSigmaGrid.alpha[n-1]; 
+    
+    if(alpha_)
+    { if(alpha1==0) *alpha_=0; 
+      else   *alpha_=  alpha0*       (X-X1)*(X-X2)*(X-X3)/        (X0-X1)/(X0-X2)/(X0-X3)
+                       +alpha1*(X-X0)*       (X-X2)*(X-X3)/(X1-X0)/        (X1-X2)/(X1-X3)
+                       +alpha2*(X-X0)*(X-X1)*       (X-X3)/(X2-X0)/(X2-X1)/        (X2-X3)
+                       +alpha3*(X-X0)*(X-X1)*(X-X2)       /(X3-X0)/(X3-X1)/(X3-X2)        ;
+    }
+    return exp( 
+    sigmav0*       (X-X1)*(X-X2)*(X-X3)/        (X0-X1)/(X0-X2)/(X0-X3)
+   +sigmav1*(X-X0)*       (X-X2)*(X-X3)/(X1-X0)/        (X1-X2)/(X1-X3) 
+   +sigmav2*(X-X0)*(X-X1)*       (X-X3)/(X2-X0)/(X2-X1)/        (X2-X3) 
+   +sigmav3*(X-X0)*(X-X1)*(X-X2)       /(X3-X0)/(X3-X1)/(X3-X2)        );                        
+  }
+}
+
+
+static double dY(double X, double Beps,double fast)
+{ double d, dYdX,Yeq0X, sqrt_gStar, vSig,cFactor=sqrt(M_PI/45)*MPlank*Mcdm;
+  double epsY,alpha;
+  d=X*0.001; MassCut=Mcdm*(2-log(Beps)/X); dYdX=(Yeq(X+d)-Yeq(X-d))/(2*d);
+  Yeq0X=Yeq(X);
+  epsY=deltaY/Yeq0X;
+  Yeq0X/=X;
+  termod(Mcdm/X,&sqrt_gStar,NULL);
+  vSig=vSigmaI(X,Beps, fast,&alpha);
+  if(vSig==0){ FError=1; return 0;}
+  return -dYdX/(vSig*(1-alpha/2)*cFactor*sqrt_gStar*Yeq0X*Yeq0X)/sqrt(1+epsY*epsY);
+} 
+
+
+static double darkOmega1(double * Xf,double Z1,double dZ1,int Fast,double Beps)
+{
+  double X = *Xf;
+  double CCX=(Z1-1)*(Z1+1);
+  double dCCX=(Z1-1+dZ1)*(Z1+1+dZ1)-CCX;
+  double ddY;
+  double dCC1,dCC2,X1,X2;
+    
+  sigma= (Fast)?sigma_gauss:sigma_simpson;
+
+  if(Beps>=1) Beps=0.999;
+  vSigmaGrid.pow=0;
+  
+  ddY=dY(X,Beps,Fast); if(FError || ddY==0)  return -1;
+  if(fabs(CCX-ddY)<dCCX) { *Xf=X; MassCut=Mcdm*(2-log(Beps)/X); return Yeq(X)*sqrt(1+ddY);} 
+   
+  dCC1=dCC2=ddY-CCX; ;X1=X2=X; 
+  while(dCC2>0) 
+  {  
+     X1=X2;
+     dCC1=dCC2;
+     X2=X2/XSTEP;
+     X=X2;
+     dCC2=-CCX+dY(X,Beps,Fast);
+  }
+             
+  while (dCC1<0)
+  {  
+     X2=X1;
+     dCC2=dCC1;
+     X1=X1*XSTEP;
+     X=X1;
+     dCC1=-CCX+dY(X,Beps,Fast); 
+  }
+  for(;;)
+  { double dCC;
+    if(fabs(dCC1)<dCCX) 
+      {*Xf=X1; MassCut=Mcdm*(2-log(Beps)/X1); return Yeq(X1)*sqrt(1+CCX+dCC1);}
+    if(fabs(dCC2)<dCCX || fabs(X1-X2)<0.0001*X1) 
+      {*Xf=X2; MassCut=Mcdm*(2-log(Beps)/X2); return Yeq(X2)*sqrt(1+CCX+dCC2);}
+    X=0.5*(X1+X2); 
+    dCC=-CCX+dY(X,Beps,Fast);
+    if(dCC>0) {dCC1=dCC;X1=X;}  else {dCC2=dCC;X2=X;} 
+  }
+}
+
+static double Beps_;
+static int Fast_;
+
+static void XderivLn(double x, double *Y, double *dYdx)
+{
+  double y=Y[0];
+  double yeq, sqrt_gStar;
+  
+  termod(Mcdm/x,&sqrt_gStar,NULL);
+  MassCut=Mcdm*(2-log(Beps_)/x); yeq=Yeq(x);
+  if(y<yeq) *dYdx=0; else 
+  { double vSig;
+    double alpha; 
+    double epsY=deltaY/y; 
+    vSig=vSigmaI(x,Beps_,Fast_,&alpha);
+    *dYdx=-(Mcdm/x/x)*MPlank*sqrt_gStar*sqrt(M_PI/45)*vSig*(y*y-(1-alpha)*yeq*yeq-alpha*y*yeq)*sqrt(1+epsY*epsY);
+  }
+}
+
+
+
+double darkOmegaFO(double * Xf_, int Fast, double Beps)
+{
+  double Yf,Yi;
+  double  Z1=2.5;
+  double  dZ1=0.05;
+  double x;
+  double Xf=25;
+  
+  if(omegaCh) {free(omegaCh); omegaCh=NULL;}
+    
+  if(Xf_) *Xf_=Xf; 
+  assignVal("Q",2*Mcdm); 
+  if(Beps>=1) Beps=0.999;
+  Yf=  darkOmega1(&Xf, Z1, dZ1,Fast, Beps);
+  if(Yf<0||FError) { return -1;}
+  x=Xf;
+  
+  Yi=1/( (Mcdm/x)*sqrt(M_PI/45)*MPlank*aRate(x, 1,Fast,NULL, NULL,NULL) );
+  if(!finite(Yi)||FError)  { return -1;}
+  if(Xf_) *Xf_=Xf; 
+  return  2.742E8*Mcdm/(1/Yf +  1/Yi); /* 2.828-old 2.755-new 2.742 next-new */
+}
+
+
+double darkOmega(double * Xf, int Fast, double Beps)
+{
+  double Yt,Yi,Xt=25;
+  double Z1=1.1;
+  double Z2=10; 
+  int i;
+  double Xf1;
+  
+  if(Xf)*Xf=Xt;
+  assignVal("Q",2*Mcdm);
+  if(Beps>=1) Beps=0.999;
+  Beps_=Beps; Fast_=Fast;
+  
+  if(Z1<=1) Z1=1.1;
+
+  Yt=  darkOmega1(&Xt, Z1, (Z1-1)/5,Fast, Beps);
+  if(Yt<0||FError) {return -1;}
+  Xf1=Xt;
+  for(i=0; ;i++)
+  { double X2=vSigmaGrid.xtop*pow(XSTEP,i+1);
+    double y,yeq,alpha;
+    yeq=Yeq(Xt);
+    alpha=vSigmaGrid.alpha[i];    
+    if(Yt*Yt>=Z2*Z2*( alpha*Yt*yeq+(1-alpha)*yeq*yeq))  break;
+    
+    if(Xt>X2*0.999999) continue; 
+    y=Yt;
+    if(odeint(&y,1 , Xt , X2 , 1.E-3, (X2-Xt)/2, &XderivLn)){ printf("problem in solving diff.equation\n");      return -1;}
+    Yt=y;
+    Xt=X2;
+  }
+  if(Xf) *Xf=0.5*(Xf1+Xt);
+  Yi=1/( (Mcdm/Xt)*sqrt(M_PI/45)*MPlank*aRate(Xt,1,Fast,NULL,NULL,NULL));
+  if(!finite(Yi)||FError)  return -1;
+  if(deltaY==0.)
+  { dmAsymm=0;
+    return  2.742E8*Mcdm/(1/Yt  +  1/Yi); /* 2.828-old 2.755-new,2.742 -newnew */
+  } else
+  {  double a,f,z0,Y0;
+     a=fabs(deltaY);
+     f= (sqrt(Yt*Yt+a*a)-a)/
+        (sqrt(Yt*Yt+a*a)+a)*exp(-2*a/Yi);
+     z0=sqrt(f)*2*a/(1-f);
+     Y0=sqrt(z0*z0+a*a);  
+     dmAsymm=log((Y0+deltaY)/(Y0-deltaY));
+     return 2.742E8*Mcdm*Y0;
+  }   
+}
+
+
+double printChannels(double Xf ,double cut, double Beps, int prcn, FILE * f)
+{ int i,nPrc,nform=log10(1/cut)-2;
+  double Sum,s;
+  
+  if(omegaCh) {free(omegaCh); omegaCh=NULL;}
+  
+  MassCut=Mcdm*(2-log(Beps)/Xf);
+  Sum=aRate(Xf, 1,1,NULL,&omegaCh,&nPrc)*(Mcdm/Xf)*sqrt(M_PI/45)*MPlank/(2.742E8*Mcdm);
+
+  if(FError)     { return -1;}
+  if(nform<0)nform=0;
+   
+  if(f)
+  {  int j;
+     fprintf(f,"\nChannels which contribute to 1/(omega) more than %G%%.\n",100*cut );
+     if(prcn) fprintf(f,"Relative contrubutions in %% are displyed\n");
+        else  fprintf(f,"Absolut  contrubutions  are  displyed\n");
+     for(i=0,s=0;i<nPrc;i++)  if(fabs(omegaCh[i].weight)>=cut)
+     {  s+=omegaCh[i].weight;
+        if(prcn)
+        { if(cut <0.000001) fprintf(f,"%.1E%% ",100*omegaCh[i].weight);
+          else              fprintf(f,"%*.*f%% ",nform+3,nform,
+                                        100*omegaCh[i].weight);
+        } else fprintf(f,"%.1E ",Sum*omegaCh[i].weight); 
+        for(j=0;j<4;j++)
+        {
+           fprintf(f,"%s ",omegaCh[i].prtcl[j]);
+           if(j==1) fprintf(f,"->");
+           if(j==3) fprintf(f,"\n");
+        }
+     }
+  }
+  return 1/Sum;
+}
+
+static int strcmp_(char * n1, char *n2) { if( n1[0]=='*' &&  n1[1]==0) return 0; return strcmp(n1, n2);}
+
+double oneChannel(double Xf,double Beps,char*n1,char*n2,char*n3,char*n4)
+{ int j,nPrc;
+  aChannel *wPrc;
+  double Sum,res;
+  
+  MassCut=Mcdm*(2-log(Beps)/Xf);
+  Sum=aRate(Xf, 1,1,NULL,&wPrc,&nPrc)*(Mcdm/Xf)*sqrt(M_PI/45)*MPlank/(2.742E8*Mcdm);
+  
+  if(FError)     { return -1;}
+  if(wPrc==NULL) { return  0;}  
+
+  for(res=0,j=0;j<nPrc;j++) 
+  if( ( (strcmp_(n1,wPrc[j].prtcl[0])==0 && strcmp_(n2,wPrc[j].prtcl[1])==0) ||
+        (strcmp_(n2,wPrc[j].prtcl[0])==0 && strcmp_(n1,wPrc[j].prtcl[1])==0)
+      ) &&
+      ( (strcmp_(n3,wPrc[j].prtcl[2])==0 && strcmp_(n4,wPrc[j].prtcl[3])==0) ||
+        (strcmp_(n4,wPrc[j].prtcl[2])==0 && strcmp_(n3,wPrc[j].prtcl[3])==0)
+      )
+    )  {res+=wPrc[j].weight;} 
+      
+  free(wPrc); 
+  return res;
+}
+
+void wimpannlib_(char * f_name, int len)
+{
+  char *c_name=wimpAnnLib();
+  cName2f(c_name, f_name,len);
+} 
+
+int omegach_(int *i, double *w, char* name10)
+{ int k,j;
+  if(!omegaCh || *i<1)  return 0;
+  for(k=0;k<*i;k++) if(omegaCh[k].weight==0) return 0;
+  k--;
+  *w=omegaCh[k].weight;
+  for(j=0;j<40;j++) name10[j]=' '; 
+  for(j=0;j<4;j++) strncpy(name10+j*10,omegaCh[k].prtcl[j],strlen(omegaCh[k].prtcl[j]));
+  return 1;
+}
+
+char * EvenParticles(void)
+{ 
+  static char * out=NULL;
+  int i,len;
+
+  if(out) return out;
+  for(i=0,len=0;i<nModelParticles;i++) if(ModelPrtcls[i].name[0]!='~')
+  {
+    len+=strlen(ModelPrtcls[i].name)+1;
+    if(strcmp(ModelPrtcls[i].name,ModelPrtcls[i].aname))
+    len+=strlen(ModelPrtcls[i].aname)+1;
+  }
+  out=malloc(len); out[0]=0;
+  for(i=0;i<nModelParticles;i++)if(ModelPrtcls[i].name[0]!='~') 
+  { 
+    if(i) strcat(out,",");
+    strcat(out,ModelPrtcls[i].name);
+    if(strcmp(ModelPrtcls[i].name,ModelPrtcls[i].aname))
+    { strcat(out,",");
+      strcat(out,ModelPrtcls[i].aname);
+    } 
+  }
+  return out;
+}
+
+/*================= Z4 ==================*/
+
+static double T_;
+static double M02_;
+
+//extern double bessk1(double);
+
+static double s_integrandT(double  sqrtS )
+{  double sv_tot,t,bsk1;
+   double ms,md,PcmIn;
+   double res;
+   
+   ms = M1 + M2; 
+   if(ms>=sqrtS)  return 0;
+   md = M1 - M2;
+   PcmIn = sqrt((sqrtS-ms)*(sqrtS+ms)*(sqrtS-md)*(sqrtS+md))/(2*sqrtS);
+   sv_tot=sigma(PcmIn);         
+
+   t=T_/sqrtS; 
+   if(t<0.1) bsk1=K1pol(t)*exp(-1/t+M02_/T_)*sqrt(M_PI*t/2);
+   else      bsk1=bessk1(sqrtS/T_)*exp(M02_/T_);
+      
+   res= sqrtS*sqrtS*(PcmIn*PcmIn)*sv_tot*bsk1/T_;
+   return res;
+}
+
+
+
+
+static char * txtListParticles(int Ch)
+{ 
+  static char * out=NULL;
+  int i,len;
+
+  if(out) return out;
+  for(i=0,len=0;i<Nodd;i++) if(Z4ch(OddPrtcls[i].aname)==Ch)
+  { 
+    len+=strlen(OddPrtcls[i].name)+1;
+    if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))
+    len+=strlen(OddPrtcls[i].aname)+1;
+  }
+  out=malloc(len); out[0]=0;
+  for(i=0;i<Nodd;i++) if(Z4ch(OddPrtcls[i].aname)==Ch)
+  { 
+    if(out[0]) strcat(out,",");
+    strcat(out,OddPrtcls[i].name);
+    if(strcmp(OddPrtcls[i].name,OddPrtcls[i].aname))
+    { strcat(out,",");
+      strcat(out,OddPrtcls[i].aname);
+    } 
+  }
+  return out;
+}
+
+
+static int  new_code_(int k1,int k2,int ch)
+{
+   char lib[40];
+   char process[400];
+   char lib1[12],lib2[12];
+   numout*cc;
+   pname2lib(inP[k1],lib1);
+   pname2lib(inP[k2],lib2); 
+   sprintf(lib,"omg_%s%s_%d",lib1,lib2,ch);
+   sprintf(process,"%s,%s->All2,All2{%s",inP[k1],inP[k2],txtListParticles(ch));
+//   sprintf(process,"%s,%s->2*x",inP[k1],inP[k2]);
+   cc=getMEcode(0,ForceUG,process,NULL,NULL,lib);
+   if(cc) 
+   { (*cc->interface->twidth)=1;
+     if(ch==1) code22_21[k1*NC+k2]=cc; else code22_12[k1*NC+k2]=cc;
+        
+   } else inC[k1*NC+k2]=0;
+
+   return 0;
+}   
+
+
+
+
+static int aRate4(double T, double *vs1100_, double *vs1120_, double *vs1122_,double *vs1210_,double*vs2200_,double*vs2211_)
+{
+  int i,l1,l2,N12;
+  char* pname[5];
+  double X=Mcdm/T;
+ 
+  double Msmall,Mlarge;
+  double vs1100=0,vs1120=0,vs1122=0,vs1210=0,vs2200=0,vs2211=0;
+ 
+  WIDTH_FOR_OMEGA=1;
+  T_=T;
+  
+  xf_=X;
+
+for(N12=0;N12<2;N12++)
+{ 
+  if( N12==1 && (!CDM1 || !CDM2) ) break;
+  for(l1=0;l1<NC;l1++)
+  { int k1=sort[l1];
+  for(l2=0;l2<NC;l2++)
+  {
+    double factor;
+    int k2=sort[l2];
+    numout * code;
+    CalcHEP_interface * CI;
+    double MassCutOut;
+ 
+    if(inC[k1*NC+k2]<=0) continue;
+  
+    MassCut=0;    
+    if(Z4ch(inP[k1])==1) MassCut+=Mcdm1; else  MassCut+=Mcdm2;
+    if(Z4ch(inP[k2])==1) MassCut+=Mcdm1; else  MassCut+=Mcdm2;
+    M02_=MassCut;
+    MassCut-=T*log(Beps);
+    
+    MassCutOut=MassCut+T*log(100.);
+    
+    if(inMass[k1]+inMass[k2] > MassCut) continue;                      
+
+    if(N12==1)
+    {  if(Mcdm1 > Mcdm2)
+       { if(Z4ch(inP[k1])!=1 || Z4ch(inP[k2])!=1) continue;
+         if(code22_12[k1*NC+k2]==NULL) new_code_(k1,k2,2);
+         code=code22_12[k1*NC+k2];
+       } else 
+       {  if(Z4ch(inP[k1])!=2 || Z4ch(inP[k2])!=2) continue;
+          if(code22_21[k1*NC+k2]==NULL) new_code_(k1,k2,1);
+          code=code22_21[k1*NC+k2];
+       }  
+    }
+    else 
+    { if(code22[k1*NC+k2]==NULL) new_code(k1,k2);
+      code=code22[k1*NC+k2];
+    }
+    if(!code) continue;
+    if(!code->init)
+    { 
+      CalcHEP_interface *cdi=code->interface;
+      for(i=1;i<=cdi->nvar;i++) if(code->link[i]) cdi->va[i]=*(code->link[i]);     
+      if(  cdi->calcFunc()>0 ) {FError=1; WIDTH_FOR_OMEGA=0;  return -1;}
+      code->init=1;
+    }
+
+    sqme22=code->interface->sqme;
+    
+    DeltaXf=(inDelta[k1]+inDelta[k2])*X;
+    inBuff=0;
+
+    M1=inMass[k1];
+    M2=inMass[k2];
+
+    Msmall=M1>M2? M1-Mcdm*(1-sWidth): M2-Mcdm*(1-sWidth);
+    Mlarge=M1>M2? M2+Mcdm*(1-sWidth): M1+Mcdm*(1-sWidth);
+
+    u_max=m2u(MassCutOut);
+
+    factor=inC[k1*NC+k2]*inG[k1]*inG[k2];
+
+    CI=code->interface;
+    for(nsub22=1; nsub22<= CI->nprc;nsub22++)
+    { double u_min=0.;
+      double a=0;
+
+      int z4[4];
+      for(i=0;i<4;i++)  pname[i]=CI->pinf(nsub22,i+1,pmass+i,PDGnum+i);
+      for(i=0;i<4;i++) z4[i]=Z4ch(pname[i]);
+      
+      if(z4[0]==z4[2] && z4[1]==z4[3] ) continue;
+      if(z4[0]==z4[3] && z4[1]==z4[2] ) continue;
+      if(pmass[2]+pmass[3]>MassCutOut) continue;
+
+      if( (pmass[2]>Mlarge && pmass[3]<Msmall)
+        ||(pmass[3]>Mlarge && pmass[2]<Msmall))
+           { *(CI->twidth)=1; *(CI->gtwidth)=1;}
+      else { *(CI->twidth)=0; *(CI->gtwidth)=0;}
+      *(CI->gswidth)=0;
+                             
+      if(pmass[2]+pmass[3] > pmass[0]+pmass[1])
+      { double smin=pmass[2]+pmass[3];
+        if((pmass[0]!=M1 || pmass[1]!=M2)&&(pmass[0]!=M2 || pmass[1]!=M1))
+        { double ms=pmass[0]+pmass[1];
+          double md=pmass[0]-pmass[1];
+          double Pcm=sqrt((smin-ms)*(smin+ms)*(smin-md)*(smin+md))/(2*smin);
+          smin=sqrt(M1*M1+Pcm*Pcm)+sqrt(M2*M2+Pcm*Pcm);
+        }
+        u_min=m2u(smin); 
+      }else  u_min=0;
+      
+repeat:
+      neg_cs_flag=0;
+      T_=T;
+      { double Msum=M1+M2;
+        if(pmass[2]+pmass[3]> Msum) Msum=pmass[2]+pmass[3];    
+        a=simpson(s_integrandT,Msum,Msum-1.5*T*log(Beps) ,eps);
+      }
+      if(neg_cs_flag && *(CI->gswidth)==0)
+      { *(CI->gswidth)=1;
+         goto  repeat;
+      }   
+/*
+ printf("X=%.2E (%d) %.3E %s %s %s %s\n",X,average, a, pname[0],pname[1],pname[2],pname[3]);
+*/
+
+      { int  sIn,sOut;
+        sIn= z4[0]+z4[1];
+        sOut=z4[2]+z4[3];
+        a*=factor;
+//?????
+//        if(z4[0]==1) a*=exp((Mcdm1-inMass[k1])/T); else a*=exp((Mcdm2-inMass[k1])/T);
+//        if(z4[1]==1) a*=exp((Mcdm1-inMass[k2])/T); else a*=exp((Mcdm2-inMass[k2])/T);  
+//?????
+        switch(sIn)
+        { case 2: 
+            switch(sOut)
+            { case 0: vs1100+=a;     break;
+              case 2: if(z4[2]==0 || z4[3]==0) vs1120+=a; break;
+              case 4: vs1122+=a;
+            }    
+            break;  
+          case 3: if(sOut==1) vs1210+=a; break;
+          case 4: if(sOut==0) vs2200+=a; else vs2211+=a;  
+        }
+      }                
+    }
+  }
+  }
+}
+{ double g1=1,g2=1;
+  if(CDM1) g1=geff1_(T);
+  if(CDM2) g2=geff2_(T);
+    
+  *vs1100_=vs1100/(g1*g1);
+  *vs1120_=vs1120/(g1*g1);
+  *vs1122_=vs1122/(g1*g1);
+  *vs1210_=vs1210/(g1*g2);
+  *vs2200_=vs2200/(g2*g2);
+  *vs2211_=vs2211/(g2*g2);
+}
+  WIDTH_FOR_OMEGA=0;
+  return 0;
+}
+
+
+
+double geff2_(double T)
+{ 
+   double sum=0,t; int l;
+   for(l=0;l<NC;l++) 
+   { int k=sort[l];
+     if(Z4ch(inP[k])==2) 
+     { double bsk2; 
+       double M=inMass[k];
+       t=T/M;
+       if(t<0.1) bsk2=K2pol(t)*exp(-1/t+Mcdm2/T)*sqrt(M_PI*t/2);
+                 else     bsk2=bessk2(1/t)*exp(Mcdm2/T);
+                             
+       
+       
+//      if(A>15 || Mcdm +inMass[k] > MassCut) return sum;
+       sum+=inG[k]*M*M*bsk2;
+     }
+   }  
+   return sum;
+}
+
+double geff1(double T)
+{ 
+   double sum=0; int l;
+   for(l=0;l<NC;l++) 
+   { int k=sort[l];
+     if(Z4ch(inP[k])==1) 
+     {  
+       double M=inMass[k],b2;
+       if(T<0.1*M) b2= exp(-(M-Mcdm1)/T )*K2pol(T/M); 
+          else     b2= bessk2(M/T)*exp(Mcdm1/T)/sqrt(M_PI*T/2/M);
+       sum+=inG[k]*pow(M/Mcdm1,1.5)*b2;
+     }
+   }  
+   return sum;
+}
+
+double geff1_(double T)
+{ 
+   double sum=0,t; int l;
+   for(l=0;l<NC;l++) 
+   { int k=sort[l];
+     if(Z4ch(inP[k])==1) 
+     { double bsk2; 
+       double M=inMass[k];
+       t=T/M;
+       if(t<0.1) bsk2=K2pol(t)*exp((Mcdm1-M)/T)*sqrt(M_PI*t/2);
+        else     bsk2=bessk2(1/t)*exp(Mcdm1/T);
+       sum+=inG[k]*M*M*bsk2;
+     }
+   }      
+   return sum;
+}
+
+
+
+double Yeq1(double T)
+{  double heff,s;
+   termod(T,NULL,&heff);
+   s=2*M_PI*M_PI*T*T*T*heff/45;
+   return  (T/(2*M_PI*M_PI*s))*geff1_(T)*exp(-Mcdm1/T);
+
+}
+
+double geff2(double T)
+{ double sum=0; int l;
+  for(l=0;l<NC;l++)
+  { int k=sort[l];
+    if(Z4ch(inP[k])==2)
+    { 
+      double M=inMass[k],b2;  
+      if(T<0.1*M) b2= exp(-(M-Mcdm2)/T )*K2pol(T/M);
+          else    b2= bessk2(M/T)*exp(Mcdm2/T)/sqrt(M_PI*T/2/M);
+      sum+=inG[k]*pow(M/Mcdm2,1.5)*b2;
+    }  
+  }
+  return sum;
+}
+
+double Yeq2(double T)
+{  double heff,s;
+   termod(T,NULL,&heff);
+   s=2*M_PI*M_PI*T*T*T*heff/45;
+   return  (T/(2*M_PI*M_PI*s))*geff2_(T)*exp(-Mcdm2/T); 
+}
+
+
+static double Y1SQ_Y2(double T)
+{ double heff,s,X1,X2,g1_,g2_;
+  X1=Mcdm1/T;
+  X2=Mcdm2/T;
+  
+  termod(T,NULL,&heff);
+  s=2*M_PI*M_PI*T*T*T*heff/45;
+  
+  g1_=geff1_(T);
+  g2_=geff2_(T);
+      
+  return g1_/g2_*exp(X2-X1)*T*g1_/(2*M_PI*M_PI*s)*exp(-X1);  
+}                          
+
+
+static double y1_y2_Q(double T)
+{ double r;
+   r=geff1_(T)/geff2_(T)*exp((Mcdm2-Mcdm1)/T);
+  return r*r;
+} 
+
+static double y2_y1_Q(double T)
+{ double r;
+     r=geff2_(T)/geff1_(T)*exp((Mcdm1-Mcdm2)/T);    
+  return r*r;
+} 
+
+
+
+void TderivZ4(double T, double *Y, double *dYdT)
+{
+  double y1,y2,y1_,y2_,z1122,y1q_y2, coef,dy1,dy2;
+  double sqrt_gStar;
+  
+  double C[2], L[2][2], Q[2][3];
+  int i;
+  double vs1100,vs1120,vs1122,vs1210,vs2200,vs2211;
+  
+  y1=Y[0];
+  y2=Y[1];
+  y1_=Yeq1(T);
+  y2_=Yeq2(T);
+  y1q_y2=Y1SQ_Y2(T);
+//printf("*T=%e y1eq=%E y2e2=%E\n",T,y1_,y2_); 
+
+//  MassCut=Mcdm*(2-log(Beps_)*T/Mcdm);
+//  MassCut=4*Mcdm;
+  
+  aRate4(T,&vs1100,&vs1120,&vs1122,&vs1210,&vs2200,&vs2211);
+
+//  printf("T=%e y1eq=%E y2e2=%E\n",T,y1_,y2_); 
+
+#ifdef OLD
+  if(Mcdm1 >Mcdm2)z1122= vs1122*(y1*y1-y2*y2*y1_y2_Q(T)); else  z1122=-vs2211*(y2*y2-y1*y1*y2_y1_Q(T));
+  dYdT[0]=vs1100*(y1*y1-y1_*y1_)+     vs1120*(y1*y1-y2*y1q_y2) + z1122;
+  dYdT[1]=vs2200*(y2*y2-y2_*y2_)- 0.5*vs1120*(y1*y1-y2*y1q_y2) - z1122 + 0.5*vs1210*y1*(y2-y2_) ;
+
+#else
+ 
+ dy1=y1-y1_;
+ dy2=y2-y2_;
+ 
+  if(Mcdm1 >Mcdm2){ z1122= vs1122*(dy1*dy1             -dy2*dy2*y1_y2_Q(T) +2*y1_*dy1            -2*y2_*dy2*y1_y2_Q(T) );
+                    Q[0][0]=vs1122;       Q[0][1]=0;     Q[0][2]=-vs1122*y1_y2_Q(T);
+                    L[0][0]=2*vs1122*y1_; L[0][1]=-2*vs1122*y2_*y1_y2_Q(T);    
+  
+                  } else  
+                  { z1122= vs2211*(dy1*dy1*y2_y1_Q(T)  -dy2*dy2            +2*y1_*dy1*y2_y1_Q(T) -2*y2_*dy2            );
+                    Q[0][0]=vs2211*y2_y1_Q(T); Q[0][1]=0; Q[0][2]=-vs2211;
+                    L[0][0]=2*vs2211*y1_*y2_y1_Q(T); L[0][1]=-2*vs2211*y2_; 
+                  }
+                  
+for(i=0;i<3;i++) Q[1][i]=-Q[0][i];
+for(i=0;i<2;i++) L[1][i]=-L[0][i];                    
+                  
+L[0][0]+=2*vs1100*y1_ +2*vs1120*y1_;
+L[0][1]+=-vs1120*y1q_y2;
+Q[0][0]+=vs1100+vs1120;
+
+  dYdT[0]=vs1100*(2*dy1*y1_ + dy1*dy1) 
+  
+  +vs1120*(dy1*dy1 +2*dy1*y1_ -dy2*y1q_y2)
+  
+
+                                            + z1122
+                                            ;
+// printf(" ZERO1=%E(%E)\n",dYdT[0], dYdT[0]-(L[0][0]*dy1+L[0][1]*dy2 +Q[0][0]*dy1*dy1 + Q[0][1]*dy1*dy2 +Q[0][2]*dy2*dy2));                                            
+                                            
+                                            
+L[1][0]+=-vs1120*y1_;
+L[1][1]+=0.5*vs1120*y1q_y2+2*vs2200*y2_ +0.5*vs1210*y1_;
+Q[1][0]+=-0.5*vs1120;
+Q[1][2]+=vs2200;                                            
+Q[1][1]+=0.5*vs1210;
+      
+  dYdT[1]=vs2200*(2*dy2*y2_ + dy2*dy2) 
+  
+  -0.5*vs1120*( dy1*dy1 +2*y1_*dy1 -y1q_y2*dy2)
+  
+                                           
+                                           
+                                            - z1122 
++ 0.5*vs1210*(y1_*dy2  + dy1*dy2)    ;
+
+// printf(" ZERO2=%E(%E)\n",dYdT[1], dYdT[1]-(L[1][0]*dy1+L[1][1]*dy2 +Q[1][0]*dy1*dy1 + Q[1][1]*dy1*dy2 +Q[1][2]*dy2*dy2));                                            
+
+
+#endif 
+
+
+/*
+dYdT[0]=vs1100*(y1*y1-y1_*y1_);
+dYdT[1]=vs2200*(y2*y2-y2_*y2_);
+*/
+
+  termod(T,&sqrt_gStar,NULL);
+  coef=sqrt(M_PI/45)*MPlank*sqrt_gStar;
+
+  
+
+  C[0]=(Yeq1(T*1.05)-Yeq1(T/1.05))/(2*log(1.05)*T);
+  C[1]=(Yeq2(T*1.05)-Yeq2(T/1.05))/(2*log(1.05)*T);
+
+//printf(" C= %E %E    M= %E %E %E %E\n", C[0],C[1],   L[0][0]*coef,L[0][1]*coef,L[1][0]*coef,L[1][1]*coef);
+  
+  
+  dYdT[0]*=coef;
+  dYdT[1]*=coef;
+  if(isnan(dYdT[0])){printf("All= %E %E %E %E %E %E %E %E %E %E %E %E\n",coef,y1,y1_,y2,y2_,z1122,vs1100,vs1120,vs2200,vs1210, vs1122,vs2211);}
+
+// printf("T=%e  vs1100=%e,vs1120=%E,z1122=%E,vs2200=%e,vs1210=%E   derives %E %E\n",T, vs1100,vs1120,z1122,vs2200,vs1210,  dYdT[0],dYdT[1]);  
+}
+
+static int DMEQ0(double T, double vs1100, double vs1120, double vs1122, double vs1210,double vs2200, double vs2211,
+    double *C, double *L, double *Q)
+{
+  double y1_,y2_,y1q_y2, y2q_y1,coef;
+  double sqrt_gStar;
+  int i;
+  
+  if(CDM1)  y1_=Yeq1(T); else y1_=0;
+  if(CDM2)  y2_=Yeq2(T); else y2_=0;
+  if(CDM1&&CDM2) { y1q_y2=Y1SQ_Y2(T); y2q_y1=y2_y1_Q(T);}  else { y1q_y2=0; y2q_y1=0;}
+
+
+/* 
+  if(Mcdm1 >Mcdm2)z1122= vs1122*(y1*y1-y2*y2*y1_y2_Q(T)); else  z1122=-vs2211*(y2*y2-y1*y1*y2_y1_Q(T));
+  dYdT[0]=vs1100*(y1*y1-y1_*y1_)+     vs1120*(y1*y1-y2*y1q_y2) + z1122;
+  dYdT[1]=vs2200*(y2*y2-y2_*y2_)- 0.5*vs1120*(y1*y1-y2*y1q_y2) - z1122 + 0.5*vs1210*y1*(y2-y2_) ;
+*/
+ 
+  if(Mcdm1 >Mcdm2){
+                    Q[0]=vs1122;       Q[1]=0;     Q[2]=-vs1122*y1q_y2;
+                    L[0]=2*vs1122*y1_; L[1]=-2*vs1122*y2_*y1q_y2;    
+  
+                  } else  
+                  {
+                    Q[0]=vs2211*y2q_y1; Q[1]=0; Q[2]=-vs2211;
+                    L[0]=2*vs2211*y1_*y2q_y1; L[1]=-2*vs2211*y2_; 
+                  }
+                  
+for(i=0;i<3;i++) Q[3+i]=-Q[i];
+for(i=0;i<2;i++) L[2+i]=-L[i];                    
+                  
+    L[0]+=2*vs1100*y1_ +2*vs1120*y1_;
+
+if(vs1120>0) L[1]+=-vs1120*y1q_y2;
+    Q[0]+=vs1100+vs1120;                                         
+    L[2+0]+=-vs1120*y1_;
+    
+    L[2+1]+=2*vs2200*y2_ +0.5*vs1210*y1_;
+    if(vs1120>0) L[2+1]+=0.5*vs1120*y1q_y2;
+
+    Q[3+0]+=-0.5*vs1120;
+    Q[3+1]+=0.5*vs1210;
+    Q[3+2]+=vs2200;                                            
+
+
+  termod(T,&sqrt_gStar,NULL);
+  coef=sqrt(M_PI/45)*MPlank*sqrt_gStar;
+  for(i=0;i<4;i++) L[i]*=coef;
+  for(i=0;i<6;i++) Q[i]*=coef;
+  
+  
+  if(CDM1)  C[0]=(Yeq1(T*1.01)-Yeq1(T/1.01))/(2*log(1.01)*T); else C[0]=0;
+  if(CDM2)  C[1]=(Yeq2(T*1.01)-Yeq2(T/1.01))/(2*log(1.01)*T); else C[1]=0;
+
+  return 0;
+}
+
+int DMEQ(double T,double *C, double *L, double *Q)
+{
+  double vs1100,vs1120,vs1122,vs1210,vs2200,vs2211;
+  aRate4(T,&vs1100,&vs1120,&vs1122,&vs1210,&vs2200,&vs2211);
+  return  DMEQ0(T, vs1100,vs1120, vs1122, vs1210, vs2200, vs2211, C,L,Q);
+}
+
+int dYstart(double T, double * dy)
+{
+  double C[2],L[4],Q[6],D;
+  DMEQ(T, C, L,Q);
+
+  if(!CDM2) { dy[0]=C[0]/L[0]; dy[1]=0; return 0;}
+  if(!CDM1) { dy[0]=0; dy[1]=C[1]/L[3]; return 0;}
+    
+  D=L[0]*L[3]-L[1]*L[2];
+  
+  dy[0]= ( C[0]*L[3]-C[1]*L[1])/D;
+  dy[1]= (-C[0]*L[2]+C[1]*L[0])/D;
+  
+  return 0;
+}
+
+
+
+void TderivZ4dy(double T, double *Y, double *dYdT)
+{
+  double C[2], L[4], Q[6],dy1,dy2;
+   
+  DMEQ(T, C, L, Q);
+  
+  dy1=Y[0];
+  dy2=Y[1];
+  
+  dYdT[0]= -C[0] + L[0]*dy1 + L[1]*dy2 + Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;
+  dYdT[1]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
+}
+
+static int Ntab=0;
+static double*Ttab=NULL;
+
+//static double*Ctab[2]={NULL,NULL};
+static double *vs1100T = NULL;
+static double *vs1120T = NULL;
+static double *vs1122T = NULL;
+static double *vs1210T = NULL;
+static double *vs2200T = NULL;
+static double *vs2211T = NULL;
+
+static double vs1120F(double T){ return polint2Exp(T,Ntab,Ttab,  vs1120T);}
+static double vs2200F(double T){ return polint2Exp(T,Ntab,Ttab,  vs2200T);}
+static double vs1100F(double T){ return polint2Exp(T,Ntab,Ttab,  vs1100T);}
+static double vs1210F(double T){ return polint2Exp(T,Ntab,Ttab,  vs1210T);}
+static double vs1122F(double T){ return polint2Exp(T,Ntab,Ttab,  vs1122T);}
+static double vs2211F(double T){ return polint2Exp(T,Ntab,Ttab,  vs2211T);}
+
+
+void TabDmEq(double Tstart,double Tend,double step, int show)
+{
+  int i,N;
+  double T;
+  
+  N=log(Tstart/Tend)/log(step)+1;
+  if(N!=Ntab)
+  {                 
+    Ttab    = realloc(Ttab,   N*sizeof(double));
+    vs1100T = realloc(vs1100T,N*sizeof(double));
+    vs1120T = realloc(vs1120T,N*sizeof(double));
+    vs1122T = realloc(vs1122T,N*sizeof(double));
+    vs1210T = realloc(vs1210T,N*sizeof(double));
+    vs2200T = realloc(vs2200T,N*sizeof(double));
+    vs2211T = realloc(vs2211T,N*sizeof(double));
+    Ntab=N;
+  }  
+  for(T=Tstart,i=0;i<N;i++)
+  { 
+     Ttab[i]=T;
+     aRate4(T,vs1100T+i,vs1120T+i,vs1122T+i,vs1210T+i,vs2200T+i,vs2211T+i);
+     T/=step;     
+  }
+  if(show)
+  {
+    if(CDM1 && CDM2)
+    {  displayFunc(vs1120F,Tend,Tstart,"vs1120");
+       displayFunc(vs1210F,Tend,Tstart,"vs1210");
+       if(Mcdm1<Mcdm2) displayFunc(vs2211F,Tend,Tstart,"vs2211");
+       else            displayFunc(vs1122F,Tend,Tstart,"vs1122");
+    }
+    if(CDM2) displayFunc(vs2200F,Tend,Tstart,"vs2200");
+    if(CDM1) displayFunc(vs1100F,Tend,Tstart,"vs1100");
+  }  
+}
+
+static int DMEQtab(double T,double *C, double *L, double *Q)
+{
+  double vs1100,vs1120,vs1122,vs1210,vs2200,vs2211;
+
+  vs1100 = polint2Exp(T,Ntab,Ttab,  vs1100T);  if(vs1100<0) vs1100 = 0;
+  vs1120 = polint2Exp(T,Ntab,Ttab,  vs1120T);  if(vs1120<0) vs1120 = 0;
+  vs1122 = polint2Exp(T,Ntab,Ttab,  vs1122T);  if(vs1122<0) vs1122 = 0;
+  vs1210 = polint2Exp(T,Ntab,Ttab,  vs1210T);  if(vs1210<0) vs1210 = 0;
+  vs2200 = polint2Exp(T,Ntab,Ttab,  vs2200T);  if(vs2200<0) vs2200 = 0;
+  vs2211 = polint2Exp(T,Ntab,Ttab,  vs2211T);  if(vs2211<0) vs2211 = 0;
+//printf("vs1100=%E,vs1120=%E, vs1122=%E, vs1210=%E, vs2200=%E, vs2211=%E\n",vs1100,vs1120, vs1122, vs1210, vs2200, vs2211);
+  return   DMEQ0(T, vs1100,vs1120, vs1122, vs1210, vs2200, vs2211, C,L,Q);
+}
+
+
+void TderivZ4tab(double T, double *Y, double *dYdT)
+{
+  double C[2], L[4], Q[6],dy1,dy2;
+
+  DMEQtab(T,C,L,Q);
+  
+  dy1=Y[0];
+  dy2=Y[1];
+//printf("T=%E C= %E %E L= %E %E %E %E  Q=%E %E %E %E %E %E \n",T,C[0],C[1],L[0],L[1],L[2],L[3],Q[0],Q[1],Q[2],Q[3],Q[4],Q[5] );      
+  dYdT[0]= -C[0] + L[0]*dy1 + L[1]*dy2 + Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;
+  dYdT[1]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
+}
+
+
+
+double dy2_approx(double T,double y1)
+{
+  double C[2], L[4], Q[6],dy1,dy2;
+
+  DMEQtab(T,C,L,Q);
+  
+  dy1=y1;
+  dy2= (C[1] - L[2]*dy1  - Q[3]*dy1*dy1)/(L[3]+Q[4]*dy1); 
+  return dy2;
+}
+
+double dy1_approx(double T,double y2)
+{
+  double C[2], L[4], Q[6],dy1,dy2;
+
+  DMEQtab(T,C,L,Q);  
+  dy2=y2;
+  dy1=( C[0] - L[1]*dy2 - Q[2]*dy2*dy2 )/(L[0]   + Q[1]*dy2);
+
+  return dy1;
+}
+
+
+void TderivZ4tab1(double T, double *Y, double *dYdT)
+{
+  double C[2], L[4], Q[6],dy1,dy2;
+
+  DMEQtab(T,C,L,Q);
+  
+  dy1=Y[0];
+
+if(!CDM2) dy2=0; else dy2= (C[1] - L[2]*dy1  - Q[3]*dy1*dy1)/(L[3]+Q[4]*dy1); 
+  dYdT[0]= -C[0] + L[0]*dy1 + L[1]*dy2 + Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;
+}
+
+void TderivZ4tab2(double T, double *Y, double *dYdT)
+{
+  double C[2], L[4], Q[6],dy1,dy2;
+
+  DMEQtab(T,C,L,Q);  
+  dy2=Y[0];
+
+if(!CDM1)dy1=0;else  dy1=( C[0] - L[1]*dy2 - Q[2]*dy2*dy2 )/(L[0]   + Q[1]*dy2);
+   
+  dYdT[0]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
+}
+
+

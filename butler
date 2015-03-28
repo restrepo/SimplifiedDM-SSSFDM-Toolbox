@@ -1,0 +1,339 @@
+#!/bin/sh
+
+# This script is automatically generated from butler.in by configure,
+# DO NOT EDIT
+
+pkgroot="/home/restrepo/prog/toolbox/toolbox"
+enable_calchep="yes"
+enable_micromegas="yes"
+enable_spheno="yes"
+enable_whizard="no"
+enable_higgsbounds="no"
+enable_ssp="yes"
+enable_madgraph="yes"
+include_calchep=True
+include_spheno=True
+include_whizard=True
+include_madgraph=True
+
+MATH=/usr/local/bin/math
+
+separator="==============================================================================="
+
+usage() {
+   test -n "$1" && echo $1
+   cat <<EOI
+usage: butler [options] model
+
+valid options are:
+
+   --help, -h         : this help scree
+   --config           : just show package configuration and exit
+   --skip-package     : skip a package, where package is one of
+                        spheno , calchep , micromegas , whizard , 
+                        madgraph , ssp
+   --skip-sarah       : skip the SARAH run and use an existing result
+EOI
+   exit
+}
+
+config() {
+cat <<EOI
+$separator
+SUSY Phenomenology framework 0.1 
+$separator
+
+Package configuration:
+$separator
+
+SARAH                      : yes
+SARAH scan and plot (SSP)  : $enable_ssp
+SPHENO                     : $enable_spheno
+CalcHEP                    : $enable_calchep
+MicrOMEGAs                 : $enable_micromegas
+WHIZARD                    : $enable_whizard
+MadGraoh                   : $enable_madgraph
+HiggsBounds                : $enable_higgsbounds
+
+
+package root               : $pkgroot
+Mathematica kernel         : $MATH
+Mathematica version        : 9.0 for Linux x86 (64-bit) (November 20, 2012)
+$separator
+EOI
+}
+
+die() {
+   test -n "$1" && echo $1
+   exit 1
+}
+
+ask() {
+   (
+      askval=""
+      first=""
+      while test ! "$askval" = yes && test ! "$askval" = no; do
+         test -n "$first" && echo please answer yes or no
+         first=1
+         read askval
+      done
+      test "$askval" = yes
+   )
+}
+
+createdir() {
+   if test "$1" = yes; then
+      if test -e "$2"; then
+         test ! -d "$2" && die ERROR: $2 exists and is not a directory
+         echo WARNING: $2 already exists, remove contents [yes/no]?
+         ask || "die Refusing to remove already existing directory $2, quitting..."
+         echo removing contents of $2...
+         rm -fr "$2" || die
+      fi
+      test -n "$3" || mkdir -p "$2" || die
+   fi
+}
+
+model=""
+skip_sarah=""
+while test -n "$1"; do
+   case "$1" in
+      -h|--help)
+         usage
+         ;;
+      --config)
+         config
+         exit
+         ;;
+      --skip-spheno)
+         enable_spheno=no
+         include_spheno=False
+         ;;
+      --skip-calchep)
+         enable_calchep=no
+         include_calchep=False
+         ;;
+      --skip-micromegas)
+         enable_micromegas=no
+         ;;
+      --skip-whizard)
+         enable_whizard=no
+         include_whizard=False
+         ;;
+      --skip-madgraph)
+         enable_madgraph=no
+         include_madgraph=False
+         ;;
+      --skip-ssp)
+         enable_ssp=no
+         ;;
+      --skip-sarah)
+         skip_sarah=1
+         ;;
+      *)
+         if test -z "$model"; then
+            model="$1"
+         else
+            usage "invalid argument \"$1\""
+         fi
+         ;;
+   esac
+   shift
+   test -n "$model" && test -n "$1" && usage "invalid argument \"$model\""
+done
+test -z "$model" && usage "ERROR: please supply a model"
+
+if test -z "$skip_sarah"; then
+   echo running SARAH...
+   echo $separator
+   echo
+   $MATH <<EOI || die
+      Print["$model"];
+      <<"SARAH/SARAH.m"
+      Start["$model"];
+      SetOptions[MakeAll,IncludeSPheno->$include_spheno, IncludeCalcHep->$include_calchep, IncludeWHIZARD->$include_whizard, IncludeUFO->$include_madgraph];
+      WriteModelDirectories=True;
+      MakeAll[];
+EOI
+   echo SARAH run finished
+else
+   echo SARAH run skipped on user request, trying to use an existing result...
+fi
+
+test -e "$pkgroot/DirectoryNames.txt" || die \
+   "ERROR: Something went wrong when running SARAH; please check Mathematica output"
+. "$pkgroot/DirectoryNames.txt" || die \
+   "ERROR: SARAH ran but produced a corrup DirectoryNames.txt --- check Mathematica output"
+test -n "$SARAHModelName" && \
+   (test -d "$SPhenoDir" || test "$enable_spheno" = no) && \
+   (test -d "$CHepDir" || test "$enable_calchep" = no) && \
+   (test -d "$UFOdir" || test "$enable_madgraph" = no) && \
+   (test -d "$WHIZARDdir" || test "$enable_whizard" = no) && \
+   test -d "$FeynArtsDir" || die \
+   "ERROR: SARAH ran but produced incomplete output --- check Mathematica output"
+
+spheno_dir="$pkgroot/SPHENO"
+spheno_wd="$spheno_dir/$SARAHModelName"
+calchep_wd="$pkgroot/calchep/$SARAHModelName"
+micromegas_wd="$pkgroot/micromegas/$SARAHModelName"
+madgraph_wd="$pkgroot/madgraph/models/$SARAHModelName"
+
+sphenostat="disabled"
+calchepstat="disabled"
+micromegasstat="disabled"
+whizardstat="disabled"
+madgraohstat="disabled"
+sspstat="disabled"
+
+createdir "$enable_spheno" "$spheno_wd"
+createdir "$enable_calchep" "$calchep_wd" 0
+createdir "$enable_micromegas" "$micromegas_wd" 0
+createdir "$enable_madgraph" "$madgraph_wd" 0
+
+if test "$enable_whizard" = yes; then
+   whizardmdl=`echo "$WHIZARDdir/whizard/"*mdl | sed 's/.*\///' | sed 's/\.mdl//'`
+   test -n "$whizardmdl" || die \
+      "ERROR: SARAH ran, but no WHIZARD model was generated --- check Mathematica output"
+   if test -e "$pkgroot/whizard/share/whizard/models/$whizardmdl.mdl"; then
+      echo "A WHIZARD model called $whizardmdl already exists; overwrite? [yes/no]"
+      ask || die "Refusing to overwrite existing WHIZARD model $whizardmdl; quitting..."
+   fi
+fi
+
+if test "$enable_ssp" = yes; then
+   sspsettings="$pkgroot/SSP/DefaultSettings.m.$SARAHModelName"
+   if test -e "$sspsettings"; then
+      echo "A SSP configuration $sspsettings already exists; overwrite [yes/no]"
+      ask || die "Refusing to overwrite existing $sspsettings; quitting..."
+   fi
+fi
+
+if test "$enable_spheno" = "yes"; then
+   echo
+   echo "Building SPHENO for $SARAHModelName"
+   echo $separator
+   echo
+   echo copying files...
+   cp  "$SPhenoDir"/* "$spheno_wd" || die
+   echo building SPHENO...
+   echo
+   make -C "$spheno_dir" "Model=$spheno_wd" || die
+   echo
+   echo "SPHENO for $SARAHModelName built successfully in $spheno_wd"
+   sphenostat="code and executable located in $spheno_wd"
+fi
+
+if test "$enable_calchep" = "yes"; then
+   echo
+   echo "Creating a CalcHEP project for $SARAHModelName"
+   echo $separator
+   echo
+   oldpwd=`pwd`
+   cd "$pkgroot/calchep"
+   echo creating directory structure...
+   ./mkWORKdir "$SARAHModelName" || die 1
+   echo copying files...
+   cp "$CHepDir"/* "$calchep_wd/models" || die 1
+   cd "$oldpwd"
+   echo
+   echo "CalcHEP project for $SARAHModelName created successfully in $calchep_wd"
+   calchepstat="project located in $calchep_wd"
+fi
+
+if test "$enable_madgraph" = "yes"; then
+   echo
+   echo "Creating a MadGraph project for $SARAHModelName"
+   echo $separator
+   echo
+   oldpwd=`pwd`
+   cd "$pkgroot/madgraph/models"
+   echo creating directory structure...
+   mkdir "$SARAHModelName" || die 1
+   echo copying files...
+   cp "$UFOdir"/* "$madgraph_wd" || die 1
+   cd "$oldpwd"
+   echo
+   echo "MadGraph project for $SARAHModelName created successfully in $madgraph_wd"
+   madgraphstat="project located in $madgraph_wd"
+fi
+
+if test "$enable_micromegas" = yes; then
+   echo 
+   echo "Creating MicroMEGAs project for $SARAHModelName"
+   echo $separator
+   echo
+   oldpwd=`pwd`
+   cd "$pkgroot/micromegas"
+   echo creating directory structury...
+   ./newProject "$SARAHModelName" || die
+   cd "$oldpwd"
+   cp "$CHepDir"/* "$micromegas_wd/work/models" || die
+   cp "$CHepDir"/* "$micromegas_wd/calchep/models" || die
+   cp "$CHepDir"/CalcOmega* "$micromegas_wd" || die
+   echo building project...
+   echo
+   make -C "$micromegas_wd" main=CalcOmega.cpp || die
+   echo
+   echo "MicrOMEGAs project for $SARAHModelName created successfully in $micromegas_wd"
+   micromegasstat="project located in $micromegas_wd"
+fi
+
+if test "$enable_whizard" = yes; then
+   echo
+   echo "Compiling WHIZARD model $whizardmdl"
+   echo $separator
+   echo
+   oldpwd=`pwd`
+   echo running configure...
+   echo
+   cd $WHIZARDdir
+   ./configure --prefix="$pkgroot/whizard" WO_CONFIG="$pkgroot/whizard/bin" || die
+   echo
+   echo building and installing model
+   make install || die
+   cd "$oldpwd"
+   echo
+   echo "WHIZARD model $whizardmdl successfully installed"
+   whizardstat="model installed and available as $whizardmdl"
+fi
+
+if test "$enable_ssp" = yes; then
+   echo
+   echo "Creating SSP configuration for $SARAHModelName"
+   echo $separator
+   echo
+   echo "Writing $sspsettings..."
+   cat <<EOI > "$sspsettings" | die
+DEFAULT[SPheno] = "$pkgroot/SPHENO/bin/SPheno$SARAHModelName";
+DEFAULT[SPhenoInputFile] = "LesHouches.in.$SARAHModelName";
+DEFAULT[SPhenoSpectrumFile] = "SPheno.spc.$SARAHModelName";
+DEFAULT[MicroOmegas] = "$pkgroot/micromegas/$SARAHModelName/CalcOmega";
+DEFAULT[MicroOmegasInputFile] = "SPheno.spc.$SARAHModelName";
+DEFAULT[MicroOmegasOutputFile] = "omg.out";
+DEFAULT[WHIZARD] = "$pkgroot/whizard/bin/whizard";
+DEFAULT[WHIZARDparFile] = "WHIZARD.par.$SARAHModelName";
+DEFAULT[HiggsBounds] = "$pkgroot/HiggsBounds/HiggsBounds LandH effC $NumberNeutralHiggs $NumberChargedHiggs";
+DEFAULT[HiggsSignals] = "$pkgroot/HiggsSignals/HiggsSignals latestresults peak 2 effC $NumberNeutralHiggs $NumberChargedHiggs";
+DEFAULT[MadGraph] = "$pkgroot/madgraph";
+DEFAULT[MadGraphModel] = "$SARAHModelName";
+
+EOI
+   echo
+   echo "Created SSP configuration $sspsettings"
+   sspstat="configuration available as $sspsettings"
+fi
+
+cat <<EOI
+
+$separator
+Summary
+$separator
+
+SPHENO     : $sphenostat
+CalcHEP    : $calchepstat
+MicrOMEGAs : $micromegasstat
+WHIZARD    : $whizardstat
+MadGraph   : $madgraphstat
+SSP        : $sspstat
+
+EOI
