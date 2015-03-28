@@ -195,6 +195,225 @@ double complex Hgam1F(double tau) { return Hgam1Fr(tau)+I*Hgam1Fi(tau); }
 double complex Hgam1A(double tau) { return Hgam1Ar(tau)+I*Hgam1Ai(tau); }
 double complex Hgam1S(double tau) { return Hgam1Sr(tau)+I*Hgam1Si(tau); }
 
+#define alphaE0    (1/137.036) 
+
+
+double complex hGGeven(double MH, double aQCD, int Nitems, ...)
+{
+  typedef struct{ int spin2; int cdim; double mass; double coeff;} hggItem;
+  hggItem* part=malloc(Nitems*sizeof(hggItem));
+  int i;
+  double complex sum=0; 
+  double a=aQCD;
+  
+  va_list ap;
+  va_start(ap,Nitems);
+
+  for(i=0;i<Nitems;i++)
+  {  part[i].spin2=va_arg(ap, int);
+     part[i].cdim=va_arg(ap, int);
+     part[i].mass=va_arg(ap,REAL); 
+     part[i].coeff=va_arg(ap,REAL);   
+  }
+  va_end(ap);
+  
+  for(i=0;i<Nitems;i++)
+  {  double complex  res;
+     double mass=part[i].mass; 
+     double tau=MH/2/mass;
+     double cf,lf;
+     tau=tau*tau;
+     switch(part[i].spin2)
+     { case 0: res=HggS(tau)/2; break;
+       case 1: res=HggF(tau); break;
+       case 2: res=-HggV(tau)/2; break;
+       default: 
+         printf("hGGeven item %d : unexpected  2*spin=%d\n", i+1,part[i].spin2);
+        exit(5);
+     } 
+     switch(part[i].cdim)
+     { case  3:
+       case -3: cf=0.5; break;
+       case  8: cf=-2;
+       default: continue;
+     } 
+     if(abs(part[i].cdim)==3) switch(part[i].spin2)
+     { 
+       case 0: lf=1+4.5*a; break;
+       case 1: lf=1+2.75*a;
+       if(tau<1)
+       {  double ln=2*log(mass/MH);
+          lf+= a*a*(6.1537-2.8542*ln+a*(10.999-17.93*ln+5.47*ln*ln)); 
+       } break;
+       default: lf=1;
+     }   
+
+     sum+= res*cf*lf*part[i].coeff;
+  }
+  free(part); 
+  sum*=a/8;
+  return sum;  
+}
+
+
+double complex hAAeven(double MH, double aQCD, int Nitems, ...)
+{
+  typedef struct{ int spin2; int cdim;  double mass; double coeff;} haaItem;
+  haaItem* part=malloc(Nitems*sizeof(haaItem));
+  int i;
+  double complex sum=0; 
+  double a=aQCD;
+  
+  va_list ap;
+  va_start(ap,Nitems);
+
+  for(i=0;i<Nitems;i++)
+  {  part[i].spin2=va_arg(ap, int);
+     part[i].cdim=va_arg(ap, int);
+     part[i].mass=va_arg(ap,REAL); 
+     part[i].coeff=va_arg(ap,REAL);   
+  }
+  va_end(ap);
+  
+  for(i=0;i<Nitems;i++)
+  {  double complex  res,lf;
+     double mass=part[i].mass; 
+     double tau,cf;
+
+     if(abs(part[i].cdim)==3)
+     { if(part[i].spin2==1) mass= mass*McRun(MH/2)/McRun(mass);
+       else  mass = mass*pow(alphaQCD(MH/2)/alphaQCD(mass),6./23.);
+     }
+     tau=MH/2/mass;
+     tau=tau*tau;
+     
+     switch(part[i].spin2)
+     { case 0: res=HggS(tau)/2; break;
+       case 1: res=HggF(tau); break;
+       case 2: res=-HggV(tau)/2; break;
+       default:
+       printf("hAAeven item %d : unexpected  2*spin=%d\n", i+1,part[i].spin2);
+        exit(5);
+     } 
+     cf=abs(part[i].cdim);
+     
+     lf=1;
+     if(abs(part[i].cdim)==3) switch(part[i].spin2)
+     { case 0: lf=1+a*Hgam1S(tau); break;
+       case 1: lf=1+a*Hgam1F(tau); break;
+     }
+     sum+= res*cf*lf*part[i].coeff;
+  }
+  free(part);
+  sum*=alphaE0/8/M_PI;
+  return sum;  
+}
+
+double complex hGGodd(double MH, double aQCD, int Nitems, ...)
+{
+
+  typedef struct{ int spin2; int cdim; double mass; double coeff;} hggItem;
+  hggItem* part=malloc(Nitems*sizeof(hggItem));
+  int i;
+  double complex sum=0; 
+  double a=aQCD;
+  
+  va_list ap;
+  va_start(ap,Nitems);
+
+  for(i=0;i<Nitems;i++)
+  {  part[i].spin2=va_arg(ap, int);
+     part[i].cdim=va_arg(ap, int);
+     part[i].mass=va_arg(ap,REAL); 
+     part[i].coeff=va_arg(ap,REAL);   
+  }
+  va_end(ap);
+  
+  for(i=0;i<Nitems;i++)
+  {  double complex  res;
+     double mass=part[i].mass; 
+     double tau=MH/2/mass;
+     double cf,lf;
+     tau=tau*tau;
+     switch(part[i].spin2)
+     { 
+       case 1: res=HggA(tau); break;
+       default:   
+         printf("hGGodd item %d : unexpected  2*spin=%d\n", i+1,part[i].spin2);
+        exit(5);
+     } 
+     switch(part[i].cdim)
+     { case  3:
+       case -3: cf=0.5; break;
+       case  8: cf=-2;
+       default: continue;
+     } 
+     
+     if(abs(part[i].cdim)==3)
+     {  lf=1+3*a;
+        if(tau<1) lf+= a*a*(9.6759-5*log(mass/MH));
+     } else lf=1;
+
+     sum+= res*cf*lf*part[i].coeff;
+  }
+  free(part); 
+  sum*=a/8;
+  return sum;  
+}
+
+
+double complex hAAodd(double MH, double aQCD, int Nitems, ...)
+{
+  typedef struct{ int spin2; int cdim; double mass; double coeff;} haaItem;
+  haaItem* part=malloc(Nitems*sizeof(haaItem));
+  int i;
+  double complex sum=0; 
+  double a=aQCD;
+  
+  va_list ap;
+  va_start(ap,Nitems);
+
+  for(i=0;i<Nitems;i++)
+  {  part[i].spin2=va_arg(ap, int);
+     part[i].cdim=va_arg(ap, int);
+     part[i].mass=va_arg(ap,REAL); 
+     part[i].coeff=va_arg(ap,REAL);   
+  }
+  va_end(ap);
+  
+  for(i=0;i<Nitems;i++)
+  {  double complex  res,lf;
+     double mass=part[i].mass; 
+     double tau,cf;
+      
+     if(abs(part[i].cdim)==3)
+     {
+        mass= mass*McRun(MH/2)/McRun(mass);
+     }
+     tau=MH/2/mass;
+     tau=tau*tau;
+          
+     switch(part[i].spin2)
+     { case 1: res=HggA(tau); break;
+       default:   
+         printf("hAAodd item %d : unexpected  2*spin=%d\n", i+1,part[i].spin2);
+        exit(5);
+     } 
+     cf=abs(part[i].cdim);
+     
+     lf=1;
+     if(abs(part[i].cdim)==3) switch(part[i].spin2)
+     { 
+       case 1: lf=1+a*Hgam1A(tau); break;
+     }
+     sum+= res*cf*lf*part[i].coeff;
+  }
+  free(part);
+  sum*=alphaE0/8/M_PI;
+  return sum;  
+}
+
+
 
 #ifdef MAIN
 

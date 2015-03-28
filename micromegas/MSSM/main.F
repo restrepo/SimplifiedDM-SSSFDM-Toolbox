@@ -30,8 +30,8 @@ C     Display  deltarho, B_>sgamma, Bs->mumu, gmuon and
 C     check LEP mass limits 
 
 
-C#define HIGGSBOUNDS "../Packages/HiggsBounds-4.1.0"
-C#define HIGGSSIGNALS "../Packages/HiggsSignals-1.2.0"
+C#define HIGGSBOUNDS "../Packages/HiggsBounds-4.2.0"
+C#define HIGGSSIGNALS "../Packages/HiggsSignals-1.3.0"
 
 #define OMEGA
 C    Calculate relic density and display contribution of
@@ -56,9 +56,9 @@ C#define CDM_NUCLEUS
 C     Calculate number of events for 1kg*day
 C     and recoil energy distibution for various nuclei
 
-C#define NEUTRINO   neutrino telescope
+#define NEUTRINO   neutrino telescope
 
-#define DECAYS 
+C#define DECAYS 
 C     Calculates particle widths and branchings
 
 C#define CROSS_SECTIONS
@@ -540,7 +540,7 @@ C  Use SpectdNdE(E, SpX) to calculate energy distribution in 1/GeV units.
 #ifdef SHOWPLOTS      
       write(mess,fmt="('gamma flux[cm^2 s GeV]^{-1} at fi=',F4.2,
      > ' from cone with angle=',F4.2,'[rad]')")fi,dfi*2  
-      err= displaySpectrum(FluxA,mess,Emin,Mcdm,1)
+      err= displaySpectrum(FluxA,mess,Emin,Mcdm)
 #endif
       write(*,fmt="('Photon flux =',1PE8.2,
      >'[cm^2 s GeV]^{-1} for E=',0PF5.1,'[GeV]')")
@@ -551,7 +551,7 @@ C  Use SpectdNdE(E, SpX) to calculate energy distribution in 1/GeV units.
 #ifdef SHOWPLOTS      
       err= 
      >displaySpectrum(FluxE,'positron flux [cm^2 s sr GeV]^{-1}',
-     >Emin,Mcdm,1)
+     >Emin,Mcdm)
 #endif
       write(*,fmt="('Positron flux  = ',1PE8.2,
      >'[cm^2 sr s GeV]^{-1} for E=',0PF6.1,'[GeV]')")
@@ -563,7 +563,7 @@ C  Use SpectdNdE(E, SpX) to calculate energy distribution in 1/GeV units.
 #ifdef SHOWPLOTS      
       err= 
      >displaySpectrum(FluxP,'a-proton flux [cm^2 s sr GeV]^{-1}',Emin,
-     >Mcdm,1)
+     >Mcdm)
 #endif
       write(*,fmt="('Anti proton flux  = ',1PE8.2,
      >'[cm^2 sr s GeV]^{-1} for E=',0PF6.1,'[GeV]')")
@@ -624,7 +624,7 @@ C      call  calcScalarQuarkFF(0.553d0,18.9d0,55.d0,243.5d0)
       write(*,*) '==== Calculation of CDM-nucleons amplitudes  ====='
 
 
-      err=nucleonAmplitudes(FeScLoop, pA0,pA5,nA0,nA5)
+      err=nucleonAmplitudes(CDM1,FeScLoop, pA0,pA5,nA0,nA5)
       write(*,*)'CDM-nucleon amplitudes:'
       write(*,fmt="(' proton:  SI=',1PE9.2,' SD=',E9.2)")pA0(1),pA5(1)
       write(*,fmt="(' neutron: SI=',1PE9.2,' SD=',E9.2)")nA0(1),nA5(1) 
@@ -700,8 +700,8 @@ C rhoDet - detector density
 
       err=neutrinoFlux(Maxwell,forSun, FluxN,FluxNb)
 #ifdef SHOWPLOTS
-      err=displaySpectrum(FluxN, "nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm,1)
-      err=displaySpectrum(FluxNb,"nu-bar from Sun  [1/Year/km^2/GeV]",Emin,Mcdm,1)
+      err=displaySpectrum(FluxN, "nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm)
+      err=displaySpectrum(FluxNb,"nu-bar from Sun  [1/Year/km^2/GeV]",Emin,Mcdm)
 #endif
       call spectrInfo(Emin/Mcdm,FluxN, IntFlux,NULL)
       write(*,fmt='("E>", 1PE8.2," GeV neutrino flux =", E8.2," [1/Year/km^2]")') Emin,IntFlux
@@ -712,7 +712,7 @@ C ======  Upward events
   
       call muonUpward(FluxN,FluxNb,FluxMu)
 #ifdef SHOWPLOTS  
-      err= displaySpectrum(FluxMu,"Upward muons[1/Year/km^2/GeV]",Emin,Mcdm/2,1)
+      err= displaySpectrum(FluxMu,"Upward muons[1/Year/km^2/GeV]",Emin,Mcdm/2)
 #endif
 
       call spectrInfo(Emin/Mcdm,FluxMu, IntFlux,NULL)
@@ -721,7 +721,7 @@ C ======  Upward events
 C ======  Contained events 
       call muonContained(FluxN,FluxNb,rhoDet, FluxMu)
 #ifdef SHOWPLOTS  
-      err=displaySpectrum(FluxMu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm,1)
+      err=displaySpectrum(FluxMu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm)
 #endif
       call spectrInfo(Emin/Mcdm,FluxMu, IntFlux,NULL)
       write(*,fmt='("E>", 1PE8.2," Contained muon flux =", E8.2," [1/Year/km^3]")') Emin,IntFlux
@@ -775,10 +775,8 @@ C ======  Contained events
 #endif
 
 #ifdef CLEAN
-      call system("rm -f suspect2_lha.in suspect2_lha.out  suspect2.out HB.slha Key.dat  nngg.in nngg.out  output.flha debug_channels.txt")
-      call system("rm -f HB.in HB.out HS.in HS.out hb.stdout hs.stdout debug_predratio.txt HBslha.in HBslha.out")
-
+      call system("rm -f inp spectr nngg.out ")
 #endif 
+      call killPlots
 
-         call killPlots
       END

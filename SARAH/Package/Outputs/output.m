@@ -215,7 +215,11 @@ Format[H0[a_,b_,c_],TeXForm]:=Format["{H_0("<>ToString[TeXForm[a]]<>","<>ToStrin
 Format[A0[a_],TeXForm]:=Format["{A_0("<>ToString[TeXForm[a]]<>")}",OutputForm];
 Format[Re[a_],TeXForm]:=Format["{\\Re("<>ToString[TeXForm[a]]<>")}",OutputForm];
 
-Format[Generator[a_,b_][i1_,i2_,i3_],TeXForm]:=Format["T^{"<>TeXOutput[b]<>","<>TeXOutput[DimR[SusynoForm[b],a]]<>"}_{"<>ToString[TeXForm[i1]]<>ToString[TeXForm[i2]]<>ToString[TeXForm[i3]]<>"}",OutputForm];
+Format[Generator[a_,b_][i1_,i2_,i3_],TeXForm]:=Format["T^{"<>ToString[TeXForm[a]]<>","<>TeXOutput[DimR[SusynoForm[a],b]]<>"}_{"<>ToString[TeXForm[i1]]<>ToString[TeXForm[i2]]<>ToString[TeXForm[i3]]<>"}",OutputForm];
+
+Format[conj[Generator[a_,b_][i1_,i2_,i3_]],TeXForm]:=Format["T^{"<>ToString[TeXForm[a]]<>","<>TeXOutput[DimR[SusynoForm[a],b]]<>"\\, *}_{"<>ToString[TeXForm[i1]]<>ToString[TeXForm[i2]]<>ToString[TeXForm[i3]]<>"}",OutputForm];
+
+Format[FST[a_][i1___],TeXForm]:=Format["f^{"<>ToString[TeXForm[a]]<>"}_{"<>ToString[TeXForm[{i1}]]<>"}",OutputForm];
 
 StringDimDynkin[group_,dyn_]:=Block[{dim},
 dim=DimR[SusynoForm[group],dyn];

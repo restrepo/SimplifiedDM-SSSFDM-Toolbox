@@ -19,6 +19,11 @@ static void fName2c(char*f_name,char*c_name,int len)
   for(;i>=0;i--) c_name[i]=f_name[i];
 }
 
+static void cName2f(char*c_name,char*f_name,int len)
+{ int i; for(i=0;i<len &&c_name[i];i++) f_name[i]=c_name[i];
+         for(   ;i<len            ;i++) f_name[i]=' ';
+}
+         
 
 struct slhacomment_ { char txt[100]; }  slhacomment_;
 
@@ -169,24 +174,6 @@ int slhavalexists3_(char * Block, int*k1, int*k2, int*k3, int len)
    fName2c(Block,c_name,len);
    return slhaValExists(c_name, 3,*k1,*k2,*k3);
 }
-
-int slhawarnings_(int *Nch)
-{
-  char fname[20];
-  FILE*f;
-  int err;
-  if(*Nch)
-  {
-     sprintf(fname,"%d.tmptxt",getpid());
-     f=fopen(fname,"w");
-     err=slhaWarnings(f);
-     fclose(f);
-     fortreread_(Nch,fname,strlen(fname));
-     unlink(fname);   
-     return err;
-  } else return err=slhaWarnings(NULL);   
-}
-
 /*===============  qNumbers ============================= */
 
 int findqnumbers_(int *pdg,int*eQ3,int*spinDim,int*cDim,int*neutral)
@@ -302,6 +289,31 @@ int aprintf5_(char * format, double*x1,double*x2,double*x3,double*x4,double*x5,i
   fName2c(format,c_name,len); 
   return aPrintF(c_name,*x1,*x2,*x3,*x4,*x5);
 }
+
+double slhavalformat_(char * Block, double *Q, char * format,int len1,int len2)
+{  char  cBlock[1000], cFormat[1000];
+   double res; 
+   fName2c(Block, cBlock, len1);
+   fName2c(format,cFormat,len2); 
+   
+   res=slhaValFormat(cBlock, *Q, cFormat);
+
+   return res;
+}   
+
+
+int slhastrformat_(char * Block, char * format, char * fRes, int len1,int len2,int len3)
+{  char  cBlock[1000], cFormat[1000], cRes[1000];
+   int res; 
+   fName2c(Block, cBlock, len1);
+   fName2c(format,cFormat,len2); 
+   
+   res=slhaSTRFormat(cBlock, cFormat,cRes);
+   if(res!=0) return res;
+   cName2f(cRes,fRes,len3);
+   return 0;
+}   
+
 
 
 /*================ Diagonalizing ==========================*/

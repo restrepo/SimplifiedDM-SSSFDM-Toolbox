@@ -10,11 +10,13 @@ typedef struct whohow
 {  int    who, how;
 }  whohow[whohowMAX];
 
+extern int ZWmax,ZWmin;
+
 typedef struct hadron
 {
    char        name[P_NAME_SIZE];
    shortstr    contents;
-   int         pow;
+   int         len;
    int         parton[1000];
    int         polarized[1000];
 }  hadron;

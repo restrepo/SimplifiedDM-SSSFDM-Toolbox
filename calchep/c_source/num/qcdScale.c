@@ -140,7 +140,6 @@ int initScales(char*sF,char*sR,char * mess)
    fprintf(fout,"         \n");
    fprintf(fout," double Qfactorization;\n");   
    ch=readExpression(sF,rd_num_,act_num_,free);
-   
    if(!ch) 
    { fclose(fout); 
      if(mess)

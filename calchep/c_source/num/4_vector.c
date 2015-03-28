@@ -13,7 +13,7 @@ void lvtonv(char *lv, int nin, int nv, REAL * V)
   int i,n;
   REAL*q=V+4*(nv-1);
   for(i=0;i<4;i++) q[i]=0;
-  for(i=0;n=lv[i] ;i++) if(n>nin) vsum4(nv,n,nv,1,V); else vsum4(nv,n,nv,-1,V);
+  for(i=0;(n=lv[i]);i++) if(n>nin) vsum4(nv,n,nv,1,V); else vsum4(nv,n,nv,-1,V);
 } 
 
 /* ****************************************** */

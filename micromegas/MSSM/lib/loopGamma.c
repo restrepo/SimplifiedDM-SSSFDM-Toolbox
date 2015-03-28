@@ -35,9 +35,9 @@ int loopGamma(double * csAZ, double *csAA)
   err=slhaWrite(FIN);
   if(err) return err; 
   f=fopen(FIN,"a");
-  if(slhaDecayExists(36)<0) slhaDecayPrint("H3",f);
-  if(slhaDecayExists(25)<0) slhaDecayPrint("h",f);  
-  if(slhaDecayExists(35)<0) slhaDecayPrint("H",f);  
+  if(slhaDecayExists(36)<0) slhaDecayPrint("H3",0,f);
+  if(slhaDecayExists(25)<0) slhaDecayPrint("h", 0,f);  
+  if(slhaDecayExists(35)<0) slhaDecayPrint("H", 0,f);  
   fclose(f);    
   if(!access(FOUT,R_OK)) unlink(FOUT);
   

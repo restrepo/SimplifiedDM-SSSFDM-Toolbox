@@ -115,7 +115,7 @@ static double  cross_section(double  x)
   Scale(pvect4_,&qF,&qR);
   GG=sqrt(4*M_PI*alpha_2(qR));
       
-  r = sqme_int( Nsub,GG,pvect4,&err_code)*usrFF(2,2,pvect4_,p_names,p_codes);
+  r = sqme_int( Nsub,GG,pvect4,NULL,&err_code)*usrFF(2,2,pvect4_,p_names,p_codes);
   if (err_code != 0) return 0; 
   return r * totcoef; 
 } 

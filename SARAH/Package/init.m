@@ -504,8 +504,8 @@ subFieldsOne=Join[subFieldsOne,{Fields[[i,3]][{c__}][d_]->(FFieldsMultiplets [[i
 ];,
 If[Last[Fields[[i]]]===S,
 If[SupersymmetricModel===False,
-Set[ToExpression[ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}] ] /. NR->i];,
-Set[ToExpression["S"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}] ] /. NR->i];
+Set[ToExpression[ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]/(DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]/.{0:>1})) DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}] ] /. NR->i];,
+Set[ToExpression["S"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]/(DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]/.{0:>1})) DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}] ] /. NR->i];
 ];
 ];
 If[Last[Fields[[i]]]===F,
@@ -1090,7 +1090,7 @@ subIndizesMixStart=Join[subIndizesMixStart,{getAdjointIndex[Gauge[[i,3]]]->ToExp
 subIndizesMixEnde=Join[subIndizesMixEnde,{getAdjointIndex[Gauge[[i,3]]]->ToExpression["a"<>StringTake[ToString[Gauge[[i,3]]],3]]}]; 
 *)
 
-For[j=1,j<=4,
+For[j=1,j<=7,
 subIndizes=Join[subIndizes,{ToExpression[ToString[Gauge[[i,3]]]<>appendIndex[[j]]]->(Hold[ToExpression[basis<>ToString[number]<>app]]/.{basis->StringTake[ToString[Gauge[[i,3]]],3],app->appendIndex[[j]]})}];
 subIndizesRule=Join[subIndizesRule,{ToExpression[ToString[Gauge[[i,3]]]<>appendIndex[[j]]]->(Hold[ToExpression[basis<>ToString[number]<>app<>"_"]]/.{basis->StringTake[ToString[Gauge[[i,3]]],3],app->appendIndex[[j]]})}];
 subIndizesRE=Join[subIndizesRE,{(Hold[ToExpression[basis<>ToString[number1]<>app]]->Hold[ToExpression[basis<>ToString[number2]<>app]])/.{basis->StringTake[ToString[Gauge[[i,3]]],3],app->appendIndex[[j]]}}];

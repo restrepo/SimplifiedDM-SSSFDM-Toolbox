@@ -26,15 +26,15 @@
 #include"VandP.h"
 #include"dynamic_cs.h"
 
-#define NITEMS 18
+#define NITEMS 19
 char *p_names[20];
 int   p_codes[20];
 static int rdErr;
 
 static int writeIntegral(FILE *f)
 {
-  fprintf(f," %.17E %.17E %.17E %d %d %d %d %d", integral.s0,integral.s1,integral.s2,
-  integral.n_it, integral.old, integral.nCallTot,  integral.freeze, integral.tp);
+  fprintf(f," %.17E %.17E %.17E %d %d %ld %d %d", integral.s0,integral.s1,integral.s2,
+  integral.n_it, integral.old,integral.nCallTot,integral.freeze,integral.tp);
   return 0;
 }
 
@@ -61,16 +61,31 @@ static int r_prc__(FILE *mode)
 }
 
 static int w_mc__(FILE *mode)
-{ fprintf(mode,"%dx%d",integral.ncall[0],integral.itmx[0]);
-  fprintf(mode," %dx%d",integral.ncall[1],integral.itmx[1]);
+{ fprintf(mode,"%ldx%d",integral.ncall[0],integral.itmx[0]);
+  fprintf(mode," %ldx%d",integral.ncall[1],integral.itmx[1]);
   return 0;
 }
 
 static int r_mc__(FILE *mode)
 { fscanf(mode,"%ldx%d",integral.ncall,integral.itmx); 
-  fscanf(mode," %ldx%d",integral.ncall+1,integral.itmx+1); 
+  fscanf(mode," %ldx%d",integral.ncall+1,integral.itmx+1);
   return 0;
 }
+
+static int  wrtNcores(FILE *mode)
+{ 
+  fprintf(mode,"  %d\n",nPROCSS);   
+  return 0;
+}
+
+static int rdNcores(FILE *mode)
+{ 
+  fscanf(mode," %d",&nPROCSS);
+  return 0;
+}
+
+
+
 
 static int w_widths(FILE *mode)
 { 
@@ -93,9 +108,9 @@ static int r_widths(FILE *mode)
 }                                   
 
 
-static int w_VVdecays(FILE *mode) { fprintf(mode," %d\n", VVdecay); return 0;  }
+static int w_VVdecays(FILE *mode) { fprintf(mode," %d\n", VWdecay); return 0;  }
 
-static int r_VVdecays(FILE*mode)  { fscanf(mode," %d",&VVdecay);  return 0; }
+static int r_VVdecays(FILE*mode)  { fscanf(mode," %d",&VWdecay);  VZdecay=VWdecay; return 0; }
 
 static int w_mdl__(FILE * mode)
 {
@@ -112,15 +127,12 @@ static int r_mdl__(FILE * mode)
   static double val;
   int i;
   char name1[20];    
-  char * t=malloc(nModelVars);
 
-  for (i = 0; i < nModelVars; ++i) t[i]=0;
   for(;;)
   { if(2!= fscanf(mode,"%s = %lf",name1,&val)) break;
     for(i=0;i< nModelVars;i++)if(strcmp(name1,varNames[i])==0)
-    { t[i]=1; varValues[i] = val; break;}
-  }
-  free(t);   
+    { varValues[i] = val; break;}
+  }  
   return 0;
 } 
 
@@ -188,24 +200,25 @@ int w_sess__(FILE *mode_)
    FILE*mode;
    rw_paragraph  wrt_array[NITEMS]=
    {
-      {"Subprocess",  w_prc__},
+      {"Subprocess",      w_prc__},
       {"Session_number",  wnsess_},
-      {"Initial_state",  w_in__},
+      {"Initial_state",   w_in__},
       {"Physical_Parameters",  w_mdl__},
-      {"Breit-Wigner", w_widths}, 
-      {"VVdecays", w_VVdecays},
+      {"Breit-Wigner",    w_widths}, 
+      {"VVdecays",        w_VVdecays},
+      {"alphaQCD",        w_alphaQCD},
+      {"QCDscales",       w_Scales},      
+      {"Composites",      wrtcomp_},
+      {"Cuts",            wrtcut_},
+      {"Parallelization", wrtNcores},
+      {"Distributions",   wrt_hist},
       {"Kinematical_scheme",  wrtkin_},
-      {"Cuts",  wrtcut_},
-      {"Composites",  wrtcomp_},
       {"Regularization",  wrtreg_},
-      {"alphaQCD",  w_alphaQCD},
-      {"QCDscales", w_Scales},
-      {"Vegas_calls",  w_mc__},
-      {"Vegas_integral", writeIntegral},
-      {"Distributions", wrt_hist},
-      {"Events",saveEventSettings},
-      {"Random", saveRandom},
-      {"VEGAS_Grid", saveVegasGrid}
+      {"Vegas_calls",     w_mc__},
+      {"Vegas_integral",  writeIntegral},
+      {"Events",          saveEventSettings},
+      {"Random",          saveRandom},
+      {"VEGAS_Grid",      saveVegasGrid}
    };
 
    if (mode_ == NULL)
@@ -216,10 +229,13 @@ int w_sess__(FILE *mode_)
    } else mode=mode_;
 
    if(mode_ == NULL)
-   {
+   {  char fname[100];
       writeParagraphs(mode,NITEMS,wrt_array);
       fclose(mode);
-   } else   writeParagraphs(mode,8,wrt_array);
+      sprintf(fname,"%saux/session.dat",outputDir);
+      mode=fopen(fname,"w");
+      if(mode) {writeParagraphs(mode,9,wrt_array+2); fclose(mode);}
+   } else   writeParagraphs(mode,10,wrt_array);
 
    return 0;
 }    
@@ -230,31 +246,35 @@ int r_sess__(FILE *mode_)
   rdErr=0;
  rw_paragraph  rd_array[NITEMS]=
  {
-   {"Subprocess",  r_prc__},
+   {"Subprocess",      r_prc__},
    {"Session_number",  rnsess_},
-   {"Initial_state",  r_in__},
+   {"Initial_state",   r_in__},
    {"Physical_Parameters",  r_mdl__},
-   {"Breit-Wigner", r_widths},
-   {"VVdecays", r_VVdecays}, 
-   {"Kinematical_scheme",  rdrkin_},
-   {"Cuts",  rdrcut_},
-   {"Composites",  rdrcomp_},
+   {"Breit-Wigner",    r_widths},
+   {"VVdecays",        r_VVdecays}, 
+   {"alphaQCD",        r_alphaQCD},
+   {"QCDscales",       r_Scales},          
+   {"Composites",      rdrcomp_},
+   {"Cuts",            rdrcut_},
+   {"Parallelization", rdNcores}, 
+   {"Distributions",   rdr_hist},
    {"Regularization",  rdrreg_},
-   {"alphaQCD",  r_alphaQCD},
-   {"QCDscales", r_Scales},          
-   {"Distributions", rdr_hist},
-   {"Vegas_integral", readIntegral},
-   {"Vegas_calls",  r_mc__},  
-   {"Events", readEventSettings},
-   {"Random", readRandom},
-   {"VEGAS_Grid",readVegasGrid}
+   {"Kinematical_scheme",  rdrkin_},
+   {"Vegas_integral",  readIntegral},
+   {"Vegas_calls",     r_mc__},  
+   {"Events",          readEventSettings},
+   {"Random",          readRandom},
+   {"VEGAS_Grid",      readVegasGrid}
  };
                        
                          
  if (mode_ == NULL) 
  { 
-   mode=fopen("session.dat","r"); 
-   if (mode ==NULL) return 0;
+    mode=fopen("session.dat","r"); 
+    if (mode ==NULL)
+    { mode=fopen("aux/session.dat","r");
+      if(mode==NULL) return -1;
+    }
  }else mode=mode_;
  readParagraphs(mode, NITEMS,rd_array);  
  if (mode_ == NULL) fclose(mode); 

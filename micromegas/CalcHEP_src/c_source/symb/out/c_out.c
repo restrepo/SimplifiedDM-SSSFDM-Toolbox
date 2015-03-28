@@ -511,7 +511,7 @@ static int  alldiagrams(FILE * fd,  int nsub)
 
 static void  writesubprocess(int nsub,long firstDiag,long totDiag,int* breaker)
 {  denlist    den_;
-   long      i;
+   int      i;
     
    deninforec   dendescript;
    FILE * fd;                /* file of (deninforec)  */

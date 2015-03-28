@@ -107,14 +107,14 @@ DEFINITION[ScanM0M12][Plots]={
 };
 
 
-BasicStyle1= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$"],UseLaTeX["$m_{h_i}$"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]};
+BasicStyle1= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$"],UseLaTeX["$m_{h_i}$"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]};
 Style1 = Map[Join[BasicStyle1,{PlotStyle->#}]&,{Red,Green,Blue}];
-BasicStyle2= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$"],UseLaTeX["$m_{\\tilde{e}_i}$"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]};
+BasicStyle2= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$"],UseLaTeX["$m_{\\tilde{e}_i}$"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]};
 Style2 = Map[Join[BasicStyle2,{PlotStyle->#}]&,{Red,Green,Blue,Black,Orange,Pink}];
 
-BasicStyle3= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$M_{1/2}$"],UseLaTeX["$m_{h_i}$"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]};
+BasicStyle3= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$M_{1/2}$"],UseLaTeX["$m_{h_i}$"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]};
 Style3 = Map[Join[BasicStyle3,{PlotStyle->#}]&,{Red,Green,Blue}];
-BasicStyle4= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$M_{1/2}$"],UseLaTeX["$m_{\\tilde{\\chi}^0_i}$"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]};
+BasicStyle4= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$M_{1/2}$"],UseLaTeX["$m_{\\tilde{\\chi}^0_i}$"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]};
 Style4 = Map[Join[BasicStyle4,{PlotStyle->#}]&,{Red,Green,Blue,Black}];
 
 Style5= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$"],UseLaTeX["$M_{1/2}$"]},FrameTicksStyle -> Directive[Black, 14],ContourLabels->True};

@@ -509,7 +509,7 @@ printf("         TREE LEVEL\n");
     printf("proton:  SI  %.3E  SD  %.3E\n",pA0[0],pA5[0]);
     printf("neutron: SI  %.3E  SD  %.3E\n",nA0[0],nA5[0]); 
 
-    nucleonAmplitudes(NULL, pA0,pA5,nA0,nA5);
+    nucleonAmplitudes(CDM1,NULL, pA0,pA5,nA0,nA5);
     printf("CDM-nucleon micrOMEGAs amplitudes:\n");
     printf("proton:  SI  %.3E  SD  %.3E\n",pA0[0],pA5[0]);
     printf("neutron: SI  %.3E  SD  %.3E\n",nA0[0],nA5[0]); 
@@ -524,7 +524,7 @@ printf("         BOX DIAGRAMS\n");
     
 #endif
 
-    nucleonAmplitudes(FeScLoop, pA0,pA5,nA0,nA5);
+    nucleonAmplitudes(CDM1,FeScLoop, pA0,pA5,nA0,nA5);
     printf("CDM-nucleon micrOMEGAs amplitudes:\n");
     printf("proton:  SI  %.3E  SD  %.3E\n",pA0[0],pA5[0]);
     printf("neutron: SI  %.3E  SD  %.3E\n",nA0[0],nA5[0]); 

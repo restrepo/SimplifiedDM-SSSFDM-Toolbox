@@ -114,7 +114,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring SARAH])
 
-tarball_sarah_prefix=SARAH-4.4.2
+tarball_sarah_prefix=SARAH-4.5.1
 tarball_sarah="${tarball_sarah_prefix}.tar.gz"
 tarball_sarah_path="$TARBALLS/$tarball_sarah"
 
@@ -125,7 +125,7 @@ fi
 CS_PROVIDE_FILE(
    [http://www.hepforge.org/archive/sarah/$tarball_sarah],
    [$tarball_sarah_path],
-   [1880d6281256754884a43e779ae0540e])
+   [ec5bd3ff2ee95611c3573e884ffec605])
 CS_UNTAR([$tarball_sarah_path],[$tarball_sarah_prefix],[SARAH])
 
 dnl #################################################################
@@ -134,7 +134,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring SARAH scan and plot (SSP)])
 
-tarball_ssp_prefix=SSP-1.2.0
+tarball_ssp_prefix=SSP-1.2.2
 tarball_ssp="${tarball_ssp_prefix}.tar.gz"
 tarball_ssp_path="$TARBALLS/$tarball_ssp"
 
@@ -145,7 +145,7 @@ else
    CS_PROVIDE_FILE(
       [http://www.hepforge.org/archive/sarah/$tarball_ssp],
       [$tarball_ssp_path],
-      [bb50401079e0e735843eed4010e13907])
+      [16fbfffb84cacf38ae00b3205a584fc3])
    CS_UNTAR([$tarball_ssp_path],[$tarball_ssp_prefix],[SSP])
    enable_ssp="yes"
    sed -i 's/math7/'$MATH'/g' SSP/MakeScan.sh
@@ -157,7 +157,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring SPHENO])
 
-tarball_spheno_prefix=SPheno-3.3.3
+tarball_spheno_prefix=SPheno-3.3.6
 tarball_spheno="${tarball_spheno_prefix}.tar.gz"
 tarball_spheno_path="$TARBALLS/$tarball_spheno"
 
@@ -179,7 +179,7 @@ if test "$enable_spheno" = yes; then
    CS_PROVIDE_FILE(
       [http://www.hepforge.org/archive/spheno/$tarball_spheno],
       [$tarball_spheno_path],
-      [fe9d3658b694408b9614825fda87f59a])
+      [800f9a9d1f8510f34f528475a9bf22eb])
    CS_UNTAR([$tarball_spheno_path],[$tarball_spheno_prefix],[SPHENO])
    AC_MSG_NOTICE([Configuring SPHENO...])
    cp -f ./SPHENO/Makefile ./SPHENO/Makefile.old || exit 1
@@ -196,7 +196,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring CalcHEP])
 
-tarball_calchep_prefix="calchep_3.4.6"
+tarball_calchep_prefix="calchep_3.6.23"
 tarball_calchep="${tarball_calchep_prefix}.tgz"
 tarball_calchep_path="$TARBALLS/$tarball_calchep"
 
@@ -204,7 +204,7 @@ if test "$enable_calchep" = yes; then
    CS_PROVIDE_FILE(
       [http://theory.sinp.msu.ru/~pukhov/CALCHEP/$tarball_calchep],
       [$tarball_calchep_path],
-      [19e784b56e4efa3f06edd76ec4f1064c])
+      [1115c2b3977fffac882393650b7fa205])
    CS_UNTAR([$tarball_calchep_path],[$tarball_calchep_prefix],[calchep])
    subdirs="$subdirs \"`pwd`/calchep\""
    subdirs_clean="$subdirs_clean \"`pwd`/calchep\""
@@ -218,7 +218,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring MicrOMEGAs])
 
-tarball_micromegas_prefix="micromegas_4.1"
+tarball_micromegas_prefix="micromegas_4.1.7"
 tarball_micromegas="${tarball_micromegas_prefix}.tgz"
 tarball_micromegas_path="$TARBALLS/$tarball_micromegas"
 
@@ -226,7 +226,7 @@ if test "$enable_micromegas" = yes; then
    CS_PROVIDE_FILE(
       [http://lapth.cnrs.fr/micromegas/downloadarea/code/$tarball_micromegas],
       [$tarball_micromegas_path],
-      [b1bc08e9b769423c2237c059d141ce00])
+      [a67da1edcc3ed381562ce8f5dc5ab5f2])
    CS_UNTAR([$tarball_micromegas_path],[$tarball_micromegas_prefix],[micromegas])
    subdirs="$subdirs \"`pwd`/micromegas\""
    subdirs_clean="$subdirs_clean \"`pwd`/micromegas\""
@@ -240,7 +240,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring WHIZARD])
 
-tarball_whizard_prefix="whizard-2.2.2"
+tarball_whizard_prefix="whizard-2.2.5"
 tarball_whizard="${tarball_whizard_prefix}.tar.gz"
 tarball_whizard_path="$TARBALLS/$tarball_whizard"
 
@@ -262,7 +262,7 @@ if test "$enable_whizard" = yes; then
    CS_PROVIDE_FILE(
       [http://www.hepforge.org/archive/whizard/$tarball_whizard],
       [$tarball_whizard_path],
-      [f048eba3de68d35a631531721263daaf])
+      [47d426ea39d6cfec006c3c1f880f10a0])
    CS_UNTAR([$tarball_whizard_path],[$tarball_whizard_prefix])
    if test -e "$whizard_builddir"; then
       if test ! -d "$whizard_builddir"; then
@@ -306,7 +306,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring HiggsBounds])
 
-tarball_higgsbounds_prefix="HiggsBounds-4.1.3"
+tarball_higgsbounds_prefix="HiggsBounds-4.2.0"
 tarball_higgsbounds="${tarball_higgsbounds_prefix}.tar.gz"
 tarball_higgsbounds_path="$TARBALLS/$tarball_higgsbounds"
 
@@ -319,7 +319,7 @@ if test "$enable_higgsbounds" = yes; then
    CS_PROVIDE_FILE(
       [http://www.hepforge.org/archive/higgsbounds/$tarball_higgsbounds],
       [$tarball_higgsbounds_path],
-      [929a3171b797ba31e9f5dd09814ef1cb])
+      [9d76eefecea870d941a6fe8c0ee7a6ae])
    CS_UNTAR([$tarball_higgsbounds_path],[$tarball_higgsbounds_prefix],
       [HiggsBounds])
    subdirs="$subdirs `pwd`/HiggsBounds"
@@ -345,7 +345,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring HiggsSignals])
 
-tarball_higgssignals_prefix="HiggsSignals-1.2.0"
+tarball_higgssignals_prefix="HiggsSignals-1.3.2"
 tarball_higgssignals="${tarball_higgssignals_prefix}.tar.gz"
 tarball_higgssignals_path="$TARBALLS/$tarball_higgssignals"
 
@@ -358,7 +358,7 @@ if test "$enable_higgssignals" = yes; then
    CS_PROVIDE_FILE(
       [http://www.hepforge.org/archive/higgsbounds/$tarball_higgssignals],
       [$tarball_higgssignals_path],
-      [74c24c7410dd72f410d5824b9211b279])
+      [2e300a3784eb5d3a9e1dd905d2af7676])
    CS_UNTAR([$tarball_higgssignals_path],[$tarball_higgssignals_prefix],
       [HiggsSignals])
    subdirs="$subdirs `pwd`/HiggsSignals"
@@ -384,15 +384,15 @@ dnl #################################################################
 
 CS_SECTION([Configuring MadGraph])
 
-tarball_madgraph_prefix="MG5_aMC_v2.2.2"
+tarball_madgraph_prefix="MG5_aMC_v2.2.3"
 tarball_madgraph="${tarball_madgraph_prefix}.tar.gz"
 tarball_madgraph_path="$TARBALLS/$tarball_madgraph"
 if test "$enable_madgraph" = yes; then
    CS_PROVIDE_FILE(
       [https://launchpad.net/mg5amcnlo/2.0/2.2.0/+download/$tarball_madgraph],
       [$tarball_madgraph_path],
-      [5772f391779ba394153806fab1278167])
-   CS_UNTAR([$tarball_madgraph_path],["MG5_aMC_v2_2_2"],
+      [3413b0f0c3dffcee0a27434e9e8092c8])
+   CS_UNTAR([$tarball_madgraph_path],["MG5_aMC_v2_2_3"],
       [madgraph])
 else
    AC_MSG_NOTICE([MadGraph disabled, skipping section...])

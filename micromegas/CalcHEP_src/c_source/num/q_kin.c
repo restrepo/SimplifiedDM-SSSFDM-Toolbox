@@ -526,7 +526,7 @@ int imkmom(double P1, double P2)
       REAL ss = 0; 
       int pn;
       
-      for(j=0; pn=kinmtc_1[i].lvout[k][j];j++) ss += pm[pn - 1];
+      for(j=0; (pn=kinmtc_1[i].lvout[k][j]);j++) ss += pm[pn - 1];
       summas[i][k] = ss;
     }
 

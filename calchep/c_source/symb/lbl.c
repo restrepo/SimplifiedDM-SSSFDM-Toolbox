@@ -19,7 +19,7 @@ void  cheplabel(void)
      scrcolor(Blue,LightGray);
      goto_xy(7,Y); print("CalcHEP - a package for Calculation in High Energy Physics");
      scrcolor(FGmain,BGmain);
-     goto_xy(15,Y+1);  print("Version 3.4.6: Last correction January 27, 2014");
+     goto_xy(15,Y+1);  print("Version 3.6.23: Last correction March 14, 2015");
    }
 
    { int Y=6;
@@ -30,7 +30,7 @@ void  cheplabel(void)
      goto_xy(4+8,Y++);print(" Alexander Belyaev(University of Southampton)"); 
      goto_xy(4+8,Y++);print(" Neil Chistensen (University of Pittsburgh)");
    }
-   
+
    { int Y=10;
      scrcolor(FGmain,BGmain);
      goto_xy(4,Y);print("For contacts:");

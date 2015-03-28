@@ -76,7 +76,6 @@ int fillCutArray(void)
       case '%': aux=0; break;
       default : goto errorExit;
     }  
-                                      
 /*================ MIN bound ============*/
     strcpy(fieldName,"Wrong field 'Min. bound'");
     minOn= strlen(minStr);
@@ -93,7 +92,7 @@ int fillCutArray(void)
 
 /* =========== fill array ==========*/
 
-    if(minOn||maxOn)
+    if((minOn||maxOn)&&aux!=0)
     {  k=addcut(aux,cutStr,minOn,maxOn,min_,max_);
        switch(k)
        { case 2: strcpy(fieldName,"Too many cuts ");         goto errorExit;
@@ -160,7 +159,7 @@ double  calcCutFactor(double*V)
     for(pList=invcut_1[i].pLists;pList;pList=pList->next)
     {  
        val=calcPhysVal(invcut_1[i].key[0],pList->pstr,V);
-       if(!finite(val)) continue;
+       if(!isfinite(val)) continue;
        switch(invcut_1[i].key[1])
        { case '^': if(i){ if(val>valM) valM=val;}  else valM=val; break;
          case '_': if(i){ if(val<valM) valM=val;}  else valM=val; break;

@@ -146,7 +146,10 @@ For[i=1,i<=Length[partS],
 	
 	val=Vertex[{conj[partS[[i]]],partS[[i]],VectorG}][[2,1]];
 	If[val=!=0,
+	If[partS[[i]]===conj[partS[[i]]],
+	coupAlphaStrong= Join[coupAlphaStrong,{{partS[[i]],1,1,CalculateColorFactor[VectorG,partS[[i]],partS[[i]]]/2}}];,
 	coupAlphaStrong= Join[coupAlphaStrong,{{partS[[i]],1,1,CalculateColorFactor[VectorG,partS[[i]],partS[[i]]]}}];
+	];
 	NeededCouplingsToGluon= Join[NeededCouplingsToGluon,{getSPhenoCoupling[C[conj[partS[[i]]],partS[[i]],VectorG]][[1,1]]}];
 	RelativeCoupling[VectorG,partS[[i]]]=1;,
 	RelativeCoupling[VectorG,partS[[i]]]=0;

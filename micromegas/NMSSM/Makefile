@@ -23,7 +23,7 @@ cLib = $(CALCHEP)/lib
  
 SSS = $(wildcard lib/*.a) ../sources/micromegas.a  $(cLib)/dynamic_me.a  \
  work/work_aux.a $(cLib)/sqme_aux.$(SO) $(cLib)/libSLHAplus.a   \
- $(cLib)/num_c.a  $(cLib)/ntools.a   $(cLib)/serv.a $(LX11) -lgfortran
+ $(cLib)/num_c.a  $(cLib)/ntools.a   $(cLib)/serv.a $(LX11)
        
 
 all: $(main) libs

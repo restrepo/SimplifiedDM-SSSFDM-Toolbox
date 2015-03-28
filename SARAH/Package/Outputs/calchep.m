@@ -475,7 +475,7 @@ WriteVerticesCHep4[SA`VertexList[SSSS],CPViolation,FeynmanGauge, SSSS,NoSplitWit
 StringReplaceExtra={"Sig(1,1,2)"->"1","Sig(1,2,1)"->"1","Sig(3,1,1)"->"1","Sig(3,2,2)"->"(-1)","Sig(2,1,2)"->"(-1)","Sig(2,2,1)"->"1"};
 (* Print["  Two Scalar - One Auxiliary Field - Interaction"]; *)
 (* WriteVerticesCHep[SA`VertexList[SSA],CPViolation,FeynmanGauge, SSA, NoSplitWith,NoSplitOnly,True]; *)
-WriteVerticesCHep[SA`VertexList[ASS],CPViolation,FeynmanGauge, SSA, NoSplitWith,NoSplitOnly,True];
+WriteVerticesCHep[Expand[SA`VertexList[ASS]],CPViolation,FeynmanGauge, SSA, NoSplitWith,NoSplitOnly,True];
 
 StringReplaceExtra={};
 (* Print["  Three Vector Boson - Interaction"]; *)
@@ -2154,11 +2154,11 @@ MOfile= OpenWrite[ToFileName[$sarahCurrentCalcHepDir,"CalcOmega.cpp"]];
 AppendSourceCode["CalcOmega.cpp",MOfile];
 Close[MOfile];
 
-MOfile= OpenWrite[ToFileName[$sarahCurrentCalcHepDir,"CalcOmega_with_DDetection.cpp"]];
+MOfile= OpenWrite[ToFileName[$sarahCurrentCalcHepDir,"CalcOmega_with_DDetection_old.cpp"]];
 AppendSourceCode["CalcOmega_with_DDetection.cpp",MOfile];
 Close[MOfile];
 
-MOfile= OpenWrite[ToFileName[$sarahCurrentCalcHepDir,"CalcOmega_with_DDetection_MO4.cpp"]];
+MOfile= OpenWrite[ToFileName[$sarahCurrentCalcHepDir,"CalcOmega_with_DDetection.cpp"]];
 AppendSourceCode["CalcOmega_with_DDetection_MO4.cpp",MOfile];
 Close[MOfile];
 ];

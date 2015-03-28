@@ -116,6 +116,8 @@ BetaBijW = BetaBij3I;
 BetaLSiW = BetaLSi3I;
 Betam2ijW = Betam2ij3I;
 BetaMiW = BetaMi3I;
+BetaFIiW = BetaFIi3I;
+BetaDGiW = BetaDGi3I;
 BetaGaugeW=BetaGauge3I;
 BetaVEVW = BetaVEV3I;
 BetaLijklW = BetaLijkl3I;,
@@ -130,6 +132,8 @@ BetaBijW = BetaBij;
 BetaLSiW = BetaLSi;
 Betam2ijW = Betam2ij;
 BetaMiW = BetaMi;
+BetaFIiW = BetaFIi;
+BetaDGiW = BetaDGi;
 BetaGaugeW=BetaGauge;
 BetaVEVW = BetaVEV;
 ];
@@ -200,6 +204,16 @@ WriteTeXBetaFunction[BetaBijW];
 If[Length[BetaLSi]>0,
 WriteString[RGEsFile,"\\subsection{Linear Soft-Breaking Parameters}\n"];
 WriteTeXBetaFunction[BetaLSiW];
+];
+
+If[Length[BetaDGiW]>0,
+WriteString[RGEsFile,"\\subsection{Fayet-Iliopoulos $D$-terms}\n"];
+WriteTeXBetaFunction[BetaDGiW];
+];
+
+If[Length[BetaFIiW]>0,
+WriteString[RGEsFile,"\\subsection{Fayet-Iliopoulos $D$-terms}\n"];
+WriteTeXBetaFunction[BetaFIiW];
 ];
 
 If[Length[Betam2ij]>0,

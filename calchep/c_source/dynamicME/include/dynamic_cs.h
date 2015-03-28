@@ -68,9 +68,9 @@ extern void printTxtList(txtList L, FILE *f);
 /*===========================================================*/
 typedef struct{ double width; txtList pdList[2]; int status;}  decayTableStr;
 
-extern double   (*sqme)(int nsub,double GG,REAL *pvect, int * err_code);
+extern double   (*sqme)(int nsub,double GG,REAL *pvect,REAL*cb_coeff, int * err_code);
 extern double   decayPcm(double am0,  double  am1,  double  am2);
-extern double   decayPcmW(double m0,double m1,double m2,double w1,double w2);
+extern double   decayPcmW(double m0,double m1,double m2,double w1,double w2,int N);
 extern int      ForceUG;
 extern int      procInfo1(numout*cc, int *nsub, int * nin, int *nout);
 extern int      procInfo2(numout*cc, int nsub,char**name,  REAL *mass);
@@ -89,13 +89,14 @@ extern double   pWidth2(numout * cc, int nsub);
 extern void     process2Mass(char * process,double * mass);
 extern void     delAllLib(void);
 
-extern int VVdecay; 
+extern int      VWdecay,VZdecay; 
 extern numout* xVtoxll(int Nin,int Nout,char**name,int *pdg, int lV, double *wV,  double *br);
 extern int passParameters(numout*cc);
 
-extern int slhaDecayPrint(char * name,FILE*f);
+extern int slhaDecayPrint(char*name, int dVirt, FILE*f);
 extern void setQforParticle(REAL *Q,char*pname);
 
+extern double BWrange;
 
 #ifdef __cplusplus
 }

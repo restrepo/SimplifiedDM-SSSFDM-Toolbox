@@ -33,7 +33,7 @@ mse1=mser;
   if(findVal("MSdR",&msdr)) return -1; msdr=fabs(msdr); 
 
   Mh=findValW("Mh");
-  Mhh=findValW("MHH");
+  Mhh=findValW("MH");
   if(Mh>128) limh=1;
   if(Mh<123&&Mhh>128) limh=1;
   if(Mh<123&&Mhh<123) limh=1;

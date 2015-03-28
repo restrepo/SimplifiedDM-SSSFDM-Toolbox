@@ -24,12 +24,12 @@ void wrt_menu(int menutype,int k,char*txt,int ndel,int ncalc,int nrest,long recp
    if (menutype == 1)
    {
       fseek(menup,(k - 1)*71 + 2,SEEK_SET);
-      fprintf(menup,"%4d| %-44.44s|%5d|%5d|%-8d",k,txt,ndel,nrest,recpos);
+      fprintf(menup,"%4d| %-44.44s|%5d|%5d|%-8ld",k,txt,ndel,nrest,recpos);
    }
    else
    {
       fseek(menuq,(k - 1)*77 + 2,SEEK_SET);
-      fprintf(menuq,"%4d| %-44.44s|%5d|%5d|%5d|%-8d",k,txt,ndel,ncalc,nrest,recpos);
+      fprintf(menuq,"%4d| %-44.44s|%5d|%5d|%5d|%-8ld",k,txt,ndel,ncalc,nrest,recpos);
    }
 }
 

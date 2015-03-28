@@ -89,8 +89,8 @@ DEFINITION[a_][Plots]={
 
 
 
-BasicStyle= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$A_0$~[GeV]"],UseLaTeX["$m$ ~[GeV]"]},PlotJoined->True};
-BasicStyle2= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$A_0$~[GeV]"],UseLaTeX["$\\sigma$~[pb]"]},PlotJoined->False};
+BasicStyle= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$A_0$~[GeV]"],UseLaTeX["$m$ ~[GeV]"]},Joined->True};
+BasicStyle2= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$A_0$~[GeV]"],UseLaTeX["$\\sigma$~[pb]"]},Joined->False};
 Style1 = Map[Join[BasicStyle,{PlotStyle->#}]&,{Red,Green}];
 Style2 = Map[Join[BasicStyle,{PlotStyle->#}]&,{Red,Green,Blue,Black,Orange,Pink}];
 

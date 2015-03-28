@@ -108,7 +108,9 @@ DEFINITION[EWSB][GaugeSector] =
 
 DEFINITION[EWSB][VEVs]= 
   {{SHd0, {vd, 1/Sqrt[2]}, {sigmad, \[ImaginaryI]/Sqrt[2]},{phid, 1/Sqrt[2]}},
-   {SHu0, {vu, 1/Sqrt[2]}, {sigmau, \[ImaginaryI]/Sqrt[2]},{phiu, 1/Sqrt[2]}}};
+   {SHu0, {vu, 1/Sqrt[2]}, {sigmau, \[ImaginaryI]/Sqrt[2]},{phiu, 1/Sqrt[2]}},
+   {SvL,  {0,0}, {sigmaL, \[ImaginaryI]/Sqrt[2]},{phiL,1/Sqrt[2]}}
+};
 
 
  
@@ -118,7 +120,8 @@ DEFINITION[EWSB][MatterSector]=
 {    {{SdL, SdR}, {Sd, ZD}},
      {{SuL, SuR}, {Su, ZU}},
      {{SeL, SeR}, {Se, ZE}},
-     {{SvL}, {Sv, ZV}},
+     {{sigmaL}, {SvIm, ZVI}},
+     {{phiL},   {SvRe, ZVR}},
      {{phid, phiu}, {hh, ZH}},
      {{sigmad, sigmau}, {Ah, ZA}},
      {{SHdm,conj[SHup]},{Hpm,ZP}},

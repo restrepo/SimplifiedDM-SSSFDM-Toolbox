@@ -99,7 +99,7 @@ int saveEventSettings(FILE * f)
 
 int  readEventSettings(FILE * f)
 {
-  fscanf(f, "%ld %ld %ld %ld %ld ", &n_cube, &nRandom, &nSimplex1, &nEvents);
+  fscanf(f, "%ld %ld %ld %ld ", &n_cube, &nRandom, &nSimplex1, &nEvents);
   return 0;
 }
 
@@ -240,7 +240,7 @@ static void  generateEvents( vegasGrid * vegPtr,
 
          if(cEvent>0)
          {  int l;
-            sprintf(mess,"Statistic\n Events generated: %d\n  efficiency: %.1E\nMax event multiplicity: %d\n"
+            sprintf(mess,"Statistic\n Events generated: %ld\n  efficiency: %.1E\nMax event multiplicity: %d\n"
                       "Multiple events(total): %d \nNegative weight  events: %d \n", cEvent, eff,nmax,mult, neg);
 
             l=strlen(mess);
@@ -261,9 +261,9 @@ static void  generateEvents( vegasGrid * vegPtr,
                fscanf(events_,"%ld",&nGenerated);
                nGenerated+=cEvent;
                fseek(events_,nEvPos,SEEK_SET);
-               fprintf(events_," %10d",nGenerated);
+               fprintf(events_," %10ld",nGenerated);
                fclose(events_);
-               fprintf(iprt," %d events are stored in '%s'\n",nGenerated,fname);
+               fprintf(iprt," %ld events are stored in '%s'\n",nGenerated,fname);
                fprintf(iprt,"%s\n",mess);
                fflush(iprt);
             } else  truncate(fname,fileEnd);
@@ -354,7 +354,7 @@ int saveVegasGrid( FILE * f)
      }
      if(veg_Ptr->fMax)
      { long l;
-       fprintf(f,"Max(%d):\n",veg_Ptr->nCubes);
+       fprintf(f,"Max(%ld):\n",veg_Ptr->nCubes);
        for(l=0;l<veg_Ptr->nCubes;l++) fprintf(f,"%.1E\n",veg_Ptr->fMax[l]);
      } else fprintf(f,"Max(0):\n");
   }else  fprintf(f," Vegas_grid: dim=%d  size=%d\n", 0, 0);

@@ -60,9 +60,14 @@ line[[10]]=+  Sum[(6 Ha2t[p3,p1,p2,nr] +10 kF  Yijk[p1,p2,pQ] Y2FS[p3,pQ,nr]),{n
 line[[11]]=6 Sum[ (SA`CasimirRGE[pB,nr] Yijk[p1,pO,pB] Conj[Yijk[pO,pP,p3]] Yijk[pP,p2,pB] - 2  SA`CasimirRGE[p3,nr] Yijk[p1,pO,pB] Conj[Yijk[pO,pP,p3]] Yijk[pP,p2,pB]),{nr,1,Length[Gauge]}] ;
 line[[12]]=+ 9/2 Sum[ SA`CasimirRGE[pB,nr](Yijk[p1,pO,pB] Conj[Yijk[pO,pP,pB]] Yijk[pP,p2,p3] + Yijk[p1,pO,p3] Conj[Yijk[pO,pP,pB]] Yijk[pP,p2,pB]),{nr,1,Length[Gauge]}] ;
 line[[13]]=  Sum[Sum[(-3/2  (SA`CasimirRGE[p1,nr] SA`CasimirRGE[p1,nr2]+SA`CasimirRGE[p2,nr] SA`CasimirRGE[p2,nr2]) Yijk[p1,p2,p3]+ 6 SA`CasimirRGE[p3,nr](SA`CasimirRGE[p1,nr2]+SA`CasimirRGE[p2,nr2]) Yijk[p1,p2,p3]),{nr,1,Length[Gauge]}],{nr2,1,Length[Gauge]}];
+(*
 line[[14]]= Sum[(-97/6 SA`Casimir[nr] + 10/3 kF SA`DynkinF[rep,nr] +11/12 SA`DynkinS[rep,nr])(SA`CasimirRGE[p1,nr]+SA`CasimirRGE[p2,nr])Yijk[p1,p2,p3],{nr,1,Length[Gauge]}]-21/2 Sum[Sum[ SA`CasimirRGE[p3,nr] SA`CasimirRGE[p3,nr2] Yijk[p1,p2,p3],{nr,1,Length[Gauge]}],{nr2,1,Length[Gauge]}]+
 Sum[Sum[If[nr=!=nr2 && Gauge[[nr,2]]===U[1] && Gauge[[nr2,2]]===U[1],(10/3 kF SA`DynkinF[rep,nr,nr2] +11/12 SA`DynkinS[rep,nr,nr2])(SA`CasimirRGE[p1,nr]+SA`CasimirRGE[p2,nr])Yijk[p1,p2,p3],0],{nr,1,Length[Gauge]}],{nr2,1,Length[Gauge]}];
-line[[16]]=Yijk[p1,p2,p3] Sum[ SA`CasimirRGE[p3,nr] (49/4 SA`Casimir[nr] - 2kF SA`DynkinF[rep,nr] - 1/4 SA`DynkinS[rep,nr]),{nr,1,Length[Gauge]}];
+*)
+line[[14]]= Sum[If[Gauge[[nr,2]]===U[1],0,(-97/6 SA`Casimir[nr] + 10/3 kF SA`DynkinF[rep,nr] +11/12 SA`DynkinS[rep,nr])(SA`CasimirRGE[p1,nr]+SA`CasimirRGE[p2,nr])Yijk[p1,p2,p3]],{nr,1,Length[Gauge]}]-21/2 Sum[Sum[ SA`CasimirRGE[p3,nr] SA`CasimirRGE[p3,nr2] Yijk[p1,p2,p3],{nr,1,Length[Gauge]}],{nr2,1,Length[Gauge]}]+Sum[Sum[ 10/3 kF (SA`CasimirFDynkinF[rep,getBlank[p1],nr,nr2]+SA`CasimirFDynkinF[rep,getBlank[p2],nr,nr2])Yijk[p1,p2,p3]+11/12(SA`CasimirFDynkinS[rep,getBlank[p1],nr,nr2]+SA`CasimirFDynkinS[rep,getBlank[p2],nr,nr2])Yijk[p1,p2,p3],{nr,1,Length[Gauge]}],{nr2,1,Length[Gauge]}];
+
+(* line[[16]]=Yijk[p1,p2,p3] Sum[ SA`CasimirRGE[p3,nr] (49/4 SA`Casimir[nr] - 2kF SA`DynkinF[rep,nr] - 1/4 SA`DynkinS[rep,nr]),{nr,1,Length[Gauge]}]; *)
+line[[16]]=Yijk[p1,p2,p3]  Sum[If[Gauge[[nr,2]]===U[1],0,SA`CasimirRGE[p3,nr] (49/4 SA`Casimir[nr] - 2kF SA`DynkinF[rep,nr] - 1/4 SA`DynkinS[rep,nr])],{nr,1,Length[Gauge]}]+Yijk[p1,p2,p3]Sum[Sum[-2 kF SA`CasimirSDynkinF[rep,getBlank[p3],nr,nr2]-1/4 SA`CasimirSDynkinS[rep,getBlank[p3],nr,nr2],{nr,1,Length[Gauge]}],{nr2,1,Length[Gauge]}];
 linesave=line;
 Return[ExpandTermNS[Plus@@line]];
 ];

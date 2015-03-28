@@ -19,8 +19,9 @@
       /* Display  deltarho, B_>sgamma, Bs->mumu, gmuon and
          check LEP mass limits 
       */ 
+//#define HIGGSBOUNDS "../Packages/HiggsBounds-4.2.0"
+//#define HIGGSSIGNALS "../Packages/HiggsSignals-1.3.0"      
       
-//#define HIGGSBOUNDS "../Packages/HiggsBounds-4.0.0"
       
 #define OMEGA            
       /* Calculate relic density and display contribution of
@@ -47,8 +48,11 @@
       /* Calculate number of events for 1kg*day 
          and recoil energy distibution for various nuclei
       */
-//#define NEUTRINO 
-#define DECAYS
+#define NEUTRINO
+ /*  Neutrino signal of DM annihilation in Sun and Earth */
+       
+      
+/*#define DECAYS */
     /* Calculate decay widths and branchings  */
 
 /*#define CROSS_SECTIONS */
@@ -57,12 +61,11 @@
       */
 /*===== end of Modules  ======*/
 
+#define CLEAN
+
 /*===== Options ========*/
 /* #define SHOWPLOTS */
      /* Display  graphical plots on the screen */ 
-
-#define CLEAN to clean intermediate files
-
 
 /*===== End of DEFINE  settings ===== */
 
@@ -73,20 +76,24 @@
 
 
 int main(int argc,char** argv)
-{  int err,nw;
+{
+  int err,nw;
    char cdmName[10];
    int spin2, charge3,cdim;
-   double laMax;
-      
-  ForceUG=1;   // to Force Unitary Gauge assign 1 
-  
+   double laMax;   
+
+  ForceUG=0;  /* to Force Unitary Gauge assign 1 */
+//   VWdecay=0; VZdecay=0;
+   
 #ifdef SUGRA
 {
   double m0,mhf,a0,tb;
   double Lambda, aLambda,aKappa,sgn;
+  double mXiF=0,mXiS=0,muP=0,msP=0,m3h=0;
 
   if(argc<7) 
   { 
+
     printf(" This program needs 6 parameters:\n"
            "   m0      common scalar mass at GUT scale\n"
            "   mhf     common gaugino mass at GUT scale\n"
@@ -101,7 +108,7 @@ int main(int argc,char** argv)
            "   Mtp     top quark pole mass\n"
            "   MbMb    Mb(Mb) scale independent b-quark mass\n"
            "   alfSMZ  strong coupling at MZ\n");
-    printf("Example:  ./main 320 600 -1300 2 0.5 -1400\n");
+    printf("Example:  ./main 135 600 -1300 2 0.5 -1400\n");
       exit(1); 
   } else  
   {  double Mtp,MbMb,alfSMZ;
@@ -119,7 +126,7 @@ int main(int argc,char** argv)
      if(argc>11){ sscanf(argv[11],"%lf",&alfSMZ); assignValW("alfSMZ",alfSMZ);}
   }
 
-  err=nmssmSUGRA( m0,mhf, a0,tb, sgn,  Lambda, aLambda, aKappa); 
+  err=nmssmSUGRA( m0,mhf, a0,tb, sgn,  Lambda, aLambda, aKappa,mXiF,mXiS,muP,msP,m3h);
 }
 #elif defined(EWSB)
 {
@@ -146,8 +153,12 @@ int main(int argc,char** argv)
       exit(1);
    }  
    
-   printf("Initial file  \"%s\"\n",argv[1]); 
+   printf("Initial file  \"%s\"\n",argv[1]);
+     
    err=readSLHA(argv[1]);
+   
+   
+   if(err) exit(2);
 }
 
 #endif
@@ -167,16 +178,16 @@ int main(int argc,char** argv)
   if(strcmp(cdmName,"~o1")) printf(" ~o1 is not CDM\n"); 
                     else o1Contents(stdout);
 
-// If you would like to use widths calculated by NMSSMTools, 
-// uncomment the line below
+/*  printVar(stdout);  */
 
-//   slhaRead("decay",1+8);
+ 
 
 #ifdef MASSES_INFO
 {
   printf("\n=== MASSES OF HIGGS AND SUSY PARTICLES: ===\n");
   printHiggs(stdout);
   printMasses(stdout,1);
+  
 }
 #endif
 
@@ -208,36 +219,59 @@ int main(int argc,char** argv)
 
 #ifdef HIGGSBOUNDS
    if(access(HIGGSBOUNDS "/HiggsBounds",X_OK )) system( "cd " HIGGSBOUNDS "; ./configure; make ");
-   slhaWrite("slha.in");
-   system("cat spectr decay > HB.slha");
-   HBblocks("HB.slha");
-   System("%s/HiggsBounds  LandH SLHA 5 1 HB.slha",HIGGSBOUNDS);
-   slhaRead("HB.slha",1+4);
+   system("cat spectr decay > HB.in");
+   HBblocks("HB.in");
+   System("%s/HiggsBounds  LandH SLHA 5 1 HB.in HB.out >hb.stdout",HIGGSBOUNDS);
+   slhaRead("HB.out",1+4);
    printf("HB result= %.0E  obsratio=%.2E\n",slhaVal("HiggsBoundsResults",0.,2,1,2), slhaVal("HiggsBoundsResults",0.,2,1,3)  );
    { char hbInfo[100];
     if(0==slhaSTRFormat("HiggsBoundsResults","1 5 ||%[^|]||",hbInfo)) printf("Channel: %s\n",hbInfo);
    }  
-   slhaRead("slha.in",0);
-   unlink("slha.in");
+#endif
+
+#ifdef HIGGSSIGNALS
+#define DataSet " latestresults "
+//#define Method  " peak " 
+//#define  Method " mass "
+#define  Method " both "
+#define PDF  " 2 "  // Gaussian
+//#define PDF " 1 "  // box 
+//#define PDF " 3 "  // box+Gaussia
+#define dMh " 2 "
+   printf("HiggsSignals:\n");
+   if(access(HIGGSSIGNALS "/HiggsSignals",X_OK )) system( "cd " HIGGSSIGNALS "; ./configure; make ");
+     system("rm -f HS.in HS.out");
+     system("cat spectr decay > HS.in");
+     HBblocks("HS.in");
+     system("echo 'BLOCK DMASS\n 25 " dMh " '>> HS.in");
+     System(HIGGSSIGNALS "/HiggsSignals" DataSet Method  PDF " SLHA 5 1 HS.in > hs.stdout");
+     System("grep -A 10000  HiggsSignalsResults HS.in > HS.out");
+     slhaRead("HS.out",1+4);
+     printf("  Number of observables %.0f\n",slhaVal("HiggsSignalsResults",0.,1,7));
+     printf("  total chi^2= %.1E\n",slhaVal("HiggsSignalsResults",0.,1,12));
+     printf("  HS p-value = %.1E\n", slhaVal("HiggsSignalsResults",0.,1,13));
+#undef dMh
+#undef PDF
+#undef Method
+#undef DataSet
+     
 #endif
 
 
 
 #ifdef OMEGA
 { int fast=1;
-  double Beps=1.E-3, cut=0.001;
-  double Omega,Xf;
-  
-// to include processes with virtual W/Z in DM   annihilation      
-//   VZdecay=1; ZWdecay=1; cleanDecayTable(); 
-
-// to include processes with virtual W/Z  also  in co-annihilation 
-//   VZdecay=2; ZWdecay=2; cleanDecayTable(); 
-     
-  printf("\n==== Calculation of relic density =====\n");  
+  double Beps=1.E-4, cut=0.01;
+  double Omega,Xf;   
+  printf("\n==== Calculation of relic density =====\n");
+// to exclude processes with virtual W/Z in DM   annihilation
+  VWdecay=0; VZdecay=0; cleanDecayTable();  
   Omega=darkOmega(&Xf,fast,Beps);
   printf("Xf=%.2e Omega=%.2e\n",Xf,Omega);
   printChannels(Xf,cut,Beps,1,stdout);
+  
+// to restore default switches  
+  VZdecay=1; VWdecay=1; cleanDecayTable();  
 }
 #endif
 
@@ -337,6 +371,15 @@ printf("\n==== Indirect detection =======\n");
   printf("protonFF (new)     d %E, u %E, s %E\n",ScalarFFPd, ScalarFFPu,ScalarFFPs);                               
   printf("neutronFF(new)     d %E, u %E, s %E\n",ScalarFFNd, ScalarFFNu,ScalarFFNs);
 
+
+
+/* Option to change parameters of DM velocity  distribution  */   
+   SetfMaxwell(220.,600.);
+/* 
+    dN  ~  exp(-v^2/arg1^2)*Theta(v-arg2)  d^3v     
+    Earth velocity with respect to Galaxy defined by 'Vearth' parameter.
+    All parameters are  in [km/s] units.       
+*/
 }
 #endif
 
@@ -404,16 +447,16 @@ printf("\n======== Direct Detection ========\n");
 #endif
   
 }
-#endif
- 
+#endif 
+
 #ifdef NEUTRINO
 { double nu[NZ], nu_bar[NZ],mu[NZ];
   double Ntot;
   int forSun=1;
   double Emin=0.01;
-
-  printf("\n===============Neutrino Telescope=======  for  ");
-  if(forSun) printf("Sun\n"); else printf("Earth\n");
+  
+ printf("\n===============Neutrino Telescope=======  for  "); 
+ if(forSun) printf("Sun\n"); else printf("Earth\n");  
 
   err=neutrinoFlux(Maxwell,forSun, nu,nu_bar);
 #ifdef SHOWPLOTS
@@ -421,15 +464,15 @@ printf("\n======== Direct Detection ========\n");
   displaySpectrum(nu_bar,"nu-bar from Sun [1/Year/km^2/GeV]",Emin,Mcdm);
 #endif
 { double Ntot;
-  double Emin=10; //GeV
+  double Emin=1; //GeV
   spectrInfo(Emin/Mcdm,nu, &Ntot,NULL);
-    printf(" E>%.1E GeV neutrino flux       %E [1/Year/km^2] \n",Emin,Ntot);
+    printf(" E>%.1E GeV neutrino flux       %.2E [1/Year/km^2] \n",Emin,Ntot);
   spectrInfo(Emin/Mcdm,nu_bar, &Ntot,NULL);
-    printf(" E>%.1E GeV anti-neutrino flux  %E [1/Year/km^2]\n",Emin,Ntot);
-}
-
+    printf(" E>%.1E GeV anti-neutrino flux  %.2E [1/Year/km^2]\n",Emin,Ntot);  
+} 
+  
 /* Upward events */
-
+  
   muonUpward(nu,nu_bar, mu);
 #ifdef SHOWPLOTS  
   displaySpectrum(mu,"Upward muons[1/Year/km^2/GeV]",1,Mcdm/2);
@@ -437,42 +480,40 @@ printf("\n======== Direct Detection ========\n");
   { double Ntot;
     double Emin=1; //GeV
     spectrInfo(Emin/Mcdm,mu, &Ntot,NULL);
-    printf(" E>%.1E GeV Upward muon flux    %E [1/Year/km^2]\n",Emin,Ntot);
-  }
-
+    printf(" E>%.1E GeV Upward muon flux    %.2E [1/Year/km^2]\n",Emin,Ntot);
+  } 
+  
 /* Contained events */
   muonContained(nu,nu_bar,1., mu);
 #ifdef SHOWPLOTS  
-  displaySpectrum(mu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm);
+  displaySpectrum(mu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm); 
 #endif
   { double Ntot;
     double Emin=1; //GeV
     spectrInfo(Emin/Mcdm,mu, &Ntot,NULL);
-    printf(" E>%.1E GeV Contained muon flux %E [1/Year/km^3]\n",Emin,Ntot);
-  }
-}
-#endif
+    printf(" E>%.1E GeV Contained muon flux %.2E [1/Year/km^3]\n",Emin,Ntot);
+  }  
+}        
+#endif 
+
 
 #ifdef DECAYS
 {  
   txtList L;
-   int dim;
    double width,br;
    char * pname;
-   
-    if(!VZdecay || ! VWdecay  ){ cleanDecayTable(); VZdecay=1; VWdecay=1;}
    
    printf("\nParticle decays\n"); 
    pname = "h1";
     width=pWidth(pname,&L);
-    printf("%s-> :   total width=%E \n and Branchings:\n",pname,width);
+    printf("%s->%d*x :   total width=%E \n and Branchings:\n",pname,dim,width);
     printTxtList(L,stdout);
 
-   printf("\nParticle decays\n");
-   pname = "ha";
-   width=pWidth(pname,&L);
-   printf("%s-> :   total width=%E \n and Branchings:\n",pname,width);
-   printTxtList(L,stdout);
+   pname = "l";
+    width=pWidth(pname,&L);
+    printf("%s->%d*x :   total width=%E \n and Branchings:\n",pname,dim,width);
+    printTxtList(L,stdout);
+    printf("Br(e,Ne,nl)= %E\n",findBr(L,"e,Ne,nl"));
 
    pname = "~o2";
     width=pWidth(pname,&L);
@@ -511,10 +552,12 @@ printf(" e^+, e^- annihilation\n");
 }
 #endif
 
-#ifdef CLEAN 
-  system("rm -f inp spectr decay omega nngg.out HB.slha  Key.dat ");
-#endif 
+#ifdef CLEAN
+  killPlots();
+  system("rm -f inp spectr nngg.out ");
+#endif
 
   return 0;
+
 }
 

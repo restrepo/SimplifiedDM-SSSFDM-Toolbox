@@ -22,7 +22,7 @@ static double RS=6.96E10;   /* cm */
 
 static double (*fvStat)(double)=NULL;
 static double v_stat,MA, muX, FFalpha;
-
+static char*CDM;
 /*
 double Tcapture(double T, double w, double v)
 { double mu=Mcdm/MA;
@@ -39,6 +39,9 @@ double Tcapture(double T, double w, double v)
 
 }
 */
+
+static numout* cc23; 
+extern double cs23(numout*cc, int nsub, double Pcm, int ii3);
 
 
 static double r3Integrand(double r3)
@@ -66,7 +69,6 @@ static double vIntegrand(double v)
   if(phiv <= phiTab[nTab-1]) Rmax=Rcm; else   Rmax=Rcm*polint2(phiv,nTab,phiTab,rTab); 
   return u*(4*M_PI/3.)*simpson(r3Integrand,0,Rmax*Rmax*Rmax,1.E-4)*Vlight*Vlight*1.E-1; // in cm
 }
-
 
 
 
@@ -202,6 +204,8 @@ static double captureSun(double(*vfv)(double),  double pA0, double nA0, double p
 //printf("Sun capture =%E\n",rhoDM*sumI/Mcdm);  
   return  rhoDM*sumI/Mcdm;
 }
+
+
 
 
 static double sigmaSun(double pA0, double nA0, double pA5, double nA5, double R3)
@@ -341,6 +345,49 @@ static double sigmaEarth(double pA0, double nA0, double pA5, double nA5, double 
   return  sumI;
 }
 
+double captureAux(double(*vfv)(double),int forSun, double csIp,double csIn,double csDp, double csDn)
+{ 
+  double pA0, nA0, pA5, nA5;
+  double MN=0.939;
+  double Mr=MN*Mcdm/(MN+Mcdm);
+  double sCoeff= 2*sqrt(3.8937966E8/M_PI)*Mr;
+           
+  pA0=sqrt(fabs(csIp))/sCoeff;   if(csIp<0) pA0*=-1;
+  nA0=sqrt(fabs(csIn))/sCoeff;   if(csIn<0) nA0*=-1;
+  pA5=sqrt(fabs(csDp/3))/sCoeff; if(csDp<0) pA5*=-1;
+  nA5=sqrt(fabs(csDn/3))/sCoeff; if(csDn<0) nA5*=-1;
+  
+  if(forSun) return captureSun(vfv,pA0,nA0,pA5,nA5);
+       else  return captureEarth(vfv,pA0,nA0,pA5,nA5);               
+}
+
+static double  vcs22(numout * cc,int nsub,int * err)
+{
+   int i;
+   double pcm,r;
+   REAL pmass[4], pvect[16];
+   double  GG=sqrt(4*M_PI*parton_alpha(3*Mcdm));
+   for(i=1;i<=cc->interface->nvar;i++) if(cc->link[i]) 
+   cc->interface->va[i]=*(cc->link[i]);
+
+   if( cc->interface->calcFunc()>0 ) {*err=4; return 0;}
+   *(cc->interface->gtwidth)=0;
+   *(cc->interface->twidth)=0;
+   *(cc->interface->gswidth)=0;
+   for(i=0;i<4;i++) cc->interface->pinf(nsub,1+i,pmass+i,NULL);
+   *err=0;
+   if(pmass[0]+pmass[1] <= pmass[2]+pmass[3]) return 0;
+   for(i=0;i<16;i++) pvect[i]=0;
+
+   pcm= decayPcm(pmass[0]+pmass[1],pmass[2],pmass[3]);
+   for(i=0;i<2; i++) pvect[4*i]=pmass[i];
+   for(i=2;i<4; i++) pvect[4*i]=sqrt(pmass[i]*pmass[i] +pcm*pcm);
+   pvect[8+3]=pcm;
+   pvect[12+3]=-pcm;
+   r=cc->interface->sqme(nsub,GG,pvect,err);
+   return 3.8937966E8*r*pcm/(16*M_PI*pmass[0]*pmass[1]*(pmass[0]+pmass[1]));
+}
+
 
 
 /* ================ Basic Spectra  =====   hep-ph/0506298v5 ============== */
@@ -453,41 +500,43 @@ static void mInterpEarth(double Nmass,  int  CHin,int  CHout, double*tab)
 }   
   
                                                      
-int basicNuSpectra(int forSun, int pdgN, int outN, double * tab)
+int basicNuSpectra(int forSun, double Mass, int pdgN, int outN, double * tab)
 { 
   int inP,i,j;
   int N=abs(pdgN);
   double tab100[100];
   double c=1;
   
-  for(i=0;i<NZ;i++) tab[i]=0;
+  tab[0]=Mass;
+  for(i=1;i<NZ;i++) tab[i]=0;
   
 //  if(N==12 ||N==14 ||N==16) {  if( pdgN*outN<0) return 0; else c=1;}
   
   switch(N)
   {
-    case 1: case 2: case 3: inP=4; break;
-    case 4:                 inP=3; break;
-    case 5:                 inP=1; break; 
-    case 6:                 inP=5; break;
+    case 1: case 2: 
+    case 3: case 21: inP=4; break;
+    case 4:          inP=3; break;
+    case 5:          inP=1; break; 
+    case 6:          inP=5; break;
  
-    case 15:                inP=2; break;  /*l  */ 
-    case 23:                inP=6; break;  /*z  */ 
-    case 24:                inP=7; break;  /*w  */
+    case 15:         inP=2; break;  /*l  */ 
+    case 23:         inP=6; break;  /*z  */ 
+    case 24:         inP=7; break;  /*w  */
     case 12:
     case 14:
     case 16:  if(forSun) inP=0; else 
-              {  if((pdgN==14 && outN>0)||(pdgN==-14 && outN<0)) tab[0]=2/(Zi(0)-Zi(1)); 
+              {  if((pdgN==14 && outN>0)||(pdgN==-14 && outN<0)) tab[1]=2/(Zi(1)-Zi(2)); 
                  return 0; 
               }     /*nu */
               break;  
     default:                       return 1;
   }  
   
-  if(forSun) mInterpSun(Mcdm,inP,-(outN-1)/2,tab100); 
-    else     mInterpEarth(Mcdm,inP,-(outN-1)/2,tab100);
+  if(forSun) mInterpSun(Mass,inP,-(outN-1)/2,tab100); 
+    else     mInterpEarth(Mass,inP,-(outN-1)/2,tab100);
 
-  for(i=0;i<NZ;i++)
+  for(i=1;i<NZ;i++)
   { double x=exp(Zi(i));
     tab[i]+=c*x*polint3(x,100, xTab ,tab100);  
   }
@@ -495,47 +544,122 @@ int basicNuSpectra(int forSun, int pdgN, int outN, double * tab)
   return 0;
 }
 
+
 /*  ===================  Spectra ========================== */
 
-static double  vcs22(numout * cc,int nsub,int * err)
+
+static void getSpectrum(int forSun, double M, double m1,double m2,char*n1,char*n2, int N1, int N2,int outP, double *tab)
 {
-   int i;
-   double pcm,r;
-   double pmass[4], pvect[16];
-   double  GG=sqrt(4*M_PI*parton_alpha(3*Mcdm));
-   for(i=1;i<=cc->interface->nvar;i++) if(cc->link[i]) 
-   cc->interface->va[i]=*(cc->link[i]);
+  int i,k;
+  char* nn[2];
+  int pdg[2];
+  double mm[2],E[2],p2;
 
-   if( cc->interface->calcFunc()>0 ) {*err=4; return 0;}
-   *(cc->interface->gtwidth)=0;
-   *(cc->interface->twidth)=0;
-   *(cc->interface->gswidth)=0;
-   for(i=0;i<4;i++) cc->interface->pinf(nsub,1+i,pmass+i,NULL);
-   *err=0;
-   if(pmass[0]+pmass[1] <= pmass[2]+pmass[3]) return 0;
-   for(i=0;i<16;i++) pvect[i]=0;
+  tab[0]=M/2;  
+  for(i=1;i<NZ;i++) tab[i]=0; 
 
-   pcm= decayPcm(pmass[0]+pmass[1],pmass[2],pmass[3]);
-   for(i=0;i<2; i++) pvect[4*i]=pmass[i];
-   for(i=2;i<4; i++) pvect[4*i]=sqrt(pmass[i]*pmass[i] +pcm*pcm);
-   pvect[8+3]=pcm;
-   pvect[12+3]=-pcm;
-   r=cc->interface->sqme(nsub,GG,pvect,err);
-   return 3.8937966E8*r*pcm/(16*M_PI*pmass[0]*pmass[1]*(pmass[0]+pmass[1]));
+  if(abs(N1)==abs(N2)) switch(abs(N1))
+  { case 22: case 11: case 13: return;}
+     
+  if(N1+N2==0  || (N1==21 && N2==21) || (N1==23 && N2==23) )  { if(basicNuSpectra(forSun, M/2, N1, outP,tab)==0) return;} 
+
+  nn[0]=n1;  nn[1]=n2;
+  mm[0]=m1;  mm[1]=m2;  
+  pdg[0]=N1; pdg[1]=N2;          
+  
+  
+  if(M>m1+m2) p2=sqrt((M*M-(m1+m2)*(m1+m2))*(M*M-(m1-m2)*(m1-m2)))/(2*M);
+  else 
+  { p2=0; 
+    if(abs(N1)==abs(N2)) { mm[0]=M/2; mm[1]=M/2;} else
+    {
+         if(N1==23 || abs(N1)==24)   mm[0]=M-m2; else mm[1]=M-m1;
+    }   
+  }
+    
+  E[0]=sqrt(mm[0]*mm[0]+p2*p2);
+  E[1]=sqrt(mm[1]*mm[1]+p2*p2);
+    
+  for(k=0;k<2;k++)
+  {   double dY;
+      double tabAux[NZ];
+      
+      if(abs(pdg[k])==11 || abs(pdg[k])==13 || abs(pdg[k])==22) continue;
+      if(basicNuSpectra(forSun,E[k],pdg[k], outP,tabAux)==0)
+      { double kf; 
+        dY=log(M/E[k]/2);
+        switch(abs(pdg[k]))
+        { case 12: case 14: case 16: 
+          if(pdg[k]*outP>1) kf=1; else kf=0; break;
+          default: kf=0.5;
+        } 
+        boost(dY, M/2, E[k], 0., tabAux);
+        for(i=1;i<NZ;i++)tab[i]+=kf*tabAux[i]; 
+      }
+      else
+      { double w=0;
+        numout * d2Proc;
+        int l; 
+        char* n[4];
+        REAL m[4];
+        double tab_p[NZ];
+        char process[40],plib[40];
+        int ntot;
+
+        if(mm[k]==0) { fprintf(stderr,"Can not hadronize BSM zero mass %s\n",nn[k]); continue;}
+                                         
+        strcpy(plib,"2width_");
+        sprintf(process,"%s->2*x",nn[k]);
+        pname2lib(nn[k],plib+7);
+        for(i=1;i<NZ;i++) tabAux[i]=0;
+                     
+        d2Proc=getMEcode(0,ForceUG,process,NULL,NULL,plib);
+        if(!d2Proc) { fprintf(stderr,"Can not find decay modes for  mass %s\n",nn[k]); continue; }
+        procInfo1(d2Proc,&ntot,NULL,NULL);
+        { double  Qstat;
+          if(Qaddress) { Qstat=*Qaddress; setQforParticle(Qaddress,nn[k]); }  
+          for(l=1;l<=ntot ;l++)
+          {    
+            double wP=pWidth2(d2Proc,l);
+            
+            if(wP>0)
+            { int N2=d2Proc->interface->pinfAux(l,2,NULL,NULL,NULL);
+              int N3=d2Proc->interface->pinfAux(l,3,NULL,NULL,NULL); 
+              procInfo2(d2Proc,l,n,m);    
+              getSpectrum(forSun,m[0],m[1],m[2],n[1],n[2],N2,N3,outP, tab_p);
+              tabAux[0]=tab_p[0];
+              for(i=1;i<NZ;i++) tabAux[i]+=wP*tab_p[i];
+              w+=wP;
+            }
+          }
+          if(Qaddress){ *Qaddress=Qstat; calcMainFunc();}
+        }
+         
+        if(w==0) { if(abs(pdg[k])!= abs(pNum(CDM)))   fprintf(stderr,"Can't find decays for  %s\n",nn[k]);
+                   continue;
+                 }
+        dY=acosh(E[k]/mm[k]);
+        boost(dY, M/2, mm[k], 0., tabAux);
+        tab[0]=M/2;
+        for(i=1;i<NZ;i++)tab[i]+=tabAux[i]/w;
+      }
+    } 
 }
 
 
-static double calcSpectrum0(char *name1,char*name2, int forSun,   double *Spectranu, double *SpectraNu)
+
+static double calcSpectrum0(char *name1,char*name2, int forSun,   double *Spectranu, double *SpectraNu, double *alpha)
 {
   int i,k;
-  double vcsSum=0; 
+  double vcsSum=0,vcsSum1=0; 
   int ntot,err;
   double * v_cs;
   
   char name1L[10],name2L[10], lib[20],process[400];
   numout * libPtr;
   
-  for(i=0;i<NZ;i++) Spectranu[i]=SpectraNu[i]=0;  
+  Spectranu[0]=SpectraNu[0]=0.5*(pMass(name1)+pMass(name2));  
+  for(i=1;i<NZ;i++) Spectranu[i]=SpectraNu[i]=0;  
 
   pname2lib(name1,name1L);
   pname2lib(name2,name2L);
@@ -546,18 +670,61 @@ static double calcSpectrum0(char *name1,char*name2, int forSun,   double *Spectr
   
   
   if(!libPtr) return 0;
+  if(Qaddress && *Qaddress!=pMass(name1)+pMass(name2)) 
+  { *Qaddress=pMass(name1)+pMass(name2);
+     calcMainFunc();
+  }   
   passParameters(libPtr);
   procInfo1(libPtr,&ntot,NULL,NULL); 
-
   
   v_cs=malloc(sizeof(double)*ntot);
   (*libPtr->interface->twidth)=0;
   
   for(k=0;k<ntot;k++)
-  { double m[4];
+  { REAL m[4];
     char *N[4];
-    procInfo2(libPtr,k+1,N,m);
-    if((m[2]+m[3])/(m[0]+m[1])<1)
+    int pdg[4];
+    int l,l_;
+    double br,wV;
+    
+    for(i=0;i<4;i++) N[i]=libPtr->interface->pinf(k+1,i+1,m+i,pdg+i);
+    cc23=NULL;
+    v_cs[k]=0;
+
+    if(VZdecay||VWdecay)
+    {  int nVV;
+       int vd[4]={0,0,0,0};
+       for(l=2;l<4;l++) if((pdg[l]==23&&VZdecay) || (abs(pdg[l])==24&&VWdecay)) vd[l]=1;
+            
+       for(l=2;l<4;l++) if(vd[l]) break;
+       if(l<3)
+       {  l_=5-l; 
+          if(vd[l_])
+          { nVV=2;
+            if(m[l_]>m[l]) { l=l_; l_=5-l;}
+          } else nVV=1;
+          
+          if(m[0]+m[1] >  m[l_] +20  && m[0] + m[1] <  m[2]+m[3] + 4*nVV)
+           cc23=xVtoxll(2,2,N,pdg,l,&wV,&br);                
+       }
+    }
+    if(cc23)
+    { int i3W;  
+      double  r,m1,v0=0.001;
+      for(i3W=2;i3W<5;i3W++) if(strcmp(cc23->interface->pinf(1,i3W+1,NULL,NULL),N[l_])==0) break;
+      r=v0*cs23(cc23,1,v0*Mcdm/2,i3W)/br;
+       
+      if(pdg[l_]==23 || abs(pdg[l_])==24)
+      { double wV2;
+        
+        wV2=pWidth(N[l_],NULL);
+        r*=decayPcmW(2*Mcdm,m[l],m[l_],wV,wV2,0)/decayPcmW(2*Mcdm,m[l],m[l_],wV,0,0);
+        if(pdg[l]==pdg[l_]) r/=2;
+      }
+      v_cs[k]=r;
+      vcsSum+=r;                     
+    }
+    else if((m[2]+m[3])<m[0]+m[1])
     { 
 #ifdef V0    
       v_cs[k]=V0*cs22(libPtr,k+1,V0*m[0]/2,-1.,1.,&err);
@@ -569,47 +736,29 @@ static double calcSpectrum0(char *name1,char*name2, int forSun,   double *Spectr
     } else v_cs[k]=-1;
   }
    
-  for(k=0;k<ntot ;k++) if(v_cs[k]>=0)
+  for(k=0;k<ntot ;k++) if(v_cs[k]>0)
   { char * N[4];
     double m[4];
-    int l, charge3[2],spin2[2],cdim[2],pdg[2];
+    int l,pdg[2];
     int PlusAok=0;
+    double tab2[NZ];
 
     procInfo2(libPtr,k+1,N,m);
-    for(l=0;l<2;l++)  pdg[l]=qNumbers(N[2+l],spin2+l,charge3+l,NULL);
-
-            
-    if(v_cs[k]>1.E-3*vcsSum) 
-    {  double tab2[NZ]; 
+    for(l=0;l<2;l++)  pdg[l]=qNumbers(N[2+l],NULL,NULL,NULL);
+    if(N[2][0]=='~' || N[3][0]=='~') vcsSum1+=v_cs[k]; 
 #ifdef PRINT
        { char txt[100];
          sprintf(txt,"%s,%s -> %s %s", N[0],N[1],N[2],N[3]);
          printf("  %-20.20s  %.2E\n",txt,v_cs[k]*2.9979E-26);
        }
 #endif       
-       for(l=0;l<2;l++) switch(abs(pdg[l]))  
-       {  
-         case 12: case 14: case 16:
-         if(pdg[l]>0)
-         {
-           basicNuSpectra(forSun,pdg[l],1,tab2);   
-           for(i=0;i<NZ;i++) Spectranu[i]+=tab2[i]*v_cs[k]/vcsSum;
-         } else 
-         {      
-           basicNuSpectra(forSun,pdg[l],-1,tab2);
-           for(i=0;i<NZ;i++) SpectraNu[i]+=tab2[i]*v_cs[k]/vcsSum;
-         }  
-         break;
-         default:   
-         basicNuSpectra(forSun,pdg[l],1,tab2);
-          for(i=0;i<NZ;i++) Spectranu[i]+=0.5*tab2[i]*v_cs[k]/vcsSum;
-         basicNuSpectra(forSun,pdg[l],-1,tab2);
-          for(i=0;i<NZ;i++) SpectraNu[i]+=0.5*tab2[i]*v_cs[k]/vcsSum;    
-       }
-    } 
-  }
-  
+    getSpectrum(forSun, pMass(name1)+pMass(name2), m[2], m[3],N[2],N[3],pdg[0],pdg[1], 1,tab2);
+    for(i=1;i<NZ;i++) Spectranu[i]+=tab2[i]*v_cs[k]/vcsSum;
+    getSpectrum(forSun, pMass(name1)+pMass(name2), m[2], m[3],N[2],N[3],pdg[0],pdg[1],-1,tab2);
+    for(i=1;i<NZ;i++) SpectraNu[i]+=tab2[i]*v_cs[k]/vcsSum;  
+  } 
   free(v_cs);
+  if(alpha) { if(vcsSum>0) *alpha=vcsSum1/vcsSum; else *alpha=0;}
   return  vcsSum*2.9979E-26;
 }
 
@@ -619,22 +768,22 @@ static double calcSpectrum0(char *name1,char*name2, int forSun,   double *Spectr
 #define KelvinEv (8.61734E-05) /* ev */
 #define Etime  (1.5E17)     /* time of existence of Sun and Earth in seconds */ 
 
-static double C[2],An[2],Ev[2];
+static double C[2],An[2],Ev[2],Alpha;
 
 static void deriv1(double t,double*n,double*dn) { dn[0]=C[0]-An[0]*n[0]*n[0]-Ev[0]*n[0];
 
 //printf(" C=%E An=%E Ev=%E\n", C[0], An[0]*n[0]*n[0], Ev[0]*n[0]);
 } 
   
-static void deriv2(double t,double*n,double*dn) { dn[0]=C[0] - An[1]*n[0]*n[0] - An[0]*n[0]*n[1] -Ev[0]*n[0]; 
-                                                  dn[1]=C[1] - An[1]*n[1]*n[1] - An[0]*n[0]*n[1] -Ev[1]*n[1];
-                                                }
+static void deriv2(double t,double*n,double*dn) 
+{ dn[0]=C[0]+ 0.5*Alpha*An[1]*n[1]*n[1] - An[1]*n[0]*n[0] - An[0]*n[0]*n[1] -Ev[0]*n[0]; 
+  dn[1]=C[1]+ 0.5*Alpha*An[1]*n[0]*n[0] - An[1]*n[1]*n[1] - An[0]*n[0]*n[1] -Ev[1]*n[1];
+}
 
 int neutrinoFlux(double (* fvf)(double), int forSun, double* nu, double * Nu)
 {
   int i,n,err;
   double vcs0,vcs1;
-  char  lop[100];
 
   double nu_[NZ],Nu_[NZ];
   char *name, *aname;
@@ -643,30 +792,26 @@ int neutrinoFlux(double (* fvf)(double), int forSun, double* nu, double * Nu)
   double Veff;
   double rho,T;
 
-  for(i=0;i<NZ;i++) nu[i]=Nu[i]=0;
-
-  err=sortOddParticles(lop);   // it also calculated by nucleonAmplitudes, but we need to know 'lop' 
+  for(i=1;i<NZ;i++) nu[i]=Nu[i]=0;
   
-  if(err) return err;
   if(CDM1&&CDM2) { printf(" The 'neutrinoFlux' code is still not upgrated for 2DM case\n");  return 1;}
-  if(CDM1) err=nucleonAmplitudes(CDM1,FeScLoop,pA0,pA5,nA0,nA5); else err=nucleonAmplitudes(CDM2,FeScLoop,pA0,pA5,nA0,nA5);
+  if(CDM1) CDM=CDM1; else CDM=CDM2;
+  nu[0]=Nu[0]=2*pMass(CDM);
+  err=nucleonAmplitudes(CDM,FeScLoop,pA0,pA5,nA0,nA5);
+
   if(err) return err;
   Cr0=forSun? captureSun(fvf,pA0[0],nA0[0],pA5[0],nA5[0]):captureEarth(fvf, pA0[0],nA0[0],pA5[0],nA5[0]); 
   
   if(pA0[0]==pA0[1] && nA0[0]==nA0[1] &&pA5[0]==pA5[1]&&nA5[0]==nA5[1]) Cr1=Cr0; else
   Cr1=forSun? captureSun(fvf,pA0[1],nA0[1],pA5[1],nA5[1]):captureEarth(fvf,pA0[1],nA0[1],pA5[1],nA5[1]);  
-
-          
-  for(n=0;n<Nodd;n++) if(strcmp(lop,OddPrtcls[n].name)==0 ||
-                         strcmp(lop,OddPrtcls[n].aname)==0  ) break;
                          
-  name=OddPrtcls[n].name;
-  aname=OddPrtcls[n].aname;
+  name=CDM;
+  aname=pdg2name(-pNum(CDM));
+  if(!aname) aname=name;
   if(forSun) R=150E6;  else R=6378.1; /* Distance to Sun/Earth in [km] */  
   Prop=31556925.2/(4*M_PI*R*R);       /* for Year*km^2 */
     
-  vcs0= calcSpectrum0(name,aname,forSun, nu,Nu);
-  
+  vcs0= calcSpectrum0(name,aname,forSun, nu,Nu,NULL);
   { 
      double r_,v_,r095,S,ph,Veff1;
      for(i=0,r_=0;i<10;i++) 
@@ -676,53 +821,37 @@ int neutrinoFlux(double (* fvf)(double), int forSun, double* nu, double * Nu)
        if(r_>Rcm) r_=Rcm;
      }
 
-//printf("r_/RS=%E\n", r_/Rcm);
-
      rho=polint2(r_/Rcm,nTab,rTab,rhoTab);
      T=polint2(r_/Rcm,nTab,rTab,tTab);
      r095=polint2(T*0.95,nTab,tTab,rTab);
      if(r095>1) r095=1;
-//printf("r095=%E\n",r095);
      T*=KelvinEv*1E-9;
-//printf("T=%E[GeV]\n",T);     
      r095*=Rcm;
      Veff1=pow(r_*M_PI,3)/8;
      if(forSun) S=sigmaSun(pA0[0],nA0[0],pA5[0],nA5[0],r095*r095*r095);
      else       S=sigmaEarth(pA0[0],nA0[0],pA5[0],nA5[0],r095*r095*r095);
      v_=sqrt(8*T/(M_PI*Mcdm));
-//printf("v_=%E\n",v_);
-//printf("S/Veff1=%E\n",S/Veff1);
      ph=phiTab[0]*Mcdm/T;
-//printf(" Mcdm=%E T=%E phi[0]=%E\n",Mcdm,T,phiTab[0]);     
-//printf("ph=%E\n",ph);     
      ph=ph*exp(-ph);
      
      Ev[0]=v_*S/Veff1*ph*Vlight*100;
-//printf("S=%E  (expected = cs[cm^2]* %E)   , phi[0]=%E  \n",S, 4./3.*M_PI*r095*r095*r095*150/mp_g,  phiTab[0]);     
      if(strcmp(name,aname))
      { if(forSun)S=sigmaSun(pA0[1],nA0[1],pA5[1],nA5[1],r095);
        else S=sigmaEarth(pA0[1],nA0[1],pA5[1],nA5[1],r095);
-       Ev[1]=v_*S/Veff1*ph; 
+       Ev[1]=v_*S/Veff1*ph*Vlight*100; 
      } 
-//printf("Temperature  New =%E Old=%E \n", T/(KelvinEv*1E-9), tTab[0]); 
-//printf("rho New %E old %E\n", rho,rhoTab[0]);
-     { // compare
-//      double  mu=Mcdm*mp_gev/(Mcdm+mp_gev); 
-//      double cs=mu*mu/M_PI*(12*pA5[0]*pA5[0]+  4*pA0[0]*pA0[0])*3.8937966E8;         
-//printf("cs=%E\n",cs);     
-//      printf("Evaporation New=%E Old=%E\n",Ev[0], cs/5.e-3*pow(10,-(3.5*Mcdm+4)));
-     }
      Veff=pow(Gconst*100*rho*Mcdm/T/3,-1.5);
-//     printf("Veff : new=%E old=%E\n",Veff,  pow(Gconst*100*(150)*Mcdm/(tTab[0]*KelvinEv*1E-9)/3,-1.5) );     
   } 
 
   if(strcmp(name,aname))
   { double G01,G00,G11;
     double N[2]={0,0};
     int err;
-    vcs1=calcSpectrum0(name,name,forSun, nu_,Nu_); 
-    C[0]=Cr0*(1+dmAsymm)/2;
-    C[1]=Cr1*(1-dmAsymm)/2; 
+    vcs1=calcSpectrum0(name,name,forSun, nu_,Nu_,&Alpha);
+    
+    C[0]=Cr0*(1+dmAsymm)/2;                             
+    C[1]=Cr1*(1-dmAsymm)/2;       
+       
     An[0]=vcs0/Veff;
     An[1]=vcs1/Veff;
     err=odeint(N,2, 0 ,Etime , 1.E-3,  Etime/10, deriv2);
@@ -741,11 +870,16 @@ int neutrinoFlux(double (* fvf)(double), int forSun, double* nu, double * Nu)
       G11_=0.5*G01_*alpha/x;
 //      printf("x=%E G00 = %E/%E  G01 = %E/%E G11 = %E/%E\n",x, G00,G00_,G01,G01_,G11,G11_);
     }
-    for(i=0;i<NZ;i++) 
+    for(i=1;i<NZ;i++) 
     { nu[i]=Prop*(G01*nu[i]+G00*nu_[i]+G11*Nu_[i]); 
       Nu[i]=Prop*(G01*Nu[i]+G00*Nu_[i]+G11*nu_[i]);
     }  
-     
+    vcs1=calcSpectrum0(aname,aname,forSun, nu_,Nu_,NULL);     
+    for(i=1;i<NZ;i++)
+    { nu[i]+=Prop*(G11*nu_[i]);
+      Nu[i]+=Prop*(G11*Nu_[i]);
+    }              
+
   } else   
   {   
     int err;  
@@ -757,7 +891,7 @@ int neutrinoFlux(double (* fvf)(double), int forSun, double* nu, double * Nu)
     rf=0.5*An[0]*N*N*Prop;
 
 //printf("Rate Factor = %E(num.sol), =%E(formula)\n",rf,   0.5*Cr0*pow(tanh(Etime*sqrt(Cr0*vcs0/Veff)),2)*Prop);
-    for(i=0;i<NZ;i++) { nu[i]*=rf;  Nu[i]*=rf;}
+    for(i=1;i<NZ;i++) { nu[i]*=rf;  Nu[i]*=rf;}
   }
   return 0;
 }
@@ -829,8 +963,9 @@ void muonUpward(double*nu, double*Nu, double*mu)
    alpha_stat=0.002*rho;
    beta_stat=3.0E-6*rho;
 
-   mu[0]=0;
-   for(i=1;i<NZ;i++) 
+   mu[0]=nu[0];
+   mu[1]=0;
+   for(i=2;i<NZ;i++) 
    {  Emu_stat=Mcdm*exp(Zi(i));
       mu[i]=0;
       if(Emu_stat>0.01) for(k=0;k<2;k++) for(l=0;l<2;l++)
@@ -862,9 +997,9 @@ void muonContained(double*nu,double*Nu,double rho, double*mu)
   double*Sp[2]={nu,Nu};
   
   nuSpectrum=tabNuSpectrum; 
-  mu[0]=0; 
-
-  for(i=1;i<NZ;i++)
+  mu[0]=nu[0]; 
+  mu[1]=0;
+  for(i=2;i<NZ;i++)
   {  Emu_stat=Mcdm*exp(Zi(i));
      mu[i]=0;
      if(Emu_stat>0.01) for(k=0;k<2;k++) for(l=0;l<2;l++)
@@ -936,119 +1071,3 @@ double  ATMmuonContained(double cosFi, double E,double rho)
    }   
    return  mu*rho*NA*1.E5;      
 }
-
-/* ========================================== OLD CODE ===============================*/
-
-/*   Approximate formulae for Sun and Earth DM capture rates   */
-
-
-double captureAux(int forSun,double(*vfv)(double), double csIp,double csIn,double csDp, double csDn)
-{ 
-  double pA0, nA0, pA5, nA5;
-  double MN=0.939;
-  double Mr=MN*Mcdm/(MN+Mcdm);
-  double sCoeff= 2*sqrt(3.8937966E8/M_PI)*Mr;
-           
-  pA0=sqrt(fabs(csIp))/sCoeff;   if(csIp<0) pA0*=-1;
-  nA0=sqrt(fabs(csIn))/sCoeff;   if(csIn<0) nA0*=-1;
-  pA5=sqrt(fabs(csDp/3))/sCoeff; if(csDp<0) pA5*=-1;
-  nA5=sqrt(fabs(csDn/3))/sCoeff; if(csDn<0) nA5*=-1;
-  
-  if(forSun) return captureSun(vfv,pA0,nA0,pA5,nA5);
-       else  return captureEarth(vfv,pA0,nA0,pA5,nA5);               
-}
-
-
-#ifdef OLD
-
-static double S(double x, double VescV)
-{  double A,Ab;
-   double vesc=1156;  /* escape velocity for the Sun */
-   if(fabs(1-x)<0.01) return 1;
-
-   A=3*x/2./(x-1)/(x-1)*VescV*VescV;
-   Ab=pow(A,1.5);
-   return pow((Ab/(1+Ab)),2./3.);
-}
-
-
-
-/*static*/ double captureSunOld(double pA0, double nA0, double pA5, double nA5, double Dv)
-{ 
-  double vesc=1156;    /* escape velocity for the Sun */
-/* sum over nuclear species */
-                /* H,He,C, N, O,Ne,Mg,Ni, S,Fe  */
-  int     A[10] ={1,4,12,14,16,20,24,28,32,56};
-  int     Z[10] ={1,2, 6, 7, 8,10,12,14,16,26};
-  double  fs[10] ={0.670,0.311,2.37e-3,1.88e-3,8.78e-3,1.93e-3,7.33e-4,7.98e-4,5.50e-4,1.42e-3};
-  double  ps[10] ={3.15,3.4,2.85,3.83,3.25,3.22,3.22,3.22,3.22,3.22};
-/*
-  double  fs[10] ={0.772,0.209,3.87e-3,9.4e-4,8.55e-3,1.51e-3,7.39e-4,8.13e-4,4.65e-4,1.46e-3};
-  double  ps[10] ={3.16,3.4,3.23,3.23,3.23,3.23,3.23,3.23,3.23,3.23};
-*/  
-  double Finf[10]={1,0.986,0.788,0.613,0.613,0.613,0.281,0.281,0.101,0.00677};
-  double  mc[10] ={1,18.2,61.6,75.2,75.2,75.2,71.7,71.7,57.0,29.3};
-  double  ai[10] ={1,1.58,2.69,2.69,2.69,2.69,2.97,2.97,3.1,3.36};
-  double  sumI,cap;
-  double csSDp,mu;
-  int i;
-
-  mu=Mcdm*mp_gev/(Mcdm+mp_gev); 
-  csSDp=12/M_PI*(pA5*mu)*(pA5*mu)*3.8937966E8 ;
-  
-  sumI=0;
-  for(i=0;i<10;i++)   /* sum over spin-independent contributions */
-  { double MA,si,FF;
-    MA=A[i]*mp_gev;
-    mu=Mcdm*MA/(Mcdm+MA);
-    si= (Z[i]*pA0+(A[i]-Z[i])*nA0)*mu;
-    si=4/M_PI*si*si*3.8937966E8;  
-    FF=(Finf[i]+(1-Finf[i])*exp(-pow((log(Mcdm)/log(mc[i])),ai[i])));
-    if(i==0) si+=csSDp;
-    sumI+=FF*fs[i]*ps[i]/MA*S(Mcdm/MA,vesc/Dv)*si;    
-  }
-  
-  cap=4.8e28*(sumI)/Mcdm/(Dv/270.)*(rhoDM/0.3);
-#ifdef PRINT 
-printf("Sun capture rate %E/s\n", cap);
-#endif  
-  return cap;
-}
-
-double captureEarthOld(double pA0,double nA0,double pA5,double nA5,double Dv )
-{ 
-/*               O Ni Mg Fe Cu P  Na S  Cu  */
-  int A[9] ={16,28,24,56,40,30,23,32,59};
-  int Z[9] ={ 8,14,12,26,20,15,11,16,28};
-  double fs[9]={0.3,0.15,0.14,0.3,0.015,0.011,0.004,0.05,0.03};
-  double ps[9]={1.2,1.2,1.2,1.6,1.2,1.2,1.2,1.6,1.6};
-  double sumI,cap;
-  double vesc=13.2;  /* escape velocity for the Earth */
-  int i;
-  
-  
-  sumI=0;
-  for(i=0;i<9;i++)     /* sum over nuclear species */
-  { double MA,mu,si,FF;
-  
-    MA=A[i]*mp_gev;
-    mu=Mcdm*MA/(Mcdm+MA);
-    si=(Z[i]*pA0+(A[i]-Z[i])*nA0)*mu;
-    si=4/M_PI*si*si*3.8937966E8;
-    if(i==3)
-    { double x,Ax;
-      x=Mcdm/MA;
-      Ax=3*x/2./(x-1)/(x-1)*vesc*vesc/Dv/Dv;
-      FF=1-0.26*(Ax)/(1+Ax);
-    } else FF=1;
-    sumI+=FF*fs[i]*ps[i]/MA*S(Mcdm/MA,vesc/Dv)*si;
-printf("C%d = %E\n", A[i], FF*fs[i]*ps[i]/MA*S(Mcdm/MA,vesc/Dv)*si*(4.8e19/Mcdm/(Dv/270.)*(rhoDM/0.3)));    
-  }
-  cap=4.8e19/Mcdm*sumI/(Dv/270.)*(rhoDM/0.3);
-
-printf("Earth capture rate (approx formular) %E/s\n", cap);
-
-  return cap; 
-}
-#endif
-

@@ -23,17 +23,18 @@ static int SystemCall(int mode)
   { printf("Executable \n %s\n is not found. Program stops.\n",buff);
     exit(13);
   }
-    
+
+/*    
   { FILE *f=fopen(FIN,"a");
      fprintf(f,"%s\n%s\n","Block SOFTSUSY               # SOFTSUSY specific inputs",
      "         2   0                    # quark mixing option");
      fclose(f);
   }  
+*/
 
-
-  sprintf(buff,"pwd=`pwd`; cd %s ;  ./softpoint.x leshouches < $pwd/%s > $pwd/%s",SOFTSUSY,FIN,FOUT);
+  sprintf(buff,"pwd=`pwd`; cd %s ;  ./softpoint.x leshouches < $pwd/%s > $pwd/%s; echo OK",SOFTSUSY,FIN,FOUT);
  
-  err=System(buff);   
+  err=System(buff);     
   if(err>=0)   err=slhaRead(FOUT,4); else cleanSLHAdata();
 
   return err;

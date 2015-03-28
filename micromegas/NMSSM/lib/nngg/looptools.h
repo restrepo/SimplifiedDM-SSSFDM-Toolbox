@@ -88,7 +88,7 @@
 	double complex A0, B0, DB0, C0, D0
 	double complex B1, DB1, B00, DB00, B11, DB11
 	double complex C0i, D0i
-	integer Cget, Dget, getcachelast
+	integer*8 Cget, Dget, getcachelast
 	double precision getmudim, getdelta, getlambda
 
 	external A0, B0, DB0, C0, D0

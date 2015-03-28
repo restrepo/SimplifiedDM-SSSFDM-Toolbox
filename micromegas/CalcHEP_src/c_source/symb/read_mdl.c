@@ -614,7 +614,14 @@ static int  readparticles(int  check, int ugForce )
            break;
         } 
       }
+      
+      prtclbase[nparticles-1].nHerm=0;
+      if(strchr(chlp,'*'))
+      { char *ch=strchr(chlp,'!');
+        if(ch) { ch[0]=' '; prtclbase[nparticles-1].nHerm=1;}
+      }
       trim(chlp);
+      
       if (strcmp(chlp,"") == 0) strcpy(chlp," ");
       prtclbase[nparticles-1].hlp = toupper(chlp[0]);
       if(check)
@@ -965,7 +972,7 @@ static int  readlagrangian(int check, int ugForce)
         if (f_copy[i] !=0)
         {
           mm=ghostmother(f_copy[i]);
-          f_copy[i]=prtclbase[mm-1].anti  + f_copy[i]-mm   ;
+          if(!prtclbase[mm-1].nHerm) f_copy[i]=prtclbase[mm-1].anti  + f_copy[i]-mm   ;
          }
       }
 
@@ -1087,10 +1094,11 @@ exi:;
 static int find3charge(void)
 {
   int i,cont;
-
+  for(i=0;i<nparticles;i++) if(prtclbase[i].nHerm) prtclbase[i].q3=0;
+  
   for(cont=1;cont;)
   { cont=0;  
-    for(i=0;i<nparticles;i++) if(prtclbase[i].hlp!='*' &&   ghostmother(i+1)==i+1 && prtclbase[i].q3==unknownQ3)
+    for(i=0;i<nparticles;i++) if(/*prtclbase[i].hlp!='*' &&*/   ghostmother(i+1)==i+1 && prtclbase[i].q3==unknownQ3)
     { decaylink dec=prtclbase[i].top;
       for(;dec;dec=dec->next)
       { int j,ch,br ;
@@ -1245,7 +1253,7 @@ static void readEXTFunc(FILE*f)
   for(;fgets(buff,199,f);)
   { 
     trim(buff);
-    if(strstr(buff,"extern ")==buff);
+    if(strstr(buff,"extern ")==buff)
     { char *c;
       c=strchr(buff,'(');
       if(c)
@@ -1331,10 +1339,9 @@ int makeVandP(int rd ,char*path,int L, int mode,char*CalcHEP)
       fprintf(f," {\"%s\",",prtclbase[i].name);
       if(i+1==anti)   fprintf(f,"\"%s\", ",prtclbase[i].name);
            else       fprintf(f,"\"%s\", ",prtclbase[anti-1].name);
-     fprintf(f,"%ld, \"%s\",\"%s\",%d,%d,%d}\n",
+       fprintf(f,"%d, \"%s\",\"%s\",%d,%d,%d}\n",
        prtclbase[i].N,  prtclbase[i].massidnt, prtclbase[i].imassidnt,  
        prtclbase[i].spin, prtclbase[i].cdim,prtclbase[i].q3);
-    
   }
   fprintf(f,"};\n");
   fprintf(f,"ModelPrtclsStr *ModelPrtcls=ModelPrtcls_; \n");

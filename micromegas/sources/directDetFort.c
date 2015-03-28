@@ -56,7 +56,7 @@ static void(*_Sxx)(double*,double*,double*,double*);
 static double fDv_(double v){ return (*_fDv)(&v);}
 static void Sxx_(double p,double*S00,double*S01,double*S11){ (*_Sxx)(&p,S00,S01,S11);}
 
-#ifdef TMP 
+
 double nucleusrecoil_(
      double(*fDv)(double*),int*A, int*Z, double*J, 
      void(*Sxx)(double*,double*,double*,double*),
@@ -70,7 +70,7 @@ double nucleusrecoil_(
   
   if(fDv  == maxwell_)
     return  nucleusRecoil(Maxwell, *A,*Z,*J,Sxx_,LF_,dNdE);
-  else  if(fDv=fdvdelta_)  
+  else  if(fDv==fdvdelta_)  
     return  nucleusRecoil(fDvDelta, *A,*Z,*J,Sxx_,LF_,dNdE);
   else  
   { _fDv=fDv;
@@ -87,7 +87,7 @@ double nucleusrecoilaux_(
   _Sxx=Sxx;
   
   if(fDv  == maxwell_) c_fDv=Maxwell;
-  else  if(fDv=fdvdelta_) c_fDv=fDvDelta;
+  else  if(fDv==fdvdelta_) c_fDv=fDvDelta;
   else { _fDv=fDv; c_fDv=fDv_;}
    
     return  nucleusRecoilAux(c_fDv, *A,*Z,*J,Sxx_,*LmbdP,*XiP,*LmbdN,*XiN, dNdE);
@@ -122,7 +122,7 @@ double nucleusrecoil0aux_( double (*fDv)(double*),
   double (*c_fDv)(double);
 
   if(fDv  == maxwell_) c_fDv=Maxwell;
-  else  if(fDv=fdvdelta_) c_fDv=fDvDelta;
+  else  if(fDv==fdvdelta_) c_fDv=fDvDelta;
   else { _fDv=fDv; c_fDv=fDv_;}
 
   return nucleusRecoil0Aux(c_fDv,*A,*Z,*J,*Sp,*Sn,*LmbdP,*XiP,*LmbdN,*XiN,dNdE);
@@ -144,7 +144,6 @@ double dnderecoil_(double *tab, double *E)
 {  
    return  dNdERecoil(tab, *E);
 } 
-#endif
 
  void sxxf19_   (double *p,double*S00,double*S01,double*S11){ SxxF19(*p,S00,S01,S11);}
  void sxxna23_  (double *p,double*S00,double*S01,double*S11){ SxxNa23(*p,S00,S01,S11);}

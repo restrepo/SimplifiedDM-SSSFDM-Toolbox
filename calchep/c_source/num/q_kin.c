@@ -22,24 +22,19 @@
 
 static void LorRot(REAL rapidity, int ntot,REAL*pvect)
 {
-    static REAL rapid___ = 0;
-    static REAL sh = 0;
-    static REAL ch = 1;
-    REAL ee, pp;
-    int nv;
-
-    if (rapidity != rapid___) 
-    {
-	rapid___ = rapidity;
-	sh = sinh(rapidity);
-	ch = sqrt(sh * sh + 1);
-    }
-    if (rapidity) for(nv=4*ntot-4; nv>=0; nv -=4)
-    {  ee = pvect[nv];
-       pp = pvect[nv+3];
-       pvect[nv] = ee * ch + pp * sh;
-       pvect[nv+3] = ee * sh + pp * ch;
-    }
+  REAL sh,ch,ee, pp;
+  int nv;
+  
+  if(rapidity)
+  {   sh = sinh(rapidity);
+      ch = sqrt(sh * sh + 1);
+      for(nv=4*ntot-4; nv>=0; nv -=4)
+      {  ee = pvect[nv];
+         pp = pvect[nv+3];
+         pvect[nv] = ee * ch + pp * sh;
+         pvect[nv+3] = ee * sh + pp * ch;
+      }
+  }
 } 
 
 static void AzimuthRot(REAL fi, int ntot,REAL*pvect)
@@ -113,6 +108,17 @@ typedef  struct
 
 
 
+
+static REAL  cmfun( REAL E,REAL PM1,REAL PM2)
+{
+  REAL e2,s,d;
+  e2=E*E;
+  s=PM1+PM2;
+  d=PM1-PM2;  
+  return sqrt((e2-s*s)*(e2-d*d))/(2*E);     
+}
+
+
 static REAL sqrt_S, rapidity, stop, sbot, pcm;
 static double ssmin, ssmax;
 
@@ -134,16 +140,8 @@ static  sphereStr  sph_inf[DEPTH][10];
 
 
 
-static REAL  cmfun( REAL E,REAL PM1,REAL PM2)
-{
-  REAL e2,s,d;
-  e2=E*E;
-  s=PM1+PM2;
-  d=PM1-PM2;  
-  return sqrt((e2-s*s)*(e2-d*d))/(2*E);     
-}
 
-int mkmom(double *x, double *tfact, REAL* pvect)
+int mkmom(double*x,double*tfact,double*xp1,double*xp2,REAL*pvect)
 {
   int i,k,l;
   int nx=0;
@@ -201,8 +199,8 @@ int mkmom(double *x, double *tfact, REAL* pvect)
        if(sf_num[0] && sf_num[1]) { ytilda=x[0]*y1+ (1-x[0])*y2;    *tfact*=(y1-y2);}   
         else if(sf_num[0]) ytilda=y2; else if(sf_num[1]) ytilda=y1; else  return 1;
        LorRot(ytilda,3,pvect);
-       x[0]= sf_num[0]?  pvect[3]/pcm : 1;
-       x[1]= sf_num[1]? -pvect[7]/pcm : 1;
+       *xp1=sf_num[0]? pvect[3]/pcm:1;
+       *xp2=sf_num[1]?-pvect[7]/pcm:1;
        
        LorRot(rapidity,3,pvect);
        return 0;
@@ -396,7 +394,7 @@ int mkmom(double *x, double *tfact, REAL* pvect)
 
 	decay_0(nvin[i], amass[i][0], amass[i][1], &fct0, Emax,&memDecay,pvect);
 	if(fct0==0) {*tfact=0; return 0;}
-	if(!finite(fct0))
+	if(!isfinite(fct0))
 	{ printf("mkmom infinite factor\n");
 	  *tfact=0;
 	  return 0;
@@ -448,8 +446,8 @@ int mkmom(double *x, double *tfact, REAL* pvect)
 	*tfact = *tfact * fct0 / fct_1__;
     }
     if(nin_int==2)
-    { if(sf_num[0]) x[0]= x1;
-      if(sf_num[1]) x[1]= x2;
+    { *xp1=sf_num[0]? x1:1;
+      *xp2=sf_num[1]? x2:1;
       LorRot(rapidity+ytilda,nin_int+nout_int,pvect);
       AzimuthRot(drandXX()*2*M_PI,nout_int, pvect+8);        
     } else 
@@ -458,13 +456,13 @@ int mkmom(double *x, double *tfact, REAL* pvect)
         LorRot(rapidity,nin_int+nout_int,pvect);
     }
     
-    if(!finite(*tfact))
+    if(!isfinite(*tfact))
     {  fprintf(stderr,"mkmom: infinite factor\n");
        *tfact=0;
       return 0;
     }
 
-    for(i=0;i<(nin_int+nout_int)*4;i++) if(!finite(pvect[i])) {*tfact=0; return 0;}
+    for(i=0;i<(nin_int+nout_int)*4;i++) if(!isfinite(pvect[i])) {*tfact=0; return 0;}
 
     return 0;
 }    
@@ -526,7 +524,7 @@ int imkmom(double P1, double P2)
       REAL ss = 0; 
       int pn;
       
-      for(j=0; pn=kinmtc_1[i].lvout[k][j];j++) ss += pm[pn - 1];
+      for(j=0; (pn=kinmtc_1[i].lvout[k][j]);j++) ss += pm[pn - 1];
       summas[i][k] = ss;
     }
 

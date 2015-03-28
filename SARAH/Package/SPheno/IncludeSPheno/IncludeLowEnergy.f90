@@ -1,895 +1,847 @@
-! Real(dp) Function C0m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! ! !    C0m  = -C0_3m(m1,m2,m3)  ! check sign
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!   If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C0m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C0m = large
-!   Else
-!    C0m = 1/(2.*m1)
-!   End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!  If (Abs(m3).lt.eps) Then
-!    C0m = 1/m2
-!  Else If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C0m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C0m = large/m3
-!  Else
-!    C0m = (m2 - m3 + m3*Log(m3/m2))/(m2 - m3)**2
-!  End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!  If (Abs(m2).lt.eps) Then
-!    C0m = 1/m3
-!  Else If (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C0m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C0m = large/m2
-!  Else
-!    C0m =   (-m2 + m3 + m2*Log(m2/m3))/(m2 - m3)**2
-!  End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!  If (Abs(m1).lt.eps) Then
-!    C0m = 1/m3
-!  Else If (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C0m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C0m = large/m1
-!  Else
-!    C0m =  (-m1 + m3 - m1*Log(m3/m1))/(m1 - m3)**2
-!  End if
-! 
-! Else
-!  If (Abs(m1).lt.eps) Then
-!   C0m = -Log(m3/m2)/(m2 - m3)
-!  Else if (Abs(m2).lt.eps) Then
-!   C0m = -Log(m3/m1)/(m1 - m3)
-!  Else if (Abs(m3).lt.eps) Then
-!   C0m = -Log(m2/m1)/(m1 - m2)
-!  Else
-!   C0m =  (m2*(-m1 + m3)*Log(m2/m1) + (m1 - m2)*m3*Log(m3/m1))/ &
-!      &  ((m1 - m2)*(m1 - m3)*(m2 - m3))
-!  End if
-! 
-! End if
-! 
-!  C0m = - C0m
-! 
-! End Function C0m
-! 
-! Real(dp) Function C00m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!  If (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C00m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C00m = large
-!  Else
-!    C00m = -Log(m3)/4.
-!  End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!   If (Abs(m3).lt.eps) Then
-!    C00m = 0.125_dp - Log(m2)/4._dp
-!   Else if (Abs(m2).lt.eps) Then
-!    C00m = 0.375_dp - Log(m3)/4._dp
-!   Else
-!    C00m = ((m2 - m3)*(m2 - 3*m3 + 2*(-m2 + m3)*Log(m2)) - &
-!    &  2*m3**2*Log(m3/m2))/(8.*(m2 - m3)**2)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!   If (Abs(m2).lt.eps) Then
-!    C00m = 0.125_dp - Log(m2)/4._dp
-!   Else if (Abs(m3).lt.eps) Then
-!    C00m = 0.375_dp - Log(m3)/4._dp
-!   Else
-!    C00m =    -(2*m2**2*Log(m2/m3) +  &
-!     &      (m2 - m3)*(-3*m2 + m3 + 2*(m2 - m3)*Log(m3)))/ &
-!     &   (8.*(m2 - m3)**2)
-!   End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!   If (Abs(m1).lt.eps) Then
-!    C00m = 0.125_dp - Log(m2)/4._dp
-!   Else if (Abs(m3).lt.eps) Then
-!    C00m = 0.375_dp - Log(m3)/4._dp
-!   Else
-!    C00m =  (-((m1 - m3)*(-3*m1 + m3 + 2*(m1 - m3)*Log(m1))) + &
-!    &    2*(2*m1 - m3)*m3*Log(m3/m1))/(8.*(m1 - m3)**2)
-!   End if
-! 
-! Else
-!  If (Abs(m1).lt.eps) Then
-!   C00m = -(-3*m2 + 3*m3 + 2*m2*Log(m2) - 2*m3*Log(m3))/(8.*(m2 - m3))
-!  Else If (Abs(m2).lt.eps) Then
-!   C00m = -(-3*m1 + 3*m3 + 2*m1*Log(m1) - 2*m3*Log(m3))/(8.*(m1 - m3))
-!  Else If (Abs(m3).lt.eps) Then
-!   C00m = -(-3*m1 + 3*m2 + 2*m1*Log(m1) - 2*m2*Log(m2))/(8.*(m1 - m2))
-!  Else 
-!    C00m =  ((-m1 + m3)*((m1 - m2)*(m2 - m3)*(-3 + 2*Log(m1)) -  &
-!   &          2*m2**2*Log(m2/m1)) + 2*(-m1 + m2)*m3**2*Log(m3/m1))/ &
-!   &      (8.*(m1 - m2)*(m1 - m3)*(m2 - m3))
-!   End if
-! 
-! End if
-! 
-!   C00m = - C00m 
-! 
-! End Function C00m
-! 
-! 
-! 
-! Real(dp) Function C11m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!   If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C11m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C11m = large
-!   Else
-!    C11m = 1/(12.*m1)
-!   End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!   If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C11m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C11m = -large
-!   Else if (Abs(m3).lt.eps) Then
-!    C11m = -1/(9.*m2)
-!   Else
-!    C11m = ((m2 - m3)*(2*m2**2 - 7*m2*m3 + 11*m3**2) + &
-!    &      6*m3**3*Log(m3/m2))/(18.*(m2 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!  If (Abs(m1).lt.eps) Then
-!    C11m = -1/(6.*m2)
-!   Else if (Abs(m2).lt.eps) Then
-!    C11m =-1/(3.*m3)
-!   Else
-!    C11m = (m2**3 - 6*m2**2*m3 + 3*m2*m3**2 + 2*m3**3 + &
-!    &      6*m2*m3**2*Log(m2/m3))/(6.*(m2 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!  If (Abs(m1).lt.eps) Then
-!    C11m = -1/(9.*m3)
-!   Else if (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C11m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C11m =-large
-!   Else
-!    C11m =  -((m1 - m3)*(11*m1**2 - 7*m1*m3 + 2*m3**2) + &
-!    &       6*m1**3*Log(m3/m1))/(18.*(m1 - m3)**4)
-!   End if
-! 
-! Else
-!  If (Abs(m1).lt.eps) Then
-!   C11m = (-((m2 - 3*m3)*(m2 - m3)) + 2*m3**2*Log(m3/m2))/(6.*(m2 - m3)**3)
-!  Else If (Abs(m2).lt.eps) Then
-!   C11m =Log(m3/m1)/(3*m1 - 3*m3)
-!  Else If (Abs(m3).lt.eps) Then
-!   C11m = (3*m1**2 - 4*m1*m2 + m2**2 + 2*m1**2*Log(m2/m1))/(6.*(m1 - m2)**3)
-!  Else 
-!    C11m =   (m2*(m1 - m3)*(-((-m1 + m2)*(m2 - m3)* &
-!      &          (-3*m1*m2 + m2**2 + 5*m1*m3 - 3*m2*m3)) -  &
-!      &       2*(m1*m2*(m2 - 3*m3)*m3 + m2**2*m3**2 +  &
-!      &          m1**2*(m2**2 - 3*m2*m3 + 3*m3**2))*Log(m2/m1)) +  &
-!      &    2*(m1 - m2)**3*m3**3*Log(m3/m1))/ &
-!      &  (6.*(m1 - m2)**3*(m1 - m3)*(m2 - m3)**3)
-!  End if
-! End if
-! 
-!  C11m = - C11m
-! 
-! End Function C11m
-! 
-! 
-! Real(dp) Function C12m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!   If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C12m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C12m = large
-!   Else
-!    C12m = 1/(24.*m1)
-!   End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!  If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C12m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C12m = -large
-!   Else if (Abs(m3).lt.eps) Then
-!    C12m = -1/(9.*m2)
-!   Else
-!    C12m = (m2**3 - 6*m2**2*m3 + 3*m2*m3**2 + 2*m3**3 &
-!     &  - 6*m2*m3**2*Log(m3/m2))/(12.*(m2 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!  If (Abs(m2).lt.eps) Then
-!    C12m = -1/(3.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!    C12m = -1/(6.*m2)
-!   Else
-!    C12m = (2*m2**3 + 3*m2**2*m3 - 6*m2*m3**2 + m3**3 &
-!    & - 6*m2**2*m3*Log(m2/m3))/(12.*(m2 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!  If (Abs(m1).lt.eps) Then
-!    C12m = -1/(9.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C12m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C12m = -large
-!   Else
-!    C12m = -((m1 - m3)*(11*m1**2 - 7*m1*m3 + 2*m3**2) &
-!    &  + 6*m1**3*Log(m3/m1))/(36.*(m1 - m3)**4)
-!   End if
-! 
-! Else
-!  If (Abs(m1).lt.eps) Then
-!   C12m = (m2**2 - m3**2 + 2*m2*m3*Log(m3/m2))/(6.*(m2 - m3)**3)
-!  Else If (Abs(m2).lt.eps) Then
-!   C12m =(-m1 + m3 + m1*Log(m1/m3))/(6.*(m1 - m3)**2)
-!  Else If (Abs(m3).lt.eps) Then
-!   C12m = (-m1 + m2 + m1*Log(m1/m2))/(6.*(m1 - m2)**2)
-!  Else 
-!    C12m =   -(m2**2*(m1 - m3)**2*(m1*(m2 - 3*m3) + 2*m2*m3)* &
-!      &      Log(m2/m1) + (m1 - m2)* &
-!      &      ((m1 - m3)*(m2 - m3)*  &
-!      &         (-(m2*m3*(m2 + m3)) + m1*(m2**2 + m3**2)) +  &
-!      &        (m1 - m2)*m3**2*(3*m1*m2 - (m1 + 2*m2)*m3)*Log(m3/m1)) &
-!      &     )/(6.*(m1 - m2)**2*(m1 - m3)**2*(m2 - m3)**3)
-!  End if
-! 
-! End if
-! 
-!  C12m = - C12m
-! 
-! End Function C12m
-! 
-! 
-! 
-! Real(dp) Function C22m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: r1, r2
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! r1 = m2/m1
-! r2 = m3/m1
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!   If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C22m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C22m = -large 
-!   Else
-!    C22m = -1/(12.*m1)
-!   End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!  If (Abs(m1).lt.eps) Then
-!    C22m = 1/(6.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!    C22m = 1/(3.*m2)
-!   Else
-!     C22m=-(2*m2**3 + 3*m2**2*m3 - 6*m2*m3**2 + m3**3 -  &
-!     &       6*m2**2*m3*Log(m2/m3))/(6.*(m2 - m3)**4)
-!   Endif
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!  If (Abs(m2).lt.eps) Then
-!    C22m = 1/(9.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C22m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C22m = large
-!   Else
-!      C22m=((m2 - m3)*(11*m2**2 - 7*m2*m3 + 2*m3**2) -  &
-!     &      6*m2**3*Log(m2/m3))/(18.*(m2 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!  If (Abs(m1).lt.eps) Then
-!    C22m = 1/(9.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C22m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C22m = large
-!   Else
-!      C22m =  ((m1 - m3)*(11*m1**2 - 7*m1*m3 + 2*m3**2) +  &
-!     &     6*m1**3*Log(m3/m1))/(18.*(m1 - m3)**4)  
-!   End if
-! 
-! Else
-!  If (Abs(m1).lt.eps) Then
-!   C22m = -(3*m2**2 - 4*m2*m3 + m3**2 - 2*m2**2*Log(m2/m3))/(6.*(m2 - m3)**3)
-!  Else If (Abs(m2).lt.eps) Then
-!   C22m = -(3*m1**2 - 4*m1*m3 + m3**2 - 2*m1**2*Log(m1/m3))/(6.*(m1 - m3)**3)
-!  Else If (Abs(m3).lt.eps) Then
-!   C22m = Log(m1/m2)/(3*m1 - 3*m2)
-!  Else
-!    C22m =   (2*m1**3*(m2 - m3)**3*Log(m2/m1) + (m1 - m2)*m3* &
-!      &     (-((m1 - m3)*(m2 - m3)*(5*m1*m2 - 3*(m1 + m2)*m3 + m3**2)) + &
-!      &       2*(3*m1**2*m2**2 - 3*m1*m2*(m1 + m2)*m3 + &
-!      & (m1**2 + m1*m2 + m2**2)*m3**2)*Log(m2/m3)))/  &
-!      &  (6.*(m1 - m2)*(m1 - m3)**3*(m2 - m3)**3)
-!  End if
-! 
-! End if
-! 
-! ! ! C22m = - C22m ! check sign!
-! End Function C22m
-! 
-! 
-! 
-! Real(dp) Function C2m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!    C2m = -1/(6.*m1)
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!  If (Abs(m1).lt.eps) Then
-!    C2m =-1/(2.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!    C2m = -1/(2.*m2)
-!   Else
-!    C2m = (-m2**2 + m3**2 + 2*m2*m3*Log(m2/m3))/(2.*(m2 - m3)**3)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!  If (Abs(m2).lt.eps) Then
-!    C2m = -1/(4.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C2m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C2m = -large
-!   Else
-!    C2m = (3*m2**2 - 4*m2*m3 + m3**2 - 2*m2**2*Log(m2/m3))/(4.*(m2 - m3)**3)
-!   End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!  If (Abs(m1).lt.eps) Then
-!    C2m = -1/(4.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C2m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C2m = -large
-!   Else
-!    C2m = (3*m1**2 - 4*m1*m3 + m3**2 + 2*m1**2*Log(m3/m1))/(4.*(m1 - m3)**3)
-!   End if
-! 
-! Else
-! 
-!  If (Abs(m1).lt.eps) Then
-!   C2m = (m2 - m3 + m2*Log(m3/m2))/(2.*(m2 - m3)**2)
-!  Else If (Abs(m2).lt.eps) Then
-!   C2m = (m1 - m3 + m1*Log(m3/m1))/(2.*(m1 - m3)**2)
-!  Else If (Abs(m3).lt.eps) Then
-!   C2m = Log(m2/m1)/(2*m1 - 2*m2)
-!  Else
-!    C2m =  (m1**2*(m2 - m3)**2*Log(m2/m1) +   &
-!      &    (-m1 + m2)*m3*((m1 - m3)*(m2 - m3) +  & 
-!      &       (-2*m1*m2 + (m1 + m2)*m3)*Log(m2/m3)))/ &
-!      &  (2.*(m1 - m2)*(m1 - m3)**2*(m2 - m3)**2) 
-!   End if
-! End if
-! 
-!  C2m = - C2m
-! 
-! End Function C2m
-! 
-! 
-! 
-! Real(dp) Function C1m(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
-! 
-! If ((Abs(m1-m2).lt.eps).And.(Abs(m1-m3).lt.eps)) Then ! all masse equal
-!   If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C12m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C1m = -large 
-!   Else
-!    C1m = -1/(6.*m1)
-!   End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then ! m1 = m2
-!  If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C12m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C1m = -large
-!   Else if (Abs(m3).lt.eps) Then
-!    C1m = -1/(4.*m2)
-!   Else
-!    C1m = -((m2 - 3*m3)*(m2 - m3) - 2*m3**2*Log(m3/m2))/(4.*(m2 - m3)**3)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then ! m1 = m3
-!  If (Abs(m2).lt.eps) Then
-!    C1m = -1/(2.*m3)
-!   Else if (Abs(m3).lt.eps) Then
-!    C1m = -1/(2.*m2)
-!   Else
-!    C1m = (-m2**2 + m3**2 + 2*m2*m3*Log(m2/m3))/(2.*(m2 - m3)**3)
-!   End if
-! 
-! Else If (Abs(m3-m2).lt.eps) Then ! m2 = m3
-!  If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in C12m"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    C1m = -large
-!   Else if (Abs(m1).lt.eps) Then
-!    C1m = -1/(4.*m3)
-!   Else
-!    C1m = (3*m1**2 - 4*m1*m3 + m3**2 + 2*m1**2*Log(m3/m1))/(4.*(m1 - m3)**3)
-!   End if
-! 
-! Else
-!  If (Abs(m1).lt.eps) Then
-!   C1m = (-m2 + m3 + m3*Log(m2/m3))/(2.*(m2 - m3)**2)
-!  Else If (Abs(m2).lt.eps) Then
-!   C1m = Log(m3/m1)/(2*m1 - 2*m3)
-!  Else If (Abs(m3).lt.eps) Then
-!   C1m =(m1 - m2 + m1*Log(m2/m1))/(2.*(m1 - m2)**2)
-!  Else
-!    C1m =   (m2*(-m1 + m3)*((-m1 + m2)*(m2 - m3) -      &
-!      &       (m1*(m2 - 2*m3) + m2*m3)*Log(m2/m1)) +    &
-!      &    (m1 - m2)**2*m3**2*Log(m3/m1))/              &
-!      &  (2.*(m1 - m2)**2*(m1 - m3)*(m2 - m3)**2) 
-!  End if
-! End if
-! 
-!  C1m = - C1m
-! 
-! End Function C1m
-! 
-! 
-! Real(dp) Function MonopoleFSS(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp
-! 
-! If ((Abs(m2-m3).lt.eps).and.(Abs(m1-m2).lt.eps)) Then
-!  If (Abs(m1).lt. eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleFSS"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleFSS = -1/eps
-!  Else
-!     MonopoleFSS = -1/(24.*m1)
-!  End if
-! 
-! Else If (Abs(m2-m3).lt.eps) Then
-!   If (Abs(m1).lt.eps) Then
-!     MonopoleFSS = -1/(18.*m3)
-!   Else If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleFSS"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleFSS = -1/eps
-!   Else 
-!     MonopoleFSS = (11*m1**3 - 18*m1**2*m3 + 9*m1*m3**2 - 2*m3**3 & 
-!          & - 6*m1**3*Log(m1) + 6*m1**3*Log(m3))/(36.*(m1 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then
-!   If (Abs(m3).lt.eps) Then
-!     MonopoleFSS = -1/(6.*m2)
-!   Else If (Abs(m2).lt.eps) Then
-!     MonopoleFSS = -1/(12.*m3)
-!   Else 
-!     MonopoleFSS = -(2*m2**3 + 3*m2**2*m3 - 6*m2*m3**2 + m3**3 - 6*m2**2*m3*Log(m2) &
-!          &  + 6*m2**2*m3*Log(m3))/(12.*(m2 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then
-!   If (Abs(m3).lt.eps) Then
-!     MonopoleFSS = -1/(12.*m2)
-!   Else If (Abs(m2).lt.eps) Then
-!     MonopoleFSS = -1/(6.*m3)
-!   Else 
-!     MonopoleFSS = -(m2**3 - 6*m2**2*m3 + 3*m2*m3**2 + 2*m3**3 +  6*m2*m3**2*Log(m2) &
-!          & - 6*m2*m3**2*Log(m3))/(12.*(m2 - m3)**4)
-!   End if
-! 
-! Else 
-! 
-!  If (Abs(m1).lt.eps) Then
-!    MonopoleFSS = (-m2**2 + m3**2 + 2*m2*m3*Log(m2/m3))/(6.*(m2 - m3)**3)  
-!  Else If (Abs(m2).lt.eps) Then
-!    MonopoleFSS = (m1 - m3 + m1*Log(m3/m1))/(6.*(m1 - m3)**2)
-!  Else If (Abs(m3).lt.eps) Then
-!    MonopoleFSS = (m1 - m2 + m1*Log(m2/m1))/(6.*(m1 - m2)**2)
-!  Else
-!   MonopoleFSS = (-(m1**3*(m2 - m3)**3*Log(m1)) + (m1 - m3)*((m1 - m2)*(m2 - m3)*(-(m2*m3*(m2 + m3)) + m1*(m2**2 + m3**2)) +  &
-!      &       m2**2*(m1 - m3)*(m1*(m2 - 3*m3) + 2*m2*m3)*Log(m2)) + (m1 - m2)**2*m3**2*(3*m1*m2 - (m1 + 2*m2)*m3)*Log(m3))/   &
-!      &  (6.*(m1 - m2)**2*(m1 - m3)**2*(m2 - m3)**3)
-!   End if
-! End If
-! 
-! End Function MonopoleFSS
-! 
-! 
-! Real(dp) Function MonopoleSFF(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp
-! 
-! If ((Abs(m2-m3).lt.eps).and.(Abs(m1-m2).lt.eps)) Then
-!  If (Abs(m1).lt.eps) Then 
-!     Write(ErrCan,*) "Numerical problem in MonopoleSFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!   MonopoleSFF = -1/eps
-!  Else
-!   MonopoleSFF = -1/(8.*m1)
-!  End if
-! 
-! Else If (Abs(m2-m3).lt.eps) Then
-!   If (Abs(m2).lt.eps) Then 
-!     Write(ErrCan,*) "Numerical problem in MonopoleSFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    MonopoleSFF =1/eps
-!   Else If (Abs(m1).lt.eps) Then 
-!     Write(ErrCan,*) "Numerical problem in MonopoleSFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!    MonopoleSFF =1/eps
-!   Else 
-!    MonopoleSFF = ((m1 - m3)*(16*m1**2 - 29*m1*m3 + 7*m3**2) + 6*m1**2*(3*m3*Log(m1/m3) + 2*m1*Log(m3/m1)))/(36.*(m1 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleSFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleSFF = 1/eps
-! 
-! Else If (Abs(m2-m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleSFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleSFF = 1/eps
-! 
-! Else 
-!  If (Abs(m1).lt.eps) Then
-!    MonopoleSFF = (-m2**2 + m3**2 + 2*m2*m3*Log(m2/m3))/(6.*(m2 - m3)**3)  
-!  Else If (Abs(m2).lt.eps) Then
-!    MonopoleSFF = (m1 - m3 + m1*Log(m3/m1))/(6.*(m1 - m3)**2)
-!  Else If (Abs(m3).lt.eps) Then
-!    MonopoleSFF = (m1 - m2 + m1*Log(m2/m1))/(6.*(m1 - m2)**2)
-!  Else
-!   MonopoleSFF = (-2*m2**4*(m1 - m3)**2 - 3*m1**3*Sqrt(m2**5*m3) + 3*m1**2*Sqrt(m2**7*m3) + 3*m1**3*Sqrt(m2*m3**5) - 3*m1**2*Sqrt(m2*m3**7) + &
-!      &    3*m1**2*Sqrt(m2**7*m3)*Log(m1/m2) - 3*m2*(m2*m3)**2.5*Log(m2) - 3*m3*(m2*m3)**2.5*Log(m2) + 2*m1**2*m3**3*(-m1 + m3 + m1*Log(m1/m3)) + & 
-!      &    2*m1*m2*m3**2*((m1 - m3)*(m1 + 2*m3) - 3*m1**2*Log(m1/m3)) + 6*m1**3*(m2*m3)**1.5*Log(m2/m3) + 6*m1*(m2*m3)**2.5*Log(m2/m3) +  &
-!      &    3*m1*m2**1.5*m3**2.5*(-3*m1 + 3*m3 + 3*m1*Log(m1) + 2*(-2*m1 + m3)*Log(m2) + (m1 - 2*m3)*Log(m3)) +  &
-!      &    3*m2**3.5*m3**1.5*(-3*m1 + 2*m3 + 2*m1*Log(m2) + (-2*m1 + m3)*Log(m3)) +  &
-!      &    3*m2**2.5*m3**1.5*(3*m1**2 - 2*m3**2 - m1**2*Log(m1**3*m2) + (4*m1**2 + m3**2)*Log(m3)) + 3*m1**2*Sqrt(m2*m3**7)*Log(m3/m1) -  &
-!      &    2*m2**3*(m1**2*(-m1 + m3) + m1**3*Log(m1/m2) + 3*m1*m3**2*Log(m2/m3) + 2*m3**3*Log(m3/m2)) +  &
-!      &    2*m2**2*m3*(-m1**3 + m3**3 + 3*m1**3*Log(m1/m2) + 3*m1*m3*(2*m1*Log(m2/m3) + m3*Log(m3/m2))))/(6.*(m1 - m2)**2*(m1 - m3)**2*(m2 - m3)**3)
-!   End if
-! End If
-! 
-! End Function MonopoleSFF
-! 
-! 
-! Real(dp) Function MonopoleVFF(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp
-! 
-! If ((Abs(m2-m3).lt.eps).and.(Abs(m1-m2).lt.eps)) Then
-!  If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleVFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleVFF = 1/eps
-!  Else 
-!   MonopoleVFF = -7/(12.*m1)
-!  End if
-! 
-! Else If (Abs(m2-m3).lt.eps) Then
-!  If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleVFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleVFF = 1/eps
-!  Else If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleVFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleVFF = 1/eps
-!  Else
-!   MonopoleVFF = (-((m1 - m3)*(2*m1**2 + 29*m1*m3 - 25*m3**2)) + &
-!      & 6*m1*(2*m1**2 - 9*m1*m3 + 6*m3**2)*Log(m3/m1))/(18.*(m1 - m3)**4)
-!   End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleVFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleVFF = 1/eps
-! 
-! Else If (Abs(m1-m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleVFF"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleVFF = 1/eps
-! 
-! Else 
-!  If (Abs(m1).lt. eps) Then
-!   MonopoleVFF =  (2*(-m2**2 + m3**2 + 3*Sqrt(m2**3*m3) - 3*Sqrt(m2*m3**3)) &
-!      &  - 3*Sqrt(m2*m3)*(m2 + m3)*Log(m2/m3) +  &
-!      &    (3*m2**2 - 10*m2*m3 + 3*m3**2)*Log(m3/m2))/(3.*(m2 - m3)**3)
-!  Else If (Abs(m2).lt. eps) Then
-!   MonopoleVFF = (-m1 + m3 + (-2*m1 + 3*m3)*Log(m1/m3))/(3.*(m1 - m3)**2)
-!  Else If (Abs(m3).lt. eps) Then
-!   MonopoleVFF = (-m1 + m2 + (-2*m1 + 3*m2)*Log(m1/m2))/(3.*(m1 - m2)**2)
-!  Else 
-!   MonopoleVFF = (-3*m1**3*Sqrt(m2**5*m3) + 3*m1**2*Sqrt(m2**7*m3) + 3*m1**3*Sqrt(m2*m3**5) - 3*m1**2*Sqrt(m2*m3**7) + 9*m1**2*(m2*m3)**1.5*(-m2 + m3)*Log(m1) + &
-!      &    m1**2*(3*m2**4 + 6*m1*m2**2*m3 + 3*Sqrt(m2**7*m3) - 2*m2**3*(m1 + 3*m3))*Log(m1/m2) + m1**2*m3**3*(m1 - m3 + (2*m1 - 3*m3)*Log(m1/m3)) +  &
-!      &    6*m1**3*(m2*m3)**1.5*Log(m2/m3) + 6*m1*(m2*m3)**2.5*Log(m2/m3) -  &
-!      &    3*m2**2.5*m3**1.5*(-3*m1**2 + 2*m3**2 + m1**2*Log(m2/m3**4) + m3**2*Log(m2/m3)) - 3*m2**3.5*m3**1.5*(3*m1 - 2*m3 + (-2*m1 + m3)*Log(m2/m3)) +  &
-!      &    3*m1*m2**1.5*m3**2.5*(-3*m1 + 3*m3 + 2*(-2*m1 + m3)*Log(m2) + (m1 - 2*m3)*Log(m3)) + 3*m1**2*Sqrt(m2*m3**7)*Log(m3/m1) +  &
-!      &    m1*m2*m3**2*(-7*m1**2 + 8*m1*m3 - m3**2 - 6*m1**2*Log(m1/m3) - 6*m3*(m1 + m3)*Log(m3/m1)) +  &
-!      &    m2**4*(m1**2 + m1*m3 - 2*m3**2 + 6*m1*m3*Log(m2/m1) + 3*m3**2*Log(m3/m2)) +   &
-!      &    m2**2*m3*(7*m1**3 - 9*m1*m3**2 + 2*m3**3 + 9*m1*m3*(m1*Log(m2/m3) + 2*m3*Log(m3/m1)) + 3*m3**3*Log(m3/m2)) -   &
-!      &    m2**3*(m1*(m1 - m3)*(m1 + 9*m3) + 2*m3**2*(9*m1*Log(m2/m1) + 5*m3*Log(m3/m2))))/(3.*(m1 - m2)**2*(m1 - m3)**2*(m2 - m3)**3)  
-!  End If
-! End if
-! 
-! End Function MonopoleVFF
-! 
-! Real(dp) Function MonopoleFVV(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp
-! 
-! If ((Abs(m2-m3).lt.eps).and.(Abs(m1-m2).lt.eps)) Then
-!  If (Abs(m1).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleFVV"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!   MonopoleFVV = 1/eps
-!  Else
-!   MonopoleFVV = 1/(3.*m1)
-!  End if
-! 
-! Else If (Abs(m2-m3).lt.eps) Then
-!  If (Abs(m1).lt.eps) Then
-!   MonopoleFVV = 5/(9.*m2)
-!  Else If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleFVV"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!   MonopoleFVV = 1/eps
-!  Else
-!   MonopoleFVV = (-((m1 - m2)*(5*m1**2 - 22*m1*m2 + 5*m2**2)) + 6*m1**2*(m1 - 3*m2)*Log(m1/m2))/(9.*(m1 - m2)**4)
-!  End if
-! !! Assuming always identical vector bosons
-! Else 
-!  
-!  If (Abs(m1).lt.eps) Then
-!   MonopoleFVV = 5/(9.*m2)
-!  Else If (Abs(m2).lt.eps) Then
-!     Write(ErrCan,*) "Numerical problem in MonopoleFVV"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!   MonopoleFVV = 1/eps
-!  Else
-!   MonopoleFVV = (-((m1 - m2)*(5*m1**2 - 22*m1*m2 + 5*m2**2)) + 6*m1**2*(m1 - 3*m2)*Log(m1/m2))/(9.*(m1 - m2)**4)
-!  End if
-! 
-! End If
-! 
-! End Function MonopoleFVV
-! 
-! Real(dp) Function MonopoleFVS(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-! Real(dp) :: eps=1E-10_dp
-! 
-! If ((Abs(m2-m3).lt.eps).and.(Abs(m1-m2).lt.eps)) Then
-!  If (Abs(m1).lt.eps) Then 
-!     Write(ErrCan,*) "Numerical problem in MonopoleFVS"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!   MonopoleFVS = 1/eps
-!  Else
-!   MonopoleFVS = 1/(24.*m2**1.5)
-!  End if
-! 
-! Else If (Abs(m2-m3).lt.eps) Then
-!   If (Abs(m1).lt.eps) Then 
-!    MonopoleFVS = 0
-!  Else if (Abs(m2).lt.eps) Then 
-!     Write(ErrCan,*) "Numerical problem in MonopoleFVS"
-!     Write(ErrCan,*) "Involved masses: ",m1,m2,m3
-!     MonopoleFVS = 1/eps
-!  Else
-!    MonopoleFVS =(Sqrt(m1)*(2*m1**3 + 3*m1**2*m3 - 6*m1*m3**2 + m3**3 + 6*m1**2*m3*Log(m3/m1)))/(12.*(m1 - m3)**4*m3)
-!  End if
-! 
-! Else If (Abs(m1-m3).lt.eps) Then
-!  If (Abs(m1).lt.eps) Then 
-!     MonopoleFVS = 0
-!  Else if (Abs(m2).lt.eps) Then 
-!     MonopoleFVS = 1/(4.*m3**1.5)
-!  Else
-!     MonopoleFVS = (Sqrt(m3)*(-5*m2**2 + 4*m2*m3 + m3**2 + 2*m2*(m2 + 2*m3)*Log(m2/m3)))/(4.*(m2 - m3)**4)
-!  End if
-! 
-! Else If (Abs(m1-m2).lt.eps) Then
-!  If (Abs(m1).lt.eps) Then 
-!     MonopoleFVS = 0
-!   Else if (Abs(m3).lt.eps) Then 
-!     MonopoleFVS = 1/(4.*m2**1.5)
-!   Else
-!     MonopoleFVS = (Sqrt(m2)*((m2 - m3)*(m2 + 5*m3) + 2*m3*(2*m2 + m3)*Log(m3/m2)))/(4.*(m2 - m3)**4)
-!   End if
-! 
-! Else 
-!   If (Abs(m1).lt.eps) Then 
-!     MonopoleFVS = 0
-!   Else if (Abs(m2).lt.eps) Then 
-!     MonopoleFVS = (Sqrt(m1)*(m1 - m3 - m3*Log(m1) + m3*Log(m3)))/(2.*(m1 - m3)**2*m3)
-!   Else if (Abs(m3).lt.eps) Then 
-!     MonopoleFVS = (Sqrt(m1)*(m1 - m2 - m2*Log(m1) + m2*Log(m2)))/(2.*(m1 - m2)**2*m2)
-!   Else
-!   MonopoleFVS =  (Sqrt(m1)*((m1 - m2)*(m1 - m3)*(m2 - m3)*(-2*m2*m3 + m1*(m2 + m3)) - m1**2*(m2 - m3)**3*Log(m1) +  &
-!      &      m2*(m1 - m3)**2*(-2*m1*m3 + m2*(m2 + m3))*Log(m2) + (m1 - m2)**2*m3*(2*m1*m2 - m3*(m2 + m3))*Log(m3)))/ &
-!      &  (2.*(m1 - m2)**2*(m1 - m3)**2*(m2 - m3)**3)
-!   End if
-! End If
-! 
-! End Function MonopoleFVS
-! 
-! Real(dp) Function MonopoleFSV(m1, m2, m3)
-! Implicit None
-! Real(dp), Intent(in) :: m1, m2, m3
-!  MonopoleFSV = MonopoleFVS(m1,m3,m2)
-! End Function MonopoleFSV
+Real(dp) Function C00g(m1, m2, m3)
+Implicit None
+Real(dp), Intent(in) :: m1, m2, m3
+Real(dp) :: eps=1E-10_dp, large = 1E+5_dp
+
+C00g = C00_3m(m1,m2,m3)
+
+End Function C00g
+
+Real(dp) Function C0g(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C0
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C0g=-1/(2._dp*m1) + (-1 + r)/(6._dp*m1) - (-1 + r)**2/(12._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C0g=-(1/m1)
+     Else 
+        C0g=(-1 + r - r*Log(r))/(m1*(-1 + r)**2)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C0g=-1/(2._dp*m2) + (-1 + r)/(3._dp*m2) - (-1 + r)**2/(4._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C0g=1._dp
+     Else 
+        C0g=(1 - r + Log(r))/(m2*(-1 + r)**2)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C0g=-1/(2._dp*m1) + (-1 + r)/(3._dp*m1) - (-1 + r)**2/(4._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C0g=1._dp
+     Else 
+        C0g=(1 - r + Log(r))/(m1*(-1 + r)**2)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C0g=-1/(2._dp*m2) + (-1 + r)/(6._dp*m2) - (-1 + r)**2/(12._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C0g=-(1/m2)
+     Else 
+        C0g=(-1 + r - r*Log(r))/(m2*(-1 + r)**2)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C0g =0._dp 
+End if 
+ 
+End Function C0g 
 
 
-! Complex(dp) Function D00check(a,b,c,d)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c,d
-! D00check = KilianD00(a,b,c,d)
-! If ((Real(D00check,dp).ne.Real(D00check,dp)).or. &
-!   & (Abs(D00check).gt.1.0E+30_dp)) D00check = 0._dp
-! End Function D00check
-! 
-! Complex(dp) Function C0check(a,b,c)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c
-! C0check = C0_3m(a,b,c)
-! If ((Real(C0check,dp).ne.Real(C0check,dp)).or. &
-!   & (Abs(C0check).gt.1.0E+30_dp))  C0check = 0._dp
-! End Function C0check
-! 
-! Complex(dp) Function D0check(a,b,c,d)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c,d
-! D0check = KilianD0(a,b,c,d)
-! If ((Real(D0check,dp).ne.Real(D0check,dp)).or.  & 
-!  & (Abs(D0check).gt.1.0E+30_dp))  D0check = 0._dp
-! End Function D0check
-! 
-! Complex(dp) Function C0D0check(a,b,c,d)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c,d
-! C0D0check = KilianC0D0(a,b,c,d)
-! If ((Real(C0D0check,dp).ne.Real(C0D0check,dp)).or. &
-!   & (Abs(C0D0check).gt.1.0E+30_dp))  C0D0check = 0._dp
-! End Function C0D0check
-! 
-! Complex(dp) Function B0C0check(a,b,c)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c
-! B0C0check = KilianB0C0(a,b,c)
-! If ((Real(B0C0check,dp).ne.Real(B0C0check,dp)).or. &
-!  & (Abs(B0C0check).gt.1.0E+30_dp))  B0C0check = 0._dp
-! End Function B0C0check
+Real(dp) Function C1g(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C1
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C1g=1/(6._dp*m1) - (-1 + r)/(24._dp*m1) + (-1 + r)**2/(60._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C1g=1/(4._dp*m1)
+     Else 
+        C1g=(-1 + (4 - 3*r)*r + 2*r**2*Log(r))/(4._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C1g=1/(6._dp*m2) - (-1 + r)/(8._dp*m2) + (-1 + r)**2/(10._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C1g=1.e10
+     Else 
+        C1g=(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m2*(-1 + r)**3)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C1g=1/(6._dp*m1) - (-1 + r)/(8._dp*m1) + (-1 + r)**2/(10._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C1g=1.e10
+     Else 
+        C1g=(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C1g=1/(6._dp*m2) - (-1 + r)/(24._dp*m2) + (-1 + r)**2/(60._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C1g=1/(4._dp*m2)
+     Else 
+        C1g=(-1 + (4 - 3*r)*r + 2*r**2*Log(r))/(4._dp*m2*(-1 + r)**3)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C1g =0._dp 
+End if 
+ 
+End Function C1g 
 
 
+Real(dp) Function C2g(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
 
-! Complex(dp) Function D00check(a,b,c,d)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c,d
-! D00check = KilianD00(a,b,c,d)
-! If ((Real(D00check,dp).ne.Real(D00check,dp)).or. &
-!   & (Abs(D00check).gt.1.0E+30_dp)) Then 
-! 
-! Write(ErrCan,*) "Numerical problem in D00check"
-! Write(ErrCan,*) "Involved masses: ",a,b,c,d
-! 
-!  If (ErrorLevel.gt.0) Then
-!    Call TerminateProgram
-!  Else 
-!    D00check = 0._dp
-!   End if
-! End if
-! End Function D00check
-! 
-! Complex(dp) Function C0check(a,b,c)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c
-! C0check = C0_3m(a,b,c)
-! If ((Real(C0check,dp).ne.Real(C0check,dp)).or. &
-!   & (Abs(C0check).gt.1.0E+30_dp))  Then 
-!     Write(ErrCan,*) "Numerical problem in C0check"
-!     Write(ErrCan,*) "Involved masses: ",a,b,c
-! 
-!      If (ErrorLevel.gt.0) Then
-!        Call TerminateProgram
-!      Else 
-!        C0check = 0._dp
-!      End if 
-! End if
-! End Function C0check
-! 
-! Complex(dp) Function D0check(a,b,c,d)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c,d
-! D0check = KilianD0(a,b,c,d)
-! If ((Real(D0check,dp).ne.Real(D0check,dp)).or.  & 
-!  & (Abs(D0check).gt.1.0E+30_dp))  Then 
-!    Write(ErrCan,*) "Numerical problem in D0check"
-!    Write(ErrCan,*) "Involved masses: ",a,b,c,d
-! 
-!     If (ErrorLevel.gt.0) Then
-!        Call TerminateProgram
-!     Else 
-!        D0check = 0._dp
-!     End if
-! End if
-! End Function D0check
-! 
-! Complex(dp) Function C0D0check(a,b,c,d)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c,d
-! C0D0check = KilianC0D0(a,b,c,d)
-! If ((Real(C0D0check,dp).ne.Real(C0D0check,dp)).or. &
-!   & (Abs(C0D0check).gt.1.0E+30_dp))  Then 
-!    Write(ErrCan,*) "Numerical problem in C0D0check"
-!    Write(ErrCan,*) "Involved masses: ",a,b,c,d
-! 
-!    If (ErrorLevel.gt.0) Then
-!      Call TerminateProgram
-!    Else 
-!      C0D0check = 0._dp
-!    End if 
-! End if
-! End Function C0D0check
-! 
-! Complex(dp) Function B0C0check(a,b,c)
-! Implicit None
-! Real(dp), Intent(in) :: a,b,c
-! B0C0check = KilianB0C0(a,b,c)
-! If ((Real(B0C0check,dp).ne.Real(B0C0check,dp)).or. &
-!  & (Abs(B0C0check).gt.1.0E+30_dp))  Then 
-! 
-!    Write(ErrCan,*) "Numerical problem in B0C0check"
-!    Write(ErrCan,*) "Involved masses: ",a,b,c
-! 
-!    If (ErrorLevel.gt.0) Then
-!      Call TerminateProgram
-!    Else 
-!      B0C0check = 0._dp
-!    End if
-! End if
-! End Function B0C0check
+!  C2
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C2g=1/(6._dp*m1) - (-1 + r)/(12._dp*m1) + (-1 + r)**2/(20._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C2g=1/(2._dp*m1)
+     Else 
+        C2g=(-1 + r**2 - 2*r*Log(r))/(2._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C2g=1/(6._dp*m2) - (-1 + r)/(12._dp*m2) + (-1 + r)**2/(20._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C2g=1/(2._dp*m2)
+     Else 
+        C2g=(-1 + r**2 - 2*r*Log(r))/(2._dp*m2*(-1 + r)**3)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C2g=1/(6._dp*m1) - (-1 + r)/(8._dp*m1) + (-1 + r)**2/(10._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C2g=1.e10
+     Else 
+        C2g=(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C2g=1/(6._dp*m2) - (-1 + r)/(24._dp*m2) + (-1 + r)**2/(60._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C2g=1/(4._dp*m2)
+     Else 
+        C2g=(-1 + (4 - 3*r)*r + 2*r**2*Log(r))/(4._dp*m2*(-1 + r)**3)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C2g =0._dp 
+End if 
+ 
+End Function C2g 
+
+
+Real(dp) Function C11g(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C11
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C11g=-1/(12._dp*m1) + (-1 + r)/(60._dp*m1) - (-1 + r)**2/(180._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C11g=-1/(9._dp*m1)
+     Else 
+        C11g=((-1 + r)*(2 + r*(-7 + 11*r)) - 6*r**3*Log(r))/(18._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C11g=-1/(12._dp*m2) + (-1 + r)/(15._dp*m2) - (-1 + r)**2/(18._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C11g=1.e10
+     Else 
+        C11g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(18._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C11g=-1/(12._dp*m1) + (-1 + r)/(15._dp*m1) - (-1 + r)**2/(18._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C11g=1.e10
+     Else 
+        C11g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(18._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C11g=-1/(12._dp*m2) + (-1 + r)/(60._dp*m2) - (-1 + r)**2/(180._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C11g=-1/(9._dp*m2)
+     Else 
+        C11g=((-1 + r)*(2 + r*(-7 + 11*r)) - 6*r**3*Log(r))/(18._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C11g =0._dp 
+End if 
+ 
+End Function C11g 
+
+
+Real(dp) Function C12g(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C12
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C12g=-1/(24._dp*m1) + (-1 + r)/(60._dp*m1) - (-1 + r)**2/(120._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12g=-1/(12._dp*m1)
+     Else 
+        C12g=(-((-1 + r)*(-1 + r*(5 + 2*r))) + 6*r**2*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12g=-1/(24._dp*m2) + (-1 + r)/(40._dp*m2) - (-1 + r)**2/(60._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12g=-1/(6._dp*m2)
+     Else 
+        C12g=-(2 + r*(3 + (-6 + r)*r) + 6*r*Log(r))/(12._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C12g=-1/(24._dp*m1) + (-1 + r)/(30._dp*m1) - (-1 + r)**2/(36._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12g=1.e10
+     Else 
+        C12g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(36._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12g=-1/(24._dp*m2) + (-1 + r)/(120._dp*m2) - (-1 + r)**2/(360._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12g=-1/(18._dp*m2)
+     Else 
+        C12g=((-1 + r)*(2 + r*(-7 + 11*r)) - 6*r**3*Log(r))/(36._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C12g =0._dp 
+End if 
+ 
+End Function C12g 
+
+
+Real(dp) Function C22g(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C22
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C22g=-1/(12._dp*m1) + (-1 + r)/(20._dp*m1) - (-1 + r)**2/(30._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C22g=-1/(3._dp*m1)
+     Else 
+        C22g=-(2 + r*(3 + (-6 + r)*r) + 6*r*Log(r))/(6._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C22g=-1/(12._dp*m2) + (-1 + r)/(30._dp*m2) - (-1 + r)**2/(60._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C22g=-1/(6._dp*m2)
+     Else 
+        C22g=(-((-1 + r)*(-1 + r*(5 + 2*r))) + 6*r**2*Log(r))/(6._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C22g=-1/(12._dp*m1) + (-1 + r)/(15._dp*m1) - (-1 + r)**2/(18._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C22g=1.e10
+     Else 
+        C22g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(18._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C22g=-1/(12._dp*m2) + (-1 + r)/(60._dp*m2) - (-1 + r)**2/(180._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C22g=-1/(9._dp*m2)
+     Else 
+        C22g=((-1 + r)*(2 + r*(-7 + 11*r)) - 6*r**3*Log(r))/(18._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C22g =0._dp 
+End if 
+ 
+End Function C22g 
+
+
+Real(dp) Function C2C12C22(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C12 + C2 + C22
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C2C12C22=1/(24._dp*m1) - (-1 + r)/(60._dp*m1) + (-1 + r)**2/(120._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12C22=1/(12._dp*m1)
+     Else 
+        C2C12C22=((-1 + r)*(-1 + r*(5 + 2*r)) - 6*r**2*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C2C12C22=1/(24._dp*m2) - (-1 + r)/(40._dp*m2) + (-1 + r)**2/(60._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12C22=1/(6._dp*m2)
+     Else 
+        C2C12C22=(2 + r*(3 + (-6 + r)*r) + 6*r*Log(r))/(12._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C2C12C22=1/(24._dp*m1) - (-1 + r)/(40._dp*m1) + (-1 + r)**2/(60._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12C22=1/(6._dp*m1)
+     Else 
+        C2C12C22=(2 + r*(3 + (-6 + r)*r) + 6*r*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C2C12C22=1/(24._dp*m2) - (-1 + r)/(60._dp*m2) + (-1 + r)**2/(120._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12C22=1/(12._dp*m2)
+     Else 
+        C2C12C22=((-1 + r)*(-1 + r*(5 + 2*r)) - 6*r**2*Log(r))/(12._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C2C12C22 =0._dp 
+End if 
+ 
+End Function C2C12C22 
+
+
+Real(dp) Function C1C12C11(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C1 + C11 + C12
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C1C12C11=1/(24._dp*m1) - (-1 + r)/(120._dp*m1) + (-1 + r)**2/(360._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C12C11=1/(18._dp*m1)
+     Else 
+        C1C12C11=(-((-1 + r)*(2 + r*(-7 + 11*r))) + 6*r**3*Log(r))/(36._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C1C12C11=1/(24._dp*m2) - (-1 + r)/(30._dp*m2) + (-1 + r)**2/(36._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C12C11=1.e10
+     Else 
+        C1C12C11=((-1 + r)*(11 + r*(-7 + 2*r)) - 6*Log(r))/(36._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C1C12C11=1/(24._dp*m1) - (-1 + r)/(40._dp*m1) + (-1 + r)**2/(60._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C12C11=1/(6._dp*m1)
+     Else 
+        C1C12C11=(2 + r*(3 + (-6 + r)*r) + 6*r*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C1C12C11=1/(24._dp*m2) - (-1 + r)/(60._dp*m2) + (-1 + r)**2/(120._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C12C11=1/(12._dp*m2)
+     Else 
+        C1C12C11=((-1 + r)*(-1 + r*(5 + 2*r)) - 6*r**2*Log(r))/(12._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C1C12C11 =0._dp 
+End if 
+ 
+End Function C1C12C11 
+
+
+Real(dp) Function C0C1C2(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C0 + C1 + C2
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C0C1C2=-1/(6._dp*m1) + (-1 + r)/(24._dp*m1) - (-1 + r)**2/(60._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C0C1C2=-1/(4._dp*m1)
+     Else 
+        C0C1C2=(1 - 4*r + 3*r**2 - 2*r**2*Log(r))/(4._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C0C1C2=-1/(6._dp*m2) + (-1 + r)/(8._dp*m2) - (-1 + r)**2/(10._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C0C1C2=1.e10
+     Else 
+        C0C1C2=-(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m2*(-1 + r)**3)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C0C1C2=-1/(6._dp*m1) + (-1 + r)/(12._dp*m1) - (-1 + r)**2/(20._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C0C1C2=-1/(2._dp*m1)
+     Else 
+        C0C1C2=(1 - r**2 + 2*r*Log(r))/(2._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C0C1C2=-1/(6._dp*m2) + (-1 + r)/(12._dp*m2) - (-1 + r)**2/(20._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C0C1C2=-1/(2._dp*m2)
+     Else 
+        C0C1C2=(1 - r**2 + 2*r*Log(r))/(2._dp*m2*(-1 + r)**3)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C0C1C2 =0._dp 
+End if 
+ 
+End Function C0C1C2 
+
+
+Real(dp) Function C12C11C2(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  2 C11 + 2 C12 - C2
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C12C11C2=-5/(12._dp*m1) + (3*(-1 + r))/(20._dp*m1) - (7*(-1 + r)**2)/(90._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C11C2=-8/(9._dp*m1)
+     Else 
+        C12C11C2=((-1 + r)*(16 + r*(-29 + 7*r)) - 6*r*(3 + 2*(-3 + r)*r)*Log(r))/(18._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C11C2=-5/(12._dp*m2) + (4*(-1 + r))/(15._dp*m2) - (7*(-1 + r)**2)/(36._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C11C2=1.e10
+     Else 
+        C12C11C2=(-((-1 + r)*(7 + r*(-29 + 16*r))) + 6*(2 + 3*(-2 + r)*r)*Log(r))/(18._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C11C2=-5/(12._dp*m1) + (13*(-1 + r))/(40._dp*m1) - (4*(-1 + r)**2)/(15._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C11C2=1.e10
+     Else 
+        C12C11C2=-((-1 + r)*(31 + r*(-26 + 7*r)) + 6*(-3 + r)*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C11C2=-5/(12._dp*m2) + (11*(-1 + r))/(120._dp*m2) - (-1 + r)**2/(30._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C11C2=-7/(12._dp*m2)
+     Else 
+        C12C11C2=((-1 + r)*(7 + r*(-26 + 31*r)) + 6*(1 - 3*r)*r**2*Log(r))/(12._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C12C11C2 =0._dp 
+End if 
+ 
+End Function C12C11C2 
+
+
+Real(dp) Function C12C22C1(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  -C1 + 2 C12 + 2 C22
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C12C22C1=-5/(12._dp*m1) + (7*(-1 + r))/(40._dp*m1) - (-1 + r)**2/(10._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22C1=-13/(12._dp*m1)
+     Else 
+        C12C22C1=((-1 + r)*(13 + (-2 + r)*r) - 6*r*(4 + (-3 + r)*r)*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C22C1=-5/(12._dp*m2) + (29*(-1 + r))/(120._dp*m2) - (-1 + r)**2/(6._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22C1=1.e10
+     Else 
+        C12C22C1=(-((-1 + r)*(1 + r*(-2 + 13*r))) + 6*(1 + r*(-3 + 4*r))*Log(r))/(12._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C22C1=-5/(12._dp*m1) + (13*(-1 + r))/(40._dp*m1) - (4*(-1 + r)**2)/(15._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22C1=1.e10
+     Else 
+        C12C22C1=-((-1 + r)*(31 + r*(-26 + 7*r)) + 6*(-3 + r)*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C22C1=-5/(12._dp*m2) + (11*(-1 + r))/(120._dp*m2) - (-1 + r)**2/(30._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22C1=-7/(12._dp*m2)
+     Else 
+        C12C22C1=((-1 + r)*(7 + r*(-26 + 31*r)) + 6*(1 - 3*r)*r**2*Log(r))/(12._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C12C22C1 =0._dp 
+End if 
+ 
+End Function C12C22C1 
+
+
+Real(dp) Function C12C22(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C12 + C22
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C12C22=-1/(8._dp*m1) + (-1 + r)/(15._dp*m1) - (-1 + r)**2/(24._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22=-5/(12._dp*m1)
+     Else 
+        C12C22=(-5 + (9 - 4*r)*r**2 + 6*(-2 + r)*r*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C22=-1/(8._dp*m2) + (7*(-1 + r))/(120._dp*m2) - (-1 + r)**2/(30._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22=-1/(3._dp*m2)
+     Else 
+        C12C22=(-4 + 9*r - 5*r**3 + 6*r*(-1 + 2*r)*Log(r))/(12._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C22=-1/(8._dp*m1) + (-1 + r)/(10._dp*m1) - (-1 + r)**2/(12._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22=1.e10
+     Else 
+        C12C22=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C12C22=-1/(8._dp*m2) + (-1 + r)/(40._dp*m2) - (-1 + r)**2/(120._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C12C22=-1/(6._dp*m2)
+     Else 
+        C12C22=((-1 + r)*(2 + r*(-7 + 11*r)) - 6*r**3*Log(r))/(12._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C12C22 =0._dp 
+End if 
+ 
+End Function C12C22 
+
+
+Real(dp) Function C2C12(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C12 + C2
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C2C12=1/(8._dp*m1) - (-1 + r)/(15._dp*m1) + (-1 + r)**2/(24._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12=5/(12._dp*m1)
+     Else 
+        C2C12=(5 + r**2*(-9 + 4*r) - 6*(-2 + r)*r*Log(r))/(12._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C2C12=1/(8._dp*m2) - (7*(-1 + r))/(120._dp*m2) + (-1 + r)**2/(30._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12=1/(3._dp*m2)
+     Else 
+        C2C12=(4 - 9*r + 5*r**3 + 6*(1 - 2*r)*r*Log(r))/(12._dp*m2*(-1 + r)**4)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C2C12=1/(8._dp*m1) - (11*(-1 + r))/(120._dp*m1) + (13*(-1 + r)**2)/(180._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12=1.e10
+     Else 
+        C2C12=((-1 + r)*(16 + r*(-29 + 7*r)) + 6*(-2 + 3*r)*Log(r))/(36._dp*m1*(-1 + r)**4)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C2C12=1/(8._dp*m2) - (-1 + r)/(30._dp*m2) + (-1 + r)**2/(72._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C2C12=7/(36._dp*m2)
+     Else 
+        C2C12=(-((-1 + r)*(7 + r*(-29 + 16*r))) + 6*r**2*(-3 + 2*r)*Log(r))/(36._dp*m2*(-1 + r)**4)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C2C12 =0._dp 
+End if 
+ 
+End Function C2C12 
+
+
+Real(dp) Function C1C2(m1in,m2in,m3in) 
+Real(dp),Intent(in)::m1in,m2in,m3in 
+Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::m1,m2,r 
+
+!  C1 + C2
+
+If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+ m1=m1in
+ m2=m3in
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then  ! Taylor
+        C1C2=1/(3._dp*m1) - (-1 + r)/(8._dp*m1) + (-1 + r)**2/(15._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C2=3/(4._dp*m1)
+     Else 
+        C1C2=-(3 - 4*r + r**2 - 2*(-2 + r)*r*Log(r))/(4._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C1C2=1/(3._dp*m2) - (5*(-1 + r))/(24._dp*m2) + (3*(-1 + r)**2)/(20._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C2=1.e10
+     Else 
+        C1C2=(1 - 4*r + 3*r**2 + (2 - 4*r)*Log(r))/(4._dp*m2*(-1 + r)**3)
+    End if 
+   End if 
+
+Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+ m1=m1in 
+ m2=m3in 
+   If (m1.gt.m2) Then 
+     r=m2/m1 
+     If ((1._dp-r).lt.epsR) Then 
+        C1C2=1/(3._dp*m1) - (-1 + r)/(4._dp*m1) + (-1 + r)**2/(5._dp*m1)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C2=1.e10
+     Else 
+        C1C2=(3 - 4*r + r**2 + 2*Log(r))/(2._dp*m1*(-1 + r)**3)
+     End if 
+   Else 
+     r=m1/m2 
+     If ((1._dp-r).lt.epsR) Then 
+        C1C2=1/(3._dp*m2) - (-1 + r)/(12._dp*m2) + (-1 + r)**2/(30._dp*m2)
+     Elseif (Abs(r).lt.eps) Then 
+        C1C2=1/(2._dp*m2)
+     Else 
+        C1C2=(-1 + (4 - 3*r)*r + 2*r**2*Log(r))/(2._dp*m2*(-1 + r)**3)
+     End if 
+  End if 
+
+Else!! Different masses are not possible! 
+   C1C2 =0._dp 
+End if 
+ 
+End Function C1C2 

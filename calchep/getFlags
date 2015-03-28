@@ -30,7 +30,7 @@ echo UNIX `uname`
 case `uname` in
 
 Linux) CC=gcc
-       CFLAGS="-g -fsigned-char -Wstrict-prototypes -Wimplicit  -Wmissing-prototypes"
+       CFLAGS="-g -fsigned-char -Wstrict-prototypes -Wimplicit -Wmissing-prototypes -std=gnu99"
 #       CFLAGS="-fsigned-char -Wall"
        lDL="-rdynamic -ldl"       
        SHARED=-shared
@@ -44,7 +44,7 @@ Linux) CC=gcc
      ;;
 
 OSF1)  CC=cc
-       CFLAGS="-g -std1 -ieee" 
+       CFLAGS="-g -std1 -ieee -std=gnu99" 
        FC=f77
        FFLAGS="-O0 -fpe2" 
        FFLAGSD=
@@ -57,7 +57,7 @@ OSF1)  CC=cc
        RANLIB=ranlib
      ;;
 SunOS) CC=cc
-       CFLAGS=-g
+       CFLAGS=-g -std=gnu99
        SHARED=-G
        SONAME=
        FC=f77
@@ -69,7 +69,7 @@ SunOS) CC=cc
        RANLIB=ranlib
      ;;
 Darwin)CC=gcc
-       CFLAGS="-g -fsigned-char"
+       CFLAGS="-g -fsigned-char -std=gnu99"
        lDL=-ldl
        SHARED=-dynamiclib
        SONAME="-install_name "
@@ -82,7 +82,7 @@ Darwin)CC=gcc
      ;;
 CYGWIN*)
        CC=gcc
-       CFLAGS="-g -fsigned-char"
+       CFLAGS="-g -fsigned-char -std=gnu99"
        lDL=
        SHARED=-shared
        SONAME=
@@ -97,7 +97,7 @@ CYGWIN*)
 
 
    *) CC=cc
-      CFLAGS=-g 
+      CFLAGS="-g -std=gnu99" 
       FC=f77
       lFort=
       lDL=

@@ -1,4 +1,4 @@
 .PHONY: all
 
-all: *.src 
-	lhep316 -ca -evl 2 susy.src
+all: *.lhp
+	lhep -ca susy.lhp

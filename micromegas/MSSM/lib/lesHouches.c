@@ -246,7 +246,7 @@ int sugraHiggsLesH(char *fname,  double tb, double gMG1,double gMG2,double gMG3,
    fprintf(f," 1   %.8E       # m0\n",       m0); 
    fprintf(f," 2   %.8E       # m1/2\n",     mh);   
    fprintf(f," 3   %.8E       # tanb\n",     tb);
-   fprintf(f," 4   %d     # sign(mu)\n", mu>0? 1:-1);
+//   fprintf(f," 4   %d     # sign(mu)\n", mu>0? 1:-1);
    fprintf(f," 5   %.8E       # A0\n",       a0);
 
 
@@ -277,11 +277,13 @@ int sugraHiggsLesH(char *fname,  double tb, double gMG1,double gMG2,double gMG3,
                           fprintf(f," 48  %.8E      # Md2\n",  gMd2);}
    if(fabs(m0-gMd3)>m0_)  fprintf(f," 49  %.8E      # Md3\n",  gMd3);
    fprintf(f,"# EWSB  parameters\n");
+   
+//   fprintf(f," 0   -1       #  EWSB \n"); 
    fprintf(f," 23  %.8E      # mu\n",  mu);
    fprintf(f," 26  %.8E      # MA\n",  MA);
    
-   fprintf(f,"Block QEXTPAR\n");
-   fprintf(f," 23  -1      # mu\n");
+//   fprintf(f,"Block QEXTPAR\n");
+//   fprintf(f," 23  -1      # mu\n");
 
    fclose(f); 
    return 0;

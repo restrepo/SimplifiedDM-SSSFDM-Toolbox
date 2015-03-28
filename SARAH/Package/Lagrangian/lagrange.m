@@ -313,7 +313,8 @@ Tp[MassScalar[Fields[[i,3]],Fields[[j,3]]]]=MassScalar[Fields[[i,3]],Fields[[j,3
 listSMoff=Join[listSMoff,{{{SFields[[i]] /. conj[x_]->x,SFields[[j]]  /. conj[x_]->x},genTest[MassScalar[Fields[[i,3]],Fields[[j,3]]],{conj[Fields[[i,3]]],Fields[[j,3]]},False]*makeDelta[i,1,2,{generation}]}}];
 SA`ListM2ijOFF=Join[SA`ListM2ijOFF,{{{SFields[[i]] /. conj[x_]->x,SFields[[j]]  /. conj[x_]->x},{1,genTest[MassScalar[Fields[[i,3]],Fields[[j,3]]],{conj[Fields[[i,3]]],Fields[[j,3]]},False]*makeDelta[i,1,2,{generation}]}}}];
 
-listSMaddoff = Join[listSMaddoff,{{0,1,TrueQ[Head[SFields[[i]]]===conj]}}];
+(* listSMaddoff = Join[listSMaddoff,{{0,1,TrueQ[Head[SFields[[i]]]===conj]}}]; *)
+listSMaddoff = Join[listSMaddoff,{{0,1,TrueQ[(Head[SFields[[i]]]===conj) && Fields[[i,2]]==Fields[[j,2]]]}}];
 (* ]; *)
 ];
 j++;];
@@ -558,7 +559,7 @@ temp= - g[lor4,lor3]*((conj[part[SFields[[i]],2]]  I KovariantDerivative[i,2,1,3
 KinScalar+=SumOverExpandedIndizes[temp,{Fields[[i,3]],Fields[[i,3]]}] /.subFieldsOne; 
 SumFactor=getSumFields[i,5];
 temp= g[lor4,lor3] SumFactor KovariantDerivative[i,5,1,4]*part[SFields[[i]],1] KovariantDerivative[i,2,5,3]*conj[part[SFields[[i]],2]];
-KinScalar+=SumOverExpandedIndizes[temp,{Fields[[i,3]],Fields[[i,3]],None,None,Fields[[i,3]]}] /.subFieldsOne;
+KinScalar+=SumOverExpandedIndizes[temp,{Fields[[i,3]],Fields[[i,3]],None,None,Fields[[i,3]]}] /.subFieldsOne; 
 
 i++;];
 DynamicKineticScalarName="All Done";
@@ -768,6 +769,14 @@ temp2= SumOverExpandedIndizes[temp2,{None, None,Fields[[j,3]],Fields[[j,3]]}];
 If[Gauge[[gNr,5]]===False,
 If[Gauge[[gNr,2]]=!=U[1],
 term1=DTermIndizes[gNr,i,j] temp1 *temp2;,
+If[AddFIU1===True && i==j,
+If[FreeQ[parameters,Xi[Gauge[[gNr,1]]]],
+parameters=Join[parameters,{{Xi[Gauge[[gNr,1]]],{},{}}}];
+SA`listFIU1=Join[SA`listFIU1,{{gNr,{gNr,Xi[Gauge[[gNr,1]]]}}}];
+];
+temp1+=Xi[Gauge[[gNr,1]]];
+(* temp2+=Xi[Gauge[[gNr,1]]]; *)
+];
 term1=temp1 *temp2;
 ];
 term2=term1 /. Flatten[{subGCRE[1,5],subGCRE[2,6], subGCRE[3,7],subGCRE[4,8]}] /. Flatten[{subGCRE[8,2],subGCRE[7,1],subGCRE[6,4], subGCRE[5,3]}];,
@@ -816,6 +825,7 @@ Return[temp];
 ];
 
 (* ---------- Gaugino Interaction ---------- *)
+
 
 
 CalcGaugino:=Block[{i,j,k,g,c,a,ai},

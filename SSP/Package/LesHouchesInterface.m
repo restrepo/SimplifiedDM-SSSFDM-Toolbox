@@ -84,6 +84,11 @@ Off[General::spell];
 
 ReadSpectrumFile[file_,split_]:=ReadSpectrumFileFunc[file,split,False,{},"no.dat",MachinePrecision,0];
 ReadSpectrumFileFunc[file_,splitsequence_,subset_,subblocks_,outputfile_,precision_,chop_]:=Block[{i,j,a,b,c,sps={}, temp,t="", return,subfile,SplitLine,in,decay},
+If[FileExistsQ[file]==False,
+File::DoesntExist="File `` does not exist";
+Message[File::DoesntExist,file];
+Interrupt[];
+];
 If[splitsequence=!=False,
 AllLesHouchesInput={};
 SplitLine =splitsequence;,

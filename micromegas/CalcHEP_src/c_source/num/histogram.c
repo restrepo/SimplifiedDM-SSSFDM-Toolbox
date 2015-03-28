@@ -671,7 +671,7 @@ void showHist(int X, int Y,char *title)
             if( hist->nPoints == 0) messanykey(10,10,"Distibution is empty");     
             else
             if(strcmp(hist->key[1],"0")==0)
-            while(nBin1=nBinMenu(X,Y+4))                                                                   
+            while((nBin1=nBinMenu(X,Y+4)))                                                                   
             {  double f[300],df[300],coeff;                                        
                int i;
                coeff=nBin1/(hist->nPoints*(hist->hMax[0] - hist->hMin[0]));               

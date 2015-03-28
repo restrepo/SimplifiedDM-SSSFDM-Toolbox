@@ -7,7 +7,7 @@
 
 #include<math.h>
 
-static double pmass[6]={10,20,30,40,50};
+static REAL pmass[6]={10,20,30,40,50};
 static int i3=2,i4=3,i5=4,i6=5;
 static numout* cc23_=NULL,*cc24_=NULL;
 static double eps=1.E-2;
@@ -16,12 +16,19 @@ static int nsub_;
 static double MZ=91.1884 ,wZ=2.4944,K=1;
 static double GG=1.23;
 
-static double  kinematic_23(double Pcm, double M45, double cs1, double cs2, double fi, double*pvect)
+double  kinematic_23(double Pcm,int i3, double M45, double cs1, double cs2,  double fi,REAL*pmass, REAL*pvect)
 {
   int i;
   double pcm1,pcm2,p0,p2,p3,chY,shY,sn1,sn2,r;
-  int err;
-
+  int err,i4,i5;
+  
+  switch(i3)
+  { 
+    case 4: i3=3;i4=2;i5=4; break;
+    case 5: i3=4;i4=2;i5=3; break;
+    default: i3=2;i4=3;i5=4;
+  }
+  
   sn1=sqrt(1-cs1*cs1);
   sn2=sqrt(1-cs2*cs2);
   for(i=0;i<20;i++)pvect[i]=0;
@@ -42,7 +49,6 @@ static double  kinematic_23(double Pcm, double M45, double cs1, double cs2, doub
 //printf("pcm2=%E  M45=%E  pmass[%d]=%E pmass[%d]=%E \n",pcm2,M45,i4,pmass[i4],i5,pmass[i5]);
 
   if(!pcm2) return 0;
-
   
   pvect[i4*4]=sqrt(pcm2*pcm2+pmass[i4]*pmass[i4]);
   pvect[i4*4+3]=pcm2*cs2;
@@ -74,9 +80,11 @@ static double  kinematic_23(double Pcm, double M45, double cs1, double cs2, doub
   p2=pvect[i5*4+2];p3=pvect[i5*4+3];
   pvect[i5*4+2]= -(p2*cs1+p3*sn1);
   pvect[i5*4+3]= -(-p2*sn1+p3*cs1);
-  
-   return   3.8937966E8*pcm1*pcm2/(512*M_PI*M_PI*M_PI*M_PI*Pcm*(pvect[0]+pvect[4])*(pvect[0]+pvect[4]));   
-}
+
+
+  return 3.8937966E8*pcm1*pcm2/(512*M_PI*M_PI*M_PI*M_PI*Pcm*(pvect[0]+pvect[4])*(pvect[0]+pvect[4]));
+  return r; 
+}  
 
 int NCALL;
 
@@ -85,10 +93,11 @@ static int Np=5;
 
 static double Idfi(double cs2) 
 { int i,err;
-  double s,factor, pvect[20];
+  double s,factor;
+  REAL pvect[20];
   for(s=0,i=0;i<Np;i++)
   {  double fi=M_PI*(0.5+i)/Np,ds;
-     factor=kinematic_23(Pcm_, M_, cs1_, cs2,fi,pvect);
+     factor=kinematic_23(Pcm_,i3+1, M_, cs1_, cs2,fi,pmass,pvect);
      if(factor==0.) return 0;   
      ds=factor*(cc23_->interface->sqme)(nsub_,GG, pvect,&err);
      s+=ds;
@@ -129,60 +138,53 @@ static double dIdM_mu_mu(double mu)
 {  return 1./q2 *dIdM_w_mu(zMax - pow(mu,1/q2))*pow(mu,(1-q2)/q2); }
 
 
-
 double cs23(numout*cc, int nsub, double Pcm, int ii3) 
 { int i,n;
   char*s,s0[3];
   int m,w;
   double muMax;
-//  static ii=0;
-//  ii++;
-//printf("cs23\n"); 
+
+
+  passParameters(cc);
   GG=sqrt(4*M_PI*parton_alpha(GGscale));
   Pcm_=Pcm;
   nsub_=nsub;
   cc23_=cc;
-  i3=ii3;
+
   switch(ii3)
-  { case 2: i4=3;i5=4; break; 
-    case 3: i4=2;i5=4; break;
-    case 4: i4=2;i5=3; break;
-    default: i3=2;i4=3;i5=4; 
+  {  
+    case 3: i3=3; i4=2;i5=4; break;
+    case 4: i3=4; i4=2;i5=3; break;
+    default:i3=2; i4=3;i5=4; 
   } 
-                    
-//  for(i=0;i<5;i++) printf("%s ", cc->interface->pinf(nsub,1+i,pmass+i,NULL)); printf("\n");  
-   
-   for(i=0;i<5;i++) cc->interface->pinf(nsub,1+i,pmass+i,NULL);
+                       
+  for(i=0;i<5;i++) cc->interface->pinf(nsub,1+i,pmass+i,NULL);
 
   s0[0]=i4+1;
   s0[1]=i5+1;
   s0[2]=0;
-  for(n=1;(s=cc->interface->den_info(nsub,n,&m,&w));n++) if(strcmp(s,s0)==0) 
-  { 
-//  printf("%E %E \n", cc->interface->va[m], cc->interface->va[w]); 
-    m0=cc->interface->va[m];
-    w0=cc->interface->va[w];
-    break; 
-  }
 
-//  *(cc->interface->BWrange)=10000;
-//  *(cc->interface->gswidth)=1;
+  for(n=1;;n++)
+  {  s=cc->interface->den_info(nsub,n,&m,&w);
+     if(s==NULL) break;
+     if(strcmp(s,s0)==0) 
+     { 
+//       printf("%E %E \n", cc->interface->va[m], cc->interface->va[w]); 
+       
+       m0=cc->interface->va[m];
+       w0=cc->interface->va[w];
+       break; 
+     } 
+  }
      
   Mmax=sqrt(Pcm*Pcm+pmass[0]*pmass[0])+sqrt(Pcm*Pcm+pmass[1]*pmass[1])-pmass[i3];
   Mmin=pmass[i4]+pmass[i5];
+
   if(Mmin<0.1) Mmin=0.1;    
   if(Mmin>=Mmax) { return 0;}
   muMax=pow(Mmax-Mmin,q);
   
-//printf("Pcm=%E Mmin=%E Mmax=%E pmass[%d]=%E  \n",Pcm,Mmin,Mmax,i3,pmass[i3]);  
-//displayFunc(dIdM, Mmin,Mmax,"dIdM");
-//displayFunc(dIdM_mu, 0.01,muMax,"dIdM_mu");  
- 
-//  displayFunc(dIdM_mu, 0.01,muMax-0.01,"dIdM_mu"); 
-NCALL=0;  
-//  return simpson(dIdM,Mmin+0.01,Mmax-0.01,0.01);  
-
- if(s==NULL) return simpson(dIdM_mu, 0.01, muMax-0.01, 0.01);
+  if(s==NULL) return simpson(dIdM_mu, 0.01, muMax-0.01, 0.01);
 
   yMin=atan((Mmin*Mmin-m0*m0)/(m0*w0));
   yMax=atan((Mmax*Mmax-m0*m0)/(m0*w0)); 
@@ -192,14 +194,8 @@ NCALL=0;
   zMax=pow(yMax-yMin,q);
   
   uMax=pow(zMax,q2);
-
-NCALL=0;   
- 
-//   return simpson(dIdM_w,yMin+0.001, yMax-0.001, 0.001);
-//printf("ii=%d\n",ii);
-//if(ii>=190)  displayFunc(dIdM_w_mu_mu, 0., uMax,"dIdM_w_mu_mu");
-//  return simpson(dIdM_w_mu,0.001, zMax-0.001, 0.001);
-NCALL=0;
+  
+//  displayFunc(dIdM_w_mu_mu, 0., uMax,"dIdM_w_mu_mu");
     return simpson(dIdM_w_mu_mu,0, uMax, 0.01);
 
 }
@@ -207,8 +203,9 @@ NCALL=0;
 
 static double func_23(double *x, double wgt)
 { int err; 
-  double pvect[20], factor;
-  factor=kinematic_23(Pcm_,Mmin+x[0]*(Mmax-Mmin),2*(x[1]-0.5) ,2*(x[2]-0.5), M_PI*x[3],pvect);
+  REAL pvect[20];
+  double  factor;
+  factor=kinematic_23(Pcm_, i3+1, Mmin+x[0]*(Mmax-Mmin),2*(x[1]-0.5) ,2*(x[2]-0.5), M_PI*x[3],pmass,pvect);
   if(factor==0) return 0; 
   return  factor*2*(Mmax-Mmin)*4*M_PI*(cc23_->interface->sqme)(nsub_,GG, pvect,&err);
 }
@@ -221,7 +218,9 @@ double cs23Vegas(numout * cc, int nsub, double Pcm, int ii3,
   double rVal=0; 
   vegasGrid *vegPtr=NULL;
   GG=sqrt(4*M_PI*parton_alpha(GGscale));  
-//  link_process(cc->interface);
+  
+  if(passParameters(cc)) return 0;  
+
   Pcm_=Pcm;
   cc23_=cc;  
   if(cc->interface->nin!=2 || cc->interface->nout!=3) {*err=-1; return 0;}
@@ -246,6 +245,7 @@ double cs23Vegas(numout * cc, int nsub, double Pcm, int ii3,
      
     for(i=0;i<nSess[k];i++)
     {  *err=vegas_int(vegPtr, nCall[k], 1.5, func_23, &ti, &dti); 
+        printf("ti=%E, dti=%E\n", ti,dti);    
         if(*err) { vegas_finish(vegPtr);return 0;}
         dti=1/(dti*dti);                                                            
         s0+=dti;                                                         
@@ -262,7 +262,7 @@ double cs23Vegas(numout * cc, int nsub, double Pcm, int ii3,
 
 
 static double kinematic_24(double Pcm, double M1, double M2, double xcos,double xcos1, double xcos2, double fi1, double fi2,
-                            double * P)
+                            REAL * P)
 { 
   double factor,pcm,p1cm,p2cm,chY,shY,xsin,sqrtS;
   double p0,p3;
@@ -343,7 +343,8 @@ for(i=0;i<4;i++)
 
 static double func_24(double *x, double wgt)
 { int err; 
-  double pvect[24], factor,sqrtS,M1,M2;
+  REAL pvect[24];
+  double  factor,sqrtS,M1,M2;
   sqrtS=sqrt(Pcm_*Pcm_ +pmass[0]*pmass[0])+sqrt(Pcm_*Pcm_ +pmass[1]*pmass[1]);
   M1= (1-x[0])*(pmass[i3]+pmass[i4])+ x[0]*(sqrtS-pmass[i5]-pmass[i6]);
   factor=sqrtS-pmass[i3]-pmass[i4] -pmass[i5]-pmass[i6];

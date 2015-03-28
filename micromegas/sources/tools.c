@@ -1,6 +1,6 @@
 #include"micromegas.h"
 #include"micromegas_aux.h"
-
+#include"../CalcHEP_src/c_source/ntools/include/vegas.h"
 
 /* Numerical recipes codes */
 
@@ -328,10 +328,10 @@ static void ins(int k,  double x, double y, int*N,double *xa,double *ya)
    xa[k]=x;ya[k]=y; (*N)++;        
 }
 
-int buildInterpolation(double (*Fun)(double), double x1,double x2, double eps,int*N_, double**xa_, double**ya_)
+int buildInterpolation(double (*Fun)(double), double x1,double x2, double eps,double delt, int*N_, double**xa_, double**ya_)
 {  int i,cnt,N,k;
    double *xa,*ya,dx0;
-   dx0=fabs(x2-x1)*0.01;   
+   dx0=fabs(x2-x1)*delt;   
    N=5;
    xa=malloc(N*sizeof(double));
    ya=malloc(N*sizeof(double));
@@ -536,3 +536,38 @@ double amoeba(double *p, double * y, int ndim, double (*f)(double *),
 }
 /*========================== end of amoeba ================*/
 
+#define MAXSTEP 15
+double vegas_chain(int ndim, double (*Integrand)(double*, double),
+int N0, double Nfact, double eps,double * dI)   
+{ vegasGrid *vegPtr=NULL;
+  int k,l;
+  double ti[MAXSTEP],dti[MAXSTEP];
+  vegPtr=vegas_init(ndim,50);
+  double ii,dii,chi2;
+  
+  for(k=0;k<MAXSTEP;k++)
+  { double s0=0,s1=0,s2=0; 
+    vegas_int(vegPtr, N0 , 1.5, Integrand, ti+k, dti+k);
+    printf("ti=%E dti=%E\n",ti[k], dti[k]);
+    if(dti[k]==0) break;
+    for(l=k;l>=k/2;l--)
+    { s0+=1/(dti[l]*dti[l]);
+      s1+=ti[l]/(dti[l]*dti[l]);
+      s2+=ti[l]*ti[l]/(dti[l]*dti[l]);
+      if(l!=k)
+      { 
+        ii=s1/s0;
+        dii=1/sqrt(s0);
+        chi2=(s2-s1*s1/s0)/(k-l+1);
+        if(chi2> 1 )dii*=sqrt(chi2);
+//printf("ii=%e dii=%e chi2/N=%E\n", ii,dii,chi2);         
+        if(dii<eps*fabs(ii)) break;
+      }  
+    }
+    if(k && dii<eps*fabs(ii)) break;
+    N0*=Nfact;    
+  }  
+  vegas_finish(vegPtr);
+  if(dI) *dI=dii;
+  return ii;
+}  

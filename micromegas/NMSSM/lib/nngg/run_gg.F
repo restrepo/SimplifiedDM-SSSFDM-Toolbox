@@ -11,7 +11,7 @@
 
 * Uncomment the following to check UV- and IR-finiteness
 
-c#define DELTA 1D7
+c#define DELTA 1D10
 c#define MUDIM 1D100
 c#define LAMBDA 1D10
 

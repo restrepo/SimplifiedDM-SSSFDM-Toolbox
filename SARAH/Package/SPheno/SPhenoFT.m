@@ -96,7 +96,7 @@ WriteString[sphenoFT,"Real(dp) :: delta0,gA("<>ToString[numberAll]<>"), gB("<>To
 WriteString[sphenoFT,"Real(dp) :: MZ2ref, MZ2current, variation, stepsize, dt, tz, factor \n"];
 WriteString[sphenoFT,"Real(dp) :: vdref, vuref, maxdiff \n"];
 WriteString[sphenoFT,"Real(dp) :: m_lo, m_hi \n"];
-WriteString[sphenoFT,"Logical :: NumericalProblem \n"];
+WriteString[sphenoFT,"Logical :: NumericalProblem, GenerationMixingSave \n"];
 MakeVariableList[listAllParametersAndVEVs,"",sphenoFT];
 WriteString[sphenoFT, "Complex(dp) :: Tad1Loop("<>ToString[SA`NrTadpoleEquations]<>"), dmz2, mudim \n\n"];
 MakeVariableList[NewMassParameters,"",sphenoFT];
@@ -105,6 +105,8 @@ MakeVariableList[Union[Flatten[{NeededCouplingsUnmixed}]],"",sphenoFT];
 WriteString[sphenoFT,"Write(*,*) \"Calculate FineTuning\" \n"];
 
 WriteString[sphenoFT,"NumericalProblem = .False. \n"];
+WriteString[sphenoFT,"GenerationMixingSave=GenerationMixing \n"];
+WriteString[sphenoFT,"GenerationMixing= .false. \n"];
 WriteString[sphenoFT,"Tad1Loop = 0._dp \n"];
 WriteString[sphenoFT,"stepsize = 1.0E-5_dp \n \n"];
 WriteString[sphenoFT,"delta0 = stepsize/1000._dp\n \n"];
@@ -155,6 +157,7 @@ WriteString[sphenoFT,"Call BoundaryFT(gA,gB,0,variation)\n"];
 WriteRunningDownFT;
 
 WriteString[sphenoFT,"gDiff=Abs(gB-gRef) \n"];
+WriteString[sphenoFT,"Where (Abs(gDiff).lt.1E-12_dp) gDiff=0._dp \n"];
 WriteString[sphenoFT,"Where (Abs(gRef).Gt.0._dp) gDiff=gDiff/Abs(gRef) \n"];
 WriteString[sphenoFT,"maxdiff=Maxval(gDiff) \n"];
 
@@ -276,6 +279,8 @@ WriteString[sphenoFT,"! Write(*,*) sqrt((Real(vu-vuref,dp)**2+Real(vd-vdref,dp)*
 
 WriteString[sphenoFT,"End Do \n"];
 
+WriteString[sphenoFT,"GenerationMixing = GenerationMixingSave \n"];
+
 WriteString[sphenoFT,"End Subroutine FineTuning \n"];
 ];
 
@@ -321,6 +326,12 @@ WriteString[sphenoFT,"End Select \n"];
 
 If[SeveralBoundaryConditions===False,
 For[i=1,i<=Length[BoundaryHighScale],
+If[FreeQ[Transpose[ListAllInputParameters][[1]],BoundaryHighScale[[i,1]]]==False || FreeQ[listParametersOtherRegimes,BoundaryHighScale[[i,1]]]==False,
+WriteString[sphenoFT,"If (InputValuefor"<>SPhenoForm[BoundaryHighScale[[i,1]]] <>") Then \n"];
+WriteString[sphenoFT,SPhenoForm[BoundaryHighScale[[i,1]]]<>" = " <> SPhenoForm[BoundaryHighScale[[i,1]]]<>"IN \n"];
+WriteString[sphenoFT,"Else \n"];
+];
+
 If[BoundaryHighScale[[i,2]]=!= RUNNING && FreeQ[ParametersToSolveTadpoles,BoundaryHighScale[[i,1]]] && FreeQ[Table[BetaGauge[[j,1]],{j,1,Length[BetaGauge]}],BoundaryHighScale[[i,1]]],
 If[FreeQ[BoundaryHighScale[[i,2]],DIAGONAL]==True,
 WriteString[sphenoFT,SPhenoForm[BoundaryHighScale[[i,1]]]<>" = " <> SPhenoForm[BoundaryHighScale[[i,2]]]<>"\n"];,
@@ -330,6 +341,9 @@ WriteString[sphenoFT,SPhenoForm[BoundaryHighScale[[i,1]]]<>"(i1,i1) = " <> SPhen
 WriteString[sphenoFT,"End Do\n"];
 ];
 ];
+If[FreeQ[Transpose[ListAllInputParameters][[1]],BoundaryHighScale[[i,1]]]==False || FreeQ[listParametersOtherRegimes,BoundaryHighScale[[i,1]]]==False,
+WriteString[sphenoFT,"End If \n"]
+];
 i++;];,
 
 
@@ -337,6 +351,11 @@ WriteString[sphenoFT,"Select Case(BoundaryCondition) \n"];
 For[j=1,j<=Length[BoundaryHighScale],
 WriteString[sphenoFT,"Case ("<>ToString[j]<>") \n"];
 For[i=1,i<=Length[BoundaryHighScale[[j]]],
+If[FreeQ[Transpose[ListAllInputParameters][[1]],BoundaryHighScale[[j,i,1]]]==False || FreeQ[listParametersOtherRegimes,BoundaryHighScale[[j,i,1]]]==False,
+WriteString[sphenoFT,"If (InputValuefor"<>SPhenoForm[BoundaryHighScale[[j,i,1]]] <>") Then \n"];
+WriteString[sphenoFT,SPhenoForm[BoundaryHighScale[[j,i,1]]]<>" = " <> SPhenoForm[BoundaryHighScale[[j,i,1]]]<>"IN \n"];
+WriteString[sphenoFT,"Else \n"]
+];
 If[BoundaryHighScale[[j,i,2]]=!= RUNNING && FreeQ[ParametersToSolveTadpoles,BoundaryHighScale[[j,i,1]]] && FreeQ[Table[BetaGauge[[k,1]],{k,1,Length[BetaGauge]}],BoundaryHighScale[[j,i,1]]],
 If[FreeQ[BoundaryHighScale[[j,i,2]],DIAGONAL]==True,
 WriteString[sphenoFT,SPhenoForm[BoundaryHighScale[[j,i,1]]]<>" = " <> SPhenoForm[BoundaryHighScale[[j,i,2]]]<>"\n"];,
@@ -345,6 +364,9 @@ WriteString[sphenoFT,"Do i1=1,"<>ToString[getDimSPheno[BoundaryHighScale[[j,i,1]
 WriteString[sphenoFT,SPhenoForm[BoundaryHighScale[[j,i,1]]]<>"(i1,i1) = " <> SPhenoForm[BoundaryHighScale[[j,i,2]] /. DIAGONAL->1]<>"\n"];
 WriteString[sphenoFT,"End Do\n"];
 ];
+];
+If[FreeQ[Transpose[ListAllInputParameters][[1]],BoundaryHighScale[[j,i,1]]]==False || FreeQ[listParametersOtherRegimes,BoundaryHighScale[[j,i,1]]]==False,
+WriteString[sphenoFT,"End If \n"]
 ];
 i++;];
 j++;];

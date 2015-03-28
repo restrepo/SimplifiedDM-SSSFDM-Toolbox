@@ -338,17 +338,17 @@ do{
        forQ=0;
        sscanf(items[m],"%[^,]",frgm);
              
-      if(n=strstr(frgm,"!="))       
+      if((n=strstr(frgm,"!=")))       
       { if(!anti) {errTxt="wrong restriction"; break;}
         if(sscanf(n+2,"%d",&k)!=1) {errTxt="wrong number"; break;}
         else  { n[0]=0; k++; forQ=1;}
       }
-      else if(n=strstr(frgm,"<"))
+      else if((n=strstr(frgm,"<")))
       { if(!anti) {errTxt="wrong restriction"; break;}
         if(sscanf(n+1,"%d",&k)!=1) {errTxt="wrong number"; break;}
         else {n[0]=0; k=-k-1;}
       }
-      else if(n=strstr(frgm,">"))
+      else if((n=strstr(frgm,">")))
       {
         if(sscanf(n+1,"%d",&k)!=1) {errTxt="wrong number"; break;}
         else {n[0]=0;k++;}

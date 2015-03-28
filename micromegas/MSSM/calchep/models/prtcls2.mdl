@@ -1,4 +1,4 @@
-MSSM(SUGRA)
+MSSM(EWSB)+hgg
  Particles 
 Full   Name     | P | aP|  number  |spin2|mass|width|color|aux| LaTeX(A)       |  LateX(A+)         |
 photon          |A  |A  |22        |2    |0   |0    |1    |G  |A               |A
@@ -15,10 +15,10 @@ u-quark         |u  |U  |2         |1    |0   |0    |3    |   |u               |
 d-quark         |d  |D  |1         |1    |0   |0    |3    |   |d               |D
 s-quark         |s  |S  |3         |1    |0   |0    |3    |   |s               |S
 c-quark         |c  |C  |4         |1    |Mc  |0    |3    |   |c               |C
-t-quark         |t  |T  |6         |1    |Mt  |wt   |3    |   |t               |T
+t-quark         |t  |T  |6         |1    |Mt  |!wt  |3    |   |t               |T
 b-quark         |b  |B  |5         |1    |Mb  |0    |3    |   |b               |B
  Higgs 1        |h  |h  |25        |0    |Mh  |!wh  |1    |   |h               |h
- Higgs 2        |H  |H  |35        |0    |MHH |!wHh |1    |   |H               |H
+ Higgs 2        |H  |H  |35        |0    |MH  |!wH  |1    |   |H               |H
  Higgs 3        |H3 |H3 |36        |0    |MH3 |!wH3 |1    |   |H3              |H3
 Charged Higgs   |H+ |H- |37        |0    |MHc |!wHc |1    |   |H+              |H-
 chargino 1      |~1+|~1-|1000024   |1    |MC1 |!wC1 |1    |   |(1+)            |(1-)

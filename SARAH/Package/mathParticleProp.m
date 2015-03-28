@@ -500,7 +500,7 @@ For[i=1,i<=Length[IndexTypes],
 pos=Position[Gauge,IndexTypes[[i]]][[1,1]];
 CGc=GenerateInvariantsTensor[Gauge[[pos,2]],Gauge[[pos,3]],Table[sign[[j]]*Fields[[Position[ListFields,RE[partList[[j]]]][[1,1]],3+pos]],{j,1,Length[partList]}]];
 structure=structure*CGc;
-If[FreeQ[SA`KnonwCG,Head[CGc]] && Length[partList]<5 && FreeQ[CGc,CG]==False,
+If[FreeQ[SA`KnonwCG,Head[CGc]] && Length[partList]<5 && FreeQ[CGc,CG]==False &&Head[CGc]=!=Times,
 If[Length[Head[CGc][[2]]]===4,
 If[(FreeQ[SA`KnonwCG,Head[CGc]/. CG[a_,{i1_List,i2_List,i3_List,i4_List}]->CG[a,{i1,i2}]]==False ) &&(FreeQ[SA`KnonwCG,Head[CGc]/. CG[a_,{i1_List,i2_List,i3_List,i4_List}]->CG[a,{i3,i4}]]==False ) ,
 structure=structure /.  CG[a_,{i1_List,i2_List,i3_List,i4_List}][j1_,j2_,j3_,j4_]:>CG[a,{i1,i2}][j1,j2]CG[a,{i3,i4}][j3,j4],
@@ -613,10 +613,36 @@ For[i=1,i<=Length[NeededStructures],
 If[Length[NeededStructures[[i]]]>1,
 Switch[Length[NeededStructures[[i]]],
 2,
+(*
 res=ContractIndizes[NeededStructures[[i,1]],NeededStructures[[i,2]]];
 NeededStructures[[i,1]]=res[[1]];
 NeededStructures[[i,2]]=res[[2]];
-structure=structure*res[[3]];,
+structure=structure*res[[3]];*)
+list1a=Cases[Flatten[NeededStructures[[i,1]]],x_Cov];
+list1b=Cases[Flatten[NeededStructures[[i,1]]],x_Con];
+list2a=Cases[Flatten[NeededStructures[[i,2]]],x_Cov];
+list2b=Cases[Flatten[NeededStructures[[i,2]]],x_Con];
+res12=ContractIndizes[list1b,list2a];
+structure=structure*res12[[3]];
+list1b=res12[[1]];
+list2a=res12[[2]];
+res12=ContractIndizes[list1a,list2b];
+list1a=res12[[1]];
+list2b=res12[[2]];
+structure=structure*res12[[3]];
+
+If[group===SU[2],
+res12=ContractIndizesEps2[list1a,list2a];
+list1a=res12[[1]];
+list2a=res12[[2]];
+structure=structure*res12[[3]];
+res12=ContractIndizesEps2[list1b,list2b];
+list1b=res12[[1]];
+list2b=res12[[2]];
+structure=structure*res12[[3]];
+];
+NeededStructures[[i,1]]=Join[{list1a,list1b}];
+NeededStructures[[i,2]]=Join[{list2a,list2b}];,
 3,
 list1a=Cases[Flatten[NeededStructures[[i,1]]],x_Cov];
 list1b=Cases[Flatten[NeededStructures[[i,1]]],x_Con];
@@ -652,21 +678,125 @@ list3a=Cases[Flatten[NeededStructures[[i,3]]],x_Cov];
 list3b=Cases[Flatten[NeededStructures[[i,3]]],x_Con];
 list4a=Cases[Flatten[NeededStructures[[i,4]]],x_Cov];
 list4b=Cases[Flatten[NeededStructures[[i,4]]],x_Con];
-If[list1a==={} && list1b=!={},
+
+(* contract 1-2 & 3-4 *)
+
 res12=ContractIndizes[list1b,list2a];
-res23=ContractIndizes[list2b,list3a];
 res34=ContractIndizes[list3b,list4a];
-res41=ContractIndizes[list4b,list1a];,
+list1b=res12[[1]];
+list2a=res12[[2]];
+list3b=res34[[1]];
+list4a=res34[[2]];
+structure=structure res12[[3]]  res34[[3]];
+
 res12=ContractIndizes[list1a,list2b];
-res23=ContractIndizes[list2a,list3b];
 res34=ContractIndizes[list3a,list4b];
-res41=ContractIndizes[list4a,list1b];
+list1a=res12[[1]];
+list2b=res12[[2]];
+list3a=res34[[1]];
+list4b=res34[[2]];
+structure=structure res12[[3]]  res34[[3]];
+
+If[group===SU[2],
+res12=ContractIndizesEps2[list1b,list2b];
+res34=ContractIndizesEps2[list3b,list4b];
+list1b=res12[[1]];
+list2b=res12[[2]];
+list3b=res34[[1]];
+list4b=res34[[2]];
+structure=structure res12[[3]]  res34[[3]];
+
+res12=ContractIndizesEps2[list1a,list2a];
+res34=ContractIndizesEps2[list3a,list4a];
+list1a=res12[[1]];
+list2a=res12[[2]];
+list3a=res34[[1]];
+list4a=res34[[2]];
+structure=structure res12[[3]]  res34[[3]];
+
 ];
-NeededStructures[[i,1]]=Join[res12[[1]],res41[[2]]];
-NeededStructures[[i,2]]=Join[res23[[1]],res12[[2]]];
-NeededStructures[[i,3]]=Join[res34[[1]],res23[[2]]];
-NeededStructures[[i,4]]=Join[res41[[1]],res34[[2]]];
-structure=structure res12[[3]] res23[[3]] res34[[3]]*res41[[3]];
+
+(* contract 2-3 & 4-1 *)
+
+ res23=ContractIndizes[list2b,list3a]; 
+ res41=ContractIndizes[list4b,list1a]; 
+ list2b=res23[[1]];
+list3a=res23[[2]]; 
+ list4b=res41[[1]];
+list1a=res41[[2]]; 
+structure=structure res23[[3]]  res41[[3]];
+
+ res23=ContractIndizes[list2a,list3b]; 
+ res41=ContractIndizes[list4a,list1b]; 
+ list2a=res23[[1]];
+list3b=res23[[2]]; 
+ list4a=res41[[1]];
+list1b=res41[[2]]; 
+structure=structure res23[[3]]  res41[[3]];
+
+If[group===SU[2],
+ res23=ContractIndizesEps2[list2b,list3b]; 
+ res41=ContractIndizesEps2[list4b,list1b]; 
+ list2b=res23[[1]];
+list3b=res23[[2]]; 
+ list4b=res41[[1]];
+list1b=res41[[2]]; 
+structure=structure res23[[3]]  res41[[3]];
+
+ res23=ContractIndizesEps2[list2a,list3a]; 
+ res41=ContractIndizesEps2[list4a,list1a]; 
+ list2a=res23[[1]];
+list3a=res23[[2]]; 
+ list4a=res41[[1]];
+list1a=res41[[2]]; 
+structure=structure res23[[3]]  res41[[3]];
+];
+
+
+
+(* contract 1-3 & 2-4 *)
+
+res13=ContractIndizes[list1b,list3a];
+res24=ContractIndizes[list2b,list4a];
+list1b=res13[[1]];
+list3a=res13[[2]];
+list2b=res24[[1]];
+list4a=res24[[2]];
+structure=structure res13[[3]]  res24[[3]];
+
+res13=ContractIndizes[list1a,list3b];
+res24=ContractIndizes[list2a,list4b];
+list1a=res13[[1]];
+list3b=res13[[2]];
+list2a=res24[[1]];
+list4b=res24[[2]];
+structure=structure res13[[3]]  res24[[3]];
+
+If[group===SU[2],
+res13=ContractIndizesEps2[list1b,list3b];
+res24=ContractIndizesEps2[list2b,list4b];
+list1b=res13[[1]];
+list3b=res13[[2]];
+list2b=res24[[1]];
+list4b=res24[[2]];
+structure=structure res13[[3]]  res24[[3]];
+
+res13=ContractIndizesEps2[list1a,list3a];
+res24=ContractIndizesEps2[list2a,list4a];
+list1a=res13[[1]];
+list3a=res13[[2]];
+list2a=res24[[1]];
+list4a=res24[[2]];
+structure=structure res13[[3]]  res24[[3]];
+
+];
+
+
+NeededStructures[[i,1]]=Join[list1a,list1b];
+NeededStructures[[i,2]]=Join[list2a,list2b];
+NeededStructures[[i,3]]=Join[list3a,list3b];
+NeededStructures[[i,4]]=Join[list4a,list4b];
+
 res=ContractIndizes[NeededStructures[[i,1]],NeededStructures[[i,2]]];
 NeededStructures[[i,1]]=res[[1]];
 NeededStructures[[i,2]]=res[[2]];
@@ -727,6 +857,16 @@ tempA=DeleteCases[tempA,a[[Length[a]-i]]];
 tempB=Delete[tempB,j];];
 i++;];
 Return[{tempA,tempB,term}];];
+ContractIndizesEps2[a_,b_]:=Block[{i,j},
+tempA=a;tempB=b;term=1;
+For[i=1,i<=Length[a],contracted=False;
+j=1;
+While[j<=Length[tempB]&&contracted==False,If[Head[a[[i]]]===Head[tempB[[j]]],contracted=True;,j++;];];
+If[contracted==True,term=term*(epsTensor[a[[i]],tempB[[j]]]/.{Cov[x_]->x,Con[x_]->x});
+tempA=DeleteCases[tempA,a[[i]]];
+tempB=Delete[tempB,j];];
+i++;];
+Return[{tempA,tempB,term}];];
 
 GenerateInvariantsTensor[group_,name_,dims_]:=Block[{i,j,k,inds={},dyn={}},
 For[i=1,i<=Length[dims],
@@ -748,8 +888,7 @@ Return[CG[group,dyn]@@inds];
 
 SumOverExpandedIndizes[term_,partList_]:=SumOverExpandedIndizes[term,partList,False];
 
-SumOverExpandedIndizes[term_,partList_,Matrix_]:=Block[{j,i,temp, temp1,pos},
-IndexNames={};
+SumOverExpandedIndizes[term_,partList_,Matrix_]:=Block[{j,i,temp, temp1,pos,IndexNames={},iter,fin},
 For[i=1,i<=Length[partList],
 If[partList[[i]]=!=None,
 pos=Position[ListFields,partList[[i]]][[1,1]];

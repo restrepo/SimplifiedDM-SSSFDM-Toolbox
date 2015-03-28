@@ -100,7 +100,6 @@ Return[list];
 MakeTerms[entry_]:=Block[{i,i1,j,temp,part,particles,particleNr=1,fermNr=1,head,newParticle,pos,invFields={},coup,fields,withHead={},head2, headDer,lorIndex,Fincluded=False,IndStructure},
 fields=entry[[3]];
 (* coup = genTest[entry[[2]],fields,False]^entry[[4]]; *)
-
 AdditionalParametersLagrange = Join[AdditionalParametersLagrange,{entry[[2]]}];
 
 particles=1;
@@ -179,10 +178,10 @@ temp=entry[[1]]*coup*particles /. subFieldsOne;
 ];
 
 SA`LagrangianContractions=Join[SA`LagrangianContractions,{{Dot@@withHead,temp /. sum[a__]->1}}];
-
 If[invFields=!={},
 temp = SumOverExpandedIndizes[temp,invFields];
 ];
+
 
 If[Fincluded==True,
 temp = temp + (temp /. { A_?(#=!=SU&)[1]->A[2],A_?(#=!=SU&)[2]->A[1]});
@@ -192,6 +191,8 @@ temp = temp + (temp /. { A_?(#=!=SU&)[1]->A[2],A_?(#=!=SU&)[2]->A[1]});
 If[LagInputIncludeHC,
 temp = temp + (conj[temp]  /. {A_?(#=!=SU&)[1]->A[2],A_?(#=!=SU&)[2]->A[1],A_?(#=!=SU&)[3]->A[4],A_?(#=!=SU&)[4]->A[3]}  /. CG[a_,b_]:>CG[a,Reverse/@b])
 ];
+
+
 
 Return[temp /. conj[gamma[a_]]->gamma[a]];
 

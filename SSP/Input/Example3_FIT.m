@@ -114,12 +114,12 @@ DEFINITION[FITNeutralino][Plots]={
 };
 
 
-BasicStyle= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$m_h$~[GeV]"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]};
+BasicStyle= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$m_h$~[GeV]"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]};
 Style1a = Map[Join[BasicStyle,{PlotStyle->#}]&,{Blue}];
 Style1b = Map[Join[BasicStyle,{PlotStyle->#}]&,{Blue,Green,Red}];
 
-Style2a = {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$\\tan(\\beta)$"]},PlotJoined->True, FrameTicksStyle -> Directive[Black, 14]}}
-Style2b = {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$A_0$~[GeV]"]},PlotJoined->True, FrameTicksStyle -> Directive[Black, 14]}}
+Style2a = {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$\\tan(\\beta)$"]},Joined->True, FrameTicksStyle -> Directive[Black, 14]}}
+Style2b = {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$A_0$~[GeV]"]},Joined->True, FrameTicksStyle -> Directive[Black, 14]}}
 Style3 = Map[Join[BasicStyle,{PlotStyle->#}]&,{Green,Blue}];
 Style4={Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$M_{1/2}$~[GeV]"]},ContourLabels->True};
 Style5 = {{Frame -> True, Axes -> False, FrameLabel -> {UseLaTeX["$m_0$~[GeV]"], UseLaTeX["$M_{1/2}$~[GeV]"]}}};

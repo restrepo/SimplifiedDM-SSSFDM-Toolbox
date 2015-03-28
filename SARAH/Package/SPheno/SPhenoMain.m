@@ -41,9 +41,11 @@ WriteString[spheno,"Use LoopFunctions\n"];
 If[AddLowEnergyConstraint ===True && SPhenoOnlyForHM=!=True,
 WriteString[spheno,"Use RunSM_"<>ModelName<>"\n"]; 
 WriteString[spheno,"Use LowEnergy_"<>ModelName<>"\n"]; 
+If[SkipFlavorKit=!=True,
 WriteString[spheno,"Use FlavorKit_LFV_"<>ModelName<>"\n"]; 
 WriteString[spheno,"Use FlavorKit_QFV_"<>ModelName<>"\n"]; 
-WriteString[spheno,"Use FlavorKit_Observables_"<>ModelName<>"\n"]; 
+WriteString[spheno,"Use FlavorKit_Observables_"<>ModelName<>"\n"];
+]; 
 ];
 WriteString[spheno,"Use Mathematics\n"];
 WriteString[spheno,"Use Model_Data_"<>ModelName<>"\n"];
@@ -136,7 +138,7 @@ temp2=Join[temp2,{temp1[[i]]/. subLowEnergyParameters}];
 i++;];
 
 If[NonSUSYModel=!=True,
-WriteString[spheno,"If (HighScaleModel.Eq.\"LOW\") Then ! No longer used by default \n "];
+WriteString[spheno,"If ((HighScaleModel.Eq.\"LOW\").and.(.not.SUSYrunningFromMZ)) Then ! No longer used by default \n "];
 ];
 WriteString[spheno,"! Setting values \n "];
 For[i=1,i<=Length[listVEVsIN],
@@ -713,6 +715,12 @@ WriteString[spheno,"\n ! **** "<>ToString[PreSARAHobservablesQFV[[i,1]]]<>" ****
 MakeCall["Calculate_"<>ToString[PreSARAHobservablesQFV[[i,1]]],{},ToString/@PreSARAHobservablesQFV[[i,4]],ToString/@PreSARAHobservablesQFV[[i,2]],spheno];
 i++;];
 
+If[SkipFlavorKit=!=True,
+For[i=1,i<=Length[FLHA`WilsonCoefficients],
+WriteString[spheno,ToString[FLHA`WilsonCoefficients[[i,5]]]<>" = "<>SPhenoForm[FLHA`WilsonCoefficients[[i,6]]]<>"\n"];
+i++;];
+];
+
 
 If[IncludeOldObservables===True,
 (* q ->  q' gamma *)
@@ -1047,7 +1055,10 @@ MakeCall["DeltaRho",Flatten[{masses,couplings}],{},{"dRho"},spheno];
 
 If[FreeQ[massless,Neutrino],
 WriteTadpoleSolution[spheno];
+WriteString[spheno,"CalculateOneLoopMassesSave = CalculateOneLoopMasses \n"];
+WriteString[spheno,"CalculateOneLoopMasses = .false. \n"];
 MakeCall["OneLoopMasses",Join[NewMassParameters,Join[listVEVs,listAllParameters]],{},{"kont"},spheno];
+WriteString[spheno,"CalculateOneLoopMasses = CalculateOneLoopMassesSave \n"];
 WriteString[spheno,"nuMasses = "<>SPhenoForm[SPhenoMass[Neutrino]]<>" \n"];
 If[SPhenoForm[NeutrinoMM]=!="Delta",WriteString[spheno,"nuMixing = "<>SPhenoForm[NeutrinoMM]<>" \n"];];
 SetPoleMasses[spheno];

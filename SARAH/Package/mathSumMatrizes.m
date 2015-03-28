@@ -539,7 +539,6 @@ noSUN =Select[temp,(Head[Head[#]]==RM)&,5];
 InvariantMatrix=Select[temp,(Head[Head[#]]==InvMat)&,5];
 epsilons= Select[temp,(Head[#]==epsTensor) &,5];
 deltas=Select[temp,(Head[#]==Delta) &,5];
-
 For[i=1,i<=Length[noSUN],
 pos=Position[SA`NonZeroEntries,noSUN[[i,0]]][[1,1]];
 entry=Extract[SA`NonZeroEntries,pos];
@@ -553,6 +552,15 @@ entry=Extract[SA`NonZeroEntries,pos];
 sub = Join[sub,Table[InvariantMatrix[[i,j]]->SA`NonZeroEntries[[pos,2,j]],{j,1,Length[entry[[2]]]}]];
 fac=fac*(InvariantMatrix[[i]]/.sub);
 i++;];
+
+ If[Head[term]===Times,
+temp=term;
+
+While[FreeQ[temp,Delta[b_Symbol,a_Integer]]==False|| FreeQ[temp,Delta[a_Integer,b_Symbol]]==False,sub=Join[sub,DeleteCases[Select[List@@temp,FreeQ[#,Delta]==False&] /. Delta[a_Symbol,b_Symbol]->1 /. Delta[a_Integer,b_Symbol]->(b->a)/. Delta[b_Symbol,a_Integer]->(b->a),1]];
+temp=temp/.sub;
+deltas=Select[deltas /. sub,FreeQ[#,x_Integer]&];
+];
+];
 
 sub = Join[sub,{Flatten[Table[Map[(#->1)&,List@@deltas[[i]]],{i,1,Length[deltas]}]]}];
 sub = Join[sub,{Flatten[Table[Map[(#->Position[List@@epsilons[[i]],#][[1,1]])&,List@@epsilons[[i]]],{i,1,Length[epsilons]}]]}];

@@ -421,10 +421,10 @@ int monte_carlo_menu(void)
    if(nout_int!=2  ) menutxt[menutxt[0]*10+1]=0;
    if(nin_int==1)  improveStr(menutxt,"Easy", "Total width"); 
            else    improveStr(menutxt,"Easy", "1D integration");
-           
+ 
    wrtprc_();
    for(;;)
-   {
+   {  
       infor();
       f3_key[7]=quit;
       menu1(54,4,"",menutxt,"n_mc_*",&pscr, &mode);

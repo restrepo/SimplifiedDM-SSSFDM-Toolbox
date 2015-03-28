@@ -246,6 +246,8 @@ UseBoundarySUSYatEWSB = False;
 LgravFFSV = 0;
 LgravFFVV = 0;
 
+SA`listFIU1={};
+
 PrintAll[x_]:=Block[{},Print[x]; If[WriteDebugInformation,Write[LogFile,x]; WriteString[LogFile,"\n"];];];
 PrintDebug[x_]:=Block[{},
 If[WriteDebugInformation,Write[LogFile,x]; WriteString[LogFile,"\n"];];

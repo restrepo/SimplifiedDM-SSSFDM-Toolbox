@@ -749,6 +749,10 @@ subUfoLorentz = {
 LorentzProduct[a__]->LorP[a],
 fSU3[a__]->f[a],
 fSU2[a__]->Eps[a],
+
+Mom[a_Symbol,b_]->P[b,1],
+Mom[conj[a_Symbol],b_]->P[b,2],
+
 Mom[a_[{gt1,c___}],b_]->P[b,1],
 Mom[a_[{gt2,c___}],b_]->P[b,2],
 Mom[a_[{gt3,c___}],b_]->P[b,3],

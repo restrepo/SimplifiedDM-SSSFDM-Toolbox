@@ -85,8 +85,8 @@ extern void  solarmodulation_(double *PHI, double *mass, double * inTab, double 
 int basicspectra_(double *Mass, int *pdgN, int *outN, double * tab)
 { return basicSpectra(*Mass,*pdgN, *outN, tab);}
 
-int basicnuspectra_(int*forSun,int *pdgN, int *outN, double * tab)
-{ return basicNuSpectra(*forSun, *pdgN, *outN, tab);}
+int basicnuspectra_(int*forSun, double *Mass, int *pdgN, int *outN, double * tab)
+{ return basicNuSpectra(*forSun,*Mass, *pdgN, *outN, tab);}
 
 
 

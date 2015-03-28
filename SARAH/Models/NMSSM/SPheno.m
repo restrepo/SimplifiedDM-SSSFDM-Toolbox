@@ -108,6 +108,10 @@ BoundaryHighScale[[3]]={
 
 
 BoundaryLowScaleInput={
+ {\[Kappa], KappaInput},
+ {\[Lambda], LambdaInput},
+ {T[\[Kappa]], AKappaInput*KappaInput},
+ {T[\[Lambda]], ALambdaInput*LambdaInput},
  {vd,Sqrt[4 mz2/(g1^2+g2^2)]*Cos[ArcTan[TanBeta]]},
  {vu,Sqrt[4 mz2/(g1^2+g2^2)]*Sin[ArcTan[TanBeta]]},
  {vS, Sqrt[2]*MuEffinput/LambdaInput}

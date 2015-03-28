@@ -18,6 +18,7 @@
 #include "fcompare.h"
 #include "../../include/VandP.h"
 #include "vp.h"
+#include "n_proc.h"
 #include "dynamic_cs.h"
   
 char  * libDir=NULL;
@@ -25,6 +26,7 @@ char  * modelDir=NULL;
 char  * compDir=NULL;
 char  * calchepDir=NULL;
 int   modelNum=0;
+double BWrange=2.7;
 
 int  prepareWorkPlace(void)
 {  char * command;
@@ -229,7 +231,8 @@ numout*getMEcode(int twidth,int Gauge, char*Process, char*excludeVirtual,
    {
      *(test->cc->interface->gtwidth)=0;
      *(test->cc->interface->twidth) =0;
-     *(test->cc->interface->gswidth)=0; 
+     *(test->cc->interface->gswidth)=0;
+     *(test->cc->interface->BWrange)=BWrange; 
      free(lib_);
      return test->cc;
    }
@@ -257,6 +260,7 @@ numout*getMEcode(int twidth,int Gauge, char*Process, char*excludeVirtual,
       if(!handle)
       {
         char options[20];
+        char nPROCSSch[20];
         char GaugeCh[4];
         int ret;  
         int delWorkDir;
@@ -272,6 +276,10 @@ numout*getMEcode(int twidth,int Gauge, char*Process, char*excludeVirtual,
         if(excludeVirtual) sprintf(command+strlen(command)," \"%s\"",excludeVirtual);
         else  sprintf(command+strlen(command)," \"\"");            
         if(excludeOut) sprintf(command+strlen(command)," \"%s\"",excludeOut);       
+
+        sprintf(nPROCSSch,"%d",nPROCSS);
+        setenv("nParProc",nPROCSSch,1);
+        
         ret=system(command);
       
         if(ret<0 || WIFSIGNALED(ret)>0 ) exit(10);

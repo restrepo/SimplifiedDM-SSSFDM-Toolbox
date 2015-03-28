@@ -188,11 +188,13 @@ NeededMasses = Intersection[Join[NeededMasses,SPhenoMass/@Transpose[coupAlphaStr
 
 savedDecayInfos = Join[savedDecayInfos,{{particle,NeededCouplings,NeededMasses,FullInformation}}];
 
+channels=CountNumberEntries[FullInformation];
+(*
 channels=0;
 For[i=1,i<=Length[FullInformation],
 channels += (1+getGenSPheno[FullInformation[[i,1]]]-getGenSPhenoStart[FullInformation[[i,1]]])*(1+getGenSPheno[FullInformation[[i,2]]]-getGenSPhenoStart[FullInformation[[i,2]]]);
 i++;];
-
+*)
 SPhenoParameters= Join[SPhenoParameters,{{ToExpression["gP"<>ToString[particle]],{generation,generation},{getGenSPheno[particle],channels}}}];
 SPhenoParameters= Join[SPhenoParameters,{{ToExpression["gT"<>ToString[particle]],{generation},{getGenSPheno[particle]}}}];
 SPhenoParameters = Join[SPhenoParameters,{{ToExpression["BR"<>ToString[particle]],{generation,generation},{getGenSPheno[particle],channels}}}];
@@ -689,10 +691,17 @@ WriteString[sphenoDecay, "End Subroutine "<>ToString[particle]<>"TwoBodyDecay"<>
 
 ];
 
-CountNumberEntries[FullInformation_]:=Block[{i,channels},
+CountNumberEntries[FullInformation_]:=Block[{i,j,k,channels},
 channels=0;
 For[i=1,i<=Length[FullInformation],
+If[FullInformation[[i,1]]===FullInformation[[i,2]],
+For[j=getGenSPhenoStart[FullInformation[[i,1]]],j<=getGenSPheno[FullInformation[[i,1]]],
+For[k=j,k<=getGenSPheno[FullInformation[[i,1]]],
+channels++;
+k++;];
+j++;];,
 channels += (1+getGenSPheno[FullInformation[[i,1]]]-getGenSPhenoStart[FullInformation[[i,1]]])*(1+getGenSPheno[FullInformation[[i,2]]]-getGenSPhenoStart[FullInformation[[i,2]]]);
+];
 i++;];
 Return[channels];
 ];

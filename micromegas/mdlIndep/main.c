@@ -15,7 +15,7 @@
 /* Calculate number of events for 1kg*day and recoil energy distibution for various nuclei.
    Input parameters are  Mcdm, spin dependent and spin independent cross sections on nucleons
 */
-//#define NEUTRINO 
+#define NEUTRINO 
 /*  Neutrino signal of DM annihilation in Sun and Earth */
   
 /*===== end of Modules  ======*/
@@ -59,13 +59,14 @@ printf("\n==== Indirect detection =======\n");
   sigmaV=vcs*2.9979E-26; 
   printf("sigmav=%.2E[cm^3/s]\n",sigmaV);  
 
-  for(i=0;i<NZ;i++) { SpA[i]=SpE[i]=SpP[i]=0;} 
+  SpA[0]=SpE[0]=SpP[0]=Mcdm;
+  for(i=1;i<NZ;i++) { SpA[i]=SpE[i]=SpP[i]=0;} 
 
   for(n=0;n<nCH;n++) if(fracCH[n]>0)
   {    
-    basicSpectra(Mcdm,pdgCH[n],0, buff);  for(i=0;i<NZ;i++)  SpA[i]+=buff[i]*fracCH[n];
-    basicSpectra(Mcdm,pdgCH[n],1, buff);  for(i=0;i<NZ;i++)  SpE[i]+=buff[i]*fracCH[n];
-    basicSpectra(Mcdm,pdgCH[n],2, buff);  for(i=0;i<NZ;i++)  SpP[i]+=buff[i]*fracCH[n];
+    basicSpectra(Mcdm,pdgCH[n],0, buff);  for(i=1;i<NZ;i++)  SpA[i]+=buff[i]*fracCH[n];
+    basicSpectra(Mcdm,pdgCH[n],1, buff);  for(i=1;i<NZ;i++)  SpE[i]+=buff[i]*fracCH[n];
+    basicSpectra(Mcdm,pdgCH[n],2, buff);  for(i=1;i<NZ;i++)  SpP[i]+=buff[i]*fracCH[n];
   }  
 
   {  double Emin=1; /* Energy cut  in GeV   */
@@ -76,7 +77,7 @@ printf("\n==== Indirect detection =======\n");
      "and spherical region described by cone with angle %.2f[rad]\n",fi,2*dfi);
 #ifdef SHOWPLOTS
      sprintf(txt,"Photon flux[cm^2 s GeV]^{1} at f=%.2f[rad], cone angle %.2f[rad]",fi,2*dfi);
-     displaySpectrum(FluxA,txt,Emin,Mcdm,1);
+     displaySpectrum(FluxA,txt,Emin,Mcdm);
 #endif
      printf("Photon flux = %.2E[cm^2 s GeV]^{-1} for E=%.1f[GeV]\n",SpectdNdE(Etest, FluxA), Etest);       
   }
@@ -86,7 +87,7 @@ printf("\n==== Indirect detection =======\n");
     if(SMmev>0)  solarModulation(SMmev,0.0005,FluxE,FluxE);
 
 #ifdef SHOWPLOTS     
-    displaySpectrum(FluxE,"positron flux [cm^2 s sr GeV]^{-1}" ,Emin,Mcdm, 1);
+    displaySpectrum(FluxE,"positron flux [cm^2 s sr GeV]^{-1}" ,Emin,Mcdm);
 #endif
     printf("Positron flux  =  %.2E[cm^2 sr s GeV]^{-1} for E=%.1f[GeV] \n",
     SpectdNdE(Etest, FluxE),  Etest);           
@@ -96,7 +97,7 @@ printf("\n==== Indirect detection =======\n");
     pbarFluxTab(Emin, sigmaV, SpP,  FluxP  ); 
     if(SMmev>0)  solarModulation(SMmev,1,FluxP,FluxP);
 #ifdef SHOWPLOTS    
-     displaySpectrum(FluxP,"antiproton flux [cm^2 s sr GeV]^{-1}" ,Emin, Mcdm,1);
+     displaySpectrum(FluxP,"antiproton flux [cm^2 s sr GeV]^{-1}" ,Emin, Mcdm);
 #endif
     printf("Antiproton flux  =  %.2E[cm^2 sr s GeV]^{-1} for E=%.1f[GeV] \n",
     SpectdNdE(Etest, FluxP),  Etest);             
@@ -162,14 +163,15 @@ printf("\n==== Indirect detection =======\n");
  if(forSun) printf("Sun\n"); else printf("Earth\n");  
 
   
-  Crate=captureAux(forSun,Maxwell, csSIp,csSIn,csSDp,csSDn);
+  Crate=captureAux(Maxwell, forSun,csSIp,csSIn,csSDp,csSDn);
  
-  for(i=0;i<NZ;i++){ nu[i]=nu_bar[i]=0;}
+  nu[0]=nu_bar[0]=Mcdm;
+  for(i=1;i<NZ;i++){ nu[i]=nu_bar[i]=0;}
 
   for(n=0;n<nCH;n++) if(fracCH[n]>0)
   {    
-    basicNuSpectra(forSun, pdgCH[n], 1, buff);  for(i=0;i<NZ;i++)  nu[i]     +=buff[i]*fracCH[n];
-    basicNuSpectra(forSun, pdgCH[n],-1, buff);  for(i=0;i<NZ;i++)  nu_bar[i] +=buff[i]*fracCH[n];
+    basicNuSpectra(forSun,Mcdm, pdgCH[n], 1, buff);  for(i=1;i<NZ;i++)  nu[i]     +=buff[i]*fracCH[n];
+    basicNuSpectra(forSun,Mcdm, pdgCH[n],-1, buff);  for(i=1;i<NZ;i++)  nu_bar[i] +=buff[i]*fracCH[n];
   }  
 
 
@@ -177,14 +179,14 @@ printf("\n==== Indirect detection =======\n");
   if(forSun) R=150E6; else  R=6378.1;  // distance in km 
   Prop=31556925.2/(4*M_PI*R*R);        // in Year*km^2
 
-  for(i=0;i<NZ;i++) 
+  for(i=1;i<NZ;i++) 
   { nu[i]*= 0.5*Crate*Prop;   
     nu_bar[i]*=0.5*Crate*Prop; 
   }
     
 #ifdef SHOWPLOTS
-  displaySpectrum(nu,"nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm,1);
-  displaySpectrum(nu_bar,"nu-bar from Sun [1/Year/km^2/GeV]",Emin,Mcdm,1);
+  displaySpectrum(nu,"nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm);
+  displaySpectrum(nu_bar,"nu-bar from Sun [1/Year/km^2/GeV]",Emin,Mcdm);
 #endif
 { double Ntot;
   spectrInfo(Emin/Mcdm,nu, &Ntot,NULL);
@@ -197,7 +199,7 @@ printf("\n==== Indirect detection =======\n");
   
   muonUpward(nu,nu_bar, mu);
 #ifdef SHOWPLOTS  
-  displaySpectrum(mu,"Upward muons[1/Year/km^2/GeV]",1,Mcdm/2,1);
+  displaySpectrum(mu,"Upward muons[1/Year/km^2/GeV]",1,Mcdm/2);
 #endif
   { double Ntot;
     spectrInfo(Emin/Mcdm,mu, &Ntot,NULL);
@@ -207,7 +209,7 @@ printf("\n==== Indirect detection =======\n");
 /* Contained events */
   muonContained(nu,nu_bar,1., mu);
 #ifdef SHOWPLOTS  
-  displaySpectrum(mu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm,1); 
+  displaySpectrum(mu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm); 
 #endif
   { double Ntot;
     double Emin=1; //GeV

@@ -157,7 +157,7 @@ double decay2info_(char * pname, int *Nch, int len)
   return res;
 }
 
-int slhadecayprint_(char * pname,int *Nch,int len)
+int slhadecayprint_(char * pname,int*dVirt,int *Nch,int len)
 { double res;
   char cname[20]; 
   char fname[20];
@@ -166,7 +166,7 @@ int slhadecayprint_(char * pname,int *Nch,int len)
   sprintf(fname,"%d.tmptxt",getpid());
   f=fopen(fname,"w");
   fName2c(pname,cname,len);    
-  res=slhaDecayPrint(cname,f);
+  res=slhaDecayPrint(cname,*dVirt,f);
   fclose(f);
   fortreread_(Nch,fname,strlen(fname));
   unlink(fname); 
@@ -215,7 +215,6 @@ void cleandecaytable_(void) { cleanDecayTable(); }
 void setvvdecay_(int*vwdecay,int*vzdecay ){ VWdecay=*vwdecay;  VZdecay=*vzdecay;  cleanDecayTable(); }
 
 
-#ifdef TMP
 
 int neutrinoflux_( double(*fDv)(double*), int* forSun, double* nu, double * Nu)
 {  
@@ -230,10 +229,10 @@ void muonupward_(double*nu, double*Nu, double*mu) { muonUpward(nu, Nu, mu);}
 void muoncontained_(double*nu,double*Nu,double *rho, double*mu) { muonContained(nu,Nu,*rho, mu);}
 
 
-double captureaux_(int*forSun,double(*fDv)(double*), double*csIp,double*csIn,double*csDp, double*csDn)
+double captureaux_(double(*fDv)(double*),int*forSun, double*csIp,double*csIn,double*csDp, double*csDn)
 {
   _fDv=fDv; 
-  captureAux(*forSun,fDv_, *csIp,*csIn,*csDp,*csDn);
+  return captureAux(fDv_, *forSun,*csIp, *csIn,*csDp,*csDn);
 }
 
-#endif
+

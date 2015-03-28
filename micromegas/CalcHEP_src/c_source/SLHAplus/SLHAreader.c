@@ -711,7 +711,7 @@ double  slhaValFormat(char * Block, double Q, char * format)
        sprintf(body_,"%s #",dr->body);
        err=sscanf(body_,format_,&v,buff);
        if(err==2 && strcmp(buff,"#")==0) 
-       {  found[pos]=1; scale[pos]=blck->scale; val[pos]=v; slhaComment=dr->txt;  break; }
+       { found[pos]=1; scale[pos]=blck->scale; val[pos]=v; slhaComment=dr->txt;  break; }
      }  
   }
   }
@@ -811,7 +811,7 @@ int slhaWarnings(FILE*f)
 int slhaDecayExists(int pNum)
 { 
    decayStr* decay=decayList;
-   for(;decay;decay=decay->next) if( decay->pNum==pNum)
+   for(;decay;decay=decay->next) if(abs(decay->pNum)==abs(pNum))
    { decayRec*dr=decay->dataList;
      int n;
      for(n=0; dr; dr=dr->next, n++) continue;
@@ -823,7 +823,7 @@ int slhaDecayExists(int pNum)
 double slhaWidth(int pNum)
 {  
    decayStr* decay=decayList;
-   for(;decay;decay=decay->next) if( decay->pNum==pNum) return decay->pWidth;
+   for(;decay;decay=decay->next) if( abs(decay->pNum)==abs(pNum)) return decay->pWidth;
    printf("Error: width for particle %d is unknown\n",pNum);
    FError=1;
    return 0;
@@ -832,13 +832,14 @@ double slhaWidth(int pNum)
 double slhaBranch(int pNum,int N, int * nCh)
 {
    decayStr* decay=decayList;
-   for(;decay;decay=decay->next) if( decay->pNum==pNum)
+   for(;decay;decay=decay->next) if(abs(decay->pNum)==abs(pNum))
    { decayRec*dr=decay->dataList;
      int i;
      if(N<=0){ nCh[0]=0; return 0;}
      for(N--;N&&dr;N--,dr=dr->next) continue;
      if(dr==NULL) { nCh[0]=0;return 0;}
-     for(i=0;i<dr->nkey;i++) nCh[i]=dr->pNum[i];
+     if(decay->pNum==pNum) for(i=0;i<dr->nkey;i++) nCh[i]= dr->pNum[i];
+     else                  for(i=0;i<dr->nkey;i++) nCh[i]=-dr->pNum[i];
      nCh[i]=0;
      return dr->Br;
    }

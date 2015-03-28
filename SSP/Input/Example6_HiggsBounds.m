@@ -85,7 +85,7 @@ DEFINITION[a_][Plots]={
 };
 
 
-BasicStyle= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_h$ [GeV]"],Style["HB result",14]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]};
+BasicStyle= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_h$ [GeV]"],Style["HB result",14]},Joined->False, FrameTicksStyle -> Directive[Black, 14]};
 Style1 = Map[Join[BasicStyle,{PlotStyle->#}]&,{Red}];
 Style2= {Frame->True, Axes->False,FrameLabel->{UseLaTeX["$\\tan(\\beta)$"],UseLaTeX["$A_0$ [GeV]"]},FrameTicksStyle -> Directive[Black, 14],ContourLabels->False,Contours -> {1}};
 

@@ -99,7 +99,7 @@ int MSSMDDtest(int loop, double*pA0,double*pA5,double*nA0,double*nA5)
   }
 /* Higgs sector */ 
   mh=findValW("Mh");
-  mH=findValW("MHH");
+  mH=findValW("MH");
   sa=findValW("sa");
   ca=findValW("ca");
   o1o1h= E*(ca*NL[4]+sa*NL[3])*(CW*NL[2]-SW*NL[1])/CW/SW;

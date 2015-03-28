@@ -10,6 +10,7 @@
 
 #include "event2pyth.h"
 
+#define  HEPML
 static  char* pdg2name(int pdg)
 { static char buff[40];
   switch(pdg)
@@ -64,7 +65,7 @@ void  upinit_(void)
 
 int main(int argc,char ** argv)
 {
-  int N,NEV,MAXEVENTS,II,J,K,err;
+  int N,NEV,MAXEVENTS,II,J;
   double cs;
   FILE *lun1=NULL;
   long posNevents, posSize;
@@ -108,7 +109,7 @@ int main(int argc,char ** argv)
     fprintf(lun1,"-->\n");
     fprintf(lun1,"<header>\n");
 
-
+#ifdef HEPML
   fprintf(lun1,"<hepml>\n");
   fprintf(lun1,"<samples xmlns=\"http://mcdb.cern.ch/hepml/0.2/\"\n");
   fprintf(lun1,"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
@@ -118,17 +119,16 @@ int main(int argc,char ** argv)
   fprintf(lun1,"            <eventsNumber> ");
   posNevents=ftell(lun1);
   fprintf(lun1,"              </eventsNumber>\n");
-
-  fprintf(lun1,"            <crossSection unit=\"pb\">%f</crossSection>\n",cs);
+  fprintf(lun1,"            <crossSection unit=\"pb\">%.4E</crossSection>\n",cs);
   fprintf(lun1,"            <fileSize> ");
   posSize=ftell(lun1);
   fprintf(lun1,"                 </fileSize>\n");
   
 //  fprintf(lun1,"            <checksum type=\"md5\">d7722af9e2886fa465e3f7b786c3e6e6</checksum>\n");
-  fprintf(lun1,"            <comments></comments>\n");
+  fprintf(lun1,"            <comments> </comments>\n");
   
   fprintf(lun1,"            <location>\n");
-  fprintf(lun1,"              <path/>\n");
+//  fprintf(lun1,"              <path/>\n");
   fprintf(lun1,"            </location>\n");
   
   fprintf(lun1,"        </file>\n");
@@ -136,15 +136,15 @@ int main(int argc,char ** argv)
   
   fprintf(lun1,"    <description>\n");
   
-  fprintf(lun1,"        <title> </title>\n");
-  fprintf(lun1,"        <abstract></abstract>\n");
-  fprintf(lun1,"        <authorComments></authorComments>\n");
+  fprintf(lun1,"        <title>  </title>\n");
+  fprintf(lun1,"        <abstract> </abstract>\n");
+  fprintf(lun1,"        <authorComments> </authorComments>\n");
 
   fprintf(lun1,"	<experimentGroup>\n");
-  fprintf(lun1,"	    <experiment></experiment>\n");
-  fprintf(lun1,"	    <group></group>\n");
-  fprintf(lun1,"	    <responsiblePerson></responsiblePerson>\n");
-  fprintf(lun1,"	    <description></description>\n");
+  fprintf(lun1,"	    <experiment> </experiment>\n");
+  fprintf(lun1,"	    <group> </group>\n");
+  fprintf(lun1,"	    <responsiblePerson> </responsiblePerson>\n");
+  fprintf(lun1,"	    <description>  </description>\n");
   fprintf(lun1,"	</experimentGroup>\n");
 
   fprintf(lun1,"        <generator>\n");
@@ -160,8 +160,8 @@ int main(int argc,char ** argv)
 
   fprintf(lun1,"        <model>\n");
 //  fprintf(lun1,"             <name>  %s  </name>\n",getField("run_details.txt","Model:"));
-  fprintf(lun1,"             <name></name>\n");
-  fprintf(lun1,"             <description> </description>\n",getField("run_details.txt","Model:"));
+  fprintf(lun1,"             <name> </name>\n");
+  fprintf(lun1,"             <description>%s</description>\n",getField("run_details.txt","Model:"));
 
   fprintf(lun1,"            <parameters>\n");
   if(SLHA) 
@@ -174,10 +174,10 @@ int main(int argc,char ** argv)
         fprintf(lun1,"                    <name>%s</name>\n",slhaComment);
         fprintf(lun1,"                    <value>%f</value>\n",creal(val) );
         fprintf(lun1,"			      <notation>\n");
-        fprintf(lun1,"				      <plain></plain>\n");
-        fprintf(lun1,"				      <Latex></Latex>\n");
+        fprintf(lun1,"				      <plain> </plain>\n");
+        fprintf(lun1,"				      <Latex> </Latex>\n");
         fprintf(lun1,"			      </notation>\n");
-        fprintf(lun1,"			      <description></description>\n");
+        fprintf(lun1,"			      <description> </description>\n");
         fprintf(lun1,"                </parameter>\n");
       }
     } 
@@ -189,9 +189,8 @@ int main(int argc,char ** argv)
   fprintf(lun1,"        <process>\n");
   fprintf(lun1,"            <beam1>\n");
   fprintf(lun1,"                <particle KFcode=\"%d\">%s</particle>\n",R_.IDBMUP[0],pdg2name(R_.IDBMUP[0]));
-  fprintf(lun1,"                <energy unit=\"GeV\">%f</energy>\n",R_.EBMUP[0]);
-//  fprintf(lun1,"                <pdf name=\"CTEQ\" version=\"6m\" PDFLIBset=\"57\" PDFLIBgroup=\"4\" LHAPDFset=\"0\" LHAPDFmember=\"0\" LHAPDFfile=\"\" />\n");
-  fprintf(lun1,"                <pdf name= \"%s\"></pdf>\n", getField("run_details.txt","pdf1 :"));  
+  fprintf(lun1,"                <energy unit=\"GeV\">%.3E</energy>\n",R_.EBMUP[0]);
+  fprintf(lun1,"                <pdf name= \"%s\"> </pdf>\n", getField("run_details.txt","pdf1 :"));  
 //  fprintf(lun1,"                <QCDCoupling>\n");
 //  fprintf(lun1,"                    <Lambda unit=\"GeV\">0.226200</Lambda>\n");
 //  fprintf(lun1,"                    <NFlavours>6</NFlavours>\n");
@@ -202,10 +201,8 @@ int main(int argc,char ** argv)
  
   fprintf(lun1,"            <beam2>\n");
   fprintf(lun1,"                <particle KFcode=\"%d\">%s</particle>\n",R_.IDBMUP[1],pdg2name(R_.IDBMUP[0]));
-  fprintf(lun1,"                <energy unit=\"GeV\">%f</energy>\n",R_.EBMUP[1]);
-//  fprintf(lun1,"                <pdf name=\"CTEQ\" version=\"6m\" PDFLIBset=\"57\" PDFLIBgroup=\"4\" LHAPDFset=\"0\" LHAPDFmember=\"0\" LHAPDFfile=\"\" />\n");
-  fprintf(lun1,"                <pdf name= \"%s\"></pdf>\n", getField("run_details.txt","pdf2 :"));  
-  
+  fprintf(lun1,"                <energy unit=\"GeV\">%.3E</energy>\n",R_.EBMUP[1]);
+  fprintf(lun1,"                <pdf name= \"%s\"> </pdf>\n", getField("run_details.txt","pdf2 :"));  
 //  fprintf(lun1,"                <QCDCoupling>\n");
 //  fprintf(lun1,"                    <Lambda unit=\"GeV\">0.226200</Lambda>\n");
 //  fprintf(lun1,"                    <NFlavours>6</NFlavours>\n");
@@ -216,7 +213,7 @@ int main(int argc,char ** argv)
 //All Final state tags are required!!!
   fprintf(lun1,"	    <finalState>\n");
 {   char*out=getField("run_details.txt","Process   :");
-    out=strstr(out,"->");
+    out=strstr(out,"-&gt");
     if(out)out+=2; else out="";
   fprintf(lun1,"		<state>%s\n",out);
   fprintf(lun1,"                </state>\n");
@@ -224,18 +221,18 @@ int main(int argc,char ** argv)
   fprintf(lun1,"		    <plain>%s\n",out);
 }
    fprintf(lun1,"                   </plain>\n");
-  fprintf(lun1,"		    <Latex></Latex>\n");
+  fprintf(lun1,"		    <Latex> </Latex>\n");
   fprintf(lun1,"		</notation>\n");
   fprintf(lun1,"	    </finalState>\n");
 
-  fprintf(lun1,"            <crossSection unit=\"pb\">%f</crossSection>\n",cs);
- 
+  fprintf(lun1,"            <crossSection unit=\"pb\">%.3E</crossSection>\n",cs);
+  
   fprintf(lun1,"            <subprocesses>\n");
   printProcInfo(lun1);
 
 //  fprintf(lun1,"                  <FactorisationScale>\n");
-//  fprintf(lun1,"                      <plain></plain>\n");
-//  fprintf(lun1,"                      <Latex></Latex>\n");
+//  fprintf(lun1,"                      <plain> </plain>\n");
+//  fprintf(lun1,"                      <Latex> </Latex>\n");
 //  fprintf(lun1,"                  </FactorisationScale>\n");  
 
   fprintf(lun1,"            </subprocesses>\n");
@@ -248,12 +245,12 @@ int main(int argc,char ** argv)
   fprintf(lun1,"                        <name> </name>\n");
   fprintf(lun1,"                        <notation>\n");
   fprintf(lun1,"                            <plain> </plain>\n");
-  fprintf(lun1,"                            <Latex></Latex>\n");
+  fprintf(lun1,"                            <Latex> </Latex>\n");
   fprintf(lun1,"                        </notation>\n");
   fprintf(lun1,"                    </object>\n");
-  fprintf(lun1,"                    <minValue></minValue>\n");
-  fprintf(lun1,"                    <maxValue></maxValue>\n");
-  fprintf(lun1,"                    <logic></logic>\n");
+  fprintf(lun1,"                    <minValue> </minValue>\n");
+  fprintf(lun1,"                    <maxValue> </maxValue>\n");
+  fprintf(lun1,"                    <logic> </logic>\n");
   fprintf(lun1,"                </cut>\n");
   fprintf(lun1,"            </cutSet>\n");
   fprintf(lun1,"        </cuts>\n");
@@ -262,16 +259,17 @@ int main(int argc,char ** argv)
   fprintf(lun1,"       	      <firstName>CalcHEP</firstName>\n");                                                                                                    
   fprintf(lun1,"              <lastName> </lastName>\n");                                                                                                     
   fprintf(lun1,"              <email>calchep[at]goolegroups.com</email>  \n");                                                                                      
-  fprintf(lun1,"              <experiment></experiment>\n");                                                                                                    
-  fprintf(lun1,"              <group></group>\n");                                                                                                    
-  fprintf(lun1,"       	      <organization></organization>\n");                                                                                             
+  fprintf(lun1,"              <experiment> </experiment>\n");                                                                                                    
+  fprintf(lun1,"              <group> </group>\n");                                                                                                    
+  fprintf(lun1,"       	      <organization> </organization>\n");                                                                                             
   fprintf(lun1,"   	   </author>\n");                                                                                                                            
   fprintf(lun1,"         </authors>\n"); 
-//  fprintf(lun1,"        <relatedPapers></relatedPapers>\n");
+//  fprintf(lun1,"        <relatedPapers> </relatedPapers>\n");
   fprintf(lun1,"    </description>\n");
   fprintf(lun1,"</samples>\n");
   fprintf(lun1,"</hepml>\n");
 
+#endif
 
     fprintf(lun1,"<slha>\n");
     if(SLHA) 
@@ -282,7 +280,7 @@ int main(int argc,char ** argv)
 
        for(i=1;allQnumbers(i, &pdg,&eQ3,&spinDim,&cDim,&neutral);i++)
        { for(k=0;k<16;k++) if(pdg==SM[k]) break;
-         if(k==16) fprintf(lun1,"BLOCK QNUMBERS %d # %s\n"
+         if(k==16 && pdg!=25) fprintf(lun1,"BLOCK QNUMBERS %d # %s\n"
                       " 1 %d\n 2 %d\n 3 %d\n 4 %d\n\n"   
          , pdg,slhaComment,eQ3,spinDim,cDim,neutral);
        }
@@ -317,7 +315,7 @@ int main(int argc,char ** argv)
     }
         
     fprintf(lun1,"</slha>\n");
-
+#ifdef RUN_DETAILS
     if(access("run_details.txt", R_OK)==0) 
     {  FILE * f=fopen("run_details.txt","r");
        int ch;
@@ -328,7 +326,7 @@ int main(int argc,char ** argv)
        }
       fclose(f);
     }
-    
+#endif    
     fprintf(lun1,"</header>\n");	
     fprintf(lun1,"<init>\n");
     fprintf(lun1," %5d %5d %18.11E %18.11E %5d %5d %5d %5d %5d %5d\n",
@@ -376,11 +374,13 @@ int main(int argc,char ** argv)
   if(lun1)
   { long size;
     fprintf(lun1,"</LesHouchesEvents>\n");
+#ifdef HEPML
     size=ftell(lun1);
     fseek(lun1, posNevents,SEEK_SET);
     fprintf(lun1,"%d",N-1);
     fseek(lun1,posSize,SEEK_SET);
     fprintf(lun1,"%ld", size);
+#endif
     fclose(lun1);   
   }  
   closeevents_();

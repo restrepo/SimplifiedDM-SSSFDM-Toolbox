@@ -91,14 +91,14 @@ int main(int argc,char** argv)
    df=(double*)malloc(xDim*yDim*sizeof(double)); 
    sscanf(buff,"%lf  %lf",f,df);  
    for(i=1;i<xDim*yDim;i++) fscanf(F,"%lf  %lf",f+i,df+i);
-   for(i=1;i<xDim*yDim;i++) if( !finite(f[i])|| !finite(df[i]) )
+   for(i=1;i<xDim*yDim;i++) if( !isfinite(f[i])|| !isfinite(df[i]) )
       { printf(" NAN in table %s\n",procName); return 0;}
  }
  else 
  { 
    sscanf(buff,"%lf",f);
    for(i=1;i<xDim*yDim;i++) fscanf(F,"%lf",f+i);
-   for(i=1;i<xDim*yDim;i++) if( !finite(f[i])){ printf(" NAN in table %s\n",procName); return 0;} 
+   for(i=1;i<xDim*yDim;i++) if( !isfinite(f[i])){ printf(" NAN in table %s\n",procName); return 0;} 
  }             
  sprintf(icon_name,"%s/include/icon",pathtocalchep);
  start1(VERSION_ ,icon_name,"calchep.ini;../calchep.ini",NULL);  

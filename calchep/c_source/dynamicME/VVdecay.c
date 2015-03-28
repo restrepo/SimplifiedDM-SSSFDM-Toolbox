@@ -1,3 +1,3 @@
 
 #include"dynamic_cs.h"
-int VVdecay=1;
+int VWdecay=1,VZdecay=1;

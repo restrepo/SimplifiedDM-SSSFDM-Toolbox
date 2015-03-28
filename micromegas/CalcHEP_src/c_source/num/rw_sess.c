@@ -33,7 +33,7 @@ static int rdErr;
 
 static int writeIntegral(FILE *f)
 {
-  fprintf(f," %.17E %.17E %.17E %d %d %d %d %d", integral.s0,integral.s1,integral.s2,
+  fprintf(f," %.17E %.17E %.17E %d %d %ld %d %d", integral.s0,integral.s1,integral.s2,
   integral.n_it, integral.old, integral.nCallTot,  integral.freeze, integral.tp);
   return 0;
 }
@@ -61,8 +61,8 @@ static int r_prc__(FILE *mode)
 }
 
 static int w_mc__(FILE *mode)
-{ fprintf(mode,"%dx%d",integral.ncall[0],integral.itmx[0]);
-  fprintf(mode," %dx%d",integral.ncall[1],integral.itmx[1]);
+{ fprintf(mode,"%ldx%d",integral.ncall[0],integral.itmx[0]);
+  fprintf(mode," %ldx%d",integral.ncall[1],integral.itmx[1]);
   return 0;
 }
 

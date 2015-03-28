@@ -96,7 +96,7 @@ extern int VWdecay;
 extern numout* xVtoxll(int Nin,int Nout,char**name,int *pdg, int lV, double *wV,  double *br);
 extern int passParameters(numout*cc);
 
-extern int slhaDecayPrint(char * name,FILE*f);
+extern int slhaDecayPrint(char * name,int dVirt,FILE*f);
 extern void setQforParticle(REAL *Q,char*pname);
 
 extern double BWrange;

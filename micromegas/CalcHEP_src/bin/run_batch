@@ -1,9 +1,26 @@
 #!/usr/bin/perl
 # (c) 2008 Neil Christensen
-$version="1.11";
+$version="1.22";
 #############################################################################################################
 #Version Notes:
 #############################################################################################################
+#1.22 : Bug for the case of "Remove :0:" intermediate particles fixed
+#1.21 : Further Fixed bug with aux being written to concurrently by 
+#         parallel jobs.
+#1.20 : Bug fixed on line 1664 for #ppn choice in the menu
+#1.19 : Updated to work with new session.dat ordering.
+#1.18 : Fixed a problem using suspect in parallel mode.
+#1.17 : Parallelized symbolic calculation.
+#1.16 : Parallelized event generation.
+#1.15 : More support for parallelization.
+#1.14 : Added support for parallelized version of CH.
+#1.13 : Fixed bug with aux being written to concurrently by 
+#         parallel jobs.
+#1.12 : Allow parameter definition to include formula.
+#         Also, allow this formula to be a function of
+#         scan parameters.
+#       Also, allow p1,p2 to be formula in terms of
+#         scan parameters.
 #1.11 : Added total cs to scan page when there are no decays.
 #       Added plot of total cs when scanned in 1-d.
 #1.10 : Added remove statement for decays.
@@ -485,6 +502,8 @@ $photon_Q2max                    = 2;
 $photon_proton_ptCut             = 0.1;
 $p1=7000;
 $p2=7000;
+$p1def=7000;
+$p2def=7000;
 $BWrange=2.7;
 $TchannelWidths=0;
 $GItchannel=0;
@@ -547,6 +566,7 @@ $ntuple    = "False";
 $cleanup   = "False";
 $par_meth  = "this computer";
 $max_cpus  = 1;
+$max_ppn   = 1; #processors per node (for threading)
 $que       = "";
 $walltime  = 0;
 $memory    = 0;
@@ -617,9 +637,9 @@ LINE: while($line = <BATCH_FILE>){
 	elsif ($line =~ /Model\s*:\s*([^:]+)/){$model_name=$1;}
 	elsif ($line =~ /Model changed\s*:\s*(\w+)/){$model_changed=$1;$model_changed =~ s/\s//g;}
 	elsif ($line =~ /[Gg]auge\s*:\s*(\w+)/){$gauge=$1;$gauge =~ s/\s//g;}
-	elsif ($line =~ /[Rr]emove\s*[Dd]ec[^:]*:\s*([0-9]*)\s*:([^:]*)/){push(@removesDNumber,$1);$tmp=$2;$tmp =~ s/\s//g;push(@removesD,$tmp)}
+	elsif ($line =~ /[Rr]emove\s*[Dd]ec[^:]*:\s*([0-9]*)\s*:([^:]*)/){push(@removesDNumber,$1-1);$tmp=$2;$tmp =~ s/\s//g;push(@removesD,$tmp)}
 	elsif ($line =~ /[Rr]emove\s*[Dd]ec[^:]*:([^:]*)/){push(@removesDNumber,-1);$tmp=$1;$tmp =~ s/\s//g;push(@removesD,join(",",sort(split(",",$tmp))));}
-	elsif ($line =~ /[Rr]emove[^:]*:\s*([0-9]*)\s*:([^:]*)/){push(@removesNumber,$1);$tmp=$2;$tmp =~ s/\s//g;push(@removes,$tmp)}
+	elsif ($line =~ /[Rr]emove[^:]*:\s*([0-9]*)\s*:([^:]*)/){push(@removesNumber,$1-1);$tmp=$2;$tmp =~ s/\s//g;push(@removes,$tmp)}
 	elsif ($line =~ /[Rr]emove[^:]*:([^:]*)/){push(@removesNumber,-1);$tmp=$1;$tmp =~ s/\s//g;push(@removes,join(",",sort(split(",",$tmp))));}
 	elsif ($line =~ /Process\s*:\s*([^\s]+)/){$tmp=$1;$tmp =~ s/\s//g;push(@processes,$tmp);}
 	elsif ($line =~ /Decay\s*:(.+)/){$tmp=$1;$tmp =~ s/\s//g;push(@decays,$tmp);}
@@ -636,8 +656,8 @@ LINE: while($line = <BATCH_FILE>){
 	elsif ($line =~ /[Ii]ncoming\s*particle\s*charge[^:]*:([^:]+)/){$photon_incoming_particle_charge = $1;$photon_incoming_particle_charge =~ s/\s//g;}
 	elsif ($line =~ /\|Q\^2\|\s*max[^:]*:([^:]+)/){$photon_Q2max = $1;$photon_Q2max =~ s/\s//g;}
 	elsif ($line =~ /Pt\s*cut[^:]*proton[^:]*:([^:]+)/){$photon_proton_ptCut = $1;$photon_proton_ptCut =~ s/\s//g;}
-	elsif ($line =~ /p1\s*:\s*(\d+)/){$p1=$1;$p1 =~ s/\s//g;}
-	elsif ($line =~ /p2\s*:\s*(\d+)/){$p2=$1;$p2 =~ s/\s//g;}
+	elsif ($line =~ /p1[^:]*:([^:]+)/){$p1=$1;$p1 =~ s/\s//g;$p1def=$p1;}
+	elsif ($line =~ /p2[^:]*:([^:]+)/){$p2=$1;$p2 =~ s/\s//g;$p2def=$p2;}
 	elsif ($line =~ /[Bb]reit\s*[Ww]igner\s*[Rr]ange[^:]*:([^:]+)/){$tmp=$1;$tmp =~ s/\s//g;$BWrange=$tmp;}
 	elsif ($line =~ /[Tt]-channel\s*[Ww]idth[^:]*:([^:]+)/){$tmp=$1;$tmp =~ s/\s//g;$TchannelWidths=$tmp;}
 	elsif ($line =~ /[Gg][Ii].*[Tt]-channel[^:]*:([^:]+)/){$tmp=$1;$tmp =~ s/\s//g;$GItchannel=$tmp;}
@@ -723,6 +743,8 @@ LINE: while($line = <BATCH_FILE>){
 	elsif ($line =~ /email[^:]*:([^:]+)/){$email=$1;$email =~ s/\s//g;}
 	elsif ($line =~ /[Pp]roject[^:]*:([^:]+)/){$LSFproject=$1; $LSFproject=~s/\s//g;}
 	elsif ($line =~ /Max[^:]+cpus[^:]*:\s*([^\s]+)/){$max_cpus=$1; $max_cpus =~ s/\s//g; $max_cpus = int($max_cpus);}
+	elsif ($line =~ /Max[^:]+proc[^:]+node[^:]*:\s*([^\s]+)/){$max_ppn=$1; $max_ppn =~ s/\s//g; $max_ppn = int($max_ppn);}
+	elsif ($line =~ /Max[^:]+nodes[^:]*:\s*([^\s]+)/){$max_cpus=$1; $max_cpus =~ s/\s//g; $max_cpus = int($max_cpus);}
 	elsif ($line =~ /[Nn]ice\s*[Ll]evel[^:]*:\s*([^:]+)/){$nice_level=$1; $nice_level =~ s/\s//g; $nice_level = int($nice_level);}
 	elsif ($line =~ /nSess_1\s*:\s*([0-9]*)/){$nSess1=$1;$nSess1 =~ s/\s//g; $nSess1=int($nSess1);}
 	elsif ($line =~ /nSess_2\s*:\s*([0-9]*)/){$nSess2=$1;$nSess2 =~ s/\s//g; $nSess2=int($nSess2);}
@@ -919,7 +941,6 @@ VARS_LINE: while (my $line = <VARS_FILE>){
 	}
 }
 close(VARS_FILE);
-
 
 
 ####################################################
@@ -1282,11 +1303,16 @@ for (my $l=0;$l<=$#processes;$l++){
 	
 	#Add removals
 	my $whichRemove=-1;
+	my $removeList="";
 	for (my $m=0;$m<=$#removes;$m++){
-	  if($removesNumber[$m]==$l+1||$removesNumber[$m]==-1){$whichRemove=$m;}
+	  if($removesNumber[$m]==$l||$removesNumber[$m]==-1)
+	   { 
+	      if($whichRemove>=0) {$removeList=$removeList.",";}
+	      $removeList= $removeList.$removes[$m];
+	      $whichRemove=$m;
+	   }
 	}
-	if($whichRemove>=0){$systemString=$systemString.$removes[$whichRemove];}
-	$systemString=$systemString."\{";
+	$systemString=$systemString.$removeList."\{";
 	
 	#Add { for 2*x etc..
 	if ($systemString =~ /\*x/){$systemString=$systemString."\{";}									
@@ -1323,8 +1349,10 @@ for (my $l=0;$l<=$#processes;$l++){
 			push(@subproc_which_proc,$l);
 			push(@subproc_dir,"");
 			push(@subproc_in_lib,0);
-			if($whichRemove>=0){push(@subremoves,$removes[$whichRemove]);}
-			else {push(@subremoves,"");}
+#			if($whichRemove>=0){push(@subremoves,$removes[$whichRemove]);}
+
+#			else {push(@subremoves,"");}
+                              push(@subremoves,$removeList);   
 		#	$line =~ s/\|[^\|]+->[^\|]+\|//; #Old system used tmp/menup.ch
 	  	#} #Old system used tmp/menup.ch
 	}
@@ -1394,11 +1422,17 @@ for (my $l=0;$l<=$#decays;$l++){
 	
 	#Add removals
 	my $whichRemove=-1;
-	for (my $m=0;$m<=$#removesD;$m++){
-	  if($removesDNumber[$m]==$l+1||$removesDNumber[$m]==-1){$whichRemove=$m;}
+	my $removeList="";
+	for (my $m=0;$m<=$#removes;$m++){
+	  if($removesNumber[$m]==$l||$removesNumber[$m]==-1)
+	   { 
+	      if($whichRemove>=0) {$removeList=$removeList.",";}
+	      $removeList= $removeList.$removes[$m];
+	      $whichRemove=$m;
+	   }
 	}
-	if($whichRemove>=0){$systemString=$systemString.$removesD[$whichRemove];}
-	$systemString=$systemString."\{";
+	$systemString=$systemString.$removeList."\{";
+	
 
 	#Finish $systemString
 	if ($systemString =~ /\*x/){$systemString=$systemString."\{";}												
@@ -1637,18 +1671,21 @@ for (my $j=0;$j<=$#all_subprocesses;$j++){
 		print JOB_FILE "#!/bin/bash\n";
 		my $job_name = $all_subprocesses[$j];
 		$job_name =~ s/'//g;#Remove '
-		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",0);}
 		elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 		elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 		print JOB_FILE "cd $working_dir/Processes/$model_dir/$all_subproc_dir[$j]\n";
 	
 		#Create CH blind string	
-		$systemString = "";
+		#$systemString = "";
+		$systemString = "5[[[\{${max_ppn}\{\}";
 		for (my $k=1;$k<$model_num;$k++){$systemString=$systemString."[";}
 		if ($gauge =~ /[Uu]nitary/){$systemString=$systemString."\{[\{]";}
 		else {$systemString=$systemString."\{";}
 		$systemString = $systemString."\{$all_subprocesses[$j]\{";
+
 		$systemString = $systemString."$all_subremoves[$j]\{[\{[[[\{";
+		
 		$systemString = "./calchep -blind \"$systemString\"";
 		$systemString = $systemString."  2>&1 1>  job.o";
 		if ($par_meth =~ /[Pp][Bb][Ss]/ || $par_meth =~ /[Ll][Ss][Ff]/ || $par_meth =~ /[Ss][Ll][Uu][Rr][Mm]/){print JOB_FILE "$systemString\n";}
@@ -1682,7 +1719,7 @@ if ($widths_in_lib==0){
 	open(JOB_FILE,">Processes/$model_dir/$widths_dir/job_script")
 		or die("Couldn't open Processes/$model_dir/$widths_dir/jobscript.");
 	print JOB_FILE "#!/bin/bash\n";
-	if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info("Widths","job.out");}
+	if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info("Widths","job.out",0);}
 	elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info("Widths","job.out");}
 	elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 
@@ -2022,7 +2059,14 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 		}
 		#system("ln -s $dir_name/results/extern.h extern.h");
 		#system("ln -s $dir_name/results/aux aux");
-		system("ln -s ../results/aux aux");
+		
+		#AB system("ln -s ../results/aux aux");		
+		system("mkdir aux");
+                system("mkdir aux/results");
+                system("mkdir aux/tmp");  
+                system("ln -s ../../results/aux/so_generated aux/so_generated");
+                system("ln -s ../../results/aux/models aux/models");
+
  		#system("ln -s $dir_name/results/autoprot.h autoprot.h");
  		#system("ln -s ../results/autoprot.h autoprot.h");
 		#system("ln -s $dir_name/results/EXTLIB EXTLIB");
@@ -2030,6 +2074,7 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 		#Create and update session.dat
 		system("./n_calchep -blind \'\\8a\'");
 		update_session("$dir_name/single",$k,-1);
+		system("./n_calchep -blind \'\\8a\'");
 		
 		#Create job script
 		open(JOB_FILE,">job_script")
@@ -2037,7 +2082,7 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 		print JOB_FILE "#!/bin/bash\n";
 		my $job_name = $subprocess;
 		$job_name =~ s/'//g;#'
-		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out");}
+		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out",1);}
 		elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"cs.out");}
 		elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"cs.out");}
 		print JOB_FILE "cd $dir_name/single/\n";
@@ -2098,14 +2143,46 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 			}
 			#system("ln -s $dir_name/results/extern.h extern.h");
 			#system("ln -s $dir_name/results/aux aux");
-			system("ln -s ../results/aux aux");
+			
+			#AB system("ln -s ../results/aux aux");
+			system("mkdir aux");
+                	system("mkdir aux/results");
+                	system("mkdir aux/tmp");  
+                	system("ln -s ../../results/aux/so_generated aux/so_generated");
+               	 	system("ln -s ../../results/aux/models aux/models");
+
  			#system("ln -s $dir_name/results/autoprot.h autoprot.h");
  			#system("ln -s ../results/autoprot.h autoprot.h");
 			#system("ln -s $dir_name/results/EXTLIB EXTLIB");
 			#system("ln -s ../results/EXTLIB EXTLIB");
 			#Create and update session.dat
 			system("./n_calchep -blind \'\\8a\'");
+			#Before updating the session, update the numerical values in @vars_values.
+			for(my $l=0;$l<=$#vars_names;$l++){
+			  for(my $m=0;$m<=$#param_names;$m++){
+			    if($vars_names[$l] eq $param_names[$m]){$vars_values[$l] = $param_values[$m];}
+			  }
+			  for(my $m=0;$m<=$#run_param;$m++){
+			    my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+			    $vars_values[$l] =~ s/${run_param[$m]}/($run_value)/g; 
+			    if($vars_names[$l] eq $run_param[$m]){$vars_values[$l] = $run_value;} 
+			  }
+			  $vars_values[$l] = eval($vars_values[$l]);
+			}
+			#Also update momenta
+			$p1 = $p1def;
+			$p2 = $p2def;
+			for(my $m=0;$m<=$#run_param;$m++){
+			  my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+			  $p1 =~ s/${run_param[$m]}/($run_value)/g; 
+			  $p2 =~ s/${run_param[$m]}/($run_value)/g; 
+			  if($p1 eq $run_param[$m]){$p1 = $run_value;} 
+			  if($p2 eq $run_param[$m]){$p2 = $run_value;} 
+			}
+			$p1 = eval($p1);
+			$p2 = eval($p2);
 			update_session("$dir_name/$subdir_name",$k,$j);
+			system("./n_calchep -blind \'\\8a\'");
 
 			#Create job script
 			open(JOB_FILE,">job_script")
@@ -2113,14 +2190,14 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 			print JOB_FILE "#!/bin/bash\n";
 			my $job_name = $subprocess;
 			$job_name =~ s/'//g;#'
-			if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out");}
+			if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out",1);}
 			elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"cs.out");}
 			elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"cs.out");}
 			print JOB_FILE "cd $dir_name/$subdir_name/\n";
-			for (my $l=0;$l<=$#run_param;$l++){
-				printf JOB_FILE "$CH_PATH/bin/set_param %s %s\n", $run_param[$l], 
-					$run_begin[$l]+$run_step[$l]*$step_tmp[$l];
-			}
+			#for (my $l=0;$l<=$#run_param;$l++){
+			#	printf JOB_FILE "$CH_PATH/bin/set_param %s %s\n", $run_param[$l], 
+			#		$run_begin[$l]+$run_step[$l]*$step_tmp[$l];
+			#}
 			#$systemString = "$CH_PATH/bin/run_vegas";
 			$systemString = "./n_calchep -blind \"[[[[[[[[[\{\{$nSess1\{[\{$nCalls1\{[[\{[[\{[\{]]]]]]\{$nSess2\{[\{$nCalls2\{[[\{0\"";
 			$systemString = $systemString."  2>&1 1>  cs.o";
@@ -2182,10 +2259,18 @@ for (my $k=0;$k<=$#decay_subprocesses;$k++){
     foreach $a (@as){
       system("ln -s ../results/$a $a");
     }
-    system("ln -s ../results/aux aux");
+    
+    #AB system("ln -s ../results/aux aux");
+    system("mkdir aux");
+    system("mkdir aux/results");
+    system("mkdir aux/tmp");  
+    system("ln -s ../../results/aux/so_generated aux/so_generated");
+    system("ln -s ../../results/aux/models aux/models");
+
     #Create and update session.dat
     system("./n_calchep -blind \'\\8a\'");
     update_decay_session("$dir_name/single",$k);
+    system("./n_calchep -blind \'\\8a\'");
     
     #Create job script
     open(JOB_FILE,">job_script")
@@ -2193,7 +2278,7 @@ for (my $k=0;$k<=$#decay_subprocesses;$k++){
     print JOB_FILE "#!/bin/bash\n";
     my $job_name = $subprocess;
     $job_name =~ s/'//g;#'
-    if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out");}
+    if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out",0);}
     elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"cs.out");}
     elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"cs.out");}
     print JOB_FILE "cd $dir_name/single/\n";
@@ -2240,10 +2325,30 @@ for (my $k=0;$k<=$#decay_subprocesses;$k++){
 	#system("ln -s $dir_name/results/$a $a");
 	system("ln -s ../results/$a $a");
       }
-      system("ln -s ../results/aux aux");
+      
+      #AB system("ln -s ../results/aux aux");
+      system("mkdir aux");
+      system("mkdir aux/results");
+      system("mkdir aux/tmp");  
+      system("ln -s ../../results/aux/so_generated aux/so_generated");
+      system("ln -s ../../results/aux/models aux/models");
+
       #Create and update session.dat
       system("./n_calchep -blind \'\\8a\'");
+      #Before updating the session, update the numerical values in @vars_values.
+      for(my $l=0;$l<=$#vars_names;$l++){
+	for(my $m=0;$m<=$#param_names;$m++){
+	  if($vars_names[$l] eq $param_names[$m]){$vars_values[$l] = $param_values[$m];}
+	}
+	for(my $m=0;$m<=$#run_param;$m++){
+	  my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+	  $vars_values[$l] =~ s/${run_param[$m]}/($run_value)/g;
+	  if($vars_names[$l] eq $run_param[$m]){$vars_values[$l] = $run_value;}
+	}
+	$vars_values[$l] = eval($vars_values[$l]);
+      }
       update_decay_session("$dir_name/$subdir_name",$k);
+      system("./n_calchep -blind \'\\8a\'");
       
       #Create job script
       open(JOB_FILE,">job_script")
@@ -2251,14 +2356,14 @@ for (my $k=0;$k<=$#decay_subprocesses;$k++){
       print JOB_FILE "#!/bin/bash\n";
       my $job_name = $subprocess;
       $job_name =~ s/'//g;#'
-      if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out");}
+      if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"cs.out",0);}
       elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"cs.out");}
       elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"cs.out");}
       print JOB_FILE "cd $dir_name/$subdir_name/\n";
-      for (my $l=0;$l<=$#run_param;$l++){
-	printf JOB_FILE "$CH_PATH/bin/set_param %s %s\n", $run_param[$l], 
-	  $run_begin[$l]+$run_step[$l]*$step_tmp[$l];
-      }
+      #for (my $l=0;$l<=$#run_param;$l++){
+      #    printf JOB_FILE "$CH_PATH/bin/set_param %s %s\n", $run_param[$l], 
+      #    $run_begin[$l]+$run_step[$l]*$step_tmp[$l];
+      #}
       $systemString = "./n_calchep -blind \"[[[[[[[[[\{\{$nSess1\{[\{$nCalls1\{[[\{[[\{[\{]]]]]]\{$nSess2\{[\{$nCalls2\{[[\{0\"";
       $systemString = $systemString."  2>&1 1>  cs.o";
       if ($par_meth =~ /[Pp][Bb][Ss]/ || $par_meth =~ /[Ll][Ss][Ff]/ || $par_meth =~ /[Ss][Ll][Uu][Rr][Mm]/){print JOB_FILE "        $systemString\n";}
@@ -2658,7 +2763,7 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 		print JOB_FILE "#!/bin/bash\n";
 		my $job_name = $subprocesses[$k];
 		$job_name =~ s/'//g;#'
-		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",1);}
 		elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 		elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 		print JOB_FILE "cd $dir_name/single/\n";
@@ -2713,7 +2818,7 @@ for (my $k=0;$k<=$#subprocesses;$k++){
 			print JOB_FILE "#!/bin/bash\n";
 			my $job_name = $subprocesses[$k];
 			$job_name =~ s/'//g;#'
-			if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+			if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",1);}
 			elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 			elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 			print JOB_FILE "cd $dir_name/$subdir_name/\n";
@@ -2782,7 +2887,7 @@ for (my $k=0;$k<=$#decay_subprocesses;$k++){
 		print JOB_FILE "#!/bin/bash\n";
 		my $job_name = $subprocess;
 		$job_name =~ s/'//g;#'
-		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",0);}
 		elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 		elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 		print JOB_FILE "cd $dir_name/single/\n";
@@ -2823,7 +2928,7 @@ for (my $k=0;$k<=$#decay_subprocesses;$k++){
 			print JOB_FILE "#!/bin/bash\n";
 			my $job_name = $subprocess;
 			$job_name =~ s/'//g;#'
-			if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+			if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",0);}
 			elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 			elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 			print JOB_FILE "cd $dir_name/$subdir_name/\n";
@@ -2885,7 +2990,14 @@ if ($#step<0){
 	}
 	#system("ln -s $dir_name/results/extern.h extern.h");
 	#system("ln -s $dir_name/results/aux aux");
-	system("ln -s ../results/aux aux");
+	
+	#AB system("ln -s ../results/aux aux");
+	system("mkdir aux");
+        system("mkdir aux/results");
+        system("mkdir aux/tmp");  
+        system("ln -s ../../results/aux/so_generated aux/so_generated");
+        system("ln -s ../../results/aux/models aux/models");
+
  	#system("ln -s $dir_name/results/autoprot.h autoprot.h");
  	#system("ln -s ../results/autoprot.h autoprot.h");
 	#system("ln -s $dir_name/results/EXTLIB EXTLIB");
@@ -2894,13 +3006,14 @@ if ($#step<0){
 	system("./n_calchep -blind \'\\8a\'");
 	#system("./n_calchep -blind \'[[[[[[[[[{[{\\8e0{[{5{[{\\8e0{}[{{\\8e0{\\8a\'");
 	update_decay_session("$dir_name/single",-1);
+	system("./n_calchep -blind \'\\8a\'");
 		#Create job script
 	open(JOB_FILE,">job_script")
 		or die("Couldn't open $dir_name/single/jobscript.");
 	print JOB_FILE "#!/bin/bash\n";
 	my $job_name = $subprocess;
 	$job_name =~ s/'//g;#'
-	if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+	if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",0);}
 	elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 	elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 	print JOB_FILE "cd $dir_name/single/\n";
@@ -2955,7 +3068,15 @@ else {
 		}
 		#system("ln -s $dir_name/results/extern.h extern.h");
 		#system("ln -s $dir_name/results/aux aux");
-		system("ln -s ../results/aux aux");
+		#system("ln -s ../results/aux aux");
+		
+		#AB system("cp -r ../results/aux aux");
+		system("mkdir aux");
+                system("mkdir aux/results");
+                system("mkdir aux/tmp");  
+                system("ln -s ../../results/aux/so_generated aux/so_generated");
+                system("ln -s ../../results/aux/models aux/models");
+
  		#system("ln -s $dir_name/results/autoprot.h autoprot.h");
  		#system("ln -s ../results/autoprot.h autoprot.h");
 		#system("ln -s $dir_name/results/EXTLIB EXTLIB");
@@ -2963,7 +3084,20 @@ else {
 		#Create and update session.dat
 		system("./n_calchep -blind \'\\8a\'");
 		#system("./n_calchep -blind \'[[[[[[[[[[{{10000{\\8a\'");
+		#Before updating the session, update the numerical values in @vars_values.
+		for(my $l=0;$l<=$#vars_names;$l++){
+		  for(my $m=0;$m<=$#param_names;$m++){
+		    if($vars_names[$l] eq $param_names[$m]){$vars_values[$l] = $param_values[$m];}
+		  }
+		  for(my $m=0;$m<=$#run_param;$m++){
+		    my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+		    $vars_values[$l] =~ s/${run_param[$m]}/($run_value)/g;
+		    if($vars_names[$l] eq $run_param[$m]){$vars_values[$l] = $run_value;}
+		  }
+		  $vars_values[$l] = eval($vars_values[$l]);
+		}
 		update_decay_session("$dir_name/$subdir_name",-1);
+		system("./n_calchep -blind \'\\8a\'");
 
 		#Create job script
 		open(JOB_FILE,">job_script")
@@ -2971,14 +3105,14 @@ else {
 		print JOB_FILE "#!/bin/bash\n";
 		my $job_name = "Widths";
 		$job_name =~ s/'//g;#'
-		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out");}
+		if($par_meth=~/[Pp][Bb][Ss]/){write_PBS_info($job_name,"job.out",0);}
 		elsif($par_meth=~/[Ll][Ss][Ff]/){write_LSF_info($job_name,"job.out");}
 		elsif($par_meth=~/[Ss][Ll][Uu][Rr][Mm]/){write_SLURM_info($job_name,"job.out");}
 		print JOB_FILE "cd $dir_name/$subdir_name/\n";
-		for (my $l=0;$l<=$#run_param;$l++){
-			printf JOB_FILE "$CH_PATH/bin/set_param %s %s\n", $run_param[$l], 
-				$run_begin[$l]+$run_step[$l]*$step_tmp[$l];
-		}
+		#for (my $l=0;$l<=$#run_param;$l++){
+		#	printf JOB_FILE "$CH_PATH/bin/set_param %s %s\n", $run_param[$l], 
+		#		$run_begin[$l]+$run_step[$l]*$step_tmp[$l];
+		#}
 		#my $systemString = sprintf ("./n_calchep -blind \"[[[[[[[[[[[\{[[[[[[\{\\8a\"");
 		my $systemString = sprintf ("./n_calchep -blind \"[[[{[{{}0\"");#Includes 1->3 decays
 		$systemString = $systemString."  2>&1 1>  job.o";
@@ -3491,14 +3625,14 @@ sub generate_cs_plot {
   
   if($#run_param==0){
     if($max_param[0]/$min_param[0]>100){print GP_INST "set logscale x\n";}
-    if($max/$min>100){print GP_INST "set logscale y\n";}
+    if($min!=0&&$max/$min>100){print GP_INST "set logscale y\n";}
     print GP_INST "set ylabel 'cs (fb)'\n";
     print GP_INST "set xlabel '$run_param[0]'\n";
     print GP_INST "plot 'gnuplot_dat' using 1:2 with lines\n";
   }
   elsif($#run_param==1){
     if($max_param[0]/$min_param[0]>100){print GP_INST "set logscale x\n";}
-    if($max/$min>100){print GP_INST "set logscale y\n";}
+    if($min!=0&&$max/$min>100){print GP_INST "set logscale y\n";}
     print GP_INST "set ylabel 'cs (fb)'\n";
     print GP_INST "set xlabel '$run_param[0]'\n";
     print GP_INST "plot 'gnuplot_dat' using 1:(\$2==500?\$3:0) with lines";
@@ -3537,7 +3671,7 @@ else
    soname_VandP :=
 endif
 VandP.so:VandP.c \$(DEPEND) models/extlib$model_num.mdl
-\t\$(CC) \$(CFLAGS)  -shared -o VandP.so \$(soname_VandP) VandP.c \$(CALCHEP)/include/VandPgate.c  \$(EXTLIB) \$(CALCHEP)/lib/libSLHAplus.a \$(CALCHEP)/lib/dummy.a  -lm
+\t\$(CC) \$(CFLAGS)  -shared -o VandP.so \$(soname_VandP) VandP.c \$(CALCHEP)/include/VandPgate.c  \$(EXTLIB) \$(CALCHEP)/lib/libSLHAplus.a \$(CALCHEP)/lib/dummy.a  -lm -lpthread
 ENDMK
   close(MAKEFILE);
 #  system("make -C $dir");
@@ -3721,7 +3855,7 @@ cd results
 \$CALCHEP/sbin/nCompil
 if(test \$? -ne 0) then echo error in C-code compilation; exit 2 ;fi
 cLib=\$CALCHEP/lib
-\$CC \$CFLAGS  -o n_calchep \$cLib/n_calchep.o \$cLib/num_c.a \$cLib/sqme_aux.\$SO proclib_*.a ../../../VandP.so \$cLib/dynamic_me.a \$cLib/serv.a \$cLib/libSLHAplus.a \$cLib/ntools.a \$LX11 -lm  \$lDL
+\$CC \$CFLAGS  -o n_calchep \$cLib/n_calchep.o \$cLib/num_c.a \$cLib/sqme_aux.\$SO proclib_*.a ../../../VandP.so \$cLib/dynamic_me.a \$cLib/serv.a \$cLib/libSLHAplus.a \$cLib/ntools.a \$LX11 -lm -lpthread \$lDL
 if(test \$? -ne 0) then echo error in n_calchep linking; exit 3; fi
 echo n_calchep is created
 
@@ -3782,6 +3916,7 @@ sub write_PBS_info {
   elsif($memory>0){print JOB_FILE "#PBS -l mem=${memory}gb\n";}
   my $job_name = $_[0];
   $job_name =~ s/'//g;#'
+  if($_[2]>0){print JOB_FILE "#PBS -l nodes=1:ppn=$max_ppn\n";}
   print JOB_FILE "#PBS -N $_[0]\n";
   print JOB_FILE "#PBS -o $_[1]\n";
   print JOB_FILE "#PBS	-j oe\n";
@@ -3893,7 +4028,7 @@ sub update_session {
 		elsif ($line =~ /#Distributions/){$dists_section=1;$cuts_section=0;$reg_section=0;$kinematics_section=0;}
 		elsif ($line =~ /#QCDscales/){$qcdscales_section=1;}
 		elsif ($line =~ /#Vegas/){$qcdscales_section=0;}
-		elsif ($line =~ /#Composites/){$composite_section=1;}
+		elsif ($line =~ /#Composites/){$composite_section=1;$qcdscales_section=0;}
 		elsif ($line =~ /========/){$dists_section=0;$cuts_section=0;$reg_section=0;$composite_section=0;}
 		
 		if ($init_section==1){
@@ -4053,6 +4188,7 @@ sub update_session {
 		}
 		if ($init_section==0&&$param_section==0&&$BW_section==0&&$cuts_section==0&& $reg_section==0 && $kinematics_section==0 && $dists_section==0&&$qcdscales_section==0&&$composite_section==0){
 			if($line =~ /#Vegas_calls/){$line ="#Vegas_calls ${nCalls1}x${nSess1} ${nCalls2}x${nSess2}\n";}
+			if($line =~ /#Parallelization:/){$line ="#Parallelization: $max_ppn\n";}
 			if($line =~ /#Events/){$line = "#Events $subCubes $randSearch $simpSearch 10000 \n";}
 			if($line =~ /#VVdecays/ && ($VVdecay =~ /[Oo][Ff][Ff]/ || $VVdecay =~ /[Ff][Aa][Ll][Ss][Ee]/))
 			  {$line = "#VVdecays  0\n";}
@@ -4368,7 +4504,7 @@ sub update_min_max {
 	my @step_tmp = @{$step[$_[1]]};
 	for (my $l=0;$l<=$#run_param;$l++){
 		my $run_value = $run_begin[$l]+$run_step[$l]*$step_tmp[$l];
-		$new_value =~ s/{$run_param[$l]}/($run_value)/g;
+		$new_value =~ s/${run_param[$l]}/($run_value)/g;
 		#printf "%s -> %s\n", $_[0], $new_value; 
 	}
 	
@@ -4389,13 +4525,14 @@ sub update_decay_session {
 	my $param_section=0;
 	my $kinematics_section=0;
 	my $reg_section=0;
+	my $cuts_section=0;
 	SESSION_LINE: while (my $line = <SESSION_FILE>){
 		if ($line =~ /Physical_Parameters/){$param_section=1;}
 		elsif ($line =~ /----/){$param_section=0;}
 		elsif ($line =~ /#Kinematical_scheme/){$kinematics_section=1;}
-		elsif ($line =~ /#Cuts/){$kinematics_section=0;}
+		elsif ($line =~ /#Cuts/){$kinematics_section=0;$cuts_section=1;}
 		elsif ($line =~ /#Regularization/){$reg_section=1;}
-		elsif ($line =~ /========/){$reg_section=0;}
+		elsif ($line =~ /========/){$reg_section=0;$cuts_section=0;}
 		
 		if ($param_section==1){
 			print NEW_SESSION_FILE "#Physical_Parameters \n";
@@ -4448,9 +4585,17 @@ sub update_decay_session {
 			}
 			$reg_section=2;
 		}
+		if ($cuts_section==1){
+		  print NEW_SESSION_FILE "#Cuts\n";
+		  print NEW_SESSION_FILE "*** Table ***\n";
+		  print NEW_SESSION_FILE " Cuts\n";
+		  print NEW_SESSION_FILE "!|  Parameter  |> Min bound <|> Max bound <|\n";
+		  $cuts_section=2;
+		}
 		#$param_section=0;
-		if ($param_section==0 && $kinematics_section==0 && $reg_section==0){
+		if ($param_section==0 && $kinematics_section==0 && $reg_section==0 && $cuts_section==0){
 			if($line =~ /#Vegas_calls/){$line = "#Vegas_calls ${nCalls1}x${nSess1} ${nCalls2}x${nSess2}\n";}
+			if($line =~ /#Parallelization:/){$line ="#Parallelization: 0\n";}
 			if($line =~ /#Events/){$line = "#Events $subCubes $randSearch $simpSearch 10000\n";}
 			if($line =~ /#VVdecays/ && ($VVdecay =~ /[Oo][Ff][Ff]/ || $VVdecay =~ /[Ff][Aa][Ll][Ss][Ee]/))
 			  {$line = "#VVdecays  0\n";}
@@ -4487,13 +4632,25 @@ sub combine_events {
 		$subdir_name="";
 		if ($#step<0){$subdir_name="single";}
 		else{
+		  #Before combining events, update the numerical values in @vars_values.
+		  for(my $l=0;$l<=$#vars_names;$l++){
+		    for(my $m=0;$m<=$#param_names;$m++){
+		      if($vars_names[$l] eq $param_names[$m]){$vars_values[$l] = $param_values[$m];}
+		    }
+		    for(my $m=0;$m<=$#run_param;$m++){
+		      my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+		      $vars_values[$l] =~ s/${run_param[$m]}/($run_value)/g;
+		      if($vars_names[$l] eq $run_param[$m]){$vars_values[$l] = $run_value;}
+		    }
+		    $vars_values[$l] = eval($vars_values[$l]);
+		  }
 			my @step_tmp = @{$step[$_[0]]};
 			for (my $l=0;$l<=$#run_param;$l++){
 				$subdir_name = sprintf("%s%s%s",$subdir_name, $run_param[$l], 
 					$run_begin[$l]+$run_step[$l]*$step_tmp[$l]);
-				for (my $k=0;$k<=$#vars_names;$k++){
-					if ($vars_names[$k] eq $run_param[$l]){$vars_values[$k]=$run_begin[$l]+$run_step[$l]*$step_tmp[$l];}
-				}
+			#	for (my $k=0;$k<=$#vars_names;$k++){
+			#		if ($vars_names[$k] eq $run_param[$l]){$vars_values[$k]=$run_begin[$l]+$run_step[$l]*$step_tmp[$l];}
+			#	}
 			}
 		}
 		$dir_name=$dir_name."/$subdir_name";
@@ -4509,13 +4666,25 @@ sub combine_events {
 	$subdir_name="";
 	if ($#step<0){$subdir_name="single";}
 	else{
+	  #Before combining events, update the numerical values in @vars_values.
+	  for(my $l=0;$l<=$#vars_names;$l++){
+	    for(my $m=0;$m<=$#param_names;$m++){
+	      if($vars_names[$l] eq $param_names[$m]){$vars_values[$l] = $param_values[$m];}
+	    }
+	    for(my $m=0;$m<=$#run_param;$m++){
+	      my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+	      $vars_values[$l] =~ s/${run_param[$m]}/($run_value)/g;
+	      if($vars_names[$l] eq $run_param[$m]){$vars_values[$l] = $run_value;}
+	    }
+	    $vars_values[$l] = eval($vars_values[$l]);
+	  }
 		my @step_tmp = @{$step[$_[0]]};
 		for (my $l=0;$l<=$#run_param;$l++){
 			$subdir_name = sprintf("%s%s%s",$subdir_name, $run_param[$l], 
 				$run_begin[$l]+$run_step[$l]*$step_tmp[$l]);
-			for (my $k=0;$k<=$#vars_names;$k++){
-				if ($vars_names[$k] eq $run_param[$l]){$vars_values[$k]=$run_begin[$l]+$run_step[$l]*$step_tmp[$l];}
-			}
+			#for (my $k=0;$k<=$#vars_names;$k++){
+			#	if ($vars_names[$k] eq $run_param[$l]){$vars_values[$k]=$run_begin[$l]+$run_step[$l]*$step_tmp[$l];}
+			#}
 		}
 	}
 	$dir_name=$dir_name."/$subdir_name";
@@ -4534,6 +4703,7 @@ sub combine_events {
 	
 	#Run event_mixer
 	chdir("$working_dir/Events/tmp/");
+        print($n_events); 
 	my $command=sprintf "nice -n $nice_level $CH_PATH/bin/event_mixer %G $n_events .  2>&1 1>  event_mixer.o", $max_lumi;
 	#$command="nice -n $nice_level $CH_PATH/bin/event_mixer $n_events .  2>&1 1>  event_mixer.o";
 	#print "$command\n";
@@ -4653,13 +4823,25 @@ sub combine_distributions {
 	    $subdir_name="";
 	    if ($#step<0){$subdir_name="single";}
 	    else{
+	      #Before combining distributions, update the numerical values in @vars_values.
+	      for(my $l=0;$l<=$#vars_names;$l++){
+		for(my $m=0;$m<=$#param_names;$m++){
+		  if($vars_names[$l] eq $param_names[$m]){$vars_values[$l] = $param_values[$m];}
+		}
+		for(my $m=0;$m<=$#run_param;$m++){
+		  my $run_value = $run_begin[$m]+$run_step[$m]*$step_tmp[$m];
+		  $vars_values[$l] =~ s/${run_param[$m]}/($run_value)/g;
+		  if($vars_names[$l] eq $run_param[$m]){$vars_values[$l] = $run_value;}
+		}
+		$vars_values[$l] = eval($vars_values[$l]);
+	      }
 	      my @step_tmp = @{$step[$_[0]]};
 	      for (my $l=0;$l<=$#run_param;$l++){
 		$subdir_name = sprintf("%s%s%s",$subdir_name, $run_param[$l], 
 				       $run_begin[$l]+$run_step[$l]*$step_tmp[$l]);
-		for (my $k=0;$k<=$#vars_names;$k++){
-		  if ($vars_names[$k] eq $run_param[$l]){$vars_values[$k]=$run_begin[$l]+$run_step[$l]*$step_tmp[$l];}
-		}
+		#for (my $k=0;$k<=$#vars_names;$k++){
+		#  if ($vars_names[$k] eq $run_param[$l]){$vars_values[$k]=$run_begin[$l]+$run_step[$l]*$step_tmp[$l];}
+		#}
 	      }
 	    }
 	    $dir_name=$dir_name."/$subdir_name";
@@ -5119,6 +5301,7 @@ sub print_run_details {
 	open(TXT_FILE, ">$working_dir/Events/tmp/run_details.txt");
 	print TXT_FILE	"\n";
 	print TXT_FILE "<calchep-batch>\n";
+        print TXT_FILE "<![CDATA[\n";
 	print TXT_FILE "#########################################\n";
 	print TXT_FILE "#            Model Info                 #\n";
 	print TXT_FILE "#########################################\n";
@@ -5169,8 +5352,8 @@ sub print_run_details {
 	print TXT_FILE "#########################################\n";
 	print TXT_FILE "#            Momenta                    #\n";
 	print TXT_FILE "#########################################\n";
-	print TXT_FILE "p1 :         $p1\n";
-	print TXT_FILE "p2 :         $p2\n\n";
+	print TXT_FILE "p1 :         $p1def\n";
+	print TXT_FILE "p2 :         $p2def\n\n";
 	print TXT_FILE "\n";
 	print TXT_FILE "#########################################\n";
 	print TXT_FILE "#            Parameters                 #\n";
@@ -5289,7 +5472,8 @@ sub print_run_details {
 	print TXT_FILE "simplex search : $simpSearch\n";
 	print TXT_FILE "MAX*N          : $maxN\n";
 	print TXT_FILE "find new MAX   : $findNewMax\n"; 
-	print TXT_FILE "\n\n";
+	print TXT_FILE "\n";
+        print TXT_FILE "]]>\n";
 	print TXT_FILE "</calchep-batch>\n";
 	close(TXT_FILE);
 }

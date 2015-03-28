@@ -26,6 +26,7 @@
 
 #define unknownQ3 -111111
 
+int ldModelStatus=0;
 int  nCommonVars=0;
 static int  depQ1=0;
 table  modelTab[5] =
@@ -35,7 +36,6 @@ table  modelTab[5] =
  {"","","",NULL,0},
  {"","","",NULL,0}};
 
-static int lastModel=0;
 static char * tabName;
 static int nLine;
 
@@ -51,8 +51,9 @@ static void errorMessage( char * fieldName, char * format, ...)
     sprintf(errorText,"Error in table '%s' line %d field '%s'\nposition %u: %s",
 	  tabName,nLine,fieldName,rderrpos,errmesstxt(rderrcode) );
    else
-	sprintf(errorText,"Error in table '%s' line %d field '%s' \n %s",
-		  tabName,nLine,fieldName,dump);
+    sprintf(errorText,"Error in table '%s' line %d field '%s'  position %u:\n  %s",
+           tabName,nLine,fieldName, rderrpos, dump);
+                              
    if(blind) printf("ERROR:%s\n",errorText); else messanykey(2,10,errorText);
 }
 
@@ -75,7 +76,7 @@ static int tabCharPos(char *  str, int  n)
 static int  isVarName(char*  s)
 {
   int i=1;
-
+  if(!s[0]) return 0;
   if ( !isalpha(s[0]) ) return 0;
   while  (s[i] !=0)
   { 
@@ -139,13 +140,37 @@ static void * rd_33(char*s)
    if(isdigit(s[0])) return &Number;
    if(s[0]=='"')  return  &String;
    if (strcmp(s,"Q")==0) depQ=1;
-   for(i=1;i<=nmodelvar;i++) if(strcmp(modelvars[i].varname,s) == 0) 
+
+   if(nmodelvar && strcmp(modelvars[nmodelvar].varname,s)==0)
+   {  i=nmodelvar; 
+      if(setPub && modelvars[i].pub==0 && modelvars[i].func)  modelvars[i].pub=-1; 
+      return &Number;
+   } 
+    
+   for(i=1;i<nmodelvar;i++) if(strcmp(modelvars[i].varname,s) == 0) 
    {  
       if(setPub && modelvars[i].pub==0 && modelvars[i].func)  modelvars[i].pub=-1; 
       return &Number;
    }
    rderrcode=unknownidentifier; return NULL;   
 }  
+
+static void * rd_33_nocheck(char*s)
+{  int i;
+
+   if(isdigit(s[0])) return &Number;
+   if(s[0]=='"')  return  &String;
+   if (strcmp(s,"Q")==0) depQ=1; 
+
+   if(setPub) 
+   for(i=1;i<=nmodelvar;i++)  if(modelvars[i].pub==0 && strcmp(modelvars[i].varname,s) == 0) 
+   {  modelvars[i].pub=-1; 
+      return &Number;
+   }
+   return &Number;   
+}  
+
+
 
                                 
 #define nv0 4
@@ -199,9 +224,7 @@ static int  readvars(int  check)
 
   for(i=0;i<nv0;i++) 
   {  strcpy(modelvars[i].varname,resName[i]);}
-  
-  
-  
+    
    aWidth1=nv+10;
    depQ1=nv+10;
    
@@ -248,8 +271,9 @@ static int  readvars(int  check)
    {  
       int hidden=0;
       ss=ln->line;
-      sscanf(ss,"%[^|]",name);
+      name[0]=0; sscanf(ss," %[^|]",name);   
       trim(name);
+      if(!name[0]) { errorMessage("Name","Empty line in the table","*"); goto errExi1; }
       if(name[0]=='*') {name[0]=' '; trim(name); setPub=1;}  else 
       {  setPub=0;
          if(name[0]=='#') {name[0]=' '; trim(name); hidden=1;}
@@ -280,17 +304,28 @@ static int  readvars(int  check)
       aWidth=0;
       depQ=0;
 
-      if(readExpression(ln->line+funcShift,rd_33, act_33,NULL)==&String) rderrcode=typemismatch;
-      if(rderrcode &&(rderrcode!=unknownfunction))
-      {    
-	  errorMessage("Expression","*");
-	  goto errExi1;
-      }
-              
+      if(check)
+      {
+         if(readExpression(ln->line+funcShift,rd_33, act_33,NULL)==&String) rderrcode=typemismatch;
+         if(rderrcode &&(rderrcode!=unknownfunction))
+         {  
+           if(rderrcode==unknownidentifier)
+           { char buff[100];
+             sscanf(ln->line+funcShift+rderrpos-1,"%[^|*+-/)(. ]",buff);
+             errorMessage("Expression","Unknown variable  %s",buff);
+           }else if(rderrcode==unexpectedcharacter)
+           { char ch=ln->line[funcShift+rderrpos-1];
+             if(!ch) errorMessage("Expression","%s","Unexpected end of line");
+             else errorMessage("Expression","Unexpected characted |%c|",ch);
+           }  else errorMessage("Expression","*");     
+	   goto errExi1;
+         }
+      }  else readExpression(ln->line+funcShift,rd_33_nocheck, act_33,NULL);
+      
       if(aWidth && aWidth1 > nmodelvar+1)  aWidth1=nmodelvar+1; 
-      if(depQ   && depQ1   > nmodelvar+1)  depQ1  =nmodelvar+1;   
+      if(depQ   && depQ1   > nmodelvar+1)  depQ1  =nmodelvar+1; 
       if(ExtFunc) 
-      { 
+      {
         nCommonVars=nmodelvar+1;
         if(nCommonVars>=aWidth1)
         { 
@@ -310,7 +345,7 @@ static int  readvars(int  check)
    for(i=nmodelvar; i>nCommonVars; i--) if(modelvars[i].pub==-1) 
    {  readExpression(modelvars[i].func,rd_33, act_33,NULL);
       modelvars[i].pub=1;
-   }
+   }   
    return 1;
 
 errExi1:
@@ -594,7 +629,8 @@ static int  readparticles(int  check, int ugForce )
          {  errorMessage("color","number expected");
             return 0;
          }
-         if (((itmp!=1)&&(itmp!=3)&&(itmp!=8))||((itmp==3)&&(strcmp(p1,p2)==0))  )
+         if (((itmp!=1)&&(itmp!=3)&&(itmp!=8)&& (itmp!=6))
+            ||((itmp==3)&&(strcmp(p1,p2)==0)) ||((itmp==6)&&(strcmp(p1,p2)==0))) 
          {  errorMessage("color","value out of range");
             return 0;
          }
@@ -614,6 +650,12 @@ static int  readparticles(int  check, int ugForce )
            break;
         } 
       }
+      prtclbase[nparticles-1].nHerm=0;
+      if(strchr(chlp,'*'))
+      { char *ch=strchr(chlp,'!');
+        if(ch) { ch[0]=' '; prtclbase[nparticles-1].nHerm=1;}
+      }
+                                
       trim(chlp);
       if (strcmp(chlp,"") == 0) strcpy(chlp," ");
       prtclbase[nparticles-1].hlp = toupper(chlp[0]);
@@ -668,6 +710,7 @@ static int  readparticles(int  check, int ugForce )
         prtclbase[nparticles-1].latex=malloc(1+strlen(latex_));
         strcpy(prtclbase[nparticles-1].latex,latex_);
         if (prtclbase[np1-1].cdim == 3) prtclbase[nparticles-1].cdim = -3;
+        if (prtclbase[np1-1].cdim == 6) prtclbase[nparticles-1].cdim = -6;
         if(prtclbase[np1-1].q3==unknownQ3) prtclbase[nparticles-1].q3=unknownQ3; 
                                     else   prtclbase[nparticles-1].q3=-prtclbase[np1-1].q3;     
         np2=ghostaddition();
@@ -721,7 +764,7 @@ static int  testLgrgn(algvertptr lgrgn)
   int n;
 /*  goto_xy(1,20); print("%d           ",nLine); */
   m = (preres) readExpression(lgrgn->comcoef,rd_pre, act_preF,NULL);
-  if (rderrcode )
+  if(rderrcode )
   {  errorMessage("Factor","*");
     return 0;
   }
@@ -824,7 +867,7 @@ static int  readlagrangian(int check, int ugForce)
   char   pPtr[4][60];
   int  factorShift,lorentzShift;
   arr4byte  f_copy;
-  int mLine,totcolor,color,spinorNumb;
+  int mLine,spinorNumb;
   linelist ln;
   static char fName[4][5] = {"P1","P2","P3","P4"};
   polyvars var_testing={0,NULL}; 
@@ -873,16 +916,25 @@ static int  readlagrangian(int check, int ugForce)
     for (i=0;i<4;i++) lgrgn->fields[i] = f_copy[i];
 
     if(check)
-    {
-      totcolor=1;
-      for (mm=0;((mm<4)&&(lgrgn->fields[mm] !=0));mm++)
+    { 
+      int color=1;
+      for (mm=0;((mm<4)&&(lgrgn->fields[mm] !=0));mm++) 
+      switch(prtclbase[lgrgn->fields[mm] -1].cdim)
       {
-        color=prtclbase[lgrgn->fields[mm] -1].cdim;
-        if (color==-3) color=5;
-        totcolor=totcolor*color;
+        case  8: color*=2; break;
+        case  3: color*=3; break;
+        case -3: color*=5; break;
+        case  6: color*=7; break;
+        case -6: color*=11;break;  
       }
-      if( (totcolor!=1)&&(totcolor!=15)&&(totcolor!=64)&&(totcolor!=120)&&(totcolor!=512) )
-      {   errorMessage("Lorentz part","wrong color structure");
+//printf("color=%d\n",color);      
+      switch(color)
+      { case 1: 
+        case 4:  case 15: case 77: 
+        case 30: case 154: case 8: 
+        case 27: case 125:
+        case 99: case 175: break;
+        default:  errorMessage("Lorentz part","wrong color structure");
          return 0;
       }
       spinorNumb=0;
@@ -894,15 +946,15 @@ static int  readlagrangian(int check, int ugForce)
       {  errorMessage("Lorentz part","wrong spinor  structure");
         return 0;
        }
-    }
     if (! testLgrgn(lgrgn) )  { clearVars(vardef); return 0;}
+
+    }
    }
 
    clearVars(vardef);
    clearpregarbage();
 
-   lgrgn1 = lgrgn;   /*     Sorting    */
-   if(lgrgn1) do
+   for(lgrgn1 = lgrgn; lgrgn1; lgrgn1=lgrgn1->next)   /*     Sorting    */
    {  lgrgn1->factor=1;
       for(i=0;i<4 && lgrgn1->fields[i];i++)
       { int hlp=prtclbase[lgrgn1->fields[i]-1].hlp;
@@ -926,8 +978,7 @@ static int  readlagrangian(int check, int ugForce)
             else
                --(i);
          }
-      lgrgn1 = lgrgn1->next;
-  }  while (lgrgn1 != NULL);
+  }
 
   if (check)
   {
@@ -965,7 +1016,7 @@ static int  readlagrangian(int check, int ugForce)
         if (f_copy[i] !=0)
         {
           mm=ghostmother(f_copy[i]);
-          f_copy[i]=prtclbase[mm-1].anti  + f_copy[i]-mm   ;
+          if(!prtclbase[mm-1].nHerm) f_copy[i]=prtclbase[mm-1].anti  + f_copy[i]-mm;
          }
       }
 
@@ -1019,10 +1070,7 @@ static void  filldecaylist(void)
   particleNumType   pn[5], cc[3];
   decaylink   kk, qq;
 
-   if(!lgrgn) return;
-   
-   lgrgn1 = lgrgn;
-   do
+   for(lgrgn1 = lgrgn;lgrgn1;lgrgn1 = lgrgn1->next)   
    {
       for (i = 1; i <= 4; i++)
       {
@@ -1079,18 +1127,18 @@ static void  filldecaylist(void)
 exi:;
             }
          }
-      lgrgn1 = lgrgn1->next;
-   }  while (lgrgn1 != NULL);
+   }
 }
 
 
 static int find3charge(void)
 {
   int i,cont;
+  for(i=0;i<nparticles;i++) if(prtclbase[i].nHerm) prtclbase[i].q3=0;
 
   for(cont=1;cont;)
   { cont=0;  
-    for(i=0;i<nparticles;i++) if(prtclbase[i].hlp!='*' &&   ghostmother(i+1)==i+1 && prtclbase[i].q3==unknownQ3)
+    for(i=0;i<nparticles;i++) if(/*prtclbase[i].hlp!='*' && */  ghostmother(i+1)==i+1 && prtclbase[i].q3==unknownQ3)
     { decaylink dec=prtclbase[i].top;
       for(;dec;dec=dec->next)
       { int j,ch,br ;
@@ -1170,8 +1218,11 @@ static void  readEXTLIB(void)
 int  loadModel(int check,int ugForce)
 { 
   errorText[0]=0;
-  if( (!check)&&(lastModel == n_model) ) return 1;
-  if( !readvars(check) )     {  if(blind) sortie(125); else return 0;} 
+  if(ldModelStatus&1==0) {sprintf(errorText,"model files are not read\n");    return 0;} 
+  
+  if((!check) && (ldModelStatus&2)==2 && (ldModelStatus&4)==4*ugForce) return 1;
+  ldModelStatus=1;
+  if( !readvars(check) )     {  if(blind) sortie(125); else return 0;}   
   if( !readparticles(check,ugForce))   {  if(blind) sortie(125); else return 0;}
   nmodelvar++;
   strcpy(modelvars[nmodelvar].varname,strongconst);
@@ -1181,7 +1232,7 @@ int  loadModel(int check,int ugForce)
   if(find3charge()) {if(blind) sortie(125); else return 0;} 
   if(check && ! checkQ3()) {if(blind)  sortie(125); else return 0;}
 //  readEXTLIB();
-  lastModel = n_model;
+  ldModelStatus=1+2+4*ugForce;
   return 1;
 }
 
@@ -1189,7 +1240,8 @@ int  readModelFiles(char * path,int l)
 {  char fname[100];
    char *ext[5]={"vars","func","prtcls","lgrng","extlib"};
    int i;
-
+       
+   ldModelStatus=0; 
    sprintf(fname,"%s/%s%d.mdl",path,ext[4],l);
    if(access(fname,R_OK)) 
    { FILE *f=fopen(fname,"w");
@@ -1200,7 +1252,6 @@ int  readModelFiles(char * path,int l)
      fclose(f);     
    }
    for(i=0;i<5;i++) cleartab(modelTab+i);
-   lastModel=0;
    for(i=0;i<5;i++)
    { int err;
      sprintf(fname,"%s/%s%d.mdl",path,ext[i],l);
@@ -1216,23 +1267,14 @@ int  readModelFiles(char * path,int l)
        sprintf(txt,"Error in model file %s\n"
                    "file is absent",fname);                     
        messanykey(10,10,txt);
-       if(blind) { printf("%s\n",txt); exit(1);} 
+       if(blind) { printf("%s\n",txt); exit(1);}
+       return err; 
      } 
-     if(err) return err;  
    }
+   ldModelStatus=1;
    return 0;  
 }
 
-
-int read2VarsParticles(void)
-{
-   errorText[0]=0;
-   blind=1;
-  
-   if(!readvars(1) ) return 1;   
-   if(!readparticles(1,0))     return 2;
-   return 0;
-}
 
 /*=========================  VandP ========================*/
 #include "procvar.h"
@@ -1245,7 +1287,7 @@ static void readEXTFunc(FILE*f)
   for(;fgets(buff,199,f);)
   { 
     trim(buff);
-    if(strstr(buff,"extern ")==buff);
+    if(strstr(buff,"extern ")==buff)
     { char *c;
       c=strchr(buff,'(');
       if(c)
@@ -1331,7 +1373,7 @@ int makeVandP(int rd ,char*path,int L, int mode,char*CalcHEP)
       fprintf(f," {\"%s\",",prtclbase[i].name);
       if(i+1==anti)   fprintf(f,"\"%s\", ",prtclbase[i].name);
            else       fprintf(f,"\"%s\", ",prtclbase[anti-1].name);
-     fprintf(f,"%ld, \"%s\",\"%s\",%d,%d,%d}\n",
+     fprintf(f,"%d, \"%s\",\"%s\",%d,%d,%d}\n",
        prtclbase[i].N,  prtclbase[i].massidnt, prtclbase[i].imassidnt,  
        prtclbase[i].spin, prtclbase[i].cdim,prtclbase[i].q3);
     
@@ -1430,7 +1472,7 @@ if(i==depQ1) fprintf(f," FirstQ:\n cErr=1;\n");
            free(ss);
         }
         if(checkNaN)
-        fprintf(f,"   if(!finite(%s) || FError) return %d;\n",vararr[i].alias,vararr[i].num);
+        fprintf(f,"   if(!isfinite(%s) || FError) return %d;\n",vararr[i].alias,vararr[i].num);
         else fprintf(f,"\n");
      }
   }

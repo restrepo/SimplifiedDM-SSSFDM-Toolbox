@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 			err = sortOddParticles(lspname);	
 			printMasses(stdout,1);				
 	 		Omega = darkOmega(&Xf,fast,Beps);
-			printf("Xf=%.2e Omega=%.2e\n",Xf,Omega);
+			printf("Xf=%.2e Omega h^2=%.2e\n",Xf,Omega);
 //   			printChannels(Xf,cut,Beps,1,stdout);
 			printf("\n");
 			printChannels(Xf,cut,Beps,1,stdout);
@@ -79,7 +79,7 @@ printf("         BOX DIAGRAMS\n");
     fprintf(omega,"201 %6.15lf #\n",SCcoeff*pA0[0]*pA0[0]);
     fprintf(omega,"202 %6.15lf #\n",3*SCcoeff*pA5[0]*pA5[0]);
     fprintf(omega,"203 %6.15lf #\n",SCcoeff*nA0[0]*nA0[0]);
-    fprintf(omega,"204 %6.15lf# \n",3*SCcoeff*nA5[0]*nA5[0]);
+    fprintf(omega,"204 %6.15lf # \n",3*SCcoeff*nA5[0]*nA5[0]);
     
     
 }

@@ -136,6 +136,11 @@ extern double polint3(double x, int n,  double *xa, double *ya);
 extern double polint4(double x, int n,  double *xa, double *ya);
 
 
+extern double complex hGGeven(double MH, double alphaMH, int Nitems, ...);
+extern double complex hAAeven(double MH, double alphaMH, int Nitems, ...);
+extern double complex  hGGodd(double MH, double alphaMH, int Nitems, ...);
+extern double complex  hAAodd(double MH, double alphaMH, int Nitems, ...);
+
 #include "delList.h"
 
 #ifdef __cplusplus

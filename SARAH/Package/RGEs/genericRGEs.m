@@ -73,6 +73,7 @@ CalcBetaOneSoftBreakingNew[TwoL,Simp];
 CalcRGEtraces[TwoL,Simp];
 CalcBetaScalarMass[TwoL,Simp];
 If[AddDiracGauginos===True,CalcBetaDiracGauginos[TwoL,Simp]];
+If[AddFIU1===True,CalcBetaFI[TwoL,Simp]];
 CalcBetaGaugino[TwoL,Simp];
 CalcBetaGauge[TwoL,Simp];
 CalcBetaQuadSuperpotential[TwoL,Simp];
@@ -112,6 +113,7 @@ BetaLi=Get[ToFileName[$sarahCurrentRGEDir,"BetaLi.m"]];
 BetaLSi=Get[ToFileName[$sarahCurrentRGEDir,"BetaLSi.m"]]; 
 Betam2ij=Get[ToFileName[$sarahCurrentRGEDir,"Betam2ij.m"]]; 
 BetaMi=Get[ToFileName[$sarahCurrentRGEDir,"BetaMi.m"]];
+If[AddFIU1===True,BetaFIi=Get[ToFileName[$sarahCurrentRGEDir,"BetaFIi.m"]];];
 If[AddDiracGauginos===True,BetaDGi=Get[ToFileName[$sarahCurrentRGEDir,"BetaDGi.m"]]];
 BetaGauge=Get[ToFileName[$sarahCurrentRGEDir,"BetaGauge.m"]];
 BetaWijkl=Get[ToFileName[$sarahCurrentRGEDir,"BetaWijkl.m"]];
@@ -129,6 +131,7 @@ BetaLi3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaLi3I.m"]];
  BetaLSi3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaLSi3I.m"]]; 
 Betam2ij3I=Get[ToFileName[$sarahCurrentRGEDir,"Betam2ij3I.m"]]; 
 BetaMi3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaMi3I.m"]];
+If[AddFIU1===True,BetaFIi3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaFIi3I.m"]];];
 If[AddDiracGauginos===True,BetaDGi3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaDGi3I.m"]]];
 BetaGauge3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaGauge3I.m"]];
 BetaWijkl3I=Get[ToFileName[$sarahCurrentRGEDir,"BetaWijkl3I.m"]];
@@ -141,7 +144,7 @@ TraceAbbr3I=Get[ToFileName[$sarahCurrentRGEDir,"RGEtraces3I.m"]];
 ];
 
 
-GenerateCouplingList[NoMatMul_,Force_]:=Block[{i},
+GenerateCouplingList[NoMatMul_,Force_]:=Block[{i,indices,indNr},
 If[NoMatMul,MakeMatrixMul=False;,MakeMatrixMul=True;];
 
 threeIndexParameter={};
@@ -225,17 +228,32 @@ listSMOne = listSM;
 NeededAnaDimsForVEVs={};
 listVEVi={};
 SA`ListVEVi={};
+Clear[VEVi];
 
 For[j=1,j<=Length[NameOfStates],
 If[Head[DEFINITION[NameOfStates[[j]]][VEVs]]===List,
 For[i=1,i<=Length[DEFINITION[NameOfStates[[j]]][VEVs]],
 If[FreeQ[listVEVi,DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]] && DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]=!=0 && DEFINITION[NameOfStates[[j]]][VEVs][[i,2,2]]=!=0,
 pos=Position[SFieldsMultiplets,DEFINITION[NameOfStates[[j]]][VEVs][[i,1]]];
+If[Head[SFieldsMultiplets[[pos[[1,1]]]]]===List,
+indNr=Position[SFieldsMultiplets[[pos[[1,1]]]],DEFINITION[NameOfStates[[j]]][VEVs][[i,1]]];
+];
 NeededAnaDimsForVEVs=Join[NeededAnaDimsForVEVs,{{getBlankSF[Extract[SFields,pos[[1,1]]]],DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]] /.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A}}}];
 sf=RE[getFullSF[Extract[SFields,pos[[1,1]]]]];
-listVEVi = Join[listVEVi,{{sf  makeDelta[pos[[1,1]],1,2,{generation}],getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL]/.subGC[1]}}];
-SA`ListVEVi = Join[SA`ListVEVi,{{sf, {-1,makeDelta[pos[[1,1]],1,2,{generation}] getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL]/.subGC[1]}}}];
-VEVi[sf /. Delta[a__]->1 /. RM[a__][b__]->1 /. subGCRule[1]]=getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL] /. subGC[1];
+indices=ListFields[[pos[[1,1]],2,1]];
+deltaInd=makeDelta[pos[[1,1]],1,2,{generation}];
+(* deltaInd=1; *)
+For[k=1,k<=Length[indices],
+deltaInd=deltaInd*Delta[indices[[k]]/.subGC[1],indNr[[1,k]]];
+k++;
+];
+listVEVi = Join[listVEVi,{{sf  deltaInd ,getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL]/.subGC[1]}}];
+SA`ListVEVi = Join[SA`ListVEVi,{{sf, {-1,deltaInd  getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL]/.subGC[1]}}}];
+If[Head[VEVi[sf /. Delta[a__]->1 /. RM[a__][b__]->1 /. subGC[1]]]===Times ||Head[VEVi[sf /. Delta[a__]->1 /. RM[a__][b__]->1 /. subGC[1]]]===Plus,
+VEVi[sf /. Delta[a__]->1 /. RM[a__][b__]->1 /. subGCRule[1]]=VEVi[sf /. Delta[a__]->1 /. RM[a__][b__]->1 /. subGC[1]]+ deltaInd getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL] /. subGC[1];,
+VEVi[sf /. Delta[a__]->1 /. RM[a__][b__]->1 /. subGCRule[1]]= deltaInd getFull[DEFINITION[NameOfStates[[j]]][VEVs][[i,2,1]]/.{A_[b_Integer]->A,A_[b_Integer,c_Integer]->A},ALL] /. subGC[1];
+
+];
 ];
 i++;];
 ];
@@ -707,9 +725,11 @@ betaFuncVEV2L[p1_] := VEVi[pP] gammaij2L[pP,p1];
 *)
 
 
-betaFuncVEV[p1_] := VEVi[pZ] gammaijScalar[pZ,p1]+ VEVi[pZ]gammaijHat[pZ,p1];
+betaFuncVEV[p1_] := VEVi[pX] gammaijScalar[pX,p1]+ VEVi[pX]gammaijHat[pX,p1];
 betaFuncVEV2L[p1_] := VEVi[pP] gammaij2LScalar[pP,p1]+ VEVi[pP]gammaij2LHat[pP,p1];
 
+betaFuncFIi1L[gNr_]:=Sum[2   GUTren[gNr] SA`gCoup[gNr,gnr2] Tr1[gnr2],{gnr2,1,AnzahlGauge}]+Sum[Sum[1/( SA`gCoup[gNr,gnr2]) betaFuncGauge[gnr2,gnr1] Xi[Gauge[[gnr1,1]]],{gnr2,1,AnzahlGauge}],{gnr1,1,AnzahlGauge}]/. 1/SA`gCoup[__]->0/. SA`gCoup[__]->0;
+betaFuncFIi2L[gNr_]:=Sum[2   GUTren[gNr] SA`gCoup[gNr,gnr2] Tr3[gnr2],{gnr2,1,AnzahlGauge}]+ExpandTerm[Sum[Sum[1/( SA`gCoup[gNr,gnr2]) betaFuncGaugeU12L[gnr2,gnr1] Xi[Gauge[[gnr1,1]]],{gnr2,1,AnzahlGauge}],{gnr1,1,AnzahlGauge}]] /. 1/SA`gCoup[__]->0/. SA`gCoup[__]->0 /. YBar[a__]->0 ;
 
 betaFuncDGi[p1_,gNr_]:=ExpandTerm[DGi[pN,gNr] gammaij[pN,p1]]+Sum[DGi[p1,gSUM] (QBar[gSUM,gNr] - 3 SA`gCoup[gSUM,gNr]^2 SA`Casimir[gNr]),{gSUM,1,Length[Gauge]}] //.  SA`gCoup[a__]->0 //. QBar[a__]->0;
 betaFuncDGi2L[p1_,gNr_]:=ExpandTerm[DGi[pN,gNr] gammaij2L[pN,p1]]+DGi[p1,gNr] betaFuncGauge2L[gNr,gNr]/SA`gCoup[gNr,gNr];
@@ -808,6 +828,14 @@ BetaFunctionLi2L[term_]:=Block[{beta},
 Return[betaFuncLi2L[term[[1]]/.subGC[1]]];
 ];
 
+BetaFunctionFIi1L[term_]:=Block[{beta},
+Return[betaFuncFIi1L[term]];
+];
+
+BetaFunctionFIi2L[term_]:=Block[{beta},
+Return[betaFuncFIi2L[term]];
+];
+
 BetaFunctionTijk1L[term_]:=Block[{beta},
 beta = betaFuncAijk[term[[1]]/.subGC[1],term[[2]]/.subGC[2],term[[3]]/.subGC[3] ];
 beta +=betaFuncAijk[term[[3]]/.subGC[3],term[[2]]/.subGC[2],term[[1]]/.subGC[1]];
@@ -898,6 +926,7 @@ BIJ,Print[StyleForm["Calculate Beta Functions for bilinear soft breaking paramet
 LSI,Print[StyleForm["Calculate Beta Functions for linear soft breaking parameters","Section",FontSize->12]];,
 M2IJ,Print[StyleForm["Calculate Beta Functions for scalar soft breaking masses","Section",FontSize->12]];,
 GAUGE,Print[StyleForm["Calculate Beta Functions for Gauge Couplings","Section",FontSize->12]];,
+FI,Print[StyleForm["Calculate Beta Functions for Fayet-Iliopoulos D-terms","Section",FontSize->12]];,
 MI,Print[StyleForm["Calculate Beta Functions for Gaugino masses","Section",FontSize->12]];,
 DGI,Print[StyleForm["Calculate Beta Functions for Dirac Gaugino masses","Section",FontSize->12]];,
 VEV,Print[StyleForm["Calculate Beta Functions for VEVs","Section",FontSize->12]];
@@ -961,6 +990,10 @@ DGI,
 	coup=1;
 	betaFunction=BetaFunctionDGi1L[fields[[i,1]]];
 	If[twoloop,betaFunction2L=BetaFunctionDGi2L[fields[[i,1]]];,betaFunction2L=0];,
+FI,
+	coup=1;
+	betaFunction=BetaFunctionFIi1L[fields[[i,1]]];
+	If[twoloop,betaFunction2L=BetaFunctionFIi2L[fields[[i,1]]];,betaFunction2L=0];,
 VEV,
 	coup=fields[[i,2,2]];
 	betaFunction=BetaFunctionVEV1L[fields[[i,1]]];
@@ -968,17 +1001,15 @@ VEV,
  ];
 
 DynamicCoupProgess[type]=CalcRGEValue[fields[[i,2,2]] /. Delta[a__]->1 /.epsTensor[a__]->1  /. RM[a___][b___]->1/. InvMat[a__][b__]->1];
-
 res=GetNonZeroEntries[fields[[i,2,2]] /. Delta[gen1,a_]->1 /. Delta[a___,gen2,b___]->1];
 subNonZero=res[[1]]; 
-
-factor=DeleteCases[DeleteCases[fakeFac coup /. subNonZero,_?(MemberQ[{gen1,gen2,gen3},#]&),10] /. A_[]->1 /. Conj[x_]->x,_?(MemberQ[Transpose[parameters][[1]],#]&),10] /. fakeFac ->1;
-
+factor=DeleteCases[DeleteCases[fakeFac coup /. subNonZero,_?(MemberQ[{gen1,gen2,gen3},#]&),10]/. A_[{}]->1 /. A_[]->1 /. Conj[x_]->x,_?(MemberQ[Transpose[parameters][[1]],#]&),10] /. fakeFac ->1;
 
 betaFunction =Expand[1/factor* CalcRGEValue[ExpandTerm[betaFunction ]/. subNonZero /. SA`gCoup[a__]->0 ,False]];
 LoopProgess[type]="1-loop";
 betaFunction2L = Expand[1/factor* CalcRGEValue[ExpandTerm[betaFunction2L] /. SA`SubIgnore2L /. 0[a__]->0 /. subNonZero,False]];
 LoopProgess[type]="2-loop";
+
 
 If[type===M2IJ,
 If[listSMadd[[i,3]],betaFunction=betaFunction /. {gen2->gen1,gen1->gen2};betaFunction2L=betaFunction2L /. {gen2->gen1,gen1->gen2};];
@@ -1030,6 +1061,7 @@ M2IJ,Betam2ij=SaveArray; Betam2ij3I=SaveArray3I;,
 GAUGE,BetaGauge=SaveArray; BetaGauge3I=SaveArray3I;,
 MI,BetaMi=SaveArray; BetaMi3I=SaveArray3I;,
 DGI,BetaDGi=SaveArray; BetaDGi3I=SaveArray3I;,
+FI,BetaFIi=SaveArray; BetaFIi3I=SaveArray3I;,
 VEV,BetaVEV=SaveArray; BetaVEV3I=SaveArray3I;
 ];
 UseSymmASymm=False;
@@ -1128,6 +1160,7 @@ CalcBetaOneSoftBreaking[TwoL_,Simp_]:=CalcBetaFunctions[LSI,listAone,"BetaLSi","
 CalcBetaScalarMass[TwoL_,Simp_]:=CalcBetaFunctions[M2IJ,SA`ListM2ij,"Betam2ij","Betam2ij3I",TwoL,Simp];
 CalcBetaGauge[TwoL_,Simp_]:=CalcBetaFunctions[GAUGE,SA`ListGaugeMixed,"BetaGauge","BetaGauge3I",TwoL,Simp];
 CalcBetaDiracGauginos[TwoL_,Simp_]:=CalcBetaFunctions[DGI,SA`DiracGauginosInfo,"BetaDGi","BetaDGi3I",TwoL,Simp];
+CalcBetaFI[TwoL_,Simp_]:=CalcBetaFunctions[FI,SA`listFIU1,"BetaFIi","BetaFIi3I",TwoL,Simp];
 CalcBetaGaugino[TwoL_,Simp_]:=CalcBetaFunctions[MI,SA`ListGauginoMixed,"BetaMi","BetaMi3I",TwoL,Simp];
 CalcBetaVEVs[TwoL_,Simp_]:=CalcBetaFunctions[VEV,SA`ListVEVi,"BetaVEV","BetaVEV3I",TwoL,Simp];
 

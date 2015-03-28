@@ -7,15 +7,15 @@
 #define Nout 7
 #define QCUT 2.5
 #define X1CUT (2.E-2)
-#define V0  (0.001)
+
+#define V0 (Vrot/299792.*1.5957691)  /* 2*sqrt(2/PI).  10^(-6)*Mslp < Width */
+
 //#define DISPLAY_SPECTRA 
 /*#define ECTEST*/
-
 
 static double Mcdm0;
 
 extern double cs23(numout*cc, int nsub, double Pcm, int ii3);
-
 
 
 aChannel* vSigmaCh=NULL;
@@ -34,7 +34,7 @@ static double  vcs22(numout * cc,int nsub,int * err)
 {
    int i;
    double pcm,r;
-   double pmass[4], pvect[16];
+   REAL pmass[4], pvect[16];
    
 //printf("Mb4a=%E\n", findValW("Mb"));    
    for(i=1;i<=cc->interface->nvar;i++) if(cc->link[i]) cc->interface->va[i]=*(cc->link[i]);
@@ -245,20 +245,18 @@ static double Spectra22A(char*name1,char*name2,double ** Spectra,txtList plusA)
      }
   } 
   if(l==nModelParticles) return 0;
-
   
   for(cRec=plusA;cRec;cRec=cRec->next)
   { 
      char lib[50]="";
      char*N[5];
      process2Lib(cRec->txt,lib);
-     
      cc23=getMEcode(0,0,cRec->txt,NULL,NULL,lib);
      if(cc23==NULL) continue;
      if(passParameters(cc23)) continue; 
      *(cc23->interface->gtwidth)=0;
      *(cc23->interface->twidth)=0;
-     *(cc23->interface->gswidth)=1;
+     *(cc23->interface->gswidth)=0;
 
      for(i=0;i<5;i++) N[i]=cc23->interface->pinf(1,i+1,pmass+i,code+i);
     
@@ -275,7 +273,7 @@ static double Spectra22A(char*name1,char*name2,double ** Spectra,txtList plusA)
      }
 #endif 
        x2Sum=0; 
-       for(i=0;i<NZ;i++) 
+       for(i=1;i<NZ;i++) 
        { double dSigmaDz=0,x=exp(Zi(i));
          if(x>X0)
          { dSigmaDz=x*Mcdm0*dSigmadERest(x*Mcdm0);
@@ -336,8 +334,12 @@ static int readSpectra(void)
 
   for(n=0;n<Nin;n++)
   {  sprintf(buff,"%s/sources/data/%s",micrO,fnames[n]);
-     f=  fopen(buff,"r"); 
-     if(f==NULL) { free(buff);return 1;}    
+     f=  fopen(buff,"r");
+//     printf("f=%p\n",f);       
+//     fclose(f); f=NULL;
+     
+     if(f==NULL) { free(buff);return 1;} 
+//printf("%s\n", buff);        
      for(i=0;i<6;i++)
      { fscanf(f,"%*s"); 
        for(k=0;k<NEn;k++)
@@ -347,6 +349,7 @@ static int readSpectra(void)
          for(;l<NZ;l++)phidiff[n][i][k][l]=0;
        }
      }
+//printf("ok before fclose\n");     
      fclose(f);
   }
   
@@ -467,7 +470,7 @@ static double FUNB(double e)
 }
 
 
-static void boost(double Y, double Emax, double mDecay, double mx, double*tab)
+void boost(double Y, double Emax, double mDecay, double mx, double*tab)
 { double chY=cosh(Y), shY=sinh(Y);
   int l;
   double tab_out[NZ];  
@@ -527,7 +530,8 @@ int basicSpectra(double Mass, int pdgN, int outN, double * tab)
     double tabV[NZ],Y;
     double br_b=0.60 , br_l=0.06 ,br_W=0.21, br_Z=0.03, br_G=0.08,br_c=0.017,br_A=0.003;  
     int i;
-    for(i=0;i<NZ;i++) tab[i]=0;
+    for(i=1;i<NZ;i++) tab[i]=0;
+    tab[0]=Mass;
     mInterp(Mh,5,outN,tabV);  for(i=1;i<NZ;i++) tab[i]+=2*br_b*tabV[i];
     mInterp(Mh,9,outN,tabV);  for(i=1;i<NZ;i++) tab[i]+=2*br_l*tabV[i];
     mInterp(Mh,10,outN,tabV); for(i=1;i<NZ;i++) tab[i]+=2*br_Z*tabV[i];
@@ -535,7 +539,6 @@ int basicSpectra(double Mass, int pdgN, int outN, double * tab)
     mInterp(Mh,0,outN,tabV);  for(i=1;i<NZ;i++) tab[i]+=2*br_G*tabV[i]; 
     mInterp(Mh,4,outN,tabV);  for(i=1;i<NZ;i++) tab[i]+=2*br_c*tabV[i];
     if(outN==0) tab[1]+=br_A*8/(Zi(1)-Zi(2));
-    tab[0]=Mass;
     Y=acosh(Mcdm0/Mh);
 //printf("Mass=%E Mcdm0=%E\n", Mass,Mcdm0);    
     boost(Y, Mcdm0,Mh , outMass[outN], tab); 
@@ -584,7 +587,8 @@ static void getSpectrum(int wPol, double M, double m1,double m2,char*n1,char*n2,
         for(i=1;i<NZ;i++) tab[i]=(1-lng)*tab[i]+lng*tabL[i];
       } 
     }   
-    else mInterp(M/2,inP, outP,tab);  
+    else  mInterp(M/2,inP, outP,tab); 
+         
   }   
   else
   { char* nn[2];
@@ -652,7 +656,7 @@ static void getSpectrum(int wPol, double M, double m1,double m2,char*n1,char*n2,
         numout * d2Proc;
         int l; 
         char* n[4];
-        double m[4];
+        REAL m[4];
         double Y;
         double tab_p[NZ];
         char process[40],plib[40];
@@ -694,8 +698,9 @@ static void getSpectrum(int wPol, double M, double m1,double m2,char*n1,char*n2,
                     continue;
                  }
         Y=acosh(E[k]/mm[k]);
-        for(i=1;i<NZ;i++)tab[i]+=tabAux[i]/w; 
         boost(Y, M/2, mm[k], outMass[outP], tabAux);
+        for(i=1;i<NZ;i++)tab[i]+=tabAux[i]/w; 
+                
       }
     } 
   }
@@ -717,7 +722,7 @@ void addSpectrum(double *Spect, double * toAdd)
   double m2=toAdd[0];
   double buff[NZ];
   int i;
-    
+   
   if(m1>m2) for(i=1;i<NZ;i++) 
   { 
      double E= m1*exp(Zi(i));
@@ -755,8 +760,12 @@ static double calcSpectrum0(char *name1,char*name2, int key, double **Spectra, t
   sprintf(process,"%s,%s->AllEven,1*x{%s",name1,name2,EvenParticles());
 // Warning!!   in should be done in the same manner as annihilation libraries for Omega
   libPtr=getMEcode(0,ForceUG,process,NULL,NULL,lib);
-  
+
   if(!libPtr) return 0;
+  if(Qaddress && *Qaddress!=pMass(name1)+pMass(name2)) 
+  { *Qaddress=pMass(name1)+pMass(name2);
+     calcMainFunc;
+  }   
   passParameters(libPtr);
   if(plusA)
   { 
@@ -776,7 +785,8 @@ static double calcSpectrum0(char *name1,char*name2, int key, double **Spectra, t
   v_cs=malloc(sizeof(double)*ntot);
   (*libPtr->interface->twidth)=0;
   for(k=0;k<ntot;k++)
-  { double m[4],wV,br;
+  { REAL m[4];
+    double wV,br;
     char *N[4];
     int pdg[4];
     int l,l_;
@@ -821,27 +831,19 @@ static double calcSpectrum0(char *name1,char*name2, int key, double **Spectra, t
     else  if(m[2]+m[3]< m[0]+m[1])
     { 
 #ifdef V0    
-      v_cs[k]=V0*cs22(libPtr,k+1,V0*m[0]/2,-1.,1.,&err);
-//printf("Mb3=%E\n", findValW("Mb")); 
-
-      
+      v_cs[k]=V0*cs22(libPtr,k+1,V0*m[0]*m[1]/(m[0]+m[1]),-1.,1.,&err); 
 #else 
       v_cs[k]= vcs22(libPtr,k+1,&err);
-
 #endif 
       if(v_cs[k]<0) v_cs[k]=0; 
       vcsSum+=v_cs[k];
     } else v_cs[k]=-1;
-//    printf("vcs=%E cc23=%p \n",v_cs[k],cc23);
-
-//printf("before  Q=%E Mb=%E\n", findValW("Q"), findValW("Mb"));
-
   }
 
    
   for(k=0;k<ntot ;k++) if(v_cs[k]>=0)
   { char * N[4];
-    double m[4];
+    REAL m[4];
     int l,charge3[2],spin2[2],pdg[2];
     int PlusAok=0;
 
@@ -903,6 +905,7 @@ printf("energy conservation:0=%E=%E\n",  (E1+Eg+sqrt(pow(p2+2*dp,2)+m2*m2))/2/Mc
        }
        nAnCh++;
               
+//       if(N3!=25 && N4!=25)
        for(l=0;l<6;l++) if(Spectra[l])
        {
          getSpectrum(key&1,m[0]+m[1],m[2],m[3],N[2],N[3],N3,N4,l,tab2);
@@ -929,6 +932,7 @@ printf("energy conservation:0=%E=%E\n",  (E1+Eg+sqrt(pow(p2+2*dp,2)+m2*m2))/2/Mc
     }    
   }
   free(v_cs);
+  
   return  vcsSum;
 }
 
@@ -947,6 +951,7 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
   double weight[4][4];
   int checkGam[4][4];
   double  chStat[3]={0,0,0};
+  double NfracCDM2;
   
   err=readSpectra(); 
   if(err) { printf("calcSpectrum: Can not read data files for spectra\n");
@@ -956,8 +961,9 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
           
 //printf("?WINPS[2]=%s  fracCDM2=%e \n",WINPS[2],fracCDM2);
  
-  if(fracCDM2==0) WINPS[2]=NULL;
-  if(fracCDM2==1) WINPS[0]=NULL;  
+  if(fracCDM2==0) { WINPS[2]=NULL; NfracCDM2=0; } else
+  if(fracCDM2==1) { WINPS[0]=NULL; NfracCDM2=1; } else
+   NfracCDM2=  fracCDM2*Mcdm1/(fracCDM2*Mcdm1 +(1-fracCDM2)*Mcdm2); 
 
 //printf("WINPS[2]=%s\n",WINPS[2]);
   if(WINPS[0])
@@ -970,8 +976,8 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
     if( strcmp(ModelPrtcls[n-1].name,ModelPrtcls[n-1].aname)) WINPS[3]=ModelPrtcls[n-1].aname;
   }
   
-  double w1[4]={0.5*(1-fracCDM2)*(1+dmAsymm)  ,0.5*(1-fracCDM2)*(1-dmAsymm),
-                0.5*fracCDM2*(1+dmAsymm),      0.5*fracCDM2*(1-dmAsymm)};
+  double w1[4]={0.5*(1-NfracCDM2)*(1+dmAsymm)  ,0.5*(1-NfracCDM2)*(1-dmAsymm),
+                0.5*NfracCDM2*(1+dmAsymm),      0.5*NfracCDM2*(1-dmAsymm)};
   if(!WINPS[1]) { w1[0]+=w1[1]; w1[1]=0;}
   if(!WINPS[3]) { w1[2]+=w1[3]; w1[3]=0;}
 
@@ -985,6 +991,8 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
        if( WINPS[ni]==WINPS[nj]  && ModelPrtcls[nj-1].spin2==1)    checkGam[i][j]=1;
      } 
   }
+  
+    
   
    Mcdm0=0;
    if(weight[0][0]) Mcdm0=Mcdm1;
@@ -1004,16 +1012,14 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
     
   if(key&4) { PrintOn=1; printf("    Channel          vcs[cm^3/s]\n");} else PrintOn=0;  
 
-
-                
-  for(i=0;i<4;i++) for(j=0;j<4;j++) if(weight[i][j])  
+  for(i=0;i<4;i++) for(j=i;j<4;j++) if(weight[i][j])
   { double scale,c=weight[i][j];
     int nAnCh0,k;
     int key0=key&1;
     if(key&2 && checkGam[i][j]) key0+=2;
+    if(i!=j) c*=2;
 
 //printf("i=%d j=%d w=%e \n",i,j,weight[i][j]);
-//printf(" %s %s \n",WINPS[i],WINPS[j]);    
      
     Mcdm0=0.5*(pMass(WINPS[i])+pMass(WINPS[j]));
     err=findVal("Q",&scale);
@@ -1025,11 +1031,12 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
       if( i<2 && j<2) chStat[0]+=vcsij;
       else if(i>1 && j>1) chStat[2]+=vcsij;
       else chStat[1]+=vcsij;
-      vcs+=vcsij;
+      vcs+=vcsij;      
     }  
     for(l=0;l<6;l++) if(Spectra[l])
     {  for(k=1;k<NZ;k++)Spectra_[l][k]*=c;
-       addSpectrum(Spectra[l], Spectra_[l]);
+      addSpectrum(Spectra[l], Spectra_[l]);
+       
     }
     for(k=nAnCh0;k<nAnCh;k++) vSigmaCh[k].weight*=c;     
     if(plusA)
@@ -1044,6 +1051,7 @@ double calcSpectrum(int key, double *Sg,double*Se, double*Sp, double*Sne,double*
        }
        for(k=nAnCh0;k<nAnCh;k++) vSigmaCh[k].weight*=c;
        cleanTxtList(plusA);
+       plusA=NULL;
     }    
   } 
 

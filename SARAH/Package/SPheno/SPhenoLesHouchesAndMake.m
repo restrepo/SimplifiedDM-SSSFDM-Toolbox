@@ -119,7 +119,8 @@ WriteString[filenames[[l]],"  9  1              # Gaugeless limit used at two-lo
 WriteString[filenames[[l]]," 10  0              # safe-mode used at two-loop \n"];
 ];
 WriteString[filenames[[l]]," 11 1               # calculate branching ratios \n"];
-WriteString[filenames[[l]]," 13 1               # include 3-Body decays \n"];
+WriteString[filenames[[l]]," 13 1               # 3-Body decays: none (0), fermion (1), scalar (2), both (3) \n"];
+WriteString[filenames[[l]]," 14 1               # Run couplings to scale of decaying particle \n"];
 WriteString[filenames[[l]]," 12 1.000E-04       # write only branching ratios larger than this value \n"];
 WriteString[filenames[[l]]," 15 1.000E-30       # write only decay if width larger than this value \n"];
 WriteString[filenames[[l]]," 31 -1              # fixed GUT scale (-1: dynamical GUT scale) \n"];
@@ -330,7 +331,12 @@ WriteString[sphenoMake,"ifeq (${cVersion},1)\n"];
 WriteString[sphenoMake,"\t cd ../src ; ${MAKE} F90=${F90} \n"];
 WriteString[sphenoMake,"\t ${MAKE} F90=${F90} ${name} \n"];
 WriteString[sphenoMake,"\t ${MAKE} F90=${F90} SPheno"<>NameForModel<>".o \n"];
-WriteString[sphenoMake,"\t ${F90} -o SPheno"<>NameForModel<>" ${LFlagsB} SPheno"<>NameForModel<>".o ../lib/libSPheno"<>NameForModel<>".a ../lib/libSPheno.a\n"];
+
+If[UseHiggs2LoopMSSM===True,
+WriteString[sphenoMake,"\t ${F90} -c effpotasat.f \n"];
+WriteString[sphenoMake,"\t ${F90} -o SPheno"<>NameForModel<>" ${LFlagsB} SPheno"<>NameForModel<>".o effpotasat.o ../lib/libSPheno"<>NameForModel<>".a ../lib/libSPheno.a\n"];,(*otherwise do not include the fortran file*)WriteString[sphenoMake,"\t ${F90} -o SPheno"<>NameForModel<>" ${LFlagsB} SPheno"<>NameForModel<>".o ../lib/libSPheno"<>NameForModel<>".a ../lib/libSPheno.a\n"];
+];
+
 WriteString[sphenoMake,"\t mv SPheno"<>NameForModel<>" ../bin\n"];
 WriteString[sphenoMake,"\t rm SPheno"<>NameForModel<>".o  \n"];
 WriteString[sphenoMake,"${name}:  ${name}(Model_Data_"<>ModelName<>".o)  \\\n"]; 
@@ -354,6 +360,7 @@ WriteString[sphenoMake ," \\\n"];
 
 If[SupersymmetricModel=!=False,
 WriteString[sphenoMake," ${name}(EffPotFunctions.o) ${name}(DerivativesEffPotFunctions.o) ${name}(EffectivePotential_"<>ModelName<>".o) \\\n"];
+WriteString[sphenoMake," ${name}(2LPoleFunctions.o) ${name}(2LPole_"<>ModelName<>".o) \\\n"];
 If[UseHiggs2LoopMSSM===True,
 WriteString[sphenoMake," ${name}(BranchingRatios_"<>ModelName<>".o) ${name}(TwoLoopHiggsMass_SARAH.o) ${name}(LoopMasses_"<>ModelName<>".o) \\\n"];,
 WriteString[sphenoMake," ${name}(BranchingRatios_"<>ModelName<>".o) ${name}(LoopMasses_"<>ModelName<>".o) \\\n"];
@@ -379,9 +386,13 @@ WriteString[sphenoMake," ${name}(FineTuning_"<>ModelName<>".o) \\\n"];
 
 
 If[AddLowEnergyConstraint ===True && SPhenoOnlyForHM=!=True ,
+WriteString[sphenoMake," ${name}(LowEnergy_"<>ModelName<>".o) \\\n"];
+If[SkipFlavorKit=!=True,WriteString[sphenoMake,"${name}(FlavorKit_LFV_"<>ModelName<>".o) ${name}(FlavorKit_QFV_"<>ModelName<>".o) ${name}(FlavorKit_Observables_"<>ModelName<>".o)\\\n"];
+];
+
 If[NonSUSYModel=!=True,
-WriteString[sphenoMake," ${name}(SugraRuns_"<>ModelName<>".o) "<>stringOneLoopDecay <>"${name}(LowEnergy_"<>ModelName<>".o) ${name}(FlavorKit_LFV_"<>ModelName<>".o) ${name}(FlavorKit_QFV_"<>ModelName<>".o) ${name}(FlavorKit_Observables_"<>ModelName<>".o) ${name}(InputOutput_"<>ModelName<>".o) \n"];,
-WriteString[sphenoMake," ${name}(LowEnergy_"<>ModelName<>".o) ${name}(FlavorKit_LFV_"<>ModelName<>".o) ${name}(FlavorKit_QFV_"<>ModelName<>".o) ${name}(FlavorKit_Observables_"<>ModelName<>".o) "<>stringOneLoopDecay <>"${name}(InputOutput_"<>ModelName<>".o) \n"];
+WriteString[sphenoMake," ${name}(SugraRuns_"<>ModelName<>".o) "<>stringOneLoopDecay <>" ${name}(InputOutput_"<>ModelName<>".o) \n"];,
+WriteString[sphenoMake,stringOneLoopDecay <>"${name}(InputOutput_"<>ModelName<>".o) \n"];
 ];,
 If[NonSUSYModel=!=True,
 WriteString[sphenoMake," ${name}(SugraRuns_"<>ModelName<>".o) "<>stringOneLoopDecay <>"${name}(InputOutput_"<>ModelName<>".o) \n"];,
@@ -392,7 +403,7 @@ WriteString[sphenoMake,"else \n"];
 WriteString[sphenoMake,"\t @echo -------------------------------------------------------------------  \n"];
 WriteString[sphenoMake,"\t @echo ERROR:  \n"];
 WriteString[sphenoMake,"\t @echo The installed SPheno is version not compatibel with this module \n"];
-WriteString[sphenoMake,"\t @echo Please, upgrade at least to SPheno version 3.1.11.  \n"];
+WriteString[sphenoMake,"\t @echo Please, upgrade at least to SPheno version 3.3.0.  \n"];
 WriteString[sphenoMake,"\t @echo The current SPheno version can be downloaded from \n"];
 WriteString[sphenoMake,"\t @echo http://www.hepforge.org/downloads/spheno \n"];
 WriteString[sphenoMake,"\t @echo ------------------------------------------------------------------- \n"];

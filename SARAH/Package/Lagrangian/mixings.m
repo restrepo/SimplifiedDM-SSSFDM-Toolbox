@@ -312,7 +312,6 @@ Print["-----------------------------------"];
 PrintAll[StyleForm["Finishing","Section",FontSize->12]];
 
 PrintAll["Calculate final Lagrangian"];
-
 SetGenerations=True;
 Update[];
 CheckOne;
@@ -321,11 +320,9 @@ SetGenerations=False;
 PrintAll["Cleaning up"];
 AddMatrixProducts;
 
-
 MakeParameterDependenceList;
 CheckForMassless;
 CalculateTreeLevelMasses;
-
 SimplifyMatrices;
 CurrentStates = Last[NameOfStates];
 
@@ -757,6 +754,7 @@ MassMatrices[[i]]=Table[DMM[DMM[potential,conj[basis[[i,1,m]]],m,"m",1],conj[bas
 MassMatrices[[i]]=Table[DMM[DMM[potential,basis[[i,1,m]],m,"m",1],basis[[i,2,n]],n,"n",2]/.subVac /. Mom[_]->0 /. zero[a_]->nix /. nix->0,{m,1,Length[basis[[i,1]]]},{n,1,Length[basis[[i,2]]]}];
 ];
 i++;];
+
 DynamicNameMass[basis]="All Done";
 MassMatricesFull = Table[{},{Length[basis]}];
 
@@ -835,7 +833,6 @@ Message[MassMatrix::OnlyZero,basis[[i]]];
 ];
 i++;];
 *)
-
 
 Return[{CalcDelta[MassMatrices],CalcDelta[MassMatricesFull]}];
 

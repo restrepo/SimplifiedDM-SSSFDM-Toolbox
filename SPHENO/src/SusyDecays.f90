@@ -298,12 +298,12 @@ Contains
 
 
  Subroutine CharginoTwoBodyDecays(i_in, n_nu, id_nu, n_l, id_l, n_d, id_d, n_u &
-   & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c, n_s0    &
-   & , n_p0, n_Spm, ChiPm, Slept, c_CNuSl_L, c_CNuSl_R, Sneut, c_CLSn_L        &
-   & , c_CLSn_R, mf_l, Sdown, c_CUSd_L, c_CUSd_R, mf_u, Sup, c_CDSu_L          &
-   & , c_CDSu_R, mf_d, Chi0, mW, c_CNW_L, c_CNW_R, Spm, c_SmpCN_L, c_SmpCN_R   &
-   & , mZ, c_CCZ_L, c_CCZ_R, P0, c_CCP0_L, c_CCP0_R, S0, c_CCS0_L, c_CCS0_R    &
-   & , k_neut )
+  & , id_u, n_Z, id_Z, n_W, id_W, n_snu, n_sle, n_Sd, n_su, n_n, n_c, n_s0     &
+  & , n_p0, n_Spm, id_grav, ChiPm, Slept, c_CNuSl_L, c_CNuSl_R, Sneut          &
+  & , c_CLSn_L, c_CLSn_R, mf_l, Sdown, c_CUSd_L, c_CUSd_R, mf_u, Sup, c_CDSu_L &
+  & , c_CDSu_R, mf_d, Chi0, mW, c_CNW_L, c_CNW_R, Spm, c_SmpCN_L, c_SmpCN_R    &
+  & , mZ, c_CCZ_L, c_CCZ_R, P0, c_CCP0_L, c_CCP0_R, S0, c_CCS0_L, c_CCS0_R     &
+  & , m32, c_CGW_L, c_CGW_R, k_neut )
  !-----------------------------------------------------------------------
  ! Calculates the 2-body decays of charginos:
  ! input:
@@ -351,16 +351,16 @@ Contains
  Implicit None
 
   Integer, Intent(in) :: i_in, k_neut, n_nu, n_l, n_d, n_u, n_Z, n_W, n_snu  &
-       & , n_sle, n_Sd, n_su, n_n, n_c, n_s0, n_p0, n_Spm
+       & , n_sle, n_Sd, n_su, n_n, n_c, n_s0, n_p0, n_Spm, id_grav
   Integer, Intent(in) :: id_nu(:), id_l(:), id_d(:), id_u(:), id_Z(:), id_W(:)
-  Real(dp), Intent(in) ::  mf_l(:), mf_d(:), mf_u(:), mW(:), mZ(:)
+  Real(dp), Intent(in) ::  mf_l(:), mf_d(:), mf_u(:), mW(:), mZ(:), m32
   Complex(dp), Intent(in) :: c_CNuSl_L(:,:,:), c_CNuSl_R(:,:,:)     &
          & , c_CLSn_L(:,:,:), c_CLSn_R(:,:,:), c_CUSd_L(:,:,:)      &
          & , c_CUSd_R(:,:,:), c_CDSu_L(:,:,:), c_CDSu_R(:,:,:)      &
          & , c_CNW_L(:,:,:), c_CNW_R(:,:,:), c_SmpCN_L(:,:,:)       &
          & , c_SmpCN_R(:,:,:), c_CCZ_L(:,:,:), c_CCZ_R(:,:,:)       &
          & , c_CCP0_L(:,:,:), c_CCP0_R(:,:,:), c_CCS0_L(:,:,:)      &
-         & , c_CCS0_R(:,:,:)
+         & , c_CCS0_R(:,:,:), c_CGW_L(2), c_CGW_R(2)
   Type(particle2), Intent(in) :: Sdown(:), Spm(:), P0(:)
   Type(particle23), Intent(in) :: Sneut(:), Slept(:), Sup(:), Chi0(:), S0(:)
   Type(particle23), Intent(inout) :: ChiPm(:)
@@ -368,7 +368,7 @@ Contains
  
   Integer :: i1, i2, i_start, i_end, i_count, i3
   Real(dp) :: gam, m_in, mN(n_n), mSlepton(n_sle), mSneut(n_snu), mSdown(n_sd) &
-         & , mSup(n_su), mC(n_c), mS0(n_S0), mSpm(n_Spm), mP0(n_P0) 
+         & , mSup(n_su), mC(n_c), mS0(n_S0), mSpm(n_Spm), mP0(n_P0), x1, x2, sq1
   !-----------------
   ! Initialization
   !-----------------
@@ -425,7 +425,7 @@ Contains
    !--------------------------------------------------------
    Do i2 = 1,n_sle
     Do i3 = 1, n_nu
-     If ((Abs(c_CNuSl_L(i1,i3,i2))+Abs(c_CNuSl_R(i1,i3,i2))).gt.0._dp) then
+     If ((Abs(c_CNuSl_L(i1,i3,i2))+Abs(c_CNuSl_R(i1,i3,i2))).Gt.0._dp) Then
       Call FermionToFermionScalar(m_in, 0._dp, mSlepton(i2) &
              & , c_CNuSl_L(i1,i3,i2), c_CNuSl_R(i1,i3,i2), gam)
       If (k_neut.Eq.1) Then
@@ -447,7 +447,7 @@ Contains
    !-----------------------------------------------------------
    Do i2 = 1,n_snu
     Do i3 = 1,n_l
-     If ((Abs(c_CLSn_L(i1,i3,i2))+Abs(c_CLSn_R(i1,i3,i2))).gt.0._dp) then
+     If ((Abs(c_CLSn_L(i1,i3,i2))+Abs(c_CLSn_R(i1,i3,i2))).Gt.0._dp) Then
       Call FermionToFermionScalar(m_in, mf_l(i3), mSneut(i2) &
              & , c_CLSn_L(i1,i3,i2), c_CLSn_R(i1,i3,i2), gam)
       ChiPm(i1)%gi2(i_count) = gam
@@ -462,7 +462,7 @@ Contains
    !----------------------------------------------------
    Do i2 = 1,n_su
     Do i3 = 1,n_u
-     If ((Abs(c_CDSu_L(i1,i3,i2))+Abs(c_CDSu_R(i1,i3,i2))).gt.0._dp) then
+     If ((Abs(c_CDSu_L(i1,i3,i2))+Abs(c_CDSu_R(i1,i3,i2))).Gt.0._dp) Then
       Call FermionToFermionScalar(m_in, mf_d(i3), mSup(i2) &
              & , c_CDSu_L(i1,i3,i2), c_CDSu_R(i1,i3,i2), gam)
 
@@ -478,7 +478,7 @@ Contains
    !----------------------------------------------------
    Do i2 = 1,n_Sd
     Do i3 = 1,n_d
-     If ((Abs(c_CUSd_L(i1,i3,i2))+Abs(c_CUSd_R(i1,i3,i2))).gt.0._dp) then
+     If ((Abs(c_CUSd_L(i1,i3,i2))+Abs(c_CUSd_R(i1,i3,i2))).Gt.0._dp) Then
       Call FermionToFermionScalar(m_in, mf_u(i3), mSdown(i2) &
              & , c_CUSd_L(i1,i3,i2), c_CUSd_R(i1,i3,i2), gam)
 
@@ -560,6 +560,30 @@ Contains
      i_count = i_count + 1
     End Do
    End Do
+   !-----------------------------------------
+   ! gravitino W
+   !-----------------------------------------
+   If (Abs(mC(i1)).Gt.(m32+mW(1))) Then ! to be changed
+     x1 = m32/mC(i1)
+     sq1 = Sqrt(x1)
+     x2 = (mW(1)/mC(i1))**2
+     ChiPm(i1)%gi2(i_count) = oo16pi * Abs(mC(i1))**5                         &
+        &      * Sqrt(1._dp-2._dp*(x1+x2)+(x1-x2)**2)                         &
+        &      * ( (Abs(c_CGW_L(1))**2 + Abs(c_CGW_R(1))**2)                  &
+        &          * ( (1._dp-x1)**2 * (1._dp + 3._dp*x1)                     &
+        &                              - x2 * (3._dp + x1**2                  &
+        &                                  - 12._dp * x1 * sq1                &
+        &                                  - x2 * (3._dp-x1-x2) ) )           &
+        &         + (Abs(c_CGW_L(2))**2 + Abs(c_CGW_R(2))**2)                 &
+        &           * ( (1._dp-x1)**2 * (1._dp + sq1)**2                      &
+        &             - x2 * ( (1-sq1)**2 * (3._dp + 2._dp*sq1 - 9._dp*x1)    &
+        &                             - x2 * (3._dp-2._dp*sq1-9._dp*x1-x2) )) )
+
+     ChiPm(i1)%id2(i_count,1) = id_grav
+     ChiPm(i1)%id2(i_count,2) = id_W(1)
+
+     i_count = i_count + 1
+   End If
 
    ChiPm(i1)%g = Sum(ChiPm(i1)%gi2)
    If (ChiPm(i1)%g.Gt.0._dp) ChiPm(i1)%bi2 = ChiPm(i1)%gi2 / ChiPm(i1)%g
@@ -571,9 +595,9 @@ Contains
  End Subroutine CharginoTwoBodyDecays
 
 
- Subroutine GluinoTwoBodyDecays(n_d, id_d, n_Sd, n_u, id_u, n_Su, Glu, Sdown &
-               & , cpl_DGSd_L, cpl_DGSd_R, mf_d, Sup, cpl_UGSu_L, cpl_UGSu_R &
-               & , mf_u, k_neut)
+ Subroutine GluinoTwoBodyDecays(n_d, id_d, n_Sd, n_u, id_u, n_Su, id_grav, id_gl &
+       & , Glu, Sdown, cpl_DGSd_L, cpl_DGSd_R, mf_d, Sup, cpl_UGSu_L, cpl_UGSu_R &
+       & , mf_u, m32, Fgmsb, k_neut)
  !-----------------------------------------------------------------------
  ! Calculates the 2-body decays of gluinos at tree-level:
  ! input:
@@ -598,20 +622,22 @@ Contains
  ! 24.08.03: up to now there has been a sum over charged conjuagted states
  !           due to the need for the Les Houches Interface this will be
  !           removed
+ ! 05.03.2015: adding decay into gravitino and gluon
  !-----------------------------------------------------------------------
  Implicit None
 
-  Integer, Intent(in) :: k_neut, n_d, id_d(:), n_Sd, n_u, id_u(:), n_Su
-  Real(dp), Intent(in) ::  mf_d(:), mf_u(:)
+  Integer, Intent(in) :: k_neut, n_d, id_d(:), n_Sd, n_u, id_u(:), n_Su &
+      & , id_grav, id_gl
+  Real(dp), Intent(in) ::  mf_d(:), mf_u(:), m32, Fgmsb
   Complex(dp), Intent(in) :: cpl_DGSd_L(:,:), cpl_DGSd_R(:,:)   &
                           &, cpl_UGSu_L(:,:), cpl_UGSu_R(:,:)
 
   Type(particle2), Intent(in) :: Sdown(:)
   Type(particle23), Intent(in) :: Sup(:)
-  Type(particle23), intent(inout) :: Glu
+  Type(particle23), Intent(inout) :: Glu
 
   Integer :: i1, i2, i_count 
-  Real(dp) :: mSdown(n_Sd), mGlu, gam, mSup(n_su)
+  Real(dp) :: mSdown(n_Sd), mGlu, gam, mSup(n_su), x1
   !-----------------
   ! Initialization
   !-----------------
@@ -636,7 +662,7 @@ Contains
   !----------------------------------------------------
   Do i1 = 1,n_su
    Do i2 = 1,n_u
-    If ( (Abs(cpl_UGSu_L(i2,i1))+abs(cpl_UGSu_R(i2,i1))).ne.0._dp) then
+    If ( (Abs(cpl_UGSu_L(i2,i1))+Abs(cpl_UGSu_R(i2,i1))).Ne.0._dp) Then
      Call  FermionToFermionScalar(mglu, mf_u(i2), mSup(i1) &
              & , cpl_UGSu_L(i2,i1), cpl_UGSu_R(i2,i1), gam)
      gam = 2._dp * gam ! colour
@@ -666,7 +692,7 @@ Contains
   !----------------------------------------------------
   Do i1 = 1,n_sd
    Do i2 = 1,n_d
-    If ( (Abs(cpl_UGSu_L(i2,i1))+abs(cpl_UGSu_R(i2,i1))).ne.0._dp) then
+    If ( (Abs(cpl_UGSu_L(i2,i1))+Abs(cpl_UGSu_R(i2,i1))).Ne.0._dp) Then
      Call FermionToFermionScalar(mglu, mf_d(i2), mSdown(i1) &
             & , cpl_DGSd_L(i2,i1), cpl_DGSd_R(i2,i1), gam)
      gam = 2._dp * gam ! colour
@@ -691,9 +717,22 @@ Contains
    If (k_neut.Eq.1) i_count = i_count + 2
   End Do
      
+ 
+  !-----------------------------------------
+  ! gravitino gluon
+  !-----------------------------------------
+  If (mglu.Gt.m32) Then
+   x1 = m32 / mglu
+   Glu%gi2(i_count) = oo16pi * Abs(mGlu)**5 / Fgmsb**2 &
+                   &        * (1._dp-x1)**3 * (1._dp + 3._dp*x1)
+   Glu%id2(i_count,1) = id_grav
+   Glu%id2(i_count,2) = id_gl
+
+   i_count = i_count + 1
+  End If
 
   Glu%g = Sum(Glu%gi2)
-  If (Glu%g.ne.0._dp) then
+  If (Glu%g.Ne.0._dp) Then
    Glu%bi2 = Glu%gi2 / Glu%g
   Else
    Glu%bi2 = 0._dp
@@ -914,19 +953,20 @@ Contains
        & , n_sle, n_Sd, n_su, n_n, n_c, n_s0, n_p0, n_Spm, id_ph, id_grav
   Integer, Intent(in) :: id_nu(:), id_l(:), id_d(:), id_u(:), id_Z(:), id_W(:)
   Real(dp), Intent(in) ::  mf_l(3), mf_d(3), mf_u(3), mW(:), mZ(:), m32
-  Complex(dp), Intent(in) :: c_LNSl_L(:,:,:), c_LNSl_R(:,:,:)                  &
-     & , c_NuNSn_L(:,:,:), c_NuNSn_R(:,:,:), c_DNSd_L(:,:,:), c_DNSd_R(:,:,:)  &
-     & , c_UNSu_L(:,:,:), c_UNSu_R(:,:,:), c_CNW_L(:,:,:), c_CNW_R(:,:,:)      &
-     & , c_SmpCN_L(:,:,:), c_SmpCN_R(:,:,:), c_NNZ_L(:,:,:), c_NNZ_R(:,:,:)    &
-     & , c_NNP0_L(:,:,:), c_NNP0_R(:,:,:), c_NNS0_L(:,:,:), c_NNS0_R(:,:,:)    &
-     & , c_NGP, c_NGZ, c_NGH
+  Complex(dp), Intent(in) :: c_LNSl_L(:,:,:), c_LNSl_R(:,:,:)                 &
+     & , c_NuNSn_L(:,:,:), c_NuNSn_R(:,:,:), c_DNSd_L(:,:,:), c_DNSd_R(:,:,:) &
+     & , c_UNSu_L(:,:,:), c_UNSu_R(:,:,:), c_CNW_L(:,:,:), c_CNW_R(:,:,:)     &
+     & , c_SmpCN_L(:,:,:), c_SmpCN_R(:,:,:), c_NNZ_L(:,:,:), c_NNZ_R(:,:,:)   &
+     & , c_NNP0_L(:,:,:), c_NNP0_R(:,:,:), c_NNS0_L(:,:,:), c_NNS0_R(:,:,:)   &
+     & , c_NGP, c_NGZ(2), c_NGH
   Type(particle2), Intent(in) :: Sdown(:), Spm(:), P0(:)
   Type(particle23), Intent(in) :: Sneut(:), Slept(:), Sup(:), ChiPm(:), S0(:)
   Type(particle23), Intent(inout) :: Chi0(:)
 
   Integer :: i1, i2, i3, i_start, i_end, i_count
-  Real(dp) :: gam, m_in, mN(n_n), mSlepton(n_sle), mSneut(n_snu), mSdown(n_sd) &
-         & , mSup(n_su), mC(n_c), mS0(n_S0), mSpm(n_Spm), mP0(n_P0), x1, x2, sq1
+  Real(dp) :: gam, m_in, mN(n_n), mSlepton(n_sle), mSneut(n_snu)     &
+       & , mSdown(n_sd), mSup(n_su), mC(n_c), mS0(n_S0), mSpm(n_Spm) &
+       & , mP0(n_P0), x1, x2, sq1
   !-----------------
   ! Initialization
   !-----------------
@@ -1166,13 +1206,13 @@ Contains
      x2 = (mZ(1)/mN(i1))**2
      Chi0(i1)%gi2(i_count) = oo16pi * Abs(mN(i1))**5                          &
         &      * Sqrt(1._dp-2._dp*(x1+x2)+(x1-x2)**2)                         &
-        &      * ( Abs(c_NGZ)**2  * ( (1._dp-x1)**2 * (1._dp + 3._dp*x1)      &
+        &      * ( Abs(c_NGZ(1))**2  * ( (1._dp-x1)**2 * (1._dp + 3._dp*x1)   &
         &                           - x2 * (3._dp + x1**2                     &
         &                                  - 12._dp * x1 * sq1                &
         &                                  - x2 * (3._dp-x1-x2) ) )           &
-        &         + Abs(c_NGH)**2 * ( (1._dp-x1)**2 * (1._dp + sq1)**2        &
+        &         + Abs(c_NGZ(2))**2 * ( (1._dp-x1)**2 * (1._dp + sq1)**2     &
         &                      - x2 * ( (1-sq1)**2                            &
-        &                               * (3._dp + 2._dp*sq1 - 9._dp*x1)      & 
+        &                               * (3._dp + 2._dp*sq1 - 9._dp*x1)      &
         &                             - x2 * (3._dp-2._dp*sq1-9._dp*x1-x2) )) )
      Chi0(i1)%id2(i_count,1) = id_grav
      Chi0(i1)%id2(i_count,2) = id_Z(1)

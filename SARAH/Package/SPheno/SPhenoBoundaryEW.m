@@ -107,8 +107,10 @@ WriteString[sphenoSugra,"Iname=Iname+1\n"];
 WriteString[sphenoSugra,"NameOfUnit(Iname)='BoundaryEW'\n"];
 
 WriteString[sphenoSugra,"tanb = tanbetaMZ \n"];
-(* WriteString[sphenoSugra,"sinW2 = 1._dp - mW2/mZ2 \n"]; *)
+If[(ThetaW /.subNumDependences)===ThetaW,
+WriteString[sphenoSugra,"sinW2 = 1._dp - mW2/mZ2 \n"]; ,
 WriteString[sphenoSugra,"sinW2 = "<>SPhenoForm[Sin[ThetaW /.subNumDependences/.Mass[VWm]->mW/.Mass[VZ]->mZ]^2]<>" \n"];
+];
 WriteString[sphenoSugra,"test = SetRenormalizationScale(mZ2) \n"];
 
 
@@ -848,8 +850,10 @@ WriteString[sphenoSugra,"Iname=Iname+1\n"];
 WriteString[sphenoSugra,"NameOfUnit(Iname)='BoundaryEW'\n"];
 
 WriteString[sphenoSugra,"tanb = tanbetaMZ \n"];
-(* WriteString[sphenoSugra,"sinW2 = 1._dp - mW2/mZ2 \n"]; *)
+If[(ThetaW /.subNumDependences)===ThetaW,
+ WriteString[sphenoSugra,"sinW2 = 1._dp - mW2/mZ2 \n"];,
 WriteString[sphenoSugra,"sinW2 = "<>SPhenoForm[Sin[ThetaW /.subNumDependences/.Mass[VWm]->mW/.Mass[VZ]->mZ]^2]<>" \n"];
+];
 WriteString[sphenoSugra,"test = SetRenormalizationScale(mZ2) \n"];
 
 

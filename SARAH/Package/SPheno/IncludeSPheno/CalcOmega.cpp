@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 			err = sortOddParticles(lspname);	
 			printMasses(stdout,1);				
 	 		Omega = darkOmega(&Xf,fast,Beps);
-			printf("Xf=%.2e Omega=%.2e\n",Xf,Omega);
+			printf("Xf=%.2e Omega h^2=%.2e\n",Xf,Omega);
 //   			printChannels(Xf,cut,Beps,1,stdout);
 			printf("\n");
 			printChannels(Xf,cut,Beps,1,stdout);

@@ -110,7 +110,7 @@ int  makenewmodel(void)
        continue;
     }
     strcpy(new,"\040");
-    while(dp=readdir(dirPtr))
+    while((dp=readdir(dirPtr)))
     { char tail[100];
       if(sscanf(dp->d_name,"vars%d.%s",&n,tail)==2 && n<100 && strcmp(tail,"mdl")==0)
       { 
@@ -158,7 +158,7 @@ int  makenewmodel(void)
          }else 
          {
            fscanf(f,"%*[^\n]%*c");
-           while( s=fread(ch,1,1000,f)) fwrite(ch,1,s,g);
+           while((s=fread(ch,1,1000,f))) fwrite(ch,1,s,g);
            fclose(f); 
          }  
          fclose(g);  

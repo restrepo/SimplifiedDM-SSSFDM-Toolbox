@@ -1,5 +1,5 @@
-MSSM(SUGRA)
+MSSM(EWSB)+hgg
 Libraries
 External libraries  and citation                                      <|
-$CALCHEP/../MSSM/lib/aLib.a                                                       |
+$CALCHEP/../MSSM/lib/aLib.a
 ========================================================================

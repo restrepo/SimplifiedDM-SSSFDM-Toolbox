@@ -15,9 +15,6 @@ RenormalizationScale = MSu[1]*MSu[6];
 
 ConditionGUTscale = (g1*gBL-g1BL*gBL1)/Sqrt[gBL^2+gBL1^2] == g2;
 
-UseHiggs2LoopMSSM = True;
-
-
 BoundaryHighScale={
 {g1,(g1*gBL-g1BL*gBL1)/Sqrt[gBL^2+gBL1^2]},
 {g1,Sqrt[(g1^2+g2^2)/2]},
@@ -44,8 +41,7 @@ BoundaryHighScale={
 {MassWB,m12},
 {MassG,m12},
 {MassBp,m12},
-{MassBBp,0},
-{MassBpB,0}
+{MassBBp,0}
 };
 
 

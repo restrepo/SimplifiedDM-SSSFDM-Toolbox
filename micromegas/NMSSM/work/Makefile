@@ -8,7 +8,7 @@ endif
 all: work_aux.a 
 
 workOBJ =  VandP.o  path.o
-override CFLAGS += -I../../sources/micromegas/CalcHEP_src/include
+override CFLAGS += -I../../CalcHEP_src/include
 
 work_aux.a: work_aux.a($(workOBJ))
 	$(RANLIB) work_aux.a 

@@ -69,8 +69,8 @@ DEFINITION[TANBm0][Plots]={
   {P2D, {MINPAR[1],{Log[10,DARKMATTER[1]]}},Style2,"Omegah2.eps"}	
 };
 
-Style1= {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$\\Delta M$~[GeV]"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]}};
-Style2= {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$\\Omega h^2$"]},PlotJoined->False, FrameTicksStyle -> Directive[Black, 14]}};
+Style1= {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$\\Delta M$~[GeV]"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]}};
+Style2= {{Frame->True, Axes->False,FrameLabel->{UseLaTeX["$m_0$~[GeV]"],UseLaTeX["$\\Omega h^2$"]},Joined->False, FrameTicksStyle -> Directive[Black, 14]}};
 
 
 

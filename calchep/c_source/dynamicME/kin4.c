@@ -15,7 +15,6 @@
 int ForceUG=0;
 decayTableStr* decayTable=NULL;
 
-
 /*=============   decayPcm   and decayPcmW ================*/      
 
 double  decayPcm(double am0,  double  am1,  double  am2)
@@ -28,27 +27,52 @@ double  decayPcm(double am0,  double  am1,  double  am2)
 }
 
 
+
 static double w1_,w2_,m0_,m1_,m2_,m1_p,m2_p;
-static double pDecay=2; //   2.5;
+static int nGauss=0;
+
+static double ME(double m0,double m1,double m2)
+{ 
+  return  m2*m2*m1*m1 +(m0*m0 -m2*m2 -m1*m1)*(m0*m0 -m2*m2 -m1*m1)/8;
+}
+
+static double y11,y12,y21,y22;
 
 static double intDecay2(double y2)
 { double m2;
   m2= m2_p*m2_p + w2_*m2_p*tan(y2);
   if(m2<=0) return 0;
   m2=sqrt(m2);
-  return ( m2*m2*m1_*m1_ +pow(m0_*m0_ -m2*m2 -m1_*m1_,2)/8)*decayPcm(m0_,m1_,m2);
+  return  ME(m0_,m1_,m2)*decayPcm(m0_,m1_,m2);
 }   
+
+static double intDecay2_(double x)
+{ if(x<=0 || x>=1) return 0;
+  return intDecay2(y21+x*x*x*(4-3*x)*(y22-y21))*12*x*x*(1-x)*(y22-y21);
+}
 
 static double  intDecay1(double y1)
 { 
    m1_=m1_p*m1_p + w1_*m1_p*tan(y1);
    if(m1_<0) return 0;
    m1_=sqrt(m1_);
-   return  simpson(intDecay2, atan(-m2_p/w2_), atan( ((m0_-m1_)*(m0_-m1_)-m2_p*m2_p)/(m2_p*w2_)), 1.E-3);
+   
+   y21=atan(-m2_p/w2_);
+   y22=atan( ((m0_-m1_)*(m0_-m1_)-m2_p*m2_p)/(m2_p*w2_));
+   if(nGauss) return  gauss(intDecay2_,0,1,nGauss);
+   else       return  simpson(intDecay2_,0,1,1.E-3);
+//   return  simpson(intDecay2, atan(-m2_p/w2_), atan( ((m0_-m1_)*(m0_-m1_)-m2_p*m2_p)/(m2_p*w2_)), 1.E-3);
 }
 
-double decayPcmW(double m0,double m1,double m2,double w1,double w2)
-{ 
+static double intDecay1_(double x)
+{ if(x<=0 || x>=1) return 0;
+   return intDecay1(y11+x*x*x*(4-3*x)*(y12-y11))*12*x*x*(1-x)*(y12-y11);
+}
+  
+
+double decayPcmW(double m0,double m1,double m2,double w1,double w2, int N)
+{  
+  nGauss=N;
   m0_=m0;
   if(w1==0 && w2==0) return decayPcm(m0,m1,m2);
   else if(w1==0)
@@ -56,23 +80,36 @@ double decayPcmW(double m0,double m1,double m2,double w1,double w2)
     m1_=m1;
     m2_p=m2;
     w2_=w2;
-    return simpson( intDecay2, atan(-m2/w2), atan( ((m0-m1)*(m0-m1)  -m2*m2)/(m2*w2)),1.E-3)/M_PI; 
+    y21=atan(-m2/w2);
+    y22=atan( ((m0-m1)*(m0-m1)  -m2*m2)/(m2*w2));
+    if(nGauss) return gauss( intDecay2_,0,1,nGauss)/M_PI/ME(m0,m1,m2);
+     else      return simpson( intDecay2_,0,1,1.E-3)/M_PI/ME(m0,m1,m2); 
   }
   else if(w2==0)
   { if(m2>m0) return 0;
     m1_=m2;
     m2_p=m1;
     w2_=w1;
-    return simpson( intDecay2, atan(-m1/w1), atan( ((m0-m2)*(m0-m2)-m1*m1)/(m1*w1)),1.E-3)/M_PI;
+    y21=atan(-m1/w1);
+    y22=atan( ((m0-m2)*(m0-m2)-m1*m1)/(m1*w1));
+    if(nGauss) return gauss( intDecay2_,0,1,nGauss)/M_PI/ME(m0,m1,m2);  
+    else       return simpson(intDecay2_,0,1,1.E-3)/M_PI/ME(m0,m1,m2);
   }
   else 
   { w1_=w1;
     w2_=w2; 
     m1_p=m1;
     m2_p=m2; 
-    return simpson( intDecay1, atan(-m1/w1), atan( (m0*m0-m1*m1)/(m1*w1)),1.E-3)/(M_PI*M_PI);
+   y11=atan(-m1/w1); y12=atan( (m0*m0-m1*m1)/(m1*w1));
+
+   if(nGauss) return gauss(intDecay1_,0,1,nGauss)/(M_PI*M_PI)/ME(m0,m1,m2);
+   else       return simpson(intDecay1_,0,1,1E-3)/(M_PI*M_PI)/ME(m0,m1,m2);
+
   }
 }
+
+
+
 
 /*================  kinematic 1->3 and  1->4  =======================*/
 
@@ -189,7 +226,7 @@ for(i=0;i<4;i++)
 
 /* ===========  Intergration ================ */
 
-double (*sqme)(int nsub,double GG, REAL *pvect, int * err_code)=NULL;
+double (*sqme)(int nsub,double GG, REAL *pvect, REAL*cb_coeff, int * err_code)=NULL;
 static int  nsub_stat;
 static REAL*Q=NULL;
 static REAL Pmass[5];
@@ -209,7 +246,7 @@ static double dWidthdCos(double xcos)
   if(factor==0) return 0;
   
 //printf("xcos=%e factor=%E sqme=%e\n", xcos,factor,(*sqme)(nsub_stat,GG,P,&err_code));  
-  return  factor*(*sqme)(nsub_stat,GG,P,&err_code);
+  return  factor*(*sqme)(nsub_stat,GG,P,NULL,&err_code);
 
 }
 
@@ -245,7 +282,7 @@ static double wInt14(double *x, double w)
    double res;
    res=kinematic_1_4(Pmass,x[0], x[1], 2*(x[2]-0.5),2*(x[3]-0.5),2*M_PI*x[4],pvect); 
    if(res==0) return 0;  
-   res*= (*sqme)(1,GG, pvect, &err_code);
+   res*= (*sqme)(1,GG, pvect,NULL, &err_code);
    if(err_code) return 0;
    return res*8*M_PI;
 }
@@ -269,10 +306,10 @@ static double width14(numout * cc, int * err)
 
   sqme=cc->interface->sqme;
   
-  vegPtr=vegas_init(5,50);
+  vegPtr=vegas_init(5,wInt14,50);
   
-  vegas_int(vegPtr,ncall0,alph,wInt14,&ti,&tsi); 
-  vegas_int(vegPtr,ncall0,alph,wInt14,&ti,&tsi);
+  vegas_int(vegPtr,ncall0,alph,nPROCSS,&ti,&tsi); 
+  vegas_int(vegPtr,ncall0,alph,nPROCSS,&ti,&tsi);
   vegas_finish(vegPtr);
    
   return ti;
@@ -483,7 +520,7 @@ double pWidth2(numout * cc, int nsub)
       pvect[4]=sqrt(pRestOut*pRestOut+m2*m2);
       pvect[11]=-pRestOut;
       pvect[8]=sqrt(pRestOut*pRestOut+m3*m3);
-      width = totcoef * (cc->interface->sqme)(nsub,GG,pvect,&err_code);
+      width = totcoef * (cc->interface->sqme)(nsub,GG,pvect,NULL,&err_code);
   }
   return width;
 }
@@ -526,8 +563,8 @@ static int chOpen(numout*cc, int k)
    for(j=0;j<3;j++) name[j]=cc->interface->pinf(k,j+1,NULL,pdg+j);
    s=pMass(name[0]);
    for(j=1;j<3;j++) s-=pMass(name[j]);
-   if( pdg[0]!=23 &&  abs(pdg[j])!=24 && VVdecay!=0 )
-   for(j=1;j<3;j++) if(pdg[j]==23) s-=6; else if(abs(pdg[j])==24) s-=5;
+   if( pdg[0]!=23 &&  abs(pdg[0])!=24)
+   for(j=1;j<3;j++) if(pdg[j]==23 && VZdecay) s-=6; else if(abs(pdg[j])==24 && VWdecay) s-=5;
    if(s>0) return 1; else return 0;
 }   
 
@@ -622,6 +659,7 @@ static double decay22List(char * pname, txtList *LL)
   sprintf(process,"%s->2*x",pname2);
   cc=getMEcode(0,ForceUG,process,NULL,"",plib);
   if(!cc) { if(LL) *LL=NULL; return -1;} 
+  passParameters(cc);
   procInfo1(cc,&ntot,NULL,NULL);
   for(wtot=0,i=1;i<=ntot;i++)  if(chOpen(cc,i))
   {     
@@ -637,33 +675,38 @@ static double decay22List(char * pname, txtList *LL)
          L_->txt=malloc(20+strlen(buff));
          strcpy(L_->txt,buff);
        } 
-       wtot+=w; 
+       wtot+=w;
     }
   }
 
   no22= L?0:1;
   
-  if(VVdecay && pN!=23 && abs(pN)!=24 )
+  if(pN!=23 && abs(pN)!=24)
   { int k,l;
     REAL m[5];  
     int pdg[5]; 
     char*name[5];
-       
     for(k=1;k<=ntot;k++) if(!chOpen(cc,k))
     { double w1=0,w2=0;
+      int vd[3]={0,0,0};
       for(i=0;i<3;i++) name[i]=cc->interface->pinf(k,i+1,m+i,pdg+i);
       if(no22 && m[0]<= m[1]+m[2]) continue;
       
       if(pdg[0]==23 ||  abs(pdg[0])==24) continue;
+
+      for(i=1;i<3;i++) vd[i]= (abs(pdg[i])==24 && VWdecay) || (pdg[i]==23 && VZdecay);
+
       l=0;
-      if((abs(pdg[1])==24 || abs(pdg[2])==24 || pdg[1]==23||pdg[2]==23) && m[0]+VVmassGap > m[1]+m[2])
-      for(l=1;l<3;l++) if(pdg[l]==23 || abs(pdg[l])==24) break;
+      
+      if((vd[1]||vd[2]) && m[0]+VVmassGap > m[1]+m[2])
+      for(l=1;l<3;l++) if(vd[l]) break;
       if(l>0 && l<3)      
       {  int nW,iW;
          numout * cc13;
          int err;
          double wV,brV; 
          int l_=3-l; 
+         if( vd[l_] && m[l]<m[l_]) {l=l_; l_=3-l;}
          if( (pdg[l_]==23 || abs(pdg[l_])==24) && m[l]<m[l_]) {l=l_; l_=3-l;}
          cc13=xVtoxll(1,2,name,pdg, l, &wV, &brV);
          if(cc13)         
@@ -683,11 +726,12 @@ static double decay22List(char * pname, txtList *LL)
               w/=brV;
            }
            
-           if( pdg[l_]==23 || abs(pdg[l_])==24)
-           {  double w2= pWidth(name[l_], NULL);  
-               w*=decayPcmW(m[0],m[l],m[l_],wV,w2)/decayPcmW(m[0],m[l],m[l_],wV,0);
-               if(pdg[l_]==pdg[l])  w/=2;      
+           if( vd[l_] )   
+           {  double w2= pWidth(name[l_], NULL);
+              w*=decayPcmW(m[0],m[l],m[l_],wV,w2,0)/decayPcmW(m[0],m[l],m[l_],wV,0,0);
+              if(pdg[l_]==pdg[l])  w/=2;
            }
+                                                                
            
            if(w!=0)
            {  if(LL)
@@ -702,9 +746,8 @@ static double decay22List(char * pname, txtList *LL)
            }
          }    
       }
-    }
+    }       
   }
-
   if(LL)
   {  for(L_=L;L_;L_=L_->next)
      { 
@@ -785,8 +828,9 @@ double pWidth(char *name, txtList * LL)
   for(i=0;i<nModelParticles;i++)
   { char *pnames[2]={ModelPrtcls[i].name,ModelPrtcls[i].aname};
     for(j=0;j<2;j++) if(strcmp(name,pnames[j])==0) 
-    { if(decayTable[i].status==1)
-      { 
+    { 
+      if(decayTable[i].status==1)
+      {        
         if(LL) *LL=decayTable[i].pdList[j];
         return decayTable[i].width;
       } else if(decayTable[i].status==-1)
@@ -838,12 +882,12 @@ double pWidth(char *name, txtList * LL)
         }
      }          
   }
-  
+  decayTable[i0].status=-1;
   if(Q==NULL) for(i=0;i<nModelVars;i++) if(strcmp(varNames[i],"Q")==0){ Q= varValues+i; break;}
   if(Q) { Qstat=*Q; setQforParticle(Q,name);}
     
   width=decay22List(name,&L);
-  
+
   if(L) 
   {
     if(LL) *LL=L;
@@ -851,6 +895,7 @@ double pWidth(char *name, txtList * LL)
     if(strcmp(ModelPrtcls[i0].name,ModelPrtcls[i0].aname)) 
                  decayTable[i0].pdList[1-j0]=conBrList(L); 
     decayTable[i0].width=width;
+    decayTable[i0].status=1;
     if(Q) {*Q=Qstat; calcMainFunc();}
     return width;
   }
@@ -872,6 +917,7 @@ double pWidth(char *name, txtList * LL)
     txtList newr;
     process2Lib(l->txt ,libName);
     cc=getMEcode(0,ForceUG,l->txt,NULL,"",libName);
+    if(!cc) continue;
     if(nout==3) width=width13(cc, 1, &err); else width=width14(cc, &err);
     if(width >0)
     {
@@ -895,6 +941,7 @@ double pWidth(char *name, txtList * LL)
   if(strcmp(ModelPrtcls[i0].name,ModelPrtcls[i0].aname)) 
                decayTable[i0].pdList[1-j0]=conBrList(Lout);
   decayTable[i0].width=sum;
+  decayTable[i0].status=1;
   if(Q) { *Q=Qstat; calcMainFunc();}
   return sum;
 }
@@ -980,6 +1027,7 @@ int procInfo2(numout*cc,int nsub,char**name,REAL*mass)
    for(i=0;i<nModelParticles;i++)
    { for(j=0;j<2;j++) decayTable[i].pdList[j]=NULL;
      decayTable[i].width=0;
+     decayTable[i].status=0;
    }
  }
 
@@ -992,38 +1040,66 @@ int passParameters(numout*cc)
    return 0;
 }
 
-int slhaDecayPrint(char * name,FILE*f)
+#define P_NAME_SIZE 11
+int slhaDecayPrint(char * name, int dVirt, FILE*f)
 {
    double w;
    txtList all;
    int i,dim; 
    long PDG;
+   char N[5][P_NAME_SIZE];
+   int id[5];
            
-   PDG=qNumbers(name,NULL,NULL,NULL);
+   PDG=pNum(name);
    if(!PDG) return 0;
-   w=pWidth(name,&all);
-   fprintf(f,"DECAY %d  %E  # %s\n",PDG,w,name);
+   fprintf(f,"DECAY %d  %E  # %s\n",PDG,pWidth(name,&all),name);
    for(;all;all=all->next)
    {  
-      char pn[20], buff[100], *chB,*chE;
-      strcpy(buff,all->txt);
-      sscanf(buff,"%s", pn);
-      chB=strstr(buff,"->");
+      char pn[20], *chB,*chE;
+      double br;
+      
+      sscanf(all->txt,"%s",pn);
+      sscanf(pn,"%lf",&br);
+      chB=strstr(all->txt,"->");
       chB+=2;
-      for(dim=0,chE=chB ; chE;dim++, chE=strchr(chE+1,',')) continue;
-      fprintf(f," %s   %d  ",pn,dim);
-
-      for(i=0;i<dim;i++)
-      { 
-         chE=strchr(chB,',');
-         if(chE)chE[0]=0;
-         sscanf(chB,"%s",pn);
-         fprintf(f," %d", qNumbers(pn,NULL,NULL,NULL));
-         if(chE)chB=chE+1;else break;           
+      for(dim=0,chE=chB ; chE;dim++, chE=strchr(chE+1,',')) 
+      {  sscanf(chE+1,"%[^,]",N[dim]); 
+         trim(N[dim]); 
+         id[dim]=pNum(N[dim]);
       }
+      if(dVirt && dim==2 && pMass(name)<= pMass(N[0])+pMass(N[1]))  
+      {  
+         int v[2],k; 
+         for(k=0;k<2;k++) v[k] = (id[k]==23 || abs(id[k])==24);
+          
+         if(v[0]||v[1])
+         { 
+            txtList LV;
+            if(id[0]!=id[1]) br/=2;   
+            for(k=0;k<2;k++) if(v[k])
+            { 
+               pWidth(N[k],&LV);
+               for(;LV;LV=LV->next)
+               {  double brV;
+                  char* chD=strstr(LV->txt,"->")+2;
+                  char name1[20],name2[20];
+                  sscanf(chD,"%[^,],%s", name1,name2);
+                  trim(name1);
+                  sscanf(LV->txt,"%lf",&brV);
+                  fprintf(f," %e  3  %d  %d  %d # %s,%s->%s\n",br*brV , id[1-k] , pNum(name1),pNum(name2),N[1-k],N[k],chD);
+               } 
+               if(id[0]==id[1]) break;
+            }
+            continue;   
+         }   
+      }     
+      
+      fprintf(f," %s   %d  ",pn,dim);
+      for(i=0;i<dim;i++) fprintf(f," %d", id[i] ); 
       chB=strstr(all->txt,"->");
       fprintf(f,"  # %s \n",chB+2);
    } 
    fprintf(f,"\n");
    return PDG;
 } 
+

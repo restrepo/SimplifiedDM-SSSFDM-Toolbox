@@ -50,7 +50,7 @@ static int *inC1;
 static int *inC2;
 static numout*cc23=NULL;
 
-static double **inMassAddress;
+static REAL **inMassAddress;
 static double *inMass;  /* masses */
 static int *sort;
 static int gaussInt=1;
@@ -157,7 +157,6 @@ static double sigma23(double PcmIn)
    }   
 
    if(r<1.E-15) r=1.E-15;
-    
    return log(r*PcmIn);
 }   
 
@@ -378,7 +377,7 @@ static int testSubprocesses(void)
     inP=(char**)malloc(NC*sizeof(char*));
     inAP=(int*)malloc(NC*sizeof(int));
     inG=(int*)malloc(NC*sizeof(int));
-    inMassAddress=(double**)malloc(NC*sizeof(double*));
+    inMassAddress=(REAL**)malloc(NC*sizeof(REAL*));
     inMass=(double*)malloc(NC*sizeof(double));
     inNum= (int*)malloc(NC*sizeof(int));
     sort=(int*)malloc(NC*sizeof(int));
@@ -518,7 +517,7 @@ static int testSubprocesses(void)
   for(k1=0;k1<NC;k1++)  for(k2=0;k2<NC;k2++) 
   {  if(code22_0[k1*NC+k2]) code22_0[k1*NC+k2]->init=0;
      if(code22_1[k1*NC+k2]) code22_1[k1*NC+k2]->init=0;
-     if(code22_2[k1*NC+k2]) code22_1[k1*NC+k2]->init=0;
+     if(code22_2[k1*NC+k2]) code22_2[k1*NC+k2]->init=0;
   }             
   cleanDecayTable();
 
@@ -691,7 +690,7 @@ static int  new_code(int k1,int k2, int ch)
              strcat(lib,"_2"); break;
      case  2: sprintf(process,"%s,%s->AllOdd1,AllOdd2{%s{%s",inP[k1],inP[k2],OddParticles(1),OddParticles(2));
                   strcat(lib,"_12"); break;                        
-   }           
+   } 
    cc=getMEcode(0,ForceUG,process,NULL,NULL,lib);
    if(cc) 
    {  int nprc,n;
@@ -735,6 +734,55 @@ static int  new_code(int k1,int k2, int ch)
    return 0;
 }
 
+
+static int Ntab=0;
+static double*Ttab=NULL;
+
+
+static double *vs1100T = NULL;
+static double *vs1120T = NULL;
+static double *vs1122T = NULL;
+static double *vs1210T = NULL;
+static double *vs2200T = NULL;
+static double *vs2211T = NULL;
+
+static double *vs1110T = NULL;
+static double *vs2220T = NULL;
+static double *vs1112T = NULL;
+static double *vs1222T = NULL;
+static double *vs1220T = NULL;
+static double *vs2210T = NULL;
+static double *vs2221T = NULL;
+static double *vs1211T = NULL;
+
+static double *Y1T=NULL;
+static double *Y2T=NULL;
+
+double vs1120F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1120T);}
+double vs2200F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2200T);}
+double vs1100F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1100T);}
+double vs1210F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1210T);}
+double vs1122F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1122T);}
+double vs2211F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2211T);}
+
+double vs1110F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1110T);}
+double vs2220F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2220T);}
+double vs1112F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1112T);}
+double vs1222F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1222T);}
+double vs1220F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1220T);}
+double vs2210F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2210T);}
+double vs2221F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2221T);}
+double vs1211F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1211T);}
+
+
+double dY1F(double T){ return polint2Exp(T,Ntab,Ttab, Y1T) ;}
+double dY2F(double T){ return polint2Exp(T,Ntab,Ttab, Y2T) ;}
+
+double Y1F(double T){ return  dY1F(T)+Yeq1(T);}
+double Y2F(double T){ return  dY2F(T)+Yeq2(T);}
+
+
+
    
 static void gaussC2(double * c, double * x, double * f)
 {
@@ -774,7 +822,7 @@ static double aRate(double X, int average,int Fast, double * alpha, aChannel ** 
   int i,l1,l2;
   int nPrc=0;
   char* pname[5];
-  gridStr grid,grid1;
+  gridStr grid,grid1;  
   double MassCutOut=MassCut+Mcdm*log(100.)/X;
   double Msmall,Mlarge;
 
@@ -806,8 +854,12 @@ static double aRate(double X, int average,int Fast, double * alpha, aChannel ** 
     if(inC0[k1*NC+k2]<=0) continue;
 
     if(!code22_0[k1*NC+k2]->init)
-    { if(passParameters(code22_0[k1*NC+k2])) {FError=1; WIDTH_FOR_OMEGA=0;  return -1;}
-    
+    {
+      if(Qaddress && *Qaddress!=inMass[k1]+inMass[k2]) 
+      { *Qaddress=inMass[k1]+inMass[k2];
+         calcMainFunc();
+      }       
+      if(passParameters(code22_0[k1*NC+k2])) {FError=1; WIDTH_FOR_OMEGA=0;  return -1;}
       code22_0[k1*NC+k2]->init=1;
     }
 
@@ -846,13 +898,12 @@ static double aRate(double X, int average,int Fast, double * alpha, aChannel ** 
     factor=inC0[k1*NC+k2]*inG[k1]*inG[k2]*exp(-(M1+M2 -2*Mcdm)/T_);
     CI=code22_0[k1*NC+k2]->interface;
     AUX=code22Aux0[k1*NC+k2];
-//passParameters(code22[k1*NC+k2]);
     for(nsub22=1; nsub22<= CI->nprc;nsub22++,nPrc++)
     { double u_min=0.,smin;
       double a=0;
       double K=0;
-      
       for(i=0;i<4;i++) pname[i]=CI->pinf(nsub22,i+1,pmass+i,pdg+i);  
+      if(pmass[0]<Mcdm/2 || pmass[1]<Mcdm/2) continue; 
       if(wPrc) 
       { (*wPrc)[nPrc].weight=0;
         for(i=0;i<4;i++) (*wPrc)[nPrc].prtcl[i]=pname[i];
@@ -862,6 +913,7 @@ static double aRate(double X, int average,int Fast, double * alpha, aChannel ** 
       
       if(VZdecay||VWdecay)
       {  int l,l_,nVV;        
+
          if(!AUX[nsub22].virt )  for(l=2;l<4;l++) if(pdg[l]==21 ||pdg[l]==22) { AUX[nsub22].virt=-1; break;}
          
          if(!AUX[nsub22].virt)
@@ -901,19 +953,31 @@ static double aRate(double X, int average,int Fast, double * alpha, aChannel ** 
                  AUX[nsub22].br=brV1;
                  cc23=AUX[nsub22].cc23; 
                  if(cc23)
-                 {
+                 {   double Pcm0,PcmMax;
                     *(cc23->interface->BWrange)=10000; 
                     *(cc23->interface->gswidth)=1;  
                     for(i3W=2;i3W<5;i3W++) if(strcmp(cc23->interface->pinf(1,i3W+1,NULL,NULL),pname[l_])==0) break; 
-                    AUX[nsub22].i3=i3W;                       
+                    AUX[nsub22].i3=i3W;   
+                    PcmMax=decayPcm(pmass[2]+pmass[3]+10*AUX[nsub22].w[l-2], pmass[0],pmass[1]);
+                    if( pmass[0]+pmass[1]>=pmass[l_]) Pcm0=Mcdm*0.01; else 
+                    Pcm0=1.01*decayPcm(pmass[l_], pmass[0],pmass[1]); 
+                    buildInterpolation(sigma23, Pcm0,PcmMax, 0.02,1.E-5, &(AUX[nsub22].nTab), &(AUX[nsub22].pcmTab), &(AUX[nsub22].csTab));
+/*
+    printf("nTab=%d\n", AUX[nsub22].nTab);
+   displayFunc(sigma23,Pcm0,PcmMax,"sigma23");
+   loadINTER(AUX[nsub22].nTab, AUX[nsub22].pcmTab,AUX[nsub22].csTab); 
+                displayFunc(INTER,Pcm0,PcmMax,"INTER"); 
+*/                
+                       
                  }
               }    
-              if(cc23) smin=pmass[l_];
+              if(cc23){ smin=pmass[l_]; smin=pmass[0]+pmass[1]+0.1;}
             } 
          }
       }
 //if(cc23)  printf("23  %s %s -> %s %s\n", pname[0],pname[1],pname[2],pname[3]);
     
+     
 //if(abs(pdg[2])!=24 && abs(pdg[3])!=24) continue; 
       if(smin>=MassCutOut) continue; 
       if(cc23==NULL) 
@@ -942,6 +1006,7 @@ repeat:
 //     {   displayFunc(s_integrand,u_min,1,"s_integrand");
 //         printf("int=%E\n",simpson(s_integrand,u_min,1.,eps)); 
 //     } 
+
 
       if(!Fast) a=simpson(s_integrand,u_min,1.,eps); 
       else if(Fast!=1) a=f[0]*sigma(x[0]); else
@@ -1012,9 +1077,9 @@ repeat:
       { *(CI->gswidth)=1;
          goto  repeat;
       }   
-/*
- printf("X=%.2E (%d) %.3E %s %s %s %s\n",X,average, a, pname[0],pname[1],pname[2],pname[3]);
-*/
+
+// printf("X=%.2E (%d) %.3E %s %s %s %s\n",X,average, a, pname[0],pname[1],pname[2],pname[3]);
+
 
       for(kk=2;kk<4;kk++) if(pmass[kk]>2*Mcdm && pname[kk][0]!='~')
       {  txtList LL;
@@ -1076,7 +1141,7 @@ double vSigma(double T,double Beps ,int Fast,double *alpha)
 }
 
 
-static double Yeq(double T)
+double Yeq(double T)
 {  double heff;
    double X=Mcdm/T;
    heff=polint2(T,Tdim,t_,heff_);
@@ -1193,11 +1258,12 @@ static double dY(double s3, double Beps,double fast)
 //  sqrt_gStar=polint2(Mcdm/X,Tdim,t_,sqrt_gstar_);
 
   vSig=vSigmaI(T,Beps, fast,&alpha);
-
+  if(vSig <=0) return 10;
   if(vSig==0){ FError=1; return 0;}
   res= dlnYds3/(pow(2*M_PI*M_PI/45.*heff,0.66666666)/sqrt(8*M_PI/3.*M_PI*M_PI/30.*geff)*vSig*MPlank
   *(1-alpha/2)*sqrt(1+epsY*epsY))/Yeq(T);
-  
+  res=fabs(res);
+  if(res>10) return 10;
   return res;
 } 
 
@@ -1226,6 +1292,7 @@ static double darkOmega1(double * Xf,double Z1,double dZ1,int Fast,double Beps)
      X2=X2/XSTEP;
      X=X2;
      dCC2=-CCX+dY(polint2(Mcdm/X,Tdim,t_,s3_),Beps,Fast);
+     if(Mcdm/X>1.E5) return -1;
   }
              
   while (dCC1<0)
@@ -1283,9 +1350,8 @@ static void XderivLn(double s3, double *Y, double *dYdx)
 double darkOmegaFO(double * Xf_, int Fast, double Beps)
 {
   double Yf,Yi;
-  double  Z1=2.5;
-  double  dZ1=0.05;
-  double x;
+  double Z1=2.5;
+  double dZ1=0.05;
   double Xf=25;
 
   if(CDM1==NULL) fracCDM2=1; else
@@ -1298,11 +1364,11 @@ double darkOmegaFO(double * Xf_, int Fast, double Beps)
   if(assignVal("Q",2*Mcdm)==0) calcMainFunc();
   GGscale=2*Mcdm/3;   
   if(Beps>=1) Beps=0.999;
-  Yf=  darkOmega1(&Xf, Z1, dZ1,Fast, Beps);
-  if(Yf<0||FError) {  return -1;}
-  x=Xf;
   
-  Yi=1/( (Mcdm/x)*sqrt(M_PI/45)*MPlank*aRate(x, 1,Fast,NULL, NULL,NULL) );
+  Yf=  darkOmega1(&Xf, Z1, dZ1,Fast, Beps);
+  if(FError||Xf<1||Yf<=0) {  return -1;}
+ 
+  Yi=1/( (Mcdm/Xf)*sqrt(M_PI/45)*MPlank*aRate(Xf, 1,Fast,NULL, NULL,NULL) );
 
   if(!finite(Yi)||FError)  {  return -1;}
   if(Xf_) *Xf_=Xf; 
@@ -1312,6 +1378,14 @@ double darkOmegaFO(double * Xf_, int Fast, double Beps)
 }
 
 
+
+static double *Ytab=NULL;
+
+double YF(double T){ return polint2Exp(T,Ntab,Ttab, Ytab) ;}
+
+
+
+
 double darkOmega(double * Xf, int Fast, double Beps)
 {
   double Yt,Yi,Xt=25;
@@ -1319,6 +1393,11 @@ double darkOmega(double * Xf, int Fast, double Beps)
   double Z2=10; 
   int i;
   double Xf1;
+  int Nt=25;
+  
+  Ytab=realloc(Ytab,sizeof(double)*Nt);
+  Ttab=realloc(Ttab,sizeof(double)*Nt);
+  Ntab=0;
 
   if(CDM1==NULL) fracCDM2=1; else
   if(CDM2==NULL) fracCDM2=0; else 
@@ -1336,14 +1415,22 @@ double darkOmega(double * Xf, int Fast, double Beps)
 
   if(Yt<0||FError) { return -1;}
   Xf1=Xt;
+  
+  Tstart=Mcdm/Xt;
 
 //printf("Yt=%E deltaY=%E\n", Yt,deltaY);
   
-  if(Yt<fabs(deltaY)*1.E-20)
-  {  dmAsymm = 2*log( fabs(deltaY)/Yt);
-     if(deltaY < 0 ) dmAsymm *= -1;   
-     return 2.742E8*Mcdm*deltaY;
+  if(Yt<fabs(deltaY)*1.E-15)
+  {  
+     if(deltaY>0) dmAsymm=1;  else dmAsymm=-1;
+     if(Xf) *Xf=Xt;   
+     return 2.742E8*Mcdm*deltaY;  
   }   
+  
+  Ntab=1;
+  Ttab[0]=Tstart;
+  Ytab[0]=Yt;
+  
   for(i=0; ;i++)
   { double X2=vSigmaGrid.xtop*pow(XSTEP,i+1);
     double y,yeq,alpha;
@@ -1354,6 +1441,14 @@ double darkOmega(double * Xf, int Fast, double Beps)
     if(Xt>X2*0.999999) continue; 
     
     if(Yt*Yt>=Z2*Z2*( alpha*Yt*yeq+(1-alpha)*yeq*yeq))  break;
+    if(Yt<fabs(deltaY*1E-15))
+    {  if(Xf) *Xf=Xt;
+       Tend=Mcdm/Xt;
+       if(deltaY>0) dmAsymm=1; else dmAsymm=-1;   
+       return 2.742E8*Mcdm*deltaY;
+    }
+    
+    Tend=Mcdm/X2;                                 
     y=Yt;
     s3_t=polint2(Mcdm/Xt,Tdim,t_,s3_);
     s3_2=polint2(Mcdm/X2,Tdim,t_,s3_); 
@@ -1361,7 +1456,16 @@ double darkOmega(double * Xf, int Fast, double Beps)
     if(odeint(&y,1 ,s3_t , s3_2 , 1.E-3, (s3_2-s3_t)/2, &XderivLn)){ printf("problem in solving diff.equation\n"); return -1;}
     Yt=y;
     Xt=X2;
+    if(Ntab>=Nt)
+    { Nt+=20;
+      Ytab=realloc(Ytab,sizeof(double)*Nt);
+      Ttab=realloc(Ttab,sizeof(double)*Nt);
+    }      
+    Ytab[Ntab]=Yt;
+    Ttab[Ntab]=Tend;
+    Ntab++;
   }
+  
   if(Xf) *Xf=0.5*(Xf1+Xt);
   Yi=1/( (Mcdm/Xt)*sqrt(M_PI/45)*MPlank*aRate(Xt,1,Fast,NULL,NULL,NULL));
   if(!finite(Yi)||FError)  return -1;
@@ -1378,9 +1482,7 @@ double darkOmega(double * Xf, int Fast, double Beps)
       f *= exp(-2*a/Yi);
       z0=sqrt(f)*2*a/(1-f);
       Y0=sqrt(z0*z0+a*a);
-      dmAsymm=2*log(z0/(Y0+a));
-      if(deltaY>0) dmAsymm*=-1;       
-//     dmAsymm=log((Y0+deltaY)/(Y0-deltaY));
+      dmAsymm=deltaY/Y0;     
 
      return 2.742E8*Mcdm*Y0;
   }   
@@ -1629,6 +1731,8 @@ for(N12=0;N12<=2;N12++)
      
       int z4[4];
       for(i=0;i<4;i++)  pname[i]=CI->pinf(nsub22,i+1,pmass+i,pdg+i);
+
+      if(pmass[0]==0) continue; // for the case of absence of process
       for(i=0;i<4;i++) z4[i]=Z4ch(pname[i]);
       smin=pmass[2]+pmass[3];      
       cc23=NULL;
@@ -1676,13 +1780,13 @@ for(N12=0;N12<=2;N12++)
                  if(cc23)
                  {  double Pcm0,PcmMax; 
                     *(cc23->interface->BWrange)=10000; 
-                    *(cc23->interface->gswidth)=1;
+                    *(cc23->interface->gswidth)=0;
                     for(i3W=2;i3W<5;i3W++) if(strcmp(cc23->interface->pinf(1,i3W+1,NULL,NULL),pname[l_])==0) break; 
                     AUX[nsub22].i3=i3W;        
                     PcmMax=decayPcm(pmass[2]+pmass[3]+10*AUX[nsub22].w[l-2], pmass[0],pmass[1]);
                     if( pmass[0]+pmass[1]>=pmass[l_]) Pcm0=Mcdm*0.01; else 
                     Pcm0=1.01*decayPcm(pmass[l_], pmass[0],pmass[1]);  
-                    buildInterpolation(sigma23, Pcm0,PcmMax, 0.02, &(AUX[nsub22].nTab), &(AUX[nsub22].pcmTab), &(AUX[nsub22].csTab));
+                    buildInterpolation(sigma23, Pcm0,PcmMax, 0.02,1E-5,&(AUX[nsub22].nTab), &(AUX[nsub22].pcmTab), &(AUX[nsub22].csTab));
 /*
     printf("nTab=%d\n", AUX[nsub22].nTab);
     displayFunc(sigma23,Pcm0,PcmMax,"sigma23");
@@ -1935,23 +2039,6 @@ static double Y2SQ_Y1(double T)
 }                          
 
 
-static double y1_y2_Q(double T)
-{ double r,f;
-  f=(Mcdm2-Mcdm1)/T;
-  if(f<-100) return 0;
-   r=geff1_(T)/geff2_(T)*exp(f);
-  return r*r;
-} 
-
-static double y2_y1_Q(double T)
-{ double r,f;
-     f=(Mcdm1-Mcdm2)/T;
-     if(f<-100) return 0;
-     r=geff2_(T)/geff1_(T)*exp(f);    
-  return r*r;
-} 
-
-
 
 
 static int DMEQ0(double T, 
@@ -2101,51 +2188,36 @@ static void TderivZ4(double T, double *Y, double *dYdT)
   dYdT[1]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
 }
 
-static int Ntab=0;
-static double*Ttab=NULL;
 
-//static double*Ctab[2]={NULL,NULL};
- double *vs1100T = NULL;
-static double *vs1120T = NULL;
-static double *vs1122T = NULL;
-static double *vs1210T = NULL;
-static double *vs2200T = NULL;
-static double *vs2211T = NULL;
+static void stiffDerives(double T, double*Y,double*f,double h,double*dfdx,double*dfdy)
+{
 
-static double *vs1110T = NULL;
-static double *vs2220T = NULL;
-static double *vs1112T = NULL;
-static double *vs1222T = NULL;
-static double *vs1220T = NULL;
-static double *vs2210T = NULL;
-static double *vs2221T = NULL;
-static double *vs1211T = NULL;
+ double C[2], L[4], Q[6],dy1,dy2;
+ double dT=-0.001*T;
+ int n=2;   
+ DMEQ(T, C, L, Q);
+        
+ dy1=Y[0];
+ dy2=Y[1];
+              
+  f[0]= -C[0] + L[0]*dy1 + L[1]*dy2 + Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;
+  f[1]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
+ 
+  if(dfdy)
+  { dfdy[0*n+0]= L[0]+2*Q[0]*dy1+Q[1]*dy2;               
+    dfdy[0*n+1]= L[1]+2*Q[2]*dy2+Q[1]*dy1;
+    dfdy[1*n+0]= L[2]+2*Q[3]*dy1+Q[4]*dy2;
+    dfdy[1*n+1]= L[3]+2*Q[5]*dy2+Q[4]*dy1;
+  }
 
-static double *Y1T=NULL;
-static double *Y2T=NULL;
-
-double vs1120F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1120T);}
-double vs2200F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2200T);}
-double vs1100F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1100T);}
-double vs1210F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1210T);}
-double vs1122F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1122T);}
-double vs2211F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2211T);}
-
-double vs1110F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1110T);}
-double vs2220F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2220T);}
-double vs1112F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1112T);}
-double vs1222F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1222T);}
-double vs1220F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1220T);}
-double vs2210F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2210T);}
-double vs2221F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs2221T);}
-double vs1211F(double T){ return  3.8937966E8*polint2Exp(T,Ntab,Ttab,  vs1211T);}
-
-
-double dY1F(double T){ return polint2Exp(T,Ntab,Ttab, Y1T) ;}
-double dY2F(double T){ return polint2Exp(T,Ntab,Ttab, Y2T) ;}
-
-double Y1F(double T){ return  dY1F(T)+Yeq1(T);}
-double Y2F(double T){ return  dY2F(T)+Yeq2(T);}
+  if(dfdx)
+  { DMEQ(T+dT, C, L, Q);
+    dfdx[0]= -C[0] + L[0]*dy1 + L[1]*dy2 + Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;
+    dfdx[1]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
+    dfdx[0]-=f[0]; dfdx[0]/=dT;
+    dfdx[1]-=f[1]; dfdx[1]/=dT;
+  }
+}
 
 static void TabDmEq(double step, int show)
 {
@@ -2153,7 +2225,7 @@ static void TabDmEq(double step, int show)
   double T;
 
 //printf("TabDmEq:  Tstart=%E Tend=%E\n",Tstart,Tend);  
-  N=log(Tstart/Tend)/log(step)+1;
+  N=log(Tstart/Tend)/log(step)+2;
   if(N!=Ntab)
   {                 
     Ttab    = realloc(Ttab,   N*sizeof(double));
@@ -2171,8 +2243,8 @@ static void TabDmEq(double step, int show)
     vs2210T = realloc(vs2210T,N*sizeof(double));
     vs2221T = realloc(vs2221T,N*sizeof(double));
     vs1211T = realloc(vs1211T,N*sizeof(double));
-    Y1T     = realloc(Y1T,(N+1)*sizeof(double));
-    Y2T     = realloc(Y2T,(N+1)*sizeof(double)); 
+    Y1T     = realloc(Y1T,    N*sizeof(double));
+    Y2T     = realloc(Y2T,    N*sizeof(double)); 
     Ntab=N;
   }  
   for(T=Tstart,i=0;i<N;i++)
@@ -2238,48 +2310,6 @@ static void TderivZ4tab(double T, double *Y, double *dYdT)
   dYdT[1]= -C[1] + L[2]*dy1 + L[3]*dy2 + Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
 }
 
-double dy2_approx(double T,double y1)
-{
-  double C[2], L[4], Q[6],dy1,dy2;
-
-  DMEQtab(T,C,L,Q);
-  
-  dy1=y1;
-  dy2= (C[1] - L[2]*dy1  - Q[3]*dy1*dy1)/(L[3]+Q[4]*dy1); 
-  return dy2;
-}
-
-// integer function  smallRadu2(N,FCN,X,Y,XEND,H,eps)
-
-extern int smallradu2_( int *N, void (*fcn)(int *, double*,double*,double*,double*,int*), 
-                double *x,double *y, double *xend, double *h,double *eps); 
-
-//SUBROUTINE FCN(N,X,Y,F,RPAR,IPAR)
-
-static void fcn_fort(int *N, double *x,double*y,double*F,double*RPAR,int*IPAR)
-{ double z[2];
-  z[0]=y[0];
-  z[1]=y[1];
-  if(z[0]<0) z[0]*=-1;
-  if(z[1]<0) z[1]*=-1;
-   TderivZ4tab(*x,z,F);
-   
-//   printf("N=%d x=%E y=(%E %E) F=(%e %e)\n", *N,*x, y[0],y[1],F[0],F[1]); 
-}    
-
-
-
-double dy1_approx(double T,double y2)
-{
-  double C[2], L[4], Q[6],dy1,dy2;
-
-  DMEQtab(T,C,L,Q);  
-  dy2=y2;
-  dy1=( C[0] - L[1]*dy2 - Q[2]*dy2*dy2 )/(L[0]   + Q[1]*dy2);
-
-  return dy1;
-}
-
 
 static void TderivZ4tab2(double T, double *Y, double *dYdT)
 {
@@ -2313,100 +2343,6 @@ dy2= -D + sqrt( (C[1]-L[2]*dy1-Q[3]*dy1*dy1)/Q[5] +D*D);
 }
 
 
-static void TderivZ4tab_1(double T, double *Y, double *dYdT)
-{
-  double C[2], L[4], Q[6],dy1,dy2;
-  double s,d ,al,Lmin,Lmax;
-  double a11,a12,a21,a22,c1,c2;
-
-  DMEQtab(T,C,L,Q); 
-
-  a11=L[0],a12=L[1],a21=L[2],a22=L[3],c1=C[0],c2=C[1];
-  s=0.5*(a11+a22);
-  d= s*s + a12*a21-a11*a22;
-  if(1.E-5*s*s > fabs(a12*a21-a11*a22)) Lmin=-0.5*(a12*a21-a11*a22)/s; else Lmin=s-sqrt(d);
-  Lmax=s+sqrt(d);
-
-  if( 1.E-5*fabs(a11-a22)> fabs(a12*a21))  al= a21/(a22-a11); 
-  else   al=0.5*( (a11-a22)+sqrt((a11-a22)*(a11-a22) +4*a12*a21))/a12; 
-  dy1=Y[0];
-//  dy2=(c2-Q[5]*dy1*dy1 +al*(c1-Q[3]*dy1*dy1))/(Lmax+Q[4]*dy1+al*Q[1]*dy1 ) -al*dy1; 
-   dy2=(c2 +al*c1)/Lmax -al*dy1; 
-//   if(dy2<0) dy2=0;
-//   dy2=0;
-//printf("al=%E  dy2=%E(%E,%E) Lmax=%E %E\n",al,dy2,(c2+al*c1)/Lmax,-al*dy1,Lmax, a22+a12*al);   
-//  dYdT[0]= -c1  + a11*dy1 +  Q[0]*dy1*dy1;
-//  printf("T=%E dy1=%E dYdT=%E\n", T,dy1,dYdT[0]);
-
- dYdT[0]= -C[0] + L[0]*dy1 + L[1]*dy2 + Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;  
-
-//  dYdT[0]= -c1  +a12*(c2+al*c1)/Lmax  + Lmin*dy1 +   Q[0]*dy1*dy1 + Q[1]*dy1*dy2 + Q[2]*dy2*dy2;
-  if(!finite(dYdT[0])) { printf("dYdT[0]=%E  T=%E a11-a22=%E a12=%E a21=%E   al=%E\n",dYdT[0],T,a11-a22,a12,a21,  al ); 
-  printf("dy1=%E dy2=%E\n",dy1,dy2);
-   exit(1);}
-}
-
-
-
-static void TderivZ4tab_2(double T, double *Y, double *dYdT)
-{
-  double C[2], L[4], Q[6],dy1,dy2;
-  double s,d,al,Lmin,Lmax; 
-  double a11,a12,a21,a22,c1,c2;
-
-  DMEQtab(T,C,L,Q); 
-
-  a11=L[0],a12=L[1],a21=L[2],a22=L[3],c1=C[0],c2=C[1];
-
-  if( 1.E-5*fabs(a11-a22)> fabs(a12*a21))  al= a12/(a11-a22); 
-           else   al=0.5*( (a22-a11)+sqrt((a11-a22)*(a11-a22) +4*a12*a21))/a21;
-                    
-  s=0.5*(a11+a22);
-  d= 0.25*(a11-a22)*(a11-a22)-a12*a21  ;
-  Lmin=s-sqrt(d);
-  Lmax=s+sqrt(d);
-
-  dy2=Y[0];
-  dy1=(c1+al*c2)/Lmax-al*dy2;
-  dYdT[0]= -c2  +a21*(c1+al*c2)/Lmax  + Lmin*dy2 +   Q[3]*dy1*dy1 + Q[4]*dy1*dy2 + Q[5]*dy2*dy2;
-}
-
-
-
-
-
-
-static int RungeKuta2minus( double*Y, double T1,double T2,int info)
-{
-  double C[2],L[4],Q[6],D,Lmin,Lmax;
-  double a11,a12,a21,a22,c1,c2;
-  double s,d,al,step;
-  int err=0;
-
-  { int N=2;
-    double h=0.1;
-    double ips=0.00001;
-if(info)
-{  DMEQtab(T1, C, L,Q);
-
-  a11=L[0],a12=L[1],a21=L[2],a22=L[3],c1=C[0],c2=C[1];
-            
-  D=L[0]*L[3]-L[1]*L[2];
-  s=0.5*(a11+a22);
-  d= s*s + a12*a21-a11*a22;
-  if(1.E-5*s*s > fabs(a12*a21-a11*a22)) Lmin=-0.5*(a12*a21-a11*a22)/s; else Lmin=s-sqrt(d);
-  Lmax=s+sqrt(d);        
-  if(Lmin<0.1) Lmin=0;
-  if(Lmax<0.1) Lmax=0;   
-  printf("T1=%.1E  Yeq=(%.1E %.1E)  Y=(%.1E %.1E)   Lmin=%.0E Lmax=%.0E ",T1, Yeq1(T1),Yeq2(T1), Y[0],Y[1], Lmin, Lmax);
-}    
-        
-    err= smallradu2_( &N,fcn_fort,&T1,Y, &T2, &h,&ips);
-    
-    return err-1;
-  }              
-} 
-
 
 
 double darkOmega2( double fast, double Beps0)
@@ -2417,8 +2353,10 @@ double darkOmega2( double fast, double Beps0)
   double Y[2],YY[2],T;
   double Lmin,Lmax;
   double step=1.1;
-  
+  double ips=0.01,ips_=0.005;  
   int i,err,N; 
+  
+  Tend=1.E-3;
 
   dmAsymm=0;
   if(!CDM1) Tstart= Mcdm2/20; else if(!CDM2) Tstart= Mcdm1/20;
@@ -2436,18 +2374,29 @@ double darkOmega2( double fast, double Beps0)
       while(fabs(Y[0])<0.005*Yeq1(Tstart)) { Tstart/=1.05; dYstart(Tstart,Y,&Lmin,&Lmax);} 
   } else
   {           
-     while(fabs(Y[0])>0.01*Yeq1(Tstart) || fabs(Y[1])>0.01*Yeq2(Tstart)) { Tstart*=1.05; dYstart(Tstart,Y,&Lmin,&Lmax);} 
-     while(fabs(Y[0])<0.005*Yeq1(Tstart)&&fabs(Y[1])<0.005*Yeq2(Tstart)) { Tstart/=1.05; dYstart(Tstart,Y,&Lmin,&Lmax);} 
+     while(fabs(Y[0])>ips*Yeq1(Tstart) || fabs(Y[1])>ips*Yeq2(Tstart)) { Tstart*=1.05; dYstart(Tstart,Y,&Lmin,&Lmax);} 
+     while(fabs(Y[0])<ips_*Yeq1(Tstart)&&fabs(Y[1])<ips_*Yeq2(Tstart)) { Tstart/=1.05; dYstart(Tstart,Y,&Lmin,&Lmax);} 
   }
   
   if(info) printf("Tstart=%.2E  dY1=%.2E(%.2E) dY2=%.2E(%.2E)  Lmin=%.2E Lmax=%.2E \n",Tstart, Y[0],Yeq1(Tstart),Y[1],Yeq2(Tstart),Lmin,Lmax);  
 
+//Tstart=Tstart*pow(step,10);
+//dYstart(Tstart,Y,&Lmin,&Lmax);
+
   TabDmEq(step,0);
+
+//Y[0]*=5;
+//Y[1]*=5;
+
   
+
+  Y1T[0]=Y[0];
+  Y1T[1]=Y[1]; 
   
+ 
   if(!CDM1)
   {
-    for(i=0,err=0,T=Tstart; T> Tend && !err;i++ )
+    for(i=1,err=0,T=Tstart; T> Tend && !err;i++ )
     { double T2=T/step;
       if(T2<Tend) T2=Tend;
       if(info) printf(" CMD2 : T1=%.2E Y=%.2E ",T,Y[1]);
@@ -2463,7 +2412,7 @@ double darkOmega2( double fast, double Beps0)
   } else if(!CDM2) 
   { 
   
-    for(i=0,err=0,T=Tstart; T> Tend && !err;i++ )
+    for(i=1,err=0,T=Tstart; T> Tend && !err;i++ )
     { double T2=T/step;
       if(T2<Tend) T2=Tend;
       if(info) printf(" CMD1 : T1=%.2E Y=%.2E ",T,Y[0]);
@@ -2477,22 +2426,181 @@ double darkOmega2( double fast, double Beps0)
     fracCDM2=0;
     return Y[0]*2.742E8*Mcdm1;
   }  else  
-  {
-    Y1T[0]=Y[0];
-    Y2T[0]=Y[1];
+  { double h=0.01*Tstart*(1-1/step);
     for(i=1,err=0,T=Tstart; T> Tend && !err;i++ )
     { double T2=T/step;
+      double Yscal[2]={1,1};
       if(T2<Tend) T2=Tend;
       
-      err= RungeKuta2minus(Y,T,T2,info);
-      if(err) { printf(" error in odeint\n");  return  -1;}
+      
+//      if(fast) err= RungeKuta2minus(Y,T,T2,info); else err=odeint(Y,2 , T ,T2 , 1.E-3, (T-T2) , TderivZ4tab);    
+      err=stiff(T,T2,2,Y, Yscal,1.E-3, &h, stiffDerives);
+//    err=stiffbs(i==1,T, T2, 2, Y, Yscal, 1.E-3, &h,stiffDerives);
+             
+      if(err) { printf(" error in stiff\n");  return  -1;}
       Y1T[i]=Y[0];      
       Y2T[i]=Y[1];
       T=T2;
 //    printf(" RungeKuta2minus: T=%.2E  Y[0]=%E(%E) Y[1]=%E(%E)\n",T, Y[0],Yeq1(T),Y[1],Yeq2(T));
+//printf("T=%.5E h=%.2E Y={%.3E %.3E}\n",T2,h,Y[0],Y[1]);
     }
     fracCDM2=Y[1]*Mcdm2/( Y[0]*Mcdm1 +Y[1]*Mcdm2);
 
     return  Y[0]*2.742E8*Mcdm1+ Y[1]*2.742E8*Mcdm2;
   }
 }
+
+//======================================
+
+static double T_;
+static double  sqrtSmin23,sqrtSmax23;
+static int i3=2,i4=3,i5=4;
+
+
+static double s_integrandT_(double  sqrtS )
+{  double sv_tot,t,bess;
+   double ms,md,PcmIn;
+   double Rm;
+   
+   ms = M1 + M2; 
+   if(ms>=sqrtS)  return 0;
+   md = M1 - M2;
+   PcmIn = sqrt((sqrtS-ms)*(sqrtS+ms)*(sqrtS-md)*(sqrtS+md))/(2*sqrtS);
+   kin22(PcmIn,pmass);
+   
+   sv_tot=simpson(dSigma_dCos,-1.,1.,1E-3); 
+//  sv_tot=   1/3.8937966E8/(PcmIn/M1+PcmIn/M2)  ;  
+   bess=bessk1(sqrtS/T_)/bessk2(M1/T_)/bessk2(M2/T_);
+
+   Rm=PcmIn*sqrtS/M1/M2;   
+   return  bess*Rm*Rm*sv_tot/T_;    
+}   
+
+/*
+bessk2(x) = exp(-x)*sqrt(M_PI/2/x)*K2pol(1/x)
+bessk1(x) = exp(-x)*sqrt(M_PI/2/x)*K1pol(1/x) 
+*/
+
+static double u_integrand_( double u)
+{  double z,y,sv_tot,w;
+   double Xf_1;
+   double ms,md,sqrtS,PcmIn,res0;
+   
+   if(u==0. || u==1.) return 0.;
+   
+   z=1-u*u;
+   sqrtS=M1+M2-3*T_*log(z);
+   if(sqrtS<=M1+M2 || sqrtS<=pmass[2]+pmass[3]) return 0;
+   return s_integrandT_(sqrtS )*6*T_*u/z;
+}
+
+
+static double vsigma23integrand(double *x, double w)
+{
+   double r;
+   double s,pcmIn;
+   double M45_min=pmass[i4]+pmass[i5],M45_max;
+   int err;
+   double P,M45,bess,Rm;
+   double z,sqrtS,GG;
+   REAL pvect[20];
+
+   z=1-x[0]*x[0];
+   sqrtS=M1+M2-3*T_*log(z);
+   if(sqrtS<=sqrtSmin23 || sqrtS>=sqrtSmax23) return 0;    
+   pcmIn=decayPcm(sqrtS,pmass[0], pmass[1]);
+
+   if(pcmIn==0) return 0;
+
+   M45_max= sqrtS-pmass[i3];
+   M45_max= sqrtSmax23-pmass[i3];
+   M45_min=pmass[i4]+pmass[i5];
+   M45=M45_min+x[1]*(M45_max-M45_min);
+   if(M45>sqrtS-pmass[i3]) return 0;
+   r=  kinematic_23(pcmIn,i3+1, M45, 2*x[2]-1 ,2*x[3]-1,M_PI*x[4],pmass,pvect)*8*M_PI*(M45_max-M45_min);
+   GG=sqrt(4*M_PI*parton_alpha(sqrtS));
+   r*= cc23->interface->sqme(1,GG, pvect,&err);
+//   r=  M1*M2/pcmIn/(M1+M2);
+
+   bess=bessk1(sqrtS/T_)/bessk2(M1/T_)/bessk2(M2/T_);
+   Rm=pcmIn*sqrtS/M1/M2;   
+   
+   r*= bess*Rm*Rm*6*x[0]/z;
+   return r; 
+}
+
+double vSigmaCC(double T,numout* cc)
+{
+  int i;
+  char* pname[5];
+  gridStr grid,grid1;
+  CalcHEP_interface * CI;
+  double u_min=0.,smin;
+  double a=0,factor;
+  int spin2,cdim,neutral1,neutral2;
+  double MassCutOut;
+  double oldQ;
+
+  CI=cc->interface; 
+  T_=T;
+
+  if(passParameters(cc)) return -1;
+  if(Qaddress && CI->nout==2) 
+  {  oldQ=*Qaddress;
+     for(i=0;i<2;i++) pname[i]=CI->pinf(1,i+1,pmass+i,pdg+i);
+     *Qaddress=pmass[0]+pmass[1];
+     calcMainFunc();
+     if(passParameters(cc)) return -1;
+  }
+  
+  for(i=0;i<2+CI->nout;i++) pname[i]=CI->pinf(1,i+1,pmass+i,pdg+i);  
+ 
+  M1=pmass[0];
+  M2=pmass[1];
+
+  WIDTH_FOR_OMEGA=1;  
+   
+  if(CI->nout==2)
+  {   sqme22=CI->sqme;
+      nsub22=1;    
+      a=simpson(u_integrand_,u_min,1.,eps)*3.8937966E8;
+  } else 
+  {   double dI;
+      int k,k0,n;
+      double bEps=1.E-4;
+      double wMax=1.E10;
+      int kin[3][3]={{2,3,4},{3,2,4},{4,2,3}};
+      
+      sqrtSmin23=pmass[0]+pmass[1]; 
+      if(pmass[2]+pmass[3]+pmass[4] > sqrtSmin23) sqrtSmin23=pmass[2]+pmass[3]+pmass[4];
+      sqrtSmax23=sqrtSmin23-T*log(bEps); 
+
+            
+      for(k0=0,k=0;k<3;k++)
+      { int n,m,w;
+        char s0[3],*s;
+        s0[0]=kin[k][1]+1; s0[1]=kin[k][2]+1; s0[2]=0;        
+        for(n=1;(s=CI->den_info(1,n,&m,&w));n++) 
+        if(strcmp(s0,s)==0 && fabs(CI->va[m]) > pmass[kin[k][1]]+pmass[kin[k][2]]
+          && fabs(CI->va[m]) < sqrtSmax23 - pmass[kin[k][0]]
+          && fabs(CI->va[m]*CI->va[w])< wMax)
+        {  wMax=fabs(CI->va[m]*CI->va[w]);
+           if(wMax==0) 
+           { printf("zero width propagator in integration  region\n");
+             return -1;
+           } 
+           k0=k;    
+           printf("pole(%s %s) %s(%E) %E \n", pname[s[0]-1],pname[s[1]-1], CI->varName[m],  CI->va[m], CI->va[w]);
+        }                                                       
+      }
+      i3=kin[k0][0]; i4=kin[k0][1]; i5=kin[k0][2];
+      cc23=cc;
+      a=vegas_chain(5, vsigma23integrand ,2000,1., 0.03,&dI);
+   }
+    
+   WIDTH_FOR_OMEGA=0;
+   if(Qaddress && CI->nout==2)  *Qaddress=oldQ;
+  
+   return a;
+}
+

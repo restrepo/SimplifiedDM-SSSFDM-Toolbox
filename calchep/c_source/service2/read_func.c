@@ -106,7 +106,7 @@ int calcExpression(char *s,int(*nameToDouble)(char *,double *), double *p)
   if(rderrcode==0 && !isAble) rderrcode=unknownfunction; 
  
   if(!rderrcode) *p=*r;
-  if(!rderrcode && !finite(*r)) rderrcode=cannotevaluate;
+  if(!rderrcode && !isfinite(*r)) rderrcode=cannotevaluate;
  
   release_(&heapbeg); 
   return rderrcode;

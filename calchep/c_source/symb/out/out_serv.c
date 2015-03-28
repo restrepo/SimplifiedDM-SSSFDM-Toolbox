@@ -33,7 +33,7 @@ poly readBuff=NULL;
 int outputLanguage=0;
 
 void seekArchiv(long n)
-{  fseek(archiv,n,SEEK_SET);}
+{ fseek(archiv,n,SEEK_SET);}
 
 
 void DiagramToOutFile(vcsect * vcs, int label,char comment)

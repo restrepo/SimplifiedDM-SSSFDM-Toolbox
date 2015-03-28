@@ -52,19 +52,30 @@
        End if
 
      Case(8)
-       If (wert.eq.1) Then
-          PurelyNumericalEffPot = .true.
-          CalculateMSSM2Loop = .false.
-       Else if (wert.eq.2) Then
-          PurelyNumericalEffPot = .False.
-          CalculateMSSM2Loop = .false.
-       Else if (wert.eq.9) Then 
-          PurelyNumericalEffPot = .False.
-          CalculateMSSM2Loop = .True.
-       Else 
-          Write(*,*) "Unknown option for two-loop mass calculation"
-           CalculateTwoLoopHiggsMasses=.False.        
-       End if
+        SELECT CASE (int(WERT))
+        CASE ( 1 )
+           PurelyNumericalEffPot = .true.
+           CalculateMSSM2Loop = .false.
+           TwoLoopMethod=1
+        CASE ( 2 )
+           PurelyNumericalEffPot = .false.
+           CalculateMSSM2Loop = .false.
+           TwoLoopMethod=2
+        CASE ( 3 )
+           CalculateMSSM2Loop = .false.
+           TwoLoopMethod=3
+        CASE ( 8 )
+           CalculateMSSM2Loop = .True.
+           TwoLoopMethod=8
+        CASE ( 9 )
+           CalculateMSSM2Loop = .True.
+           TwoLoopMethod=9
+        CASE DEFAULT 
+           Write(*,*) "Unknown option for two-loop mass calculation"
+           CalculateTwoLoopHiggsMasses=.False.
+        END SELECT
+
+
  
      Case(9)
        If (wert.Ne.0) Then
@@ -93,7 +104,22 @@
       Call SetWriteMinBR(wert)
 
      Case(13) ! minimal value such that a branching ratio is written out
-      If (wert.Eq.0) Enable3BDecays = .False.    
+      If (wert.Eq.0) Then
+           Enable3BDecaysF = .False.
+           Enable3BDecaysS = .False.        
+      Elseif (wert.Eq.1) Then
+           Enable3BDecaysF = .True.
+           Enable3BDecaysS = .False.        
+      Elseif (wert.Eq.2) Then
+           Enable3BDecaysS = .True.
+           Enable3BDecaysF = .False.        
+      Elseif (wert.Eq.3) Then
+           Enable3BDecaysF = .True.
+           Enable3BDecaysS = .True.        
+      Else 
+          Write(*,*) "Unknown option for flag 13 (three-body decays): ",wert
+      End if
+
 
      Case(14) ! run SUSY couplings to scale of decaying particle
       If (wert.Eq.0) RunningCouplingsDecays = .False.    
@@ -310,6 +336,12 @@
        WriteParametersAtQ=.False.
       End If
 
+     Case(70)
+      If (wert.Ne.0._dp) Then
+       SUSYrunningFromMZ=.True.
+      Else
+       SUSYrunningFromMZ=.False.
+      End If
 
      Case(65)
       If (wert.gt.0) SolutionTadpoleNr = wert 

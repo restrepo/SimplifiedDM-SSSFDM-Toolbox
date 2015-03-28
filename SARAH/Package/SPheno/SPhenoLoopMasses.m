@@ -286,7 +286,7 @@ CorrectionTypeVV=temp[[3]];
 ];
 
 
-WriteCalcLoopMasses:=Block[{i,j,count1,count2,ii1,ii2,solHighScale},
+WriteCalcLoopMasses:=Block[{i,j,count1,count2,ii1,ii2,solHighScale,higgsdim,higgsdimstr},
 
 posZ =Position[listNotMixedMasses,VectorZ][[1,1]];
 massesZ= Extract[NeededMassesUnmixed,posZ];
@@ -323,7 +323,11 @@ WriteString[sphenoLoop, "Complex(dp) :: Tad1Loop("<>ToString[SA`NrTadpoleEquatio
 WriteString[sphenoLoop, "Real(dp) :: comp("<>ToString[Length[SubSolutionsTadpolesLoop]]<>"), tanbQ, vev2\n"];
 
 If[UseHiggs2LoopMSSM==True,
-WriteString[sphenoLoop, "Real(dp) :: tadpoles_2L(2), vevs_DR(2), Q2, Pi2S(2,2), sinb2, cosb2, sinbcosb \n"];
+higgsdim=Min[4,getGenSPheno[hh]];(*at least two higgses,but maximum 4 allowed here!*)
+higgsdimstr=ToString[higgsdim];
+WriteString[sphenoLoop,"Real(dp) :: tadpoles_MSSM(2), vevs_MSSM(2), Q2, Pi2S_MSSM(2,2), sinb2, cosb2, sinbcosb \n"];
+WriteString[sphenoLoop,"Real(dp) :: tadpoles_asat(4), vevs_asat(4), Pi2S_asat(4,4),PiP2S_asat(4,4), Mglu_asat(2),mo2_asat \n"];
+WriteString[sphenoLoop,"complex(dp) :: MDO_asat,BO_asat,MO_asat,lam_asat,LT_asat, ZG_asat(2,2), mu_asat\n"];
 ];
 
 If[SPhenoOnlyForHM=!=True,
@@ -453,6 +457,7 @@ i++;];
 
 If[SupersymmetricModel=!=False,
 WriteString[sphenoLoop, "If (CalculateTwoLoopHiggsMasses) Then \n"];
+(*
 WriteString[sphenoLoop, "  If (.not.CalculateMSSM2Loop) Then \n"];
 
 WriteString[sphenoLoop, "  ! Make sure that there are no exactly degenerated masses! \n"];
@@ -462,6 +467,7 @@ WriteString[sphenoLoop,"   "<>SPhenoForm[ArrayParameters[[i]]]<> "_saveEP ="<>SP
 WriteString[sphenoLoop,"   where (aint(Abs("<>SPhenoForm[ArrayParameters[[i]]]<>")).eq."<>SPhenoForm[ArrayParameters[[i]]]<>") "<>SPhenoForm[ArrayParameters[[i]]]<>"="<>SPhenoForm[ArrayParameters[[i]]]<>"*(1 + "<>ToString[i]<>"*1.0E-12_dp)\n"];
 i++;];
 WriteString[sphenoLoop,"\n"];
+*)
 WriteString[sphenoLoop,"    If(GaugelessLimit) Then \n"];
 For[i=1,i<=Length[listVEVsStable],
 WriteString[sphenoLoop,"  "<>ToString[listVEVsStable[[i]]]<>" = 0._dp \n"];
@@ -481,6 +487,16 @@ i++;];
 (* WriteShiftTadpoleSolution[sphenoLoop]; *)
 WriteString[sphenoLoop,"     End if \n\n"];
 
+WriteString[sphenoLoop,"SELECT CASE (TwoLoopMethod) \n"];
+
+WriteString[sphenoLoop,"CASE ( 1 , 2 ) \n"];
+
+WriteString[sphenoLoop,"  ! Make sure that there are no exactly degenerated masses! \n"];
+ArrayParameters=Select[listAllParameters,(Length[getDimParameters[#]]==2)&];
+For[i=1,i<=Length[ArrayParameters],WriteString[sphenoLoop,"   "<>SPhenoForm[ArrayParameters[[i]]]<>"_saveEP ="<>SPhenoForm[ArrayParameters[[i]]]<>"\n"];
+WriteString[sphenoLoop,"   where (aint(Abs("<>SPhenoForm[ArrayParameters[[i]]]<>")).eq."<>SPhenoForm[ArrayParameters[[i]]]<>") "<>SPhenoForm[ArrayParameters[[i]]]<>"="<>SPhenoForm[ArrayParameters[[i]]]<>"*(1 + "<>ToString[i]<>"*1.0E-12_dp)\n"];
+i++;];
+WriteString[sphenoLoop,"\n"];
 
 WriteString[sphenoLoop, "If (TwoLoopSafeMode) Then \n"];
 WriteString[sphenoLoop, "  iFin = 12 \n"];
@@ -536,16 +552,36 @@ WriteString[sphenoLoop,"End If  \n"];
 
 WriteString[sphenoLoop," Pi2A0 = 0._dp \n"];
 
+(*
 WriteString[sphenoLoop,"   If(GaugelessLimit) Then \n"];
 For[i=1,i<=Length[listBrokenGaugeCouplings],
 WriteString[sphenoLoop,"   "<>SPhenoForm[listBrokenGaugeCouplings[[i]]]<> " ="<>SPhenoForm[listBrokenGaugeCouplings[[i]]] <>"_saveEP \n"];
 i++;];
 WriteString[sphenoLoop,"   End if \n\n"];
+*)
 
 For[i=1,i<=Length[ArrayParameters],
 WriteString[sphenoLoop,"   "<>SPhenoForm[ArrayParameters[[i]]]<> " ="<>SPhenoForm[ArrayParameters[[i]] ]<>"_saveEP \n"];
 i++;];
 
+WriteString[sphenoLoop,"\n\n CASE ( 3 ) ! Diagrammatic method \n"];
+
+WriteString[sphenoLoop,"  ! Make sure that there are no exactly degenerated masses! \n"];
+ArrayParameters=Select[listAllParameters,(Length[getDimParameters[#]]==2)&];
+For[i=1,i<=Length[ArrayParameters],WriteString[sphenoLoop,"   "<>SPhenoForm[ArrayParameters[[i]]]<>"_saveEP ="<>SPhenoForm[ArrayParameters[[i]]]<>"\n"];
+WriteString[sphenoLoop,"   where (aint(Abs("<>SPhenoForm[ArrayParameters[[i]]]<>")).eq."<>SPhenoForm[ArrayParameters[[i]]]<>") "<>SPhenoForm[ArrayParameters[[i]]]<>"="<>SPhenoForm[ArrayParameters[[i]]]<>"*(1 + "<>ToString[i]<>"*1.0E-12_dp)\n"];
+i++;];
+WriteString[sphenoLoop,"\n"];
+
+MakeCall["CalculatePi2S",Join[listVEVs,listAllParameters],{"0._dp"},{"kont","ti_ep2L","Pi2S_EffPot"},sphenoLoop];
+
+For[i=1,i<=Length[ArrayParameters],
+WriteString[sphenoLoop,"   "<>SPhenoForm[ArrayParameters[[i]]]<> " ="<>SPhenoForm[ArrayParameters[[i]] ]<>"_saveEP \n"];
+i++;];
+
+WriteString[sphenoLoop,"\n\n CASE ( 8 , 9 ) ! Hard-coded routines \n  \n"];
+If[UseHiggs2LoopMSSM==True,
+(*
 WriteString[sphenoLoop,"\n\n  Else ! Slavich's routines \n\n"];
 If[UseHiggs2LoopMSSM==True,
 WriteString[sphenoLoop,"vevs_DR(1) = vd \n"];
@@ -590,6 +626,153 @@ WriteString[sphenoLoop, "Pi2S_EffPot(1:2,1:2) = Pi2S \n\n"];
 ];
 
 WriteString[sphenoLoop,"  End if \n \n"];
+*)
+
+WriteString[sphenoLoop,"! Strong corrections first\n"];
+WriteString[sphenoLoop,"vevs_asat = 1._dp\n"];
+
+For[ii1=1,ii1<=higgsdim,ii1++,WriteString[sphenoLoop,"vevs_asat("<>ToString[ii1]<>") = "<>SPhenoForm[listVEVs[[ii1]]]<>"\n"];];
+
+(*Now to make sure we have all the correct definitions,and if not then to insert them accordingly...*)
+(*Need lam,LT,MD0,mo2,BO,MO,Mglu (2),ZG (2)*)
+
+If[getGenSPheno[Gluino]<2,
+WriteString[sphenoLoop,"Mglu_asat(1) = MGlu\n"];
+WriteString[sphenoLoop,"Mglu_asat(2) = 1._dp\n"];
+WriteString[sphenoLoop,"ZG_asat(1,1) = 1._dp\n"];
+WriteString[sphenoLoop,"ZG_asat(1,2) = 0._dp\n"];
+WriteString[sphenoLoop,"ZG_asat(2,1) = 0._dp\n"];
+WriteString[sphenoLoop,"ZG_asat(2,2) = 1._dp\n"];,
+WriteString[sphenoLoop,"Mglu_asat(1:2) = MGlu(1:2)\n"];
+WriteString[sphenoLoop,"ZG_asat(1:2,1:2) = ZG(1:2,1:2)\n"];
+];
+
+tvar=getEntryParameter[MDGoc,OutputName];
+If[tvar===None,WriteString[sphenoLoop,"MDO_asat = 0._dp\n"];,
+WriteString[sphenoLoop,"MDO_asat = "<>ToString[tvar]<>"\n"];
+];
+tvar=getEntryParameter[moc2,OutputName];
+If[tvar===None,WriteString[sphenoLoop,"mo2_asat = 1._dp\n"];,
+WriteString[sphenoLoop,"mo2_asat = "<>ToString[tvar]<>"\n"];
+];
+tvar=getEntryParameter[MO,OutputName];
+If[tvar===None,WriteString[sphenoLoop,"MO_asat = 0._dp\n"];,
+WriteString[sphenoLoop,"MO_asat = "<>ToString[tvar]<>"\n"];
+];
+tvar=getEntryParameter[B[MO],OutputName];
+If[tvar===None,WriteString[sphenoLoop,"BO_asat = 0._dp\n"];,
+WriteString[sphenoLoop,"BO_asat = "<>ToString[tvar]<>"\n"];
+];
+
+
+tpos=Position[ParameterDefinitions,"Singlet-Higgs-Interaction"];
+If[tpos=!={},
+tpos=Position[SuperPotential,ParameterDefinitions[[tpos[[1,1]],1]]];
+tvarres=SuperPotential[[tpos[[1,1]]]];
+If[FreeQ[tvarres,{___,Hu,___,Hd,___}]==False,
+WriteString[sphenoLoop,"lam_asat = real("<>ToString[-1*tvarres[[1,1]]]<>"*"<>ToString[getEntryParameter[tvarres[[1,2]],OutputName]]<>",dp)\n"];,
+WriteString[sphenoLoop,"lam_asat = real("<>ToString[tvarres[[1,1]]]<>"*"<>ToString[getEntryParameter[tvarres[[1,2]],OutputName]]<>",dp)\n"];
+];,
+tpos=Position[SuperPotential,{S,Hd,Hu}];
+If[tpos=={},
+tpos=Position[SuperPotential,{S,Hu,Hd}];
+If[tpos=={},
+WriteString[sphenoLoop,"lam_asat = 0._dp\n"];,
+tvarres=SuperPotential[[tpos[[1,1]]]][[1]];
+WriteString[sphenoLoop,"lam_asat = real("<>ToString[-1*tvarres[[1]]]<>"*"<>ToString[getEntryParameter[tvarres[[2]],OutputName]]<>",dp)\n"];];,tvarres=SuperPotential[[tpos[[1,1]]]][[1]];
+WriteString[sphenoLoop,"lam_asat = real("<>ToString[tvarres[[1]]]<>"*"<>ToString[getEntryParameter[tvarres[[2]],OutputName]]<>",dp)\n"];
+];
+];
+
+tpos=Position[SuperPotential,{Hd,Hu}];
+If[tpos=={},
+tpos=Position[SuperPotential,{Hu,Hd}];
+If[tpos=={},
+WriteString[sphenoLoop,"mu_asat = 0.001_dp\n"];,
+WriteString[sphenoLoop,"mu_asat = mu \n"];
+];,
+WriteString[sphenoLoop,"mu_asat = mu \n"];
+];
+
+tpos=Position[SuperPotential,{Hd,T,Hu}];
+If[tpos=={},tpos=Position[SuperPotential,{Hu,T,Hd}];
+If[tpos=={},
+WriteString[sphenoLoop,"LT_asat = 0._dp\n"];,
+tvarres=SuperPotential[[tpos[[1,1]]]][[1]];
+WriteString[sphenoLoop,"LT_asat = real("<>ToString[-1*tvarres[[1]]]<>"*"<>ToString[getEntryParameter[tvarres[[2]],OutputName]]<>"/sqrt(2._dp),dp)\n"];];,tvarres=SuperPotential[[tpos[[1,1]]]][[1]];
+WriteString[sphenoLoop,"LT_asat = real("<>ToString[tvarres[[1]]]<>"*"<>ToString[getEntryParameter[tvarres[[2]],OutputName]]<>"/sqrt(2._dp),dp)\n"];];
+
+(*write calling routine*)
+
+WriteString[sphenoLoop,"Q2 = GetRenormalizationScale() \n"];
+WriteString[sphenoLoop,"call CalculateStrongCorrections2L(Q2,g3,MGlu_asat,ZG_asat, vevs_asat, &\n"];
+WriteString[sphenoLoop,"& Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp), &\n"];
+WriteString[sphenoLoop,"& Real(ml2(3,3),dp), Td(3,3), Tu(3,3), Te(3,3), Yd(3,3), &\n"];
+WriteString[sphenoLoop,"& Yu(3,3), Ye(3,3), "<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu_asat"]<>
+",MDO_asat,mo2_asat,BO_asat,MO_asat,lam_asat,LT_asat,0,pip2s_asat,pi2s_asat,tadpoles_asat,kont )\n"];
+
+WriteString[sphenoLoop,"do i1 = 1,"<>higgsdimstr<>"\n"];
+WriteString[sphenoLoop,"ti_ep2L(i1) = tadpoles_asat(i1)\n"];
+WriteString[sphenoLoop,"pi2s_effpot(i1,i1) = pi2s_asat(i1,i1)+tadpoles_asat(i1)/vevs_asat(i1)\n"];
+WriteString[sphenoLoop,"pip2s_effpot(i1,i1) = pip2s_asat(i1,i1)\n"];
+WriteString[sphenoLoop,"do i2 = 1,i1-1\n"];
+WriteString[sphenoLoop,"pi2s_effpot(i1,i2) = pi2s_asat(i1,i2)\n"];
+WriteString[sphenoLoop,"pi2s_effpot(i2,i1) = pi2s_asat(i2,i1)\n"];
+WriteString[sphenoLoop,"pip2s_effpot(i1,i2) = pip2s_asat(i1,i2)\n"];
+WriteString[sphenoLoop,"pip2s_effpot(i2,i1) = pip2s_asat(i2,i1)\n"];
+WriteString[sphenoLoop,"end do\n"];
+WriteString[sphenoLoop,"end do\n\n"];
+
+WriteString[sphenoLoop,"If ( TwoLoopMethod .eq. 9) then ! Slavich's routines \n\n"];
+WriteString[sphenoLoop,"vevs_MSSM(1) = vd \n"];
+WriteString[sphenoLoop,"vevs_MSSM(2) = vu \n"];
+WriteString[sphenoLoop,"Q2 = GetRenormalizationScale() \n"];
+WriteString[sphenoLoop,"Call Yukawa2L_Tadpoles_MSSM(mAH2(2),vevs_MSSM, &\n"];
+WriteString[sphenoLoop,"& Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp), & \n"];
+WriteString[sphenoLoop,"& Real(ml2(3,3),dp), Td(3,3), Tu(3,3), Te(3,3), Yd(3,3), &  \n"];
+WriteString[sphenoLoop,"& Yu(3,3), Ye(3,3), "<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu_asat"]<>", tadpoles_MSSM,kont ) \n\n"];
+
+WriteString[sphenoLoop,"ti_ep2L(1) = ti_ep2L(1) + tadpoles_MSSM(1)*vevs_MSSM(1) \n"];
+WriteString[sphenoLoop,"ti_ep2L(2) = ti_ep2L(2) + tadpoles_MSSM(2)*vevs_MSSM(2) \n \n"];
+WriteString[sphenoLoop,"vevs_MSSM(1) = vd \n"];
+WriteString[sphenoLoop,"vevs_MSSM(2) = vu \n"];
+WriteString[sphenoLoop,"Call Yukawa2L_Scalar(Q2,mAH2(2),vevs_MSSM, & \n"];
+WriteString[sphenoLoop," Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp), & \n"];
+WriteString[sphenoLoop," Real(ml2(3,3),dp), Td(3,3), Tu(3,3), Te(3,3), Yd(3,3), &  \n"];
+WriteString[sphenoLoop," Yu(3,3), Ye(3,3), "<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu_asat"]<>",0, Pi2S_MSSM,kont ) \n\n"];
+
+WriteString[sphenoLoop,"! Some two loop corrections are absorbed in M_A in Pietro's routines \n\n"];
+WriteString[sphenoLoop," Call Yukawa2L_PseudoScalar(mAH2(2),vevs_MSSM,& \n"];
+WriteString[sphenoLoop," & Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp),& \n"];
+WriteString[sphenoLoop," & Real(ml2(3,3),dp),Td(3,3),Tu(3,3),Te(3,3),Yd(3,3),& \n"];
+WriteString[sphenoLoop," & Yu(3,3),Ye(3,3),"<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu_asat"]<>",Pi2A0,kont) \n"];
+WriteString[sphenoLoop," tanbQ=vu/vd \n"];
+WriteString[sphenoLoop," cosb2=1._dp/(1._dp+tanbQ**2) \n"];
+WriteString[sphenoLoop," sinb2=1._dp-cosb2 \n"];
+WriteString[sphenoLoop," sinbcosb=Sqrt(cosb2*sinb2) \n"];
+
+WriteString[sphenoLoop," Pi2S_MSSM(1,1)=Pi2S_MSSM(1,1)+Pi2A0*sinb2 + tadpoles_MSSM(1) \n"];
+WriteString[sphenoLoop," Pi2S_MSSM(1,2)=Pi2S_MSSM(1,2)-Pi2A0*sinbcosb \n"];
+WriteString[sphenoLoop," Pi2S_MSSM(2,2)=Pi2S_MSSM(2,2)+Pi2A0*cosb2 + tadpoles_MSSM(2) \n"];
+WriteString[sphenoLoop," Pi2S_MSSM(2,1)=Pi2S_MSSM(1,2) \n \n"];
+
+WriteString[sphenoLoop,"Pi2S_EffPot(1:2,1:2) = Pi2S_EffPot(1:2,1:2) + Pi2S_MSSM \n\n"];
+
+WriteString[sphenoLoop," PiP2S_effpot(1,1)=pip2s_effpot(1,1)+Pi2A0*sinb2\n"];
+WriteString[sphenoLoop," PiP2S_effpot(1,2)=pip2s_effpot(1,2)+Pi2A0*sinbcosb \n"];
+WriteString[sphenoLoop," PiP2S_effpot(2,2)=pip2s_effpot(2,2)+Pi2A0*cosb2 \n"];
+WriteString[sphenoLoop," PiP2S_effpot(2,1)=pip2s_effpot(1,2)\n \n"];
+
+WriteString[sphenoLoop,"end if ! Ends slavich routines\n\n"];
+
+];(*ends "If[UseHiggs2LoopMSSM==True, "*)
+WriteString[sphenoLoop," END SELECT\n \n"];
+
+WriteString[sphenoLoop,"   If(GaugelessLimit) Then \n"];
+For[i=1,i<=Length[listBrokenGaugeCouplings],
+WriteString[sphenoLoop,"   "<>SPhenoForm[listBrokenGaugeCouplings[[i]]]<>" ="<>SPhenoForm[listBrokenGaugeCouplings[[i]]]<>"_saveEP \n"];
+i++;];
+WriteString[sphenoLoop,"   End if \n\n"];
 
 WriteString[sphenoLoop,"Else ! Two loop turned off \n"];
 WriteString[sphenoLoop, "Pi2S_EffPot = 0._dp \n\n"];
@@ -797,16 +980,6 @@ If[addTad==True,
 WriteString[sphenoLoop, "Complex(dp), Intent(in) ::  Tad1Loop("<>ToString[SA`NrTadpoleEquations]<>") \n"];
 ];
 
-If[UseHiggs2LoopMSSM==DISABLED,
-If[particle === PseudoScalar,
-WriteString[sphenoLoop, "Real(dp) :: Pi2A0, vevs_DR(2) \n"];,
-If[particle===HiggsBoson,
-WriteString[sphenoLoop, "Real(dp) :: Pi2S(2,2), Q2, vevs_DR(2) \n"];
-WriteString[sphenoLoop, "Real(dp) :: tanbQ, sinb2, cosb2, sinbcosb, Pi2A0 \n"];
-];
-];
-];
-
 
 WriteString[sphenoLoop, "Iname = Iname + 1 \n"];
 WriteString[sphenoLoop, "NameOfUnit(Iname) = '"<>"OneLoop"<> Name<>"'\n \n"];
@@ -825,57 +998,7 @@ WriteString[sphenoLoop, "  Do i2 = 1, i1-1 \n"];
 WriteString[sphenoLoop, "  mat2a(i1,i2) = Conjg(mat2a(i2,i1)) \n"];
 WriteString[sphenoLoop, "  End do \n"];
 WriteString[sphenoLoop, "End do \n"]; 
-
 WriteString[sphenoLoop, "\n \n"];
-
-If[UseHiggs2LoopMSSM==DISABLED,
-If[particle === PseudoScalar,
-WriteString[sphenoLoop,"vevs_DR(1) = vd \n"];
-WriteString[sphenoLoop,"vevs_DR(2) = vu \n"];
-WriteString[sphenoLoop, "If (CalculateTwoLoopHiggsMasses) Then \n"];
-WriteString[sphenoLoop,"Call PiPseudoScalar2(g3,MGlu,mAH2(2),vevs_DR, & \n"];
-WriteString[sphenoLoop,"& Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp), & \n"];
-WriteString[sphenoLoop,"& Real(ml2(3,3),dp), Td(3,3), Tu(3,3), Te(3,3), Yd(3,3), &  \n"];
-WriteString[sphenoLoop,"& Yu(3,3), Ye(3,3), "<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu"]<>", Pi2A0,kont ) \n"];
-WriteString[sphenoLoop, "Else \n"];
-WriteString[sphenoLoop,"Pi2A0 = 0._dp \n"];
-WriteString[sphenoLoop, "End if \n"];,
-
-
-If[particle===HiggsBoson,
-WriteString[sphenoLoop,"Q2 = GetRenormalizationScale() \n"];
-WriteString[sphenoLoop,"vevs_DR(1) = vd \n"];
-WriteString[sphenoLoop,"vevs_DR(2) = vu \n"];
-WriteString[sphenoLoop, "If (CalculateTwoLoopHiggsMasses) Then \n"];
-WriteString[sphenoLoop,"Call PiScalar2(Q2,g3,MGlu,mAH2(2),vevs_DR, & \n"];
-WriteString[sphenoLoop," Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp), & \n"];
-WriteString[sphenoLoop," Real(ml2(3,3),dp), Td(3,3), Tu(3,3), Te(3,3), Yd(3,3), &  \n"];
-WriteString[sphenoLoop," Yu(3,3), Ye(3,3), "<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu"]<>",0, Pi2S,kont ) \n\n"];
-
-WriteString[sphenoLoop,"! Some two loop corrections are absorbed in M_A in Pietro's routines \n\n"];
-WriteString[sphenoLoop," Call PiPseudoScalar2(g3,MGlu,mAH2(2),vevs_DR,& \n" ];
-WriteString[sphenoLoop," & Real(md2(3,3),dp),Real(mu2(3,3),dp),Real(mq2(3,3),dp),Real(me2(3,3),dp),& \n"];
-WriteString[sphenoLoop," & Real(ml2(3,3),dp),Td(3,3),Tu(3,3),Te(3,3),Yd(3,3),& \n"];
-WriteString[sphenoLoop," & Yu(3,3),Ye(3,3),"<>If[UseAuxiliaryMu2Loop===True,SPhenoForm[AuxiliaryMu2Loop],"mu"]<>",Pi2A0,kont) \n"];
-WriteString[sphenoLoop," tanbQ=vu/vd \n"];
-WriteString[sphenoLoop," cosb2=1._dp/(1._dp+tanbQ**2) \n"];
-WriteString[sphenoLoop," sinb2=1._dp-cosb2 \n"];
-WriteString[sphenoLoop," sinbcosb=Sqrt(cosb2*sinb2) \n"];
-
-WriteString[sphenoLoop," Pi2S(1,1)=Pi2S(1,1)+Pi2A0*sinb2 \n"];
-WriteString[sphenoLoop," Pi2S(1,2)=Pi2S(1,2)-Pi2A0*sinbcosb \n"];
-WriteString[sphenoLoop," Pi2S(2,2)=Pi2S(2,2)+Pi2A0*cosb2 \n"];
-WriteString[sphenoLoop," Pi2S(2,1)=Pi2S(1,2) \n"];
-
-
-
-WriteString[sphenoLoop, "Else \n"];
-WriteString[sphenoLoop,"Pi2S = 0._dp \n"];
-WriteString[sphenoLoop, "End if \n"];
-];
-];
-];
-
 
 
 WriteString[sphenoLoop,"Do i1=1,"<>dimMatrix <>"\n"];
@@ -896,8 +1019,11 @@ WriteString[sphenoLoop,"End Do \n"];
 (* WriteString[sphenoLoop,"Do i1="<>dimMatrix <>","<>ToString[getGenSPhenoStart[particle]]<>",-1 \n"]; *)
 WriteString[sphenoLoop,"Do i1="<>dimMatrix <>",1,-1 \n"];
 If[SupersymmetricModel=!=False,
-If[particle === HiggsBoson,
-WriteString[sphenoLoop,"PiSf(i1,:,:) = PiSf(i1,:,:) - Pi2S_EffPot \n"];
+If[particle===HiggsBoson,
+WriteString[sphenoLoop,"PiSf(i1,:,:) = PiSf(i1,:,:) - Pi2S_EffPot \n"];,
+If[UseHiggs2LoopMSSM==True&&particle===PseudoScalar,
+WriteString[sphenoLoop,"PiSf(i1,:,:) = PiSf(i1,:,:) - PiP2S_EffPot \n"];
+];
 ];
 ];
 
@@ -906,9 +1032,6 @@ WriteString[sphenoLoop,"mat2 = mat2a - Real(PiSf(i1,:,:),dp) \n"];
 WriteString[sphenoLoop,"Call Chop(mat2) \n"];
 WriteString[sphenoLoop,"Call Eigensystem"<>stringQP<>"(mat2,mi2,RS,kont,test) \n"];
 
-If[UseHiggs2LoopMSSM===True && particle === PseudoScalar,
-WriteString [sphenoLoop, "mi2(2) = mi2(2) + Pi2A0 \n"]
-];
 
 WriteString[sphenoLoop,"If ((kont.Eq.-8).Or.(kont.Eq.-9)) Then \n"];
 WriteString[sphenoLoop,"  Write(ErrCan,*) \"Possible numerical problem in \"//NameOfUnit(Iname) \n"];
@@ -972,18 +1095,19 @@ WriteString[sphenoLoop,"End Do \n"];
 
 (* WriteString[sphenoLoop,"Do i1="<>dimMatrix <>","<>ToString[getGenSPhenoStart[particle]]<>",-1 \n"]; *)
 WriteString[sphenoLoop,"Do i1="<>dimMatrix <>",1,-1 \n"];
+
 If[SupersymmetricModel=!=False,
-If[particle === HiggsBoson,
-WriteString[sphenoLoop," PiSf(i1,:,:) = PiSf(i1,:,:) - Pi2S_EffPot \n"];
+If[particle===HiggsBoson,
+WriteString[sphenoLoop,"PiSf(i1,:,:) = PiSf(i1,:,:) - Pi2S_EffPot \n"];,
+If[UseHiggs2LoopMSSM==True&&particle===PseudoScalar,
+WriteString[sphenoLoop,"PiSf(i1,:,:) = PiSf(i1,:,:) - PiP2S_EffPot \n"];
+];
 ];
 ];
 WriteString[sphenoLoop,"mat2 = mat2a - Real(PiSf(i1,:,:),dp) \n"];
 WriteString[sphenoLoop,"Call Chop(mat2) \n"];
 WriteString[sphenoLoop,"Call Eigensystem"<>stringQP<>"(mat2,mi2,RS,kont,test) \n"];
 
-If[UseHiggs2LoopMSSM==True && particle === PseudoScalar,
-WriteString [sphenoLoop, "mi2(2) = mi2(2) + Pi2A0 \n"]
-];
 
 WriteString[sphenoLoop,"If ((kont.Eq.-8).Or.(kont.Eq.-9)) Then \n"];
 WriteString[sphenoLoop,"  Write(ErrCan,*) \"Possible numerical problem in \"//NameOfUnit(Iname) \n"];
@@ -1131,7 +1255,7 @@ WriteString[sphenoLoop,"End If \n"];
 WriteString[sphenoLoop,"If (Abs("<>Name<>"2_1L(il)).lt.1.0E-30_dp) Exit p2_loop \n"];
 WriteString[sphenoLoop,"If (test(1).lt.0.1_dp*delta) Exit p2_loop \n"];
 WriteString[sphenoLoop,"If(i_count.gt.30) then \n"];
-WriteString[sphenoTree,"  Write(ErrCan,*) \"Possible numerical problem in \"//NameOfUnit(Iname) \n"];
+WriteString[sphenoLoop,"  Write(ErrCan,*) \"Possible numerical problem in \"//NameOfUnit(Iname) \n"];
 WriteString[sphenoLoop,"  Exit p2_loop \n"];
 WriteString[sphenoLoop,"End if\n"];
 WriteString[sphenoLoop,"End Do p2_loop \n"];
@@ -1351,7 +1475,7 @@ WriteString[sphenoLoop,"End If \n"];
 WriteString[sphenoLoop,"If (Abs("<>Name<>"2_1L(il)).lt.1.0E-30_dp) Exit p2_loop \n"];
 WriteString[sphenoLoop,"If (test(1).lt.0.1_dp*delta) Exit p2_loop \n"];
 WriteString[sphenoLoop,"If(i_count.gt.30) then \n"];
-WriteString[sphenoTree,"  Write(ErrCan,*) \"Possible numerical problem in \"//NameOfUnit(Iname) \n"];
+WriteString[sphenoLoop,"  Write(ErrCan,*) \"Possible numerical problem in \"//NameOfUnit(Iname) \n"];
 WriteString[sphenoLoop,"  Exit p2_loop \n"];
 WriteString[sphenoLoop,"End if\n"];
 WriteString[sphenoLoop,"End Do p2_loop \n"];
@@ -2279,7 +2403,10 @@ WriteString[sphenoLoop,"Use MathematicsQP \n"];
 WriteString[sphenoLoop,"Use Model_Data_"<>ModelName<>" \n"];
 WriteString[sphenoLoop,"Use StandardModel \n"];
 WriteString[sphenoLoop,"Use Tadpoles_"<>ModelName<>" \n "];
-If[SupersymmetricModel=!=False,WriteString[sphenoLoop,"Use EffectivePotential_"<>ModelName<>" \n "];];
+If[SupersymmetricModel=!=False,
+WriteString[sphenoLoop,"Use EffectivePotential_"<>ModelName<>" \n "];
+WriteString[sphenoLoop,"Use Pole2L_"<>ModelName<>" \n "];
+];
 WriteString[sphenoLoop,"Use SusyMasses_"<>ModelName<>" \n \n"];
 
 
@@ -2332,6 +2459,7 @@ WriteString[sphenoLoop, "Real(dp) :: pi2A0  \n"];
 WriteString[sphenoLoop, "Real(dp) :: ti_ep2L("<>ToString[NrVEVs]<>")  \n"];
 WriteString[sphenoLoop, "Real(dp) :: pi_ep2L("<>ToString[NrVEVs]<>","<>ToString[NrVEVs]<>")\n"];
 WriteString[sphenoLoop, "Real(dp) :: Pi2S_EffPot("<>ToString[getGen[HiggsBoson]]<>","<>ToString[getGen[HiggsBoson]]<>")\n"];
+WriteString[sphenoLoop,"Real(dp) :: PiP2S_EffPot("<>ToString[getGen[HiggsBoson]]<>","<>ToString[getGen[HiggsBoson]]<>")\n"];
 ];
 WriteString[sphenoLoop,"Contains \n \n"];
 

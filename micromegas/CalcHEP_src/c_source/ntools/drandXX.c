@@ -35,7 +35,7 @@ char * seedXX(char * init)
   unsigned long Xlong_,Xshort_;
   static char cbuff[13];
   
-  sprintf(cbuff,"%08X%04X",Xlong,Xshort);
+  sprintf(cbuff,"%08lX%04lX",Xlong,Xshort);
   
   if(init)
   { if(2==sscanf(init,"%8lX%4lX",&Xlong_,&Xshort_))

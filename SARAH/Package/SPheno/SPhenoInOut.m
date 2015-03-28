@@ -55,6 +55,10 @@ If[SA`DiracGauginoMassTerms=!={},
 AddParametersToList[SA`DiracGauginoMassTerms];
 ];
 
+If[AddFIU1=!={},
+AddParametersToList[Transpose[BetaFIi][[1]]];
+];
+
 (*
 If[NonSUSYModel===True,
 AddParametersToList[Transpose[Transpose[SA`ListGaugeMixedAll][[2]]][[2]]];
@@ -232,7 +236,7 @@ WriteHiggsBounds;
 ];
 
 AppendSourceCode["ReadRoutines.f90",sphenoInOut];
-If[IncludeFlavorKit=!=True,
+If[IncludeFlavorKit=!=True || SkipFlavorKit===True,
 AppendSourceCode["ReadFLHA.f90",sphenoInOut];,
 WriteFLHAroutines;
 ];
@@ -615,6 +619,46 @@ WriteInOutRotMatrices;
 
 WriteString[sphenoInOut,"Write(io_L,100) \"Block SPheno # SPheno internal parameters \" \n"];
 AppendSourceCode["WriteSPheno.f90",sphenoInOut];
+
+If[SupersymmetricModel=!=False,
+
+WriteString[sphenoInOut,"SELECT CASE (TwoLoopMethod)\n"];
+WriteString[sphenoInOut,"CASE ( 1 ) \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,1.,\"# Two-Loop Method: purely numerical \" \n"];
+WriteString[sphenoInOut,"CASE ( 2 ) \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,2.,\"# Two-Loop Method: semi-analytical \" \n"];
+WriteString[sphenoInOut,"CASE ( 3 ) \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,3.,\"# Two-Loop Method: diagrammatic \" \n"];
+WriteString[sphenoInOut,"CASE ( 8 ) \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,8.,\"# Two-Loop Method: MSSM+ alpha_s alpha_t routines \" \n"];
+WriteString[sphenoInOut,"CASE ( 9 ) \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,9.,\"# Two-Loop Method: MSSM+ routines \" \n"];
+WriteString[sphenoInOut,"CASE DEFAULT \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,0.,\"# Two-Loop Method: no two loop calculation \" \n"];
+WriteString[sphenoInOut,"END SELECT \n"];
+
+(*
+WriteString[sphenoInOut,"If (CalculateMSSM2Loop) Then \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,9.,\"# Two-Loop Method: MSSM routines\" \n"];
+WriteString[sphenoInOut,"Else \n"];
+WriteString[sphenoInOut,"If (PurelyNumericalEffPot) Then \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,1.,\"# Two-Loop Method: purely numerical \" \n"];
+WriteString[sphenoInOut,"Else \n"];
+WriteString[sphenoInOut," Write(io_L,102) 8,2.,\"# Two-Loop Method: semi-analytical \" \n"];
+WriteString[sphenoInOut,"End if\n"];
+WriteString[sphenoInOut,"End if \n"];
+*)
+
+WriteString[sphenoInOut,"If (GaugelessLimit) Then \n"];
+WriteString[sphenoInOut," Write(io_L,102) 9,1.,\"# Gauge-less limit\" \n"];
+WriteString[sphenoInOut,"Else \n"];
+WriteString[sphenoInOut," Write(io_L,102) 9,0.,\"# Gauge-less limit\" \n"];
+WriteString[sphenoInOut,"End if \n"];
+
+WriteString[sphenoInOut,"Write(io_L,102) 400,hstep_pn,\"# Step-size for purely-numerical methode for 2-loop calculation\" \n"];
+WriteString[sphenoInOut,"Write(io_L,102) 401,hstep_sa,\"# Step-size for semi-analytical methode for 2-loop calculation\" \n"];
+WriteString[sphenoInOut,"Write(io_L,102) 410,err2L,\"# indicative error in numerical derivation\" \n"];
+];
 WriteString[sphenoInOut, "\n \n"];
 
 
@@ -656,6 +700,7 @@ WriteString[sphenoInOut,"110 Format(3x,2i3,3x,\"# \",a) \n"];
 WriteString[sphenoInOut,"200 Format(\"DECAY\",1x,I9,3x,1P,E16.8,0P,3x,\"# \",a) \n"];
 WriteString[sphenoInOut,"201 Format(3x,1P,e16.8,0p,3x,I2,3x,2(i10,1x),2x,\"# BR(\",a) \n"];
 WriteString[sphenoInOut,"202 Format(3x,1P,e16.8,0p,3x,I2,3x,3(i10,1x),2x,\"# BR(\",a) \n"];
+WriteString[sphenoInOut,"222 Format(1x,a8,1x,a4,3x,a2,3x,a1,3x,E16.8,3x,a) \n"];
 WriteString[sphenoInOut,"4711 Format(3x,1P,e16.8,0p,3x,I2,3x,2(i10,1x),2x,\" # \",A)\n"];
 WriteString[sphenoInOut,"4712 Format(\"XS 11 -11 \",F7.1,\" \",F5.2,\" \",F5.2,\" \",A)\n\n"];
 WriteString[sphenoInOut,"5410 Format(a25,1p,e16.7) \n"];
@@ -1101,7 +1146,7 @@ WriteString[sphenoInOut,"Write(123,*) \"\" \n"];
 
 For[i=1,i<=Length[PDGList],
 For[j=1,j<=Length[PDGList[[i,2]]],
-If[PDGList[[i,2,j]]=!=0 &&FreeQ[massless,PDGList[[i,1]]] && getMassW[PDGList[[i,1]],j,1] =!= 0,
+If[PDGList[[i,2,j]]=!=0 &&FreeQ[massless,PDGList[[i,1]]] && getMassW[PDGList[[i,1]],j,1] =!= 0 && FreeQ[subNumDependences/.{(a_->b_)->a},Mass[PDGList[[i,1]]]],
 WriteString[sphenoInOut,"Write(123,*) \""<>ToString[getMassW[PDGList[[i,1]],j,1]] <>"= \", Abs("<>SPhenoMass[PDGList[[i,1]],j] <>") \n"];
 ];
 j++;];
@@ -1311,16 +1356,18 @@ WriteString[sphenoInOut,"Write(io_L,100) \"# SPheno \"//version \n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"#   W. Porod, Comput. Phys. Commun. 153 (2003) 275-315, hep-ph/0301101\"\n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"#   W. Porod, F.Staub, Comput.Phys.Commun.183 (2012) 2458-2469, arXiv:1104.1573\"\n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"# SARAH: \"//versionSARAH \n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub, arXiv:0806.0538 (online manual)\"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub, Comput. Phys. Commun. 181 (2010) 1077-1086, arXiv:0909.2863\"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub, Comput. Phys. Commun. 182 (2011)  808-833, arXiv:1002.0840\"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub, Comput. Phys. Commun. 184 (2013)  1792-1809, arXiv:1207.0906\"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub, Comput. Phys. Commun. 185 (2014)  1773-1790, arXiv:1309.7223 \"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub; arXiv:0806.0538 (online manual)\"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub; Comput. Phys. Commun. 181 (2010) 1077-1086; arXiv:0909.2863\"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub; Comput. Phys. Commun. 182 (2011)  808-833; arXiv:1002.0840\"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub; Comput. Phys. Commun. 184 (2013)  1792-1809; arXiv:1207.0906\"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   F. Staub; Comput. Phys. Commun. 185 (2014)  1773-1790; arXiv:1309.7223 \"\n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"# Including the calculation of flavor observables based on the FlavorKit \"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"#   W. Porod, F. Staub, A. Vicente, arXiv:1405.1434 \"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   W. Porod, F. Staub, A. Vicente; Eur.Phys.J. C74 (2014) 8, 2992; arXiv:1405.1434 \"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"# Two-loop masss corrections to Higgs fields based on \"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   M. D. Goodsell, K. Nickel, F. Staub; arXiv:1411.0675 \"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"#   M. D. Goodsell, K. Nickel, F. Staub; arXiv:1501.XXXXX \"\n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"#  \"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"# in case of problems send email to porod@physik.uni-wuerzburg.de \"\n"];
-WriteString[sphenoInOut,"Write(io_L,100) \"# or to florian.staub@cern.ch \"\n"];
+WriteString[sphenoInOut,"Write(io_L,100) \"# in case of problems send email to florian.staub@cern.ch and goodsell@lpthe.jussieu.fr\ \"\n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"# ----------------------------------------------------------------------\" \n"];
 WriteString[sphenoInOut,"Write(io_L,100) \"# Created: \"//Datum(7:8)//\".\"//Datum(5:6)//\".\"//Datum(1:4)&\n"];
 WriteString[sphenoInOut,"&//\",  \"//Zeit(1:2)//\":\"//Zeit(3:4)\n"];
@@ -1594,9 +1641,9 @@ WriteString[sphenoInOut,"Write(io_L,104)  43,  Real(sqrt("<>SPhenoForm[SoftSquar
 WriteString[sphenoInOut,"Write(io_L,104)  44,  Real(sqrt("<>SPhenoForm[SoftUp]<>"(1,1)),dp), \" # mU(1,1)\" \n"];
 WriteString[sphenoInOut,"Write(io_L,104)  45,  Real(sqrt("<>SPhenoForm[SoftUp]<>"(2,2)),dp), \" # mU(2,2)\" \n"];
 WriteString[sphenoInOut,"Write(io_L,104)  46,  Real(sqrt("<>SPhenoForm[SoftUp]<>"(3,3)),dp), \" # mU(3,3)\" \n"];
-WriteString[sphenoInOut,"Write(io_L,104)  44,  Real(sqrt("<>SPhenoForm[SoftUp]<>"(1,1)),dp), \" # mD(1,1)\" \n"];
-WriteString[sphenoInOut,"Write(io_L,104)  45,  Real(sqrt("<>SPhenoForm[SoftDown]<>"(2,2)),dp), \" # mD(2,2)\" \n"];
-WriteString[sphenoInOut,"Write(io_L,104)  46,  Real(sqrt("<>SPhenoForm[SoftDown]<>"(3,3)),dp), \" # mD(3,3)\" \n"];
+WriteString[sphenoInOut,"Write(io_L,104)  47,  Real(sqrt("<>SPhenoForm[SoftDown]<>"(1,1)),dp), \" # mD(1,1)\" \n"];
+WriteString[sphenoInOut,"Write(io_L,104)  48,  Real(sqrt("<>SPhenoForm[SoftDown]<>"(2,2)),dp), \" # mD(2,2)\" \n"];
+WriteString[sphenoInOut,"Write(io_L,104)  49,  Real(sqrt("<>SPhenoForm[SoftDown]<>"(3,3)),dp), \" # mD(3,3)\" \n"];
 WriteString[sphenoInOut, "End if \n"];
 ];
 i++;];
@@ -1995,7 +2042,7 @@ WriteString[sphenoInOut,"  Do gt3="<>ToString[getGenSPhenoStart[p3]] <> ", "<>To
 ];
 *)
 
-
+(*
 If[getGenSPheno[p1]>1,
 WriteString[sphenoInOut,"Do gt1= 1, "<>ToString[getGenSPheno[p1]] <> "\n"];
 ];
@@ -2005,7 +2052,26 @@ WriteString[sphenoInOut,"  Do gt2= 1, "<>ToString[getGenSPheno[p2]] <> "\n"];
 If[getGenSPheno[p3]>1,
 WriteString[sphenoInOut,"  Do gt3= 1, "<>ToString[getGenSPheno[p3]] <> "\n"];
 ];
+*)
 
+If[getGenSPheno[p1]>1,
+WriteString[sphenoInOut,"Do gt1="<>ToString[getGenSPhenoStart[p1]] <> ","<>ToString[getGenSPheno[p1]] <> "\n"];
+];
+If[getGenSPheno[p2]>1,
+If[p2===p1,
+WriteString[sphenoInOut,"  Do gt2=gt1,"<>ToString[getGenSPheno[p2]] <> "\n"];,
+WriteString[sphenoInOut,"  Do gt2="<>ToString[getGenSPhenoStart[p2]] <> ","<>ToString[getGenSPheno[p2]] <> "\n"];
+];
+];
+If[getGenSPheno[p3]>1,
+If[p3===p2,
+WriteString[sphenoInOut,"    Do gt3=gt2,"<>ToString[getGenSPheno[p3]] <> "\n"];,
+If[p3===p1,
+WriteString[sphenoInOut,"    Do gt3=gt1,"<>ToString[getGenSPheno[p3]] <> "\n"];,
+WriteString[sphenoInOut,"    Do gt3="<>ToString[getGenSPhenoStart[p3]] <> ","<>ToString[getGenSPheno[p3]] <> "\n"];
+];
+];
+];
 
 
 WriteString[sphenoInOut,"If ("<>SPhenoBR[particle,j,icount]<>".Gt.BrMin) Then \n"];
@@ -2272,6 +2338,17 @@ WriteString[sphenoInOut,"Write(io_L,1010) "<>ToString[ListOfLowEnergyNames[[i,2]
 i++;];
 ];
 WriteString[sphenoInOut, "\n \n"];
+
+WriteString[sphenoInOut,"Write(io_L,100) \"Block FWCOEF Q=  1.60000000E+02  # Wilson coefficients at scale Q \" \n"];
+For[i=1,i<=Length[FLHA`WilsonCoefficients],
+WriteString[sphenoInOut,"Write(io_L,222) \""<>FLHA`WilsonCoefficients[[i,1]]<>"\" , \""<>FLHA`WilsonCoefficients[[i,2]]<>"\" , \""<>FLHA`WilsonCoefficients[[i,3]]<>"\", \""<>FLHA`WilsonCoefficients[[i,4]]<>"\", Real("<>ToString[FLHA`WilsonCoefficients[[i,5]]]<>",dp),  \" # "<>ToString[FLHA`WilsonCoefficients[[i,5]]]<>"\"  \n"];
+i++;];
+
+WriteString[sphenoInOut,"Write(io_L,100) \"Block IMFWCOEF Q=  1.60000000E+02  # Im(Wilson coefficients) at scale Q \" \n"];
+For[i=1,i<=Length[FLHA`WilsonCoefficients],
+WriteString[sphenoInOut,"Write(io_L,222) \""<>FLHA`WilsonCoefficients[[i,1]]<>"\" , \""<>FLHA`WilsonCoefficients[[i,2]]<>"\" , \""<>FLHA`WilsonCoefficients[[i,3]]<>"\", \""<>FLHA`WilsonCoefficients[[i,4]]<>"\", Aimag("<>ToString[FLHA`WilsonCoefficients[[i,5]]]<>"),  \" # "<>ToString[FLHA`WilsonCoefficients[[i,5]]]<>"\"  \n"];
+i++;];
+
 ];
 
 

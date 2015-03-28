@@ -261,6 +261,13 @@ c#define WF_RENORMALIZATION (nW*dWFW1 + nZ*dWFZ1)
 	double precision sinth
 	integer c
 
+        if(abs(MNE1).lt.45.6) then
+          do c = 1, NCOMP
+            result(c) = 0
+          enddo
+          return
+        endif  
+
 	sinth = sqrt(1 - costh**2)
 
 	call VecSet(3, dble(MASS3), Pout, sinth, 0D0, costh)

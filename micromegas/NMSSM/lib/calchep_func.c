@@ -13,11 +13,12 @@ static int runTools(char * cmd, char * fout,int mode)
    double maxl;
    
    if(access(fout,F_OK)==0) unlink(fout);
-   command=malloc(100+strlen(LPATH)+strlen(NMSSMTOOLS) );
+   command=malloc(100+strlen(NMSSMTOOLS ));
 
    sprintf(command,
-    "lPath=%s/%s ;EXPCON_PATH=$lPath/EXPCON;export EXPCON_PATH;$lPath/main/%s"
-    ,LPATH,NMSSMTOOLS,cmd); 
+    "lPath=%s;EXPCON_PATH=$lPath/EXPCON;export EXPCON_PATH;$lPath/main/%s"
+    ,NMSSMTOOLS ,cmd); 
+//printf("command:%s\n", command);    
    err=System(command);
    free(command);
    if(err>=0) err=slhaRead(fout,0);
@@ -31,13 +32,14 @@ static int runTools(char * cmd, char * fout,int mode)
   double Ml2, double Ml3, double Mr2, double Mr3, double Mq2, double Mq3,   
   double Mu2, double Mu3, double Md2, double Md3, 
   double At, double Ab, double Al, double mu,     
-  double LambdQ,double KappaQ,double aLmbdQ,double aKappQ)
+  double LambdQ,double KappaQ,double aLmbdQ, double aKappQ,
+  double mXiF,double mXiS, double muP, double msP,double m3h)
 { 
 
    int err,nw;
    FILE*  f=fopen("inp","w");
    if(f==NULL) return -1;
-                                    
+                                       
    fprintf(f,"Block MODSEL    # Select model\n"   
              "  1    0           # EWSB input\n"
              "  3    1           # NMSSM PARTICLE CONTENT\n"
@@ -89,7 +91,13 @@ static int runTools(char * cmd, char * fout,int mode)
    fprintf(f," 63  %.8E      # AL\n", aLmbdQ);
    fprintf(f," 64  %.8E      # AK\n", aKappQ);
    fprintf(f," 65  %.8E      # MU\n", mu);
-   
+
+   fprintf(f," 66  %.8E        # XiF \n",  mXiF*fabs(mXiF));
+   fprintf(f," 67  %.8E        # XiS \n",  pow(mXiS,3));
+   fprintf(f," 68  %.8E        # muP \n",  muP);
+   fprintf(f," 69  %.8E        # MS'^2 \n", msP*fabs(msP));
+   fprintf(f," 72  %.8E        # M3H^2\n", m3h*fabs(m3h));
+     
    fclose(f);
 
    err= runTools("nmhdecay","spectr",0);
@@ -100,7 +108,8 @@ static int runTools(char * cmd, char * fout,int mode)
 }
 
 double sugraNMSSM( double m0, double mhf, double a0, double tb, double sgn,  
-     double Lambda,double aLambda, double aKappa)
+     double Lambda,double aLambda, double aKappa, double mXiF, double mXiS,
+     double muP, double msP,double m3h)
 {
   int nw=0,err;
   FILE*  f=fopen("inp","w");  
@@ -131,6 +140,13 @@ double sugraNMSSM( double m0, double mhf, double a0, double tb, double sgn,
    fprintf(f," 61  %.8E        # L \n",  Lambda);
    fprintf(f," 63  %.8E        # A_LAMBDA\n", aLambda);
    fprintf(f," 64  %.8E        # A_K\n", aKappa);
+
+   fprintf(f," 66  %.8E        # XiF \n",  mXiF*fabs(mXiF));
+   fprintf(f," 67  %.8E        # XiS \n",  mXiS*mXiS*mXiS);
+   fprintf(f," 68  %.8E        # muP \n", muP);
+   fprintf(f," 69  %.8E        # MS'2 \n", msP*fabs(msP));
+   fprintf(f," 72  %.8E        # M3H^2\n", m3h*fabs(m3h));
+                           
    fclose(f);
      
   err= runTools("nmspec","spectr",0);

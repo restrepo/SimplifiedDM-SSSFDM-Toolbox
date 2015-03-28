@@ -122,6 +122,8 @@ WriteString[sphenoEP,"Use SusyMasses_"<>ModelName<>" \n"];
 WriteString[sphenoEP,"Use EffPotFunctions\n"];
 WriteString[sphenoEP,"Use DerivativesEffPotFunctions\n \n"];
 
+
+
 WriteString[sphenoEP,"Contains \n \n"];
 ];
 
@@ -189,6 +191,7 @@ WriteString[sphenoEP,"Integer, Intent(in) :: i1,i2 \n"];
 
 WriteString[sphenoEP,"vevs = (/"<>StringJoin@Riffle[ToString/@listVEVs,","]<>"/) \n"];
 WriteString[sphenoEP,"gout = partialDiffXY_RiddersMulDim(AllMassesCouplings,"<>ToString[NumberAllMassesCouplings]<>",vevs,i1,i2,"<>ToString[NrVEVs]<>",err) \n"];
+WriteString[sphenoEP, "If (err.gt.err2L) err2L = err \n"];
 
 
 WriteString[sphenoEP,"End Subroutine SecondDerivativeMassesCoups\n\n"];
@@ -203,6 +206,7 @@ WriteString[sphenoEP,"Integer, Intent(in) :: i1 \n"];
 
 WriteString[sphenoEP,"vevs = (/"<>StringJoin@Riffle[ToString/@listVEVs,","]<>"/) \n"];
 WriteString[sphenoEP,"gout = partialDiff_RiddersMulDim(AllMassesCouplings,"<>ToString[NumberAllMassesCouplings]<>",vevs,i1,"<>ToString[NrVEVs]<>",err) \n"];
+WriteString[sphenoEP, "If (err.gt.err2L) err2L = err \n"];
 WriteString[sphenoEP,"End Subroutine FirstDerivativeMassesCoups\n\n"];
 
 WriteString[sphenoEP,"Subroutine AllMassesCouplings(vevs,gout) \n"];
@@ -451,14 +455,18 @@ WriteString[sphenoEP, "Real(dp), Intent(out) :: ti_ep2L("<>ToString[NrVEVs]<>") 
 WriteString[sphenoEP, "Real(dp), Intent(out) :: pi_ep2L("<>ToString[NrVEVs]<>","<>ToString[NrVEVs]<>")\n"];
 
 WriteString[sphenoEP,"\n\n"];
-
+WriteString[sphenoEP, "err2L = 0._dp \n"];
 WriteString[sphenoEP,"If (.not.PurelyNumericalEffPot) Then \n"];
+WriteString[sphenoEP, "epsM = 1.0E-8_dp \n"];
+WriteString[sphenoEP, "epsD = 1.0E-8_dp \n"];
 (*MakeCall["FirstDerivativeEffPot2Loop",Join[listVEVs,listAllParameters],{},{"kont","ti_ep2L"},sphenoEP];*)
 WriteString[sphenoEP,"! 2nd deriv. also calculates the 1st deriv. of V\n"];
 MakeCall["SecondDerivativeEffPot2Loop",Join[listVEVs,listAllParameters],{},{"kont","pi_ep2L","ti_ep2L"},sphenoEP];
 
 
 WriteString[sphenoEP,"Else \n"];
+WriteString[sphenoEP, "epsM = 1.0E-6_dp \n"];
+WriteString[sphenoEP, "epsD = 1.0E-6_dp \n"];
 (* Write function to get first derivative of eff. pot to calculate ti_ep (ti_ep2L) *)
 (* WriteString[sphenoEP,"h_start= 0.9*min("<>StringJoin@Riffle[ToString/@listVEVs,","]<>")\n"]; *)
 WriteString[sphenoEP,"vevs = (/"<>StringJoin@Riffle[ToString/@listVEVs,","]<>"/) \n"];
@@ -466,12 +474,14 @@ WriteString[sphenoEP,"! Calculate 1st (ti_ep) and 2nd derivatives (pi_ep)\n"];
 For[i=1,i<=NrVEVs,i++;,
 (* WriteString[sphenoEP,"ti_ep("<>ToString[i]<>") = partialDiff_Ridders(EffPotFunction,vevs,"<>ToString[i]<>","<>ToString[NrVEVs]<>",err,h_start,iout) \n"]; *)
 WriteString[sphenoEP,"ti_ep2L("<>ToString[i]<>") = partialDiff_Ridders(EffPotFunction2Loop,vevs,"<>ToString[i]<>","<>ToString[NrVEVs]<>",err,h_start,iout) \n"];
+WriteString[sphenoEP, "If (err.gt.err2L) err2L = err \n"];
 ];
 (*calculate upper triangle (i,j), j<=i *)
 For[i=1,i<=NrVEVs,i++;,
 For[j=1,j<=i,j++;,
 (*WriteString[sphenoEP,"pi_ep("<>ToString[i]<>","<>ToString[j]<>") = partialDiffXY_Ridders(EffPotFunction,vevs,"<>ToString[i]<>","<>ToString[j]<>","<>ToString[NrVEVs]<>",err,h_start,iout) \n"];*)
 WriteString[sphenoEP,"pi_ep2L("<>ToString[i]<>","<>ToString[j]<>") = partialDiffXY_Ridders(EffPotFunction2Loop,vevs,"<>ToString[i]<>","<>ToString[j]<>","<>ToString[NrVEVs]<>",err,h_start,iout) \n"];
+WriteString[sphenoEP, "If (err.gt.err2L) err2L = err \n"];
 ];
 ];
 (*copy to lower triangle (i,j), j>i *)

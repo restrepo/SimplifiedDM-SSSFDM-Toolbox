@@ -16,4 +16,7 @@ DEFAULT[HiggsBounds] = "";    (* e.g. "/home/USER/HiggsBounds LandH effC 3 1" *)
 
 DEFAULT[HiggsSignals] = "";    (* e.g. "/home/USER/HiggsSignals latestresults peak 2 effC 3 1" *)
 
+DEFAULT[VevaciousBin] = "";    (* e.g. "/home/USER/Vevacious/bin/Vevacious.exe" *)
+DEFAULT[VevaciousInit] = "";    (* e.g. "/home/USER/Vevacious/bin/VevaciousInitialization.xml" *)
+
 

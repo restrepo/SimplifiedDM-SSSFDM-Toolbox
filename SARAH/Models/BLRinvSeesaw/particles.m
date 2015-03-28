@@ -226,7 +226,7 @@ ParticleDefinitions[EWSB] = {
 
       (* New Gauge Bosons *)
 
-      {VZR,  {                Mass -> Automatic,
+      {VZR,  {                Mass -> LesHouches,
                ElectricCharge -> 0,
                LaTeX -> "Z_R",
                PDG -> {99},

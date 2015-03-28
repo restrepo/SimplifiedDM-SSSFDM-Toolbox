@@ -14,7 +14,7 @@ cLib = $(CALCHEP)/lib
 # files to compile
 SSS = $(wildcard lib/*.a) ../sources/micromegas.a  $(cLib)/dynamic_me.a ../sources/micromegas.a \
  work/work_aux.a  $(wildcard lib/*.a)   $(cLib)/sqme_aux.$(SO) $(cLib)/libSLHAplus.a   \
- $(cLib)/num_c.a $(cLib)/ntools.a   $(cLib)/serv.a $(LX11) -lgfortran
+ $(cLib)/num_c.a $(cLib)/ntools.a   $(cLib)/serv.a $(LX11)
 
 
 all: $(main) libs

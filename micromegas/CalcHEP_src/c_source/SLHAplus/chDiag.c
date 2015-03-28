@@ -131,9 +131,8 @@ int rDiagonal(int nDim,...)
   free(MassM);
 //for(i=0;i<nDim;i++) printf(" %E ",(double)ev[id][i]);
 //printf("\n");  
-  
-  if(!FError){ return id;}
-  else return -1;
+
+  return id;
 }
 
 int cDiagonalH(int nDim,...) 
@@ -151,8 +150,7 @@ int cDiagonalH(int nDim,...)
   FError=FError|cJacobiH(MassM, nDim, ev[id], cV[id]); 
   free(MassM);
   
-  if(!FError){ return id;}
-  else return -1;
+  return id;
 }
 
 int cDiagonalA(int nDim,...) 
@@ -169,8 +167,7 @@ int cDiagonalA(int nDim,...)
   extendData(id,nDim,4);
   FError=FError|cJacobiA(MassM, nDim, ev[id],  cU[id], cV[id]); 
   free(MassM);
-  if(!FError){ return id;}
-  else return -1;
+  return id;
 }
 
 int cDiagonalS(int nDim,...) 
@@ -188,10 +185,8 @@ int cDiagonalS(int nDim,...)
   FError=FError|cJacobiS(MassM, nDim, ev[id], cV[id]); 
   free(MassM);
   
-  if(!FError){ return id;}
-  else return -1;
+  return id;
 }
-
 
 
 int rDiagonalA(int nDim,...) 

@@ -2,10 +2,10 @@
 #include "micromegas_aux.h"
 
 int vPolar( int out1,int out2,int out3, double*left,double*right,double*lng)
-{ double pvect[20],pcm1,pcm2,ms,md,chY,shY;
+{ REAL pvect[20],pcm1,pcm2,ms,md,chY,shY;
   int i,err_code;
   int iW,ie,in;
-  double m[5];
+  REAL m[5];
   int code[5];
   double massMin=-1;
   int oId;
@@ -70,7 +70,7 @@ int vPolar( int out1,int out2,int out3, double*left,double*right,double*lng)
   pcm2=sqrt((m[iW]*m[iW] - ms*ms)*(m[iW]*m[iW]-md*md))/(2*m[iW]);
 
   for(i=0;i<3;i++)
-  {  double csfi=i-1;
+  {  REAL csfi=i-1;
      pvect[4*iW]= sqrt(m[iW]*m[iW]+pcm1*pcm1);
      pvect[4*iW+3] = -pcm1;    
      pvect[4*ie]=sqrt(m[ie]*m[ie]+pcm2*pcm2);
@@ -84,7 +84,7 @@ int vPolar( int out1,int out2,int out3, double*left,double*right,double*lng)
      chY=sqrt(1+pcm1*pcm1/m[iW]/m[iW]);
      shY=sqrt(pcm1*pcm1/m[iW]/m[iW]);  
   
-     { double p0=pvect[4*ie], p3=pvect[4*ie+3];
+     { REAL p0=pvect[4*ie], p3=pvect[4*ie+3];
        pvect[4*ie]=  chY*p0 + shY*p3;
        pvect[4*ie+3]=shY*p0 + chY*p3;
 

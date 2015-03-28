@@ -57,10 +57,12 @@ double  sphenoSUGRAnuhc(double tb, double gMG1,double gMG2,double gMG3,
              double gAl, double gAt, double gAb,double gMl2,double gMl3,double gMr2,double gMr3,
              double gMq2,double gMq3,double gMu2,double gMu3,double gMd2,double gMd3,double mu,double MA)
 { 
-   int err;
-   printf("This scenario is not implemented in SPhono yet?\n");
-   return 1;
-   err=sugraHiggsLesH(FIN, tb, gMG1,gMG2,gMG3, gAl, gAt, gAb, gMl2,gMl3,gMr2,gMr3,gMq2,gMq3,gMu2,gMu3,gMd2,gMd3,mu,MA);
+   int err=sugraHiggsLesH(FIN, tb, gMG1,gMG2,gMG3, gAl, gAt, gAb, gMl2,gMl3,gMr2,gMr3,gMq2,gMq3,gMu2,gMu3,gMd2,gMd3,mu,MA);
+   FILE*f=fopen(FIN,"a");
+   
+   fprintf(f," 0  -1  # EWSB\n");
+   fclose(f);  
+  
               
    if(err) {printf("can not write down LesHouches.in file\n"); exit(10);}
 

@@ -126,7 +126,7 @@ double eps, double * aEps, double * ans, double * aAns, int *deepness)
   s2=(f[0]+4*f[2]+2*f[4]+4*f[6]+f[8])/12;
   s3=(f[0]+4*f[1]+2*f[2]+4*f[3]+2*f[4]+4*f[5]+2*f[6]+4*f[7]+f[8])/24;
 
-  if(!finite(s3)){ *ans=s3; *aAns=s3; return;}
+  if(!isfinite(s3)){ *ans=s3; *aAns=s3; return;}
   
   e_err=eps*fabs(s3);
   i=0;
@@ -171,7 +171,7 @@ double simpson( double (*func)(double),double a,double b, double  eps)
      int deepness=1;
      r_simpson(func,f,a,b,eps,&aEps,&ans,&aAns,&deepness);
      if(5*aAns*eps > aEps || j>=2 ) return ans;
-     if(!finite(aAns)) return aAns;
+     if(!isfinite(aAns)) return aAns;
      for(i=0;i<9;i++)  f[i]=(*func)(a+i*(b-a)/8);
      aEps=aAns*eps;
   }  

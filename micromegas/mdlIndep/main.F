@@ -71,7 +71,10 @@ C** fi angle of sight [rad], dfi - half of cone angle
       write(*,*)
       sigmaV=vcs*2.9979E-26;
       write(*,fmt="('sigma*v=',1PE8.2,'[cm^3/s]')") sigmaV 
-      DO i=1,NZ
+      SpA(1)=Mcdm
+      SpE(1)=Mcdm
+      SpP(1)=Mcdm
+      DO i=2,NZ
         SpA(i)=0
         SpE(i)=0
         SpP(i)=0
@@ -79,16 +82,16 @@ C** fi angle of sight [rad], dfi - half of cone angle
 
       DO  n=1,nCH
         if(fracCH(n).gt.0) then
-          err=basicSpectra(pdgCH(n),0, buff)
-          DO i=1,NZ
+          err=basicSpectra(Mcdm,pdgCH(n),0, buff)
+          DO i=2,NZ
             SpA(i)=SpA(i)+buff(i)*fracCH(n)
           ENDDO
-          err= basicSpectra(pdgCH(n),1, buff)
-          DO  i=1,NZ
+          err= basicSpectra(Mcdm,pdgCH(n),1, buff)
+          DO  i=2,NZ
             SpE(i)=SpE(i)+buff(i)*fracCH(n)
           ENDDO  
-          err= basicSpectra(pdgCH(n),2, buff)
-          DO i= 1,NZ
+          err= basicSpectra(Mcdm,pdgCH(n),2, buff)
+          DO i= 2,NZ
             SpP(i)= SpP(i)+buff(i)*fracCH(n) 
           ENDDO
         ENDIF
@@ -99,7 +102,7 @@ C** fi angle of sight [rad], dfi - half of cone angle
       write(*,fmt="('and spherical region described by cone with angle ',F4.2,'[rad]' )") 2*dfi
 #ifdef SHOWPLOTS      
       write(mess,fmt="('gamma flux[cm^2 s GeV]^{-1} at fi=',F4.2,' from cone with angle=',F4.2,'[rad]')")fi,dfi*2  
-      err= displaySpectrum(FluxA,mess,Emin,Mcdm,1)
+      err= displaySpectrum(FluxA,mess,Emin,Mcdm)
 #endif
       write(*,fmt="('Photon flux =',1PE8.2,'[cm^2 s GeV]^{-1} for E=',0PF5.1,'[GeV]')")
      > SpectdNdE(Etest, FluxA), Etest
@@ -109,7 +112,7 @@ C** fi angle of sight [rad], dfi - half of cone angle
       if(SMmev.gt.0)  call solarModulation(SMmev,5D-4,FluxE,FluxE)
 #ifdef SHOWPLOTS      
       err=displaySpectrum(FluxE,'positron flux [cm^2 s sr GeV]^{-1}',
-     >Emin,Mcdm,1)
+     >Emin,Mcdm)
 #endif
       write(*,fmt="('Positron flux  = ',1PE8.2,
      >'[cm^2 sr s GeV]^{-1} for E=',0PF6.1,'[GeV]')")
@@ -120,7 +123,7 @@ C** fi angle of sight [rad], dfi - half of cone angle
       if(SMmev.gt.0)  call solarModulation(SMmev,1.d0,FluxP,FluxP)
 #ifdef SHOWPLOTS      
       err=displaySpectrum(FluxP,'a-proton flux [cm^2 s sr GeV]^{-1}',
-     >Emin,Mcdm,1)
+     >Emin,Mcdm)
 #endif
 
       write(*,fmt="('Anti proton flux  = ',1PE8.2,
@@ -179,22 +182,22 @@ C rhoDet - detector density
          write(*,*) "Earth"  
       endif 
 
-C      err=neutrinoFlux(Maxwell,forSun, FluxN,FluxNb)
-       Crate=captureAux(forSun,Maxwell, csSIp,csSIn,csSDp,csSDn)
- 
-       DO i=1,NZ
+       Crate=captureAux(Maxwell,forSun, csSIp,csSIn,csSDp,csSDn)
+       nu(1)=Mcdm
+       nu_bar(1)=Mcdm
+       DO i=2,NZ
          nu(i)=0
          nu_bar(i)=0
        ENDDO    
 
        DO n=1,nCH
          if(fracCH(n).gt.0) then 
-           err=  basicNuSpectra(forSun, pdgCH(n), 1, buff) 
-           DO i=1,NZ
+           err=  basicNuSpectra(forSun, Mcdm,pdgCH(n), 1, buff) 
+           DO i=2,NZ
               nu(i) = nu(i)+buff(i)*fracCH(n)
            ENDDO
-           err=basicNuSpectra(forSun, pdgCH(n),-1, buff)
-           DO  i=1,NZ 
+           err=basicNuSpectra(forSun, Mcdm, pdgCH(n),-1, buff)
+           DO  i=2,NZ 
              nu_bar(i)=nu_bar(i)+buff(i)*fracCH(n)
            ENDDO
          endif
@@ -209,14 +212,16 @@ C distance in km
        endif
 C flux normalization in  in Year*km^2
        Prop=31556925.2/(4*M_PI*R*R)    
-       DO i=1, NZ 
+       FluxN(1)=Mcdm
+       FluxNb(1)=Mcdm
+       DO i=2, NZ 
          FluxN(i)=nu(i)*0.5*Crate*Prop   
          FluxNb(i)=nu_bar(i)*0.5*Crate*Prop 
        ENDDO
 
 #ifdef SHOWPLOTS
-      err=displaySpectrum(FluxN, "nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm,1)
-      err=displaySpectrum(FluxNb,"nu-bar from Sun  [1/Year/km^2/GeV]",Emin,Mcdm,1)
+      err=displaySpectrum(FluxN, "nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm)
+      err=displaySpectrum(FluxNb,"nu-bar from Sun  [1/Year/km^2/GeV]",Emin,Mcdm)
 #endif
       call spectrInfo(Emin/Mcdm,FluxN, IntFlux,NULL)
       write(*,fmt='("E>", 1PE8.2," GeV neutrino flux =", E8.2," [1/Year/km^2]")') Emin,IntFlux
@@ -227,7 +232,7 @@ C ======  Upward events
   
       call muonUpward(FluxN,FluxNb,FluxMu)
 #ifdef SHOWPLOTS  
-      err= displaySpectrum(FluxMu,"Upward muons[1/Year/km^2/GeV]",Emin,Mcdm/2,1)
+      err= displaySpectrum(FluxMu,"Upward muons[1/Year/km^2/GeV]",Emin,Mcdm/2)
 #endif
 
       call spectrInfo(Emin/Mcdm,FluxMu, IntFlux,NULL)
@@ -236,61 +241,12 @@ C ======  Upward events
 C ======  Contained events 
       call muonContained(FluxN,FluxNb,rhoDet, FluxMu)
 #ifdef SHOWPLOTS  
-      err=displaySpectrum(FluxMu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm,1)
+      err=displaySpectrum(FluxMu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm)
 #endif
       call spectrInfo(Emin/Mcdm,FluxMu, IntFlux,NULL)
       write(*,fmt='("E>", 1PE8.2," Contained muon flux =", E8.2," [1/Year/km^3]")') Emin,IntFlux
 #endif
 
-
-
-
-#ifdef DECAYS
-
-      write(*,*)
-      write(*,*)'======Calculations of widths======='
-
-      call pdg2name(23,pname)
-      if(pname .ne. ' ') then
-         width=pWidth(pname,txtL)
-         write(*,fmt="(A5,':  total width ',1PE8.2,'[GeV]')") pname,width
-         write(*,*)'and Branchings:'
-         call printTxtList(txtL,6)
-      endif 
-
-      call pdg2name(25,pname)
-      if(pname .ne. ' ') then
-         width=pWidth(pname,txtL)
-         write(*,fmt="(A5,' :  total width ',1PE8.2,'[GeV]')") pname,width
-         write(*,*)'and Branchings:'
-         call printTxtList(txtL,6)
-      endif 
-
-#endif
-
-#ifdef CROSS_SECTIONS
-      write(*,*)
-      write(*,*)'======Calculations of cross sections======='
-
-      Pcm=500
-      cosmin=-0.99
-      cosmax=0.99
-      write(*,fmt="('Process e,E->2*x at Pcm= ',F6.1,'[GeV]')") Pcm
-      call setHelicities(0.5D0,-0.5D0)
-      call newProcess('e%,E%->2*x',cc)
-      if(cc(1).ne.0 ) then
-        call procInfo1(cc,ntot,nin,nout)
-        do l=1,ntot
-          cs= cs22(cc,l,Pcm,cosmin,cosmax,err)
-          if((err.eq.0) .and. (cs.ne.0)) then 
-            call procInfo2(cc,l,name,mass)
-            write(*,fmt='(A3,1x,A3,A4,A3,1x,A3,$)')
-     >      name(1),name(2),' -> ', name(3),name(4)
-            write(*,fmt="(1PE8.2,'[pb]')") cs
-          endif 
-        enddo
-      endif     
-#endif
 
 
 #ifdef CLEAN

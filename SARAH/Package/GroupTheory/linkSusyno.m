@@ -48,7 +48,7 @@ Return[True];
 ];
 ];
 
-InvariantMatrixSusyno[group_,dim_]:=Block[{i,j,dimTemp={},subName={},dims,reps,result,factored,repsNC, temp, list, prefactor, subSU2={},conjugations={}},
+InvariantMatrixSusyno[group_,dim_]:=Block[{i,j,dimTemp={},subName={},dims,reps,result,factored,repsNC, temp, list, prefactor, subSU2={},conjugations={},sign},
 reps=DeleteCases[dim,{0},3];
 If[reps==={},
 Return[1];,
@@ -108,8 +108,9 @@ result=Table[Coefficient[temp,a[i]b[j]c[k]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1
 temp =2*temp;
 result=Table[Coefficient[temp,a[i]b[j]c[k] d[l]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1,dims[[3]]},{l,1,dims[[4]]}];
 ];
-(* Print[result,Position[result,x_?((Abs[#]=!=0 && NumberQ[#])&)][[1]]]; *)
-SA`NonZeroEntries = Join[SA`NonZeroEntries,{{InvMat[SA`RnR], Take[Position[result,x_?((Abs[#]=!=0 && NumberQ[#])&)][[1]],{1,Length[reps]}]}}];
+sign=Sign[DeleteCases[Flatten[result],0][[1]]];
+result=sign*result;
+ SA`NonZeroEntries = Join[SA`NonZeroEntries,{{InvMat[SA`RnR], Take[Position[result,x_?((Abs[#]=!=0 && NumberQ[#])&)][[1]],{1,Length[reps]}]}}];
 
 Off[Part::"pspec"];
 ReleaseHold[Hold[Set[LHS[a__Integer],RHS[[a]]]]/. LHS -> InvMat[SA`RnR] /. RHS -> result ];

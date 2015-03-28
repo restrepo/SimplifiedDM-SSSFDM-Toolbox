@@ -76,10 +76,10 @@ Export[file,plotComplete];
 ];
 ];
 
-Make3DPlot[x_,y_,z_,style_,file_,data_]:=Block[{cStyle,i,j=1,Name={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","U","V","W","X","Y","Z"}},
+Make3DPlot[x_,y_,zz_,style_,file_,data_]:=Block[{cStyle,i,j=1,Name={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","U","V","W","X","Y","Z"}},
 (* cStyle = style /. UseLaTeX[a_]:>"Lstring"<>ToString[j++]; *)
 cStyle = style /. UseLaTeX[a_]:>Name[[j++]];
-plots=Plot3DParameter[x,y,z,cStyle,data,False];
+plots=Plot3DParameter[x,y,zz,cStyle,data,False];
 plotComplete = Show[plots];
 If[FreeQ[style,UseLaTeX]==False,
 Export[StringDrop[file,-4]<>"_fm.eps",plotComplete];
@@ -134,9 +134,9 @@ PlotTemp=ListPlot[temp1,style];
 Return[PlotTemp];
 ];
 
-Plot3DParameter[x_,y_,z_,style_,data_,log_]:=Block[{i},
+Plot3DParameter[x_,y_,zz_,style_,data_,log_]:=Block[{i},
 (* temp1=MakeDataList3[x,y,z,data]; *)
-temp1=Table[{x,y,z} /. SSP`SubNumericalValues[[k]],{k,1,Length[SSP`SubNumericalValues]}];
+temp1=Table[{x,y,zz} /. SSP`SubNumericalValues[[k]],{k,1,Length[SSP`SubNumericalValues]}];
 If[log,temp1=Log[10,#]&/@Abs/@ temp1;];
 PlotTemp=ListContourPlot[temp1,style];
 Return[PlotTemp];

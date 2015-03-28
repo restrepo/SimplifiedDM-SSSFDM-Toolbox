@@ -1,5 +1,5 @@
 : 
-  CALCHEP=/home/restrepo/prog/toolbox/toolbox/micromegas/CalcHEP_src 
+  CALCHEP=  
 #---------------
 #======================================
 bin=$CALCHEP/bin

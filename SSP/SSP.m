@@ -32,7 +32,7 @@ SSP`PackageDir=ToFileName[{SSP`Dir,"Package"}]
 
 Off[CreateDirectory::ioerr];
 
-Print["SSP - SARAH Scan and Plot 1.2.0"]
+Print["SSP - SARAH Scan and Plot 1.2.2"]
 Print["by Florian Staub, 2012"]
 Print[""]
 

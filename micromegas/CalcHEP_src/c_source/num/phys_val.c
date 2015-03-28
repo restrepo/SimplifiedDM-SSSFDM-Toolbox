@@ -227,7 +227,7 @@ int  checkPhysValN(char * name, char * key, physValRec **pLists)
   if(*key==0) return 0;
 
 
-  if(!strchr("ACEJDMPTUYNWZ",*key)) {sprintf(errorText,"wrong key '%c'",key);  return 0;}
+  if(!strchr("ACEJDMPTUYNWZ",*key)) {sprintf(errorText,"wrong key '%c'",*key);  return 0;}
   chB++;  
 
   if(*key=='E' && nin_int==2 && (strcmp(chB,"1")==0 ||strcmp(chB,"2")==0)) 

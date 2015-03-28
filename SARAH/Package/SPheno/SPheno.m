@@ -52,13 +52,14 @@ Block[{$Path={$sarahSPhenoPackageDir}},
 <<SPhenoTadpoles`;
 
 <<SPhenoEffPot`;
+<<SPheno2LPole`;
 ];
 
-Options[MakeSPheno]={Eigenstates->EWSB,TwoLoop->True,ReadLists->False, InputFile->"SPheno.m", StandardCompiler->"gfortran"};
+Options[MakeSPheno]={Eigenstates->EWSB,TwoLoop->True,ReadLists->False, InputFile->"SPheno.m", StandardCompiler->"gfortran",IncludeFlavorKit->True};
 
-MakeSPheno[opt___ ]:=MakeSPhenoOutput[Eigenstates/.{opt}/.Options[MakeSPheno],TwoLoop/.{opt}/.Options[MakeSPheno],ReadLists/.{opt}/.Options[MakeSPheno],InputFile/.{opt}/.Options[MakeSPheno],StandardCompiler/.{opt}/.Options[MakeSPheno]];
+MakeSPheno[opt___ ]:=MakeSPhenoOutput[Eigenstates/.{opt}/.Options[MakeSPheno],TwoLoop/.{opt}/.Options[MakeSPheno],ReadLists/.{opt}/.Options[MakeSPheno],InputFile/.{opt}/.Options[MakeSPheno],StandardCompiler/.{opt}/.Options[MakeSPheno],IncludeFlavorKit/.{opt}/.Options[MakeSPheno]];
 
-MakeSPhenoOutput[Eigenstates_, TwoL_,ReadL_, inputfile_,scompiler_]:=Block[{i,i1,i2,temp,startedtime},
+MakeSPhenoOutput[Eigenstates_, TwoL_,ReadL_, inputfile_,scompiler_,flavorkit_]:=Block[{i,i1,i2,temp,startedtime},
 startedtime=TimeUsed[];
 Print[StyleForm["Generate SPheno Source Code","Section"]];
 
@@ -68,6 +69,10 @@ SPhenoFile=ToFileName[{$sarahCurrentModelDir},inputfile];
 SetOptions[CalcRGEs,WriteFunctionsToRun->False];
 SPheno`Eigenstates=Eigenstates;
 SA`CurrentStates=Eigenstates;
+
+If[flavorkit===False || SkipFlavorKit===True,
+SkipFlavorKit=True;
+];
 
 AbortStartSPheno=False;
 SARAHFortran=True;
@@ -85,6 +90,10 @@ Print["File for SPheno-Output does not exist!"];
 AbortStartSPheno=True;,
 Get[SPhenoFile];
 If[SA`Version === "SARAHVERSION",FlagLoopContributions=True;];
+];
+
+If[UseHiggs2LoopMSSM===True || Use2LoopFromLiterature===True,
+UseHiggs2LoopMSSM=True;
 ];
 
 If[Head[BoundaryRenScale]===List  && SupersymmetricModel==False,
@@ -330,7 +339,10 @@ GenerateSPhenoSusyDecays[Eigenstates];
 GenerateSPhenoBR[Eigenstates];
 ];
 
-If[SupersymmetricModel=!=False,GenerateSPhenoEffPot;];
+If[SupersymmetricModel=!=False,
+GenerateSPhenoEffPot;
+GenerateSPheno2LPole;
+];
 GenerateSPhenoLoopMasses[Eigenstates];
 
 If[SPhenoOnlyForHM=!=True,
@@ -407,7 +419,7 @@ Print["Finished! SPheno code generated in ",TimeUsed[]-startedtime,"s"];
 Print["Output saved in ",StyleForm[$sarahCurrentSPhenoDir,"Section",FontSize->10] ];
 Print[""];
 Print["The following steps are now necessary to implement the model in SPheno: "];
-Print["  1. Copy the created files to a new subdirectory \"/",NameForModel,"\" of your SPheno "<>ToString[StyleForm["3.3.0 (or later)","Section",FontSize->10]]<>" installation"];
+Print["  1. Copy the created files to a new subdirectory \"/",NameForModel,"\" of your SPheno "<>ToString[StyleForm["3.3.6 (or later)","Section",FontSize->10]]<>" installation"];
 Print["  2. Compile the model by using "];
 Print["        make Model=",NameForModel];
 Print["     in the main directory of SPheno"];
@@ -769,14 +781,14 @@ If[AllFermion[[i]]=!=TopQuark,ListDecayParticles = Join[ListDecayParticles,{AllF
 i++;];
 ];
 
-If[InlcudeBeta3Bscalar===True,
+(* If[InlcudeBeta3Bscalar===True, *)
 For[i=1,i<=Length[AllScalarNonSM],
 If[FreeQ[massless,AllScalarNonSM[[i]]] && AllScalarNonSM[[i]]=!=HiggsBoson && AllScalarNonSM[[i]]=!=PseudoScalar && AllScalarNonSM[[i]]=!=ChargedHiggs,
 ListDecayParticles3B= Join[ListDecayParticles3B,{{AllScalarNonSM[[i]],ToString[AllScalarNonSM[[i]]]<>"_"<>ModelName<>".f90"}}];
 ];
 i++;];
-];
- ];
+(* ]; *)
+  ]; 
 
 If[getGen[Electron]>3,
 If[TwoBDList===Automatic, ListDecayParticles = Join[ListDecayParticles,{Electron}];];
@@ -923,6 +935,15 @@ HighScaleParameter = Join[HighScaleParameter,tempList];
 
 For[i=1,i<=Length[BetaDGi],
 NeededParametersForRGEs= Join[NeededParametersForRGEs,{{BetaDGi[[i,1]],getInvolvedParameters[BetaDGi[[i]]]}}];
+i++;];
+];
+
+If[Length[BetaFIi]!= 0,
+tempList=Transpose[BetaFIi][[1]]/. Delta[a__]->1 /. epsTensor[a__]->1 /. InvMat[a__][b__]->1 /. Delta[a__]->1;
+HighScaleParameter = Join[HighScaleParameter,tempList];
+
+For[i=1,i<=Length[BetaFIi],
+NeededParametersForRGEs= Join[NeededParametersForRGEs,{{BetaFIi[[i,1]],getInvolvedParameters[BetaFIi[[i]]]}}];
 i++;];
 ];
 
@@ -1437,7 +1458,12 @@ Return[temp];
 CreateHiggs2Loop :=Block[{i1,i2},
 sphenoHiggs2Loop=OpenWrite[ToFileName[$sarahCurrentSPhenoDir,"TwoLoopHiggsMass_SARAH.f90"]];
 AppendSourceCode["TwoLoopHiggsMass.f90",sphenoHiggs2Loop];
-Close[sphenoHiggs2Loop]
+Close[sphenoHiggs2Loop];
+
+sphenoHiggs2Loopasat=OpenWrite[ToFileName[$sarahCurrentSPhenoDir,"effpotasat.f"]];
+AppendSourceCode["effpotasat.f",sphenoHiggs2Loopasat];
+Close[sphenoHiggs2Loopasat];
+
 ];
 
 

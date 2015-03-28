@@ -13,3 +13,7 @@ $ mv real_name link
 
 Check status, add possible new files
 
+$ rm -rf calchep/ madgraph/ micromegas/ SARAH/ SPHENO/ SSP/ tarballs/ 
+
+Return back 
+$ rsync -avxz toolbox-1.2.8/ toolbox

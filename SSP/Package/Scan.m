@@ -108,7 +108,6 @@ bestfit=PerformFitToValues[name,AllPoints[[i]],i];
 RunAll[name,AllPoints[[i]]//.bestfit,DEFINITION[name][SPhenoDirectory],DEFINITION[name][SPheno],DEFINITION[name][SPhenoSpectrumFile],DEFINITION[name][SPhenoInputFile],True];,
 RunAll[name,AllPoints[[i]],DEFINITION[name][SPhenoDirectory],DEFINITION[name][SPheno],DEFINITION[name][SPhenoSpectrumFile],DEFINITION[name][SPhenoInputFile],True];
 ];
-Creat
 ];
 i++;];
 ];
@@ -159,6 +158,8 @@ temp[[i]]=Table[{list[[i,1]], (Value /. list[[i,2]])},{j,1,spoints}];,
 temp[[i]]=Table[{list[[i,1]],1. (Min /. list[[i,2]])+((Max-Min) /. list[[i,2]])Random[]},{j,1,spoints}];
 ];,
 Switch[Distribution /. list[[i,2]] /. {Distribution->FIXED},
+USERDEFINED,
+	temp[[i]]=Tuples[{{list[[i,1]]},Values/.list[[i,2]]}];,
 FIXED,
 	temp[[i]]= {{list[[i,1]],Value  /. list[[i,2]]}};,
 LINEAR,
@@ -364,6 +365,10 @@ SSP`CurrentOutputDirMG=ToFileName[{SSP`CurrentOutputDir,"MG_point_"<>ToString[SS
 CreateDirectory[SSP`CurrentOutputDirMG];
 RunMG[name,DEFINITION[name][MadGraphRuns][[w,1]],DEFINITION[name][MadGraphRuns][[w,2]],SSP`CurrentOutputDirMG];
 w++;];
+];
+
+If[DEFINITION[name][IncludeVevacious]==True,
+RunVevacious[name];
 ];
 
 If[Head[DEFINITION[name][FitValues]]===List || DEFINITION[name][MakeCountourScan]===True,
@@ -660,6 +665,10 @@ HSres = ToExpression/@Drop[StringReplace[#,{"E"->"*10^"}]&/@StringSplit[line],1]
 SSP`HS=Join[{"HIGGSSIGNALS"},Table[{n,HSres[[n]]},{n,1,Length[HSres]}]];
 ];
 
+RunVevacious[name_]:=Block[{hb,t="",line,fin=False,pos=1,n},
+Run[DEFINITION[name][VevaciousBin]<>" --input="<>DEFINITION[name][VevaciousInit]<>" --slha_file="<>SSP`RunningDir<>DEFINITION[name][SPhenoSpectrumFile]<>" > VevaciousScreen.out"];
+];
+
 
 RunMicrOmegas[name_,spc_]:=Block[{i,res,int, comm, int1, int2, int3, int4},
 Run["cp "<>spc<>" "<>DEFINITION[name][MicroOmegasDirectory]<>"/"<>DEFINITION[name][MicroOmegasInputFile]];
@@ -797,7 +806,7 @@ Interrupt[];
 If[DEFINITION[name][IncludeMicrOmegas]==True,
 
 If[DEFAULT[MicroOmegas]==="" || Head[DEFAULT[MicroOmegas]]=!=String,
-MissingPaths::MO="It is necessary to define first the the MicrOmegas main file";
+MissingPaths::MO="It is necessary to define first the MicrOmegas main file";
 Message[MissingPaths::MO];
 Interrupt[];,
 border=Last[StringPosition[DEFAULT[MicroOmegas],"/"]][[1]];
@@ -821,6 +830,23 @@ DEFINITION[name][DarkMatterCandidate]=DEFAULT[DarkMatterCandidate];
 ];
 ];
 ];
+
+
+If[DEFINITION[name][IncludeVevacious]==True,
+If[DEFAULT[VevaciousBin]==="" || Head[DEFAULT[VevaciousBin]]=!=String,
+MissingPaths::Vev="It is necessary to define the executable of Vevacious";
+Message[MissingPaths::Vev];
+Interrupt[];,
+DEFINITION[name][VevaciousBin]=DEFAULT[VevaciousBin];
+];
+If[DEFAULT[VevaciousInit]==="" || Head[DEFAULT[VevaciousInit]]=!=String,
+MissingPaths::VevInit="It is necessary to define the initialization file for Vevacious";
+Message[MissingPaths::VevInit];
+Interrupt[];,
+DEFINITION[name][VevaciousInit]=DEFAULT[VevaciousInit];
+];
+];
+
 
 If[DEFINITION[name][IncludeHiggsBounds]==True,
 If[DEFAULT[HiggsBounds]==="" || Head[DEFAULT[HiggsBounds]]=!=String,

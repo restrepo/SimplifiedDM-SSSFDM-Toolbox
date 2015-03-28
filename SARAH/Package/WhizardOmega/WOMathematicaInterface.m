@@ -106,7 +106,8 @@ WO`WOWhizardVersion::usage = (""
    <> "   \"1.96\" : >= 1.96\n"
    <> "   \"2.0\"  : 2.0 - 2.0.2\n"
    <> "   \"2.0.3\"  : 2.0.3 - 2.1.7\n"
-   <> "   \"2.2.0\": 2.2.0 - 2.2.1 (default)");
+   <> "   \"2.2.0\": 2.2.0 - 2.2.2\n"
+   <> "   \"2.2.3\": 2.2.3 - 2.2.3 ");
 WO`WOVerbose::usage = (""
    <> "Verbose output. At the moment, this enables more detailed information "
    <> "on skipped vertices. Default: False");
@@ -451,7 +452,10 @@ WO`GaugeName[g_] := Switch[g, WO`WOUnitarity, "Unitarity", WO`WOFeynman, "Feynma
 WO`GaugeName[] := WO`GaugeName[WO`gauge];
 
 (* Version query helpers *)
-WO`whizvn[v_] := Switch[v, "1.93", 193, "1.95", 195, "1.96", 196, "2.0", 200, "2.0.3", 203, "2.0.4", 204, "2.0.5", 205, "2.0.6", 206, "2.0.7", 207, "2.1.0", 210, "2.1.1", 211, "2.2.0", 220, "2.2.1", 221, _,
+WO`whizvn[v_] := Switch[v, "1.93", 193, "1.95", 195, "1.96", 196, 
+"2.0", 200, "2.0.3", 203, "2.0.4", 204, "2.0.5", 205, "2.0.6", 206, "2.0.7", 207, 
+"2.1.0", 210, "2.1.1", 211, 
+"2.2.0", 220, "2.2.1", 221, "2.2.2", 222, "2.2.3", 223, _,
    Throw["BUG: invalid version in WO`whizvn, please report", WO`EAbort]];
 WO`whizvn[] := WO`whizvn[WO`whizv];
 WO`whizv2x[] := WO`whizvn[] >= WO`whizvn["2.0"];
@@ -717,10 +721,10 @@ WO`VersionCheck[dir_] := Module[{handle, v},
       handle = OpenRead[ToFileName[dir, "WhizardVersion"]];
       v = StringReplace[Read[handle, String], RegularExpression["\\s+"] -> ""];
       Close[handle];
-      If[v != WO`whizv,
+    (*  If[v != WO`whizv,
          Throw["ERROR: output directory already contains files generated for a differen WHIZARD / O'Mega version",
             WO`EAbort]
-      ];
+      ]; *)
    ];
 ];
 
@@ -751,7 +755,10 @@ WO`CopyAux[srcdir_, destdir_] := Module[{CopyHelper},
    ];
    If[WO`whizv2x[],
       CopyHelper[{filea_, fileb_}] := Module[{src, dest, sdir, sfile, ddir, dfile},
+        If[WO`whizvn[]>222,
+         src = ToFileName[{srcdir, "2.2.3"}, filea];,
          src = ToFileName[{srcdir, "2.0"}, filea];
+         ];
          dest = ToFileName[destdir, fileb];
          StringReplace[src, RegularExpression[
             "^(.*" <> WO`fileSlashRE <> ")([^" <> WO`fileSlashRE <> "]+)$"] :>
@@ -2848,7 +2855,7 @@ WO`WriteWhizGlue[filestem_] := Module[{handle, content, pubdefs, header, footer,
       Print[" ... rendering couplings"];      
       cpltmp= RenderCoupling/@WO`cpldeflist;
       couplings = Partition[cpltmp, WO`MaxCouplingsPerFile];
-
+      couplings = Join[couplings, {Take[cpltmp, {Length[couplings]*WO`MaxCouplingsPerFile + 1, Length[cpltmp]}]}];
       (*
       RenderCoupWO=0;
       Print[" ... rendering coupling ",Dynamic[RenderCoupWO],"/",Length[WO`cpldeflist]];
@@ -2860,7 +2867,7 @@ WO`WriteWhizGlue[filestem_] := Module[{handle, content, pubdefs, header, footer,
             cpltmp = {};
          ];
       ]; *)
-      If[Length[cpltmp] != 0, AppendTo[couplings, cpltmp]];
+      (* If[Length[cpltmp] != 0, AppendTo[couplings, cpltmp]]; *)
       (* Build the local declaration module. *)
       local = ""
          <> WO`CommentMaker[WO`fileheader, "! ", "! ", ""] <> "\n"

@@ -300,14 +300,22 @@ If ((functype.eq."FFSbar").or.(functype.eq."FFVbar")) Then
  mass1 = sqrt(m1) ! not-squared masses
  mass2 = sqrt(m2)
  If (mass1.ne.ZeroC) Then
- dmass1_i = dm1_i/(2*mass1) ! derivatives of not-squared masses
- dmass1_j = dm1_j/(2*mass1)
- ddmass1 = - dm1_j*dm1_i/(4._dp*mass1**3) + ddm1/(2._dp*mass1)
+  dmass1_i = dm1_i/(2*mass1) ! derivatives of not-squared masses
+  dmass1_j = dm1_j/(2*mass1)
+  ddmass1 = - dm1_j*dm1_i/(4._dp*mass1**3) + ddm1/(2._dp*mass1)
+ Else
+  dmass1_i = 0._dp
+  dmass1_j = 0._dp
+  ddmass1 = 0._dp
  End If
  If (mass2.ne.ZeroC) Then
- dmass2_i = dm2_i/(2*mass2)
- dmass2_j = dm2_j/(2*mass2)
- ddmass2 = - dm2_j*dm2_i/(4._dp*mass2**3) + ddm2/(2._dp*mass2)
+  dmass2_i = dm2_i/(2*mass2)
+  dmass2_j = dm2_j/(2*mass2)
+  ddmass2 = - dm2_j*dm2_i/(4._dp*mass2**3) + ddm2/(2._dp*mass2)
+ Else
+  dmass2_i = 0._dp
+  dmass2_j = 0._dp
+  ddmass2 = 0._dp
  End If
  massx = mass1*mass2
  dmassx_i = dmass1_i*mass2 + mass1*dmass2_i ! first derivative

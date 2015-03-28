@@ -11,7 +11,9 @@ extern "C" {
 extern void   o1Contents(FILE * f);
 extern int    nmssmEWSB(void); 
 extern int    nmssmSUGRA(double m0, double mhf,   double a0, double tb,
-                         double sgn,double Lambda,double aLambda, double aKappa);
+                         double sgn,double Lambda,double aLambda, double aKappa,
+                         double xif, double xis, double muP, double MSPQ,double M3HQ
+                         );
 extern int    readVarNMSSM(char *fname);
 extern int    readSLHA(char * fname);
 extern int    NMHwarn(FILE * f);

@@ -5,14 +5,18 @@
 #define SQR(x) (x)*(x)
 int  HBblocks(char * fname)
 { FILE * f=fopen(fname,"a");
-  double tb,sb,cb,alpha,sa,ca,ta,samb,camb,dMb,MbHl,MbSM,MbH,MbH3,Q;
+  double tb,sb,cb,alpha,sa,ca,ta,samb,camb,dMb,MbHl,MbSM,MbH,MbH3;
+  double vev= 2*findValW("MW")*findValW("SW")/findValW("EE"),
+  Mcp=findValW("Mcp"),Mbp=findValW("Mbp"),Mtp=findValW("Mtp"),
+  Mh=findValW("Mh"),MH=findValW("MH"),MH3=findValW("MH3");
+  double LGGSM,LAASM; 
+    
   if(!f) return 1;
-  Q=findValW("Q");
-  if(slhaDecayExists(pNum("h")) <0)  slhaDecayPrint("h", f);
-  if(slhaDecayExists(pNum("H")) <0)  slhaDecayPrint("H", f);
-  if(slhaDecayExists(pNum("H3"))<0)  slhaDecayPrint("H3",f);
-  if(slhaDecayExists(pNum("t")) <0)  slhaDecayPrint("t", f);
-  if(slhaDecayExists(pNum("H+"))<0)  slhaDecayPrint("H+",f);
+  if(slhaDecayExists(pNum("h")) <0)  slhaDecayPrint("h", 0, f);
+  if(slhaDecayExists(pNum("H")) <0)  slhaDecayPrint("H", 0, f);
+  if(slhaDecayExists(pNum("H3"))<0)  slhaDecayPrint("H3",0, f);
+  if(slhaDecayExists(pNum("t")) <0)  slhaDecayPrint("t", 0, f);
+  if(slhaDecayExists(pNum("H+"))<0)  slhaDecayPrint("H+",0, f);
 
   tb=findValW("tB");  
     sb=tb/sqrt(1+tb*tb);
@@ -38,33 +42,31 @@ int  HBblocks(char * fname)
   fprintf(f," %12.4E  3    25    23    23 # higgs-Z-Z \n",        SQR(samb)  );
   fprintf(f," %12.4E  3    25    25    23 # higgs-higgs-Z \n",    0.   );
 
-  { assignVal("Q",pMass("h"));
-    calcMainFunc();
-    fprintf(f," %12.4E  3    25    21    21 # higgs-gluon-gluon\n",  SQR(findValW("LGGh")/findValW("LGGSM")) );           
-    fprintf(f," %12.4E  3    25    22    22 # higgs-gamma-gamma\n",  SQR(findValW("LAAh")/findValW("LAASM")) );
-  }                          
+  LGGSM=lGGhSM(Mh,alphaQCD(Mh)/M_PI, Mcp,Mbp,Mtp,vev);
+  LAASM=lGGhSM(Mh,alphaQCD(Mh)/M_PI, Mcp,Mbp,Mtp,vev);
+
+    fprintf(f," %12.4E  3    25    21    21 # higgs-gluon-gluon\n",  SQR(findValW("LGGh")/LGGSM) );           
+    fprintf(f," %12.4E  3    25    22    22 # higgs-gamma-gamma\n",  SQR(findValW("LAAh")/LAASM) );
  
   fprintf(f," %12.4E  3    35    24    24 # higgs-W-W \n",        SQR(camb)  );
   fprintf(f," %12.4E  3    35    23    23 # higgs-Z-Z \n",        SQR(camb)  );
   fprintf(f," %12.4E  3    35    25    23 # higgs-higgs-Z \n",    0.  );
   fprintf(f," %12.4E  3    35    35    23 # higgs-higgs-Z \n",    0.  );
   
+  LGGSM=lGGhSM(MH,alphaQCD(MH)/M_PI, Mcp,Mbp,Mtp,vev);
+  LAASM=lGGhSM(MH,alphaQCD(MH)/M_PI, Mcp,Mbp,Mtp,vev);
   
-  { assignVal("Q",pMass("H"));
-    calcMainFunc();
-    fprintf(f," %12.4E  3    35    21    21 # higgs-gluon-gluon\n",SQR(findValW("LGGH")/findValW("LGGSM"))  );   
-    fprintf(f," %12.4E  3    35    22    22 # higgs-gamma-gamma\n",SQR(findValW("LAAH")/findValW("LAASM"))  );
-  }
-  
+  fprintf(f," %12.4E  3    35    21    21 # higgs-gluon-gluon\n",SQR(findValW("LGGH")/LGGSM)  );   
+  fprintf(f," %12.4E  3    35    22    22 # higgs-gamma-gamma\n",SQR(findValW("LAAH")/LAASM)  );  
 
   fprintf(f," %12.4E  3    36    24    24 # higgs-W-W \n",        0.  );
   fprintf(f," %12.4E  3    36    23    23 # higgs-Z-Z \n",        0.  );
+
+  LGGSM=lGGhSM(MH3,alphaQCD(MH3)/M_PI, Mcp,Mbp,Mtp,vev);
+  LAASM=lGGhSM(MH3,alphaQCD(MH3)/M_PI, Mcp,Mbp,Mtp,vev);
   
-  { assignVal("Q",pMass("H3"));
-    calcMainFunc();
-    fprintf(f," %12.4E  3    36    21    21 # higgs-gluon-gluon\n",SQR(findValW("LGGH3")/2/findValW("LGGSM")) );
-    fprintf(f," %12.4E  3    36    22    22 # higgs-gamma-gamma\n",SQR(findValW("LAAH3")/2/findValW("LAASM")) );             
-  }
+  fprintf(f," %12.4E  3    36    21    21 # higgs-gluon-gluon\n",SQR(findValW("LGGH3")/2/LGGSM) );
+  fprintf(f," %12.4E  3    36    22    22 # higgs-gamma-gamma\n",SQR(findValW("LAAH3")/2/LAASM) );             
   
   fprintf(f," %12.4E  3    36    25    23 #*higgs-higgs-Z \n",    SQR(camb)  );
   fprintf(f," %12.4E  3    36    35    23 #*higgs-higgs-Z \n",    SQR(samb)  );
@@ -83,9 +85,7 @@ int  HBblocks(char * fname)
   fprintf(f," %12.4E   %12.4E   3    36     5    5 # higgs-b-b \n"    ,0.,SQR(tb*(MbH3/MbSM)));
   fprintf(f," %12.4E   %12.4E   3    36     6    6 # higgs-top-top \n",0.,SQR(1/tb)          );
   fprintf(f," %12.4E   %12.4E   3    36    15   15 # higgs-tau-tau \n",0.,SQR(tb)            );
-  
-  assignValW("Q",Q);
-  calcMainFunc();    
+     
   fclose(f);
    
   return 0;

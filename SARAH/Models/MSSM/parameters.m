@@ -65,11 +65,13 @@ ParameterDefinitions = {
 {ThetaW,    { Description -> "Weinberg-Angle"}},                           
 {PhaseGlu,  { Description -> "Gluino-Phase" }},
 {ZZ, {Description ->   "Photon-Z Mixing Matrix"}},
-{ZW, {Description -> "W Mixing Matrix" }},
+{ZW, {Description -> "W Mixing Matrix"}},
 {ZfW, {Description ->    "Wino Mixing Matrix"}},
 
 {m32, {Description -> "Gravitino Mass"}},
-{MP, {Description -> "Planck Mass"}}
+{MP, {Description -> "Planck Mass"}},
+
+{Xi[B], {Description -> "Hypercharge FI-Term"}}
                                   
  }; 
  

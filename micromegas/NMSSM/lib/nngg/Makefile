@@ -1,15 +1,15 @@
 # --- variables defined by configure ---
 
-.PHONY: clean all
+all:lGamma.exe
 
-CHEP   =  ../../../CalcHEP_src
-LIBTOOLS = ../../../Packages/LoopTools-2.1
+CALCHEP = ../../../CalcHEP_src
+LIBTOOLS=../../../Packages/LoopTools-2.1
 
 ifneq ($(MAKECMDGOALS),clean)
-include   $(CHEP)/FlagsForMake
+include   $(CALCHEP)/FlagsForMake
 endif 
 
-FFLAGS += -g  -ffixed-line-length-none 
+FFLAGS += -g  -ffixed-line-length-none
 
 
 .PHONY: force squared_me_gg squared_me_gz  renconst util
@@ -27,8 +27,7 @@ endif
 export FC
 export FFLAGS
 
-all:lGamma.exe
-
+#LIBTOOLS=$(CURDIR)/../LoopTools-2.1
 
 
 $(LIBTOOLS)/libooptools.a:
@@ -47,7 +46,7 @@ nngg.a(run.o): 2to2.h renconst.h looptools.h model.h
 nngg.a(mdl_ini.o):model.h
 
 lGamma.exe : main.f   nngg.a $(LIBTOOLS)/libooptools.a 
-	$(FC) $(FFLAGS) -o lGamma.exe  $^ $(CHEP)/lib/libSLHAplus.a ../../../CalcHEP_src/lib/faux.o
+	$(FC) $(FFLAGS) -o lGamma.exe $^ $(CALCHEP)/lib/libSLHAplus.a  $(CALCHEP)/lib/faux.o
 
 
 $(subdir) : 

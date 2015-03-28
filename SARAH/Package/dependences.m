@@ -39,7 +39,7 @@ j++;];
 For[i=1,i<=Length[NameOfStates],
 If[FreeQ[DEFINITION[NameOfStates[[i]]][GaugeSector],par]==False,
 AssociatedMixingAngles[par]=newSym;
-If[FreeQ[dep,Sin]==False || FreeQ[dep,Cos] ==False || FreeQ[dep,Tan] ==False,realVar = Join[realVar, {par}];]; 
+If[(FreeQ[dep,Sin]==False || FreeQ[dep,Cos] ==False || FreeQ[dep,Tan] ==False) && FreeQ[dep,I],realVar = Join[realVar, {par}];]; 
 SA`RotationMatricesGaugeSector=Join[SA`RotationMatricesGaugeSector,{par}];
 ];
 i++;];

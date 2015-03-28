@@ -44,12 +44,16 @@ WriteString[ModelData, "Use LoopFunctions \n"];
 
 WriteString[ModelData,"Logical, Save :: PrintPartialContributions = .False. \n"];
 WriteString[ModelData,"Logical, Save :: Enable3BDecays = .True. \n"];
+WriteString[ModelData,"Logical, Save :: Enable3BDecaysS = .True. \n"];
+WriteString[ModelData,"Logical, Save :: Enable3BDecaysF = .True. \n"];
 WriteString[ModelData,"Logical, Save :: FirstRun = .True. \n"];
 WriteString[ModelData,"Logical, Save :: RunningCouplingsDecays = .True. \n"];
 WriteString[ModelData,"Logical, Save :: WriteSLHA1 = .False. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateOneLoopMasses = .True. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateOneLoopMassesSave = .True. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateTwoLoopHiggsMasses = .True. \n"];
+WriteString[ModelData,"Logical, Save :: SUSYrunningFromMZ = .True. \n"];
+WriteString[ModelData,"Logical :: CalculateTwoLoopHiggsMassesSave = .True. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateLowEnergy = .True. \n"];
 WriteString[ModelData,"Logical, Save :: WriteParametersAtQ = .False. \n"];
 WriteString[ModelData,"Logical, Save :: TwoLoopRGE=.True.\n"];
@@ -67,11 +71,13 @@ WriteString[ModelData,"Logical :: SPA_Convention \n"];
 WriteString[ModelData,"Logical :: ForceRealMatrices = .False. \n"];
 WriteString[ModelData,"Logical :: WriteGUTvalues \n"];
 WriteString[ModelData,"Logical :: TwoLoopSafeMode \n"];
+WriteString[ModelData,"Integer :: TwoLoopMethod = 3 \n"];
 WriteString[ModelData,"Logical :: WriteTreeLevelTadpoleParameters = .false. \n"];
 WriteString[ModelData,"Logical :: IncludeDeltaVB = .True. \n"];
 WriteString[ModelData,"Real(dp) :: WidthToBeInvisible = 0._dp \n"];
 WriteString[ModelData,"Real(dp) :: nLep = 3._dp, mf_u_mz_running \n"];
 WriteString[ModelData,"Real(dp) :: nUp = 2._dp \n"];
+WriteString[ModelData,"Real(dp) :: err2L = 0._dp \n"];
 WriteString[ModelData,"Real(dp) :: nDown = 3._dp \n"];
 WriteString[ModelData,"Real(dp) :: MaxMassLoop = 1.0E16_dp \n"];
 WriteString[ModelData,"Real(dp) :: MinWidth = 1.0E-30_dp \n"];
@@ -84,17 +90,22 @@ WriteString[ModelData,"Logical :: PurelyNumericalEffPot \n"];
 If[SupersymmetricModel===False,
 WriteString[ModelData,"Real(dp) :: hstep_pn, hstep_sa \n"];
 ];
-If[IncludeFlavorKit=!=True,
+If[IncludeFlavorKit=!=True||SkipFlavorKit===True,
 WriteString[ModelData,"Real(dp) :: tau_pi0=26033._dp, tau_pip,tau_rho0,tau_rhop,tau_Dp= 1.040E-12_dp,tau_D0,tau_DSp,tau_DSsp, & \n & tau_eta,tau_etap,tau_omega,tau_phi, tau_KL0,tau_KS0,tau_K0,tau_Kp=1238.0E-11_dp,tau_B0s=1.472E-12_dp, tau_B0d=1.525E-12_dp, tau_B0p,tau_B0c,tau_Bpc,tau_Bs0c, tau_Bp=1.519E-12_dp, & \n & tau_Bcp,tau_Bcpc,tau_K0c,tau_Kpc,tau_etac,tau_JPsi,tau_Ups,tau_etab  \n"];
 WriteString[ModelData,"Real(dp) :: mass_pi0=0.1396_dp, mass_pip,mass_rho0,mass_rhop,mass_Dp,mass_D0=1.8648_dp,mass_DSp,mass_DSsp, & \n & mass_eta,mass_etap,mass_omega,mass_phi, mass_KL0,mass_KS0,mass_K0=0.4937_dp,mass_Kp=0.493_dp,mass_B0s=5.3663_dp, mass_B0d=5.2795_dp,mass_B0p=5.279_dp,mass_B0c,mass_Bpc,mass_Bs0c, & \n & mass_Bcp,mass_Bcpc,mass_K0c=0.8959_dp,mass_Kpc,mass_etac,mass_JPsi,mass_Ups,mass_etab  \n"];
 WriteString[ModelData,"Real(dp) :: f_k_CONST=0.1598_dp, h_k_CONST, f_eta_q_CONST, f_eta_s_CONST, h_eta_q_CONST, h_eta_s_CONST, & \n & f_rho_CONST, h_rho_CONST,  f_omega_q_CONST, f_omega_s_CONST, h_omega_q_CONST, h_omega_s_CONST, f_B0d_CONST=0.190_dp, f_B0s_CONST=0.227_dp, & \n & f_D_CONST= 0.248_dp, f_Bp_CONST =  0.234_dp, f_Kp_CONST = 0.156_dp \n"];,
 
 Get[ToFileName[{$sarahDir,"FlavorKit"},"hadronic_parameters.m"]];
+Get[ToFileName[{$sarahDir,"FlavorKit"},"FLHA_WilsonCoefficients.m"]];
 For[i=1,i<=Length[FLHA`MASSandLIFETIME],
 WriteString[ModelData,"Real(dp) :: "<>FLHA`MASSandLIFETIME[[i,2,1]]<>"="<>ToString[FortranForm[FLHA`MASSandLIFETIME[[i,2,2]]]]<>", "<>FLHA`MASSandLIFETIME[[i,3,1]]<>"="<>ToString[FortranForm[FLHA`MASSandLIFETIME[[i,3,2]]]]<>"\n"];
 i++;];
 For[i=1,i<=Length[FLHA`DECAYCONSTANTS],
 WriteString[ModelData,"Real(dp) :: "<>FLHA`DECAYCONSTANTS[[i,2]]<>"="<>ToString[FortranForm[FLHA`DECAYCONSTANTS[[i,3]]]]<>"\n"];
+i++;];
+
+For[i=1,i<=Length[FLHA`WilsonCoefficients],
+WriteString[ModelData,"Complex(dp) :: "<>ToString[FLHA`WilsonCoefficients[[i,5]]]<>" = 0._dp\n"];
 i++;];
 ];
 

@@ -41,6 +41,8 @@ BetaTijkSave=BetaTijk;
 BetaMuijSave=BetaMuij;
 BetaBijSave=BetaBij;
 BetaMiSave=BetaMi;
+BetaDGiSave=BetaDGi;
+BetaFIiSave=BetaFIi;
 Betam2ijSave=Betam2ij;
 BetaGaugeSave=BetaGauge;
 BetaVEVSave=BetaVEV;
@@ -53,6 +55,8 @@ BetaTijk=BetaTijk3I;
 BetaMuij=BetaMuij3I;
 BetaBij=BetaBij3I;
 BetaMi=BetaMi3I;
+BetaFIi=BetaFIi3I;
+BetaDGi=BetaDGi3I;
 Betam2ij=Betam2ij3I;
 BetaGauge=BetaGauge3I;
 BetaVEV=BetaVEV3I;
@@ -124,6 +128,12 @@ If[Length[BetaDGi]!= 0,
 listAllParameters =Join[listAllParameters ,Transpose[BetaDGi][[1]]];
 listBeta1Loop  = Join[listBeta1Loop ,Transpose[BetaDGi][[2]]];
 listBeta2Loop  = Join[listBeta2Loop ,Transpose[BetaDGi][[3]]];
+];
+
+If[Length[BetaFIi]!= 0,
+listAllParameters =Join[listAllParameters ,Transpose[BetaFIi][[1]]];
+listBeta1Loop  = Join[listBeta1Loop ,Transpose[BetaFIi][[2]]];
+listBeta2Loop  = Join[listBeta2Loop ,Transpose[BetaFIi][[3]]];
 ];
 
 

@@ -1,4 +1,4 @@
 .PHONY: all 
 
-all: *.src 
-	lhep -ca -evl 2 startup.src
+all: *.lhp 
+	lhep -ca  startup.lhp

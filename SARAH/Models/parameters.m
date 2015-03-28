@@ -143,6 +143,11 @@ ParameterDefinitionsMain = {
 			 LesHouches ->{HMIX,101},
              Value -> None,
              OutputName-> Bmu }},        
+
+{{   Description -> "Hypercharge FI-Term", 
+	     LaTeX -> "\\xi_Y",
+             LesHouches -> {FITERMS,1},
+             OutputName-> XiY }},
              
 (*----------------------------------------*)
 (* Soft-breaking masses                   *)

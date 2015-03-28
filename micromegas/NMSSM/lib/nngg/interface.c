@@ -20,4 +20,4 @@ double vcsnngg(double v)
     return vcs1;
 }
 
-double vcsnngg_(double *v){return vcsnngg(*v);}
+double vcsnngg_(double *v){ return vcsnngg(*v);}

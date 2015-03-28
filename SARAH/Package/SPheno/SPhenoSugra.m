@@ -450,6 +450,27 @@ WriteString[sphenoSugra,"If (CalculateOneLoopMassesSave) Then \n"];
 WriteString[sphenoSugra,"CalculateOneLoopMasses =  CalculateOneLoopMassesSave \n"];
 WriteString[sphenoSugra,"Write(*,*) \"Calculate loop corrected masses \" \n"];
 MakeCall["OneLoopMasses",Join[NewMassParameters,Join[listVEVs,listAllParameters]],{},{"kont"},sphenoSugra];
+
+WriteString[sphenoSugra,"If (SignOfMassChanged) Then\n"];
+WriteString[sphenoSugra,"  If (.Not.IgnoreNegativeMasses) Then\n"];
+WriteString[sphenoSugra,"  Write(*,*) \" Mass spectrum converged, but negative mass squared present.\" \n"];
+WriteString[sphenoSugra,"   Call TerminateProgram \n"];
+WriteString[sphenoSugra,"  Else \n"];
+WriteString[sphenoSugra,"   SignOfMassChanged = .False. \n"];
+WriteString[sphenoSugra,"   kont = 0 \n"];
+WriteString[sphenoSugra,"  End If\n"];
+WriteString[sphenoSugra,"End If\n"];
+WriteString[sphenoSugra,"If (SignOfMuChanged) Then\n"];
+WriteString[sphenoSugra,"  If (.Not.IgnoreMuSignFlip) Then\n"];
+WriteString[sphenoSugra,"  Write(*,*) \" Mass spectrum converged, but negative |mu|^2 from tadpoles.\" \n"];
+WriteString[sphenoSugra,"   Call TerminateProgram \n"];
+WriteString[sphenoSugra,"  Else \n"];
+WriteString[sphenoSugra,"   SignOfMuChanged = .False. \n"];
+WriteString[sphenoSugra,"   kont = 0 \n"];
+WriteString[sphenoSugra,"  End If\n"];
+WriteString[sphenoSugra,"End If\n"];
+
+
 WriteString[sphenoSugra,"End if \n"];
 
 WriteString[sphenoSugra,"Iname=Iname-1\n \n"];
@@ -793,11 +814,11 @@ WriteString[sphenoSugra, "End if \n"];
 
 If[AddOHDM=!=True,
 WriteString[sphenoSugra,"If (tanbeta.gt.3._dp) Then \n"];
-WriteString[sphenoSugra,"tanb = tanbeta \n"];
-WriteString[sphenoSugra,"tanbetaMZ = tanbeta \n"];
+WriteString[sphenoSugra," tanb = tanbeta \n"];
+WriteString[sphenoSugra," tanbetaMZ = tanbeta \n"];
 WriteString[sphenoSugra,"Else \n"];
-WriteString[sphenoSugra,"tanb = 5._dp \n"];
-WriteString[sphenoSugra,"tanbetaMZ = 5._dp \n"];
+WriteString[sphenoSugra," tanb = 5._dp \n"];
+WriteString[sphenoSugra," tanbetaMZ = 5._dp \n"];
 WriteString[sphenoSugra,"End if \n"];
 ];
 
@@ -806,17 +827,33 @@ WriteString[sphenoSugra,"mW2=mZ2*(0.5_dp+Sqrt(0.25_dp-Alpha_Mz*pi/(sqrt2*G_F*mZ2
 WriteString[sphenoSugra,"mW=Sqrt(mW2) \n"];
 WriteString[sphenoSugra,"cosW2=mw2/mZ2 \n"];
 WriteString[sphenoSugra,"sinW2=1._dp-cosW2 \n"];
-WriteString[sphenoSugra,"cosW=Sqrt(cosW2) \n"];
+WriteString[sphenoSugra,"cosW=Sqrt(cosW2) \n \n"];
 
 
-WriteString[sphenoSugra,"k_fac=1._dp-alpha*(oo6pi& \n"];
-WriteString[sphenoSugra,"&-oo2pi*(57._dp*Log(10._dp)+16._dp*Log(mf_u(3)/mZ))/9._dp) \n"];
+If[AddOHDM=!=True,
+WriteString[sphenoSugra,"If (tanbeta.gt.5._dp) Then \n"];
+];
+WriteString[sphenoSugra," k_fac=1._dp-alpha*(oo6pi & \n"];
+WriteString[sphenoSugra,"  &-oo2pi*(57._dp*Log(10._dp)+16._dp*Log(mf_u(3)/mZ))/9._dp) \n"];
+If[AddOHDM=!=True,
+WriteString[sphenoSugra,"Else \n"];
+WriteString[sphenoSugra," k_fac=1._dp \n"];
+WriteString[sphenoSugra,"End if \n"];
+];
 WriteString[sphenoSugra,"gauge(1)=Sqrt(20._dp*pi*alpha_mZ/(k_fac*3._dp*(1._dp-sinW2))) \n"];
 WriteString[sphenoSugra,"gauge(2)=Sqrt(4._dp*pi*alpha_mZ/(k_fac*sinW2)) \n"];
-WriteString[sphenoSugra,"k_fac=1-AlphaS_mZ*oo2pi*(0.5_dp-4._dp*Log(10._dp)&\n"];
-WriteString[sphenoSugra,"&-2._dp*Log(mf_u(3)/mZ)/3._dp) \n"];
+If[AddOHDM=!=True,
+WriteString[sphenoSugra,"If (tanbeta.gt.5._dp) Then \n"];
+];
+WriteString[sphenoSugra," k_fac=1-AlphaS_mZ*oo2pi*(0.5_dp-4._dp*Log(10._dp) &\n"];
+WriteString[sphenoSugra,"  &-2._dp*Log(mf_u(3)/mZ)/3._dp) \n"];
+If[AddOHDM=!=True,
+WriteString[sphenoSugra,"Else \n"];
+WriteString[sphenoSugra," k_fac=1._dp \n"];
+WriteString[sphenoSugra,"End if \n"];
+];
 WriteString[sphenoSugra,"gauge(3)=Sqrt(4._dp*pi*alphas_mZ) \n"];
-WriteString[sphenoSugra,"gauge(3)=Sqrt(4._dp*pi*alphas_mZ/k_fac) \n"];
+WriteString[sphenoSugra,"gauge(3)=Sqrt(4._dp*pi*alphas_mZ/k_fac) \n \n"];
 
 
 
@@ -1145,6 +1182,7 @@ WriteString[file,SPhenoForm[BoundaryEWSBScaleRunningDown[[i,1]]]<>" = " <> SPhen
 i++;];
 ];
 
+(*
 WriteString[sphenoSugra,"If (HighScaleModel.Eq.\"LOW\") Then \n "];
 WriteString[sphenoSugra,"! Setting values \n "];
 For[i=1,i<=Length[listVEVsIN],
@@ -1167,7 +1205,7 @@ For[i=1,i<=Length[BoundaryLowScaleInput],
 WriteString[sphenoSugra,SPhenoForm[BoundaryLowScaleInput[[i,1]]]<>" = " <>SPhenoForm[BoundaryLowScaleInput[[i,2]]]<>"\n"];
 i++;];
 WriteString[sphenoSugra,"End if\n \n "];
-
+*)
 WriteString[file,"! ----------------------- \n \n"];
 ];
 

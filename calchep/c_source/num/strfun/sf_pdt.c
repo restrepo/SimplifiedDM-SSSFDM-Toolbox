@@ -48,7 +48,7 @@ static void findAllPDT(void)
 
       if(!dirPtr) continue;
  
-      while(dp=readdir(dirPtr))
+      while((dp=readdir(dirPtr)))
       { char *c=dp->d_name;
         int l=strlen(c);
         if(l>=4 && strcmp(c+l-4,".pdt")==0) 

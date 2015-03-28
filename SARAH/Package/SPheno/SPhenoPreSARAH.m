@@ -1500,6 +1500,7 @@ CheckForPreSARAH:=Block[{i,j,k,l,list,type},
 Print["# Checking for FlavorKit input files # "];
 Print["# Reference: 1405.1434               # "];
 *)
+
 PrintAll[StyleForm["Checking for FlavorKit input files","Section",FontSize->10]];
 PrintAll[StyleForm["Reference: 'A Flavor Kit for BSM models' by W. Porod, F. Staub, A.Vicente; 1405.1434","Section",FontSize->10]];
 
@@ -1627,6 +1628,7 @@ realVar = Join[realVar,{ToExpression[ToString[NameObservables[[j,1]]]<>"SM"]}];
 j++;];
 i++;];
 l++;];
+
 ];
 
 GeneratePreSARAHObservables[type_,file_]:=Block[{i},
