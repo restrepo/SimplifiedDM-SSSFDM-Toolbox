@@ -1,19 +1,34 @@
-We depart from the SARAH standar and
-will install SARAH directly in the primary
+We depart from the SARAH standard and
+will install SARAH Toolbox directly in the primary
 directory.
 
-$ ./configure --disable-whizard --disable-higgsbounds --disable-higgssignals
+1) We need to explicitly execute the ./configure to have all the sources.
+   However note that some of them are disbled:
 
-$ rm link
-$ mv real_name link
+ $ ./configure --disable-whizard --disable-higgsbounds --disable-higgssignals
 
-To update
-$ rm -rf link
-$ mv real_name link
+2) Symbolic links were removed and real directories were renamed
+ $ rm link
+ $ mv real_name link
 
-Check status, add possible new files
+3) YOU NEED TO EXPLICTLY execute make after clone the repo
 
-$ rm -rf calchep/ madgraph/ micromegas/ SARAH/ SPHENO/ SSP/ tarballs/ 
+ $ make
 
-Return back 
-$ rsync -avxz toolbox-1.2.8/ toolbox
+To update to a new version X.X.X  downloaded in the .. dir:
+
+ $ rsync -avxz toolbox-X.X.X/ toolbox
+
+all the old downloaded dirs are removed:
+
+ $ rm -rf calchep/ madgraph/ micromegas/ SARAH/ SPHENO/ SSP/ tarballs/ 
+
+From here, we repeat the steps 1) 2), check status, add possible new files and 
+commit with the new version in the message:
+
+ $ git commit -a -m "toolbox X.X.X"
+ $ git tag X.X.X COMMIT_HASH
+ 
+ Finally we push into the remote server including the tags:
+ 
+  $ git push origin --tags
