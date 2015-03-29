@@ -33,6 +33,7 @@ valid options are:
                         spheno , calchep , micromegas , whizard , 
                         madgraph , ssp
    --skip-sarah       : skip the SARAH run and use an existing result
+   --yes              : Assume that the answer to simple yes/no questions is 'yes'
 EOI
    exit
 }
@@ -85,8 +86,10 @@ createdir() {
    if test "$1" = yes; then
       if test -e "$2"; then
          test ! -d "$2" && die ERROR: $2 exists and is not a directory
-         echo WARNING: $2 already exists, remove contents [yes/no]?
-         ask || "die Refusing to remove already existing directory $2, quitting..."
+	 if ! test -n "YES";then 
+            echo WARNING: $2 already exists, remove contents [yes/no]?
+            ask || "die Refusing to remove already existing directory $2, quitting..."
+	 fi
          echo removing contents of $2...
          rm -fr "$2" || die
       fi
@@ -130,6 +133,9 @@ while test -n "$1"; do
       --skip-sarah)
          skip_sarah=1
          ;;
+      --yes)
+	  export YES=YES
+	  ;;
       *)
          if test -z "$model"; then
             model="$1"
@@ -194,7 +200,7 @@ if test "$enable_whizard" = yes; then
    whizardmdl=`echo "$WHIZARDdir/whizard/"*mdl | sed 's/.*\///' | sed 's/\.mdl//'`
    test -n "$whizardmdl" || die \
       "ERROR: SARAH ran, but no WHIZARD model was generated --- check Mathematica output"
-   if test -e "$pkgroot/whizard/share/whizard/models/$whizardmdl.mdl"; then
+   if test -e "$pkgroot/whizard/share/whizard/models/$whizardmdl.mdl" && and ! $YES; then
       echo "A WHIZARD model called $whizardmdl already exists; overwrite? [yes/no]"
       ask || die "Refusing to overwrite existing WHIZARD model $whizardmdl; quitting..."
    fi
@@ -202,7 +208,7 @@ fi
 
 if test "$enable_ssp" = yes; then
    sspsettings="$pkgroot/SSP/DefaultSettings.m.$SARAHModelName"
-   if test -e "$sspsettings"; then
+   if test -e "$sspsettings" && and ! $YES; then
       echo "A SSP configuration $sspsettings already exists; overwrite [yes/no]"
       ask || die "Refusing to overwrite existing $sspsettings; quitting..."
    fi
