@@ -1,5 +1,5 @@
 : 
-  CALCHEP=  
+  CALCHEP=/home/restrepo/prog/toolbox/toolbox/calchep 
 #-------------------- 
 
 if(test $# -ne 1) then
