@@ -1,0 +1,184 @@
+
+*** These modified files were found in JOE when it aborted on Sat Jan 24 22:30:09 2015
+*** JOE was aborted by UNIX signal 15
+
+*** Файл 'results/symb1.red'
+%    ==============================
+%    *  CalcHEP  3.4.3 *
+%    ==============================
+inParticles:={"~o1","~o1"}$
+outParticles:={"t","T"}$
+%
+parameters:={
+ Sqrt2=>0.000000E+00
+,EE=>0.000000E+00
+,MZ=>0.000000E+00
+,MW=>0.000000E+00
+,tb=>0.000000E+00
+,muP=>0.000000E+00
+,Q=>0.000000E+00
+,Mha=>slhaVal("MASS",MZ,1,36)
+,MNE1=>slhaVal("MASS",MZ,1,1000022)
+,MNE2=>slhaVal("MASS",MZ,1,1000023)
+,MNE3=>slhaVal("MASS",MZ,1,1000025)
+,MNE4=>slhaVal("MASS",MZ,1,1000035)
+,MNE5=>slhaVal("MASS",MZ,1,1000045)
+,MSt1=>slhaVal("MASS",MZ,1,1000006)
+,MSt2=>slhaVal("MASS",MZ,1,2000006)
+,Za11=>slhaVal("NMAMIX",QSUSY,2,1,1)
+,Za13=>slhaVal("NMAMIX",QSUSY,2,1,3)
+,Za23=>slhaVal("NMAMIX",QSUSY,2,2,3)
+,Zn11=>slhaVal("NMNMIX",QSUSY,2,1,1)
+,Zn12=>slhaVal("NMNMIX",QSUSY,2,1,2)
+,Zn13=>slhaVal("NMNMIX",QSUSY,2,1,3)
+,Zn14=>slhaVal("NMNMIX",QSUSY,2,1,4)
+,Zn15=>slhaVal("NMNMIX",QSUSY,2,1,5)
+,Zn21=>slhaVal("NMNMIX",QSUSY,2,2,1)
+,Zn22=>slhaVal("NMNMIX",QSUSY,2,2,2)
+,Zn23=>slhaVal("NMNMIX",QSUSY,2,2,3)
+,Zn24=>slhaVal("NMNMIX",QSUSY,2,2,4)
+,Zn25=>slhaVal("NMNMIX",QSUSY,2,2,5)
+,Zn31=>slhaVal("NMNMIX",QSUSY,2,3,1)
+,Zn32=>slhaVal("NMNMIX",QSUSY,2,3,2)
+,Zn33=>slhaVal("NMNMIX",QSUSY,2,3,3)
+,Zn34=>slhaVal("NMNMIX",QSUSY,2,3,4)
+,Zn35=>slhaVal("NMNMIX",QSUSY,2,3,5)
+,Zn41=>slhaVal("NMNMIX",QSUSY,2,4,1)
+,Zn42=>slhaVal("NMNMIX",QSUSY,2,4,2)
+,Zn43=>slhaVal("NMNMIX",QSUSY,2,4,3)
+,Zn44=>slhaVal("NMNMIX",QSUSY,2,4,4)
+,Zn45=>slhaVal("NMNMIX",QSUSY,2,4,5)
+,Zn51=>slhaVal("NMNMIX",QSUSY,2,5,1)
+,Zn52=>slhaVal("NMNMIX",QSUSY,2,5,2)
+,Zn53=>slhaVal("NMNMIX",QSUSY,2,5,3)
+,Zn54=>slhaVal("NMNMIX",QSUSY,2,5,4)
+,Zn55=>slhaVal("NMNMIX",QSUSY,2,5,5)
+,xvev=>slhaValFormat("EFFECTIVE_COUPLINGS",QSUSY,"XVEV
+,Pa11=>if(Za11*Pa22,Pa22,-Pa22)
+,Mt=>MtEff(Q)
+,wZ=>0.000000E+00
+,wha=>0.000000E+00
+}$
+%
+substitutions:={
+ B00717=>B00716+2*EE*NMM23*Pa11*Zn12*Zn13*sb^2*xvev+2*EE*NMM13*Pa11*Zn11*
+ Zn13*sb^2*xvev+2*EE*NMM24*Pa11*Zn12*Zn14*cb^2*xvev+2*EE*NMM14*Pa11*Zn11*
+ Zn14*cb^2*xvev
+,B00716=>MW*Pa12*SW*Sqrt2*Zn15^2*cb*muP*sb-2*MW*NMM34*Pa12*SW*Sqrt2*Zn13*
+ Zn14*cb*sb-2*EE*NMM45*Pa11*Zn14*Zn15*sb^2*xvev-2*EE*NMM35*Pa11*Zn13*Zn15*
+ cb^2*xvev-MW*NMM55*Pa12*SW*Sqrt2*Zn15^2*cb*sb
+,B00709=>B00708+NMM14*Zn11*Zn14
+,B00708=>NMM45*Zn14*Zn15-NMM35*Zn13*Zn15-NMM23*Zn12*Zn13-NMM13*Zn11*Zn13+
+ NMM24*Zn12*Zn14
+,B00707=>Zn13^2-Zn14^2
+,NMM55=>Zn15*MNE1*Zn15+Zn25*MNE2*Zn25+Zn35*MNE3*Zn35+Zn45*MNE4*Zn45+Zn55*
+ MNE5*Zn55
+,NMM45=>Zn14*MNE1*Zn15+Zn24*MNE2*Zn25+Zn34*MNE3*Zn35+Zn44*MNE4*Zn45+Zn54*
+ MNE5*Zn55
+,NMM35=>Zn13*MNE1*Zn15+Zn23*MNE2*Zn25+Zn33*MNE3*Zn35+Zn43*MNE4*Zn45+Zn53*
+ MNE5*Zn55
+,NMM34=>Zn13*MNE1*Zn14+Zn23*MNE2*Zn24+Zn33*MNE3*Zn34+Zn43*MNE4*Zn44+Zn53*
+ MNE5*Zn54
+,NMM24=>Zn12*MNE1*Zn14+Zn22*MNE2*Zn24+Zn32*MNE3*Zn34+Zn42*MNE4*Zn44+Zn52*
+ MNE5*Zn54
+,NMM23=>Zn12*MNE1*Zn13+Zn22*MNE2*Zn23+Zn32*MNE3*Zn33+Zn42*MNE4*Zn43+Zn52*
+ MNE5*Zn53
+,NMM14=>Zn11*MNE1*Zn14+Zn21*MNE2*Zn24+Zn31*MNE3*Zn34+Zn41*MNE4*Zn44+Zn51*
+ MNE5*Zn54
+,NMM13=>Zn11*MNE1*Zn13+Zn21*MNE2*Zn23+Zn31*MNE3*Zn33+Zn41*MNE4*Zn43+Zn51*
+ MNE5*Zn53
+,Pa22=>Za23
+,Pa12=>Za13
+,cb=>sqrt(1-sb^2)
+,sb=>tB/sqrt(1+tB^2)
+,QSUSY=>sqrt(MSt1*MSt2)
+,tB=>tb
+,SW=>sqrt(1-CW^2)
+,CW=>MW/MZ
+}$
+
+
+vector p1,p2,p3,p4,p5,p6$
+
+let p4 = +p1+p2-p3;
+mass p1  = MNE1; Mshell p1;
+mass p2  = MNE1; Mshell p2;
+mass p3  = Mt; Mshell p3;
+let p2.p3 = -1*(Mt^2-MNE1^2-MNE1^2-Mt^2-2*p1.p2+2*p1.p3)/2;
+
+vector !=p_,!=q_$
+operator propDen$
+for all p_,q_,m,w let propDen(0*p_+q_,m,w)=propDen(q_,m,w)$
+for all p_,m,w such that ordp(p_,-p_) let propDen(p_,m,w)=propDen(-p_,m,w);$
+
+initSum();
+
+DiagrNumber:="1_5"$
+
+%              ~o1          T       T          ~o1                   
+%             =====\     /==<==   ==<==\     /=====                  
+%               P1 |     |  P4      P4 |     |  P1                   
+%                  |     |             |     |                       
+%              ~o1 |  Z  |  t       t  |  ha | ~o1                   
+%             =====@-----@==>==   ==>==@-----@=====                  
+%               P2          P3      P3          P2                   
+totFactor:=(3*B00717*Mt^2*Pa11*EE^3)/(2*xvev*cb*sb*tB*SW^4*CW^2*MW^4)$
+
+numerator:=
+ 2*p1.p2^2*B00709*CW^2
++4*p1.p2*B00709*MNE1^2*CW^2
++2*B00709*MNE1^4*CW^2
+
+
++B00707*MNE1^3*MW^2$
++p1.p2*B00707*MNE1*MW^2
+
+MNE1^2 + p1.p2
+
+
+
+
+
+denominator:=propDen(-p1-p2,MZ,wZ)*propDen(-p1-p2,Mha,wha)^-1$
+
+
+addToSum()$
+finishSum();
+End$
+
+*** Файл '(БезИмени)'
+6.
+7.
+8.
+9.
+=/
+/=
+c=
+/
+/ 
+x
+
+*** Файл '(БезИмени)'
+passPara
+passPa
+printf
+ printf
+ampl
+SAVE
+parall
+Parall
+Paral
+p1.p2
+
+*** Файл '(БезИмени)'
+d1.c
+* Build Log *
+f106.c
+d1.c
+f1.c
+symb1.red
+* Build Log *
+symb1.red
+symb1.red
+results/symb1.red
+results/symb1.red

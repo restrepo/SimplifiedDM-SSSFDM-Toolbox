@@ -29,8 +29,6 @@ uname -v = #1 SMP Debian 3.16.3-2 (2014-09-20)
 
 PATH: /home/restrepo/.cabal/bin
 PATH: /opt/intel/composerxe-2011.4.191/bin/intel64
-PATH: /home/restrepo/.cabal/bin
-PATH: /opt/intel/composerxe-2011.4.191/bin/intel64
 PATH: /opt/intel/composerxe-2011.4.191/bin/intel64
 PATH: /opt/intel/composerxe-2011.4.191/bin/intel64
 PATH: /usr/local/sbin
@@ -39,7 +37,6 @@ PATH: /usr/sbin
 PATH: /usr/bin
 PATH: /sbin
 PATH: /bin
-PATH: /opt/intel/composerxe-2011.4.191/mpirt/bin/intel64
 PATH: /opt/intel/composerxe-2011.4.191/mpirt/bin/intel64
 PATH: /opt/intel/composerxe-2011.4.191/mpirt/bin/intel64
 PATH: /opt/intel/composerxe-2011.4.191/mpirt/bin/intel64
@@ -202,86 +199,10 @@ configure:3535: result: 9.0 for Linux x86 (64-bit) (November 20, 2012)
 configure:3544: ============================================================================
 configure:3546: Configuring SARAH
 configure:3548: ============================================================================
-configure:3564: downloading /home/restrepo/prog/toolbox/toolbox/tarballs/SARAH-4.5.1.tar.gz...
-configure:3621: checking  /home/restrepo/prog/toolbox/toolbox/tarballs/SARAH-4.5.1.tar.gz
+configure:3621: checking  /home/restrepo/prog/toolbox/tmp/BSM-Tool-Box/tarballs/SARAH-4.5.1.tar.gz
 configure:3625: result: checksum OK
-configure:3655: Untarring /home/restrepo/prog/toolbox/toolbox/tarballs/SARAH-4.5.1.tar.gz...
-configure:3671: Symlinking /home/restrepo/prog/toolbox/toolbox/SARAH-4.5.1 to /home/restrepo/prog/toolbox/toolbox/SARAH...
-configure:3680: ============================================================================
-configure:3682: Configuring SARAH scan and plot (SSP)
-configure:3684: ============================================================================
-configure:3701: downloading /home/restrepo/prog/toolbox/toolbox/tarballs/SSP-1.2.2.tar.gz...
-configure:3758: checking  /home/restrepo/prog/toolbox/toolbox/tarballs/SSP-1.2.2.tar.gz
-configure:3762: result: checksum OK
-configure:3792: Untarring /home/restrepo/prog/toolbox/toolbox/tarballs/SSP-1.2.2.tar.gz...
-configure:3808: Symlinking /home/restrepo/prog/toolbox/toolbox/SSP-1.2.2 to /home/restrepo/prog/toolbox/toolbox/SSP...
-configure:3820: ============================================================================
-configure:3822: Configuring SPHENO
-configure:3824: ============================================================================
-configure:3854: downloading /home/restrepo/prog/toolbox/toolbox/tarballs/SPheno-3.3.6.tar.gz...
-configure:3911: checking  /home/restrepo/prog/toolbox/toolbox/tarballs/SPheno-3.3.6.tar.gz
-configure:3915: result: checksum OK
-configure:3945: Untarring /home/restrepo/prog/toolbox/toolbox/tarballs/SPheno-3.3.6.tar.gz...
-configure:3961: Symlinking /home/restrepo/prog/toolbox/toolbox/SPheno-3.3.6 to /home/restrepo/prog/toolbox/toolbox/SPHENO...
-configure:3966: Configuring SPHENO...
-configure:3980: ============================================================================
-configure:3982: Configuring CalcHEP
-configure:3984: ============================================================================
-configure:3997: downloading /home/restrepo/prog/toolbox/toolbox/tarballs/calchep_3.6.23.tgz...
-configure:4054: checking  /home/restrepo/prog/toolbox/toolbox/tarballs/calchep_3.6.23.tgz
-configure:4058: result: checksum OK
-configure:4088: Untarring /home/restrepo/prog/toolbox/toolbox/tarballs/calchep_3.6.23.tgz...
-configure:4104: Symlinking /home/restrepo/prog/toolbox/toolbox/calchep_3.6.23 to /home/restrepo/prog/toolbox/toolbox/calchep...
-configure:4119: ============================================================================
-configure:4121: Configuring MicrOMEGAs
-configure:4123: ============================================================================
-configure:4136: downloading /home/restrepo/prog/toolbox/toolbox/tarballs/micromegas_4.1.7.tgz...
-configure:4193: checking  /home/restrepo/prog/toolbox/toolbox/tarballs/micromegas_4.1.7.tgz
-configure:4197: result: checksum OK
-configure:4227: Untarring /home/restrepo/prog/toolbox/toolbox/tarballs/micromegas_4.1.7.tgz...
-configure:4243: Symlinking /home/restrepo/prog/toolbox/toolbox/micromegas_4.1.7 to /home/restrepo/prog/toolbox/toolbox/micromegas...
-configure:4258: ============================================================================
-configure:4260: Configuring WHIZARD
-configure:4262: ============================================================================
-configure:4463: WHIZARD disabled, skipping section...
-configure:4470: ============================================================================
-configure:4472: Configuring HiggsBounds
-configure:4474: ============================================================================
-configure:4645: HiggsBounds disabled, skipping section...
-configure:4653: ============================================================================
-configure:4655: Configuring HiggsSignals
-configure:4657: ============================================================================
-configure:4828: HiggsSignals disabled, skipping section...
-configure:4836: ============================================================================
-configure:4838: Configuring MadGraph
-configure:4840: ============================================================================
-configure:4852: downloading /home/restrepo/prog/toolbox/toolbox/tarballs/MG5_aMC_v2.2.3.tar.gz...
-configure:4909: checking  /home/restrepo/prog/toolbox/toolbox/tarballs/MG5_aMC_v2.2.3.tar.gz
-configure:4913: result: checksum OK
-configure:4943: Untarring /home/restrepo/prog/toolbox/toolbox/tarballs/MG5_aMC_v2.2.3.tar.gz...
-configure:4959: Symlinking /home/restrepo/prog/toolbox/toolbox/MG5_aMC_v2_2_3 to /home/restrepo/prog/toolbox/toolbox/madgraph...
-configure:4974: ============================================================================
-configure:4976: Finalizing...
-configure:4978: ============================================================================
-configure:5137: creating ./config.status
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by SUSY Phenomenology framework config.status 0.1, which was
-generated by GNU Autoconf 2.69.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status 
-
-on fisica
-
-config.status:748: creating Makefile
-config.status:748: creating butler
+configure:3652: /home/restrepo/prog/toolbox/tmp/BSM-Tool-Box/SARAH-4.5.1 already exists, untarring /home/restrepo/prog/toolbox/tmp/BSM-Tool-Box/tarballs/SARAH-4.5.1.tar.gz skipped
+configure:3662: error: working directory messed up: /home/restrepo/prog/toolbox/tmp/BSM-Tool-Box/SARAH exists and is not a symlink
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -336,7 +257,7 @@ wo_cv_fc_version=4.9.2
 CC='gcc'
 CFLAGS='-g -O2'
 CPPFLAGS=''
-DEFS='-DPACKAGE_NAME=\"SUSY\ Phenomenology\ framework\" -DPACKAGE_TARNAME=\"susy-phenomenology-framework\" -DPACKAGE_VERSION=\"0.1\" -DPACKAGE_STRING=\"SUSY\ Phenomenology\ framework\ 0.1\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\"'
+DEFS=''
 ECHO_C=''
 ECHO_N='-n'
 ECHO_T=''
@@ -363,7 +284,7 @@ PACKAGE_TARNAME='susy-phenomenology-framework'
 PACKAGE_URL=''
 PACKAGE_VERSION='0.1'
 PATH_SEPARATOR=':'
-PKGROOT='/home/restrepo/prog/toolbox/toolbox'
+PKGROOT='/home/restrepo/prog/toolbox/tmp/BSM-Tool-Box'
 SED='/bin/sed'
 SHELL='/bin/bash'
 ac_ct_CC='gcc'
@@ -381,9 +302,9 @@ enable_higgssignals='no'
 enable_madgraph='yes'
 enable_micromegas='yes'
 enable_spheno='yes'
-enable_ssp='yes'
+enable_ssp=''
 enable_whizard='no'
-exec_prefix='${prefix}'
+exec_prefix='NONE'
 host_alias=''
 htmldir='${docdir}'
 includedir='${prefix}/include'
@@ -397,13 +318,13 @@ md5sum_path='/usr/bin/md5sum'
 ocamlopt_path='/usr/bin/ocamlopt'
 oldincludedir='/usr/include'
 pdfdir='${docdir}'
-prefix='/usr/local'
+prefix='NONE'
 program_transform_name='s,x,x,'
 psdir='${docdir}'
 sbindir='${exec_prefix}/sbin'
 sharedstatedir='${prefix}/com'
-subdirs=' "/home/restrepo/prog/toolbox/toolbox/SPHENO" "/home/restrepo/prog/toolbox/toolbox/calchep" "/home/restrepo/prog/toolbox/toolbox/micromegas"'
-subdirs_clean=' "/home/restrepo/prog/toolbox/toolbox/SPHENO" "/home/restrepo/prog/toolbox/toolbox/calchep" "/home/restrepo/prog/toolbox/toolbox/micromegas"'
+subdirs=''
+subdirs_clean=''
 subdirs_install=''
 sysconfdir='${prefix}/etc'
 target_alias=''
@@ -421,4 +342,4 @@ wget_path='/usr/bin/wget'
 #define PACKAGE_BUGREPORT ""
 #define PACKAGE_URL ""
 
-configure: exit 0
+configure: exit 1

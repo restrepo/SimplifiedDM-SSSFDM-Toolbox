@@ -3569,7 +3569,7 @@ $as_echo "$as_me: downloading $tarball_sarah_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_sarah_path" && rm -f "$tarball_sarah_path"
+         test -e "$tarball_sarah_path" #&& rm -f "$tarball_sarah_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -3661,7 +3661,7 @@ $as_echo "$as_me: Untarring $tarball_sarah_path..." >&6;}
          if test ! -L $destlink; then
             as_fn_error $? "working directory messed up: $destlink exists and is not a symlink" "$LINENO" 5
          fi
-         rm -f "$destlink" || exit 1
+         #rm -f "$destlink" || exit 1
       fi
       if test -n ""; then
          linkdir="$destdir/"
@@ -3706,7 +3706,7 @@ $as_echo "$as_me: downloading $tarball_ssp_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_ssp_path" && rm -f "$tarball_ssp_path"
+         test -e "$tarball_ssp_path" #&& rm -f "$tarball_ssp_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -3859,7 +3859,7 @@ $as_echo "$as_me: downloading $tarball_spheno_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_spheno_path" && rm -f "$tarball_spheno_path"
+         test -e "$tarball_spheno_path" #&& rm -f "$tarball_spheno_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -4002,7 +4002,7 @@ $as_echo "$as_me: downloading $tarball_calchep_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_calchep_path" && rm -f "$tarball_calchep_path"
+         test -e "$tarball_calchep_path" #&& rm -f "$tarball_calchep_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -4141,7 +4141,7 @@ $as_echo "$as_me: downloading $tarball_micromegas_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_micromegas_path" && rm -f "$tarball_micromegas_path"
+         test -e "$tarball_micromegas_path" #&& rm -f "$tarball_micromegas_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -4295,7 +4295,7 @@ $as_echo "$as_me: downloading $tarball_whizard_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_whizard_path" && rm -f "$tarball_whizard_path"
+         test -e "$tarball_whizard_path" #&& rm -f "$tarball_whizard_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -4498,7 +4498,7 @@ $as_echo "$as_me: downloading $tarball_higgsbounds_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_higgsbounds_path" && rm -f "$tarball_higgsbounds_path"
+         test -e "$tarball_higgsbounds_path" #&& rm -f "$tarball_higgsbounds_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -4681,7 +4681,7 @@ $as_echo "$as_me: downloading $tarball_higgssignals_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_higgssignals_path" && rm -f "$tarball_higgssignals_path"
+         test -e "$tarball_higgssignals_path" #&& rm -f "$tarball_higgssignals_path"
          as_fn_error $? "
 
 Automatic download failed. Please download
@@ -4857,7 +4857,7 @@ $as_echo "$as_me: downloading $tarball_madgraph_path..." >&6;}
    if test -n "$download_cmd"; then
       echo
       if eval "$download_cmd"; then true; else
-         test -e "$tarball_madgraph_path" && rm -f "$tarball_madgraph_path"
+         test -e "$tarball_madgraph_path" #&& rm -f "$tarball_madgraph_path"
          as_fn_error $? "
 
 Automatic download failed. Please download

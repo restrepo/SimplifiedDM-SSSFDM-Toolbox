@@ -1,6 +1,6 @@
-subdirs =  "/home/restrepo/prog/toolbox/toolbox/SPHENO" "/home/restrepo/prog/toolbox/toolbox/calchep" "/home/restrepo/prog/toolbox/toolbox/micromegas"
+subdirs =  "./SPHENO" "./calchep" "./micromegas"
 subdirs_install = 
-subdirs_clean =  "/home/restrepo/prog/toolbox/toolbox/SPHENO" "/home/restrepo/prog/toolbox/toolbox/calchep" "/home/restrepo/prog/toolbox/toolbox/micromegas"
+subdirs_clean =  "./$SPHENO" "./calchep" "./micromegas"
 
 all: subdirs_all
 
