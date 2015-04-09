@@ -10,10 +10,10 @@ Block SMINPUTS    # Standard Model inputs
 6 1.735000E+02    # m_top(pole) 
 7 1.776690E+00    # m_tau(pole) 
 Block MINPAR      # Input parameters 
-1   2.7500000E-01    # Lambda1IN
-2   0.0500000E-02    # LamSHIN
+1   2.5500000E-01    # Lambda1IN
+2   5.0000000E-02    # LamSHIN
 3   0.0000000E+00    # LamSIN
-4   9.9844000E+04    # MSinput
+4   9.6774000E+04    # MSinput
 Block SPhenoInput   # SPheno specific input 
   1 -1              # error level 
   2  0              # SPA conventions 
