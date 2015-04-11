@@ -53,7 +53,7 @@ ParameterDefinitions = {
 	     OutputName-> MS2}}, 
 
 {Lambda1, { Description -> "SM Higgs Selfcouplings",
-               DependenceNum -> Mass[hh]^2/(2 v^2)}},
+               DependenceNum -> Mass[hh]^2/(v^2)}},
 
 {LamSH,     {OutputName ->"LSH",
              LesHouches -> {HDM,2}}},

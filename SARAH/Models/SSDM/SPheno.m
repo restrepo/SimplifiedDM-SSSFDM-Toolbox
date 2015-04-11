@@ -26,4 +26,5 @@ ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"}};
 
 FlagLoopContributions = True;  
 
-DefaultInputValues ={Lambda1IN -> 0.28, LamSHIN -> 0.01, LamSIN -> 0};
+(*Benchmark point with Omega h^2=0.1 and Sigma_SI=1E-9 pb *)
+DefaultInputValues ={Lambda1IN -> 0.255, LamSHIN -> 0.1, LamSIN -> 0, MSinput -> 96774};
