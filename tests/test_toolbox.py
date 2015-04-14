@@ -6,7 +6,7 @@ def test_micromegas():
     a=commands.getoutput('../SPHENO/bin/SPheno%s ../SPHENO/%s/LesHouches.in.%s' %(MODEL,MODEL,MODEL))
     assert os.path.isfile('SPheno.spc.%s' %MODEL)
     a=commands.getoutput('../micromegas/%s/CalcOmega SPheno.spc.%s' %(MODEL,MODEL))
-    assert eval(a.split('\n')[-1].split('%')[0])==4, 'micrOMEGAS failed'
+    assert eval(a.split('\n')[-1].split('%')[0])==11, 'micrOMEGAS failed'
     
 if __name__=='__main__':
     test_micromegas()
