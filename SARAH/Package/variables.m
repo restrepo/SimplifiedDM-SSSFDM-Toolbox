@@ -237,6 +237,8 @@ PseudoScalarBosonPresent=False;
 
 AllowDecaysMasslessVectors={};
 
+subCGCBroken={};
+
 UseBoundarySUSYatEWSB = False;
 
 {

@@ -61,8 +61,8 @@ Do i2=1,3
                    & *mlep/(2._dp*sqrt2)
 End Do
 
-ratio = Abs(br/br_SM)**2 ! Cancel generic "16pi^2" from PreSARAH
-br = oo16pi2**2*oo8pi*tau_M*(f_M)**2*M_M*Abs(br)**2*(1._dp - mlep**2/M_M**2)**2 ! G_F already in coefficients included
+ratio = Abs(br/br_SM)**2 
+br = oo8pi*tau_M*(f_M)**2*M_M*Abs(br)**2*(1._dp - mlep**2/M_M**2)**2 ! G_F already in coefficients included
 
 
 If (iP.eq.1) Then  !! Ds-meson 

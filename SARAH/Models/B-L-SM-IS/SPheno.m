@@ -22,7 +22,14 @@ BoundaryLowScaleInput={
  {Yv, LHInput[Yv]},
  {Ys, LHInput[Ys]},
  {MUS, LHInput[MUS]},
- {vX,vXinput}
+ {vX,vXinput},
+ {vH, vSM}, 
+ {Ye, YeSM},
+ {Yd, YdSM},
+ {Yu, YuSM},
+ {g1, g1SM},
+ {g2, g2SM},
+ {g3, g3SM}
 };
 
 

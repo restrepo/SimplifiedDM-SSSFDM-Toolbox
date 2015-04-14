@@ -35,7 +35,7 @@ betaFuncGauge2LnsNonU1[nr_]:=-gc[nr]*(34/3*SA`Casimir[nr]^2-Sum[(kF*4*SA`Casimir
 (* Anomalous dimensions of scalars: eq. (22) + (23) *)
 GammaSij1L[p1_,p2_]:=2 kF Y2S[p1,p2]-Sum[(3-Xi)SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}] Delta2[p1,p2];
 GammaSij2L[p1_,p2_]:=1/2 Lam2S[p1,p2]+3/2 Sum[ SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}] Sum[ SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}]Delta2[p1,p2]-3 kF H2ab[p1,p2]-2 kF Hbar2[p1,p2]+10 kF Sum[ Y2FS[p1,p2,nr],{nr,1,Length[Gauge]}]-Delta2[p1,p2] Sum[((35/3-2Xi-1/4Xi^2)SA`Casimir[nr] - 10/3 kF SA`DynkinF[rep,nr] -11/12 SA`DynkinS[rep,nr])(SA`CasimirRGE[p1,nr]),{nr,1,Length[Gauge]}];
-GammaSijHat1L[p1_,p2_]:=Delta2[p1,p2]  Sum[ 2 Xi SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}];
+GammaSijHat1L[p1_,p2_]:=-Delta2[p1,p2]  Sum[ 2 Xi SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}];
 GammaSijHat2L[p1_,p2_]:= 
 -(1+Xi)Xi  Sum[ SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}] Sum[ SA`CasimirRGE[p1,nr],{nr,1,Length[Gauge]}]Delta2[p1,p2]-
 Delta2[p1,p2] Xi Sum[(7-Xi)/2 SA`Casimir[nr](SA`CasimirRGE[p1,nr]),{nr,1,Length[Gauge]}]+Delta2[p1,p2]  ExpandTermNS[Xi Sum[ ThS[nr,p1,pQ,vecB] Y2S[pQ,pR] ThS[nr,pR,p2,vecB]  sum[vecB,1,If[Gauge[[nr,2]]===U[1],1,Gauge[[nr,2,1]]^2-1]],{nr,1,Length[Gauge]}]];

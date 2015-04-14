@@ -236,7 +236,7 @@ For[i=1,i<=genMax,
 temp=( (D[temp,repl[genf[i]]] /. genf[i]->intf[nr,i]) + temp) /. repl[genf[i]]->0;
 i++;];
 
-(* temp=temp/.{ n1->gen1,n2->gen2,n3->gen3,n4->gen4,n5->gen5,n6->gen6} /. Mom[repl[a_]]->1 /.repl[a_]->1  /. Mom[1]->1 ; *)
+(* temp=temp/.{ n1\[Rule]gen1,n2\[Rule]gen2,n3\[Rule]gen3,n4\[Rule]gen4,n5\[Rule]gen5,n6\[Rule]gen6} /. Mom[repl[a_]]\[Rule]1 /.repl[a_]\[Rule]1  /. Mom[1]\[Rule]1 ; *)
 temp=temp/.subng /. Mom[repl[a_]]->1 /.repl[a_]->1  /. Mom[1]->1 ;
 
 Return[temp];
@@ -467,7 +467,7 @@ i++;];
 Return[deltas];
 ];
 
-MakeIndexStructureRGE[partListIN_]:=Block[{i,j,k,l,pos,pos2,temp,dyn,ind,sign={},CGc, i1,i2,i3,i4,partList={}},
+MakeIndexStructureRGE[partListIN_]:=Block[{i,j,k,l,pos,pos2,temp,dyn,ind,sign={},dims, CGc,inds, i1,i2,i3,i4,partList={}},
 IndexTypes={};
 For[i=1,i<=Length[partListIN],
 If[FreeQ[ListFields,RE[partListIN[[i]]]]==False,
@@ -510,6 +510,68 @@ structure=structure /. CG[a_,b_]:>InvariantMatrixSusyno[Gauge[[pos,2]],getDynkin
 ];
 ];
 i++;];
+Return[structure];
+];
+
+MakeIndexStructureRGEnonSUSY[partListIN_]:=Block[{i,j,k,l,pos,pos2,temp,dyn,ind,sign={},dims, CGc,inds, i1,i2,i3,i4,partList={}},
+IndexTypes={};
+For[i=1,i<=Length[partListIN],
+If[FreeQ[ListFields,RE[partListIN[[i]]]]==False,
+partList=Join[partList,{partListIN[[i]]}];,
+If[FreeQ[SFields,RE[partListIN[[i]]]]==False,
+pos=Position[SFields,RE[partListIN[[i]]]][[1,1]];,
+If[FreeQ[FFields,RE[partListIN[[i]]]]==False,
+pos=Position[FFields,RE[partListIN[[i]]]][[1,1]];,
+If[FreeQ[SFields,RE[partListIN[[i]]]]==False,
+pos=Position[SFields,RE[partListIN[[i]]]][[1,1]];
+];
+];
+];
+If[Head[partListIN[[i]]]===conj,
+partList=Join[partList,{conj[ListFields[[pos,1]]]}];,
+partList=Join[partList,{ListFields[[pos,1]]}];
+];
+];
+i++;];
+For[i=1,i<=Length[partList],
+If[FreeQ[ListFields,RE[partList[[i]]]]==False,
+pos=Position[ListFields,RE[partList[[i]]]][[1,1]];
+IndexTypes = Join[IndexTypes,Select[Gauge,(FreeQ[ListFields[[pos]],#[[3]]]==False &&#[[2]]=!=U[1])&]];
+];
+If[Head[partList[[i]]]===conj,sign=Join[sign,{-1}];,sign=Join[sign,{1}];];
+i++;];
+IndexTypes=Intersection[Table[IndexTypes[[i,3]],{i,1,Length[IndexTypes]}]];
+structure=1;
+inds=Table[{},{Length[partList]}];
+For[i=1,i<=Length[IndexTypes],
+pos=Position[Gauge,IndexTypes[[i]]][[1,1]];
+If[Gauge[[pos,5]]===False,
+CGc=GenerateInvariantsTensor[Gauge[[pos,2]],Gauge[[pos,3]],Table[sign[[j]]*Fields[[Position[ListFields,RE[partList[[j]]]][[1,1]],3+pos]],{j,1,Length[partList]}]];
+structure=structure*CGc;
+If[FreeQ[SA`KnonwCG,Head[CGc]] && Length[partList]<5 && FreeQ[CGc,CG]==False &&Head[CGc]=!=Times,
+If[Length[Head[CGc][[2]]]===4,
+If[(FreeQ[SA`KnonwCG,Head[CGc]/. CG[a_,{i1_List,i2_List,i3_List,i4_List}]->CG[a,{i1,i2}]]==False ) &&(FreeQ[SA`KnonwCG,Head[CGc]/. CG[a_,{i1_List,i2_List,i3_List,i4_List}]->CG[a,{i3,i4}]]==False ) ,
+structure=structure /.  CG[a_,{i1_List,i2_List,i3_List,i4_List}][j1_,j2_,j3_,j4_]:>CG[a,{i1,i2}][j1,j2]CG[a,{i3,i4}][j3,j4],
+structure=structure /. CG[a_,b_]:>InvariantMatrixSusyno[Gauge[[pos,2]],getDynkinLabels[#,Gauge[[pos,2,1]]]&/@Table[sign[[j]]*Fields[[Position[ListFields,RE[partList[[j]]]][[1,1]],3+pos]],{j,1,Length[partList]}]];
+];,
+structure=structure /. CG[a_,b_]:>InvariantMatrixSusyno[Gauge[[pos,2]],getDynkinLabels[#,Gauge[[pos,2,1]]]&/@Table[sign[[j]]*Fields[[Position[ListFields,RE[partList[[j]]]][[1,1]],3+pos]],{j,1,Length[partList]}]];
+];
+];,
+dims=Table[sign[[j]]*Fields[[Position[ListFields,RE[partList[[j]]]][[1,1]],3+pos]],{j,1,Length[partList]}];
+For[j=1,j<=Length[dims],
+If[Abs[dims[[j]]]=!=1,
+inds[[j]]=Join[inds[[j]],{Gauge[[pos,3]]/. subGC[j]}];
+];
+j++;];
+];
+i++;];
+For[j=1,j<=Length[dims],
+If[Length[inds[[j]]]>1,
+inds[[j]]={inds[[j,1]]+(inds[[j,1]]-1)*(inds[[j,2]])};
+];
+j++;];
+If[Head[inds]===List,inds=Flatten[inds];];
+If[inds=!={}, structure=structure*(CGCBroken[partListIN ]@@inds);];
 Return[structure];
 ];
 
@@ -562,9 +624,9 @@ i++;];
 structure=1;
 NeededStructures={NeededStructures};
 (*
-For[i=1,i<=Length[NeededStructures],
+For[i=1,i\[LessEqual]Length[NeededStructures],
 If[Length[NeededStructures[[i]]]>1,
-If[Length[NeededStructures[[i]]]==2,
+If[Length[NeededStructures[[i]]]\[Equal]2,
 res=ContractIndizes[NeededStructures[[i,1]],NeededStructures[[i,2]]];
 NeededStructures[[i,1]]=res[[1]];
 NeededStructures[[i,2]]=res[[2]];
@@ -598,10 +660,10 @@ list2=Cases[Flatten[NeededStructures[[i]]],x_Con];
 res=ContractIndizes[list1,list2];
 NeededStructures[[i]]=Join[res[[1]],res[[2]]];
 structure=structure*res[[3]];
-If[Length[NeededStructures[[i]]]>0,If[FreeQ[NeededStructures[[i]],Cov,3]||FreeQ[NeededStructures[[i]],Con,3],ind=Flatten[NeededStructures[[i]]/.{Cov[x_]->x,Con[x_]->x}];
+If[Length[NeededStructures[[i]]]>0,If[FreeQ[NeededStructures[[i]],Cov,3]||FreeQ[NeededStructures[[i]],Con,3],ind=Flatten[NeededStructures[[i]]/.{Cov[x_]\[Rule]x,Con[x_]\[Rule]x}];
 term=epsTensor[];
-For[j=1,j<=Length[ind],term=Append[term,ind[[j]]];
-If[Mod[j,CurrentNumberStates[[i,1]]]==0,structure=structure*term;
+For[j=1,j\[LessEqual]Length[ind],term=Append[term,ind[[j]]];
+If[Mod[j,CurrentNumberStates[[i,1]]]\[Equal]0,structure=structure*term;
 term=epsTensor[];];
 j++;];
 If[Mod[Length[ind],CurrentNumberStates[[i,1]]]=!=0,Print["Problem in contracting ",partList];];
@@ -1021,6 +1083,49 @@ Op2=Append[Op2,(generation /. subGC[i])];
 i++;];
 ReleaseHold[Hold[SetDelayed[OP,preFac OP2 /; (OrderedQ[{(GEN1),(GEN2)}]==False&& UseSymmASymm==True)]] /. OP->Op /. OP2 ->Op2 /. GEN1 -> (generation /. subGC[SameInd[[1]]])/. GEN2 -> (generation /. subGC[SameInd[[2]]])];
 ];
+ExtractSymmetryOfParametersNS[Op_,listP_,ind_]:=Block[{i,j,same,sameDis,pos,org,rep,posDef,gens,symmetry},
+
+If[MemberQ[SA`SymmetryAlreadyDefined,Op],Return[];];
+same=Select[RE/@listP,(Count[RE/@listP,#]>1)&];
+If[same==={}||FreeQ[FGauge,listP[[1]]]==False,Return[];];
+(* If[AtomQ[Op]&&FreeQ[Superpotential,Op],Return[];]; *)
+sameDis=Intersection[same];
+(* ind=MakeIndexStructure[listP]; *)
+If[Times@@getGen/@sameDis===1,Return[];];
+For[i=1,i<=Length[sameDis],
+If[getGen[sameDis[[i]]]===99,
+gens=getGenSF[sameDis[[i]]];,
+gens=getGen[sameDis[[i]]];
+];
+(* If[Extract[Fields,Position[Fields,sameDis[[i]]]\[LeftDoubleBracket]1,1\[RightDoubleBracket]]\[LeftDoubleBracket]2\[RightDoubleBracket]>1, *)
+If[gens>1,
+pos=Position[listP,sameDis[[i]]];
+rep=ind /.Join[subGCRE[pos[[1,1]],pos[[2,1]]], subGCRE[pos[[2,1]],pos[[1,1]]]];
+posDef=Position[ParameterDefinitions,Op];
+Print[rep];
+If[rep===ind,
+If[MemberQ[listP,conj[sameDis[[i]]]] && MemberQ[listP,sameDis[[i]]],symmetry=Hermitian;,symmetry=Symmetric;];
+PrintDebug["   Defined ",Op," as ",symmetry];
+DefineSymmetryOp[Op,symmetry,pos, listP];
+If[posDef=!={},
+ParameterDefinitions[[posDef[[1,1]],2]]=Join[ParameterDefinitions[[posDef[[1,1]],2]],{Symmetry->symmetry}];,
+ParameterDefinitions=Join[ParameterDefinitions,{{Op,{Symmetry->symmetry}}}];
+];,
+If[rep===-ind,
+If[MemberQ[listP,conj[sameDis[[i]]]] && MemberQ[listP,sameDis[[i]]],symmetry=AnitHermitian;,symmetry=AntiSymmetric;];
+PrintDebug["   Defined ",Op," as ",symmetry];
+DefineSymmetryOp[Op,symmetry,pos,listP];
+If[posDef=!={},
+ParameterDefinitions[[posDef[[1,1]],2]]=Join[ParameterDefinitions[[posDef[[1,1]],2]],{Symmetry->symmetry}];,
+ParameterDefinitions=Join[ParameterDefinitions,{{Op,{Symmetry->symmetry}}}];
+];,
+Symmetry::Unknown="Symmetric of parameter `` can not be resolved. Indexstructure: ``";
+(* Message[Symmetry::Unknown,Op,rep]; *)
+];
+];
+];
+i++;];
+];
 
 ExtractSymmetryOfParameters[Op_,listP_]:=Block[{i,j,same,sameDis,pos,org,rep,ind,posDef,gens,symmetry},
 If[MemberQ[SA`SymmetryAlreadyDefined,Op],Return[];];
@@ -1036,7 +1141,7 @@ If[getGen[sameDis[[i]]]===99,
 gens=getGenSF[sameDis[[i]]];,
 gens=getGen[sameDis[[i]]];
 ];
-(* If[Extract[Fields,Position[Fields,sameDis[[i]]][[1,1]]][[2]]>1, *)
+(* If[Extract[Fields,Position[Fields,sameDis[[i]]]\[LeftDoubleBracket]1,1\[RightDoubleBracket]]\[LeftDoubleBracket]2\[RightDoubleBracket]>1, *)
 If[gens>1,
 pos=Position[listP,sameDis[[i]]];
 rep=ind /.Join[subGCRE[pos[[1,1]],pos[[2,1]]], subGCRE[pos[[2,1]],pos[[1,1]]]];
@@ -1181,17 +1286,17 @@ If[(Real/.Extract[ParameterDefinitions,pos][[2]])===True && FreeQ[realVar,Op],re
 (*
 Switch[(Symmetry/.Extract[ParameterDefinitions,pos][[2]]),
 Symmetric, 
-	Op[a___,b_,c_,d___]:=Op[a,c,b,d] /;(OrderedQ[{b,c}]==False && UseSymmASymm==True);
+	Op[a___,b_,c_,d___]:=Op[a,c,b,d] /;(OrderedQ[{b,c}]\[Equal]False && UseSymmASymm\[Equal]True);
 	Tp[Op] =Op;
 	Adj[Op] = conj[Op]; 
-	If[MemberQ[ListSymmetricParameters,(Op /. conj[x_]->x)]==False,ListSymmetricParameters=Join[ListSymmetricParameters,{Op}];];,
+	If[MemberQ[ListSymmetricParameters,(Op /. conj[x_]\[Rule]x)]\[Equal]False,ListSymmetricParameters=Join[ListSymmetricParameters,{Op}];];,
 AntiSymmetric, 
-	Op[a___,b_,c_,d___]:=-Op[a,c,b,d] /;(OrderedQ[{b,c}]==False && UseSymmASymm==True); 
+	Op[a___,b_,c_,d___]:=-Op[a,c,b,d] /;(OrderedQ[{b,c}]\[Equal]False && UseSymmASymm\[Equal]True); 
 	Tp[Op] = -Op;
 	Adj[Op] = -conj[Op];
-	If[MemberQ[ListAntiSymmetricParameters,(Op /. conj[x_]->x)]==False,ListAntiSymmetricParameters=Join[ListAntiSymmetricParameters,{Op}];];,
+	If[MemberQ[ListAntiSymmetricParameters,(Op /. conj[x_]\[Rule]x)]\[Equal]False,ListAntiSymmetricParameters=Join[ListAntiSymmetricParameters,{Op}];];,
 Hermitian,
-	Op[a___,b_,c_,d___]:=conj[Op[a,c,b,d]] /;(OrderedQ[{b,c}]==False && UseSymmASymm==True); 
+	Op[a___,b_,c_,d___]:=conj[Op[a,c,b,d]] /;(OrderedQ[{b,c}]\[Equal]False && UseSymmASymm\[Equal]True); 
 	Tp[Op] = conj[Op];
 	Adj[Op] = Op;
 	]; *)
@@ -1207,15 +1312,15 @@ If[(Real/.Extract[ParameterDefinitions,pos][[2]])===True && FreeQ[realVar,Op],re
 subs=Flatten[Map[Subsets[#,{2}]&,same],1];
 (* If[sameInd=!={} && (Symmetry/.Extract[ParameterDefinitions,pos][[2]])===Symmetry, ExtractSymmetryOfParameters[Op,part];]; *)
 (*
-For[i=1,i<=Length[subs],
+For[i=1,i\[LessEqual]Length[subs],
 Switch[(Symmetry/.Extract[ParameterDefinitions,pos][[2]]),
 Symmetric, 
 	SymmetriceIndices[Op,len,subs[[i]],1];
-	If[MemberQ[ListSymmetricParameters,(Op /. conj[x_]->x)]==False,ListSymmetricParameters=Join[ListSymmetricParameters,{Op}];];
-	If[Length[same[[1]]]==len,SetOrderlessSARAH[Op]];,
+	If[MemberQ[ListSymmetricParameters,(Op /. conj[x_]\[Rule]x)]\[Equal]False,ListSymmetricParameters=Join[ListSymmetricParameters,{Op}];];
+	If[Length[same[[1]]]\[Equal]len,SetOrderlessSARAH[Op]];,
 AntiSymmetric, 
 	SymmetriceIndices[Op,len,subs[[i]],-1];
-	If[MemberQ[ListAntiSymmetricParameters,(Op /. conj[x_]->x)]==False,ListAntiSymmetricParameters=Join[ListAntiSymmetricParameters,{Op}];];
+	If[MemberQ[ListAntiSymmetricParameters,(Op /. conj[x_]\[Rule]x)]\[Equal]False,ListAntiSymmetricParameters=Join[ListAntiSymmetricParameters,{Op}];];
 
 ];
 i++;]; *)
@@ -1289,9 +1394,9 @@ genStruct= genStruct /. {DeltaF[a_,b_]->Delta[a,b], DeltaF[a_,b_,c_]->Delta[a,b]
 
 
 (*
-If[FreeQ[parameters,Opc]==True,
+If[FreeQ[parameters,Opc]\[Equal]True,
 parameters=Join[parameters,{{Opc,Table[generation,{Length[gens]}],gens}}];
-If[AddSB==True,parameters=Join[parameters,{{SBHeader[Opc],Table[generation,{Length[gens]}],gens}}];];
+If[AddSB\[Equal]True,parameters=Join[parameters,{{SBHeader[Opc],Table[generation,{Length[gens]}],gens}}];];
 ];
 *)
 
@@ -1364,11 +1469,11 @@ Return[1];
 
 (*
 getGenOne[x_]:=Block[{part},
-If[FreeQ[GaugeMassES,getBlank[x]]==False,
+If[FreeQ[GaugeMassES,getBlank[x]]\[Equal]False,
 part=Extract[GaugeMassESorg,Position[GaugeMassES,getBlank[x]][[1,1]]];,
 part=getBlank[x];
 ];
-If[FreeQ[OnlyOneGen,part]==False,
+If[FreeQ[OnlyOneGen,part]\[Equal]False,
 Return[1];,
 Return[getGen[part]];
 ];
@@ -1851,7 +1956,7 @@ pos=Position[Fields,x][[1,1]];
 field = Fields[[pos]][[1]];
 If[Head[field]===List,
 field=DeleteCases[Cases[field,y_Symbol,99],conj][[1]];
-(* If[FreeQ[Fields[[pos]][[1]],conj]==False,sign=-1;];,
+(* If[FreeQ[Fields[[pos]][[1]],conj]\[Equal]False,sign=-1;];,
 If[Head[field]===conj,field=field[[1]]; sign=-1;]; *)
 ];
 field = field /. conj[y_]->y;
@@ -1998,5 +2103,250 @@ _,
 ];
 
 ];
+
+
+GenerateCGCsForBrokenGroups[contraction_,partListIN_,particles_,invFields_,withHead_]:=Block[{i,j,k,IndexTypes={},partList={},pos,temp,result,repsNC,group},
+
+For[i=1,i<=Length[partListIN],
+If[FreeQ[ListFields,RE[partListIN[[i]]]]==False,
+partList=Join[partList,{partListIN[[i]]}];,
+If[FreeQ[SFields,RE[partListIN[[i]]]]==False,
+pos=Position[SFields,RE[partListIN[[i]]]][[1,1]];,
+If[FreeQ[FFields,RE[partListIN[[i]]]]==False,
+pos=Position[FFields,RE[partListIN[[i]]]][[1,1]];,
+If[FreeQ[SFields,RE[partListIN[[i]]]]==False,
+pos=Position[SFields,RE[partListIN[[i]]]][[1,1]];
+];
+];
+];
+If[Head[partListIN[[i]]]===conj,
+partList=Join[partList,{conj[ListFields[[pos,1]]]}];,
+partList=Join[partList,{ListFields[[pos,1]]}];
+];
+];
+i++;];
+For[i=1,i<=Length[partList],
+If[FreeQ[ListFields,RE[partList[[i]]]]==False,
+pos=Position[ListFields,RE[partList[[i]]]][[1,1]];
+IndexTypes = Join[IndexTypes,Select[Gauge,(FreeQ[ListFields[[pos]],#[[3]]]==False &&#[[2]]=!=U[1])&]];
+];
+If[Head[partList[[i]]]===conj,sign=Join[sign,{-1}];,sign=Join[sign,{1}];];
+i++;];
+IndexTypes=Intersection[Table[IndexTypes[[i,3]],{i,1,Length[IndexTypes]}]];
+structure=1;
+
+(* For[i=1,i\[LessEqual]Length[IndexTypes],
+pos=Position[Gauge,IndexTypes[[i]]][[1,1]];
+If[Gauge[[pos,5]]===True, *)
+If[FreeQ[Select[Gauge,FreeQ[IndexTypes,#[[3]]]===False &],True]===False,
+(* temp=getCGCbroken[contraction,particles,invFields,IndexTypes[[i]],withHead];
+result=temp[[1]];
+repsNC=temp[[2]];
+group=temp[[3]]; *)
+(* result=getCGCbroken[contraction,particles,invFields,IndexTypes[[i]],withHead]; *)
+result=getCGCbroken[contraction,particles,invFields,withHead];
+(* If[(*FreeQ[SA`KnonwCG,CG[group,repsNC]] && *)Length[repsNC]<5, *)
+ SA`NonZeroEntries = Join[SA`NonZeroEntries,{{InvMat[SA`RnR], Take[Position[result,x_?((Abs[#]=!=0 && NumberQ[#])&)][[1]],{1,Length[Dimensions[result]]}]}}];
+Off[Part::"pspec"];
+Off[Part::"pkspec1"];
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[[a]]]]/. LHS -> InvMat[SA`RnR] /. RHS -> result ];
+ReleaseHold[Hold[Set[LHS,RHS]]/. LHS -> InvMatFull[SA`RnR] /. RHS -> result ];
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS -> InvMat[SA`RnR] /. LHS -> CGCBroken[withHead ] ];
+subCGCBroken=Join[subCGCBroken,{CGCBroken[withHead ] ->InvMat[SA`RnR]}];
+CheckSymmetryCGCBroken[withHead,SA`RnR];
+CheckStandardCGC[SA`RnR];
+(*
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS \[Rule] InvMat[SA`RnR] /. LHS \[Rule] CG[group,repsNC] ];
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS \[Rule] InvMat[SA`RnR] /. LHS \[Rule] CG[group,Reverse/@repsNC] ];
+*)
+
+On[Part::"pspec"];
+On[Part::"pkspec1"];
+SA`RnR++;
+(* SA`ClebschGordon=Join[SA`ClebschGordon,{{CG[group,repsNC],result}}]; *)
+ (* SA`KnonwCG=Join[SA`KnonwCG,{CG[group,repsNC]}];  *)
+(* CheckSymmetryCG[CG[group,repsNC]]; *)
+(* ]; *)
+
+
+];
+(* i++;]; *)
+];
+
+CheckStandardCGC[nr_]:=Block[{},
+Switch[InvMatFull[nr],
+{{1,0},{0,1}},InvMat[nr][a__]=Delta[a];,
+{{1,0,0},{0,1,0},{0,0,1}},InvMat[nr][a__]=Delta[a];,
+{{0,1},{-1,0}},InvMat[nr][a__]=epsTensor[a];,
+{{0,-1},{1,0}},InvMat[nr][a__]=-epsTensor[a];,
+{{{{1,0},{0,1}},{{0,0},{0,0}}},{{{0,0},{0,0}},{{1,0},{0,1}}}}, InvMat[nr][a_,b_,c_,d_]=Delta[a,b]Delta[c,d];
+];
+];
+
+CheckSymmetryCGCBroken[fields_,nr_]:=Block[{j,pos},
+reps=fields;
+repsDoub=Intersection[Select[fields,(Count[fields,#]>1)&]];
+If[repsDoub==={},Return[];];
+Switch[Length[Dimensions[InvMatFull[nr]]],
+2,
+	If[Length[Intersection[Table[CGCBroken[fields][i,i],{i,1,Dimensions[InvMatFull[nr]][[1]]}]]]>1,
+	CGCBroken[fields][a_,b_]:= CGCBroken[fields][b,a] /;(OrderedQ[{a,b}]==False);
+	InvMat[nr][a_,b_]:= InvMat[nr][b,a] /;(OrderedQ[{a,b}]==False);,
+	CGCBroken[fields][a_,b_]:= -CGCBroken[fields][b,a] /;(OrderedQ[{a,b}]==False);
+	InvMat[nr][a_,b_]:= -InvMat[nr][b,a] /;(OrderedQ[{a,b}]==False);
+	];,
+3,
+For[j=1,j<=Length[repsDoub],
+pos=Position[reps,repsDoub[[j]]];
+Switch[Length[pos],
+2,
+Switch[pos,
+{{1},{2}},
+If[Length[Intersection[Flatten[Table[CGCBroken[fields][i,i,k],{i,1,Dimensions[InvMatFull[nr]][[j]]},{k,1,Dimensions[InvMatFull[nr]][[3]]}]]]]>1,
+CGCBroken[fields][a_,b_,c_]:= CGCBroken[fields][b,a,c] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,b_,c_]:=InvMat[nr][b,a,c] /;(OrderedQ[{a,b}]==False);,
+CGCBroken[fields][a_,b_,c_]:=- CGCBroken[fields][b,a,c] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,b_,c_]:=- InvMat[nr][b,a,c] /;(OrderedQ[{a,b}]==False);
+];,
+{{1},{3}},
+If[Length[Intersection[Flatten[Table[CGCBroken[fields][i,k,i],{i,1,Dimensions[InvMatFull[nr]][[j]]},{k,1,Dimensions[InvMatFull[nr]][[2]]}]]]]>1,
+CGCBroken[fields][a_,c_,b_]:= CGCBroken[fields][b,c,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,c_,b_]:=InvMat[nr][b,c,a] /;(OrderedQ[{a,b}]==False);,
+CGCBroken[fields][a_,c_,b_]:=-CGCBroken[fields][b,c,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,c_,b_]:=-InvMat[nr][b,c,a] /;(OrderedQ[{a,b}]==False);
+];,
+{{2},{3}},
+If[Length[Intersection[Flatten[Table[CGCBroken[fields][k,i,i],{i,1,Dimensions[InvMatFull[nr]][[j]]},{k,1,Dimensions[InvMatFull[nr]][[1]]}]]]]>1,
+CGCBroken[fields][c_,a_,b_]:= CGCBroken[fields][c,b,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][c_,a_,b_]:=InvMat[nr][c,b,a] /;(OrderedQ[{a,b}]==False);,
+CGCBroken[fields][c_,a_,b_]:=- CGCBroken[fields][c,b,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][c_,a_,b_]:=- InvMat[nr][c,b,a] /;(OrderedQ[{a,b}]==False);
+];
+];,
+3,
+If[Length[Intersection[Flatten[Table[CGCBroken[fields][i,i,k],{i,1,Dimensions[InvMatFull[nr]][[j]]},{k,1,Dimensions[InvMatFull[nr]][[3]]}]]]]>1,
+CGCBroken[fields][c_,a_,b_]:= CGCBroken[fields][c,b,a] /;(OrderedQ[{a,b}]==False);
+CGCBroken[fields][a_,c_,b_]:= CGCBroken[fields][b,c,a] /;(OrderedQ[{a,b}]==False);
+CGCBroken[fields][a_,b_,c_]:= CGCBroken[fields][b,a,c] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][c_,a_,b_]:= InvMat[nr][c,b,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,c_,b_]:=InvMat[nr][b,c,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,b_,c_]:= InvMat[nr][b,a,c] /;(OrderedQ[{a,b}]==False);,
+CGCBroken[fields][c_,a_,b_]:= -CGCBroken[fields][c,b,a] /;(OrderedQ[{a,b}]==False);
+CGCBroken[fields][a_,c_,b_]:= -CGCBroken[fields][b,c,a] /;(OrderedQ[{a,b}]==False);
+CGCBroken[fields][a_,b_,c_]:= -CGCBroken[fields][b,a,c] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][c_,a_,b_]:= -InvMat[nr][c,b,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,c_,b_]:= -InvMat[nr][b,c,a] /;(OrderedQ[{a,b}]==False);
+InvMat[nr][a_,b_,c_]:= -InvMat[nr][b,a,c] /;(OrderedQ[{a,b}]==False);
+];
+];
+j++;];
+];
+
+
+
+];
+
+(* getCGCbroken[contraction_,particles_,invFields_,index_,withHead_]:=Block[{i,j,names={a,b,c,d},pos,subs={},temp,result,reps={},subInv={},nameNr,dims={},group,sub2},
+group=Position[Gauge,index][[1,1]];
+group=Gauge[[group]][[2]];
+nameNr=1;
+sub2={};
+For[j=1,j\[LessEqual]Length[invFields],
+i=1;
+If[SA`DynL[invFields[[j]],index]=!={0},
+If[Head[withHead[[j]]]===conj && group===SU[2] && SA`DynL[invFields[[j]],index]==={1},
+reps=Join[reps,{-SA`DynL[invFields[[j]],index]}];
+(* sub2=Join[sub2,{names[[nameNr]][1]\[Rule]-names[[nameNr]][2],names[[nameNr]][2]\[Rule]names[[nameNr]][1]}]; *),
+reps=Join[reps,{SA`DynL[withHead[[j]],index]}];
+];
+If[FreeQ[FFields,invFields[[j]]],
+pos=Position[SFields,invFields[[j]]][[1,1]];
+subs=Join[subs,{Replace[DeleteDuplicates[Cases[Flatten[SFieldsMultiplets[[pos]] ] /. x_?NumericQ\[Rule]1,x_Symbol]], x_Symbol:>(x[names[[nameNr]]]\[Rule]names[[nameNr]][i++]),2]}];,
+pos=Position[FFields,invFields[[j]]][[1,1]];
+If[Head[FFieldsMultiplets[[pos]] ]===List,
+subs=Join[subs,{Replace[DeleteDuplicates[Cases[Flatten[FFieldsMultiplets[[pos]] ] /. x_?NumericQ\[Rule]1,x_Symbol]], x_Symbol:>(x[names[[nameNr]]]\[Rule]names[[nameNr]][i++]),2]}];,
+subs=Join[subs,{{invFields[[j]][names[[nameNr]]]\[Rule]names[[nameNr]][1]}}];
+];
+];
+subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]\[Rule]invFields[[j]][{b}][{genf[j],d}][names[[nameNr]]],invFields[[j]][{genf[j],d___}]\[Rule]invFields[[j]][{genf[j],d}][names[[nameNr]]],invFields[[j]][{b__}][{genf[j],d___}][c_Integer]\[Rule]invFields[[j]][{b}][{genf[j],d}][c][names[[nameNr]]],invFields[[j]][{genf[j],d___}][c_Integer]\[Rule]invFields[[j]][{genf[j],d}][c][names[[nameNr]]]}];
+nameNr++;,
+subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]\[Rule]1,invFields[[j]][{genf[j],d___}]\[Rule]1,invFields[[j]][{b__}][{genf[j],d___}][c_Integer]\[Rule]1,invFields[[j]][{genf[j],d___}][c_Integer]\[Rule]1}];
+];
+j++;];
+subInv=Flatten[subInv];
+temp=SumOverExpandedIndizes[contraction*particles /. sum[a__]\[Rule]1 /.A_[{b__}][c_Integer]\[Rule]A[{b}] /.A_[{b__}][{d__}][c_Integer]\[Rule]A[{b}][{d}] /. subInv,invFields] /. A_[{b__}][c_Integer]\[Rule]A/. A_[{b__}]\[Rule]A;
+temp = temp //. Flatten[subs] /. Delta[a__]\[Rule]1 /. epsTensor[a__]\[Rule]1 /. CG[a__]\[Rule]1 /. conj[x_]\[Rule]x;
+dims=Table[DimR[SusynoForm[group],Abs[reps[[i]]]],{i,1,Length[reps]}];
+temp=temp/.sub2;
+Switch[Length[reps],
+2,
+result=Table[Coefficient[temp,a[i]b[j]],{i,1,dims[[1]]},{j,1,dims[[2]]}];,
+3,
+result=Table[Coefficient[temp,a[i]b[j]c[k]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1,dims[[3]]}];,
+4,
+temp =2*temp;
+result=Table[Coefficient[temp,a[i]b[j]c[k] d[l]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1,dims[[3]]},{l,1,dims[[4]]}];
+];
+Return[{result,reps,group}];
+]; *)
+
+getCGCbroken[contraction_,particles_,invFields_,withHead_]:=Block[{i,j,names={a,b,c,d},pos,subs={},temp,result,reps={},subInv={},nameNr,dims={},group,sub2},
+nameNr=1;
+sub2={};
+For[j=1,j<=Length[invFields],
+i=1;
+If[FreeQ[FFields,invFields[[j]]],
+pos=Position[SFields,invFields[[j]]][[1,1]];
+If[Head[SFieldsMultiplets[[pos]] ]===List,
+subs=Join[subs,{Replace[DeleteDuplicates[Cases[Flatten[SFieldsMultiplets[[pos]] ] /.conj[x_]->x/. x_?NumericQ->1,x_Symbol]], x_Symbol:>(x[names[[nameNr]]]->names[[nameNr]][i++]),2]}];
+subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]->invFields[[j]][{b}][{genf[j],d}][names[[nameNr]]],invFields[[j]][{genf[j],d___}]->invFields[[j]][{genf[j],d}][names[[nameNr]]],invFields[[j]][{b__}][{genf[j],d___}][c_Integer]->invFields[[j]][{b}][{genf[j],d}][c][names[[nameNr]]],invFields[[j]][{genf[j],d___}][c_Integer]->invFields[[j]][{genf[j],d}][c][names[[nameNr]]]}];
+dims=Join[dims,{i-1}];
+nameNr++;,
+subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]->1,invFields[[j]][{genf[j],d___}]->1,invFields[[j]][{b__}][{genf[j],d___}][c_Integer]->1,invFields[[j]][{genf[j],d___}][c_Integer]->1}];
+];,
+pos=Position[FFields,invFields[[j]]][[1,1]];
+If[Head[FFieldsMultiplets[[pos]] ]===List,
+subs=Join[subs,{Replace[DeleteDuplicates[Cases[Flatten[FFieldsMultiplets[[pos]] ] /.conj[x_]->x/. x_?NumericQ->1,x_Symbol]], x_Symbol:>(x[names[[nameNr]]]->names[[nameNr]][i++]),2]}];
+subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]->invFields[[j]][{b}][{genf[j],d}][names[[nameNr]]],invFields[[j]][{genf[j],d___}]->invFields[[j]][{genf[j],d}][names[[nameNr]]],invFields[[j]][{b__}][{genf[j],d___}][c_Integer]->invFields[[j]][{b}][{genf[j],d}][c][names[[nameNr]]],invFields[[j]][{genf[j],d___}][c_Integer]->invFields[[j]][{genf[j],d}][c][names[[nameNr]]]}];
+dims=Join[dims,{i-1}];
+nameNr++;,
+subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]->1,invFields[[j]][{genf[j],d___}]->1,invFields[[j]][{b__}][{genf[j],d___}][c_Integer]->1,invFields[[j]][{genf[j],d___}][c_Integer]->1}];
+];
+];
+j++;];
+subInv=Flatten[subInv];
+temp=SumOverExpandedIndizes[contraction*particles /. sum[a__]->1 /.A_[{b__}][c_Integer]->A[{b}] /.A_[{b__}][{d__}][c_Integer]->A[{b}][{d}] /. subInv,invFields] /. A_[{b__}][c_Integer]->A/. A_[{b__}]->A/.conj[x_]->x/.(a_?NumericQ b_Symbol)[c_Symbol]->a b[c];
+temp = temp //. Flatten[subs] /. Delta[a__]->1 /. epsTensor[a__]->1 /. CG[a__][b__]->1 /. conj[x_]->x;
+temp=temp/.sub2;
+Switch[Length[dims],
+2,
+result=Table[Coefficient[temp,a[i]b[j]],{i,1,dims[[1]]},{j,1,dims[[2]]}];,
+3,
+result=Table[Coefficient[temp,a[i]b[j]c[k]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1,dims[[3]]}];,
+4,
+result=Table[Coefficient[temp,a[i]b[j]c[k] d[l]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1,dims[[3]]},{l,1,dims[[4]]}];
+];
+Return[result];
+];
+
+GetNormalizationFactors[invFields_]:=Block[{i,j,pos,IndexTypes={},partList={},subs,nameNr,factors=1,names={a,b,c,d}},
+For[j=1,j<=Length[invFields],
+If[FreeQ[FFields,invFields[[j]]],
+pos=Position[SFields,invFields[[j]]][[1,1]];
+If[Head[SFieldsMultiplets[[pos]]]===List,
+factors=factors*NM[SFieldsMultiplets[[pos]] /.Replace[DeleteDuplicates[Cases[Flatten[SFieldsMultiplets[[pos]] ] /. x_?NumericQ->1,x_Symbol]], x_Symbol:>(x->1),2]]@@(SFields[[pos]][[0,1]] /. subGC[j]);
+];,
+pos=Position[FFields,invFields[[j]]][[1,1]];
+If[Head[FFieldsMultiplets[[pos]]]===List,
+factors=factors*NM[FFieldsMultiplets[[pos]] /.Replace[DeleteDuplicates[Cases[Flatten[FFieldsMultiplets[[pos]] ] /. x_?NumericQ->1,x_Symbol]], x_Symbol:>(x->1),2]]@@(FFields[[pos]][[0,1]] /. subGC[j]);
+];
+];
+j++;];
+Return[factors];
+];
+NM[a_][b__Integer]:=a[[b]];
+NM[{1,1}][b__]=1;
+NM[{1,1,1}][b__]=1;
+
 
 

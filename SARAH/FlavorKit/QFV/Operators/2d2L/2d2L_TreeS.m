@@ -116,13 +116,13 @@ Return[]; (* not necessary *) ,
 S, (* Scalar penguins *) 
  Switch[top,  (* Check topology *) 
   1, 
-	 	 WriteStringFLB[file,"  TSOddllSLL=TSOddllSLL+ 157.91367041742973*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSLL=TSOddllSLL+ 1*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSLL= & "<> StringReplace["16 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllSRR=TSOddllSRR+ 157.91367041742973*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSRR=TSOddllSRR+ 1*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSRR= & "<> StringReplace["16 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllSRL=TSOddllSRL+ 157.91367041742973*coup1R*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSRL=TSOddllSRL+ 1*coup1R*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSRL= & "<> StringReplace["16 coup1R coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllSLR=TSOddllSLR+ 157.91367041742973*coup1L*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSLR=TSOddllSLR+ 1*coup1L*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSLR= & "<> StringReplace["16 coup1L coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllVRR=TSOddllVRR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVRR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
@@ -142,35 +142,35 @@ S, (* Scalar penguins *)
 	 	 WriteString[sphenoTeX,"  TSOddllTRR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 ,
   2, 
-	 	 WriteStringFLB[file,"  TSOddllSLL=TSOddllSLL+ -78.95683520871486*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSLL=TSOddllSLL+ -0.5*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSLL= & "<> StringReplace["-8 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllSRR=TSOddllSRR+ -78.95683520871486*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSRR=TSOddllSRR+ -0.5*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSRR= & "<> StringReplace["-8 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllSRL=TSOddllSRL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllSLR=TSOddllSLR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSLR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllVRR=TSOddllVRR+ 78.95683520871486*coup1R*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllVRR=TSOddllVRR+ 0.5*coup1R*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVRR= & "<> StringReplace["8 coup1R coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllVLL=TSOddllVLL+ 78.95683520871486*coup1L*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllVLL=TSOddllVLL+ 0.5*coup1L*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVLL= & "<> StringReplace["8 coup1L coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllVRL=TSOddllVRL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllVLR=TSOddllVLR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVLR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllTLL=TSOddllTLL+ -19.739208802178716*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllTLL=TSOddllTLL+ -0.125*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTLL= & "<> StringReplace["-2 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllTLR=TSOddllTLR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTLR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllTRL=TSOddllTRL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllTRR=TSOddllTRR+ -19.739208802178716*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllTRR=TSOddllTRR+ -0.125*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTRR= & "<> StringReplace["-2 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 ,
   3, 
-	 	 WriteStringFLB[file,"  TSOddllSLL=TSOddllSLL+ -78.95683520871486*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSLL=TSOddllSLL+ -0.5*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSLL= & "<> StringReplace["-8 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllSRR=TSOddllSRR+ -78.95683520871486*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllSRR=TSOddllSRR+ -0.5*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSRR= & "<> StringReplace["-8 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllSRL=TSOddllSRL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllSRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
@@ -180,17 +180,17 @@ S, (* Scalar penguins *)
 	 	 WriteString[sphenoTeX,"  TSOddllVRR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllVLL=TSOddllVLL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVLL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllVRL=TSOddllVRL+ -78.95683520871486*coup1R*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllVRL=TSOddllVRL+ -0.5*coup1R*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVRL= & "<> StringReplace["-8 coup1R coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllVLR=TSOddllVLR+ -78.95683520871486*coup1L*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllVLR=TSOddllVLR+ -0.5*coup1L*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllVLR= & "<> StringReplace["-8 coup1L coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllTLL=TSOddllTLL+ 19.739208802178716*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllTLL=TSOddllTLL+ 0.125*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTLL= & "<> StringReplace["2 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllTLR=TSOddllTLR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTLR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TSOddllTRL=TSOddllTRL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TSOddllTRR=TSOddllTRR+ 19.739208802178716*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TSOddllTRR=TSOddllTRR+ 0.125*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TSOddllTRR= & "<> StringReplace["2 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 ];]; 
 ]; 

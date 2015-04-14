@@ -27,7 +27,7 @@ ParameterDefinitions = {
                                                                            
 {mu2,         { Description -> "SM Mu Parameter"}},                                        
 {\[Lambda],  { Description -> "SM Higgs Selfcouplings",
-               DependenceNum -> Mass[hh]^2/(2 v^2)}},
+               DependenceNum -> Mass[hh]^2/(v^2)}},
 {v,          { Description -> "EW-VEV",
                DependenceNum -> Sqrt[4*Mass[VWp]^2/(g2^2)],
                DependenceSPheno -> None  }},

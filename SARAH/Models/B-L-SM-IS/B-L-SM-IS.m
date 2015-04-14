@@ -77,7 +77,7 @@ DEFINITION[EWSB][GaugeSector] =
 (* ----- VEVs ---- *)
 
 DEFINITION[EWSB][VEVs]= 
-{    {H0, {vSM, 1/Sqrt[2]}, {sigmaH, \[ImaginaryI]/Sqrt[2]},{phiH, 1/Sqrt[2]}},
+{    {H0, {vH, 1/Sqrt[2]}, {sigmaH, \[ImaginaryI]/Sqrt[2]},{phiH, 1/Sqrt[2]}},
      {X1, {vX, 1/Sqrt[2]}, {sigmaX, \[ImaginaryI]/Sqrt[2]},{phiX, 1/Sqrt[2]}}     };
 
 DEFINITION[EWSB][MatterSector]= 

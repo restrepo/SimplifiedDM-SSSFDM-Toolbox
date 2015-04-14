@@ -67,7 +67,7 @@ InitEquations[OnlyDiag,complex];
 
 InitEquations[OnlyDiag_,complex_]:=Block[{i,jj1,jj2,jj3,jj4,dim,temp,tempNew},
 AllEquations={};
-subExpandRGEs = {trace[a__]:>Tr[Dot[a]], MatMul->Dot,Adj[x_]:>Transpose[Conjugate[x]],Tp[x_]:>Transpose[x], conj->Conjugate, sum[a_,b_,c_,d_]:>Sum[d,{a,b,c}], ScalarProd[x__]->Dot[x]};
+subExpandRGEs = {trace[a__]:>Tr[Dot[a]], MatMul->Dot,Adj[x_]:>Transpose[Conjugate[x]],Tp[x_]:>Transpose[x], conj->Conjugate, sum[a_,b_,c_,d_]:>Sum[d,{a,b,c}], ScalarProd[x__]:>Dot[x]};
 If[complex=!=True,
 subExpandRGEs=Join[{Conjugate[x___]->x},subExpandRGEs]
 ];

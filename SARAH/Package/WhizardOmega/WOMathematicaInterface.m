@@ -942,7 +942,7 @@ WO`WriteOmegaStruct[file_] := Module[{handle, contents, preamble, flavor, color,
          taglist = pdglist = creplist = lreplist = gslist = msymlist = wsymlist = fsymlist = tsymlist = {};
 
          (* Parse particle description *)
-         ParsePart[{name_, aname_, spin_, prop_, msym_, wsym_, crep_, plabel_, pdg_, descr_, tex_, atex_, gs_}] :=
+         ParsePart[{name_, aname_, spin_, prop_, msym_, wsym_, crep_, plabel_, pdg_, descr_, tex_, atex_, gs_,echarge_}] :=
          Module[{sname, saname, RegisterParticle},
 
             (* Register a particle *)
@@ -2648,7 +2648,7 @@ WO`WriteWhizMdl[file_] := Module[{handle, content, header, params, DoParams, rep
       (* Build the definition block for one particle. TODO: the "parton" property is derived from color, *
        * singlets are no partons, all other particles are partons. This is hackish, but I see no other   *
        * way to do this.                                                                                 *)
-      AppendParticle[{name_, aname_, spin_, prop_, msym_, wsym_, crep_, plabel_, pdg_, descr_, tex_, atex_, gs_}] := Module[
+      AppendParticle[{name_, aname_, spin_, prop_, msym_, wsym_, crep_, plabel_, pdg_, descr_, tex_, atex_, gs_,echarge_}] := Module[
          {thename, thetex, theaname, theatex},
          (* Make sure that we record the particle with positive PDG. *)
          If[pdg > 0,
@@ -2664,6 +2664,7 @@ WO`WriteWhizMdl[file_] := Module[{handle, content, header, params, DoParams, rep
             <> WO`ExtendString[ToString[Abs[pdg]], 8] <> If[MatchQ[crep, T|O], " parton", ""] <> "\n"
             <> WO`Indent[""
                <> "spin " <> WO`ExtendString[Switch[spin, S, "0", F, "1/2", V, "1", T, "2"], 3]
+               <> " charge " <>ToString[InputForm[echarge]]<>" "
                <> Switch[crep, T, " color 3", O, " color 8", _, ""] <> "\n"
                <> If[WO`whizv2x[], ""
                   <> "name \"" <> ToString[thename] <> "\""

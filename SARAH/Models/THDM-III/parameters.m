@@ -10,29 +10,23 @@ ParameterDefinitions = {
 {aEWinv,    { Description -> "inverse weak coupling constant at mZ"}},
 
 {Yu,        { Description -> "Up-Yukawa-Coupling",
-			 DependenceNum ->  Sqrt[2]/v* {{Mass[Fu,1],0,0},
-             									{0, Mass[Fu,2],0},
-             									{0, 0, Mass[Fu,3]}}}}, 
+			 DependenceNum ->  None}}, 
              									
 {Yd,        { Description -> "Down-Yukawa-Coupling",
-			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fd,1],0,0},
-             									{0, Mass[Fd,2],0},
-             									{0, 0, Mass[Fd,3]}}}},
+			  DependenceNum ->  None}},
              									
 {Ye,        { Description -> "Lepton-Yukawa-Coupling",
-			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fe,1],0,0},
-             									{0, Mass[Fe,2],0},
-             									{0, 0, Mass[Fe,3]}}}}, 
+			  DependenceNum ->  None}}, 
 
-{epsE,  {LaTeX ->"\\espilon_e",
+{epsE,  {LaTeX ->"\\epsilon_e",
        OutputName -> epsE,
        LesHouches -> epsE }},                                                                           
 
-{epsD,  {LaTeX ->"\\espilon_d",
+{epsD,  {LaTeX ->"\\epsilon_d",
        OutputName -> epsD,
        LesHouches -> epsD }},
 
-{epsU,  {LaTeX ->"\\espilon_u",
+{epsU,  {LaTeX ->"\\epsilon_u",
        OutputName -> epsU,
        LesHouches -> epsU }},
                                                                            

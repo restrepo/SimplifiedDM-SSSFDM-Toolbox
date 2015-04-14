@@ -13,6 +13,13 @@ ParametersToSolveTadpoles = {mu2};
 
 
 BoundaryLowScaleInput={
+  {v, vSM}, 
+  {Ye, YeSM},
+  {Yd, YdSM},
+  {Yu, YuSM},
+  {g1, g1SM},
+  {g2, g2SM},
+  {g3, g3SM},
   {\[Lambda],Lambdainput},
   {LambdaS,LambdaSinput},
   {K1,K1input},

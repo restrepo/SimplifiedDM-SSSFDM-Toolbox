@@ -316,7 +316,8 @@ temp=temp[[0]][[0]];
 pos=Position[SFields,temp][[1,1]];
 ];
 ];
-res=SFieldsNoTensor[[pos,2]]*sumRGE[genf[nr],1,Fields[[pos,2]]] /. subGC[nr] /. subIndFinalX[nr,nr,"i"] /. Delta[1,x_]->1;
+ res=SFieldsNoTensor[[pos,2]]*sumRGE[genf[nr],1,Fields[[pos,2]]] /. subGC[nr] /. subIndFinalX[nr,nr,"i"] /. Delta[1,x_]->1; 
+(* res=SFieldsTensor[[pos,2]]*sumRGE[genf[nr],1,Fields[[pos,2]]] /. subGC[nr] /. subIndFinalX[nr,nr,"i"] /. Delta[1,x_]->1; *)
 partRGENS[particle,nr]=res;
 Return[res]; 
 ] /; MemberQ[LPName,getBlankSF[particle]];
@@ -344,7 +345,9 @@ temp=temp[[0]][[0]];
 pos=Position[SFields,temp][[1,1]];
 ];
 ];
-res=SFieldsNoTensor[[pos,2]]*sumRGE[genf[nr],1,Fields[[pos,2]]] /. subGC[nr]  /. Delta[1,x_]->1;
+ res=SFieldsNoTensor[[pos,2]]*sumRGE[genf[nr],1,Fields[[pos,2]]] /. subGC[nr]  /. Delta[1,x_]->1; 
+(* res=SFieldsTensor[[pos,2]]*sumRGE[genf[nr],1,Fields[[pos,2]]] /. subGC[nr]  /. Delta[1,x_]->1; *)
+
 
 (*  temp=List@@(partRGENS[particle,nr] /. sumRGE[__]->1) /. sum->List; *)
 inds=List@@(res/. sumRGE[__]->1) /. sum->List;

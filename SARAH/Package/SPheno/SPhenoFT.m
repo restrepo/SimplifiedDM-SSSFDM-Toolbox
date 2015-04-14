@@ -142,7 +142,7 @@ MakeCall["GToParameters"<>ToString[numberAllwithVEVs],listAllParametersAndVEVs,{
 WriteRemoveGUTnormalization[sphenoFT];
 
 (*
-For[i=1,i<=Length[listVEVs],
+For[i=1,i\[LessEqual]Length[listVEVs],
 WriteString[sphenoFT,SPhenoForm[listVEVs[[i]]] <>" = "<>SPhenoForm[listVEVs[[i]]]<>"MZ \n"];
 i++;];
 *)
@@ -262,7 +262,7 @@ WriteString[sphenoFT,"\n\n ! Calculate FineTuning \n"];
 WriteString[sphenoFT,"MZ2current = 1._dp/4._dp*("<>SPhenoForm[hyperchargeCoupling]<>"**2 + "<>SPhenoForm[leftCoupling]<> "**2)*("
 SPhenoForm[VEVSM1]<>"**2 + "<>SPhenoForm[VEVSM2]<>"**2) \n"];
 *)
-WriteString[sphenoFT,"If ((MZ2Current.lt.5000._dp).or.(MZ2Current.gt.10000._dp)) Then \n"];
+WriteString[sphenoFT,"If ((MZ2Current.lt.500._dp).or.(MZ2Current.gt.100000._dp)) Then \n"];
 WriteString[sphenoFT,"Write(*,*) \" Large deviation in Z mass in fine-tuning routine: \", sqrt(MZ2Current) \n"];
 WriteString[sphenoFT,"Write(*,*) \" That's most likely a numerical problem! \" \n"];
 WriteString[sphenoFT," NumericalProblem = .true. \n"];
@@ -697,7 +697,7 @@ i++;];
 WriteString[sphenoFT,"End If \n \n"];
 
 (*
-For[i=1,i<=Length[ThresholdCouplings],
+For[i=1,i\[LessEqual]Length[ThresholdCouplings],
 Switch[Length[getDimSPheno[ThresholdCouplings[[i]]]],
 3, ind = "("<>ToString[nr-1]<>",:,:,:)";,
 2, ind = "("<>ToString[nr-1]<>",:,:)";,

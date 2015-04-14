@@ -79,7 +79,10 @@ BoundaryLowScaleInput={
  {\[Mu], Muinput},
  {B[\[Mu]], MAinput^2/(TanBeta + 1/TanBeta)},
  {vd,Sqrt[4 mz2/(g1^2+g2^2)]*Cos[ArcTan[TanBeta]]},
- {vu,Sqrt[4 mz2/(g1^2+g2^2)]*Sin[ArcTan[TanBeta]]}
+ {vu,Sqrt[4 mz2/(g1^2+g2^2)]*Sin[ArcTan[TanBeta]]},
+{vL[1], vL1Input},  
+{vL[2], vL2Input},  
+{vL[3], vL3Input}
 };
 
 

@@ -41,6 +41,7 @@ ParticleDefinitions[GaugeES] = {
 
       
       {Hp,  { Description -> "Charged Higgs",
+                 ElectricCharge -> 1,
                  FeynArtsNr -> 5}},                                                   
       {VP,   { Description -> "Photon"}}, 
       {VZ,   { Description -> "Z-Boson",

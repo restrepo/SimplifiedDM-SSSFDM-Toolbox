@@ -237,6 +237,7 @@ InitMatterFields:=Block[{i},
 AnzahlChiral=Length[FermionFields]+Length[ScalarFields];
 SFields = Table[{}, {AnzahlChiral}];
 SFieldsNoTensor = Table[{}, {AnzahlChiral}];
+SFieldsTensor = Table[{}, {AnzahlChiral}];
 FFields = Table[{}, {AnzahlChiral}];
 AFields = Table[{}, {AnzahlChiral}];
 
@@ -531,6 +532,7 @@ SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{SFields[[i]],absEFull,absIFull}
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{FFields[[i]],absEFull,absIFull}}];
 (* SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{AFields[[i]],absEFull,absIFull}}];  *)
 
+(* SFieldsTensor[[i]] = {SFields[[i]],Product[sum[absEFull[[j,1]],1,absEFull[[j,2]]],{j,1,Length[absEFull]}]*Product[If[FreeQ[Gauge,absIFull[[j,1]]]==False,sum[absIFull[[j,1]],1,absIFull[[j,2]]],1],{j,1,Length[absIFull]}],ind}; *)
 i++;
 ];
 
@@ -544,6 +546,7 @@ ind = Join[ind,{Gauge[[j,3]]}];
 ];
 j++;];
 SFieldsNoTensor[[i]] = {SFields[[i]],sumstates,ind};
+
 i++;];
 
 ind={};
@@ -561,6 +564,7 @@ PrintDebug["   chiral superfields"];
 DynamicInitFields="chiral superfields";
 SFields = Table[{}, {AnzahlChiral}];
 SFieldsNoTensor = Table[{}, {AnzahlChiral}];
+SFieldsTensor = Table[{}, {AnzahlChiral}];
 FFields = Table[{}, {AnzahlChiral}];
 AFields = Table[{}, {AnzahlChiral}];
 
@@ -818,7 +822,7 @@ ListFields = Join[ListFields,{{Fields[[i,3]],{absE,Expandedindizes},{absI,indize
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{SFields[[i]],absEFull,absIFull}}];
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{FFields[[i]],absEFull,absIFull}}];
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{AFields[[i]],absEFull,absIFull}}]; 
-
+(* SFieldsTensor[[i]] = {SFields[[i]],Product[sum[absEFull[[j,1]],1,absEFull[[j,2]]],{j,1,Length[absEFull]}]*Product[If[FreeQ[Gauge,absIFull[[j,1]]]==False,sum[absIFull[[j,1]],1,absIFull[[j,2]]],1],{j,1,Length[absIFull]}],ind}; *)
 i++;
 ];
 

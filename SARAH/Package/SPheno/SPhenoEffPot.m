@@ -1498,7 +1498,7 @@ Switch[type,
 SS,
 WriteColorFactor=False;
 prefactor1=GetPrefactorStringSS[p1,p2];
-string=prefactor1<>"(-coup1)*Fep_SS"<>argstring;,
+string=prefactor1<>"*(-coup1)*Fep_SS"<>argstring;,
 VS,
 WriteColorFactor=False;
 string="0.25_dp*coup1*Fep_VS"<>argstring;
@@ -1577,13 +1577,16 @@ Return[Flatten@SPhenoCouplings];
 ];
 
 
-DeterminePrefactorStringSSS[p1_,p2_,p3_]:=Block[{p1real,p2real,p3real,EqualParticles=0,AllReal=False,prefactor="0._dp"},
+DeterminePrefactorStringSSS[p1_,p2_,p3_]:=Block[{p1real,p2real,p3real,EqualParticles=0,TwoConjugates=False,AllReal=False,prefactor="0._dp"},
+(* check relations of the particles *)
 p1real=(conj[p1]===p1);
 p2real=(conj[p2]===p2);
 p3real=(conj[p3]===p3);
 If[p1real&&p2real&&p3real,AllReal=True];
-If[(p1/.conj[a_]->a)===(p2/.conj[a_]->a)||(p1/.conj[a_]->a)===(p3/.conj[a_]->a)||(p2/.conj[a_]->a)===(p3/.conj[a_]->a),EqualParticles=2];
-If[(p1/.conj[a_]->a)===(p2/.conj[a_]->a)&&(p2/.conj[a_]->a)===(p3/.conj[a_]->a),EqualParticles=3];
+If[(p1===p2)||(p1===p3)||(p2===p3),EqualParticles=2];
+If[(p1===conj[p2])||(p1===conj[p3])||(p2===conj[p3]),TwoConjugates=True];
+If[(p1===p2)&&(p2===p3),EqualParticles=3];
+(* assign prefactor depending on the relations *)
 If[AllReal,
 Switch[EqualParticles,
 0,
@@ -1591,15 +1594,21 @@ prefactor="0.5_dp";,
 2,
 prefactor="0.25_dp";,
 3,
-prefactor="1._dp/12._dp";
-];,
+prefactor="1._dp/12._dp"; (*here: coupling constant is real*)
+];, (* one or more are complex *)
 Switch[EqualParticles,
 0,
-prefactor="1";,
+If[TwoConjugates,
+  If[p1real||p2real||p3real,
+  prefactor="0.5_dp";,
+  prefactor="1._dp";
+  ];,
+prefactor="1._dp";
+];,
 2,
 prefactor="0.5_dp";,
 3,
-prefactor="1._dp/6._dp";
+prefactor="1._dp/6._dp"; (*coupling constant can be complex*)
 ];
 ];
 Return[prefactor];
@@ -1624,27 +1633,7 @@ p3real=(conj[p3]===p3);
 ];
 Switch[type,
 SSS,
-If[p1real&&p2real&&p3real,AllReal=True];
-If[((p1/.conj[a_]->a)===(p2/.conj[a_]->a))||((p1/.conj[a_]->a)===(p3/.conj[a_]->a))||((p2/.conj[a_]->a)===(p3/.conj[a_]->a)),EqualParticles=2];
-If[((p1/.conj[a_]->a)===(p2/.conj[a_]->a))&&((p2/.conj[a_]->a)===(p3/.conj[a_]->a)),EqualParticles=3];
-If[AllReal,
-Switch[EqualParticles,
-0,
-prefactor="0.5_dp";,
-2,
-prefactor="0.25_dp";,
-3,
-prefactor="1._dp/12._dp";
-];,
-Switch[EqualParticles,
-0,
-prefactor="1";,
-2,
-prefactor="0.5_dp";,
-3,
-prefactor="1._dp/6._dp";
-];
-];
+prefactor=DeterminePrefactorStringSSS[p1,p2,p3];
 ,
 FFS,
 If[(Fermion1/.{bar[a_]->a})===(Fermion2/.{bar[a_]->a}),EqualParticles=2];
@@ -1700,18 +1689,7 @@ prefactor="1._dp";
 ];
 ,
 SS,
-If[((p1/.{conj[a_]->a})===(p2/.{conj[a_]->a})),EqualParticles=2];
-prefactor="-1._dp"; (*both complex, different*)
-If[EqualParticles===2,prefactor="-0.5_dp";]; (*both complex,equal*)
-If[Xor[p1real,p2real], (*one real, one complex*)
-prefactor="-0.5_dp";
-];
-If[p1real&&p2real, 
-If[EqualParticles===2,
-prefactor="(-1._dp/8._dp)";,(*both real, equal*)
-prefactor="-0.25_dp"; (*both real,different*)
-];
-];
+prefactor=GetPrefactorStringSS[p1,p2];
 ,
 VS,
 prefactor="0._dp";,
@@ -1726,13 +1704,22 @@ GetPrefactorStringSS[p1_,p2_]:=Block[{p1real,p2real,Equal,prefactor},
 p1real=(conj[p1]===p1);
 p2real=(conj[p2]===p2);
 Equal=((p1/.{conj[a_]->a})===(p2/.{conj[a_]->a}));
-prefactor="1.*";(*complex, different*)
-If[Equal,prefactor="0.5_dp*";]; (*complex, equal*)
-If[p1real||p2real,
-prefactor="0.5_dp*";]; (*at least one real*)
 If[p1real&&p2real,
-prefactor="0.25_dp*"; (*both real,different*)
-If[Equal,prefactor="(1._dp/8._dp)*";]; (*both real, equal*)
+If[Equal,
+prefactor="(-1._dp/8._dp)";, (* both real and equal *)
+prefactor="(-0.25_dp)"; (* both real and different *)
+];, (*at least one complex *)
+If[p1real||p2real,
+(* one is real *)
+prefactor = "(-0.5_dp)";,
+(* both are complex *)
+If[Equal,
+(* both complex and equal *)
+prefactor="(-0.5_dp)";,
+(* both complex and different *)
+prefactor="(-1._dp)";
+];
+];
 ];
 Return[prefactor];
 ];

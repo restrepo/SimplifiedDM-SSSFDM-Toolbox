@@ -114,13 +114,13 @@ V, (* Vector penguins *)
 	 	 WriteString[sphenoTeX,"  TVOdulvSRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TVOdulvSLR=TVOdulvSLR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSLR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVRR=TVOdulvVRR+ 157.91367041742973*coup1R*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVRR=TVOdulvVRR+1*coup1R*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVRR= & "<> StringReplace["16 coup1R coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVLL=TVOdulvVLL+ 157.91367041742973*coup1L*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVLL=TVOdulvVLL+1*coup1L*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVLL= & "<> StringReplace["16 coup1L coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVRL=TVOdulvVRL+ 157.91367041742973*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVRL=TVOdulvVRL+1*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVRL= & "<> StringReplace["16 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVLR=TVOdulvVLR+ 157.91367041742973*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVLR=TVOdulvVLR+1*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVLR= & "<> StringReplace["16 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 ,
   2, 
@@ -128,13 +128,13 @@ V, (* Vector penguins *)
 	 	 WriteString[sphenoTeX,"  TVOdulvSLL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TVOdulvSRR=TVOdulvSRR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSRR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvSRL=TVOdulvSRL+ -315.82734083485946*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvSRL=TVOdulvSRL+ -2*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSRL= & "<> StringReplace["-32 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvSLR=TVOdulvSLR+ -315.82734083485946*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvSLR=TVOdulvSLR+ -2*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSLR= & "<> StringReplace["-32 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVRR=TVOdulvVRR+ 157.91367041742973*coup1L*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVRR=TVOdulvVRR+1*coup1L*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVRR= & "<> StringReplace["16 coup1L coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVLL=TVOdulvVLL+ 157.91367041742973*coup1R*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVLL=TVOdulvVLL+1*coup1R*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVLL= & "<> StringReplace["16 coup1R coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TVOdulvVRL=TVOdulvVRL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVRL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
@@ -146,17 +146,17 @@ V, (* Vector penguins *)
 	 	 WriteString[sphenoTeX,"  TVOdulvSLL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TVOdulvSRR=TVOdulvSRR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSRR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvSRL=TVOdulvSRL+ 315.82734083485946*coup1R*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvSRL=TVOdulvSRL+ 2*coup1R*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSRL= & "<> StringReplace["32 coup1R coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvSLR=TVOdulvSLR+ 315.82734083485946*coup1L*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvSLR=TVOdulvSLR+ 2*coup1L*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvSLR= & "<> StringReplace["32 coup1L coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TVOdulvVRR=TVOdulvVRR+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVRR= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 	 	 WriteStringFLB[file,"  TVOdulvVLL=TVOdulvVLL+ 0.\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVLL= & "<> StringReplace["0",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVRL=TVOdulvVRL+ 157.91367041742973*coup1R*coup2R*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVRL=TVOdulvVRL+1*coup1R*coup2R*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVRL= & "<> StringReplace["16 coup1R coup2R IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
-	 	 WriteStringFLB[file,"  TVOdulvVLR=TVOdulvVLR+ 157.91367041742973*coup1L*coup2L*IMP2\n" ];
+	 	 WriteStringFLB[file,"  TVOdulvVLR=TVOdulvVLR+1*coup1L*coup2L*IMP2\n" ];
 	 	 WriteString[sphenoTeX,"  TVOdulvVLR= & "<> StringReplace["16 coup1L coup2L IMP2 Pi^2",SA`SPhenoTeXSub]<>" \\\\ \n" ];
 ];,
 S, (* Scalar penguins *) 

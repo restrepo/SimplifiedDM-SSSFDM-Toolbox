@@ -163,6 +163,13 @@ WriteString[sphenoSugra,","];
 i++;];
 WriteString[sphenoSugra,") \n \n"];
 
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[Electron]]<>" = mf_l2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[BottomQuark]]<>" = mf_d2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[TopQuark]]<>" = mf_u2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMass[Electron]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[Electron]]<>") \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMass[BottomQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[BottomQuark]]<>") \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMass[TopQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[TopQuark]]<>") \n"];
+
 
 WriteString[sphenoSugra,"alpha3 = AlphaSDR(mZ,"];
 
@@ -178,12 +185,6 @@ WriteString[sphenoSugra,") \n"];
 
 WriteString[sphenoSugra,"gSU3 = Sqrt(4._dp*pi*alpha3) \n \n"];
 
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[Electron]]<>" = mf_l2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[BottomQuark]]<>" = mf_d2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[TopQuark]]<>" = mf_u2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMass[Electron]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[Electron]]<>") \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMass[BottomQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[BottomQuark]]<>") \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMass[TopQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[TopQuark]]<>") \n"];
 
  
 WriteString[sphenoSugra,"!--------------------\n"];
@@ -903,6 +904,12 @@ WriteString[sphenoSugra,","];
 i++;];
 WriteString[sphenoSugra,") \n \n"];
 
+WriteString[sphenoSugra,ToString[SPhenoMassSq[Electron]]<>"(1:3) = mf_l2 \n"];
+WriteString[sphenoSugra,ToString[SPhenoMassSq[BottomQuark]]<>"(1:3) = mf_d2 \n"];
+WriteString[sphenoSugra,ToString[SPhenoMassSq[TopQuark]]<>"(1:3) = mf_u2 \n"]; 
+WriteString[sphenoSugra,ToString[SPhenoMass[Electron]]<>"(1:3) = sqrt("<>ToString[SPhenoMassSq[Electron]]<>"(1:3)) \n"];
+WriteString[sphenoSugra,ToString[SPhenoMass[BottomQuark]]<>"(1:3) = sqrt("<>ToString[SPhenoMassSq[BottomQuark]]<>"(1:3)) \n"];
+WriteString[sphenoSugra,ToString[SPhenoMass[TopQuark]]<>"(1:3) = sqrt("<>ToString[SPhenoMassSq[TopQuark]]<>"(1:3)) \n"];
 
 WriteString[sphenoSugra,"alpha3 = AlphaSDR(mZ,"];
 
@@ -916,12 +923,6 @@ WriteString[sphenoSugra,") \n"];
 
 WriteString[sphenoSugra,"gSU3 = Sqrt(4._dp*pi*alpha3) \n \n"];
 
-WriteString[sphenoSugra,ToString[SPhenoMassSq[Electron]]<>"(1:3) = mf_l2 \n"];
-WriteString[sphenoSugra,ToString[SPhenoMassSq[BottomQuark]]<>"(1:3) = mf_d2 \n"];
-WriteString[sphenoSugra,ToString[SPhenoMassSq[TopQuark]]<>"(1:3) = mf_u2 \n"]; 
-WriteString[sphenoSugra,ToString[SPhenoMass[Electron]]<>"(1:3) = sqrt("<>ToString[SPhenoMassSq[Electron]]<>"(1:3)) \n"];
-WriteString[sphenoSugra,ToString[SPhenoMass[BottomQuark]]<>"(1:3) = sqrt("<>ToString[SPhenoMassSq[BottomQuark]]<>"(1:3)) \n"];
-WriteString[sphenoSugra,ToString[SPhenoMass[TopQuark]]<>"(1:3) = sqrt("<>ToString[SPhenoMassSq[TopQuark]]<>"(1:3)) \n"];
 
  
 WriteString[sphenoSugra,"!--------------------\n"];
@@ -1488,7 +1489,7 @@ WriteString[sphenoSugra,"End Function rho_2\n\n\n"];
 
 
 For[i=1,i<=Length[NeededGenForYukawas],
-
+If[NeededGenForYukawas[[i]]===3,
 cGen= ToString[NeededGenForYukawas[[i]]];
 
 WriteString[sphenoSugra,"Subroutine Yukawas"<>cGen <>"(mf,vev,uL,uR,SigS,SigL,SigR,MassMatrix,Y,ReSum,kont)\n"];
@@ -1524,8 +1525,49 @@ WriteString[sphenoSugra,"Ytemp=mass+SigS+Matmul(Transpose(SigL),MassMatrix)+Matm
 WriteString[sphenoSugra,"End If\n"];
 WriteString[sphenoSugra,"Y=sqrt2*Ytemp(1:3,1:3)/vev\n"];
 WriteString[sphenoSugra,"Call chop(y)\n"];
+WriteString[sphenoSugra,"End Subroutine Yukawas"<>cGen <>"\n\n"];,
+
+cGen= ToString[NeededGenForYukawas[[i]]];
+
+WriteString[sphenoSugra,"Subroutine Yukawas"<>cGen <>"(mf,vev,uL,uR,SigS,SigL,SigR,MassMatrix,Y,ReSum,kont)\n"];
+WriteString[sphenoSugra,"Implicit None\n"];
+WriteString[sphenoSugra,"Integer,Intent(inout)::kont\n"];
+WriteString[sphenoSugra,"Real(dp),Intent(in)::mf("<>cGen <>"),vev\n"];
+WriteString[sphenoSugra,"Complex(dp),Dimension("<>cGen <>","<>cGen <>"),Intent(in)::uL,uR,SigS,SigL,SigR\n"];
+WriteString[sphenoSugra,"Logical,Intent(in)::ReSum\n"];
+WriteString[sphenoSugra,"Complex(dp),Intent(inout)::MassMatrix("<>cGen <>","<>cGen <>")\n"];
+WriteString[sphenoSugra,"Complex(dp),Intent(out)::Y(3,3)\n"];
+WriteString[sphenoSugra,"Complex(dp) :: Ysave(3,3) \n"];
+WriteString[sphenoSugra,"Integer::i1, i2, ierr\n"];
+WriteString[sphenoSugra,"Logical::converged=.false.\n"];
+WriteString[sphenoSugra,"Complex(dp),Dimension("<>cGen <>","<>cGen <>") :: mass, uLa, uRa, f, invf, invMass2, Ytemp, & \n &  uLnew, uRnew, mat2("<>cGen<>","<>cGen<>"), mat1("<>cGen<>","<>cGen<>")\n"];
+WriteString[sphenoSugra,"Real(dp) :: Mf2_t("<>cGen<>"),test2(2),diff(3,3)\n"];
+
+WriteString[sphenoSugra,"Ysave=1._dp \n\n"];
+WriteString[sphenoSugra,"Do i2=1,100 \n"];
+WriteString[sphenoSugra,"  mat1=MassMatrix-SigS-MatMul(SigR,MassMatrix)-MatMul(MassMatrix,SigL) \n"];
+WriteString[sphenoSugra,"  mat2=Matmul(Transpose(Conjg(mat1)),mat1)\n"];
+WriteString[sphenoSugra,"  Call EigenSystem(mat2,Mf2_t,uRnew,ierr,test2) \n"];
+WriteString[sphenoSugra,"  mat2=Matmul(mat1,Transpose(Conjg(mat1)))\n"];
+WriteString[sphenoSugra,"  Call EigenSystem(mat2,Mf2_t,uLnew,ierr,test2)\n\n"];
+WriteString[sphenoSugra,"  mass=0._dp\n"];
+WriteString[sphenoSugra,"   Do i1=1,4 \n"];
+WriteString[sphenoSugra,"    mass(i1,i1)=mf(i1) \n"];
+WriteString[sphenoSugra,"   End Do\n\n"];
+WriteString[sphenoSugra,"  mass=Matmul(Transpose(uLnew),Matmul(mass,uRnew))\n"];
+WriteString[sphenoSugra,"  Ytemp=mass+SigS+Matmul(SigR,MassMatrix)+Matmul(MassMatrix,SigL)\n"];
+WriteString[sphenoSugra,"  Y=sqrt2*Ytemp(1:3,1:3)/vev \n"];
+WriteString[sphenoSugra,"  Call chop(y)\n"];
+WriteString[sphenoSugra,"  MassMatrix(1:3,1:3)=Ytemp(1:3,1:3)\n"];
+WriteString[sphenoSugra,"  diff=Abs(Y-Ysave)\n"];
+WriteString[sphenoSugra,"  Where (diff.ne.0._dp) diff=diff/Y\n"];
+WriteString[sphenoSugra,"  Ysave=Y\n"];
+WriteString[sphenoSugra," If (Maxval(diff).lt.10E-7_dp) Exit\n"];
+WriteString[sphenoSugra,"End do \n\n"];
+
 WriteString[sphenoSugra,"End Subroutine Yukawas"<>cGen <>"\n\n"];
-i++;];
+];
+i++;]; 
 
 WriteString[sphenoSugra,"End Subroutine BoundaryEW \n \n"];
 

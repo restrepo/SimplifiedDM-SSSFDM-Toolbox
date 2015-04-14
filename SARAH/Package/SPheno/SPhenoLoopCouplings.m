@@ -187,6 +187,7 @@ i++;];
 ParticlesToPhoton=coupAlphaEWSB;
 ParticlesToGluon=coupAlphaStrong;
 
+(*
 temp={};
 For[i=1,i<=Length[coupAlphaStrong],
 If[FreeQ[SMParticles,coupAlphaStrong[[i,1]]]==True ,
@@ -196,7 +197,8 @@ i++;];
 coupAlphaStrong=temp;
 
 temp={};
-
+*)
+coupAlphaStrong=Select[coupAlphaStrong,FreeQ[#,Gluon]&];
 
 ];
 
@@ -296,11 +298,13 @@ WriteString[sphenoLoopCoup,"Integer::i1 \n"];
 WriteString[sphenoLoopCoup,"Real(dp)::DeltaAlpha \n"];
 
 
-WriteString[sphenoLoopCoup,"DeltaAlpha = 0.5_dp- 2._dp*Log(sqrt(mf_u2(3))/Q)/3._dp \n"];
+WriteString[sphenoLoopCoup,"DeltaAlpha = 0.5_dp !- 2._dp*Log(sqrt(mf_u2(3))/Q)/3._dp \n"];
 For[i=1,i<=Length[coupAlphaStrong],
 If[getGenSPheno[coupAlphaStrong[[i,1]]]>1,
 WriteString[sphenoLoopCoup, "Do i1=1,"<> ToString[getGenSPheno[coupAlphaStrong[[i,1]]]]<>"\n"];
-WriteString[sphenoLoopCoup,"DeltaAlpha=DeltaAlpha-"<>SPhenoForm[coupAlphaStrong[[i,2]]^2*coupAlphaStrong[[i,3]]*coupAlphaStrong[[i,4]]/3]<>"*Log("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/ Q) \n"];
+WriteString[sphenoLoopCoup," If (Abs("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/ Q).gt.1._dp) Then \n"];
+WriteString[sphenoLoopCoup,"  DeltaAlpha=DeltaAlpha-"<>SPhenoForm[coupAlphaStrong[[i,2]]^2*coupAlphaStrong[[i,3]]*coupAlphaStrong[[i,4]]/3]<>"*Log("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/ Q) \n"];
+WriteString[sphenoLoopCoup," End If \n"];
 WriteString[sphenoLoopCoup,"End Do \n"];,
 WriteString[sphenoLoopCoup,"DeltaAlpha=DeltaAlpha-"<>SPhenoForm[coupAlphaStrong[[i,2]]^2*coupAlphaStrong[[i,3]]*coupAlphaStrong[[i,4]]/3]<>"*Log("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/ Q) \n"];
 ];
@@ -392,7 +396,9 @@ WriteString[sphenoLoopCoup,"DeltaAlpha = 0.5_dp \n"];
 For[i=1,i<=Length[coupAlphaStrong],
 If[getGenSPheno[coupAlphaStrong[[i,1]]]>1,
 WriteString[sphenoLoopCoup, "Do i1=1,"<> ToString[getGenSPheno[coupAlphaStrong[[i,1]]]]<>"\n"];
+WriteString[sphenoLoopCoup," If (Abs("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/mf_u(3)).gt.1._dp) Then \n"];
 WriteString[sphenoLoopCoup,"DeltaAlpha=DeltaAlpha-"<>SPhenoForm[coupAlphaStrong[[i,2]]^2*coupAlphaStrong[[i,3]]*coupAlphaStrong[[i,4]]/3]<>"*Log("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/ Q) \n"];
+WriteString[sphenoLoopCoup," End If \n"];
 WriteString[sphenoLoopCoup,"End Do \n"];,
 WriteString[sphenoLoopCoup,"DeltaAlpha=DeltaAlpha-"<>SPhenoForm[coupAlphaStrong[[i,2]]^2*coupAlphaStrong[[i,3]]*coupAlphaStrong[[i,4]]/3]<>"*Log("<>SPhenoMass[coupAlphaStrong[[i,1]],i1]<>"/ Q) \n"];
 ];

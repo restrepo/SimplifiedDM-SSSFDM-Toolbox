@@ -217,7 +217,7 @@ LagrangianAux  = LagrangianAux /.{GetGenStart->getGenStart,GetGen->getGen};
 DynamicRotateLag[rotNr]=14;
 LagReDef  = LagReDef /.{GetGenStart->getGenStart,GetGen->getGen};
 
-(* If[rotNr==2,Interrupt[];]; *)
+(* If[rotNr\[Equal]2,Interrupt[];]; *)
 Print["Derive ghost terms: "];
 If[IgnoreGaugeFixing=!=True,
 testAutomaticGF=GenerateGaugeFixing[Kinetic,NameOfStates[[rotNr]],rotNr];,
@@ -366,7 +366,7 @@ mixedNamesNoFV={};
 
 For[i=1,i<=Length[mixDef],
 If[FreeQ[mixDef[[i]],NoFlavorMixing]==False,
-(* If[Length[Dimensions[mixDef[[i,1]]]]==1, *)
+(* If[Length[Dimensions[mixDef[[i,1]]]]\[Equal]1, *)
 If[Depth[mixDef[[i,1]]/. conj[x_]->x]<3,
 mixESnoFV = Join[mixESnoFV,{mixDef[[i]]}];
 If[FreeQ[parameters,mixDef[[i,2]]]===False, Message[ModelFile::ParameterNameExists,mixDef[[i,2]]];];
@@ -386,7 +386,7 @@ mixedNamesNoFV = Join[mixedNamesNoFV,{{mixDef[[i,2,1]],mixDef[[i,2,2]]}}];
 mixBasisNoFV = Join[mixBasisNoFV,{{mixDef[[i,1,1]],mixDef[[i,1,2]]}}];
 ];
 mixMatESnoFV = Join[mixMatESnoFV,{mixDef[[i,2]]}];,
-(* If[Length[Dimensions[mixDef[[i,1]]]]==1, *)
+(* If[Length[Dimensions[mixDef[[i,1]]]]\[Equal]1, *)
 If[Depth[mixDef[[i,1]]/. conj[x_]->x]<3,
 mixES = Join[mixES,{mixDef[[i]]}];
 If[FreeQ[parameters,mixDef[[i,2]]]===False, Message[ModelFile::ParameterNameExists,mixDef[[i,2]]];];
@@ -827,8 +827,8 @@ i++;];
 ];
 
 (*
-For[i=1,i<=Length[MassMatrices],
-If[Intersection[Flatten[MassMatrices[[i]]]]==={0} && getType[basis[[i,1,1]]]=!=A &&SA`CurrentRotatedNr==Length[NameOfSates],
+For[i=1,i\[LessEqual]Length[MassMatrices],
+If[Intersection[Flatten[MassMatrices[[i]]]]==={0} && getType[basis[[i,1,1]]]=!=A &&SA`CurrentRotatedNr\[Equal]Length[NameOfSates],
 Message[MassMatrix::OnlyZero,basis[[i]]];
 ];
 i++;];
@@ -1028,7 +1028,9 @@ phaseInverse=Join[phaseInverse,{phas[[i,1]][{y___}]->phas[[i,1]][{y}] conj[phas[
 ];
 
 PhasesToOneSub=Join[PhasesToOneSub,{phas[[i,2]]->1}];
+If[FreeQ[parameters,phas[[i,2]]],
 parameters = Join[parameters,{{phas[[i,2]],{},{}}}];
+];
 
 i++;];
 PhaseSub[type]=phaseSub;
@@ -1339,8 +1341,8 @@ SA`ScalarsCPodd={};
 For[i=1,i<=Length[NameOfStates],
 (*
 If[Head[DEFINITION[NameOfStates[[i]]][VEVs]]===List,
-SA`ScalarsCPeven = Join[SA`ScalarsCPeven,Transpose[Transpose[DEFINITION[NameOfStates[[i]]][VEVs] /. {b__,{a_}}->{b}][[4]]][[1]]];
-SA`ScalarsCPodd = Join[SA`ScalarsCPodd,Transpose[Transpose[DEFINITION[NameOfStates[[i]]][VEVs] /. {b__,{a_}}->{b}][[3]]][[1]]];
+SA`ScalarsCPeven = Join[SA`ScalarsCPeven,Transpose[Transpose[DEFINITION[NameOfStates[[i]]][VEVs] /. {b__,{a_}}\[Rule]{b}][[4]]][[1]]];
+SA`ScalarsCPodd = Join[SA`ScalarsCPodd,Transpose[Transpose[DEFINITION[NameOfStates[[i]]][VEVs] /. {b__,{a_}}\[Rule]{b}][[3]]][[1]]];
 ];
 
 *)

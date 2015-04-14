@@ -276,7 +276,7 @@ woModelName = ModelNameInput;
 
 If[Head[woModelName]=!=String,woModelName = ToString[woModelName];];
 
-WO`WriteOutput[WO`WOVertexList->VertexListWHIZARDexpanded,WO`WOModelName->woModelName,WO`WOMaxNcf->4,WO`WOGauge->ChosenGauge,WO`WOGaugeParameter->"Rxi",WO`WOWhizardVersion->WOVersion,WO`WOVerbose->False,WO`WOAutoGauge->AGauge,WO`WOMaxCouplingsPerFile->maxNumber,WO`WORunParameters->{aS,strongCoupling},WO`WOOutputDir->StringDrop[$sarahCurrentWODir,-1],WO`WOOplotter->False,WO`WOFast->True,WO`WOMassList->MassListFR,WO`WOWidthList->WidthListFR,WO`WOEParamList->EParamList,WO`WOIParamList->IParamList,WO`WOPartList->PartListFR];
+WO`WriteOutput[WO`WOVertexList->VertexListWHIZARDexpanded,WO`WOModelName->woModelName,WO`WOMaxNcf->4,WO`WOGauge->ChosenGauge,WO`WOGaugeParameter->"Rxi",WO`WOWhizardVersion->WOVersion,WO`WOVerbose->False,WO`WOAutoGauge->AGauge,WO`WOMaxCouplingsPerFile->maxNumber,WO`WORunParameters->{aS,strongCoupling},WO`WOOutputDir->StringDrop[$sarahCurrentWODir,-1],WO`WOOplotter->False,WO`WOFast->True,WO`WOMassList->MassListFR,WO`WOWidthList->WidthListFR,WO`WOEParamList->EParamList,WO`WOIParamList->(IParamList /. getOutputNameParameter[electricCharge] ->ee),WO`WOPartList->(PartListFR /.getOutputNameParameter[electricCharge] ->ee)];
 
 If[WriteModelDirectories==True,
 WriteString[DirectoryNamesFile,"WHIZARDdir="<>ToString[$sarahCurrentWODir] <>"\n"];
@@ -555,9 +555,9 @@ For[j=1,j<=getGen[particles[[i]]],
 For[k=1,k<=getFla[particles[[i]]],
 temp2=Join[temp2,{{
 ToString[getOutputName[particles[[i]],j,k]],ToString[getOutputNameAnti[particles[[i]],j,k]],getType[particles[[i]]],
-getPropagatorType[particles[[i]]],getMassW[particles[[i]],j,k],getWidthW[particles[[i]],j,k],
+getPropagatorType[particles[[i]]],getMassW[particles[[i]],j,k] /. 0->ZERO,getWidthW[particles[[i]],j,k] /. 0->ZERO,
 getColorRep[particles[[i]]],getOutputName[particles[[i]],j,k],getPDG[particles[[i]],j,k] /. 0:>DummyPDG++,
-getDescriptionField[particles[[i]],j,k],getLaTeXField[particles[[i]],j,k],getLaTeXField[AntiField[particles[[i]]],j,k],CheckGoldstone[particles[[i]],j,k]
+getDescriptionField[particles[[i]],j,k],getLaTeXField[particles[[i]],j,k],getLaTeXField[AntiField[particles[[i]]],j,k],CheckGoldstone[particles[[i]],j,k],getElectricCharge[particles[[i]]]
 }}];
 If[FreeQ[depmass,particles[[i]]],
 MassListFR = Join[MassListFR,{{{Abs[getPDG[particles[[i]],j,k]]},getMassW[particles[[i]],j,k],getMassNumerical[particles[[i]],j,k]}}] ;,
@@ -584,7 +584,7 @@ j++;];
 PartListFR=Join[PartListFR,{{{getType[particles[[i]]][FANumber[particles[[i]]]],getOutputName[particles[[i]],0]},temp2}}];
 i++;];
 
-PartListFR = PartListFR /. {Straight -> S,Sine -> W, ScalarDash->D, GhostDash->C} /. 0->ZERO;
+PartListFR = PartListFR /. {Straight -> S,Sine -> W, ScalarDash->D, GhostDash->C};
 
 MassListFR = Select[MassListFR,(FreeQ[#,0]==True)&] /. {LesHouches -> External, Mass ->External} /. External -> 100;
 WidthListFR = Select[WidthListFR,(FreeQ[#,0]==True)&] /. {Width ->External} /. External ->1;

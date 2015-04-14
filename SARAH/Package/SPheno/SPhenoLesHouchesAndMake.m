@@ -114,7 +114,7 @@ WriteString[filenames[[l]],"  1 -1              # error level \n"];
 WriteString[filenames[[l]],"  2  0              # SPA conventions \n"];
 If[SupersymmetricModel=!=False,
 WriteString[filenames[[l]],"  7  0              # Skip 2-loop Higgs corrections \n"];
-WriteString[filenames[[l]],"  8  2              # Method used for two-loop calculation \n"];
+WriteString[filenames[[l]],"  8  3              # Method used for two-loop calculation \n"];
 WriteString[filenames[[l]],"  9  1              # Gaugeless limit used at two-loop \n"];
 WriteString[filenames[[l]]," 10  0              # safe-mode used at two-loop \n"];
 ];

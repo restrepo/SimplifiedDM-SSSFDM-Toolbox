@@ -21,14 +21,17 @@ BoundaryLowScaleInput={
  {L3, Lambda3INPUT},
  {Yv, LHInput[Yv]},
  {Yx, LHInput[Yx]},
- {vX,vXinput}
+ {vX,vXinput},
+ {vH, vSM}, 
+ {Ye, YeSM},
+ {Yd, YdSM},
+ {Yu, YuSM},
+ {g1, g1SM},
+ {g2, g2SM},
+ {g3, g3SM}
 };
 
 
-BoundaryLowScaleInput={
- {vSM,Sqrt[4 mz2/(g1^2+g2^2)]},
- {vX,Sqrt[4 mz2/(g1^2+g2^2)]}
-};
 
 
 ListDecayParticles = {Fu,Fe,Fd,Fv,hh,VZp};

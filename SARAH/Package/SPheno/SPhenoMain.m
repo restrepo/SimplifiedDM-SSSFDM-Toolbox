@@ -81,6 +81,10 @@ If[NonSUSYModel===True,
 WriteString[spheno, "Real(dp) :: vev, sinw2, f_GMSB\n"];,
 WriteString[spheno, "Real(dp) :: vev, sinw2\n"];
 ];
+If[SupersymmetricModel===False,
+WriteString[spheno, "Complex(dp) :: YdSM(3,3), YuSM(3,3), YeSM(3,3)\n"];
+WriteString[spheno, "Real(dp) :: vSM, g1SM, g2SM, g3SM\n"];
+];
 WriteString[spheno, "Logical :: ISR(p_max)=.False.\n"];
 WriteString[spheno, "Logical :: CalcTBD\n"];
 (* MakeVariableList[NewParametersFromTadpoles,"",spheno]; *)
@@ -108,7 +112,15 @@ WriteString[spheno, "  outputFileName=trim(outputFileName)\n"];
 WriteString[spheno, "End if \n"];
 
 
-
+If[SupersymmetricModel===False,
+WriteString[spheno,"g1SM = 0._dp \n"];
+WriteString[spheno,"g2SM = 0._dp \n"];
+WriteString[spheno,"g3SM = 0._dp \n"];
+WriteString[spheno,"YdSM = 0._dp \n"];
+WriteString[spheno,"YeSM = 0._dp \n"];
+WriteString[spheno,"YuSM = 0._dp \n"];
+WriteString[spheno,"vSM = 0._dp \n"];
+];
 
 WriteString[spheno,"Call Set_All_Parameters_0() \n \n"];
 WriteString[spheno,"kont = 0 \n"];
@@ -171,6 +183,7 @@ For[i=1,i<=Length[listVEVsIN],
 WriteString[spheno,StringDrop[SPhenoForm[listVEVsIN[[i]]],-2] <>"MZ = " <>StringDrop[SPhenoForm[listVEVsIN[[i]]],-2]<>" \n "];
 i++;];
 
+If[SupersymmetricModel===True,
  If[AddSMrunning=!=False && SPhenoOnlyForHM=!=True,
 WriteString[spheno,"\n \n ! RGE running for gauge and Yukawa couplings from M_Z to M_SUSY \n "];
 WriteString[spheno,"Qin=sqrt(getRenormalizationScale()) \n"];
@@ -181,6 +194,9 @@ WriteString[spheno,"Call RunSM(Qin,deltaM,tanbeta,"<>SPhenoForm[hyperchargeCoupl
 WriteString[spheno,"Call RunSMohdm(Qin,deltaM, "<>SPhenoForm[hyperchargeCoupling]<>","<>SPhenoForm[leftCoupling]<>","<>SPhenoForm[strongCoupling]<>","<>SPhenoForm[UpYukawa]<>","<>SPhenoForm[DownYukawa]<>","<>SPhenoForm[ElectronYukawa]<>","<>SPhenoForm[VEVSM]<>") \n"];
 ];
 WriteString[spheno,"End if \n"];
+];,
+WriteString[spheno,"Qin=sqrt(getRenormalizationScale()) \n"];
+WriteString[spheno,"Call RunSMohdm(Qin,deltaM,g1SM,g2SM,g3SM,YuSM,YdSM,YeSM,vSM) \n"];
 ];
 
 If[SPhenoOnlyForHM=!=True,
@@ -549,13 +565,13 @@ WriteString[spheno,"End if \n\n"];
 
 MakeCall["GToParameters"<>ToString[numberAllwithVEVs],listAllParametersAndVEVs,{"g1D"},{},spheno];
 WriteString[spheno,"scalein = SetRenormalizationScale(160._dp**2) \n"];
-For[i=1,i<=Length[Gauge],If[Gauge[[i,2,1]]==1,WriteString[spheno,SPhenoForm[Gauge[[i,4]]]<> " = "<>SPhenoForm[Simplify[GUTren[i]]]<>"*" <> SPhenoForm[Gauge[[i,4]]]<>" \n"]; ];
+For[i=1,i\[LessEqual]Length[Gauge],If[Gauge[[i,2,1]]\[Equal]1,WriteString[spheno,SPhenoForm[Gauge[[i,4]]]<> " = "<>SPhenoForm[Simplify[GUTren[i]]]<>"*" <> SPhenoForm[Gauge[[i,4]]]<>" \n"]; ];
 i++;];
-For[i=1,i<=Length[SA`ListGaugeMixed2],WriteString[spheno,SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<> " = "<>SPhenoForm[GUTren[SA`ListGaugeMixed2[[i,1,1]],SA`ListGaugeMixed2[[i,1,2]]]]<>"*" <> SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<>" \n"];
+For[i=1,i\[LessEqual]Length[SA`ListGaugeMixed2],WriteString[spheno,SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<> " = "<>SPhenoForm[GUTren[SA`ListGaugeMixed2[[i,1,1]],SA`ListGaugeMixed2[[i,1,2]]]]<>"*" <> SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<>" \n"];
 i++;];
 WriteString[spheno,"\n\n"];,
 
-For[i=1,i<=Length[tlist],
+For[i=1,i\[LessEqual]Length[tlist],
 name=ToExpression[SPhenoForm[tlist[[i]]]<>"input"];
 WriteString[spheno,SPhenoForm[tlist[[i]]]<>" = "<>SPhenoForm[name] <>"\n"];
 i++;
@@ -585,7 +601,7 @@ WriteString[spheno, " mw2=mw**2 \n"]; *)
 WriteString[spheno, "If (.not.GenerationMixing) Then \n"];
 WriteString[spheno, SPhenoForm[UpYukawa]<> " =Transpose(Matmul(Transpose(CKMcomplex),Transpose("<>SPhenoForm[UpYukawa]<>"))) \n"];
 If[AddOHDM=!=True && SupersymmetricModel===True,
-If[SA`Casimir[Select[SuperPotential[[Position[SuperPotential,UpYukawa][[1,1]],2]],(SA`Casimir[#,Position[Gauge,color][[1,1]]]==4/3)&][[1]],Position[Gauge,left][[1,1]]]==3/4,
+If[SA`Casimir[Select[SuperPotential[[Position[SuperPotential,UpYukawa][[1,1]],2]],(SA`Casimir[#,Position[Gauge,color][[1,1]]]\[Equal]4/3)&][[1]],Position[Gauge,left][[1,1]]]\[Equal]3/4,
 WriteString[spheno,SPhenoForm[UpYukawa]<> " = Transpose("<>SPhenoForm[UpYukawa]<>") \n"];
 ];
 ];
@@ -597,7 +613,7 @@ WriteString[spheno, "SinW2_160 = SinW2 \n"];
 WriteString[spheno, "CKM_160 = CKM \n"];
 *)
 (* ,
-For[i=1,i<=Length[tlist],
+For[i=1,i\[LessEqual]Length[tlist],
 name=ToExpression[SPhenoForm[tlist[[i]]]<>"input"];
 WriteString[spheno,SPhenoForm[tlist[[i]]]<>" = "<>SPhenoForm[name] <>"\n"];
 i++;];
@@ -723,7 +739,7 @@ i++;];
 
 
 If[IncludeOldObservables===True,
-(* q ->  q' gamma *)
+(* q \[Rule]  q' gamma *)
 WriteString[spheno,"\n! *****  b -> s gamma ***** \n\n"];
 
 If[OnlyLowEnergySPheno=!=True,
@@ -743,11 +759,11 @@ WriteString[spheno,ToString[SPhenoMass[BottomQuark]] <>"(1:3) = mf_d \n"];
 WriteString[spheno,ToString[SPhenoMassSq[BottomQuark]] <>"(1:3) = mf_d**2 \n"];
 ];
 
-(* B0s -> l l *)
+(* B0s \[Rule] l l *)
 
 WriteString[spheno,"\n! ***** B0s -> l l ***** \n\n"];
 
-(*arguments: inState1 (bottom), inState2 (strange or down), outState3, outState4 *)
+(*arguments: inState1(bottom), inState2(strange or down), outState3, outState4 *)
 MakeCall["BrB0LLp",Flatten[{NeededMassesB0LLp,NeededCouplingsB0LLp}],{"3","2","1","1"},{"GBsEE","BRBsEE","BRBsEESM"},spheno];
 MakeCall["BrB0LLp",Flatten[{NeededMassesB0LLp,NeededCouplingsB0LLp}],{"3","2","2","2"},{"GBsMuMu","BRBsMuMu","BRBsMuMuSM"},spheno];
 MakeCall["BrB0LLp",Flatten[{NeededMassesB0LLp,NeededCouplingsB0LLp}],{"3","2","2","1"},{"GBsMuE","BRBsMuE","BRBsMuESM"},spheno];
@@ -769,13 +785,13 @@ WriteString[spheno,"!-------------------------------------\n\n"];
 MakeCall["ParametersToG"<>ToString[numberAllwithVEVs],Map[ToExpression[SPhenoForm[#]<>"input"]&,listAllParametersAndVEVs],{},{"g1D"},spheno];
 WriteString[spheno,"Qin=scale_save \n"];
 
-For[i=1,i<=Length[Gauge],
-If[Gauge[[i,2,1]]==1,
+For[i=1,i\[LessEqual]Length[Gauge],
+If[Gauge[[i,2,1]]\[Equal]1,
 WriteString[spheno,SPhenoForm[Gauge[[i,4]]]<> "input = "<>SPhenoForm[Simplify[GUTren[i]]]<>"*" <> SPhenoForm[Gauge[[i,4]]]<>"input \n"]; 
 ];
 i++;];
 
-For[i=1,i<=Length[SA`ListGaugeMixed2],
+For[i=1,i\[LessEqual]Length[SA`ListGaugeMixed2],
 WriteString[spheno,SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<> "input = "<>SPhenoForm[GUTren[SA`ListGaugeMixed2[[i,1,1]],SA`ListGaugeMixed2[[i,1,2]]]]<>"*" <> SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<>"input \n"];
 i++;];
 WriteString[spheno,"\n\n"];
@@ -787,20 +803,20 @@ WriteString[spheno,"Call odeint(g1D,"<>ToString[numberAllwithVEVs]<>",0._dp,tz,d
 WriteString[spheno,"End if  \n\n"];
 MakeCall["GToParameters"<>ToString[numberAllwithVEVs],listAllParametersAndVEVs,{"g1D"},{},spheno];
 WriteString[spheno,"scalein = SetRenormalizationScale(MZ2) \n"];
-For[i=1,i<=Length[Gauge],
-If[Gauge[[i,2,1]]==1,
+For[i=1,i\[LessEqual]Length[Gauge],
+If[Gauge[[i,2,1]]\[Equal]1,
 WriteString[spheno,SPhenoForm[Gauge[[i,4]]]<> " = "<>SPhenoForm[Simplify[GUTren[i]]]<>"*" <> SPhenoForm[Gauge[[i,4]]]<>" \n"]; 
 ];
 i++;];
 
-For[i=1,i<=Length[SA`ListGaugeMixed2],
+For[i=1,i\[LessEqual]Length[SA`ListGaugeMixed2],
 WriteString[spheno,SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<> " = "<>SPhenoForm[GUTren[SA`ListGaugeMixed2[[i,1,1]],SA`ListGaugeMixed2[[i,1,2]]]]<>"*" <> SPhenoForm[SA`ListGaugeMixed2[[i,2,2]]]<>" \n"];
 i++;];
 WriteString[spheno,"\n\n"];
 
 ];
 
-For[i=1,i<=Length[NewNumericalDependences],
+For[i=1,i\[LessEqual]Length[NewNumericalDependences],
 WriteString[spheno, SPhenoForm[NewNumericalDependences[[i,1]]] <> " = " <> SPhenoForm[NewNumericalDependences[[i,2]]] <> "\n"];
 i++;];
 
@@ -824,7 +840,7 @@ WriteTadpoleSolution[spheno];
 MakeCall["TreeMasses",Join[NewMassParameters,Join[listVEVs,listAllParameters]],{},{"GenerationMixing","kont"},spheno];
 WriteString[spheno, "mzsave  = sqrt(mz2) \n"];
 If[OnlyLowEnergySPheno=!=True,
-If[AuxiliaryHyperchargeCoupling, WriteString[sphenoLoop,SPhenoForm[hyperchargeCoupling] <>" = " <>SPhenoForm[ExpressionAuxHypercharge]<>"\n"];];
+If[AuxiliaryHyperchargeCoupling, WriteString[spheno,SPhenoForm[hyperchargeCoupling] <>" = " <>SPhenoForm[ExpressionAuxHypercharge]<>"\n"];];
 If[AddOHDM=!=True,
 WriteString[spheno,"mZ2 = 1._dp/4._dp*("<>SPhenoForm[hyperchargeCoupling]<>"**2 + "<>SPhenoForm[leftCoupling]<> "**2)*("
 SPhenoForm[VEVSM1]<>"**2 + "<>SPhenoForm[VEVSM2]<>"**2) \n"];,
@@ -845,7 +861,7 @@ MakeCall["AllCouplings" , Join[parametersAll,namesAll],{},{},spheno];
 
 
 If[IncludeOldObservables===True,
-(* 1 Lepton -> 3 Leptons *)
+(* 1 Lepton \[Rule] 3 Leptons *)
 WriteString[spheno,"\n! *****  l -> 3 l' ***** \n\n"];
 
 If[FreeQ[ParticleDefinitions[SPheno`Eigenstates],"Higgs"]===False,
@@ -973,14 +989,14 @@ WriteString[spheno,SPhenoForm[SPhenoMassSq[PseudoScalar]]<>" = MAh2_s \n"];
 ];
 
 If[IncludeOldObservables===True,
-(* l -> l' gamma *)
+(* l \[Rule] l' gamma *)
 WriteString[spheno,"\n! *****  l -> l' gamma ***** \n\n"];
 
 MakeCall["BrLgammaLp",Flatten[{NeededMassesLLp,NeededCouplingsLLp}],{"2","1"},{"GMuEgamma","BRMuEgamma"},spheno];
 MakeCall["BrLgammaLp",Flatten[{NeededMassesLLp,NeededCouplingsLLp}],{"3","1"},{"GTauEgamma","BRTauEgamma"},spheno];
 MakeCall["BrLgammaLp",Flatten[{NeededMassesLLp,NeededCouplingsLLp}],{"3","2"},{"GTauMugamma","BRTauMugamma"},spheno];
 
-(* Z -> l l' *)
+(* Z \[Rule] l l' *)
 
 WriteString[spheno,"\n! *****  Z -> l l' ***** \n\n"];
 

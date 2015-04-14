@@ -16,7 +16,13 @@ MINPAR={{1,LambdaIN},
 ParametersToSolveTadpoles = {mu2, MS};
 
 BoundaryLowScaleInput={
- {v,Sqrt[4 mz2/(g1^2+g2^2)]},
+ {v, vSM}, 
+ {Ye, YeSM},
+ {Yd, YdSM},
+ {Yu, YuSM},
+ {g1, g1SM},
+ {g2, g2SM},
+ {g3, g3SM},
  {vS,vSin},
  {L,LambdaIN},
  {LS,LambdaSinput},

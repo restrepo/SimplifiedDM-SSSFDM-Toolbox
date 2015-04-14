@@ -53,26 +53,26 @@ Return[{0,rVVV,rVVVV,rPot,rKin}];
 (*
 CreateTermList[terms_]:=Block[{i,j,pos,temp,fields,list={},coup,numerical,potenz,structure},
 If[Head[terms]===Plus,
-For[i=1,i<=Length[terms],
-fields = List@@Select[List@@terms[[i]],(Head[#]==Dot)&][[1]];
+For[i=1,i\[LessEqual]Length[terms],
+fields = List@@Select[List@@terms[[i]],(Head[#]\[Equal]Dot)&][[1]];
 (* numerical = Cases[List@@terms[[i]],x_?NumberQ,2]; *)
 numerical = Cases[List@@terms[[i]],x_?NumberQ,1]; (* CHECK *)
 structure=Flatten[{Cases[List@@terms[[i]],x_Delta],Cases[List@@terms[[i]],x_epsTensor],Cases[List@@terms[[i]],x_CG]}];
 If[numerical==={},numerical=1;,numerical=numerical[[1]]];
 If[structure=!={},numerical=Times@@structure numerical];
-coupling=List@@Select[List@@terms[[i]],(Head[#]=!=Dot && Head[#]==Symbol)&];
+coupling=List@@Select[List@@terms[[i]],(Head[#]=!=Dot && Head[#]\[Equal]Symbol)&];
 Pcoupling=List@@Select[List@@terms[[i]],(NumericQ[#]===False&&Head[#]===Power)&,99];
 If[Pcoupling==={},potenz=1;,potenz=Pcoupling[[1,2]]; coupling=Join[coupling,{Pcoupling[[1,1]]}];];
 If[coupling==={}, coupling=NoName;,coupling=coupling[[1]];];
 list=Join[list,{{numerical,coupling,fields,potenz}}];
 i++;];,
-fields = List@@Select[List@@terms,(Head[#]==Dot)&][[1]];
+fields = List@@Select[List@@terms,(Head[#]\[Equal]Dot)&][[1]];
 (* numerical = Cases[List@@terms,x_?NumberQ,2]; *)
 numerical = Cases[List@@terms,x_?NumberQ,1]; (* CHECK *)
 structure=Flatten[{Cases[List@@terms,x_Delta],Cases[List@@terms,x_epsTensor],Cases[List@@terms,x_CG]}];
 If[numerical==={},numerical=1;,numerical=numerical[[1]]];
 If[structure=!={},numerical=Times@@structure numerical];
-coupling=List@@Select[List@@terms,(Head[#]=!=Dot && Head[#]==Symbol && Head[#]=!=Delta && Head[#]=!=epsTensor && Head[Head[#]]=!=CG)&];
+coupling=List@@Select[List@@terms,(Head[#]=!=Dot && Head[#]\[Equal]Symbol && Head[#]=!=Delta && Head[#]=!=epsTensor && Head[Head[#]]=!=CG)&];
 Pcoupling=List@@Select[List@@terms,(NumericQ[#]===False&&Head[#]===Power)&,99];
 If[Pcoupling==={},potenz=1;,potenz=Pcoupling[[1,2]]; coupling=Join[coupling,{Pcoupling[[1,1]]}];];
 If[coupling==={}, coupling=NoName;,coupling=coupling[[1]];];
@@ -154,9 +154,21 @@ Message[Lagrange::ViolationGlobal ,Global[[i1,2]]];
 SA`CheckGlobalLagLevel=False;
 i1++;];
 
-IndStructure=MakeIndexStructureRGE[withHead];
 
+If[FreeQ[entry[[1]],Delta] && FreeQ[entry[[1]],epsTensor] && FreeQ[entry[[1]],CG],
+temp=MakeIndexStructure[withHead] /. subFieldsOne;,
+temp=entry[[1]]/. subFieldsOne;
+];
 coup = genTest[entry[[2]],fields,False]^entry[[4]];
+
+If[SupersymmetricModel===False,
+
+GenerateCGCsForBrokenGroups[temp,fields,particles,invFields,withHead]; 
+IndStructure=MakeIndexStructureRGEnonSUSY[withHead] /.subCGCBroken;
+ExtractSymmetryOfParametersNS[entry[[2]],withHead,IndStructure];
+(*
+IndStructure=temp*GetNormalizationFactors[invFields];
+*)
 
 (* adapted sign *)
 Switch[Plus@@(getPartCode[getBlank[#]&/@fields]),
@@ -170,6 +182,7 @@ SA`SSlist=Join[SA`SSlist,{{List@@(particles /. sum[a__]->1),-coup  IndStructure 
 SA`SSSlist=Join[SA`SSSlist,{{List@@(particles /. sum[a__]->1),-coup  IndStructure entry[[1]]}}];,
 400,
 SA`SSSSlist=Join[SA`SSSSlist,{{List@@(particles /. sum[a__]->1),-coup  IndStructure entry[[1]]}}];
+];
 ];
 
 If[FreeQ[entry[[1]],Delta] && FreeQ[entry[[1]],epsTensor] && FreeQ[entry[[1]],CG],
@@ -231,3 +244,5 @@ del[x_ArcTan,y_]:=0;
 del[x_ArcSin,y_]:=0;
 del[x_ArcCos,y_]:=0;
 del[x_,y_]:=Deri[x,y] /; (FreeQ[SFields,RE[x]]===False || FreeQ[FFields,RE[y]]===False);
+
+

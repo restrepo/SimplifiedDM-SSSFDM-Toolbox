@@ -185,7 +185,7 @@ _,Return[getDynkinLabelsSusyno[SusynoForm[group],dim]];
 
 getDynkinLabels[dim_,N_Integer]:=Block[{},
 If[Abs[dim]===1,Return[{0}]];
-(* If[dim==-2 && N==2,Return[{-1}];]; *)
+(* If[dim\[Equal]-2 && N\[Equal]2,Return[{-1}];]; *)
 If[N===2 && dim < 0,
 Return[-YoungToDynkin[getYoungTableaux[dim,N],N]];,
 Return[YoungToDynkin[getYoungTableaux[dim,N],N]];
@@ -308,7 +308,13 @@ CG[SU[2],{{1},{-1}}][a__]=Delta[a];
  CG[SU[2],{{1},{1},{1},{1}}][a_,b_,c_,d_]:=epsTensor[a,b] epsTensor[c,d]; 
 
 (*
-CG[SU[2],{{s1_ },{s2_ },{s3_ },{s4_ }}][a_,b_,c_,d_]:=CG[SU[2],{{s1},{s2}}][a,b]CG[SU[2],{{s3},{s4}}][c,d] /; (Abs[s1]==1 && Abs[s2]== 1&& Abs[s3]==1 && Abs[s4]==1);
+CG[SU[2],{{1},{2},{1}}][a_Integer,b_Integer,c_Integer]:={{{0,0},{0,1/Sqrt[2]},{-1,0}},{{0,-1},{1/Sqrt[2],0},{0,0}}}[[a,b,c]];
+CG[SU[2],{{-1},{2},{1}}][a_Integer,b_Integer,c_Integer]:={{{0,-1},{1/Sqrt[2],0},{0,0}},{{0,0},{0,-(1/Sqrt[2])},{1,0}}}[[a,b,c]];
+SA`KnonwCG=Join[SA`KnonwCG,{CG[SU[2],{{1},{2},{1}}],CG[SU[2],{{-1},{2},{1}}]}];
+*)
+
+(*
+CG[SU[2],{{s1_ },{s2_ },{s3_ },{s4_ }}][a_,b_,c_,d_]:=CG[SU[2],{{s1},{s2}}][a,b]CG[SU[2],{{s3},{s4}}][c,d] /; (Abs[s1]\[Equal]1 && Abs[s2]\[Equal] 1&& Abs[s3]\[Equal]1 && Abs[s4]\[Equal]1);
 
 CG[SU[2],{{2},{2},{2},{2}}][a_,b_,c_,d_]:=InvMat[200][a,b] InvMat[200][c,d];
 CG[SU[2],{{1},{1},{2},{2}}][a_,b_,c_,d_]:=epsTensor[a,b] InvMat[200][c,d];
@@ -336,9 +342,14 @@ CG[SU[3],{{1,0},{1,0},{1,0}}]=epsTensor;
 ];
 
 GenerateDynkinCasimir[group_,dyn_]:=Block[{i,j,k,casimir,dim,dimAdjoint},
+If[dyn==={-1} && group===SU[2],
+casimir=Casimir[SusynoForm[group],-dyn];
+dim=DimR[SusynoForm[group],-dyn];
+dimAdjoint=getDimAdjoint[group];,
 casimir=Casimir[SusynoForm[group],dyn];
 dim=DimR[SusynoForm[group],dyn];
 dimAdjoint=getDimAdjoint[group];
+];
 SA`Casimir[dyn,group]=casimir;
 SA`Dynkin[dyn,group]=casimir*dim/dimAdjoint;
 
@@ -384,7 +395,8 @@ Return[];
 If[group==SU[2] && dyn=={2},
 (* CG[group,{dyn,dyn}][a_,b_]:= Delta[a,b];   *)
 Delta3[a_Integer,b_Integer]:={{0,0,1},{0,-1,0},{1,0,0}}[[a,b]];
-Generator[SU[2],{2}][a__Integer]:=Normal[RepMatrices[SusynoForm[SU[2]],{2}]][[a]]; 
+(* Generator[SU[2],{2}][a__Integer]:=Normal[RepMatrices[SusynoForm[SU[2]],{2}]][[a]];  *)
+Generator[SU[2],{2}][a__Integer]:={{{0,-(1/Sqrt[2]),1/Sqrt[2]},{-(1/Sqrt[2]),0,0},{1/Sqrt[2],0,0}},{{0,-(I/Sqrt[2]),-(I/Sqrt[2])},{I/Sqrt[2],0,0},{I/Sqrt[2],0,0}},{{0,0,0},{0,1,0},{0,0,-1}}}[[a]];
 Return[];
 ];
 If[group==SU[3] && dyn=={1,0},

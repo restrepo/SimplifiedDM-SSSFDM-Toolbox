@@ -49,7 +49,7 @@ $sarahRGEsDir=ToFileName[{$sarahDir,"RGEs"}]
 $sarahInputDir=ToFileName[{$sarahDir,"Input"}]
 $sarahSusynoDir=ToFileName[{$sarahDir,"Susyno"}]
 
-SA`Version = "4.5.1";
+SA`Version = "4.5.5";
 
 
 
@@ -256,6 +256,7 @@ Print[StyleForm["Model files loaded   ","Section",FontSize->12]];
 Print["  Model    : ",StyleForm[Model`Name,"Section",FontSize->10] ];
 Print["  Author(s): ",StyleForm[Model`Authors,"Section",FontSize->10]];
 Print["  Date     : ",StyleForm[Model`Date,"Section",FontSize->10]];
+(* Print["  Superpotential     : ",StyleForm[SuperPotential,"Section",FontSize->10]]; *)
 (*Print["*****************************"];*)
 
 

@@ -9,7 +9,7 @@ End Function C00g
 
 Real(dp) Function C0g(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C0
@@ -69,7 +69,7 @@ End Function C0g
 
 Real(dp) Function C1g(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C1
@@ -91,7 +91,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C1g=1/(6._dp*m2) - (-1 + r)/(8._dp*m2) + (-1 + r)**2/(10._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C1g=1.e10
+        C1g=large
      Else 
         C1g=(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m2*(-1 + r)**3)
     End if 
@@ -105,7 +105,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C1g=1/(6._dp*m1) - (-1 + r)/(8._dp*m1) + (-1 + r)**2/(10._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C1g=1.e10
+        C1g=large
      Else 
         C1g=(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m1*(-1 + r)**3)
      End if 
@@ -129,7 +129,7 @@ End Function C1g
 
 Real(dp) Function C2g(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C2
@@ -165,7 +165,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C2g=1/(6._dp*m1) - (-1 + r)/(8._dp*m1) + (-1 + r)**2/(10._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C2g=1.e10
+        C2g=large
      Else 
         C2g=(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m1*(-1 + r)**3)
      End if 
@@ -189,7 +189,7 @@ End Function C2g
 
 Real(dp) Function C11g(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C11
@@ -211,7 +211,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C11g=-1/(12._dp*m2) + (-1 + r)/(15._dp*m2) - (-1 + r)**2/(18._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C11g=1.e10
+        C11g=large
      Else 
         C11g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(18._dp*m2*(-1 + r)**4)
     End if 
@@ -225,7 +225,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C11g=-1/(12._dp*m1) + (-1 + r)/(15._dp*m1) - (-1 + r)**2/(18._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C11g=1.e10
+        C11g=large
      Else 
         C11g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(18._dp*m1*(-1 + r)**4)
      End if 
@@ -249,7 +249,7 @@ End Function C11g
 
 Real(dp) Function C12g(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C12
@@ -285,7 +285,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C12g=-1/(24._dp*m1) + (-1 + r)/(30._dp*m1) - (-1 + r)**2/(36._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C12g=1.e10
+        C12g=large
      Else 
         C12g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(36._dp*m1*(-1 + r)**4)
      End if 
@@ -309,7 +309,7 @@ End Function C12g
 
 Real(dp) Function C22g(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C22
@@ -345,7 +345,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C22g=-1/(12._dp*m1) + (-1 + r)/(15._dp*m1) - (-1 + r)**2/(18._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C22g=1.e10
+        C22g=large
      Else 
         C22g=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(18._dp*m1*(-1 + r)**4)
      End if 
@@ -369,7 +369,7 @@ End Function C22g
 
 Real(dp) Function C2C12C22(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C12 + C2 + C22
@@ -429,7 +429,7 @@ End Function C2C12C22
 
 Real(dp) Function C1C12C11(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C1 + C11 + C12
@@ -451,7 +451,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C1C12C11=1/(24._dp*m2) - (-1 + r)/(30._dp*m2) + (-1 + r)**2/(36._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C1C12C11=1.e10
+        C1C12C11=large
      Else 
         C1C12C11=((-1 + r)*(11 + r*(-7 + 2*r)) - 6*Log(r))/(36._dp*m2*(-1 + r)**4)
     End if 
@@ -489,7 +489,7 @@ End Function C1C12C11
 
 Real(dp) Function C0C1C2(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C0 + C1 + C2
@@ -511,7 +511,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C0C1C2=-1/(6._dp*m2) + (-1 + r)/(8._dp*m2) - (-1 + r)**2/(10._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C0C1C2=1.e10
+        C0C1C2=large
      Else 
         C0C1C2=-(3 - 4*r + r**2 + 2*Log(r))/(4._dp*m2*(-1 + r)**3)
     End if 
@@ -549,7 +549,7 @@ End Function C0C1C2
 
 Real(dp) Function C12C11C2(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  2 C11 + 2 C12 - C2
@@ -571,7 +571,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C12C11C2=-5/(12._dp*m2) + (4*(-1 + r))/(15._dp*m2) - (7*(-1 + r)**2)/(36._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C12C11C2=1.e10
+        C12C11C2=large
      Else 
         C12C11C2=(-((-1 + r)*(7 + r*(-29 + 16*r))) + 6*(2 + 3*(-2 + r)*r)*Log(r))/(18._dp*m2*(-1 + r)**4)
     End if 
@@ -585,7 +585,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C12C11C2=-5/(12._dp*m1) + (13*(-1 + r))/(40._dp*m1) - (4*(-1 + r)**2)/(15._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C12C11C2=1.e10
+        C12C11C2=large
      Else 
         C12C11C2=-((-1 + r)*(31 + r*(-26 + 7*r)) + 6*(-3 + r)*Log(r))/(12._dp*m1*(-1 + r)**4)
      End if 
@@ -609,7 +609,7 @@ End Function C12C11C2
 
 Real(dp) Function C12C22C1(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  -C1 + 2 C12 + 2 C22
@@ -631,7 +631,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C12C22C1=-5/(12._dp*m2) + (29*(-1 + r))/(120._dp*m2) - (-1 + r)**2/(6._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C12C22C1=1.e10
+        C12C22C1=large
      Else 
         C12C22C1=(-((-1 + r)*(1 + r*(-2 + 13*r))) + 6*(1 + r*(-3 + 4*r))*Log(r))/(12._dp*m2*(-1 + r)**4)
     End if 
@@ -645,7 +645,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C12C22C1=-5/(12._dp*m1) + (13*(-1 + r))/(40._dp*m1) - (4*(-1 + r)**2)/(15._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C12C22C1=1.e10
+        C12C22C1=large
      Else 
         C12C22C1=-((-1 + r)*(31 + r*(-26 + 7*r)) + 6*(-3 + r)*Log(r))/(12._dp*m1*(-1 + r)**4)
      End if 
@@ -669,7 +669,7 @@ End Function C12C22C1
 
 Real(dp) Function C12C22(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C12 + C22
@@ -705,7 +705,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C12C22=-1/(8._dp*m1) + (-1 + r)/(10._dp*m1) - (-1 + r)**2/(12._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C12C22=1.e10
+        C12C22=large
      Else 
         C12C22=(-((-1 + r)*(11 + r*(-7 + 2*r))) + 6*Log(r))/(12._dp*m1*(-1 + r)**4)
      End if 
@@ -729,7 +729,7 @@ End Function C12C22
 
 Real(dp) Function C2C12(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C12 + C2
@@ -765,7 +765,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C2C12=1/(8._dp*m1) - (11*(-1 + r))/(120._dp*m1) + (13*(-1 + r)**2)/(180._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C2C12=1.e10
+        C2C12=large
      Else 
         C2C12=((-1 + r)*(16 + r*(-29 + 7*r)) + 6*(-2 + 3*r)*Log(r))/(36._dp*m1*(-1 + r)**4)
      End if 
@@ -789,7 +789,7 @@ End Function C2C12
 
 Real(dp) Function C1C2(m1in,m2in,m3in) 
 Real(dp),Intent(in)::m1in,m2in,m3in 
-Real(dp)::eps=1E-10_dp,large=1E+5_dp,epsR=1E-03_dp 
+Real(dp)::eps=1E-10_dp,large=0._dp,epsR=1E-03_dp 
 Real(dp)::m1,m2,r 
 
 !  C1 + C2
@@ -811,7 +811,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
      If ((1._dp-r).lt.epsR) Then 
         C1C2=1/(3._dp*m2) - (5*(-1 + r))/(24._dp*m2) + (3*(-1 + r)**2)/(20._dp*m2)
      Elseif (Abs(r).lt.eps) Then 
-        C1C2=1.e10
+        C1C2=large
      Else 
         C1C2=(1 - 4*r + 3*r**2 + (2 - 4*r)*Log(r))/(4._dp*m2*(-1 + r)**3)
     End if 
@@ -825,7 +825,7 @@ Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3
      If ((1._dp-r).lt.epsR) Then 
         C1C2=1/(3._dp*m1) - (-1 + r)/(4._dp*m1) + (-1 + r)**2/(5._dp*m1)
      Elseif (Abs(r).lt.eps) Then 
-        C1C2=1.e10
+        C1C2=large
      Else 
         C1C2=(3 - 4*r + r**2 + 2*Log(r))/(2._dp*m1*(-1 + r)**3)
      End if 

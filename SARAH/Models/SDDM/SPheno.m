@@ -34,7 +34,14 @@ BoundaryLowScaleInput={
   {LamS12,LamS12IN},
   {LamS21,LamS21IN},
   {muS,muSIN},
-  {mu22, mu22IN}
+  {mu22, mu22IN},
+  {v, vSM}, 
+ {Ye, YeSM},
+ {Yd, YdSM},
+ {Yu, YuSM},
+ {g1, g1SM},
+ {g2, g2SM},
+ {g3, g3SM}
 };
 
 

@@ -14,13 +14,18 @@ ParametersToSolveTadpoles = {MHD,MHU};
 RealParameters = {TanBeta};
 
 BoundaryLowScaleInput={
-(* {vd,Sqrt[4 mz2/(g1^2+g2^2)]*Cos[ArcTan[TanBeta]]},
- {vu,Sqrt[4 mz2/(g1^2+g2^2)]*Sin[ArcTan[TanBeta]]}, *)
  {Lambda1,Lambda1IN},
  {Lambda2,Lambda2IN},
  {Lambda3,Lambda3IN},
  {Lambda4,Lambda4IN},
- {Lambda5,Lambda5IN} 
+ {Lambda5,Lambda5IN},
+ {v, vSM}, 
+ {Ye, YeSM},
+ {Yd, YdSM},
+ {Yu, YuSM},
+ {g1, g1SM},
+ {g2, g2SM},
+ {g3, g3SM}
 };
 
 ListDecayParticles = {Fu,Fe,Fd,hh,H0,A0,Hp};

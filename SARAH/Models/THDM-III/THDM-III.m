@@ -1,7 +1,7 @@
 Off[General::spell]
 
-Model`Name = "THDMII";
-Model`NameLaTeX ="Two Higgs Doublet Model II";
+Model`Name = "THDMIII";
+Model`NameLaTeX ="Two Higgs Doublet Model III";
 Model`Authors = "F.Staub";
 Model`Date = "2014-11-06";
 

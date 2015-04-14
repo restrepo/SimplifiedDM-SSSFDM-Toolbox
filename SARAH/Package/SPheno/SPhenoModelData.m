@@ -596,7 +596,7 @@ WriteString[ModelData,SPhenoForm[SPhenoWidthBR[[i]]]<>" = 0._dp \n"];
 i++;];
 
 (*
-For[i=1,i<=Length[ListOfLowEnergyNames],
+For[i=1,i\[LessEqual]Length[ListOfLowEnergyNames],
 WriteString[ModelData,ToString[ListOfLowEnergyNames[[i]]]<>" = 0._dp \n"];
 i++;];
 *)
@@ -835,10 +835,10 @@ WriteString[ModelData,"End Function \n"];
 
 (*
 WriteClebschGordan[file_]:=Block[{i,j,temp},
-For[i=1,i<=Length[SA`ClebschGordon],
-WriteString[file,"Complex(dp), Parameter :: CG"<>ToString[i]<>"("<>StringReplace[ToString[Table[DimR[SusynoForm[SA`ClebschGordon[[i,1,1]]],SA`ClebschGordon[[i,1,2,j]]],{j,1,Length[SA`ClebschGordon[[i,1,2]]]}]],{"{"->"","}"->""}]<>") = Reshape(Source=(/ & \n "];
+For[i=1,i\[LessEqual]Length[SA`ClebschGordon],
+WriteString[file,"Complex(dp), Parameter :: CG"<>ToString[i]<>"("<>StringReplace[ToString[Table[DimR[SusynoForm[SA`ClebschGordon[[i,1,1]]],SA`ClebschGordon[[i,1,2,j]]],{j,1,Length[SA`ClebschGordon[[i,1,2]]]}]],{"{"\[Rule]"","}"\[Rule]""}]<>") = Reshape(Source=(/ & \n "];
 WriteString[file,"&"<>StringDrop[StringDrop[SPhenoForm[Flatten[Transpose/@N[SA`ClebschGordon[[i,2]]]]],5],-1]<>"& \n"];
-WriteString[file,"&/),shape=(/"<>StringReplace[ToString[Table[DimR[SusynoForm[SA`ClebschGordon[[i,1,1]]],SA`ClebschGordon[[i,1,2,j]]],{j,1,Length[SA`ClebschGordon[[i,1,2]]]}]],{"{"->"","}"->""}]<>"/)) \n \n"];
+WriteString[file,"&/),shape=(/"<>StringReplace[ToString[Table[DimR[SusynoForm[SA`ClebschGordon[[i,1,1]]],SA`ClebschGordon[[i,1,2,j]]],{j,1,Length[SA`ClebschGordon[[i,1,2]]]}]],{"{"\[Rule]"","}"\[Rule]""}]<>"/)) \n \n"];
 i++;];
 ];
 *)
@@ -921,7 +921,7 @@ WriteString[ModelData,"End Function SQuiver \n \n"];
 
 WriteInitClebschGordan[file_]:=Block[{i,j,temp},
 For[i=1,i<=Length[SA`ClebschGordon],
-WriteString[file,"Complex(dp) :: CG"<>ToString[i]<>"("<>StringReplace[ToString[Table[DimR[SusynoForm[SA`ClebschGordon[[i,1,1]]],SA`ClebschGordon[[i,1,2,j]]],{j,1,Length[SA`ClebschGordon[[i,1,2]]]}]],{"{"->"","}"->""}]<>") \n "];
+WriteString[file,"Complex(dp) :: CG"<>ToString[i]<>"("<>StringReplace[ToString[Table[DimR[SusynoForm[SA`ClebschGordon[[i,1,1]]],Abs[SA`ClebschGordon[[i,1,2,j]]]],{j,1,Length[SA`ClebschGordon[[i,1,2]]]}]],{"{"->"","}"->""}]<>") \n "];
 i++;];
 ];
 

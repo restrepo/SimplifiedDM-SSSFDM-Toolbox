@@ -29,7 +29,7 @@ ParameterDefinitions = {
         LesHouches -> {HMIX,2}}},                                        
 
 {L,  { Description -> "SM Higgs Selfcouplings",
-               DependenceNum -> Mass[hh]^2/(2 v^2)},
+               DependenceNum -> Mass[hh]^2/(v^2)},
         LesHouches -> {HMIX,1} },
 
 {v,          { Description -> "EW-VEV",

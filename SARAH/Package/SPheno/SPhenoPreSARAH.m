@@ -482,7 +482,7 @@ c3=CheckFermionFlipPS[{External[3], External[2],AntiField[Internal[3]]}/.diagram
 ind3=c3[[2]];c3=c3[[1]];
 ];
 If[nf===4,
-ind4 = MakeIndicesCouplingPS[{External[4],Index[4]}/.diagrams[[i,2]],{Propagator,iProp}/.diagrams[[i,2]],{External[3],Index[3]}/.diagrams[[i,2]],c4[[2]]];
+ind4 = MakeIndicesCouplingPS[{External[4],Index[4]}/.diagrams[[i,2]],{AntiField[Propagator],iProp}/.diagrams[[i,2]],{External[3],Index[3]}/.diagrams[[i,2]],c4[[2]]];
 c4=CheckFermionFlipPS[{Propagator,External[4],External[3]}/.diagrams[[i,2]],c4,ind4];
 ind4=c4[[2]];c4=c4[[1]];
 ];,
@@ -503,7 +503,7 @@ ind2=c2[[2]];c2=c2[[1]];
 c3=CheckFermionFlipPS[{External[2],Internal[1],AntiField[Internal[2]]}/.diagrams[[i,2]],c3,ind3];(* NEW FLIP *)
 ind3=c3[[2]];c3=c3[[1]];
 If[nf===4,
-ind4 = MakeIndicesCouplingPS[{External[4],Index[4]}/.diagrams[[i,2]],{Propagator,iProp}/.diagrams[[i,2]],{External[3],Index[3]}/.diagrams[[i,2]],c4[[2]]];
+ind4 = MakeIndicesCouplingPS[{External[4],Index[4]}/.diagrams[[i,2]],{AntiField[Propagator],iProp}/.diagrams[[i,2]],{External[3],Index[3]}/.diagrams[[i,2]],c4[[2]]];
 c4=CheckFermionFlipPS[{AntiField[Propagator],External[4],External[3]}/.diagrams[[i,2]],c4,ind4];
 ind4=c4[[2]];c4=c4[[1]];
 ];

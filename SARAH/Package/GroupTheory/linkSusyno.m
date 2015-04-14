@@ -39,7 +39,7 @@ For[i=1,i<=Length[fields],
 pos=Position[Fields,fields[[i]]][[1,1]];
 reps=Join[reps,{getDynkinLabels[Fields[[pos,3+group]],Gauge[[group,2]]]}];
 i++;];
-(* res=(Apply[Inv[SusynoForm[Gauge[[group,2]]]],reps] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants); *)
+(* res=(Apply[Inv[SusynoForm[Gauge[[group,2]]]],reps] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants); *)
 reps=DeleteCases[reps,{0}];
 res=Invariants[SusynoForm[Gauge[[group,2]]],reps];
 If[res=={} && reps=!={},
@@ -55,19 +55,19 @@ Return[1];,
 dims=Table[DimR[SusynoForm[group],Abs[reps[[i]]]],{i,1,Length[reps]}];
 repsNC=Abs/@reps;
 (*
-If[group=!=SU[2] || (Length[reps]==2 && reps[[1]]==={2} && reps[[2]]==={2}),
+If[group=!=SU[2] || (Length[reps]\[Equal]2 && reps[[1]]==={2} && reps[[2]]==={2}),
 reps[[-1]]=ConjugatedRep[reps[[-1]],group];
-temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants);, 
+temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants);, 
 If[group===SU[2] && reps[[1]]==={-1},
 reps=Abs[reps];
-temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants);, 
-temp=(Apply[Inv[SusynoForm[group]],reps] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants);  
+temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants);, 
+temp=(Apply[Inv[SusynoForm[group]],reps] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants);  
 ];
 ]; *)
 If[group===SU[2],
 For[i=1,i<=Length[reps],
 If[reps[[i]]==={-1},
-subSU2=Join[subSU2,{NF[i][1]->NF[i][2],NF[i][2]->-NF[i][1]}];
+subSU2=Join[subSU2,{NF[i][1]->NF[i][2],NF[i][2]->NF[i][1]}];
 ];
 i++;];
 subSU2=subSU2/.{NF[1]->a,NF[2]->b,NF[3]->c,NF[4]->d};
@@ -78,14 +78,19 @@ If[reps[[i,1]]<0,conjugations=Join[conjugations,{True}];,conjugations=Join[conju
 i++;];
 If[Length[reps]===4,
 temp=Get4Invariants[group,repsNC];
+
 If[FreeQ[temp,CG]==False || FreeQ[temp,Delta]==False,
+
 SA`RnR++;
 Off[Part::"pspec"];
+Off[Part::"pkspec1"];
 ReleaseHold[Hold[Set[CG[group,repsNC][i1_,i2_,i3_,i4_],RHS]]/. RHS -> temp[[1]] ];
 ReleaseHold[Hold[Set[CG[group,Reverse/@repsNC][i1_,i2_,i3_,i4_],RHS]]/. RHS -> temp[[1]] ];
 ReleaseHold[Hold[Set[InvMat[SA`RnR-1][i1_,i2_,i3_,i4_],RHS]]/. RHS -> temp[[2]] ];
-On[Part::"pspec"];
+On[Part::"pspec"]; 
+On[Part::"pkspec1"];
 Return[InvMat[SA`RnR-1]];
+
 ];,
 temp=Invariants[SusynoForm[group],Abs/@reps,Conjugations->conjugations];
 ];
@@ -109,18 +114,34 @@ temp =2*temp;
 result=Table[Coefficient[temp,a[i]b[j]c[k] d[l]],{i,1,dims[[1]]},{j,1,dims[[2]]},{k,1,dims[[3]]},{l,1,dims[[4]]}];
 ];
 sign=Sign[DeleteCases[Flatten[result],0][[1]]];
-result=sign*result;
+(* result=sign*result; *)
+
+
  SA`NonZeroEntries = Join[SA`NonZeroEntries,{{InvMat[SA`RnR], Take[Position[result,x_?((Abs[#]=!=0 && NumberQ[#])&)][[1]],{1,Length[reps]}]}}];
 
 Off[Part::"pspec"];
 ReleaseHold[Hold[Set[LHS[a__Integer],RHS[[a]]]]/. LHS -> InvMat[SA`RnR] /. RHS -> result ];
-ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS -> InvMat[SA`RnR] /. LHS -> CG[group,repsNC] ];
-ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS -> InvMat[SA`RnR] /. LHS -> CG[group,Reverse/@repsNC] ];
+(*
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS \[Rule] InvMat[SA`RnR] /. LHS \[Rule] CG[group,repsNC] ];
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS \[Rule] InvMat[SA`RnR] /. LHS \[Rule] CG[group,Reverse/@repsNC] ];
+*)
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS -> InvMat[SA`RnR] /. LHS -> CG[group,reps] ];
+ReleaseHold[Hold[Set[LHS[a__Integer],RHS[a]]]/. RHS -> InvMat[SA`RnR] /. LHS -> CG[group,Reverse/@reps] ];
+(* subCGCBroken=Join[subCGCBroken,{CG[group,repsNC] ->InvMat[SA`RnR]}]; *)
 On[Part::"pspec"];
-SA`RnR++;
+SA`RnR++; 
+
+(*
 SA`ClebschGordon=Join[SA`ClebschGordon,{{CG[group,repsNC],result}}];
 SA`KnonwCG=Join[SA`KnonwCG,{CG[group,repsNC]}];
 CheckSymmetryCG[CG[group,repsNC]];
+*)
+
+SA`ClebschGordon=Join[SA`ClebschGordon,{{CG[group,reps],result}}];
+SA`KnonwCG=Join[SA`KnonwCG,{CG[group,reps]}];
+CheckSymmetryCG[CG[group,reps]];
+
+
 
 If[Length[reps]===2 && reps[[1]]===reps[[2]] && reps[[2]]=!=repsNC[[2]],
 CG[group,repsNC][a_,b_]=Delta[a,b];,
@@ -156,13 +177,13 @@ Return[{CG[groups,{reps[[p[[i,1,1]]]],reps[[p[[i,1,2]]]]}][fields[[p[[i,1,1]]]],
 CheckInvariants[group_,repIN_]:=Block[{temp,reps},
 reps=repIN;
 (*
-If[group=!=SU[2] || (Length[reps]==2 && reps[[1]]==={2} && reps[[2]]==={2}),
+If[group=!=SU[2] || (Length[reps]\[Equal]2 && reps[[1]]==={2} && reps[[2]]==={2}),
 reps[[-1]]=ConjugatedRep[reps[[-1]],group];
-temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants);, 
+temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants);, 
 If[group===SU[2] && reps[[1]]==={-1},
 reps=Abs[reps];
-temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants);, 
-temp=(Apply[Inv[SusynoForm[group]],reps] /. Inv[a_][b__]->Inv[a,b]/. Inv->Invariants);  
+temp=(Append[Apply[Inv[SusynoForm[group]],reps],True] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants);, 
+temp=(Apply[Inv[SusynoForm[group]],reps] /. Inv[a_][b__]\[Rule]Inv[a,b]/. Inv\[Rule]Invariants);  
 ];
 ]; *)
 temp=Invariants[SusynoForm[group],Abs/@reps];
