@@ -3,7 +3,7 @@
 # This script is automatically generated from butler.in by configure,
 # DO NOT EDIT
 
-pkgroot="."
+pkgroot=$(pwd)
 enable_calchep="yes"
 enable_micromegas="yes"
 enable_spheno="yes"
