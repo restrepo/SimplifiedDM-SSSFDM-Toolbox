@@ -1,5 +1,5 @@
 : 
-  CALCHEP=/home/restrepo/prog/toolbox/toolbox/micromegas/CalcHEP_src 
+  CALCHEP=/home/restrepo/prog/toolbox/tmp/BSM-Tool-Box/micromegas/CalcHEP_src 
 #--------------------
 
 if(test $# -ne 1) then 

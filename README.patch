@@ -1,0 +1,16 @@
+--- README	2015-04-13 14:02:40.943205868 -0500
++++ ../../toolbox/README	2015-03-28 19:54:51.086534262 -0500
+@@ -1,3 +1,13 @@
++This version was configured and is updated when new version of the official Toolbox at:
++
++https://sarah.hepforge.org/Toolbox.html 
++
++according to the instructions in file GIT_MANAGEMENT
++
++A nosetests script is also included: test_toolbox.py
++
++===  OFFICIAL README STARTS HERE ==========0
++
+ This README file describes the contents and usage of the SUSY toolbox package.
+ 
+ 1) Content

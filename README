@@ -1,13 +1,3 @@
-This version was configured and is updated when new version of the official Toolbox at:
-
-https://sarah.hepforge.org/Toolbox.html 
-
-according to the instructions in file GIT_MANAGEMENT
-
-A nosetests script is also included: test_toolbox.py
-
-===  OFFICIAL README STARTS HERE ==========0
-
 This README file describes the contents and usage of the SUSY toolbox package.
 
 1) Content

@@ -1,0 +1,11 @@
+--- Makefile	2015-04-11 19:21:17.105839583 -0500
++++ ../toolbox-1.2.9/Makefile	2015-04-13 09:57:33.363457915 -0500
+@@ -1,6 +1,6 @@
+-subdirs =  "./SPHENO" "./calchep" "./micromegas"
++subdirs =  "/home/restrepo/prog/toolbox/tmp/toolbox-1.2.9/SPHENO" "/home/restrepo/prog/toolbox/tmp/toolbox-1.2.9/calchep" "/home/restrepo/prog/toolbox/tmp/toolbox-1.2.9/micromegas"
+ subdirs_install = 
+-subdirs_clean =  "./$SPHENO" "./calchep" "./micromegas"
++subdirs_clean =  "/home/restrepo/prog/toolbox/tmp/toolbox-1.2.9/SPHENO" "/home/restrepo/prog/toolbox/tmp/toolbox-1.2.9/calchep" "/home/restrepo/prog/toolbox/tmp/toolbox-1.2.9/micromegas"
+ 
+ all: subdirs_all
+ 

@@ -114,7 +114,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring SARAH])
 
-tarball_sarah_prefix=SARAH-4.5.1
+tarball_sarah_prefix=SARAH-4.5.5
 tarball_sarah="${tarball_sarah_prefix}.tar.gz"
 tarball_sarah_path="$TARBALLS/$tarball_sarah"
 
@@ -125,7 +125,7 @@ fi
 CS_PROVIDE_FILE(
    [http://www.hepforge.org/archive/sarah/$tarball_sarah],
    [$tarball_sarah_path],
-   [ec5bd3ff2ee95611c3573e884ffec605])
+   [b5a5691350791acfe74a028244903e68])
 CS_UNTAR([$tarball_sarah_path],[$tarball_sarah_prefix],[SARAH])
 
 dnl #################################################################
@@ -287,7 +287,7 @@ if test "$enable_whizard" = yes; then
    CS_SUBCONFIG([Running WHIZARD configure...])
    whizard_confopts="--disable-lhapdf --disable-stdhep --disable-hepmc"
    whizard_confopts="$whizard_confopts --prefix=\"$whizard_instdir\" FC=\"$FC\""
-   whizard_confipts="$whizard_confopts FCFLAGS=\"$FCFLAGS\""
+   whizard_confopts="$whizard_confopts FCFLAGS=\"$FCFLAGS\""
    oldpwd=`pwd`
    cd $whizard_builddir
    eval "../configure $whizard_confopts" || exit 1
