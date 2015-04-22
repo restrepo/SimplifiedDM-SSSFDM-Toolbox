@@ -3,9 +3,10 @@ Off[General::spell]
 Model`Name = "MSSMCPV";
 Model`NameLaTeX ="MSSM-CPV";
 Model`Authors = "F.Staub";
-Model`Date = "2012-09-01";
+Model`Date = "2015-04-16";
 
 (* 2013-09-01: changing to new conventions for Superfields, Superpotential and global symmetries *)
+(* 2015-04-16: changed handling of complex phases in Higgs sector *)
 
 
 (*-------------------------------------------*)
@@ -75,16 +76,18 @@ DEFINITION[GaugeES][DiracSpinors]={
   Fe2 -> {0, FeR},
   Fv -> {FvL,0}
 };
-        
-        
-          	
+
+
+DEFINITION[GaugeES][Phases]= 
+{    {SHup, Exp[I eta]},
+     {SHu0, Exp[I eta]}
+    }; 
 
 (* ----- VEVs ---- *)
 
 DEFINITION[EWSB][VEVs]= 
   {{SHd0, {vd, 1/Sqrt[2]}, {sigmad, \[ImaginaryI]/Sqrt[2]},{phid,1/Sqrt[2]}},
-   {SHu0, {vu, 1/Sqrt[2]}, {sigmau, \[ImaginaryI]/Sqrt[2]},{phiu,1/Sqrt[2]},{eta}}};
-
+   {SHu0, {vu, 1/Sqrt[2]}, {sigmau, \[ImaginaryI]/Sqrt[2]},{phiu,1/Sqrt[2]}}};
 
  
 (* ---- Mixings ---- *)

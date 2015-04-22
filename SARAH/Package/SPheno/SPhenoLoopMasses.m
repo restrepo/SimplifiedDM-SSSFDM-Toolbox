@@ -134,7 +134,7 @@ i++;];
 
 If[SA`AddOneLoopDecay === True,
 (*
-For[i=1,i<=Length[CorrectionListVectorScalar],
+For[i=1,i\[LessEqual]Length[CorrectionListVectorScalar],
 WriteVectorScalarMixedSE[ToString[CorrectionListVectorScalar[[i,1,1]]]<>ToString[CorrectionListVectorScalar[[i,1,2]]],CorrectionListVectorScalar[[i,1,1]],CorrectionListVectorScalar[[i,1,2]],NeededMassesVS[[i]],NeededCouplingsVS[[i]],CorrectionListVectorScalar[[i]]];
 i++;];
 *)
@@ -461,8 +461,8 @@ WriteString[sphenoLoop, "If (CalculateTwoLoopHiggsMasses) Then \n"];
 WriteString[sphenoLoop, "  If (.not.CalculateMSSM2Loop) Then \n"];
 
 WriteString[sphenoLoop, "  ! Make sure that there are no exactly degenerated masses! \n"];
-ArrayParameters=Select[listAllParameters,(Length[getDimParameters[#]]==2)&];
-For[i=1,i<=Length[ArrayParameters],
+ArrayParameters=Select[listAllParameters,(Length[getDimParameters[#]]\[Equal]2)&];
+For[i=1,i\[LessEqual]Length[ArrayParameters],
 WriteString[sphenoLoop,"   "<>SPhenoForm[ArrayParameters[[i]]]<> "_saveEP ="<>SPhenoForm[ArrayParameters[[i]] ]<>"\n"];
 WriteString[sphenoLoop,"   where (aint(Abs("<>SPhenoForm[ArrayParameters[[i]]]<>")).eq."<>SPhenoForm[ArrayParameters[[i]]]<>") "<>SPhenoForm[ArrayParameters[[i]]]<>"="<>SPhenoForm[ArrayParameters[[i]]]<>"*(1 + "<>ToString[i]<>"*1.0E-12_dp)\n"];
 i++;];
@@ -554,7 +554,7 @@ WriteString[sphenoLoop," Pi2A0 = 0._dp \n"];
 
 (*
 WriteString[sphenoLoop,"   If(GaugelessLimit) Then \n"];
-For[i=1,i<=Length[listBrokenGaugeCouplings],
+For[i=1,i\[LessEqual]Length[listBrokenGaugeCouplings],
 WriteString[sphenoLoop,"   "<>SPhenoForm[listBrokenGaugeCouplings[[i]]]<> " ="<>SPhenoForm[listBrokenGaugeCouplings[[i]]] <>"_saveEP \n"];
 i++;];
 WriteString[sphenoLoop,"   End if \n\n"];
@@ -583,7 +583,7 @@ WriteString[sphenoLoop,"\n\n CASE ( 8 , 9 ) ! Hard-coded routines \n  \n"];
 If[UseHiggs2LoopMSSM==True,
 (*
 WriteString[sphenoLoop,"\n\n  Else ! Slavich's routines \n\n"];
-If[UseHiggs2LoopMSSM==True,
+If[UseHiggs2LoopMSSM\[Equal]True,
 WriteString[sphenoLoop,"vevs_DR(1) = vd \n"];
 WriteString[sphenoLoop,"vevs_DR(2) = vu \n"];
 WriteString[sphenoLoop,"Q2 = GetRenormalizationScale() \n"];
@@ -634,7 +634,7 @@ WriteString[sphenoLoop,"vevs_asat = 1._dp\n"];
 For[ii1=1,ii1<=higgsdim,ii1++,WriteString[sphenoLoop,"vevs_asat("<>ToString[ii1]<>") = "<>SPhenoForm[listVEVs[[ii1]]]<>"\n"];];
 
 (*Now to make sure we have all the correct definitions,and if not then to insert them accordingly...*)
-(*Need lam,LT,MD0,mo2,BO,MO,Mglu (2),ZG (2)*)
+(*Need lam,LT,MD0,mo2,BO,MO,Mglu(2),ZG(2)*)
 
 If[getGenSPheno[Gluino]<2,
 WriteString[sphenoLoop,"Mglu_asat(1) = MGlu\n"];
@@ -1136,7 +1136,7 @@ WriteString[sphenoLoop," If (mass2(i1).Ge.0._dp) Then \n"];
 WriteString[sphenoLoop,"    mass(i1) = sqrt(mass2(i1)) \n"];
 WriteString[sphenoLoop,"  Else \n"];
 (* WriteString[sphenoLoop,"   If (ErrorLevel.Ge.0) Then \n"]; 
-If[FreeQ[GoldstoneGhost,particle]==False,
+If[FreeQ[GoldstoneGhost,particle]\[Equal]False,
 WriteString[sphenoLoop,"   If ((i1.Gt.1).or.(Abs(mass2(i1)).gt.MaxVal(Abs(mass2)))) Then \n"];
 ]; *)
 WriteString[sphenoLoop,"     Write(*,*) 'Warning from routine '//NameOfUnit(Iname) \n"];
@@ -1145,7 +1145,7 @@ WriteString[sphenoLoop,"     Write(*,*) 'generation: ',i1 \n"];
 WriteString[sphenoLoop,"     Write(*,*) 'mass: ',mass2(i1) \n"];
 WriteString[sphenoLoop,"   SignOfMassChanged = .True. \n"];
 (* WriteString[sphenoLoop,"   Call TerminateProgram \n"]; 
-If[FreeQ[GoldstoneGhost,particle]==False,
+If[FreeQ[GoldstoneGhost,particle]\[Equal]False,
 WriteString[sphenoLoop,"   End If \n"];
 ]; *)
 (* WriteString[sphenoLoop,"   End If \n"];
@@ -1617,7 +1617,7 @@ indexScalar=i2;
 If[AddCheckMaxMassInLoops===True,WriteString[sphenoLoop,"If (("<>m12<>".lt.MaxMassLoop).and.("<>m22<>".lt.MaxMassLoop)) Then \n"];];
 Switch[type,
 SSV,
-(* If[FreeQ[GoldstoneGhost,particle]==True ||  FreeQ[GoldstoneGhost,scalarpart]==True, *)
+(* If[FreeQ[GoldstoneGhost,particle]\[Equal]True ||  FreeQ[GoldstoneGhost,scalarpart]\[Equal]True, *)
 	WriteString[sphenoLoop, "F0m2 = Floop(p2,"<>m12<>","<>m22<>") \n"]; (*,
 	WriteString[sphenoLoop, "If ("<>ToString[indexScalar]<>".eq.1) Then \n"];
 	WriteString[sphenoLoop, "F0m2 = Floop(p2,0._dp,"<>m22<>") \n"];
@@ -2418,7 +2418,7 @@ For[k=1,k<=Length[SA`LoopMassesParticle],
 i=Position[ListTree,SPhenoMass[SA`LoopMassesParticle[[k]]]][[1,1]];
 If[FreeQ[SMParticles,ListMassES[[i,1]]] || getGen[ListMassES[[i,1]]]=!=3 || (ListMassES[[i,1]]===Neutrino && FreeQ[massless,Neutrino]),
 
-(* For[i=1,i<=Length[ListTree], *)
+(* For[i=1,i\[LessEqual]Length[ListTree], *)
 dim="("<>ToString[Length[ListTree[[i,3]]]]<>")";
 dim2="("<>ToString[Length[ListTree[[i,3]]]]<>","<>ToString[Length[ListTree[[i,3]]]]<>")";
 If[Length[ListTree[[i,2]]]==0,
@@ -2438,7 +2438,7 @@ dim="";,
 dim = "("<>ToString[getGenSPheno[listNotMixedMasses[[i,1]]]]<>")";
 ];
 
-(*If[Length[Dimensions[listNotMixedMasses[[i,5]]]]==2,
+(*If[Length[Dimensions[listNotMixedMasses[[i,5]]]]\[Equal]2,
 dim="("<>ToString[Length[listNotMixedMasses[[i,5]]]]<>")";,
 dim="";
 ]; *)
@@ -2558,16 +2558,16 @@ i++;];
 
 
 WriteString[sphenoLoop,"\n\n\n"];
-
+(*
 If[SPhenoOnlyForHM=!=True,
-For[i=1,i<=Length[Lvevs],
+For[i=1,i\[LessEqual]Length[Lvevs],
  WriteString[sphenoLoop,"tadpoles("<>ToString[i] <>") = oo16pi2*tadpoles("<>ToString[i] <>") \n"]; 
 i++;];,
-For[i=1,i<=Length[SA`VEVsHOMreal]+Length[SA`VEVsHOMcomplex],
+For[i=1,i\[LessEqual]Length[SA`VEVsHOMreal]+Length[SA`VEVsHOMcomplex],
  WriteString[sphenoLoop,"tadpoles("<>ToString[i] <>") = oo16pi2*tadpoles("<>ToString[i] <>") \n"]; 
 i++;];
-];
-
+]; *)
+ WriteString[sphenoLoop,"tadpoles = oo16pi2*tadpoles \n"]; 
 
 
 
@@ -2667,7 +2667,7 @@ factor = SPhenoForm[2.*contributions[[i,6]]*contributions[[i,5]]];,
 factor = SPhenoForm[1.*contributions[[i,6]]*contributions[[i,5]]];
 ];,
 VVV,
-If[FreeQ[massless,contributions[[i,1]]]==True && FreeQ[massless,contributions[[i,2]]]==True,
+If[FreeQ[massless,contributions[[i,1]]]\[Equal]True && FreeQ[massless,contributions[[i,2]]]\[Equal]True,
 WriteString[sphenoLoop, "B0m2 = - (4._dp*p2+"<>m12<>" +"<>m22<>" )*B0(p2,"<>m12<>","<>m22<>") - 8._dp*B22(p2,"<>m12<>","<>m22<>") \n"];
 WriteString[sphenoLoop,"coup1 = " <>ToString[getSPhenoCoupling[contributions[[i,3]],SPhenoCouplingsLoop][[1,1]]] <>ind1<> "\n"];
 WriteString[sphenoLoop,"    SumI = Abs(coup1)**2*B0m2 \n"];,
@@ -2723,7 +2723,7 @@ VVV,
    WriteString[sphenoLoop,"!    SumI = -SumI*coup1*coup2/(36._dp*p2) \n"];
    WriteString[sphenoLoop, "!B0m2 = 3._dp*(-5._dp*("<>m12<>"-"<>m22<>")**2+16._dp*("<>m12<>"+"<>m22<>")*p2+19._dp*p2**2)*B0(p2,"<>m12<>","<>m22<>")\n"];
    WriteString[sphenoLoop, "! Combinded VVV+VVVV+GGV contribution \n"];
-If[FreeQ[massless,contributions[[i,1]]]==True && FreeQ[massless,contributions[[i,2]]]==True,
+If[FreeQ[massless,contributions[[i,1]]]\[Equal]True && FreeQ[massless,contributions[[i,2]]]\[Equal]True,
 WriteString[sphenoLoop, "!B0m2 = - (4._dp*p2+"<>m12<>" +"<>m22<>" )*B0(p2,"<>m12<>","<>m22<>") - 8._dp*B22(p2,"<>m12<>","<>m22<>") \n"];
 WriteString[sphenoLoop,"!coup1 = " <>ToString[getSPhenoCoupling[contributions[[i,3]],SPhenoCouplingsLoop][[1,1]]] <>ind1<> "\n"];
 WriteString[sphenoLoop,"!    SumI = Abs(coup1)**2*B0m2 \n"];,
@@ -2743,7 +2743,7 @@ factor = SPhenoForm[2.*contributions[[i,6]]*contributions[[i,5]]];,
 factor = SPhenoForm[1.*contributions[[i,6]]*contributions[[i,5]]];
 ];,
 SVV, 
-(* If[FreeQ[massless,contributions[[i,1]]]==True&&FreeQ[massless,contributions[[i,2]]]==True, *)
+(* If[FreeQ[massless,contributions[[i,1]]]\[Equal]True&&FreeQ[massless,contributions[[i,2]]]\[Equal]True, *)
    WriteString[sphenoLoop, "B0m2 = B0(p2,"<>m12<>","<>m22<>") \n"];
    WriteString[sphenoLoop,"coup1 = " <>ToString[getSPhenoCoupling[contributions[[i,3]],SPhenoCouplingsLoop][[1,1]]] <>ind1<> "\n"];
    WriteString[sphenoLoop,"    SumI = Abs(coup1)**2*B0m2 \n"];

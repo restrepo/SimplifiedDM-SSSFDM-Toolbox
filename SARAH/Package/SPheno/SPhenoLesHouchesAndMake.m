@@ -120,7 +120,7 @@ WriteString[filenames[[l]]," 10  0              # safe-mode used at two-loop \n"
 ];
 WriteString[filenames[[l]]," 11 1               # calculate branching ratios \n"];
 WriteString[filenames[[l]]," 13 1               # 3-Body decays: none (0), fermion (1), scalar (2), both (3) \n"];
-WriteString[filenames[[l]]," 14 1               # Run couplings to scale of decaying particle \n"];
+WriteString[filenames[[l]]," 14 0               # Run couplings to scale of decaying particle \n"];
 WriteString[filenames[[l]]," 12 1.000E-04       # write only branching ratios larger than this value \n"];
 WriteString[filenames[[l]]," 15 1.000E-30       # write only decay if width larger than this value \n"];
 WriteString[filenames[[l]]," 31 -1              # fixed GUT scale (-1: dynamical GUT scale) \n"];

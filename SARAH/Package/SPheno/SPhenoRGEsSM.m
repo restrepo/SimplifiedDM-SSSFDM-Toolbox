@@ -229,15 +229,15 @@ If[FreeQ[ParameterDefinitions,"Left-Coupling"]==False,WriteString[file,SPhenoFor
 If[FreeQ[ParameterDefinitions,"Strong-Coupling"]==False,WriteString[file,SPhenoForm[strongCoupling]<> " = g3SM \n"];];
 
 If[AddOHDM=!=True,
-If[FreeQ[ParameterDefinitions,"Down-VEV"]==False ,WriteString[file,SPhenoForm[VEVSM1]<>"=vevSM/Sqrt(1._dp+TanBeta**2) \n"];];
-If[FreeQ[ParameterDefinitions,"Up-VEV"]==False ,WriteString[file,SPhenoForm[VEVSM2]<>"=TanBeta*"<>SPhenoForm[VEVSM1]<>" \n"];];,
+If[FreeQ[ParameterDefinitions,"Down-VEV"]==False ,WriteString[file,SPhenoForm[VEVSM1]<>"=vevSM/Sqrt(1._dp+"<>SPhenoForm[TanBeta]<>"**2) \n"];];
+If[FreeQ[ParameterDefinitions,"Up-VEV"]==False ,WriteString[file,SPhenoForm[VEVSM2]<>"="<>SPhenoForm[TanBeta]<>"*"<>SPhenoForm[VEVSM1]<>" \n"];];,
 If[FreeQ[ParameterDefinitions,"EW-VEV"]==False,WriteString[file,SPhenoForm[VEVSM]<>"=vevSM \n"];];
 ];
 
 If[AddOHDM=!=True,
-If[FreeQ[ParameterDefinitions,"Up-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[UpYukawa]<> " = YuSM*Sqrt(1._dp+TanBeta**2)/TanBeta \n"];];
-If[FreeQ[ParameterDefinitions,"Down-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[DownYukawa]<> " = YdSM*Sqrt(1._dp+TanBeta**2) \n"]; ];
-If[FreeQ[ParameterDefinitions,"Lepton-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[ElectronYukawa]<> " = YeSM*Sqrt(1._dp+TanBeta**2) \n"]; ];,
+If[FreeQ[ParameterDefinitions,"Up-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[UpYukawa]<> " = YuSM*Sqrt(1._dp+"<>SPhenoForm[TanBeta]<>"**2)/"<>SPhenoForm[TanBeta]<>" \n"];];
+If[FreeQ[ParameterDefinitions,"Down-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[DownYukawa]<> " = YdSM*Sqrt(1._dp+"<>SPhenoForm[TanBeta]<>"**2) \n"]; ];
+If[FreeQ[ParameterDefinitions,"Lepton-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[ElectronYukawa]<> " = YeSM*Sqrt(1._dp+"<>SPhenoForm[TanBeta]<>"**2) \n"]; ];,
 If[FreeQ[ParameterDefinitions,"Up-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[UpYukawa]<> " = YuSM \n"];];
 If[FreeQ[ParameterDefinitions,"Down-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[DownYukawa]<> " = YdSM \n"]; ];
 If[FreeQ[ParameterDefinitions,"Lepton-Yukawa-Coupling"]==False,WriteString[file,SPhenoForm[ElectronYukawa]<> " = YeSM \n"]; ];

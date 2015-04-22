@@ -19,7 +19,7 @@
 
 
 
-GenerateBoundaryEW:=Block[{i,j, posZ, posW, massW, massZ, couplingsW, couplingsZ},
+GenerateBoundaryEW:=Block[{i,j, posZ, posW, massW, massZ, couplingsW, couplingsZ,pos, gSd, gSe, gSu,i1,i2,dim},
 
 
 posZ =Position[listNotMixedMasses,VectorZ][[1,1]];
@@ -61,6 +61,12 @@ CheckYukawaScheme;
 NewMasses=DeleteCases[DeleteCases[NewMasses,_?(MemberQ[{SPhenoMass[Electron],SPhenoMass[TopQuark],SPhenoMass[BottomQuark],SPhenoMass[VectorW],SPhenoMass[VectorZ],SPhenoMass[Neutrino]},#]&),3],x:{a_}];
 
 
+NeededGenForYukawas=Intersection[{getGen[TopQuark],getGen[BottomQuark], getGen[Electron]}];
+
+gSd=ToString[getGen[BottomQuark]];
+gSu=ToString[getGen[TopQuark]];
+gSe=ToString[getGen[Electron]];
+
 Print["  Write 'BoundaryEW'"];
 
 MakeSubroutineTitle["BoundaryEW",Join[NewMassParameters,Join[listVEVs,listAllParameters]],{"i_run"},{"delta0","gMZ","kont"},sphenoSugra];
@@ -83,25 +89,70 @@ WriteString[sphenoSugra,"Real(dp), Intent(in) :: delta0 \n"];
 WriteString[sphenoSugra,"Integer, Intent(inout) :: kont \n"];
 WriteString[sphenoSugra,"Integer :: i1,i2,i3,i4 \n"];
 
-WriteString[sphenoSugra,"Complex(dp) ::uU_L(3,3),uU_R(3,3),uD_L(3,3),uD_R(3,3), NoMatrix(3,3) &\n"];
-WriteString[sphenoSugra,"&,uL_L(3,3),uL_R(3,3)\n"];
+WriteString[sphenoSugra,"Complex(dp) ::uU_L("<>gSu<>","<>gSu<>"),uU_R("<>gSu<>","<>gSu<>"),uD_L("<>gSd<>","<>gSd<>"),uD_R("<>gSd<>","<>gSd<>"), NoMatrix(3,3) &\n"];
+WriteString[sphenoSugra,"&,uL_L("<>gSe<>","<>gSe<>"),uL_R("<>gSe<>","<>gSe<>")\n"];
 WriteString[sphenoSugra,"Real(dp)::mW2_run,mZ2_run,test, D_mat(3,3)\n"];
 WriteString[sphenoSugra,"Real(dp)::alphaMZ,alpha3,gSU2,rho,delta_rho,delta_rho0,sinW2_DR,vev2&\n"];
 WriteString[sphenoSugra,"&,vevs_DR(2),mZ2_mZ,CosW2SinW2,gauge(3),delta,sinW2_old,delta_r&\n"];
 WriteString[sphenoSugra,"&,p2,gSU3,tanb,xt2,fac(2),SigQCD,delta_rw,sinW2,cosW2,cosW\n"];
 WriteString[sphenoSugra,"Real(dp),Dimension(3)::mf_d_DR,mf_l_DR,mf_u_DR\n"];
-WriteString[sphenoSugra,"Complex(dp)::dmZ2,dmW2,dmW2_0,yuk_tau,yuk_t,yuk_b\n"];
-WriteString[sphenoSugra,"Complex(dp),Dimension(3,3)::SigS_u,sigR_u,SigL_u,SigS_d,SigR_d&\n"];
-WriteString[sphenoSugra,"&,SigL_d,SigS_l,sigR_l,SigL_l,Y_u,Y_d,Y_l,adCKM,uU_L_T,uU_R_T&\n"];
-WriteString[sphenoSugra,"&,uD_L_T,uD_R_T,uL_L_T,uL_R_T,Y_l_old,Y_d_old,Y_u_old\n"];
+WriteString[sphenoSugra,"Complex(dp) :: dmZ2,dmW2,dmW2_0,yuk_tau,yuk_t,yuk_b\n"];
+WriteString[sphenoSugra,"Complex(dp) :: SigS_u("<>gSu<>","<>gSu<>"),sigR_u("<>gSu<>","<>gSu<>"),SigL_u("<>gSu<>","<>gSu<>")\n"];
+WriteString[sphenoSugra,"Complex(dp) :: SigS_d("<>gSd<>","<>gSd<>"),SigR_d("<>gSd<>","<>gSd<>"),SigL_d("<>gSd<>","<>gSd<>")\n"];
+WriteString[sphenoSugra,"Complex(dp) :: SigS_l("<>gSe<>","<>gSe<>"),sigR_l("<>gSe<>","<>gSe<>"),SigL_l("<>gSe<>","<>gSe<>")\n"];
+WriteString[sphenoSugra,"Complex(dp) :: Y_u(3,3),Y_d(3,3),Y_l(3,3),adCKM(3,3),Y_l_old(3,3),Y_d_old(3,3),Y_u_old(3,3) \n"];
+WriteString[sphenoSugra,"Complex(dp) :: uU_L_T("<>gSu<>","<>gSu<>"),uU_R_T("<>gSu<>","<>gSu<>")&\n"];
+WriteString[sphenoSugra,"&,uD_L_T("<>gSd<>","<>gSd<>"),uD_R_T("<>gSd<>","<>gSd<>"),uL_L_T("<>gSe<>","<>gSe<>"),uL_R_T("<>gSe<>","<>gSe<>")\n"];
 WriteString[sphenoSugra,"Logical::converge\n"];
-WriteString[sphenoSugra,"Complex(dp),Dimension(6,6)::rot,RUsq_ckm,RDsq_ckm,RUsq_in,RDsq_in\n"];
 WriteString[sphenoSugra,"Integer :: i_loop, i_loop_max \n"];
 WriteString[sphenoSugra,"Real(dp),Parameter::&\n"];
 WriteString[sphenoSugra,"& as2loop=1._dp/24._dp+2011._dp*oo32Pi2/12._dp&\n"];
 WriteString[sphenoSugra,"&+Log2/12._dp-oo8Pi2*Zeta3&\n"];
 WriteString[sphenoSugra,"&,log2loop_a=123._dp*oo32Pi2,log2loop_b=33._dp*oo32Pi2\n"];
 WriteString[sphenoSugra,"Real(dp)::Q2,logQ \n\n\n"];
+
+WriteString[sphenoSugra,"Complex(dp) ::MassFu("<>gSu<>","<>gSu<>"),MassFd("<>gSd<>","<>gSd<>"),MassFe("<>gSe<>","<>gSe<>") \n"];
+
+For[i=1,i<=Length[NeededGenForYukawas],
+If[NeededGenForYukawas[[i]]>4,
+dim = NeededGenForYukawas[[i]];
+WriteString[sphenoSugra, "Real(dp),Parameter::id"<>ToString[dim]<>"R("<>ToString[dim]<>","<>ToString[dim]<>")=& \n"];
+WriteString[sphenoSugra, "   & Reshape(Source=(/& \n"];
+WriteString[sphenoSugra, "   & "];
+For[i1=1,i1<=dim,
+For[i2=1,i2<=dim,
+If[i2==i1,
+If[i2===dim,
+WriteString[sphenoSugra,"1"];,
+WriteString[sphenoSugra,"1,"];
+];,
+WriteString[sphenoSugra,"0,"];
+];
+i2++;];
+WriteString[sphenoSugra,"& \n &"];
+i1++;];
+WriteString[sphenoSugra, "/),shape=(/"<>ToString[dim]<>","<>ToString[dim]<>"/)) \n"];
+
+
+WriteString[sphenoSugra, "Complex(dp),Parameter::id"<>ToString[dim]<>"C("<>ToString[dim]<>","<>ToString[dim]<>")=& \n"];
+WriteString[sphenoSugra, "   & Reshape(Source=(/& \n"];
+WriteString[sphenoSugra, "   & "];
+For[i1=1,i1<=dim,
+For[i2=1,i2<=dim,
+If[i2==i1,
+If[i2===dim,
+WriteString[sphenoSugra,"1"];,
+WriteString[sphenoSugra,"1,"];
+];,
+WriteString[sphenoSugra,"0,"];
+];
+i2++;];
+WriteString[sphenoSugra,"& \n &"];
+i1++;];
+WriteString[sphenoSugra, "/),shape=(/"<>ToString[dim]<>","<>ToString[dim]<>"/)) \n"];
+];
+i++;];
+
 
 WriteString[sphenoSugra,"Iname=Iname+1\n"];
 WriteString[sphenoSugra,"NameOfUnit(Iname)='BoundaryEW'\n"];
@@ -147,9 +198,9 @@ WriteString[sphenoSugra,"   mf_u2=mf_u2**2\n"];
 WriteString[sphenoSugra,"End If\n"];
 
 
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[Electron]]<>" = mf_l**2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[BottomQuark]]<>" = mf_d**2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[TopQuark]]<>" = mf_u**2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[Electron]]<>"(1:3) = mf_l**2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[BottomQuark]]<>"(1:3) = mf_d**2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[TopQuark]]<>"(1:3) = mf_u**2 \n"];
 WriteString[sphenoSugra,SPhenoForm[SPhenoMass[Electron]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[Electron]]<>") \n"];
 WriteString[sphenoSugra,SPhenoForm[SPhenoMass[BottomQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[BottomQuark]]<>") \n"];
 WriteString[sphenoSugra,SPhenoForm[SPhenoMass[TopQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[TopQuark]]<>") \n"];
@@ -163,9 +214,9 @@ WriteString[sphenoSugra,","];
 i++;];
 WriteString[sphenoSugra,") \n \n"];
 
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[Electron]]<>" = mf_l2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[BottomQuark]]<>" = mf_d2 \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[TopQuark]]<>" = mf_u2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[Electron]]<>"(1:3) = mf_l2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[BottomQuark]]<>"(1:3) = mf_d2 \n"];
+WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[TopQuark]]<>"(1:3) = mf_u2 \n"];
 WriteString[sphenoSugra,SPhenoForm[SPhenoMass[Electron]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[Electron]]<>") \n"];
 WriteString[sphenoSugra,SPhenoForm[SPhenoMass[BottomQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[BottomQuark]]<>") \n"];
 WriteString[sphenoSugra,SPhenoForm[SPhenoMass[TopQuark]]<>" = sqrt("<>SPhenoForm[SPhenoMassSq[TopQuark]]<>") \n"];
@@ -360,15 +411,21 @@ WriteString[sphenoSugra,"vevs_DR(2)=tanb*vevs_DR(1)\n"];
 
 WriteString[sphenoSugra,SPhenoForm[VEVSM1]<>"MZ = vevs_DR(1)\n"];
 WriteString[sphenoSugra,SPhenoForm[VEVSM2]<>"MZ = vevs_DR(2)\n"];
+WriteString[sphenoSugra,SPhenoForm[VEVSM1]<>" = vevs_DR(1)\n"];
+WriteString[sphenoSugra,SPhenoForm[VEVSM2]<>" = vevs_DR(2)\n"];
 WriteString[sphenoSugra,SPhenoForm[hyperchargeCoupling]<>"MZ = gauge(1)\n"];
 WriteString[sphenoSugra,SPhenoForm[leftCoupling]<>"MZ = gauge(2)\n"];
 
-WriteString[sphenoSugra,"uU_L=id3C\n"];
-WriteString[sphenoSugra,"uU_R=id3C\n"];
-WriteString[sphenoSugra,"uD_L=id3C\n"];
-WriteString[sphenoSugra,"uD_R=id3C\n"];
-WriteString[sphenoSugra,"uL_L=id3C\n"];
-WriteString[sphenoSugra,"uL_R=id3C\n"];
+WriteString[sphenoSugra,"\n\n! -------------------------\n"];
+WriteString[sphenoSugra,"!  Calculate Yukawas\n"];
+WriteString[sphenoSugra,"! -------------------------\n"];
+
+WriteString[sphenoSugra,"uU_L=id"<>gSu<>"C\n"];
+WriteString[sphenoSugra,"uU_R=id"<>gSu<>"C\n"];
+WriteString[sphenoSugra,"uD_L=id"<>gSd<>"C\n"];
+WriteString[sphenoSugra,"uD_R=id"<>gSd<>"C\n"];
+WriteString[sphenoSugra,"uL_L=id"<>gSe<>"C\n"];
+WriteString[sphenoSugra,"uL_R=id"<>gSe<>"C\n"];
 WriteString[sphenoSugra,"If (GenerationMixing) Then\n"];
 WriteString[sphenoSugra,"    Call Adjungate(CKM,adCKM)\n"];
 WriteString[sphenoSugra," If (YukawaScheme.Eq.1) Then\n"];
@@ -404,78 +461,112 @@ WriteString[sphenoSugra,"    Y_d(i1,i1)=sqrt2*mf_d_DR_SM(i1)/vevs_DR(1)\n"];
 WriteString[sphenoSugra,"End Do\n"];
 WriteString[sphenoSugra,"If (GenerationMixing) Then\n"];
 WriteString[sphenoSugra,"  If (YukawaScheme.Eq.1) Then\n"];
-WriteString[sphenoSugra,"    Y_u=Matmul(Transpose(uU_L),Y_u)\n"];
+WriteString[sphenoSugra,"    Y_u=Matmul(Transpose(uU_L(1:3,1:3)),Y_u)\n"];
 WriteString[sphenoSugra,"  Else\n"];
-WriteString[sphenoSugra,"    Y_d=Matmul(Transpose(uD_L),Y_d)\n"];
+WriteString[sphenoSugra,"    Y_d=Matmul(Transpose(uD_L(1:3,1:3)),Y_d)\n"];
 WriteString[sphenoSugra,"  End If\n"];
 WriteString[sphenoSugra,"End If\n"];
-WriteString[sphenoSugra,"uU_L_T=uU_L\n"];
-WriteString[sphenoSugra,"uU_R_T=uU_R\n"];
-WriteString[sphenoSugra,"uD_L_T=uD_L\n"];
-WriteString[sphenoSugra,"uD_R_T=uD_R\n"];
-WriteString[sphenoSugra,"uL_L_T=uL_L\n"];
-WriteString[sphenoSugra,"uL_R_T=uL_R\n"];
 WriteString[sphenoSugra,"Else\n"];
 WriteString[sphenoSugra,"Y_l=Yl_MZ\n"];
 WriteString[sphenoSugra,"Y_d=Yd_MZ\n"];
 WriteString[sphenoSugra,"Y_u=Yu_MZ\n"];
-WriteString[sphenoSugra,"Call FermionMass(Y_l,vevs_DR(1),mf_l_DR,uL_L_T,uL_R_T,kont)\n"];
-WriteString[sphenoSugra,"Call FermionMass(Y_d,vevs_DR(1),mf_d_DR,uD_L_T,uD_R_T,kont)\n"];
-WriteString[sphenoSugra,"Call FermionMass(Y_u,vevs_DR(2),mf_u_DR,uU_L_T,uU_R_T,kont)\n"];
 WriteString[sphenoSugra,"End If! i_run.eq.1\n\n"];
 
 
-WriteString[sphenoSugra,"rot=0._dp\n"];
-WriteString[sphenoSugra,"rot(1:3,1:3)=Conjg(uU_L_T)\n"];
-WriteString[sphenoSugra,"rot(4:6,4:6)=uU_R_T\n"];
-WriteString[sphenoSugra,"RUsq_ckm=Matmul("<>SPhenoForm[UpSquarkMM]<>",Transpose(rot))\n"];
-WriteString[sphenoSugra,"rot=0._dp\n"];
-WriteString[sphenoSugra,"rot(1:3,1:3)=Conjg(uD_L_T)\n"];
-WriteString[sphenoSugra,"rot(4:6,4:6)=uD_R_T\n"];
-WriteString[sphenoSugra,"RDsq_ckm=Matmul("<>SPhenoForm[DownSquarkMM]<>",Transpose(rot))\n"];
 WriteString[sphenoSugra,"converge= .False.\n"];
 WriteString[sphenoSugra,"Y_l_old=Y_l\n"];
 WriteString[sphenoSugra,"Y_d_old=Y_d\n"];
 WriteString[sphenoSugra,"Y_u_old=Y_u\n"];
+
+WriteString[sphenoSugra,"\n\n! -------------------------\n"];
+WriteString[sphenoSugra,"!  Main Loop\n"];
+WriteString[sphenoSugra,"! -------------------------\n"];
 WriteString[sphenoSugra,"if (FermionMassResummation) then\n"];
 WriteString[sphenoSugra,"  i_loop_max=100! this should be sufficient\n"];
 WriteString[sphenoSugra,"else\n"];
 WriteString[sphenoSugra,"  i_loop_max=1\n"];
 WriteString[sphenoSugra,"end if\n"];
 WriteString[sphenoSugra,"Do i_loop=1,i_loop_max\n"];
-WriteString[sphenoSugra,"  yuk_b=Y_d(3,3)! for checking of convergence\n"];
-WriteString[sphenoSugra,"  yuk_t=Y_u(3,3)\n"];
-WriteString[sphenoSugra,"  yuk_tau=Y_l(3,3)\n"];
-
-
-WriteString[sphenoSugra,"If(GenerationMixing) Then \n"];
-
-WriteString[sphenoSugra,"  rot=0._dp\n"];
-WriteString[sphenoSugra,"  rot(1:3,1:3)=uU_L_T\n"];
-WriteString[sphenoSugra,"  rot(4:6,4:6)=Conjg(uU_R_T)\n"];
-WriteString[sphenoSugra,"  RUsq_in=Matmul(RUsq_ckm,rot)\n"];
-WriteString[sphenoSugra,"  rot=0._dp\n"];
-WriteString[sphenoSugra,"  rot(1:3,1:3)=uD_L_T\n"];
-WriteString[sphenoSugra,"  rot(4:6,4:6)=Conjg(uD_R_T)\n"];
-WriteString[sphenoSugra,"  RDsq_in=Matmul(RDsq_ckm,rot)\n"];
-
-WriteString[sphenoSugra,"Else!.not.GenerationMixing\n"];
-
-
-WriteString[sphenoSugra,"  rot=0._dp\n"];
-WriteString[sphenoSugra,"  rot(1:3,1:3)=uU_L_T\n"];
-WriteString[sphenoSugra,"  rot(4:6,4:6)=Conjg(uU_R_T)\n"];
-WriteString[sphenoSugra,"  RUsq_in=Matmul(RUsq_ckm,rot)\n"];
-WriteString[sphenoSugra,"  rot=0._dp\n"];
-WriteString[sphenoSugra,"  rot(1:3,1:3)=uD_L_T\n"];
-WriteString[sphenoSugra,"  rot(4:6,4:6)=Conjg(uD_R_T)\n"];
-WriteString[sphenoSugra,"  RDsq_in=Matmul(RDsq_ckm,rot)\n"];
-
-WriteString[sphenoSugra, "End If \n"];
-
-
 
 WriteString[sphenoSugra,"p2=0._dp! for off-diagonal elements\n"];
+
+WriteBoundaryConditionsEWSB[sphenoSugra];
+
+WriteString[sphenoSugra,"\n\n! Full one-loop corrections\n"];
+MakeCall["CouplingsForSMfermions" , Join[parametersEBT,namesEBT],{},{},sphenoSugra];
+
+MakeCall["Sigma1Loop"<>ToString[Electron]<>"MZ",Flatten[{massesE,couplingsE}],{"p2"},{"sigR_l","sigL_l","sigS_l"},sphenoSugra];
+MakeCall["Sigma1Loop"<>ToString[BottomQuark]<>"MZ",Flatten[{massesB,couplingsB}],{"p2"},{"sigR_d","sigL_d","sigS_d"},sphenoSugra];
+MakeCall["Sigma1Loop"<>ToString[TopQuark]<>"MZ",Flatten[{massesT,couplingsT}],{"p2"},{"sigR_u","sigL_u","sigS_u"},sphenoSugra];
+
+WriteString[sphenoSugra,"\n\n"];
+
+WriteString[sphenoSugra,"! SM two-loop corrections\n"];
+WriteString[sphenoSugra,"Q2=GetRenormalizationScale()\n"];
+WriteString[sphenoSugra,"logQ=Log(Q2/"<>SPhenoForm[SPhenoMass[TopQuark]]<>"(3)**2)\n"];
+WriteString[sphenoSugra,"SigQCD=-4._dp/3._dp*gSU3**2*"<>SPhenoForm[SPhenoMass[TopQuark]]<>"(3)*(5._dp+3._dp*LogQ&\n"];
+WriteString[sphenoSugra,"&+(as2loop+log2loop_a*logQ&\n"];
+WriteString[sphenoSugra,"&+log2loop_b*logQ**2)*gSU3**2)&\n"];
+WriteString[sphenoSugra,"&-"<>SPhenoForm[SPhenoMass[TopQuark]]<>"(3)*(-2._dp/3._dp*gSU2)**2*sinW2_DR*(5._dp+3._dp*LogQ)\n"];
+WriteString[sphenoSugra,"SigQCD=oo16pi2*SigQCD\n\n"];
+WriteString[sphenoSugra,"mf_u_DR_SM(3)=mf_u(3)+SigQCD\n\n"];
+
+WriteString[sphenoSugra,"\n\n! Construct tree-level masses\n"];
+WriteString[sphenoSugra,"! Needed for models with additional states mixing with SM particles\n"];
+pos=Position[ListTree,SPhenoMass[Electron]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2,1]],ListTree[[pos,2,2]],ListTree[[pos,6]]}],{},{"kont"},sphenoSugra]; 
+WriteString[sphenoSugra,"MassFe=0._dp \n"];
+WriteString[sphenoSugra,"Do i1 = 1,"<>ToString[getGen[Electron]]<>"\n"];
+WriteString[sphenoSugra," MassFe(i1,i1)="<>SPhenoForm[ListTree[[pos,6]]]<>"(i1) \n"];
+WriteString[sphenoSugra,"End do\n"];
+WriteString[sphenoSugra,"MassFe = MatMul(Transpose("<>SPhenoForm[ListTree[[pos,2,1]]]<> "),MatMul(MassFe,Conjg("<>SPhenoForm[ListTree[[pos,2,2]]]<>"))) \n"];
+WriteString[sphenoSugra,SPhenoForm[ListTree[[pos,6]]]<>"(1:3) =mf_l_DR_SM \n"];
+
+
+pos=Position[ListTree,SPhenoMass[TopQuark]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2,1]],ListTree[[pos,2,2]],ListTree[[pos,6]]}],{},{"kont"},sphenoSugra]; 
+WriteString[sphenoSugra,"MassFu=0._dp \n"];
+WriteString[sphenoSugra,"Do i1 = 1,"<>ToString[getGen[TopQuark]]<>"\n"];
+WriteString[sphenoSugra," MassFu(i1,i1)="<>SPhenoForm[ListTree[[pos,6]]]<>"(i1) \n"];
+WriteString[sphenoSugra,"End do\n"];
+WriteString[sphenoSugra,"MassFu = MatMul(Transpose("<>SPhenoForm[ListTree[[pos,2,1]]]<> "),MatMul(MassFu,Conjg("<>SPhenoForm[ListTree[[pos,2,2]]]<>"))) \n"];
+WriteString[sphenoSugra,SPhenoForm[ListTree[[pos,6]]]<>"(1:3) =mf_u_DR_SM \n"];
+
+
+pos=Position[ListTree,SPhenoMass[BottomQuark]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2,1]],ListTree[[pos,2,2]],ListTree[[pos,6]]}],{},{"kont"},sphenoSugra];
+WriteString[sphenoSugra,"MassFd=0._dp \n"];
+WriteString[sphenoSugra,"Do i1 = 1,"<>ToString[getGen[BottomQuark]]<>"\n"];
+WriteString[sphenoSugra," MassFd(i1,i1)="<>SPhenoForm[ListTree[[pos,6]]]<>"(i1) \n"];
+WriteString[sphenoSugra,"End do\n"];
+WriteString[sphenoSugra,"MassFd = MatMul(Transpose("<>SPhenoForm[ListTree[[pos,2,1]]]<> "),MatMul(MassFd,Conjg("<>SPhenoForm[ListTree[[pos,2,2]]]<>"))) \n"];
+WriteString[sphenoSugra,SPhenoForm[ListTree[[pos,6]]]<>"(1:3) =mf_d_DR_SM \n"];
+
+
+WriteString[sphenoSugra,"\n\n! Obtain Yukawas\n"];
+WriteString[sphenoSugra,"Call Yukawas"<>ToString[getGen[TopQuark]]<>"("<>ToString[SPhenoMass[TopQuark]]<>",vevs_DR(2),uU_L,uU_R,SigS_u,SigL_u,SigR_u&\n"];
+WriteString[sphenoSugra,"      &,massFu,Y_u, FermionMassResummation,kont) \n"];
+WriteString[sphenoSugra,"If (kont.Ne.0) Then \n"];
+WriteString[sphenoSugra,"    Iname=Iname-1\n"];
+WriteString[sphenoSugra,"    Write(*,*) \" Fit of Yukawa couplings at EW scale failed\" \n"];
+WriteString[sphenoSugra,"    Call TerminateProgram\n"];
+WriteString[sphenoSugra,"End If\n"];WriteString[sphenoSugra,"Call Yukawas"<>ToString[getGen[BottomQuark]]<>"("<>ToString[SPhenoMass[BottomQuark]]<>",vevs_DR(1),uD_L,uD_R,SigS_d,SigL_d,SigR_d& \n"];
+WriteString[sphenoSugra,"      &,massFd,Y_d,FermionMassResummation,kont)\n"];
+WriteString[sphenoSugra,"If (kont.Ne.0) Then\n"];
+WriteString[sphenoSugra,"    Iname=Iname-1\n"];
+WriteString[sphenoSugra,"    Write(*,*) \" Fit of Yukawa couplings at EW scale failed\" \n"];
+WriteString[sphenoSugra,"    Call TerminateProgram\n"];
+WriteString[sphenoSugra,"End If \n"];
+WriteString[sphenoSugra,"Call Yukawas"<>ToString[getGen[Electron]]<>"("<>ToString[SPhenoMass[Electron]]<>",vevs_DR(1),uL_L,uL_R,SigS_l,SigL_l,SigR_l&\n"];
+WriteString[sphenoSugra,"     &,massFe,Y_l,.False.,kont) \n"];
+WriteString[sphenoSugra,"If (kont.Ne.0) Then\n"];
+WriteString[sphenoSugra,"    Iname=Iname-1\n"];
+WriteString[sphenoSugra,"    Write(*,*) \" Fit of Yukawa couplings at EW scale failed\" \n"];
+WriteString[sphenoSugra,"    Call TerminateProgram\n"];
+WriteString[sphenoSugra,"End If\n"];
+
+
+WriteString[sphenoSugra,"\n\n! Re-calculate (s)quarks with new Yukawas\n"];
 If[TransposedYukawaScheme=!=True,
 WriteString[sphenoSugra, SPhenoForm[UpYukawa] <>" = Transpose(Y_u) \n"];
 WriteString[sphenoSugra, SPhenoForm[DownYukawa] <>" = Transpose(Y_d) \n"];
@@ -484,72 +575,31 @@ WriteString[sphenoSugra, SPhenoForm[UpYukawa] <>" = Y_u \n"];
 WriteString[sphenoSugra, SPhenoForm[DownYukawa] <>" = Y_d \n"];
 WriteString[sphenoSugra, SPhenoForm[ElectronYukawa] <>" = Y_l \n"];  
 ];
-WriteString[sphenoSugra, SPhenoForm[UpMatrixL] <>" = uU_L_T \n"];
-WriteString[sphenoSugra, SPhenoForm[UpMatrixR] <>" = uU_R_T \n"];
-WriteString[sphenoSugra, SPhenoForm[DownMatrixL] <>" = uD_L_T \n"];
-WriteString[sphenoSugra, SPhenoForm[DownMatrixR] <>" = uD_R_T \n"];
-WriteString[sphenoSugra, SPhenoForm[ElectronMatrixL] <>" = uL_L_T \n"];
-WriteString[sphenoSugra, SPhenoForm[ElectronMatrixR] <>" = uL_R_T \n"];
-WriteString[sphenoSugra, SPhenoForm[SPhenoMass[Electron]] <> " = mf_l_DR \n"];
-WriteString[sphenoSugra, SPhenoForm[SPhenoMass[BottomQuark]] <> " = mf_d_DR \n"];
-WriteString[sphenoSugra, SPhenoForm[SPhenoMass[TopQuark]] <> " = mf_u_DR \n"];
-WriteString[sphenoSugra, SPhenoForm[SPhenoMassSq[Electron]] <> " = mf_l_DR**2 \n"];
-WriteString[sphenoSugra, SPhenoForm[SPhenoMassSq[BottomQuark]] <> " = mf_d_DR**2 \n"];
-WriteString[sphenoSugra, SPhenoForm[SPhenoMassSq[TopQuark]] <> " = mf_u_DR**2 \n"];
-WriteString[sphenoSugra,SPhenoForm[UpSquarkMM]<> " = RUsq_in \n"];
-WriteString[sphenoSugra,SPhenoForm[DownSquarkMM]<> " = RDsq_in \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[VectorZ]]<> " = mz2_run \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMass[VectorZ]]<> " = sqrt("<>SPhenoForm[SPhenoMassSq[VectorZ]]<>") \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMassSq[VectorW]]<> " = mw2_run \n"];
-WriteString[sphenoSugra,SPhenoForm[SPhenoMass[VectorW]]<> " = sqrt("<>SPhenoForm[SPhenoMassSq[VectorW]]<>") \n"];
-WriteString[sphenoSugra,SPhenoForm[strongCoupling]<> " =gSU3 \n"];
-
-WriteBoundaryConditionsEWSB[sphenoSugra];
 
 
-WriteString[sphenoSugra, SPhenoForm[hyperchargeCoupling]<>" = "<> SPhenoForm[leftCoupling] <>"*Sqrt(sinW2_DR/(1._dp-sinW2_DR))\n"];
-WriteString[sphenoSugra, SPhenoForm[Weinberg]<>"=Asin(sqrt(sinW2_DR))\n"];
-
-MakeCall["CouplingsForSMfermions" , Join[parametersEBT,namesEBT],{},{},sphenoSugra];
-
-MakeCall["Sigma1Loop"<>ToString[Electron]<>"MZ",Flatten[{massesE,couplingsE}],{"p2"},{"sigR_l","sigL_l","sigS_l"},sphenoSugra];
-MakeCall["Sigma1Loop"<>ToString[BottomQuark]<>"MZ",Flatten[{massesB,couplingsB}],{"p2"},{"sigR_d","sigL_d","sigS_d"},sphenoSugra];
-MakeCall["Sigma1Loop"<>ToString[TopQuark]<>"MZ",Flatten[{massesT,couplingsT}],{"p2"},{"sigR_u","sigL_u","sigS_u"},sphenoSugra];
-
-WriteString[sphenoSugra,"\n\n"];
-WriteString[sphenoSugra,"Q2=GetRenormalizationScale()! from LoopTools\n"];
-WriteString[sphenoSugra,"logQ=Log(Q2/mf_u_DR(3)**2)\n"];
-WriteString[sphenoSugra,"SigQCD=-4._dp/3._dp*gSU3**2*mf_u_DR(3)*(5._dp+3._dp*LogQ&\n"];
-WriteString[sphenoSugra,"&+(as2loop+log2loop_a*logQ&\n"];
-WriteString[sphenoSugra,"&+log2loop_b*logQ**2)*gSU3**2)&\n"];
-WriteString[sphenoSugra,"&-mf_u_DR(3)*(-2._dp/3._dp*gSU2)**2*sinW2_DR*(5._dp+3._dp*LogQ)\n"];
-WriteString[sphenoSugra,"SigQCD=oo16pi2*SigQCD\n\n"];
-WriteString[sphenoSugra,"mf_u_DR_SM(3)=mf_u(3)+SigQCD\n\n"];
+pos=Position[ListTree,SPhenoMass[Electron]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2,1]],ListTree[[pos,2,2]],ListTree[[pos,6]]}],{},{"kont"},sphenoSugra]; 
+WriteString[sphenoTree,SPhenoForm[ListTree[[pos,7]]] <>" = "<>SPhenoForm[ListTree[[pos,6]]]  <>"**2 \n"];
+pos=Position[ListTree,SPhenoMass[TopQuark]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2,1]],ListTree[[pos,2,2]],ListTree[[pos,6]]}],{},{"kont"},sphenoSugra]; 
+WriteString[sphenoTree,SPhenoForm[ListTree[[pos,7]]] <>" = "<>SPhenoForm[ListTree[[pos,6]]]  <>"**2 \n"];
+pos=Position[ListTree,SPhenoMass[BottomQuark]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2,1]],ListTree[[pos,2,2]],ListTree[[pos,6]]}],{},{"kont"},sphenoSugra]; 
+WriteString[sphenoTree,SPhenoForm[ListTree[[pos,7]]] <>" = "<>SPhenoForm[ListTree[[pos,6]]]  <>"**2 \n"];
 
 
-WriteString[sphenoSugra,"Call Yukawas(mf_u_DR_SM,vevs_DR(2),uU_L,uU_R,SigS_u,SigL_u,SigR_u&\n"];
-WriteString[sphenoSugra,"      &,Y_u,FermionMassResummation,kont) \n"];
-WriteString[sphenoSugra,"If (kont.Ne.0) Then \n"];
-WriteString[sphenoSugra,"    Iname=Iname-1\n"];
-WriteString[sphenoSugra,"    Write(*,*) \" Fit of Yukawa couplings at EW scale failed\" \n"];
-WriteString[sphenoSugra,"    Call TerminateProgram\n"];
-WriteString[sphenoSugra,"End If\n"];
-WriteString[sphenoSugra,"Call Yukawas(mf_d_DR_SM,vevs_DR(1),uD_L,uD_R,SigS_d,SigL_d,SigR_d& \n"];
-WriteString[sphenoSugra,"      &,Y_d,FermionMassResummation,kont)\n"];
-WriteString[sphenoSugra,"If (kont.Ne.0) Then\n"];
-WriteString[sphenoSugra,"    Iname=Iname-1\n"];
-WriteString[sphenoSugra,"    Write(*,*) \" Fit of Yukawa couplings at EW scale failed\" \n"];
-WriteString[sphenoSugra,"    Call TerminateProgram\n"];WriteString[sphenoSugra,"End If \n"];
-WriteString[sphenoSugra,"Call Yukawas(mf_l_DR_SM,vevs_DR(1),id3C,id3C,SigS_l,SigL_l,SigR_l&\n"];
-WriteString[sphenoSugra,"     &,Y_l,.False.,kont) \n"];
-WriteString[sphenoSugra,"If (kont.Ne.0) Then\n"];
-WriteString[sphenoSugra,"    Iname=Iname-1\n"];
-WriteString[sphenoSugra,"    Write(*,*) \" Fit of Yukawa couplings at EW scale failed\" \n"];
-WriteString[sphenoSugra,"    Call TerminateProgram\n"];
-WriteString[sphenoSugra,"End If\n"];
-WriteString[sphenoSugra,"Call FermionMass(Y_l,vevs_DR(1),mf_l_DR,uL_L_T,uL_R_T,kont)\n"];
-WriteString[sphenoSugra,"Call FermionMass(Y_d,vevs_DR(1),mf_d_DR,uD_L_T,uD_R_T,kont)\n"];
-WriteString[sphenoSugra,"Call FermionMass(Y_u,vevs_DR(2),mf_u_DR,uU_L_T,uU_R_T,kont)\n\n"];
+WriteString[sphenoSugra,"mf_l_DR  = " <>SPhenoForm[SPhenoMass[Electron]] <> "(1:3) \n"];
+WriteString[sphenoSugra,"mf_d_DR  = " <>SPhenoForm[SPhenoMass[BottomQuark]] <> "(1:3) \n"];
+WriteString[sphenoSugra,"mf_u_DR  = " <>SPhenoForm[SPhenoMass[TopQuark]] <> "(1:3) \n"];
+
+pos=Position[ListTree,SPhenoMass[Selectron]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2]],ListTree[[pos,6]],ListTree[[pos,7]]}],{},{"kont"},sphenoSugra];
+pos=Position[ListTree,SPhenoMass[TopSquark]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2]],ListTree[[pos,6]],ListTree[[pos,7]]}],{},{"kont"},sphenoSugra];
+pos=Position[ListTree,SPhenoMass[BottomSquark]][[1,1]];
+MakeCall["Calculate"<>ListTree[[pos,1]],Flatten[{ListTree[[pos,5]],ListTree[[pos,2]],ListTree[[pos,6]],ListTree[[pos,7]]}],{},{"kont"},sphenoSugra];
+
+WriteString[sphenoSugra,"\n\n! Check convergence \n"];
 WriteString[sphenoSugra,"converge= .True. \n"];
 WriteString[sphenoSugra,"D_mat=Abs(Abs(Y_l)-Abs(Y_l_old))\n"];
 WriteString[sphenoSugra,"Where (Abs(Y_l).Ne.0._dp) D_mat=D_mat/Abs(Y_l)\n"];
@@ -583,9 +633,11 @@ WriteString[sphenoSugra,"  Y_d_old=Y_d\n"];
 
 
 
-WriteString[sphenoSugra,"!-------------------------------------------------- \n"];WriteString[sphenoSugra,"!Either we have run into a numerical problem or \n"];
+WriteString[sphenoSugra,"!-------------------------------------------------- \n"];
+WriteString[sphenoSugra,"!Either we have run into a numerical problem or \n"];
 WriteString[sphenoSugra,"!perturbation theory breaks down \n"];
-WriteString[sphenoSugra,"!-------------------------------------------------- \n"];WriteString[sphenoSugra,"If ((Minval(Abs(mf_l_DR/mf_l)).Lt.0.1_dp)&\n"];
+WriteString[sphenoSugra,"!-------------------------------------------------- \n"];
+WriteString[sphenoSugra,"If ((Minval(Abs(mf_l_DR/mf_l)).Lt.0.1_dp)&\n"];
 WriteString[sphenoSugra,"&.Or.(Maxval(Abs(mf_l_DR/mf_l)).Gt.10._dp)) Then\n"];
 WriteString[sphenoSugra,"Iname=Iname-1\n"];
 WriteString[sphenoSugra,"kont=-405\n"];
@@ -609,13 +661,11 @@ WriteString[sphenoSugra,"    Call TerminateProgram\n"];
 WriteString[sphenoSugra,"End If\n"];
 WriteString[sphenoSugra,"End Do! i_loop\n"];
 WriteString[sphenoSugra,"If ((.Not.converge).and.FermionMassResummation) Then\n"];
-WriteString[sphenoSugra,"Write (ErrCan,*)'Problem in subroutine BoundaryEW!!'\n"];WriteString[sphenoSugra,"Write (ErrCan,*) \"After",i_loop-1,"iterations no convergence of Yukawas\"\n"];
-WriteString[sphenoSugra,"Write (ErrCan,*)'yuk_tau,yuk_l(3,3)',yuk_tau,y_l(3,3)\n"];
-WriteString[sphenoSugra,"Write (ErrCan,*)'yuk_b,yuk_d(3,3)',yuk_b,y_d(3,3)\n"];
-WriteString[sphenoSugra,"Write (ErrCan,*)'yuk_t,yuk_u(3,3)',yuk_t,y_u(3,3)\n"];
+WriteString[sphenoSugra,"Write (ErrCan,*)'Problem in subroutine BoundaryEW!!'\n"];
+WriteString[sphenoSugra,"Write (ErrCan,*) \"After",i_loop-1,"iterations no convergence of Yukawas\"\n"];
 WriteString[sphenoSugra,"End If\n"];
 WriteString[sphenoSugra,"!----------------------------------------------------------------\n"];
-WriteString[sphenoSugra,"!the RGE paper defines the Yukawas transposed to my conventions\n"];
+WriteString[sphenoSugra,"!Transpose Yukawas if necessary\n"];
 WriteString[sphenoSugra,"!----------------------------------------------------------------\n"];
 WriteString[sphenoSugra,"Yl_MZ=Y_l\n"];
 WriteString[sphenoSugra,"Yd_MZ=Y_d\n"];
@@ -674,7 +724,7 @@ WriteString[sphenoSugra,"&-Pi2*(2._dp-2._dp*r+0.5_dp*r2)&\n"];
 WriteString[sphenoSugra,"&-Log(r)*(3._dp*r-0.5_dp*r2)\n"];
 WriteString[sphenoSugra,"End Function rho_2\n\n\n"];
 
-
+(*
 WriteString[sphenoSugra,"Subroutine Yukawas(mf,vev,uL,uR,SigS,SigL,SigR,Y,ReSum,kont)\n"];
 WriteString[sphenoSugra,"Implicit None\n"];
 WriteString[sphenoSugra,"Integer,Intent(inout)::kont\n"];
@@ -708,9 +758,99 @@ WriteString[sphenoSugra,"Y=mass+SigS+Matmul(Transpose(SigL),Y)+Matmul(Y,SigR)\n"
 WriteString[sphenoSugra,"End If\n"];
 WriteString[sphenoSugra,"Y=sqrt2*Y/vev\n"];
 WriteString[sphenoSugra,"Call chop(y)\n"];
-WriteString[sphenoSugra,"End Subroutine Yukawas\n\n"];
+WriteString[sphenoSugra,"End Subroutine Yukawas\n\n"]; *)
+
+
+For[i=1,i<=Length[NeededGenForYukawas],
+If[NeededGenForYukawas[[i]]===3,
+cGen= ToString[NeededGenForYukawas[[i]]];
+
+WriteString[sphenoSugra,"Subroutine Yukawas"<>cGen <>"(mf,vev,uL,uR,SigS,SigL,SigR,MassMatrix,Y,ReSum,kont)\n"];
+WriteString[sphenoSugra,"Implicit None\n"];
+WriteString[sphenoSugra,"Integer,Intent(inout)::kont\n"];
+WriteString[sphenoSugra,"Real(dp),Intent(in)::mf("<>cGen <>"),vev\n"];
+WriteString[sphenoSugra,"Complex(dp),Dimension("<>cGen <>","<>cGen <>"),Intent(in)::uL,uR,SigS,SigL,SigR\n"];
+WriteString[sphenoSugra,"Logical,Intent(in)::ReSum\n"];
+WriteString[sphenoSugra,"Complex(dp),Intent(inout)::MassMatrix("<>cGen <>","<>cGen <>")\n"];
+WriteString[sphenoSugra,"Complex(dp),Intent(out)::Y(3,3)\n"];
+WriteString[sphenoSugra,"Integer::i1\n"];
+WriteString[sphenoSugra,"Complex(dp),Dimension("<>cGen <>","<>cGen <>")::mass,uLa,uRa,f,invf,invMass2,Ytemp\n"];
+WriteString[sphenoSugra,"Call Adjungate(uL,uLa)\n"];
+WriteString[sphenoSugra,"Call Adjungate(uR,uRa)\n"];
+WriteString[sphenoSugra,"mass=ZeroC\n"];
+WriteString[sphenoSugra,"Do i1=1,"<>cGen <>"\n"];
+WriteString[sphenoSugra,"mass(i1,i1)=mf(i1)\n"];
+WriteString[sphenoSugra,"End Do\n"];
+WriteString[sphenoSugra,"mass=Matmul(Transpose(uL),Matmul(mass,uR))\n"];
+WriteString[sphenoSugra,"If (ReSum) Then\n"];
+WriteString[sphenoSugra,"kont=0\n"];
+WriteString[sphenoSugra,"Call chop(MassMatrix)\n"];
+WriteString[sphenoSugra,"invMass2=MassMatrix\n"];
+WriteString[sphenoSugra,"Call gaussj(kont,invMass2,"<>cGen <>","<>cGen <>")\n"];
+WriteString[sphenoSugra,"If (kont.Ne.0) Return\n"];
+WriteString[sphenoSugra,"f=id"<>cGen<>"C-Matmul(SigS,invMass2)-Transpose(SigL)-Matmul(MassMatrix,Matmul(SigR,invMass2))\n"];
+WriteString[sphenoSugra,"invf=f\n"];
+WriteString[sphenoSugra,"Call gaussj(kont,invf,"<>cGen <>","<>cGen <>")\n"];
+WriteString[sphenoSugra,"If (kont.Ne.0) Return\n"];
+WriteString[sphenoSugra,"Ytemp=Matmul(invf,mass)\n"];
+WriteString[sphenoSugra,"Else\n"];
+WriteString[sphenoSugra,"Ytemp=mass+SigS+Matmul(Transpose(SigL),MassMatrix)+Matmul(MassMatrix,SigR)\n"];
+WriteString[sphenoSugra,"End If\n"];
+WriteString[sphenoSugra,"Y=sqrt2*Ytemp(1:3,1:3)/vev\n"];
+WriteString[sphenoSugra,"Call chop(y)\n"];
+WriteString[sphenoSugra,"End Subroutine Yukawas"<>cGen <>"\n\n"];,
+
+cGen= ToString[NeededGenForYukawas[[i]]];
+
+WriteString[sphenoSugra,"Subroutine Yukawas"<>cGen <>"(mf,vev,uL,uR,SigS,SigL,SigR,MassMatrix,Y,ReSum,kont)\n"];
+WriteString[sphenoSugra,"Implicit None\n"];
+WriteString[sphenoSugra,"Integer,Intent(inout)::kont\n"];
+WriteString[sphenoSugra,"Real(dp),Intent(in)::mf("<>cGen <>"),vev\n"];
+WriteString[sphenoSugra,"Complex(dp),Dimension("<>cGen <>","<>cGen <>"),Intent(in)::uL,uR,SigS,SigL,SigR\n"];
+WriteString[sphenoSugra,"Logical,Intent(in)::ReSum\n"];
+WriteString[sphenoSugra,"Complex(dp),Intent(inout)::MassMatrix("<>cGen <>","<>cGen <>")\n"];
+WriteString[sphenoSugra,"Complex(dp),Intent(out)::Y(3,3)\n"];
+WriteString[sphenoSugra,"Complex(dp) :: Ysave(3,3) \n"];
+WriteString[sphenoSugra,"Integer::i1, i2, ierr\n"];
+WriteString[sphenoSugra,"Logical::converged=.false.\n"];
+WriteString[sphenoSugra,"Complex(dp),Dimension("<>cGen <>","<>cGen <>") :: mass, uLa, uRa, f, invf, invMass2, Ytemp, & \n &  uLnew, uRnew, mat2("<>cGen<>","<>cGen<>"), mat1("<>cGen<>","<>cGen<>")\n"];
+WriteString[sphenoSugra,"Real(dp) :: Mf2_t("<>cGen<>"),test2(2),diff(3,3)\n"];
+
+WriteString[sphenoSugra,"Ysave=1._dp \n\n"];
+WriteString[sphenoSugra,"Do i2=1,100 \n"];
+WriteString[sphenoSugra,"  mat1=MassMatrix-SigS-MatMul(SigL,MassMatrix)-MatMul(MassMatrix,SigR) \n"];
+WriteString[sphenoSugra,"  mat2=Matmul(Transpose(Conjg(mat1)),mat1)\n"];
+WriteString[sphenoSugra,"  Call EigenSystem(mat2,Mf2_t,uRnew,ierr,test2) \n"];
+WriteString[sphenoSugra,"  mat2=Matmul(mat1,Transpose(Conjg(mat1)))\n"];
+WriteString[sphenoSugra,"  Call EigenSystem(mat2,Mf2_t,uLnew,ierr,test2)\n\n"];
+WriteString[sphenoSugra,"  uLnew(1:3,1:3)=uL(1:3,1:3) \n"];
+WriteString[sphenoSugra,"  uRnew(1:3,1:3)=uR(1:3,1:3) \n"];
+WriteString[sphenoSugra,"  mass=0._dp\n"];
+WriteString[sphenoSugra,"   Do i1=1,3 \n"];
+WriteString[sphenoSugra,"    mass(i1,i1)=mf(i1) \n"];
+WriteString[sphenoSugra,"   End Do\n\n"];
+WriteString[sphenoSugra,"   Do i1=4,"<>cGen<>" \n"];
+WriteString[sphenoSugra,"    mass(i1,i1)= sqrt(Mf2_t(i1)) \n"];
+WriteString[sphenoSugra,"   End Do\n\n"];
+WriteString[sphenoSugra,"  mass=Matmul(Transpose(uLnew),Matmul(mass,uRnew))\n"];
+WriteString[sphenoSugra,"  Ytemp=mass+SigS+Matmul(SigL,MassMatrix)+Matmul(MassMatrix,SigR)\n"];
+WriteString[sphenoSugra,"  Y=sqrt2*Ytemp(1:3,1:3)/vev \n"];
+WriteString[sphenoSugra,"  Call chop(y)\n"];
+WriteString[sphenoSugra,"  MassMatrix(1:3,1:3)=Ytemp(1:3,1:3)\n"];
+WriteString[sphenoSugra,"  diff=Abs(Y-Ysave)\n"];
+WriteString[sphenoSugra,"  Where (diff.gt.1.E-10_dp) diff=diff/Y\n"];
+WriteString[sphenoSugra,"  Ysave=Y\n"];
+WriteString[sphenoSugra," If (Maxval(diff).lt.10E-7_dp) Exit\n"];
+WriteString[sphenoSugra,"End do \n\n"];
+
+WriteString[sphenoSugra,"End Subroutine Yukawas"<>cGen <>"\n\n"];
+];
+i++;]; 
+
 WriteString[sphenoSugra,"End Subroutine BoundaryEW \n \n"];
 ];
+
+
 
 
 GenerateBoundaryEW2:=Block[{i, j,posZ, posW, massW, massZ, couplingsW, couplingsZ,i1,i2,i3},

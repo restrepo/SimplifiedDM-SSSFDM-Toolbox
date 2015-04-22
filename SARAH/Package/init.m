@@ -518,7 +518,7 @@ Set[ToExpression["F"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}][d_],Hold[(Ex
 
 ];
 (*
-Set[ToExpression["A"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[AFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}]] /. NR->i]; 
+Set[ToExpression["A"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[AFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}]] /. NR\[Rule]i]; 
 *)
 If[Last[Fields[[i]]]===S,typeList=Join[typeList,{{If[SupersymmetricModel===False,ToExpression[ToString[Fields[[i,3]]]],ToExpression["S"<>ToString[Fields[[i,3]]]]],S}}];];
 If[Last[Fields[[i]]]===F,typeList=Join[typeList,{{If[SupersymmetricModel===False,ToExpression[ToString[Fields[[i,3]]]],ToExpression["F"<>ToString[Fields[[i,3]]]]],F}}];];
@@ -532,7 +532,7 @@ SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{SFields[[i]],absEFull,absIFull}
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{FFields[[i]],absEFull,absIFull}}];
 (* SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{AFields[[i]],absEFull,absIFull}}];  *)
 
-(* SFieldsTensor[[i]] = {SFields[[i]],Product[sum[absEFull[[j,1]],1,absEFull[[j,2]]],{j,1,Length[absEFull]}]*Product[If[FreeQ[Gauge,absIFull[[j,1]]]==False,sum[absIFull[[j,1]],1,absIFull[[j,2]]],1],{j,1,Length[absIFull]}],ind}; *)
+(* SFieldsTensor[[i]] = {SFields[[i]],Product[sum[absEFull[[j,1]],1,absEFull[[j,2]]],{j,1,Length[absEFull]}]*Product[If[FreeQ[Gauge,absIFull[[j,1]]]\[Equal]False,sum[absIFull[[j,1]],1,absIFull[[j,2]]],1],{j,1,Length[absIFull]}],ind}; *)
 i++;
 ];
 
@@ -772,7 +772,7 @@ AFieldsMultiplets [[i]]=Fields[[i,1]] /. subAux /. A_[{}]->A;
 
 (*
 If[Head[Fields[[i,1]]]===List,
-GenerateSubMultiplets[i,ToExpression["S"<>ToString[Fields[[i,3]]]],ToExpression["F"<>ToString[Fields[[i,3]]]],ToExpression["A"<>ToString[Fields[[i,3]]]],subScalar /. {A_[{}][b__]->A[b],A_[{}]->A},subFermion/. {A_[{}][b__]->A[b],A_[{}]->A},subAux/. {A_[{}][b__]->A[b],A_[{}]->A}];
+GenerateSubMultiplets[i,ToExpression["S"<>ToString[Fields[[i,3]]]],ToExpression["F"<>ToString[Fields[[i,3]]]],ToExpression["A"<>ToString[Fields[[i,3]]]],subScalar /. {A_[{}][b__]\[Rule]A[b],A_[{}]\[Rule]A},subFermion/. {A_[{}][b__]\[Rule]A[b],A_[{}]\[Rule]A},subAux/. {A_[{}][b__]\[Rule]A[b],A_[{}]\[Rule]A}];
 ];
 *)
 If[Head[Fields[[i,1]]]=!=List,
@@ -789,18 +789,18 @@ AFields[[i]]=ToExpression["A"<>ToString[Fields[[i,3]]]][absE][absI];
 
 (* TO CHECK !! *)
 (*
-Set[ToExpression["S"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}] ] /. NR->i];
+Set[ToExpression["S"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[SFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}] ] /. NR\[Rule]i];
 
-Set[ToExpression["F"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}][d_],Hold[(Extract[FFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[FFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[FFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}][d]] /. NR->i];
+Set[ToExpression["F"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}][d_],Hold[(Extract[FFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[FFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[FFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}][d]] /. NR\[Rule]i];
 
-Set[ToExpression["A"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[AFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}]] /. NR->i]; 
+Set[ToExpression["A"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[AFieldsMultiplets [[NR]],{x}]/DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4]) DeleteCases[Extract[AFieldsMultiplets [[NR]],{x}],y_?NumberQ,4][{c}]] /. NR\[Rule]i]; 
 *)
 (*
-Set[ToExpression["S"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]) /.((SFieldList /. conj[y_]->y) /. A_[{b___}]->(A->A[{c}])) ]/. NR->i];
+Set[ToExpression["S"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[SFieldsMultiplets [[NR]],{x}]) /.((SFieldList /. conj[y_]\[Rule]y) /. A_[{b___}]\[Rule](A\[Rule]A[{c}])) ]/. NR\[Rule]i];
 
-Set[ToExpression["F"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}][d_],Hold[(Extract[FFieldsMultiplets [[NR]],{x}]) /.((FFieldList /. conj[y_]->y) /. A_[{b___}]->(A->A[{c}][d])) ]/. NR->i];
+Set[ToExpression["F"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}][d_],Hold[(Extract[FFieldsMultiplets [[NR]],{x}]) /.((FFieldList /. conj[y_]\[Rule]y) /. A_[{b___}]\[Rule](A\[Rule]A[{c}][d])) ]/. NR\[Rule]i];
 
-Set[ToExpression["A"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[AFieldsMultiplets [[NR]],{x}]) /.((AFieldList /. conj[y_]->y) /. A_[{b___}]->(A->A[{c}])) ]/. NR->i];
+Set[ToExpression["A"<>ToString[Fields[[i,3]]]][{x__Integer}][{c__}],Hold[(Extract[AFieldsMultiplets [[NR]],{x}]) /.((AFieldList /. conj[y_]\[Rule]y) /. A_[{b___}]\[Rule](A\[Rule]A[{c}])) ]/. NR\[Rule]i];
 *)
 
 
@@ -822,7 +822,7 @@ ListFields = Join[ListFields,{{Fields[[i,3]],{absE,Expandedindizes},{absI,indize
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{SFields[[i]],absEFull,absIFull}}];
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{FFields[[i]],absEFull,absIFull}}];
 SA`ListAllFieldsInit=Join[SA`ListAllFieldsInit,{{AFields[[i]],absEFull,absIFull}}]; 
-(* SFieldsTensor[[i]] = {SFields[[i]],Product[sum[absEFull[[j,1]],1,absEFull[[j,2]]],{j,1,Length[absEFull]}]*Product[If[FreeQ[Gauge,absIFull[[j,1]]]==False,sum[absIFull[[j,1]],1,absIFull[[j,2]]],1],{j,1,Length[absIFull]}],ind}; *)
+(* SFieldsTensor[[i]] = {SFields[[i]],Product[sum[absEFull[[j,1]],1,absEFull[[j,2]]],{j,1,Length[absEFull]}]*Product[If[FreeQ[Gauge,absIFull[[j,1]]]\[Equal]False,sum[absIFull[[j,1]],1,absIFull[[j,2]]],1],{j,1,Length[absIFull]}],ind}; *)
 i++;
 ];
 
@@ -911,9 +911,9 @@ typeList=Join[typeList,{{Gmu[{lorentz}],F}}];
 typeList=Join[typeList,{{Gol,F}}];
 diracFermions[ALL]=Join[diracFermions[ALL],{GMU}];
 diracFermions[ALL]=Join[diracFermions[ALL],{GOL}];
-(* diracSub[ALL]=Join[diracSub[ALL],{GMU->{Gmu,conj[Gmu]}}]; *)
+(* diracSub[ALL]=Join[diracSub[ALL],{GMU\[Rule]{Gmu,conj[Gmu]}}]; *)
 For[i=1,i<=Length[NameOfStates],
-(* diracSub[NameOfStates[[i]]]=Join[diracSub[NameOfStates[[i]]],{GMU->{Gmu,conj[Gmu]}}]; *)
+(* diracSub[NameOfStates[[i]]]=Join[diracSub[NameOfStates[[i]]],{GMU\[Rule]{Gmu,conj[Gmu]}}]; *)
 diracFermions[NameOfStates[[i]]]=Join[diracFermions[NameOfStates[[i]]],{GMU}];
 diracFermions[NameOfStates[[i]]]=Join[diracFermions[NameOfStates[[i]]],{GOL}];
 i++;];
@@ -1045,7 +1045,7 @@ i++;
 ];
 
 (*
-For[i=1,i<=Length[SA`CasimirList],
+For[i=1,i\[LessEqual]Length[SA`CasimirList],
 SA`Casimir[getBlank[ToExpression["S"<>ToString[Fields[[SA`CasimirList[[i,1]],3]]]]],SA`CasimirList[[i,2]]]=SA`CasimirList[[i,3]];
 SA`Casimir[getBlank[getBlank[SFields[[SA`CasimirList[[i,1]]]]]],SA`CasimirList[[i,2]]]=SA`CasimirList[[i,3]];
 SA`Dynkin[getBlank[getBlank[SFields[[SA`CasimirList[[i,1]]]]]],SA`CasimirList[[i,2]]]=SA`CasimirList[[i,4]];
@@ -1076,22 +1076,22 @@ subIndizesRule={};
 
 For[i=1,i<=Length[Gauge],
 (*
-subIndizes=Join[subIndizes,{getAdjointIndex[Gauge[[i,3]]]-> (Hold[ToExpression[basis<>ToString[number]]]/. {basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]})}];
+subIndizes=Join[subIndizes,{getAdjointIndex[Gauge[[i,3]]]\[Rule] (Hold[ToExpression[basis<>ToString[number]]]/. {basis\[Rule]"a"<>StringTake[ToString[Gauge[[i,3]]],3]})}];
 
-subIndizesRule=Join[subIndizesRule,{getAdjointIndex[Gauge[[i,3]]]-> (Hold[ToExpression[basis<>ToString[number]<>"_"]]/. {basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]})}];
+subIndizesRule=Join[subIndizesRule,{getAdjointIndex[Gauge[[i,3]]]\[Rule] (Hold[ToExpression[basis<>ToString[number]<>"_"]]/. {basis\[Rule]"a"<>StringTake[ToString[Gauge[[i,3]]],3]})}];
 
-subIndizesRE=Join[subIndizesRE,{(Hold[ToExpression[basis<>ToString[number1]]]-> Hold[ToExpression[basis<>ToString[number2]]])/.{ basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}}];
+subIndizesRE=Join[subIndizesRE,{(Hold[ToExpression[basis<>ToString[number1]]]\[Rule] Hold[ToExpression[basis<>ToString[number2]]])/.{ basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}}];
 If[Head[Gauge[[i,2]]]===SU,
-subIndizesRE2=Join[subIndizesRE2,{(Hold[ToExpression[basis<>ToString[number1]]]-> Hold[ToExpression[basis<>ToString[number2]]])/.{ basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}}];
+subIndizesRE2=Join[subIndizesRE2,{(Hold[ToExpression[basis<>ToString[number1]]]\[Rule] Hold[ToExpression[basis<>ToString[number2]]])/.{ basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}}];
 ];
-subIndizesREFinal=Join[subIndizesREFinal,{(Hold[ToExpression[basis<>ToString[number1]]]-> Hold[ToExpression[basis<>ToString[number2]]])/. {basis->("a"<>StringTake[ToString[Gauge[[i,3]]],1]<>"t")}}];
-subIndizesFinal=Join[subIndizesFinal,{(Hold[ToExpression[basis1<>ToString[number1]]]-> Hold[ToExpression[basis2<>ToString[number2]]])/. {basis1->"a"<>StringTake[ToString[Gauge[[i,3]]],3], basis2->("a"<>StringTake[ToString[Gauge[[i,3]]],1]<>"t")}}];
-subIndizesFinalX=Join[subIndizesFinalX,{(Hold[ToExpression[basis1<>ToString[number1]]]-> Hold[ToExpression[basis2<>xname<>ToString[number2]]])/. {basis1->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}/. basis2->("a"<>StringTake[ToString[Gauge[[i,3]]],1])}];
-subIndizesValue=Join[subIndizesValue,{(Hold[ToExpression[basis1<>ToString[number1]]]-> Hold[number2])/. {basis1->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}}];
-subIndizesInt=Join[subIndizesInt,{(Hold[ToExpression[basis<>ToString[number]]]/. {basis->StringTake[ToString[Gauge[[i,3]]],3]})->(Hold[ToExpression["aaI"<>"a"<>basis<>ToString[1]]]/.{basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]})}];
+subIndizesREFinal=Join[subIndizesREFinal,{(Hold[ToExpression[basis<>ToString[number1]]]\[Rule] Hold[ToExpression[basis<>ToString[number2]]])/. {basis->("a"<>StringTake[ToString[Gauge[[i,3]]],1]<>"t")}}];
+subIndizesFinal=Join[subIndizesFinal,{(Hold[ToExpression[basis1<>ToString[number1]]]\[Rule] Hold[ToExpression[basis2<>ToString[number2]]])/. {basis1->"a"<>StringTake[ToString[Gauge[[i,3]]],3], basis2\[Rule]("a"<>StringTake[ToString[Gauge[[i,3]]],1]<>"t")}}];
+subIndizesFinalX=Join[subIndizesFinalX,{(Hold[ToExpression[basis1<>ToString[number1]]]\[Rule] Hold[ToExpression[basis2<>xname<>ToString[number2]]])/. {basis1->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}/. basis2\[Rule]("a"<>StringTake[ToString[Gauge[[i,3]]],1])}];
+subIndizesValue=Join[subIndizesValue,{(Hold[ToExpression[basis1<>ToString[number1]]]\[Rule] Hold[number2])/. {basis1->"a"<>StringTake[ToString[Gauge[[i,3]]],3]}}];
+subIndizesInt=Join[subIndizesInt,{(Hold[ToExpression[basis<>ToString[number]]]/. {basis->StringTake[ToString[Gauge[[i,3]]],3]})\[Rule](Hold[ToExpression["aaI"<>"a"<>basis<>ToString[1]]]/.{basis->"a"<>StringTake[ToString[Gauge[[i,3]]],3]})}];
 
-subIndizesMixStart=Join[subIndizesMixStart,{getAdjointIndex[Gauge[[i,3]]]->ToExpression["a"<>StringTake[ToString[Gauge[[i,3]]],3]<>ToString[_]]}];
-subIndizesMixEnde=Join[subIndizesMixEnde,{getAdjointIndex[Gauge[[i,3]]]->ToExpression["a"<>StringTake[ToString[Gauge[[i,3]]],3]]}]; 
+subIndizesMixStart=Join[subIndizesMixStart,{getAdjointIndex[Gauge[[i,3]]]\[Rule]ToExpression["a"<>StringTake[ToString[Gauge[[i,3]]],3]<>ToString[_]]}];
+subIndizesMixEnde=Join[subIndizesMixEnde,{getAdjointIndex[Gauge[[i,3]]]\[Rule]ToExpression["a"<>StringTake[ToString[Gauge[[i,3]]],3]]}]; 
 *)
 
 For[j=1,j<=7,
@@ -1292,6 +1292,12 @@ vevPhase=vev[[i,3,1]];
 vev[[i]]=Join[vev[[i]],{vev[[i,3]]}];
 vev[[i]]=Delete[vev[[i]],3];,
 vevPhase=vev[[i,5,1]];
+];,
+If[FreeQ[ParticlePhases,vev[[i,1]]]===False,
+realVEV=True;
+SA`CPViolationHiggsSector=True;
+complexVEVs=False;
+vevPhase=1;
 ];
 ];
 
@@ -1339,7 +1345,7 @@ addParticle[ vev[[i,2,1]],getIndizesWI[vev[[i,1]]],getGen[vev[[i,1]]],VEV];,
 tempVEVgenScalar=Join[tempVEVgenScalar,{{Min[Flatten[alignment /. Plus->List /. Delta->List /.x->99]],Max[Flatten[alignment /. Plus->List /. Delta->List/.x->0]]}}];
 addParticle[ vev[[i,2,1]],{{generation,Count[{alignment},Delta[a__],5]}},{Min[Flatten[alignment /. Plus->List /. Delta->List /.x->99]],Max[Flatten[alignment /. Plus->List /. Delta->List/.x->0]]},VEV];
 ];
-If[getGen[vev[[i,1]]]=!=1 (* && scalarform==False *),
+If[getGen[vev[[i,1]]]=!=1 (* && scalarform\[Equal]False *),
 If[realVEV==False,parameters = Join[parameters, {{ vevPhase, {generation}, {getGen[vev[[i,1]]]}}}];];
 parameters = Join[parameters, {{ vev[[i,2,1]], {generation}, {getGen[vev[[i,1]]]}}}];,
 parameters = Join[parameters, {{ vev[[i,2,1]], {}, {1}}}];

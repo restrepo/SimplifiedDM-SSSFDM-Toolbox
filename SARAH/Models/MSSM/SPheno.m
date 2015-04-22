@@ -129,5 +129,5 @@ NeglectLoopsInvolving = {};
 
 IncludeFineTuning = True;
 FineTuningParameters={
-{m0,1/2},{m12,1/2},{Azero,1/2},{\[Mu],1/2},{B[\[Mu]],1/2}
+{m0,1/2},{m12,1},{Azero,1},{\[Mu],1},{B[\[Mu]],1}
 };

@@ -33,18 +33,18 @@ ParameterDefinitions = {
 {MassWB,    { Description -> "Wino Mass parameter"}},
 {MassG,     { Description -> "Gluino Mass parameter"}},
                            
-{vd,        { Description -> "Down-VEV"}}, 
-{vu,        { Description -> "Up-VEV"}},       
+{vd,        { Description -> "Down-VEV",
+              DependenceNum -> v Cos[ArcTan[TanBeta]]}}, 
+{vu,        { Description -> "Up-VEV",
+              DependenceNum -> v Sin[ArcTan[TanBeta]]}},       
 {v,         { Description -> "EW-VEV"}},
              
-{\[Beta],   { Description -> "Pseudo Scalar mixing angle",
-			  DependenceSPheno -> ArcSin[ZP[1,2]]  }},   
-			  
 {eta,       { Real -> True, 
               OutputName ->"eta",
               LaTeX -> "\\eta",
               LesHouches->{HMIX,500} }},			            
-{TanBeta,   { Description -> "Tan Beta" }},              
+{TanBeta,   { Description -> "Tan Beta", 
+              OutputName->TanBeta }},              
                     
              
     
@@ -58,7 +58,11 @@ ParameterDefinitions = {
               DependenceOptional -> None,
               Real -> False }},
 
-{ZP,        { Description->"Charged-Mixing-Matrix"}},                      
+{ZP,        { Description->"Charged-Mixing-Matrix",
+              Real -> False,
+              Dependence -> None,
+              DependenceOptional -> None,
+              DependenceNum -> None}},                      
                                           
  
 {ZN,        { Description->"Neutralino Mixing-Matrix" }}, 

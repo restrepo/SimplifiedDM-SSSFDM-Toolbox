@@ -3,10 +3,10 @@ Off[General::spell]
 Model`Name = "NMSSMCPV";
 Model`NameLaTeX ="NMSSM-CPV";
 Model`Authors = "F.Staub";
-Model`Date = "2012-09-01";
+Model`Date = "2015-04-16";
 
+(* 2015-04-16: changed handling of complex phases in Higgs sector *)
 
-(* 2013-09-01: changing to new conventions for Superfields, Superpotential and global symmetries *)
 
 (*-------------------------------------------*)
 (*   Particle Content*)
@@ -80,13 +80,18 @@ DEFINITION[EWSB][GaugeSector] =
   {{VWB[1],VWB[2]},{VWm,conj[VWm]},ZW},
   {{fWB[1],fWB[2],fWB[3]},{fWm,fWp,fW0},ZfW}
 };   
-        
+
+DEFINITION[GaugeES][Phases]= 
+{    {SHup, Exp[I eta]},
+     {SHu0, Exp[I eta]},
+     {SsR, Exp[I etaS]}
+    }; 
         
  
 DEFINITION[EWSB][VEVs]= 
 {    {SHd0, {vd, 1/Sqrt[2]}, {sigmad, \[ImaginaryI]/Sqrt[2]},{phid,1/Sqrt[2]}},
-     {SHu0, {vu, 1/Sqrt[2]}, {sigmau, \[ImaginaryI]/Sqrt[2]},{phiu,1/Sqrt[2]},{eta}},
-     {SsR, {vS, 1/Sqrt[2]}, {sigmaS, \[ImaginaryI]/Sqrt[2]},{phiS,1/Sqrt[2]},{etaS}}     };
+     {SHu0, {vu, 1/Sqrt[2]}, {sigmau, \[ImaginaryI]/Sqrt[2]},{phiu,1/Sqrt[2]}},
+     {SsR, {vS, 1/Sqrt[2]}, {sigmaS, \[ImaginaryI]/Sqrt[2]},{phiS,1/Sqrt[2]}}     };
 
 
  

@@ -41,8 +41,8 @@ _,WriteString[file,FortranLineBreak[SPhenoForm[list[[i,1]]], SPhenoForm[list[[i,
 i++;];
 
 (*
-For[i=1,i<=Length[SquaredParametersTadpoles],
-If[FreeQ[list,SquaredParametersTadpoles[[i,2]]]==False,
+For[i=1,i\[LessEqual]Length[SquaredParametersTadpoles],
+If[FreeQ[list,SquaredParametersTadpoles[[i,2]]]\[Equal]False,
 WriteString[file,"If ("<>ToString[SquaredParametersTadpoles[[i,1]]]<>".Lt.0._dp) Then \n"];
 WriteString[file,     SPhenoForm[SquaredParametersTadpoles[[i,1]]]<>" = 10000._dp  \n"];
 WriteString[file,      SPhenoForm[SquaredParametersTadpoles[[i,2]]]<>" = "<>SPhenoForm[SquaredParametersTadpoles[[i,3]]] <>"* 100._dp  \n"];
@@ -156,7 +156,7 @@ MakeCall["SolveTadpoleEquations"<>SuffixRegime,listAllParametersAndVEVs,{},{"Tad
 
 WriteTadpoleSolutionList[file_,list_,sevsol_]:=Block[{i,j},
 If[sevsol=!=True,
-(* For[i=1,i<=Length[list],
+(* For[i=1,i\[LessEqual]Length[list],
 Switch[Head[list[[i,1]]],
 re,WriteString[file,FortranLineBreak[SPhenoForm[list[[i,1,1]]]<>" = Cmplx(Real(" <> SPhenoForm[list[[i,2]]],5]  <> ",dp),Aimag("<>SPhenoForm[list[[i,1,1]]]<>"),dp )\n"];,
 im,WriteString[file,FortranLineBreak[SPhenoForm[list[[i,1,1]]]<>" = Cmplx(real("<>SPhenoForm[list[[i,1,1]]]<>",dp),Real(" <> SPhenoForm[list[[i,2]]],5]  <> ",dp),dp) \n"];,
@@ -354,8 +354,8 @@ WriteString[sphenoTad, "Complex(dp), Intent(in) :: Tad1Loop("<>ToString[SA`NrTad
 WriteString[sphenoTad, "Real(dp), Intent(out) :: TadpoleValues("<>ToString[SA`NrTadpoleEquations]<>")\n\n"];
 *)
 
-WriteString[sphenoTad, "Complex(dp), Intent(in) :: Tad1Loop("<>ToString[Length[ParametersToSolveTadpoles]]<>")\n\n"];
-WriteString[sphenoTad, "Real(dp), Intent(out) :: TadpoleValues("<>ToString[Length[ParametersToSolveTadpoles]]<>")\n\n"];
+WriteString[sphenoTad, "Complex(dp), Intent(in) :: Tad1Loop("<>ToString[Length[EquLoop]]<>")\n\n"];
+WriteString[sphenoTad, "Real(dp), Intent(out) :: TadpoleValues("<>ToString[Length[EquLoop]]<>")\n\n"];
 
 For[i=1,i<=Length[EquLoop],
 WriteString[sphenoTad,FortranLineBreak["TadpoleValues("<>ToString[i]<>") = Real("<>SPhenoForm[EquLoop[[i,1]]]<>",dp) \n"]];

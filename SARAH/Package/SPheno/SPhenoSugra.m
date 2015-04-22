@@ -27,9 +27,11 @@ GenerateBoundarySUSY;
 GenerateBoundaryHS;
 
 If[SupersymmetricModel=!=False,
+
 If[getGen[Electron]==3 && getGen[TopQuark]==3 && getGen[BottomQuark]==3,
 GenerateBoundaryEW;,
-GenerateBoundaryEW2;
+(* GenerateBoundaryEW2; *)
+GenerateBoundaryEW;
 ];,
 GenerateBoundaryEWnonSUSY;
 ]; 
@@ -112,11 +114,11 @@ WriteString[sphenoSugra, "Logical, save :: ThresholdMassesCalculated = .False.\n
 ];
 
 
-For[i=1,i<=Length[ListAllInputParameters],
+For[i=1,i\[LessEqual]Length[ListAllInputParameters],
 WriteString[sphenoSugra, "Logical, save :: InputValuefor"<>SPhenoForm[ListAllInputParameters[[i,1]]]  <>" =.False. \n"];
 i++;];
 
-For[i=1,i<=Length[listParametersOtherRegimes],
+For[i=1,i\[LessEqual]Length[listParametersOtherRegimes],
 WriteString[sphenoSugra, "Logical, save :: InputValuefor"<>SPhenoForm[listParametersOtherRegimes[[i]]]  <>" =.False. \n"];
 i++;];
 *)
@@ -1185,23 +1187,23 @@ i++;];
 (*
 WriteString[sphenoSugra,"If (HighScaleModel.Eq.\"LOW\") Then \n "];
 WriteString[sphenoSugra,"! Setting values \n "];
-For[i=1,i<=Length[listVEVsIN],
-If[MemberQ[ParametersToSolveTadpoles,listVEVs[[i]]]==False && FreeQ[{VEVSM1,VEVSM2,VEVSM},listVEVs[[i]]],
+For[i=1,i\[LessEqual]Length[listVEVsIN],
+If[MemberQ[ParametersToSolveTadpoles,listVEVs[[i]]]\[Equal]False && FreeQ[{VEVSM1,VEVSM2,VEVSM},listVEVs[[i]]],
 WriteString[sphenoSugra,StringDrop[SPhenoForm[listVEVsIN[[i]]],-2] <>" = " <>SPhenoForm[listVEVsIN[[i]]]<>" \n "];
 ];
 i++;];
-For[i=1,i<=Length[HighScaleList],
-If[MemberQ[ParametersToSolveTadpoles,HighScaleList[[i,2]]]==False,
+For[i=1,i\[LessEqual]Length[HighScaleList],
+If[MemberQ[ParametersToSolveTadpoles,HighScaleList[[i,2]]]\[Equal]False,
 WriteString[sphenoSugra,StringDrop[SPhenoForm[highScaleIn[[i]]],-2] <>" = " <>SPhenoForm[highScaleIn[[i]]]<>" \n "];
 ];
 i++;];
-For[i=1,i<=Length[LowScaleList],
-If[MemberQ[ParametersToSolveTadpoles,LowScaleList[[i,2]]]==False&& FreeQ[{leftCoupling,hyperchargeCoupling,strongCoupling,UpYukawa,DownYukawa,ElectronYukawa},LowScaleList[[i,1]]],
+For[i=1,i\[LessEqual]Length[LowScaleList],
+If[MemberQ[ParametersToSolveTadpoles,LowScaleList[[i,2]]]\[Equal]False&& FreeQ[{leftCoupling,hyperchargeCoupling,strongCoupling,UpYukawa,DownYukawa,ElectronYukawa},LowScaleList[[i,1]]],
 WriteString[sphenoSugra,StringDrop[SPhenoForm[lowScaleIn[[i]]],-2] <>" = " <>SPhenoForm[lowScaleIn[[i]]]<>" \n "];
 ];
 i++;];
 
-For[i=1,i<=Length[BoundaryLowScaleInput],
+For[i=1,i\[LessEqual]Length[BoundaryLowScaleInput],
 WriteString[sphenoSugra,SPhenoForm[BoundaryLowScaleInput[[i,1]]]<>" = " <>SPhenoForm[BoundaryLowScaleInput[[i,2]]]<>"\n"];
 i++;];
 WriteString[sphenoSugra,"End if\n \n "];

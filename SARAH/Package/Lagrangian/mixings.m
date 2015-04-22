@@ -301,7 +301,6 @@ rotNr++;
 ];
 
 (* ---------------------------- Final Lagrangian ------------------------ *)
-
 PrintAll[""];
 (*
 Print["-----------------------------------"];
@@ -325,7 +324,6 @@ CheckForMassless;
 CalculateTreeLevelMasses;
 SimplifyMatrices;
 CurrentStates = Last[NameOfStates];
-
 PrintAll["Numerical calculations (if necessary)"];
 GetNumericalValues[SpectrumFile];
 
@@ -409,7 +407,6 @@ mixMatES = Join[mixMatES,{mixDef[[i,2]]}];
 ];
 i++;];
 
-
 For[i=1,i<=Length[mixES],
 gen=Sum[(getGen[mixES[[i,1,j]]]-getGenStart[mixES[[i,1,j]]]+1),{j,1,Length[mixES[[i,1]]]}];
 (* addParticle[RE[mixES[[i,2,1]]],getFull[RE[mixES[[i,1,1]]]][[1]],gen, getType[mixES[[i,1,1]]]]; *)
@@ -432,7 +429,6 @@ PrintAll["Problem with deriving global charges for ",mixES[[i,2,1]]];,
 SA`ChargeGlobal[RE[mixES[[i,2,1]]],Global[[i2,2]]] =SA`ChargeGlobal[mixES[[i,1,1]],Global[[i2,2]]];
 ];
 i2++;];
-
 If[TrueQ[conj[mixES[[i,1,1]]]==mixES[[i,1,1]]]==True,realVar=Join[realVar,{mixES[[i,2,1]]}];];
 If[FreeQ[parameters,mixES[[i,2,2]]]==True,
 If[gen<=4,
@@ -442,7 +438,6 @@ parameters=Join[parameters,{{mixES[[i,2,2]],{generation,generation},{gen,gen}}}]
 SA`ListMixingMatrices = Join[SA`ListMixingMatrices,{mixES[[i,2,2]]}];
 ];
 i++;];
-
 
 For[i=1,i<=Length[mixESnoFV],
 flavors=Length[mixESnoFV[[i,1]]];
@@ -481,7 +476,6 @@ i++;];
 MatrixValues = {};
 MatrixNames = Transpose[Transpose[mixES][[2]]][[2]];
 
-
 For[i=1, i<=Length[ParameterDefinitions],
 If[( (Dependence /.  ParameterDefinitions[[i,2]])  =!= None )&&  ((Dependence /.  ParameterDefinitions[[i,2]]) =!= Dependence),
 If[FreeQ[MatrixNames,ParameterDefinitions[[i,1]]]==False,
@@ -489,7 +483,6 @@ MatrixValues = Join[MatrixValues,{{ParameterDefinitions[[i,1]], Dependence /.  P
 ];
 ];
 i++;];
-
 For[i=1,i<=Length[mixES],
 If[FreeQ[MatrixValues,mixES[[i,2,2]]]==False,
 maxX=0; maxY=0;newMatrixName=None;
@@ -528,9 +521,8 @@ realVar=Join[realVar,{newMatrixName}];
 ];
 ];
 ];
-
 If[FreeQ[ParameterDefinitions,mixES[[i,2,2]]]==False,
-If[(Real /. Extract[ParameterDefinitions,Position[ParameterDefinitions,mixES[[i,2,2]]][[1,1]]][[2]])==True,
+If[(Real /. Extract[ParameterDefinitions,Position[Transpose[ParameterDefinitions][[1]],mixES[[i,2,2]]][[1,1]]][[2]])==True,
 realVar=Join[realVar,{mixES[[i,2,2]]}];
 ];
 ];
@@ -1028,8 +1020,14 @@ phaseInverse=Join[phaseInverse,{phas[[i,1]][{y___}]->phas[[i,1]][{y}] conj[phas[
 ];
 
 PhasesToOneSub=Join[PhasesToOneSub,{phas[[i,2]]->1}];
+If[Head[phas[[i,2]]]===Power,
+If[FreeQ[parameters,phas[[i,2]]/. Exp[x_]->x /. I->1],
+parameters = Join[parameters,{{phas[[i,2]]/. Exp[x_]->x /. I->1,{},{}}}];
+realVar = Join[realVar,{phas[[i,2]]/. Exp[x_]->x /. I->1}];
+];,
 If[FreeQ[parameters,phas[[i,2]]],
 parameters = Join[parameters,{{phas[[i,2]],{},{}}}];
+];
 ];
 
 i++;];
