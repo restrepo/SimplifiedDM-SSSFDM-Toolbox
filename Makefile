@@ -1,6 +1,6 @@
 subdirs =  "./SPHENO" "./calchep" "./micromegas"
 subdirs_install = 
-subdirs_clean =  "./$SPHENO" "./calchep" "./micromegas"
+subdirs_clean =  "./SPHENO" "./calchep" "./micromegas"
 
 all: subdirs_all
 
