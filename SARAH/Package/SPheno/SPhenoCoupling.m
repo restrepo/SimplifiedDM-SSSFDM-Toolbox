@@ -19,7 +19,7 @@
 
 
 
-GenerateSPhenoCouplingList:=Block[{i,currentRegime,readRegime},
+GenerateSPhenoCouplingList:=Block[{i,currentRegime,readRegime,tt2},
 (*
 Print["--------------------------------------"];
 Print["Writing Couplings-File for SPheno "];
@@ -28,7 +28,7 @@ Print["--------------------------------------"];
 
 Print[StyleForm["Write Couplings","Section",FontSize->12]];
 
-$sarahCurrentSPhenoDir=ToFileName[{$sarahCurrentOutputDir,"SPheno"}];
+(* $sarahCurrentSPhenoDir=ToFileName[{$sarahCurrentOutputDir,"SPheno"}]; *)
 sphenoCoup=OpenWrite[ToFileName[$sarahCurrentSPhenoDir,"Couplings_"<>ModelName<>".f90"]];
 
 SubNonAbelianNonSelf={};
@@ -51,7 +51,7 @@ DynamicCouplings["AllCouplingsReallyAll"]="";
 Print["  Processing couplings for all calculations: ",Dynamic[DynamicCouplingsTreeAll]," ",Dynamic[DynamicCouplings["AllCouplingsReallyAll"]]];
 
 DynamicCouplingsTreeAll="building couplings";
-temp=SPhenoCouplingList[Select[VertexListNonCC,FreeQ[#,ASS]&] //. RXi[_]->1];
+temp=SPhenoCouplingList[Select[VertexListNonCC,FreeQ[#,ASS]&]  (*//. RXi[_]\[Rule]1*)];
 SPhenoCouplingsAllreallyAll=temp[[1]];
 parametersAllreallyAll=temp[[2]];
 namesAllreallyAll=temp[[3]];
@@ -125,6 +125,7 @@ WriteSPhenoCouplings[SPhenoCouplings3P,False,"2L"];
 (*------TWO LOOP POLE COUPLINGS------*)
 (* by M.D. Goodsell *)
 (*-----------------------------------*)
+If[SupersymmetricModel=!=False,
 DynamicCouplings2LPole="";
 Print["Creating couplings for 2-loop pole mass: ",Dynamic[DynamicCouplings2LPole]];
 
@@ -140,10 +141,10 @@ temp=Select[VertexListNonCC,(#[[-1]]===SSSS)&];(*extract all 4-vertices with sca
 
 specialPOLEvertices={};
 
-Block[{tt,i},
+Block[{tt,i,tttt2},
 For[i=1,i<=Length[temp],i++,tt=ExtractStructure[temp[[i,1,2,1]],color];
-tt2=Select[tt,#[[2,1]]=!=0&];
-POLEstructures=Table[tt2[[i,1]],{i,1,Length[tt2]}];
+tttt2=Select[tt,#[[2,1]]=!=0&];
+POLEstructures=Table[tttt2[[i,1]],{i,1,Length[tttt2]}];
 AppendTo[specialPOLEvertices,{{temp[[i,1,1]],POLEstructures}}];
 ];
 specialPOLEverticesorg=Table[C@@specialPOLEvertices[[i,1,1]]/.{A_[{___}]->A},{i,1,Length[specialPOLEvertices]}];
@@ -160,7 +161,7 @@ parametersAll4Pole=temp2[[2]];
 namesAll4Pole=temp2[[3]];
 WriteSPhenoAllCouplings[SPhenoCouplings4Pole,parametersAll4Pole,namesAll4Pole,"CouplingsFor2LPole4","2LP"];
 WriteSPhenoCouplings[SPhenoCouplings4Pole,False,"2LP"];
-
+];
 (*--------END TWO LOOP POLE COUPLINGS-------------*)
 (*------------------------------------------------*)
 
@@ -274,7 +275,7 @@ Return[False]];
 
 (*
 FreeQUHiggs[x_]:=Block[{i,temp},
-If[FreeQ[x,UnmixedHiggs]==False,
+If[FreeQ[x,UnmixedHiggs]\[Equal]False,
 Return[True];,
 Return[False]];
 ];
@@ -331,7 +332,7 @@ i2++;];
 
 SPhenoCouplings={};
 For[n1=1,n1<=Length[listCouplings],
-(* If[Length[listCouplings[[n1,1]]]==2, *)
+(* If[Length[listCouplings[[n1,1]]]\[Equal]2, *)
 Switch[Length[listCouplings[[n1,1]]],
 2, (* Lorentz scalar *)
 If[CouplingUsedForEffPot=!=True,
@@ -389,7 +390,7 @@ NewP2 =Transpose[NewParameters][[2]];
 
 
 
-(* If[Length[listCouplings[[n1,1]]]==2, *)
+(* If[Length[listCouplings[[n1,1]]]\[Equal]2, *)
 Switch[Length[listCouplings[[n1,1]]],
 2, SPhenoParameters = Join[SPhenoParameters,{{SPhenoCoupling[listCouplings[[n1,1,1]]],NewP1,NewP2,NewParametersSplit }}];,
 3, SPhenoParameters = Join[SPhenoParameters,{{SPhenoCouplingLeft[listCouplings[[n1,1,1]]],NewP1,NewP2,NewParametersSplit }}];
@@ -426,7 +427,7 @@ coupNr++;
 n1++;];
 
 
-Return[{SPhenoCouplings //. Mass[x_]:>SPhenoMass[x] //. RXi[_]->1,parameterNames,couplingNames}];
+Return[{SPhenoCouplings //. Mass[x_]:>SPhenoMass[x] (*//. RXi[_]\[Rule]1*),parameterNames,couplingNames}];
 
 ];
 
@@ -451,7 +452,7 @@ WriteCouplings=True;
 
 If[WriteCouplings==True,
 
-(* If[Length[SPhenoCouplings[[i,2]]]==2, *)
+(* If[Length[SPhenoCouplings[[i,2]]]\[Equal]2, *)
 Switch[Length[SPhenoCouplings[[i,2]]],
 2, MakeSubroutineTitle[SPhenoCouplings[[i,2,1]]<>end, Join[SPhenoCouplings[[i,3]],SPhenoCouplings[[i,4]]],{},{"res"},sphenoCoup];,
 3, MakeSubroutineTitle[SPhenoCouplings[[i,2,1]]<>end, Join[SPhenoCouplings[[i,3]],SPhenoCouplings[[i,4]]],{},{"resL","resR"},sphenoCoup]; ,
@@ -474,7 +475,7 @@ i2++;];
 
 MakeVariableList[SPhenoCouplings[[i,4]],", Intent(in)",sphenoCoup];
 
-(* If[Length[SPhenoCouplings[[i,2]]]==2, *)
+(* If[Length[SPhenoCouplings[[i,2]]]\[Equal]2, *)
 Switch[Length[SPhenoCouplings[[i,2]]],
 2, WriteString[sphenoCoup, "Complex(dp), Intent(out) :: res \n \n"];,
 3, WriteString[sphenoCoup, "Complex(dp), Intent(out) :: resL, resR \n \n"];,
@@ -505,7 +506,7 @@ i2++;];
 
 
 
-(* If[Length[SPhenoCouplings[[i,2]]]==2, *)
+(* If[Length[SPhenoCouplings[[i,2]]]\[Equal]2, *)
 Switch[Length[SPhenoCouplings[[i,2]]],
 
 2, 
@@ -557,7 +558,7 @@ WriteString[sphenoCoup,"res3 = -(0.,1.)*res3 \n \n"];
 ];
 ];
 
-(* If[Length[SPhenoCouplings[[i,2]]]==2, *)
+(* If[Length[SPhenoCouplings[[i,2]]]\[Equal]2, *)
 Switch[Length[SPhenoCouplings[[i,2]]],
 2,
 WriteString[sphenoCoup,"If (Real(res,dp).ne.Real(res,dp)) Then \n"];,
@@ -658,7 +659,7 @@ WriteString[sphenoCoup, "NameOfUnit(Iname) = '"<>RoutineName<>"'\n \n"];
 
 For[i=1,i<=Length[SPhenoCouplings],
 DynamicCouplings[RoutineName]="("<>ToString[i]<>"/"<>ToString[Length[SPhenoCouplings]]<>")";
-(* If[Length[SPhenoCouplings[[i,2]]]==2, *)
+(* If[Length[SPhenoCouplings[[i,2]]]\[Equal]2, *)
 Switch[Length[SPhenoCouplings[[i,2]]],
 2, WriteString[sphenoCoup, ToString[SPhenoCouplings[[i,2,2]]] <> " = 0._dp \n"];,
 3, WriteString[sphenoCoup, ToString[SPhenoCouplings[[i,2,2]]] <> " = 0._dp \n"];
@@ -856,7 +857,7 @@ vertexval=listCouplings[[n1,1,2,1]];
 tempcolourfunc=ExtractStructure[vertexval,color];
 If[tempcolourfunc[[1,1]]===1,(*not coloured!*)value=listCouplings[[n1,1,2,1]];
 SPhenoCouplings=Join[SPhenoCouplings,{{{Apply[C,listCouplings[[n1,1,1]]/.A_[{a__}]->A]},{CouplingName[listCouplings[[n1,1,1]]],SPhenoCoupling[listCouplings[[n1,1,1]]]},{},{},value/.subCouplingsSPheno,listCouplings[[n1,1,1]]}}];
-couplingNames=Join[couplingNames,{SPhenoCoupling[listCouplings[[n1,1,1]]]}];,(*coloured!*)newcolourfuncs=Select[tempcolourfunc,#[[2,1]]=!=0&];(*select the bits with nonzero colour structure*)If[Length[newcolourfuncs]>1,(*more than one colour structure->sum over the colour indices*)(*but first discard vertices which do not have two pairs of identical vertices*)If[((Length[Intersection[RE/@(listCouplings[[n1,1,1]]/.A_[{b__}]->A)]]>=3)||(Mod[Count[RE/@(listCouplings[[n1,1,1]]/.A_[{b__}]->A),RE[(listCouplings[[n1,1,1,1]]/.A_[{b__}]->A)]],2]==1)),Continue[];];
+couplingNames=Join[couplingNames,{SPhenoCoupling[listCouplings[[n1,1,1]]]}];,(*coloured!*)newcolourfuncs=Select[tempcolourfunc,#[[2,1]]=!=0&];(*select the bits with nonzero colour structure*)If[Length[newcolourfuncs]>1,(*more than one colour structure\[Rule]sum over the colour indices*)(*but first discard vertices which do not have two pairs of identical vertices*)If[((Length[Intersection[RE/@(listCouplings[[n1,1,1]]/.A_[{b__}]->A)]]>=3)||(Mod[Count[RE/@(listCouplings[[n1,1,1]]/.A_[{b__}]->A),RE[(listCouplings[[n1,1,1,1]]/.A_[{b__}]->A)]],2]==1)),Continue[];];
 value=sumOverNonAbelianIndicesPOLE[listCouplings[[n1]]];
 SPhenoCouplings=Join[SPhenoCouplings,{{{Apply[C,listCouplings[[n1,1,1]]/.A_[{a__}]->A]},{CouplingName[listCouplings[[n1,1,1]]],SPhenoCoupling[listCouplings[[n1,1,1]]]},{},{},value/.subCouplingsSPheno,listCouplings[[n1,1,1]]}}];
 couplingNames=Join[couplingNames,{SPhenoCoupling[listCouplings[[n1,1,1]]]}];,(*just the regular case here,a single colour factor*)value=newcolourfuncs[[1,2]];
@@ -898,7 +899,7 @@ parameterNames=Join[parameterNames,{SPhenoMass[PART[V][[i2,1]]]}]];
 i2++;];
 coupNr++;];
 fourptcouplingstatus="Complete ("<>ToString[numberofcouplings]<>"/"<>ToString[numberofcouplings]<>") processed, "<>ToString[coupNr-1]<>" unique couplings found";
-Return[{SPhenoCouplings//.Mass[x_]:>SPhenoMass[x]//.RXi[_]->1,parameterNames,couplingNames}];
+Return[{SPhenoCouplings//.Mass[x_]:>SPhenoMass[x](*//.RXi[_]\[Rule]1*),parameterNames,couplingNames}];
 ];
 
 

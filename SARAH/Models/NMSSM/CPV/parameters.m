@@ -57,7 +57,7 @@ ParameterDefinitions = {
 {ZE,        { Description -> "Slepton-Mixing-Matrix"}}, 
 {ZV,        { Description->"Sneutrino Mixing-Matrix"}},   
 {ZH,        { Description->"Scalar-Mixing-Matrix", 
-              Real -> False, 
+              Real -> True, 
               Dependence -> None,
               DependenceOptional -> None,
               DependenceNum -> None           }},

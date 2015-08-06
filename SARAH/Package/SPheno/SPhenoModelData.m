@@ -294,7 +294,8 @@ MakeVariableList[U1MixingParameters,"",ModelData];
 WriteString[ModelData,"Complex(dp) :: CKMcomplex(3,3) \n"];
 
 WriteString[ModelData,"Real(dp) :: Xi = 1._dp \n"];
-
+WriteString[ModelData,"Real(dp) :: RXi = 1._dp \n"];
+WriteString[ModelData,"Real(dp) :: RXiNew = 1._dp \n"];
 For[i=1,i<=Length[SA`GaugeFixingRXi],
 If[FreeQ[Particles[Current],SA`GaugeFixingRXi[[i,2]]]==False,
 If[SPhenoOnlyForHM===True,
@@ -745,7 +746,7 @@ If[Head[BoundaryLowScaleInput[[1,1]]]===List,
 temp=Join[temp,Table[Transpose[BoundaryLowScaleInput[[k]]][[1]],{k,1,Length[BoundaryLowScaleInput]}]];,temp=Join[temp,Transpose[BoundaryLowScaleInput][[1]]];
 ];
 ];
-temp=Select[Flatten[temp],(FreeQ[HighScaleParametersAllwithVEVsRegimes,#]&&FreeQ[MINPAR,#]&&FreeQ[EXTPAR,#]&&FreeQ[ListAllInputParameters,#]&&FreeQ[listVEVs,#]&&FreeQ[Join[highScaleIn,lowScaleIn],#]&&FreeQ[Join[highScaleIn,lowScaleIn],Head[#]]&&FreeQ[HighScaleParametersAllwithVEVsRegimes,Head[#]]&&FreeQ[MINPAR,Head[#]]&&FreeQ[EXTPAR,Head[#]]&&FreeQ[ListAllInputParameters,Head[#]]&&FreeQ[listVEVs,Head[#]])&];
+temp=Select[Flatten[temp],(FreeQ[HighScaleParametersAllwithVEVsRegimes,#]&&FreeQ[MINPAR,#]&&FreeQ[EXTPAR,#]&&FreeQ[ListAllInputParameters,#]&&FreeQ[listVEVs,#]&&FreeQ[Join[highScaleIn,lowScaleIn],#]&&FreeQ[Join[highScaleIn,lowScaleIn],Head[#]]&&FreeQ[HighScaleParametersAllwithVEVsRegimes,Head[#]]&&FreeQ[MINPAR,Head[#]]&&FreeQ[EXTPAR,Head[#]]&&FreeQ[ListAllInputParameters,Head[#]]&&FreeQ[listVEVs,Head[#]] && Head[#]=!=re  && Head[#]=!=im  )&];
 temp=Intersection[temp];
 
 temp=Select[temp,FreeQ[AdditionalParametersLagrange,#]&];

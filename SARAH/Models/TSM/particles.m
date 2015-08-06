@@ -47,10 +47,10 @@ ParticleDefinitions[GaugeES] = {
       
       
      {Hpm,     { Description -> "Charged Higgs", 
-                 PDG -> {0,37,47},
-                 PDG.IX ->{0, 100000601,100000602},
-                 Width -> {0, External,External}, 
-                 Mass -> {0, LesHouches,LesHouches},
+                 PDG -> {0,37},
+                 PDG.IX ->{0, 100000601},
+                 Width -> {0, External}, 
+                 Mass -> {0, LesHouches},
                  LaTeX -> {"H^+","H^-"},
                  OutputName -> {"Hp","Hm"}
                  }},                                                   

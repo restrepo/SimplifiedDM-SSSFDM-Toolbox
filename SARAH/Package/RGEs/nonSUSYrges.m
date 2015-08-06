@@ -515,11 +515,17 @@ listTri[[i]]=Join[listTri[[i]],{LP[[i]]}];
 listQuad[[i]]=Join[listQuad[[i]],{LP[[i]]}];
 i++;];
 
-
-For[i=1,i<=Length[LP],
+(*
+For[i=1,i\[LessEqual]Length[LP],
 listBi[[i]]=getFull/@Union[getBlank/@listBi[[i]]];
 listTri[[i]]=getFull/@Union[getBlank/@listTri[[i]]];
 listQuad[[i]]=getFull/@Union[getBlank/@listQuad[[i]]];
+i++;];
+*)
+For[i=1,i<=Length[LP],
+listBi[[i]]=Union[getBlank/@listBi[[i]]];
+listTri[[i]]=Union[getBlank/@listTri[[i]]];
+listQuad[[i]]=Union[getBlank/@listQuad[[i]]];
 i++;];
 
 listBi=listBi /. A_[{b__}][{c__}]->A /. A_[{b__}]->A;
@@ -573,7 +579,7 @@ If[i===j,
 SA`gCoup[i,j]=Gauge[[i,4]];,
 SA`gCoup[i,j]=0;
 ];,
-If[Gauge[[j,2]]=!=U[1],
+If[Gauge[[j,2]]=!=U[1]  || NoU1Mixing===True, 
 SA`gCoup[i,j]=0;,
 If[i===j,
 SA`gCoup[i,j]=Gauge[[i,4]];,

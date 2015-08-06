@@ -55,7 +55,7 @@ colorconstraint=ColorFlow/. ColorDelta[a_,b_]ColorDelta[c_,d_]->Delta[Index[a],I
 ];
 (*
 If[DeleteCases[Flatten[getIndizes/@({External[1],External[2],External[3],External[4]} /. box[[i,2]])],generation]==={color,color,color,color},
-colorconstraint=ColorFlow/. ColorDelta[a_,b_]ColorDelta[c_,d_]->Delta[Index[a],Index[b]]Delta[Index[c],Index[d]] /. box[[i,2]] /. {gt1->cex11,gt2->cex21,gt3->cex31,gt4->cex41};
+colorconstraint=ColorFlow/. ColorDelta[a_,b_]ColorDelta[c_,d_]\[Rule]Delta[Index[a],Index[b]]Delta[Index[c],Index[d]] /. box[[i,2]] /. {gt1\[Rule]cex11,gt2\[Rule]cex21,gt3\[Rule]cex31,gt4\[Rule]cex41};
 ]; *)
 
 (* Calculate the color factor *)
@@ -231,9 +231,36 @@ CurrentInsertionOrder = InsertionOrder /. diagrams[[i,2]];
 
 (* Calculate the color factor of the particles in the loop *)
 If[nf===4,
-cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}->{Cp[a],Cp[b],Cp[c]}/. {External[3]->NONE[3],External[4]->NONE[4]},{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+(*
+cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}\[Rule]{Cp[a],Cp[b],Cp[c]}/. {External[3]\[Rule]NONE[3],External[4]\[Rule]NONE[4]},{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
 {{External[2],ex2},{AntiField[Internal[1]],in1},{Internal[3],in3}},
-{{Propagator,ex3},{Internal[2],in2},{AntiField[Internal[3]],in3}}} /. diagrams[[i,2]]];,
+{{Propagator,ex3},{Internal[2],in2},{AntiField[Internal[3]],in3}}} /. diagrams[[i,2]]];
+
+Print[CurrentInsertionOrder];
+Switch[CurrentInsertionOrder,
+1,cfactor = getChargeFactor[diagrams[[i]],{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[2],ex2},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[3],ex3},{External[4],ex4}}} /. diagrams[[i,2]]];,
+2,cfactor = getChargeFactor[diagrams[[i]],{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[3],ex3},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[2],ex2},{External[4],ex4}}} /. diagrams[[i,2]]];,
+3,cfactor = getChargeFactor[diagrams[[i]],{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[4],ex4},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[3],ex3},{External[2],ex2}}} /. diagrams[[i,2]]];,
+4,cfactor = getChargeFactor[diagrams[[i]],{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[2],ex2},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[1],ex3},{External[2],ex2}}} /. diagrams[[i,2]]];,
+5,cfactor =  getChargeFactor[diagrams[[i]],{{{External[2],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[4],ex4},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[1],ex2},{External[3],ex3}}} /. diagrams[[i,2]]];,
+6,cfactor =  getChargeFactor[diagrams[[i]],{{{External[2],ex2},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[3],ex3},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[1],ex2},{External[4],ex4}}} /. diagrams[[i,2]]];
+]; *)
+cfactor = getChargeFactor[diagrams[[i]],{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
+{{External[2],ex2},{AntiField[Internal[1]],in1},{Internal[3],in3}},
+{{Propagator,in4},{Internal[2],in2},{AntiField[Internal[3]],in3}},{{AntiField[Propagator],in4},{External[3],ex3},{External[4],ex4}}} /. diagrams[[i,2]]];, 
+
 cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}->{Cp[a],Cp[b],Cp[c]},{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},
 {{External[2],ex2},{AntiField[Internal[1]],in1},{Internal[3],in3}},
 {{External[3],ex3},{Internal[2],in2},{AntiField[Internal[3]],in3}}} /. diagrams[[i,2]]];
@@ -428,11 +455,18 @@ CurrentInsertionOrder = InsertionOrder /. diagrams[[i,2]];
 (* Calculate the color factor of the particles in the loop *)
 
 If[nf===4,
+(* Switch[InsertionOrder/.diagrams[[i,2]],
+1|3|5|7|9|11, 
+cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}\[Rule]{Cp[a],Cp[b]} /.(Internal[3]\[Rule]a_)\[Rule]in3\[Rule]a /. {External[3]\[Rule]NONE[3],External[4]\[Rule]NONE[4]} ,{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},{{Internal[3],ex2},{AntiField[Internal[1]],in1},{Internal[2],in2}}} /. diagrams[[i,2]]];, 
+2|4|6|8|10|12,
+cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}\[Rule]{Cp[b],Cp[c]}/.(External[1]\[Rule]a_)\[Rule]EXT3\[Rule]a/.(Internal[3]\[Rule]a_):>(External[1]\[Rule]a) /. {External[3]\[Rule]NONE[3],External[4]\[Rule]NONE[4]},{{{Internal[3],ex1},{AntiField[Internal[1]],in1},{Internal[2],in2}},{{External[2],ex2},{Internal[1],in1},{AntiField[Internal[2]],in2}}} /. diagrams[[i,2]]]; 
+]; *)
+
 Switch[InsertionOrder/.diagrams[[i,2]],
 1|3|5|7|9|11, 
-cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}->{Cp[a],Cp[b]} /.(Internal[3]->a_)->in3->a /. {External[3]->NONE[3],External[4]->NONE[4]} ,{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},{{Internal[3],ex2},{AntiField[Internal[1]],in1},{Internal[2],in2}}} /. diagrams[[i,2]]];, 
+cfactor = getChargeFactor[diagrams[[i]],{{{External[1],ex1},{Internal[1],in1},{AntiField[Internal[2]],in2}},{{Internal[3],in3},{AntiField[Internal[1]],in1},{Internal[2],in2}},{{AntiField[Internal[3]],in3},{External[2],ex2},{Propagator,in4}},{{External[3],ex3},{External[4],ex4},{AntiField[Propagator],in4}} } /. diagrams[[i,2]]];, 
 2|4|6|8|10|12,
-cfactor = getChargeFactor[diagrams[[i]] /. {Cp[a__],Cp[b__],Cp[c__],Cp[d__]}->{Cp[b],Cp[c]}/.(External[1]->a_)->EXT3->a/.(Internal[3]->a_):>(External[1]->a) /. {External[3]->NONE[3],External[4]->NONE[4]},{{{Internal[3],ex1},{AntiField[Internal[1]],in1},{Internal[2],in2}},{{External[2],ex2},{Internal[1],in1},{AntiField[Internal[2]],in2}}} /. diagrams[[i,2]]]; 
+cfactor = getChargeFactor[diagrams[[i]],{{{AntiField[Internal[3]],in3},{External[1],ex1},{Propagator,in4}},{{Internal[3],in3},{AntiField[Internal[1]],in1},{Internal[2],in2}},{{External[2],ex2},{Internal[1],in1},{AntiField[Internal[2]],in2}},{{External[3],ex3},{External[4],ex4},{AntiField[Propagator],in4}}} /. diagrams[[i,2]]]; 
 ];,
 Switch[InsertionOrder/.diagrams[[i,2]],
 1|3|5, 
@@ -778,7 +812,7 @@ AddTriangleContributionsPreSARAH[diagrams_,name_,uGauge_,mb_,file_]:=Block[{star
 For[i=1,i<=Length[diagrams],
 DynamicNumberDiagram[name]++;
 (* SA`SPhenoTeXSub=SA`SPhenoTeXGlobal;
-SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"MassA2"->TeXOutput[Mass2[External[1][{gt1}]/.diagrams[[1,2]]]],"MassA"->TeXOutput[Mass[External[1][{gt1}]/.diagrams[[1,2]]]],"MassB2"->TeXOutput[Mass2[External[2][{gt2}]/.diagrams[[1,2]]]],"MassB"->TeXOutput[Mass[External[2][{gt2}]/.diagrams[[1,2]]]]}]; *)
+SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"MassA2"\[Rule]TeXOutput[Mass2[External[1][{gt1}]/.diagrams[[1,2]]]],"MassA"\[Rule]TeXOutput[Mass[External[1][{gt1}]/.diagrams[[1,2]]]],"MassB2"\[Rule]TeXOutput[Mass2[External[2][{gt2}]/.diagrams[[1,2]]]],"MassB"\[Rule]TeXOutput[Mass[External[2][{gt2}]/.diagrams[[1,2]]]]}]; *)
 (* particles in the loop *)
 p1=(Internal[1] /.diagrams[[i,2]]);
 p2 =(Internal[2] /. diagrams[[i,2]]);
@@ -803,9 +837,9 @@ WriteString[file,"chargefactor = "<>SPhenoForm[cfactor]<>" \n"];
 
 (*
 Switch[chargefactor,
-1,SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"chargefactor*"->""}];,
--1,SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"chargefactor*"->"-"}];,
-_,SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"chargefactor"->ToString[cfactor]}];
+1,SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"chargefactor*"\[Rule]""}];,
+-1,SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"chargefactor*"\[Rule]"-"}];,
+_,SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"chargefactor"\[Rule]ToString[cfactor]}];
 ];
 *)
 
@@ -874,7 +908,7 @@ WriteString[file,"m"<>ToString[getType[p3]]<>"2 = "<>SPhenoMass[p3,i3]<>"\n"];
 WriteString[file,"m"<>ToString[getType[p3]]<>"22 = "<>SPhenoMassSq[p3,i3]<>"\n"];
 
 (*
-SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"m"<>ToString[getType[p1]]<>"12" -> TeXOutput[Mass2[p1[{j1}]]],"m"<>ToString[getType[p1]]<>"1" ->TeXOutput[Mass[p1[{j1}]]],"m"<>ToString[getType[p2]]<>"12" ->TeXOutput[Mass2[p2[{j2}]]],"m"<>ToString[getType[p2]]<>"1" -> TeXOutput[Mass[p2[{j2}]]],"m"<>ToString[getType[p3]]<>"22" -> TeXOutput[Mass2[p3[{j3}]]],"m"<>ToString[getType[p3]]<>"2" -> TeXOutput[Mass[p3[{j3}]]],"MP2" ->TeXOutput[Mass2[p4[{iProp}]]],"MP" -> TeXOutput[Mass[p4[{iProp}]]],"IMP2" -> "\\frac{1}{"<>TeXOutput[Mass2[p4[{iProp}]]]<>"}","IMP" -> "\\frac{1}{"<>TeXOutput[Mass[p4[{iProp}]]]<>"}"}];
+SA`SPhenoTeXSub=Join[SA`SPhenoTeXSub,{"m"<>ToString[getType[p1]]<>"12" -> TeXOutput[Mass2[p1[{j1}]]],"m"<>ToString[getType[p1]]<>"1" ->TeXOutput[Mass[p1[{j1}]]],"m"<>ToString[getType[p2]]<>"12" ->TeXOutput[Mass2[p2[{j2}]]],"m"<>ToString[getType[p2]]<>"1" -> TeXOutput[Mass[p2[{j2}]]],"m"<>ToString[getType[p3]]<>"22" -> TeXOutput[Mass2[p3[{j3}]]],"m"<>ToString[getType[p3]]<>"2" -> TeXOutput[Mass[p3[{j3}]]],"MP2" \[Rule]TeXOutput[Mass2[p4[{iProp}]]],"MP" -> TeXOutput[Mass[p4[{iProp}]]],"IMP2" -> "\\frac{1}{"<>TeXOutput[Mass2[p4[{iProp}]]]<>"}","IMP" -> "\\frac{1}{"<>TeXOutput[Mass[p4[{iProp}]]]<>"}"}];
 *)
 
 (* Add the expressions of the amplitude to the code *)
@@ -992,7 +1026,11 @@ For[i=1,i<=Length[Particles[Current]],
 Switch[Particles[Current][[i,4]],
 S,
 	If[(FreeQ[VerticesInv[All],C[Pex1,Pex2,Particles[Current][[i,1]]]]==False && FreeQ[VerticesInv[All],C[Pex3,Pex4,AntiField[Particles[Current][[i,1]]]]]==False) ||
-(FreeQ[VerticesInv[All],C[Pex1,Pex2,AntiField[Particles[Current][[i,1]]]]]==False && FreeQ[VerticesInv[All],C[Pex3,Pex4,Particles[Current][[i,1]]]]==False),
+(FreeQ[VerticesInv[All],C[Pex1,Pex3,Particles[Current][[i,1]]]]==False && FreeQ[VerticesInv[All],C[Pex2,Pex4,AntiField[Particles[Current][[i,1]]]]]==False) ||
+(FreeQ[VerticesInv[All],C[Pex1,Pex4,Particles[Current][[i,1]]]]==False && FreeQ[VerticesInv[All],C[Pex3,Pex2,AntiField[Particles[Current][[i,1]]]]]==False) ||
+(FreeQ[VerticesInv[All],C[Pex1,Pex2,AntiField[Particles[Current][[i,1]]]]]==False && FreeQ[VerticesInv[All],C[Pex3,Pex4,Particles[Current][[i,1]]]]==False)||
+(FreeQ[VerticesInv[All],C[Pex1,Pex3,AntiField[Particles[Current][[i,1]]]]]==False && FreeQ[VerticesInv[All],C[Pex2,Pex4,Particles[Current][[i,1]]]]==False)||
+(FreeQ[VerticesInv[All],C[Pex1,Pex4,AntiField[Particles[Current][[i,1]]]]]==False && FreeQ[VerticesInv[All],C[Pex3,Pex2,Particles[Current][[i,1]]]]==False),
 	ScalarPropagators = Join[ScalarPropagators,{Particles[Current][[i,1]]}];
 	];,
 V,
@@ -1330,24 +1368,24 @@ temp=Join[temp,InsFields[currentTop]];
 SA`CheckSameVertices=True;
 
 (*
-currentTop={{C[f1,FieldToInsert[4],AntiField[FieldToInsert[1]]],C[f4,AntiField[FieldToInsert[2]],FieldToInsert[1]],C[f3,AntiField[FieldToInsert[3]],FieldToInsert[2]],C[f2,AntiField[FieldToInsert[4]],FieldToInsert[3]]},{Internal[1]->FieldToInsert[1],Internal[2]->FieldToInsert[2],Internal[3]->FieldToInsert[3],Internal[4]->FieldToInsert[4],External[1]->f1,External[2]->f4,External[3]->f3,External[4]->f2,Index[1]->gt1,Index[2]->gt4,Index[3]->gt3,Index[4]->gt2, InsertionOrder ->1}};
+currentTop={{C[f1,FieldToInsert[4],AntiField[FieldToInsert[1]]],C[f4,AntiField[FieldToInsert[2]],FieldToInsert[1]],C[f3,AntiField[FieldToInsert[3]],FieldToInsert[2]],C[f2,AntiField[FieldToInsert[4]],FieldToInsert[3]]},{Internal[1]\[Rule]FieldToInsert[1],Internal[2]\[Rule]FieldToInsert[2],Internal[3]\[Rule]FieldToInsert[3],Internal[4]\[Rule]FieldToInsert[4],External[1]\[Rule]f1,External[2]\[Rule]f4,External[3]\[Rule]f3,External[4]\[Rule]f2,Index[1]\[Rule]gt1,Index[2]\[Rule]gt4,Index[3]\[Rule]gt3,Index[4]\[Rule]gt2, InsertionOrder \[Rule]1}};
 temp=InsFields[currentTop];
 
-currentTop={{C[f1,FieldToInsert[4],AntiField[FieldToInsert[1]]],C[f4,AntiField[FieldToInsert[2]],FieldToInsert[1]],C[f2,AntiField[FieldToInsert[3]],FieldToInsert[2]],C[f3,AntiField[FieldToInsert[4]],FieldToInsert[3]]},{Internal[1]->FieldToInsert[1],Internal[2]->FieldToInsert[2],Internal[3]->FieldToInsert[3],Internal[4]->FieldToInsert[4],External[1]->f1,External[2]->f4,External[3]->f2,External[4]->f3,Index[1]->gt1,Index[2]->gt4,Index[3]->gt2,Index[4]->gt3, InsertionOrder ->2}};
+currentTop={{C[f1,FieldToInsert[4],AntiField[FieldToInsert[1]]],C[f4,AntiField[FieldToInsert[2]],FieldToInsert[1]],C[f2,AntiField[FieldToInsert[3]],FieldToInsert[2]],C[f3,AntiField[FieldToInsert[4]],FieldToInsert[3]]},{Internal[1]\[Rule]FieldToInsert[1],Internal[2]\[Rule]FieldToInsert[2],Internal[3]\[Rule]FieldToInsert[3],Internal[4]\[Rule]FieldToInsert[4],External[1]\[Rule]f1,External[2]\[Rule]f4,External[3]\[Rule]f2,External[4]\[Rule]f3,Index[1]\[Rule]gt1,Index[2]\[Rule]gt4,Index[3]\[Rule]gt2,Index[4]\[Rule]gt3, InsertionOrder \[Rule]2}};
 temp=Join[temp,InsFields[currentTop]];
 
-currentTop={{C[f1,FieldToInsert[4],AntiField[FieldToInsert[1]]],C[f3,AntiField[FieldToInsert[2]],FieldToInsert[1]],C[f4,AntiField[FieldToInsert[3]],FieldToInsert[2]],C[f2,AntiField[FieldToInsert[4]],FieldToInsert[3]]},{Internal[1]->FieldToInsert[1],Internal[2]->FieldToInsert[2],Internal[3]->FieldToInsert[3],Internal[4]->FieldToInsert[4],External[1]->f1,External[2]->f3,External[3]->f4,External[4]->f2,Index[1]->gt1,Index[2]->gt3,Index[3]->gt4,Index[4]->gt2, InsertionOrder ->3}}; 
+currentTop={{C[f1,FieldToInsert[4],AntiField[FieldToInsert[1]]],C[f3,AntiField[FieldToInsert[2]],FieldToInsert[1]],C[f4,AntiField[FieldToInsert[3]],FieldToInsert[2]],C[f2,AntiField[FieldToInsert[4]],FieldToInsert[3]]},{Internal[1]\[Rule]FieldToInsert[1],Internal[2]\[Rule]FieldToInsert[2],Internal[3]\[Rule]FieldToInsert[3],Internal[4]\[Rule]FieldToInsert[4],External[1]\[Rule]f1,External[2]\[Rule]f3,External[3]\[Rule]f4,External[4]\[Rule]f2,Index[1]\[Rule]gt1,Index[2]\[Rule]gt3,Index[3]\[Rule]gt4,Index[4]\[Rule]gt2, InsertionOrder \[Rule]3}}; 
 temp=Join[temp,InsFields[currentTop]]; 
 *)
 
 (*
-currentTop={{C[f1,FieldToInsert[1],AntiField[FieldToInsert[4]]],C[f2,AntiField[FieldToInsert[1]],FieldToInsert[2]],C[f3,AntiField[FieldToInsert[2]],FieldToInsert[3]],C[f4,AntiField[FieldToInsert[3]],FieldToInsert[4]]},{Internal[1]->FieldToInsert[1],Internal[2]->FieldToInsert[2],Internal[3]->FieldToInsert[3],Internal[4]->FieldToInsert[4],External[1]->f1,External[2]->f2,External[3]->f3,External[4]->f4,Index[1]->gt1,Index[2]->gt2,Index[3]->gt3,Index[4]->gt4, InsertionOrder ->1}};
+currentTop={{C[f1,FieldToInsert[1],AntiField[FieldToInsert[4]]],C[f2,AntiField[FieldToInsert[1]],FieldToInsert[2]],C[f3,AntiField[FieldToInsert[2]],FieldToInsert[3]],C[f4,AntiField[FieldToInsert[3]],FieldToInsert[4]]},{Internal[1]\[Rule]FieldToInsert[1],Internal[2]\[Rule]FieldToInsert[2],Internal[3]\[Rule]FieldToInsert[3],Internal[4]\[Rule]FieldToInsert[4],External[1]\[Rule]f1,External[2]\[Rule]f2,External[3]\[Rule]f3,External[4]\[Rule]f4,Index[1]\[Rule]gt1,Index[2]\[Rule]gt2,Index[3]\[Rule]gt3,Index[4]\[Rule]gt4, InsertionOrder \[Rule]1}};
 temp=InsFields[currentTop];
 
-currentTop={{C[f1,FieldToInsert[1],AntiField[FieldToInsert[4]]],C[f2,AntiField[FieldToInsert[1]],FieldToInsert[2]],C[f4,AntiField[FieldToInsert[2]],FieldToInsert[3]],C[f3,AntiField[FieldToInsert[3]],FieldToInsert[4]]},{Internal[1]->FieldToInsert[1],Internal[2]->FieldToInsert[2],Internal[3]->FieldToInsert[3],Internal[4]->FieldToInsert[4],External[1]->f1,External[2]->f2,External[3]->f4,External[4]->f3,Index[1]->gt1,Index[2]->gt2,Index[3]->gt4,Index[4]->gt3, InsertionOrder ->2}};
+currentTop={{C[f1,FieldToInsert[1],AntiField[FieldToInsert[4]]],C[f2,AntiField[FieldToInsert[1]],FieldToInsert[2]],C[f4,AntiField[FieldToInsert[2]],FieldToInsert[3]],C[f3,AntiField[FieldToInsert[3]],FieldToInsert[4]]},{Internal[1]\[Rule]FieldToInsert[1],Internal[2]\[Rule]FieldToInsert[2],Internal[3]\[Rule]FieldToInsert[3],Internal[4]\[Rule]FieldToInsert[4],External[1]\[Rule]f1,External[2]\[Rule]f2,External[3]\[Rule]f4,External[4]\[Rule]f3,Index[1]\[Rule]gt1,Index[2]\[Rule]gt2,Index[3]\[Rule]gt4,Index[4]\[Rule]gt3, InsertionOrder \[Rule]2}};
 temp=Join[temp,InsFields[currentTop]];
 
-currentTop={{C[f1,FieldToInsert[1],AntiField[FieldToInsert[4]]],C[f3,AntiField[FieldToInsert[1]],FieldToInsert[2]],C[f2,AntiField[FieldToInsert[2]],FieldToInsert[3]],C[f4,AntiField[FieldToInsert[3]],FieldToInsert[4]]},{Internal[1]->FieldToInsert[1],Internal[2]->FieldToInsert[2],Internal[3]->FieldToInsert[3],Internal[4]->FieldToInsert[4],External[1]->f1,External[2]->f3,External[3]->f2,External[4]->f4,Index[1]->gt1,Index[2]->gt3,Index[3]->gt2,Index[4]->gt4, InsertionOrder ->3}}; 
+currentTop={{C[f1,FieldToInsert[1],AntiField[FieldToInsert[4]]],C[f3,AntiField[FieldToInsert[1]],FieldToInsert[2]],C[f2,AntiField[FieldToInsert[2]],FieldToInsert[3]],C[f4,AntiField[FieldToInsert[3]],FieldToInsert[4]]},{Internal[1]\[Rule]FieldToInsert[1],Internal[2]\[Rule]FieldToInsert[2],Internal[3]\[Rule]FieldToInsert[3],Internal[4]\[Rule]FieldToInsert[4],External[1]\[Rule]f1,External[2]\[Rule]f3,External[3]\[Rule]f2,External[4]\[Rule]f4,Index[1]\[Rule]gt1,Index[2]\[Rule]gt3,Index[3]\[Rule]gt2,Index[4]\[Rule]gt4, InsertionOrder \[Rule]3}}; 
 temp=Join[temp,InsFields[currentTop]]; 
 *)
 Return[temp];
@@ -1463,7 +1501,7 @@ WriteString[file, "! Photon Wave Contributions            \n"];
 WriteString[file, "!---------------------------------------- \n"];
 ];
 saveP=pengPhoton;
-For[jj=1,jj<=Length[pengPhoton],
+For[jj=1,jj\[LessEqual]Length[pengPhoton],
 WriteString[file, "! --  "<>ToString[Propagator /. pengPhoton[[jj,1,2]]]<>" - Penguins            \n"]; 
 AddWaveContributionsPreSARAH[wavePhoton[[jj]],name,threshold,file];
 jj++;];
@@ -1475,7 +1513,7 @@ WriteString[file, "!---------------------------------------- \n"];
 WriteString[file, "! Photon Penguin Contributions            \n"]; 
 WriteString[file, "!---------------------------------------- \n"];
 ];
-For[jj=1,jj<=Length[pengPhoton],
+For[jj=1,jj\[LessEqual]Length[pengPhoton],
 WriteString[file, "! --  "<>ToString[Propagator /. pengPhoton[[jj,1,2]]]<>" - Penguins            \n"]; 
 AddPenguinContributionsPreSARAH[pengPhoton[[jj]],name,threshold,file];
 jj++;];
@@ -1613,7 +1651,7 @@ PreSARAHnamesQFV=Join[PreSARAHnamesQFV,{NameProcess}];
 
 (* add all observables to the standard list in SARAH; by default, they have to be explicitly real! *)
 For[j=1,j<=Length[NameObservables],
-(* For[k=1,k<=Length[NameObservables[[j,2]]],
+(* For[k=1,k\[LessEqual]Length[NameObservables[[j,2]]],
 ListOfLowEnergyNames=Join[ListOfLowEnergyNames,{{NameObservables[[j,2,k,1]],NameObservables[[j,2,k,2]]}}];
 realVar = Join[realVar,{NameObservables[[j,2,k,1]]}];
 k++;]; *)
@@ -1714,7 +1752,7 @@ PrintDebug["Write Routine to calculate: ",observables];
 MakeSubroutineTitle["Calculate_"<>process,{},ToString/@Ops,ToString/@observables,file];
 WriteString[file, "Implicit None \n"];
 (*
-For[i=1,i<=Length[Ops],
+For[i=1,i\[LessEqual]Length[Ops],
 WriteString[file,"Complex(dp), Intent(in) :: "<>ToString[Ops[[i]]]<>"(:) \n"];
 i++;]; *)
 MakeVariableList[Ops,"",file];

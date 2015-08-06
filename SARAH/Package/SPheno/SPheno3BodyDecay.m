@@ -176,7 +176,7 @@ SPhenoParameters[[pos,3,2]]= SPhenoParameters[[pos,3,2]] + channels;
 
 ];
 (*
-For[i=1,i<=Length[NeededCouplings],
+For[i=1,i\[LessEqual]Length[NeededCouplings],
  WriteThreeBodyDecay[particle,Map[getBlank,List@@temp[[i,1]]],Delete[temp[[i]],1],NeededMasses[[i]],NeededCouplings[[i]],NeededCouplingsAll[[i]],NeededIntegrals[[i]],NeededWidths[[i]],SPhenoThreeBody,i];
 i++;];  
 *)
@@ -585,9 +585,9 @@ ind2=temp2[[1]];
 checkHC2=temp2[[2]];
 
 (*
-WriteString[file, "mass(2) = "<> SPhenoMass[f1b /. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[1]]]<>" \n"];
-WriteString[file, "mass(3) = -"<> SPhenoMass[f2b/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[2]]]<>" \n"];
-WriteString[file, "mass(4) = "<> SPhenoMass[f3b/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[3]]]<>" \n \n"];
+WriteString[file, "mass(2) = "<> SPhenoMass[f1b /. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[1]]]<>" \n"];
+WriteString[file, "mass(3) = -"<> SPhenoMass[f2b/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[2]]]<>" \n"];
+WriteString[file, "mass(4) = "<> SPhenoMass[f3b/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[3]]]<>" \n \n"];
 *)
 
 WriteString[file, "mass(1) = "<> SPhenoMass[prop,nProp]<>" \n"];
@@ -836,9 +836,9 @@ WriteString[file, "Isum = 0 \n \n"];
 If[getType[particle]===S,
 posF=Position[getType/@{FinalParticle1,FinalParticle2,FinalParticle3},F];
 posS=Position[getType/@{FinalParticle1,FinalParticle2,FinalParticle3},S];
-WriteString[file,"rk2 = ("<>SPhenoMass[ToExpression["FinalParticle"<>ToString[posF[[1,1]]]],ToExpression["gt"<>ToString[posF[[1,1]]]]]<>"/"<>SPhenoMass[particle,iIN]<>")**2 \n"]; (* rk2=(mf_l (k)/mSl(i))**2 *)
-WriteString[file,"rm2 = ("<>SPhenoMass[ToExpression["FinalParticle"<>ToString[posF[[2,1]]]],ToExpression["gt"<>ToString[posF[[2,1]]]]]<>"/"<>SPhenoMass[particle,iIN]<>")**2 \n"]; (* rm2=(mf_l (m)/mSl(i))**2 *)
-WriteString[file,"rj2 = ("<>SPhenoMass[ToExpression["FinalParticle"<>ToString[posS[[1,1]]]],ToExpression["gt"<>ToString[posS[[1,1]]]]]<>"/"<>SPhenoMass[particle,iIN]<>")**2 \n"]; (* rj2=(mSl (j)/mSl(i))**2 *)
+WriteString[file,"rk2 = ("<>SPhenoMass[ToExpression["FinalParticle"<>ToString[posF[[1,1]]]],ToExpression["gt"<>ToString[posF[[1,1]]]]]<>"/"<>SPhenoMass[particle,iIN]<>")**2 \n"]; (* rk2=(mf_l(k)/mSl(i))**2 *)
+WriteString[file,"rm2 = ("<>SPhenoMass[ToExpression["FinalParticle"<>ToString[posF[[2,1]]]],ToExpression["gt"<>ToString[posF[[2,1]]]]]<>"/"<>SPhenoMass[particle,iIN]<>")**2 \n"]; (* rm2=(mf_l(m)/mSl(i))**2 *)
+WriteString[file,"rj2 = ("<>SPhenoMass[ToExpression["FinalParticle"<>ToString[posS[[1,1]]]],ToExpression["gt"<>ToString[posS[[1,1]]]]]<>"/"<>SPhenoMass[particle,iIN]<>")**2 \n"]; (* rj2=(mSl(j)/mSl(i))**2 *)
 
 WriteString[file,"smin=2._dp*Sqrt(rk2) \n"];
 WriteString[file,"smax=1._dp+rk2-rj2-rm2-2._dp*Sqrt(rj2*rm2) \n"];
@@ -881,7 +881,6 @@ WriteString[file, "Boson4(4) ="<>SPhenoWidth[Propagator /. diagrams[[i]], i1] <>
 ];
 WriteString[file, "resS=0._dp \n"];
 WriteString[file, "resD=0._dp \n \n"];
-
 
 GenerateAllSquaredDiagramsDiagonal[particle,{FinalParticle1,gt1},{FinalParticle2,gt2},{FinalParticle3,gt3}, {diagrams[[i]],i1},{couplingsAll, i},file];
 
@@ -989,7 +988,7 @@ factor=CalculateColorFactorDecay[AntiField[particle],Final1 /. diagrams[[1]],Pro
 If[getType[particle]===F,
 (* WriteString[file,"  g = "<>SPhenoForm[factor] <>"*oo512pi3 / Abs("<>SPhenoMass[particle,iIN]<>")**3*g\n"]; *)
 WriteString[file,"  g = oo512pi3 / Abs("<>SPhenoMass[particle,iIN]<>")**3*g\n"];,
-(* factor=CalculateColorFactorDecay[AntiField[particle],Final1 /. diagrams[[1]],Propagator /. diagrams[[1]]]*CalculateColorFactorDecay[AntiField[Propagator /. diagrams[[1]]],Final3 /. diagrams[[1]],Final2 /. diagrams[[1]]]/DimR[SU3,SA`DynL[getBlank[particle],color] /.{0}->{0,0}/. SA`DynL[a__]->{0,0}]; *)
+(* factor=CalculateColorFactorDecay[AntiField[particle],Final1 /. diagrams[[1]],Propagator /. diagrams[[1]]]*CalculateColorFactorDecay[AntiField[Propagator /. diagrams[[1]]],Final3 /. diagrams[[1]],Final2 /. diagrams[[1]]]/DimR[SU3,SA`DynL[getBlank[particle],color] /.{0}\[Rule]{0,0}/. SA`DynL[a__]\[Rule]{0,0}]; *)
 (* factor=CalculateColorFactorDecay[AntiField[particle],Final1 /. diagrams[[1]],Propagator /. diagrams[[1]]]*CalculateColorFactorDecay[AntiField[Propagator /. diagrams[[1]]],Final3 /. diagrams[[1]],Final2 /. diagrams[[1]]];
 If[NumericQ[factor]===False,factor=1;]; 
 WriteString[file,"  g = "<>SPhenoForm[factor] <>"*g\n"]; *)
@@ -1320,14 +1319,14 @@ LRconjugated2={"4","3","8","7"};
 
 (*
 If[f1a=== f1b,
-WriteString[file, "mass(2) = "<> SPhenoMass[f1a/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[1]]]<>" \n"];
-WriteString[file, "mass(3) = -"<> SPhenoMass[f2a/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[2]]]<>" \n"];
-WriteString[file, "mass(4) = "<> SPhenoMass[f3a/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[3]]]<>" \n \n"];,
-WriteString[file, "mass(2) = "<> SPhenoMass[f1b /. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd1[[1]]]<>" \n"];
-WriteString[file, "mass(4) = "<> SPhenoMass[f1a/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[1]]]<>" \n"];
+WriteString[file, "mass(2) = "<> SPhenoMass[f1a/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[1]]]<>" \n"];
+WriteString[file, "mass(3) = -"<> SPhenoMass[f2a/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[2]]]<>" \n"];
+WriteString[file, "mass(4) = "<> SPhenoMass[f3a/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[3]]]<>" \n \n"];,
+WriteString[file, "mass(2) = "<> SPhenoMass[f1b /. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd1[[1]]]<>" \n"];
+WriteString[file, "mass(4) = "<> SPhenoMass[f1a/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[1]]]<>" \n"];
 mass3 = DeleteCases[{f2a,f3a},f1b][[1]];
 pos3=Position[{f1a,f2a,f3a},mass3][[1,1]];
-WriteString[file, "mass(3) = -"<> SPhenoMass[mass3/. {One[x_]->x, Two[x_]->x, Three[x_]->x},listCorrInd[[pos3]]]<>" \n \n"];
+WriteString[file, "mass(3) = -"<> SPhenoMass[mass3/. {One[x_]\[Rule]x, Two[x_]\[Rule]x, Three[x_]\[Rule]x},listCorrInd[[pos3]]]<>" \n \n"];
 ];
 *)
 
@@ -1364,26 +1363,26 @@ WriteString[file,"coup(5) = "<> ToString[couplingsAll[[2*NRC2,1,2]]] <> ind2b <>
 ];
 
 (*
-If[check2a==False,
+If[check2a\[Equal]False,
 WriteString[file,"coup(3) = Conjg("<> ToString[couplingsAll[[2*(NRC2-1)+1,1,1]]] <> ind2a <>") \n"];
 WriteString[file,"coup(2) = Conjg("<> ToString[couplingsAll[[2*(NRC2-1)+1,1,2]]] <> ind2a <>")  \n"];,
 WriteString[file,"coup(2) = "<> ToString[couplingsAll[[2*(NRC2-1)+1,1,1]]] <> ind2a <>" \n"];
 WriteString[file,"coup(3) = "<> ToString[couplingsAll[[2*(NRC2-1)+1,1,2]]] <> ind2a <>"  \n"];
 ];
 
-If[check2a==False,
+If[check2a\[Equal]False,
 WriteString[file,"coup(3) = Conjg("<> ToString[couplingsAll[[2*(NRC2-1)+1,1,1]]] <> ind2a <>") \n"];
 WriteString[file,"coup(2) = Conjg("<> ToString[couplingsAll[[2*(NRC2-1)+1,1,2]]] <> ind2a <>")  \n"];,
 WriteString[file,"coup(2) = "<> ToString[couplingsAll[[2*(NRC2-1)+1,1,1]]] <> ind2a <>" \n"];
 WriteString[file,"coup(3) = "<> ToString[couplingsAll[[2*(NRC2-1)+1,1,2]]] <> ind2a <>"  \n"];
 ];
 
-If[check1b==True,
+If[check1b\[Equal]True,
 WriteString[file,"coup(4) = Conjg("<> ToString[couplingsAll[[2*NRC1,1,2]]] <> ind1b <>") \n"];,
 WriteString[file,"coup(4) = "<> ToString[couplingsAll[[2*NRC1,1,1]]] <> ind1b <>" \n"];
 ];
 
-If[check2b==False,
+If[check2b\[Equal]False,
 WriteString[file,"coup(5) = Conjg("<> ToString[couplingsAll[[2*NRC2,1,1]]] <> ind2b <>") \n"];
 WriteString[file,"coup(6) = Conjg("<> ToString[couplingsAll[[2*NRC2,1,2]]] <> ind2b <>") \n"];,
 WriteString[file,"coup(6) = "<> ToString[couplingsAll[[2*NRC2,1,1]]] <> ind2b <>" \n"];

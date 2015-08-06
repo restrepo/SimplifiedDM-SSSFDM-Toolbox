@@ -28,7 +28,7 @@ ParameterDefinitions = {
 {mu2,         { Description -> "SM Mu Parameter",
         LesHouches -> {HMIX,2}}},                                        
 
-{L,  { Description -> "SM Higgs Selfcouplings",
+{LH,  { Description -> "SM Higgs Selfcouplings",
                DependenceNum -> Mass[hh]^2/(v^2)},
         LesHouches -> {HMIX,1} },
 
@@ -45,15 +45,21 @@ ParameterDefinitions = {
         OutputName -> MT,
         LesHouches -> {HMIX,15} }},
 
-{Kappa,  { LaTeX -> "\\kappa",
+{KHT,  { LaTeX -> "\\kappa",
         OutputName -> Kap,
-        LesHouches -> {HMIX,16} }},
+        LesHouches -> {HMIX,20} }},
 
 {LT,  { LaTeX -> "\\lambda_T",
         OutputName -> LT,
         LesHouches -> {HMIX,17} }},
 
+{LT2,  { LaTeX -> "{\\lambda'}_T",
+        OutputName -> LT2,
+        LesHouches -> {HMIX,18} }},        
 
+{LHT,  { LaTeX -> "\\lambda_{HT}",
+        OutputName -> LHT,
+        LesHouches -> {HMIX,19} }},        
 
 {ThetaW,    { Description -> "Weinberg-Angle",
               DependenceNum -> ArcSin[Sqrt[1 - Mass[VWp]^2/Mass[VZ]^2]]}},
@@ -63,15 +69,15 @@ ParameterDefinitions = {
        Dependence ->   1/Sqrt[2] {{1, 1},
                   {\[ImaginaryI],-\[ImaginaryI]}} }},
 
-{ZH,  {Real->True,
-      LesHouches -> ZH,
-      OutputName -> ZH,
-       LaTeX->"Z^H"}},
+{ZH,  { Description->"Scalar-Mixing-Matrix",
+        Real->True,
+        LesHouches -> ZH,
+        OutputName -> ZH,
+        LaTeX->"Z^H", 
+        Dependence -> None,
+        DependenceOptional -> None,
+        DependenceNum -> None}},
 
-{ZA,        { Description->"Pseudo-Scalar-Mixing-Matrix", 
-                Dependence -> None,
-               DependenceOptional -> None,
-               DependenceNum -> None    }},
 {ZP,        { Description->"Charged-Mixing-Matrix", 
                 Dependence -> None,
                DependenceOptional -> None,

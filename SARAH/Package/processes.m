@@ -400,7 +400,7 @@ CalculateColorFactor[pD_,p1_,p2_]:=ChargeFactor[pD,p1,p2];
 CalculateColorFactor4[Ex1_,Ex2_,Int1_,Int2_]:=
 If[getType[Int1]===V && getType[Int2]===V,
 Return[1];,
-Return[getChargeFactor[{{Cp[Ex1,Ex2,Int1,Int2]},{External[1]->Ex1,External[2]->Ex2,Internal[1]->Int1,Internal[2]->Int2}},{{{Ex1,ex1}, {Ex2,ex2},{Int1,in1},{Int2,in2}}},Delta[in1,in2] Delta[ex1,ex2]]];
+Return[getChargeFactor[{{Cp[Ex1,Ex2,Int1,Int2]},{External[1]\[Rule]Ex1,External[2]\[Rule]Ex2,Internal[1]\[Rule]Int1,Internal[2]\[Rule]Int2}},{{{Ex1,ex1}, {Ex2,ex2},{Int1,in1},{Int2,in2}}},Delta[in1,in2] Delta[ex1,ex2]]];
 ]; *)
 CalculateColorFactor4[Ex1_,Ex2_,Int1_,Int2_]:=Block[{ind,diffind,mul},
 If[getType[Int1]===V && getType[Int2]===V,
@@ -434,9 +434,8 @@ Return[SA`Casimir[getBlank[Ext],pos[[1,1,1]]]];,
 Return[1];
 ];
 ];
-
 If[Select[getIndexRange[Int1],(FreeQ[getIndexRange[Ext],#1] ==False && FreeQ[getIndexRange[Int2],#1] ==False  && #1[[1]]=!=generation)&]=!={},
-Return[getChargeFactor[{{Cp[Ext,Int1,Int2],Cp[AntiField[Ext],AntiField[Int1],AntiField[Int2]]},{External[1]->Ext,External[2]->AntiField[Ext],Internal[1]->Int1,Internal[2]->Int2}},{{{Ext,ex1},{Int1,in1},{Int2,in2}},{{AntiField[Ext],ex2},{AntiField[Int1],in1},{AntiField[Int2],in2}}},Delta[ex1,ex2]]];
+Return[Abs[getChargeFactor[{{Cp[Ext,Int1,Int2],Cp[AntiField[Ext],AntiField[Int1],AntiField[Int2]]},{External[1]->Ext,External[2]->AntiField[Ext],Internal[1]->Int1,Internal[2]->Int2}},{{{Ext,ex1},{Int1,in1},{Int2,in2}},{{AntiField[Ext],ex2},{AntiField[Int1],in1},{AntiField[Int2],in2}}},Delta[ex1,ex2]]]];
 Return[999];
 ];
 
@@ -516,7 +515,6 @@ CG[SU[3],{{1,0},{1,1},{0,1}}][a_,b_,c_]->Lam[b,a,c]/2,CG[SU[3],{{1,1},{1,0},{0,1
 
 norm=1;
 
-
 fixvar = Intersection[Select[fixvar,(FreeQ[cfac,#]==False)&]];
 sumvar = Intersection[Select[sumvar,(FreeQ[cfac,#]==False)&]];
 
@@ -528,7 +526,7 @@ cfacsave=cfac;
 
 
 sumvarCount=1;
-intfields=Select[list[[2]],(FreeQ[#,Internal]==False)&];
+intfields=Select[list[[2]],(FreeQ[#,Internal]==False || FreeQ[#,Propagator]==False) &];
 extfields=Select[list[[2]],(FreeQ[#,External]==False)&];
 For[k=1,k<=Length[intfields],
 cind=getIndizesWI[RE[intfields[[k,2]]]];
@@ -595,11 +593,17 @@ Return[fac];
 
 
 
-ExtractStructure[vertex_,charge_]:=Block[{i,j,temp={},temp2,res,CS,diffCol,coeff,current,CSsum },
+ExtractStructure[vertex_,charge_]:=Block[{i,j,temp={},temp2,res,CS,diffCol,coeff,current,CSsum ,unbrokenInd},
 diffCol={fSU3,Delta,Lam, LamHlf,sum,epsTensor,CG,Generator}; (* Possible Headers *)
 (* diffColQT=Table[charge /. subGC[i] /. subIndFinal[i,i],{i,1,Length[vertex]}]; *)
 diffColQT=Table[charge /. subGC[i] /. subIndFinal[i,i],{i,1,4}]; (* check! *)
 CSsum=Select[Cases[vertex,x_sum,6],(FreeQ[#,ct1]==False || FreeQ[#,ct2]==False || FreeQ[#,ct3]==False || FreeQ[#,ct4]==False)&];
+CSsum={};
+unbrokenInd=Flatten[Table[Transpose[Select[Gauge,#[[5]]==False&&#[[2]]=!=U[1]&]][[3]]/.subGC[i]/.subIndFinal[i,i],{i,1,4}]];
+For[i=1,i<=Length[unbrokenInd],
+CSsum=Join[CSsum,Select[Cases[vertex,x_sum,6],(FreeQ[#,unbrokenInd[[i]]]==False)&]];
+i++;];
+CSsum=Intersection[CSsum];
 CS = Intersection[Cases[vertex /. sum[a_,b_,c_,d_]:>sum[a,b,c,Random[]],x_?(((FreeQ[diffCol,Head[#]]==False || FreeQ[diffCol,Head[Head[#]]]==False) && Head[#]=!=List && (Intersection[List@@#,diffColQT]=!={} || Head[#]===fSU3))&),10]];
 
 CS=Join[CS,CSsum];
@@ -621,7 +625,7 @@ Return[temp];
 ];
 
 
-getChargeFactorDecay[list_,ind_,constraint_]:=Block[{i,j,k,temp,fac=1,allind,coups={},pos,chargepart={},indrep={},tordered,indreptemp,ccoup,sumvar={},fixvar={}},
+getChargeFactorDecay[list_,ind_,constraint_]:=Block[{i,j,k,temp,fac=1,allind,coups={},pos,chargepart={},indrep={},tordered,indreptemp,ccoup,sumvar={},fixvar={},sumvarA,fixvarA},
 allind=DeleteCases[DeleteCases[DeleteCases[Intersection[Flatten[getIndizes/@DeleteInds[Intersection[getBlank/@Intersection[Flatten[(List@@#)&/@list[[1]]]]]]]],generation],lorentz],n];
 
 constr=constraint;
@@ -647,6 +651,8 @@ sumvar = Join[sumvar,subGC[pos] /. (a_->b_)->b /. subIndFinalX[pos,1,ToString[in
 j++;];
 indrep=Join[indrep,{indreptemp}];
 i++;];
+fixvarA=fixvar;
+sumvarA=sumvar;
 For[i=1,i<=Length[allind],
 chargepart= {};
 (* constr=constraint/. indrep[[j]]; *)
@@ -669,8 +675,8 @@ CG[SU[3],{{1,0},{1,1},{0,1}}][a_,b_,c_]->Lam[b,a,c]/2,CG[SU[3],{{1,1},{1,0},{0,1
 
 norm=1;
 
-fixvar = Intersection[Select[fixvar,(FreeQ[cfac,#]==False)&]];
-sumvar = Intersection[Select[sumvar,(FreeQ[cfac,#]==False)&]];
+fixvar = Intersection[Select[fixvarA,(FreeQ[cfac,#]==False)&]];
+sumvar = Intersection[Select[sumvarA,(FreeQ[cfac,#]==False)&]];
 
 
 subfixvar={};
@@ -679,7 +685,7 @@ cfac = cfac/norm /. subfixvar;
 cfacsave=cfac;
 
 sumvarCount=1;
-intfields=Select[list[[2]],(FreeQ[#,Internal]==False)&];
+intfields=Select[list[[2]],(FreeQ[#,Internal]==False || FreeQ[#,Propagator]==False)&];
 extfields=Select[list[[2]],(FreeQ[#,External]==False)&];
 For[k=1,k<=Length[intfields],
 cind=getIndizesWI[RE[intfields[[k,2]]]];
@@ -718,20 +724,20 @@ Return[fac];
 
 (*
 CallGetChargeFactorDecay[part_,d1_,d2_,type_]:=Block[{coups,res},
-coups=Join[Couplings /. d1,(Couplings/.d2  /.C->Cp/. Cp[a__]:> Cp@@(AntiField/@{a}))]; 
+coups=Join[Couplings /. d1,(Couplings/.d2  /.C\[Rule]Cp/. Cp[a__]:> Cp@@(AntiField/@{a}))]; 
 Switch[type,
 "BOX",
-res=getChargeFactorDecay[{coups,{External[1]->part,Internal[1]->Final1,Internal[2]->Final2,Internal[3]->Final3,Internal[4]->Propagator /. d1,Internal[5]->Propagator/.d2}}/. d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,
+res=getChargeFactorDecay[{coups,{External[1]\[Rule]part,Internal[1]\[Rule]Final1,Internal[2]\[Rule]Final2,Internal[3]\[Rule]Final3,Internal[4]\[Rule]Propagator /. d1,Internal[5]\[Rule]Propagator/.d2}}/. d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,
 ReleaseHold[Hold[{{AntiField[Propagator],in4},{Final2,in2},{Final3,in3}}]/.d1],
 ReleaseHold[Hold[{{AntiField[part],ex1},{AntiField[Propagator],in5},{AntiField[Final1],in1}}]/.d2],ReleaseHold[Hold[{{Propagator,in5},{AntiField[Final2],in2},{AntiField[Final3],in3}}]/.d2]} ,1];,
 "BOXCROSS",
-res=getChargeFactorDecay[{coups,{External[1]->part,Internal[1]->Final1,Internal[2]->Final2,Internal[3]->Final3,Internal[4]->Propagator /. d1,Internal[5]->Propagator/.d2}}/. d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,
+res=getChargeFactorDecay[{coups,{External[1]\[Rule]part,Internal[1]\[Rule]Final1,Internal[2]\[Rule]Final2,Internal[3]\[Rule]Final3,Internal[4]\[Rule]Propagator /. d1,Internal[5]\[Rule]Propagator/.d2}}/. d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,
 ReleaseHold[Hold[{{AntiField[Propagator],in4},{Final2,in2},{Final3,in3}}]/.d1],
 ReleaseHold[Hold[{{AntiField[part],ex1},{AntiField[Propagator],in5},{AntiField[Final1],in3}}]/.d2],ReleaseHold[Hold[{{Propagator,in5},{AntiField[Final2],in2},{AntiField[Final3],in1}}]/.d2]} ,1];,
 "TRIANGLE",
 If[(getType[Final2 /.d2]) ===S,
-res=getChargeFactorDecay[{coups,{External[1]->part,Internal[1]->Final1,Internal[2]->Final2,Internal[3]->Final3,Internal[4]->Propagator/.d1,Internal[5]->Propagator/.d2}}/.d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,ReleaseHold[Hold[{{AntiField[Propagator],in4},{Final2,in2},{Final3,in3}}]/.d1],ReleaseHold[Hold[{{AntiField[Propagator],in5},{AntiField[part],ex1},{AntiField[Final1],in3}}]/.d2],ReleaseHold[Hold[{{AntiField[Final3],in2},{Propagator,in5},{AntiField[Final2],in1}}]/.d2]},1];,
-res=getChargeFactorDecay[{coups,{External[1]->part,Internal[1]->Final1,Internal[2]->Final2,Internal[3]->Final3,Internal[4]->Propagator /. d1,Internal[5]->Propagator/.d2}}/. d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,
+res=getChargeFactorDecay[{coups,{External[1]\[Rule]part,Internal[1]\[Rule]Final1,Internal[2]\[Rule]Final2,Internal[3]\[Rule]Final3,Internal[4]\[Rule]Propagator/.d1,Internal[5]\[Rule]Propagator/.d2}}/.d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,ReleaseHold[Hold[{{AntiField[Propagator],in4},{Final2,in2},{Final3,in3}}]/.d1],ReleaseHold[Hold[{{AntiField[Propagator],in5},{AntiField[part],ex1},{AntiField[Final1],in3}}]/.d2],ReleaseHold[Hold[{{AntiField[Final3],in2},{Propagator,in5},{AntiField[Final2],in1}}]/.d2]},1];,
+res=getChargeFactorDecay[{coups,{External[1]\[Rule]part,Internal[1]\[Rule]Final1,Internal[2]\[Rule]Final2,Internal[3]\[Rule]Final3,Internal[4]\[Rule]Propagator /. d1,Internal[5]\[Rule]Propagator/.d2}}/. d1,{{{part,ex1},{Propagator,in4},{Final1,in1}}/.d1,
 ReleaseHold[Hold[{{AntiField[Propagator],in4},{Final2,in2},{Final3,in3}}]/.d1],
 ReleaseHold[Hold[{{AntiField[Propagator],in5},{AntiField[part],ex1},{AntiField[Final1],in2}}]/.d2],ReleaseHold[Hold[{{AntiField[Final3],in1},{Propagator,in5},{AntiField[Final2],in3}}]/.d2]} ,1];
 ];

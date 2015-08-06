@@ -273,7 +273,7 @@ absI=Table[absIFull[[j,1]],{j,1,Length[absIFull]}];
 absE=Table[absEFull[[j,1]],{j,1,Length[absEFull]}];
 
 If[Dimensions[Fields[[i,1]]]=!={} &&  Head[Fields[[i,1]]]=!=conj,
-FieldNames=Intersection[DeleteCases[Flatten[Fields[[i,1]]],x_?NumericQ] /.x_? NumericQ->1];,
+FieldNames=Select[Intersection[DeleteCases[Flatten[Fields[[i,1]]],x_?NumericQ] /.x_? NumericQ->1],(Head[#]=!=conj || MemberQ[DeleteCases[Flatten[Fields[[i,1]]],x_?NumericQ] /.x_? NumericQ->1,conj[#]]==False)&],
 FieldNames ={Fields[[i,1]]};
 ];
 
@@ -295,7 +295,7 @@ name = ToString[FieldNames[[j]]];
 
 If[Last[Fields[[i]]]===S,
 If[SupersymmetricModel===False,scalar=ToExpression[name];,scalar = ToExpression["S"<>name]; ];
-If[FreeQ[RealScalars,Fields[[i,3]]]==False,realVar=Join[realVar,{scalar}];];,
+If[FreeQ[RealScalars,Fields[[i,3]]]==False && FreeQ[Fields[[i,1]],conj[scalar]],realVar=Join[realVar,{scalar}];];,
 scalar=0;];
 If[Last[Fields[[i]]]===F,If[SupersymmetricModel===False,fermion=ToExpression[name];,fermion = ToExpression["F"<>name];];,fermion=0;];
 
@@ -1242,7 +1242,7 @@ GenerateVEVs[type_] := Block[{i,j,i2,vev,pos,form,scalarform,alignment},
 title=ToString[type];
 
 PrintAll["Parametrize Higgs Sector"];
-
+newRealStates={};
 tempVEVparameters={};
 ScalarHiggsFields={};
 PseudoScalarHiggsFields={};
@@ -1396,6 +1396,10 @@ i2++;];
 If[vev[[i,3,1]]=!=0,realVar=Join[realVar,{vev[[i,3,1]]}];];
 If[vev[[i,4,1]]=!=0,realVar=Join[realVar,{vev[[i,4,1]]}];];
 
+(*
+If[vev[[i,3,1]]=!=0,newRealStates=Join[newRealStates,{vev[[i,3,1]]}];];
+If[vev[[i,4,1]]=!=0,newRealStates=Join[newRealStates,{vev[[i,4,1]]}];];
+*)
 If[realVEVexplizit===True,
 realVar=Join[realVar,{vev[[i,2,1]]}];
 ];

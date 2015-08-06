@@ -101,7 +101,6 @@ MakeTerms[entry_]:=Block[{i,i1,j,temp,part,particles,particleNr=1,fermNr=1,head,
 fields=entry[[3]];
 (* coup = genTest[entry[[2]],fields,False]^entry[[4]]; *)
 AdditionalParametersLagrange = Join[AdditionalParametersLagrange,{entry[[2]]}];
-
 particles=1;
 
 For[i=1,i<=Length[fields],
