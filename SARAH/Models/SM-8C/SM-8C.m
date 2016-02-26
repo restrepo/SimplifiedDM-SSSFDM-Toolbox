@@ -3,10 +3,10 @@ Off[General::spell]
 Model`Name = "SM8C";
 Model`NameLaTeX ="Standard Model with color octet";
 Model`Authors = "F.Staub";
-Model`Date = "2014-11-06";
+Model`Date = "2015-11-16";
 
 (* 2014-11-06: Changed sign in Lagrangian *)
-
+(* 2015-11-16: changed SPheno.m *)
 
 (*-------------------------------------------*)
 (*   Particle Content*)
@@ -43,8 +43,8 @@ NameOfStates={GaugeES, EWSB};
 (* ----- Before EWSB ----- *)
 
 DEFINITION[GaugeES][Additional]= {
-	{LagHC, {Overwrite->True, AddHC->True}},
-	{LagNoHC,{Overwrite->True, AddHC->False}}
+	{LagHC, { AddHC->True}},
+	{LagNoHC,{AddHC->False}}
 };
 
 LagNoHC = -(mu2 conj[H].H + 1/2 MS s.s - 1/4 LS s.s.s.s - LHc conj[H].H.conj[oc].oc - 1/2 L conj[H].H.conj[H].H \

@@ -3,10 +3,10 @@ Off[General::spell]
 Model`Name = "DiracGauginos";
 Model`NameLaTeX ="MSSM/NMSSM with Dirac gauginos";
 Model`Authors = "F.Staub";
-Model`Date = "2012-09-01";
+Model`Date = "2015-11-16";
 
 (* 2013-09-01: changing to new conventions for Superfields, Superpotential and global symmetries *)
-
+(* 2015-11-16: changed SPheno.m *)
 
 
 (*-------------------------------------------*)
@@ -60,24 +60,6 @@ SuperPotential = Yu u.q.Hu - Yd d.q.Hd - Ye e.l.Hd + \[Mu] Hu.Hd + MT/2 T.T + MO
 
 NameOfStates={GaugeES, EWSB};
 
-(* ----- Before EWSB ----- *)
-
-
-
-DEFINITION[GaugeES][DiracSpinors]={
-  Bino ->{fB, conj[fB]},
-  Wino -> {fWB, conj[fWB]},
-  Glu -> {fG, conj[fG]},
-  H0 -> {FHd0, conj[FHu0]},
-  HC -> {FHdm, conj[FHup]},
-  Fd1 -> {FdL, 0},
-  Fd2 -> {0, FdR},
-  Fu1 -> {FuL, 0},
-  Fu2 -> {0, FuR},
-  Fe1 -> {FeL, 0},
-  Fe2 -> {0, FeR},
-  Fv -> {FvL,0}
-};
 
 
 (* ----- After EWSB ----- *)

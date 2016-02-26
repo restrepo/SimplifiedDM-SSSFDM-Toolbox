@@ -59,7 +59,7 @@ MakeCall[name_,possibleParameters_, additionalParameters1_,additionalParameters2
 MakeVariableList[PossibleParameters_,string_,file_]:=Block[{i,j, NewString},
 (* Write the varaible declaration to the Fortran file: *)
 (* Takes a list of parameters and checks if they are Real or Complex and adds the dimension *)
-(* "string" can be used to give the scope like Intent (in), Intent (out) or Intent (inout) *)
+(* "string" can be used to give the scope like Intent(in), Intent(out) or Intent(inout) *)
 
 
 StringReal="";
@@ -401,13 +401,12 @@ SSV,
    If[{ptemp[[per[[i,1,1]]]],ptemp[[per[[i,1,2]]]]}===temp,
  found=True; 
  res=per[[i,2]];
- If[AntiField[ptemp[[per[[i,1,1]]]]]===ptemp[[per[[i,1,1]]]] && AntiField[ptemp[[per[[i,1,2]]]]]===ptemp[[per[[i,1,2]]]],res=-res;];  (* CHECK !! *)
  ];
 ];
 ];
 i++;];
 If[found==False,Print["Error in 'getSign' for vertex ",plist," ",ref]];
-Return[res];
+Return[res]; 
 ];
 getSignVertexOLD[plist_,ref_,type_]:=Block[{i,temp,res=0,found=False,per},
 temp = ref /. {A_[{b___}]->A};
@@ -502,8 +501,7 @@ If[n2 =!= Length[indRange],ind=ind<>",";,ind=ind<>")";];
 n2++;];,
 ind="";
 ];
-
-Return[{ind,HC}];
+Return[{ind,HC,procTemp}];
 ];
 
 MakeIndicesCoupling4[{p1_,in1_},{p2_,in2_},{p3_,in3_},{p4_,in4_},proc_]:=Block[{pListTemp={},indexListTemp={},n2,i,HC,indRange={}},
@@ -601,17 +599,17 @@ indexListTemp = Join[indexListTemp,{in3}];
 
 indRange={};
 
-procTemp=proc /. a_[{x__}]->a;
+procTemp=proc /. a_[{x__}]\[Rule]a;
 
-If[adjoint==True,
+If[adjoint\[Equal]True,
 procTemp = getConjugatedVertex[procTemp];
 ];
 
 If[C@@procTemp=!=C@@{p1,p2,p3},
 procTemp=getConjugatedVertex[procTemp];
 HC=True;,
-If[(Select[procTemp,(getType[#]==F)&]===Reverse[Select[{p1,p2,p3},(getType[#]==F)&]]) && Count[{p1,p2,p3},bar[x_]]===1,
-If[Length[Intersection[RE/@Select[{p1,p2,p3},(getType[#]==F)&]]]===1,
+If[(Select[procTemp,(getType[#]\[Equal]F)&]===Reverse[Select[{p1,p2,p3},(getType[#]\[Equal]F)&]]) && Count[{p1,p2,p3},bar[x_]]===1,
+If[Length[Intersection[RE/@Select[{p1,p2,p3},(getType[#]\[Equal]F)&]]]===1,
 HC=True;,
 HC=False;
 ];,
@@ -620,7 +618,7 @@ HC=False;
 ]; 
 
 
-For[n2=1,n2<=3,
+For[n2=1,n2\[LessEqual]3,
 pos= Position[pListTemp,procTemp[[n2]],1];
 If[pos=!={} && getGenSPheno[proc[[n2]]]>1,
 indRange = Join[indRange,{Extract[indexListTemp,pos[[1,1]]]}];
@@ -633,9 +631,9 @@ Print["Not Found",procTemp[[n2]], procTemp,{p1,p2,p3}];
 n2++;];
 
 
-If[Length[indRange]>= 1,
+If[Length[indRange]\[GreaterEqual] 1,
 ind="(";
-For[n2=1,n2<=Length[indRange],
+For[n2=1,n2\[LessEqual]Length[indRange],
 ind = ind <> ToString[indRange[[n2]]];
 If[n2 =!= Length[indRange],ind=ind<>",";,ind=ind<>")";];
 n2++;];,
@@ -725,6 +723,7 @@ Return[ind];
 
 
 SPhenoMass[x_]:=If[getType[x]===G,Return[SPhenoMass[getVectorBoson[x]]];,If[FreeQ[massless,getBlank[x]]==True,Return[ToExpression["M"<>ToString[getBlank[x] /.diracSubBack1[SPheno`Eigenstates] /.diracSubBack2[SPheno`Eigenstates]]]];,Return[0.]];];
+SPhenoMassFK[x_]:=If[getType[x]===G,Return[SPhenoMassFK[getVectorBoson[x]]];,If[FreeQ[massless,getBlank[x]]==True,Return[ToExpression["M["<>ToString[getBlank[x] /.diracSubBack1[SPheno`Eigenstates] /.diracSubBack2[SPheno`Eigenstates]]<>"]"]];,Return[0]];];
 SPhenoMassSq[x_]:=If[getType[x]===G,
 If[FreeQ[massless,getVectorBoson[x]]==True,Return[ToExpression[ToString[SPhenoMass[x]]<>"2"]];,Return[0.]];,
 If[FreeQ[massless,getBlank[x]]==True,Return[ToExpression[ToString[SPhenoMass[x]]<>"2"]];,Return[0.]];
@@ -734,6 +733,13 @@ If[getType[x]===G,Return[SPhenoMass[getVectorBoson[x],nr]];];
 If[getGenSPheno[x]>1 && FreeQ[massless,getBlank[x]]==True,
 Return[ToString[SPhenoMass[x]]<>"("<>ToString[nr]<>")" ];,
 Return[ToString[SPhenoMass[x]]];
+];
+];
+SPhenoMassFK[x_,nr_]:=Block[{},
+If[getType[x]===G,Return[SPhenoMassFK[getVectorBoson[x],nr]];];
+If[getGenSPheno[x]>1 && FreeQ[massless,getBlank[x]]==True,
+Return[ToString[SPhenoMassFK[x]]<>"["<>ToString[nr]<>"]" ];,
+Return[ToString[SPhenoMassFK[x]]];
 ];
 ];
 
@@ -871,7 +877,7 @@ part=getBlank[x];
 ];
 Return[getGen[part]];
 (*
-If[FreeQ[Gauginos,part]==False || FreeQ[bosons,part]==False,
+If[FreeQ[Gauginos,part]\[Equal]False || FreeQ[bosons,part]\[Equal]False,
 Return[1];,
 Return[getGen[part]];
 ]; *)
@@ -973,7 +979,7 @@ Format[FortranTrue,FortranForm]:=Format[".True.",OutputForm]/;SARAHFortran==True
 Format[NumberGenerations[x_],FortranForm]:=Format["NumberGenerations"<>ToString[FortranForm[x]],OutputForm]/;SARAHFortran==True;
 
 
-(* Format[x_Power,FortranForm]:=Format["("<>ToString[FortranForm[x[[1]]]]<>")**("<>ToString[FortranForm[x[[2]]]]<>")",OutputForm]/;(Head[x[[1]]]===Rational &&SARAHFortran==True); *)
+(* Format[x_Power,FortranForm]:=Format["("<>ToString[FortranForm[x[[1]]]]<>")**("<>ToString[FortranForm[x[[2]]]]<>")",OutputForm]/;(Head[x[[1]]]===Rational &&SARAHFortran\[Equal]True); *)
 
 Format[Power[a_,b_],FortranForm]:=Format["("<>ToString[FortranForm[a]]<>")**("<>ToString[FortranForm[b]]<>")",OutputForm]/;(Head[a]===Rational && b=!=1/2 &&SARAHFortran==True);
 
@@ -1127,7 +1133,7 @@ If[addfirst=!=True,
 Return[leftside <>" = "<> longString];,
 If[StringTake[longString,{1,1}]==="-",
 Return[leftside <>" = "<>leftside <>longString];,
-Return[leftside <>" = "<>leftside <>"+"<>longString];
+Return[leftside <>" = "<>leftside <>"+("<>longString<>")"];
 ];
 ];
 ];
@@ -1140,7 +1146,7 @@ Counter=start;
 newLetters=start;
 
 If[addfirst==True,
-If[StringTake[longString,{1,start}]==="-",
+If[StringTake[longString,{1,1}]==="-",
 newString= leftside <>" = "<>leftside <>StringTake[longString,{1,start}];,
 newString= leftside <>" = "<>leftside <>"+"<>StringTake[longString,{1,start}];
 ];,
@@ -1354,6 +1360,74 @@ _,
 	];,
 	WriteString[file,"coup"<>ToString[nr]<>" = Conjg("<>ToString[name[[1,1]]]<>ind[[1]] <>")\n"];
 	SA`SubSPhenoTeXVertex={"coup"<>ToString[nr]->"("<>TeXOutput[name[[1,1]]]<>"_"<>TeXOutput[ToExpression[StringReplace[ind[[1]],{"("->"{",")"->"}"}]]/.{i1->j1,i2->j2,i3->j3,i4->j4}]<>")^*"};
+	];
+
+];
+
+];
+
+(*
+WriteVertexToFKout[nr_,name_,indIN_,type_,file_]:=Block[{ind},
+(* Writes the expression for a given vertex to the Fortran file *)
+(* - nr: the number of the vertex appearing in the diagram under consideration; i.e. 1,2 or 3 for penguins *)
+(* - name: the SPheno name of the vertex *)
+(* - ind: the indices as well as the statement if the vertex or the hermitian conjugated vertex should be used *)
+(* - type: generic type of the vertex, e.g. FFS, FFV, VVV,...*)
+(* - file: output file name *)
+ind=StringReplace[indIN[[1]],{"("\[Rule]"[",")"\[Rule]"]"}];
+Switch[type,
+FFV,
+	If[indIN[[2]]\[Equal]False,
+	WriteString[file,"coup"<>ToString[nr]<>"L -> "<>ToString[name[[1,1]]]<>ind <>","];
+	WriteString[file,"coup"<>ToString[nr]<>"R -> "<>ToString[name[[1,2]]]<>ind <>""];,
+	WriteString[file,"coup"<>ToString[nr]<>"L -> conj["<>ToString[name[[1,1]]]<>ind <>"],"];
+	WriteString[file,"coup"<>ToString[nr]<>"R -> conj["<>ToString[name[[1,2]]]<>ind <>"]"];
+	];,
+FFS,
+	If[indIN[[2]]\[Equal]False,
+	WriteString[file,"coup"<>ToString[nr]<>"L -> "<>ToString[name[[1,1]]]<>ind <>","];
+	WriteString[file,"coup"<>ToString[nr]<>"R -> "<>ToString[name[[1,2]]]<>ind <>""];,
+	WriteString[file,"coup"<>ToString[nr]<>"R -> conj["<>ToString[name[[1,1]]]<>ind<>"],"];
+	WriteString[file,"coup"<>ToString[nr]<>"L -> conj["<>ToString[name[[1,2]]]<>ind <>"]"];
+	];,
+_,
+	If[indIN[[2]]\[Equal]False,
+	WriteString[file,"coup"<>ToString[nr]<>" -> "<>ToString[name[[1,1]]]<>ind<>""];,
+	WriteString[file,"coup"<>ToString[nr]<>" -> conj["<>ToString[name[[1,1]]]<>ind <>"]"];
+	];
+
+];
+
+]; *)
+
+
+WriteVertexToFKout[nr_,name_,indIN_,type_,file_]:=Block[{ind},
+(* Writes the expression for a given vertex to the Fortran file *)
+(* - nr: the number of the vertex appearing in the diagram under consideration; i.e. 1,2 or 3 for penguins *)
+(* - name: the SPheno name of the vertex *)
+(* - ind: the indices as well as the statement if the vertex or the hermitian conjugated vertex should be used *)
+(* - type: generic type of the vertex, e.g. FFS, FFV, VVV,...*)
+(* - file: output file name *)
+ind=StringReplace[indIN[[1]],{"("->"[",")"->"]"}];
+Switch[type,
+FFV,
+	If[indIN[[2]]==False,
+	WriteString[file,"coup"<>ToString[nr]<>"L -> "<>ToString[(Cp@@name )[L]]<>ind <>","];
+	WriteString[file,"coup"<>ToString[nr]<>"R -> "<>ToString[(Cp@@name)[R]]<>ind <>""];,
+	WriteString[file,"coup"<>ToString[nr]<>"L -> conj["<>ToString[(Cp@@name)[L]]<>ind <>"],"];
+	WriteString[file,"coup"<>ToString[nr]<>"R -> conj["<>ToString[(Cp@@name)[R]]<>ind <>"]"];
+	];,
+FFS,
+	If[indIN[[2]]==False,
+	WriteString[file,"coup"<>ToString[nr]<>"L -> "<>ToString[(Cp@@name)[L]]<>ind <>","];
+	WriteString[file,"coup"<>ToString[nr]<>"R -> "<>ToString[(Cp@@name)[R]]<>ind <>""];,
+	WriteString[file,"coup"<>ToString[nr]<>"R -> conj["<>ToString[(Cp@@name)[L]]<>ind<>"],"];
+	WriteString[file,"coup"<>ToString[nr]<>"L -> conj["<>ToString[(Cp@@name)[R]]<>ind <>"]"];
+	];,
+_,
+	If[indIN[[2]]==False,
+	WriteString[file,"coup"<>ToString[nr]<>" -> "<>ToString[Cp@@name]<>ind<>""];,
+	WriteString[file,"coup"<>ToString[nr]<>" -> conj["<>ToString[Cp@@name]<>ind <>"]"];
 	];
 
 ];

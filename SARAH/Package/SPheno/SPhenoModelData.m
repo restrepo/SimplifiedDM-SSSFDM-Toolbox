@@ -49,6 +49,7 @@ WriteString[ModelData,"Logical, Save :: Enable3BDecaysF = .True. \n"];
 WriteString[ModelData,"Logical, Save :: FirstRun = .True. \n"];
 WriteString[ModelData,"Logical, Save :: RunningCouplingsDecays = .True. \n"];
 WriteString[ModelData,"Logical, Save :: WriteSLHA1 = .False. \n"];
+WriteString[ModelData,"Logical, Save :: MakeQTEST = .False. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateOneLoopMasses = .True. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateOneLoopMassesSave = .True. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateTwoLoopHiggsMasses = .True. \n"];
@@ -57,7 +58,11 @@ WriteString[ModelData,"Logical :: CalculateTwoLoopHiggsMassesSave = .True. \n"];
 WriteString[ModelData,"Logical, Save :: CalculateLowEnergy = .True. \n"];
 WriteString[ModelData,"Logical, Save :: WriteParametersAtQ = .False. \n"];
 WriteString[ModelData,"Logical, Save :: TwoLoopRGE=.True.\n"];
-WriteString[ModelData,"Logical, Save :: SMrunningLowScaleInput=.True.\n"];
+If[SupersymmetricModel===True,
+WriteString[ModelData,"Logical, Save :: SMrunningLowScaleInput=.True.\n"];,
+WriteString[ModelData,"Logical, Save :: SMrunningLowScaleInput=.False.\n"];
+];
+
 WriteString[ModelData,"Logical, Save :: RunningSUSYparametersLowEnergy=.True.\n"];
 WriteString[ModelData,"Logical, Save :: RunningSMparametersLowEnergy=.True.\n"];
 WriteString[ModelData,"Integer, Save :: MinimalNumberIterations = 5\n"];
@@ -74,7 +79,9 @@ WriteString[ModelData,"Logical :: TwoLoopSafeMode \n"];
 WriteString[ModelData,"Integer :: TwoLoopMethod = 3 \n"];
 WriteString[ModelData,"Logical :: WriteTreeLevelTadpoleParameters = .false. \n"];
 WriteString[ModelData,"Logical :: IncludeDeltaVB = .True. \n"];
+WriteString[ModelData,"Logical :: IncludeBSMdeltaVB = .True. \n"];
 WriteString[ModelData,"Real(dp) :: WidthToBeInvisible = 0._dp \n"];
+WriteString[ModelData,"Logical :: HigherOrderDiboson = .True. \n"];
 WriteString[ModelData,"Real(dp) :: nLep = 3._dp, mf_u_mz_running \n"];
 WriteString[ModelData,"Real(dp) :: nUp = 2._dp \n"];
 WriteString[ModelData,"Real(dp) :: err2L = 0._dp \n"];
@@ -118,7 +125,7 @@ WriteString[ModelData,"Real(dp) :: mf_d2_MZ(3), mf_u2_MZ(3), mf_l2_MZ(3) \n"];
 WriteString[ModelData,"Complex(dp) :: CKM_160(3,3), CKM_MZ(3,3) \n"];
 
 
-If[Head[SuperPotential]===List && SuperPotential=!={}&& AddSMrunning===True,
+If[Head[SuperPotential]===List && SuperPotential=!={}&& AddSMrunning===True && FreeQ[Superpotential,UpYukawa]===False,
 If[SA`Casimir[Select[SuperPotential[[Position[SuperPotential,UpYukawa][[1,1]],2]],(SA`Casimir[#,Position[Gauge,color][[1,1]]]==4/3)&][[1]],Position[Gauge,left][[1,1]]]===3/4,
 WriteString[ModelData,"Logical :: TransposedYukawa= .True. \n"];,
 WriteString[ModelData,"Logical :: TransposedYukawa= .False. \n"];
@@ -176,6 +183,11 @@ MakeVariableList[listVEVsStable,"",ModelData];
 MakeVariableList[SPhenoWidthBR,"",ModelData];
 MakeVariableList[NeededRatiosLoopCouplingsSave,"",ModelData];
 MakeVariableList[NeededRatiosLoopCouplingsSavePseudo,"",ModelData];
+
+For[i=1,i<=Length[AuxiliaryParametersSPheno],
+WriteString[ModelData,AuxiliaryParametersSPheno[[i]]<>"\n"];
+i++;
+];
 
 WriteString[ModelData,"Real(dp) :: gForTadpoles("<>ToString[numberAllwithVEVs]<>")\n"];
 WriteString[ModelData, "Complex(dp) :: tForTadpoles("<>ToString[Length[ParametersToSolveTadpoles]]<>")\n"];
@@ -462,7 +474,16 @@ V,
 i++;];
 
 If[FreeQ[ParticleDefinitions[SPheno`Eigenstates],"Higgs"]===False && FreeQ[ParticleDefinitions[SPheno`Eigenstates],"Pseudo-Scalar Higgs"]===False,
-WriteString[ModelData, "Complex(dp) :: CPL_A_H_Z("<>ToString[getGenSPheno[PseudoScalar]] <>","<>ToString[getGenSPheno[HiggsBoson]] <>") \n "];
+If[getGen[HiggsBoson]>1 && getGen[PseudoScalar]>1,
+WriteString[ModelData, "Complex(dp) :: CPL_A_H_Z("<>ToString[getGenSPheno[PseudoScalar]] <>","<>ToString[getGenSPheno[HiggsBoson]] <>") \n "];,
+If[getGen[HiggsBoson]>1,
+WriteString[ModelData, "Complex(dp) :: CPL_A_H_Z("<>ToString[getGenSPheno[HiggsBoson]] <>") \n "];,
+If[getGen[PseudoScalar]>1,
+WriteString[ModelData, "Complex(dp) :: CPL_A_H_Z("<>ToString[getGenSPheno[PseudoScalar]] <>") \n "];,
+WriteString[ModelData, "Complex(dp) :: CPL_A_H_Z \n "];
+];
+];
+];
 ];
 If[FreeQ[ParticleDefinitions[SPheno`Eigenstates],"Higgs"]===False,
 WriteString[ModelData, "Complex(dp) :: CPL_H_H_Z("<>ToString[getGenSPheno[HiggsBoson]] <>","<>ToString[getGenSPheno[HiggsBoson]] <>") \n "];
@@ -746,7 +767,7 @@ If[Head[BoundaryLowScaleInput[[1,1]]]===List,
 temp=Join[temp,Table[Transpose[BoundaryLowScaleInput[[k]]][[1]],{k,1,Length[BoundaryLowScaleInput]}]];,temp=Join[temp,Transpose[BoundaryLowScaleInput][[1]]];
 ];
 ];
-temp=Select[Flatten[temp],(FreeQ[HighScaleParametersAllwithVEVsRegimes,#]&&FreeQ[MINPAR,#]&&FreeQ[EXTPAR,#]&&FreeQ[ListAllInputParameters,#]&&FreeQ[listVEVs,#]&&FreeQ[Join[highScaleIn,lowScaleIn],#]&&FreeQ[Join[highScaleIn,lowScaleIn],Head[#]]&&FreeQ[HighScaleParametersAllwithVEVsRegimes,Head[#]]&&FreeQ[MINPAR,Head[#]]&&FreeQ[EXTPAR,Head[#]]&&FreeQ[ListAllInputParameters,Head[#]]&&FreeQ[listVEVs,Head[#]] && Head[#]=!=re  && Head[#]=!=im  )&];
+temp=Select[Flatten[temp],(FreeQ[HighScaleParametersAllwithVEVsRegimes,#] && FreeQ[UnfixedCharges,#]&&FreeQ[MINPAR,#]&&FreeQ[EXTPAR,#]&&FreeQ[ListAllInputParameters,#]&&FreeQ[listVEVs,#]&&FreeQ[Join[highScaleIn,lowScaleIn],#]&&FreeQ[Join[highScaleIn,lowScaleIn],Head[#]]&&FreeQ[HighScaleParametersAllwithVEVsRegimes,Head[#]]&&FreeQ[MINPAR,Head[#]]&&FreeQ[EXTPAR,Head[#]]&&FreeQ[ListAllInputParameters,Head[#]]&&FreeQ[listVEVs,Head[#]] && Head[#]=!=re  && Head[#]=!=im  )&];
 temp=Intersection[temp];
 
 temp=Select[temp,FreeQ[AdditionalParametersLagrange,#]&];

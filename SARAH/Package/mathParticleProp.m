@@ -109,6 +109,15 @@ Return[{(tempList[[1]]),listNew}];
 
 
 
+(* getDimFundamentalAux[nr_]:=Block[{},
+If[GaugeListAux[[nr,1]]\[Equal]False,
+Return[getDimFundamental[Gauge[[nr,2]]]];,
+Return[GaugeListAux[[nr,2]]];
+];
+]; *)
+
+getDimFundamentalAux[nr_]:=getDimFundamental[Gauge[[nr,2]]];
+
 GenerateAllIndizes[Nr_]:=Block[{i,j,k,l,m,n,res,states,templ,resSusyno,temp,temp2},
 notExpanded={{generation,Fields[[Nr,2]]}}; expanded={};
 notShort={{generation,Fields[[Nr,2]]}}; expShort={};
@@ -117,26 +126,26 @@ For[k=1,k<=AnzahlGauge,
 temp={};
 searchedDim=FieldDim[Nr,k];
 If[Gauge[[k,2]]=!=U[1] && searchedDim=!=1,
-If[Gauge[[k,5]]==False || Abs[searchedDim]==getDimFundamental[Gauge[[k,2]]],
+If[Gauge[[k,5]]===False || Abs[searchedDim]==getDimFundamental[Gauge[[k,2]]],
 If[searchedDim===getDimAdjoint[Gauge[[k,2]]],
 temp= {{getAdjointIndex[Gauge[[k,3]]],Abs[searchedDim]}};
 temp2= {{getAdjointIndex[Gauge[[k,3]]],Abs[searchedDim]}};,
-temp= {{Gauge[[k,3]],Abs[searchedDim]}};
-temp2= {{Gauge[[k,3]],Abs[searchedDim]}};
+temp= {{Gauge[[k,3]],If[Gauge[[k,5]]===False ,Abs[searchedDim],getDimFundamentalAux[k]]}};
+temp2= {{Gauge[[k,3]],If[Gauge[[k,5]]===False ,Abs[searchedDim],getDimFundamentalAux[k]]}};
 ];,
 If[Head[Gauge[[k,2]]=!=SU], Print["Only SU(N) groups can be definite explicitly as broken!"]; Abort[]];
 If[searchedDim===getNumberStatesAdjoint[Gauge[[k,2]]],
-temp={{Gauge[[k,3]],getDimFundamental[Gauge[[k,2]]]},{IndexName[Gauge[[k,3]],2],getDimFundamental[Gauge[[k,2]]]}};
-temp2={{Gauge[[k,3]],getDimFundamental[Gauge[[k,2]]]},{-Gauge[[k,3]],getDimFundamental[Gauge[[k,2]]]}};, 
+temp={{Gauge[[k,3]],getDimFundamentalAux[k]},{IndexName[Gauge[[k,3]],2],getDimFundamentalAux[k]}};
+temp2={{Gauge[[k,3]],getDimFundamentalAux[k]},{-Gauge[[k,3]],getDimFundamentalAux[k]}};, 
 If[Head[Fields[[Nr,k+3]]]===List,
 res=TestDim[Abs/@Fields[[Nr,k+3]],Gauge[[k,2,1]]];,
 res=TestDim[Abs[Fields[[Nr,k+3]]],Gauge[[k,2,1]]];
 ];
-temp=Join[Table[{IndexName[Gauge[[k,3]],j],getDimFundamental[Gauge[[k,2]]]},{j,1,res[[2]]}],Table[{-IndexName[Gauge[[k,3]],j+res[[2]]],getDimFundamental[Gauge[[k,2]]]},{j,1,res[[3]]}]];
-temp2=Join[Table[{Gauge[[k,3]],getDimFundamental[Gauge[[k,2]]]},{j,1,res[[2]]}],Table[{-Gauge[[k,3]],getDimFundamental[Gauge[[k,2]]]},{j,1,res[[3]]}]];
+temp=Join[Table[{IndexName[Gauge[[k,3]],j],getDimFundamentalAux[k]},{j,1,res[[2]]}],Table[{-IndexName[Gauge[[k,3]],j+res[[2]]],getDimFundamentalAux[k]},{j,1,res[[3]]}]];
+temp2=Join[Table[{Gauge[[k,3]],getDimFundamentalAux[k]},{j,1,res[[2]]}],Table[{-Gauge[[k,3]],getDimFundamentalAux[k]},{j,1,res[[3]]}]];
 ];
 ];
-If[Gauge[[k,5]]==False,
+If[Gauge[[k,5]]===False,
 notShort = Join[notShort,temp];
 notExpanded=Join[notExpanded,temp2];,
 expShort = Join[expShort,temp];
@@ -950,18 +959,23 @@ Return[CG[group,dyn]@@inds];
 
 SumOverExpandedIndizes[term_,partList_]:=SumOverExpandedIndizes[term,partList,False];
 
-SumOverExpandedIndizes[term_,partList_,Matrix_]:=Block[{j,i,temp, temp1,pos,IndexNames={},iter,fin},
+SumOverExpandedIndizes[term_,partList_,Matrix_]:=Block[{j,i,temp, temp1,pos,IndexNames={},IndexNamesSub={},iter,fin,SUB},
 For[i=1,i<=Length[partList],
 If[partList[[i]]=!=None,
 pos=Position[ListFields,partList[[i]]][[1,1]];
 IndexNames = Join[IndexNames,Table[{ListFields[[pos,2,1,j]],ListFields[[pos,2,2,j,2]]},{j,1,Length[ListFields[[pos,2,2]]]}] /. subGC[i]];
-
+(* IndexNamesSub = Join[IndexNamesSub,Table[(ListFields[[pos,2,1,j]] /. subGC[i])\[Rule]IndexNR[ListFields[[pos,2,1,j]],i,ListFields[[pos,2,1,j]] /. subGC[i]],{j,1,Length[ListFields[[pos,2,2]]]}]]; *)
 ];
 i++;];
 
 
 If[Matrix==False,
 temp=term;
+(*
+For[i=1, i\[LessEqual]Length[IndexNames],
+temp1 =Hold[Sum[TEMP,{iter,1,fin}]] /. {iter \[Rule] IndexNames[[i,1]], fin \[Rule] IndexNames[[i,2]],TEMP->(temp /. IndexNamesSub[[i]])};
+temp = ReleaseHold[temp1]/. Extract[a_,{IndexNR[b_,c_]}]\[RuleDelayed]Extract[a,c]; 
+i++;]; *)
 For[i=1, i<=Length[IndexNames],
 temp1 =Hold[Sum[temp,{iter,1,fin}]] /. {iter -> IndexNames[[i,1]], fin -> IndexNames[[i,2]]};
 temp = ReleaseHold[temp1]; 
@@ -1102,7 +1116,6 @@ If[gens>1,
 pos=Position[listP,sameDis[[i]]];
 rep=ind /.Join[subGCRE[pos[[1,1]],pos[[2,1]]], subGCRE[pos[[2,1]],pos[[1,1]]]];
 posDef=Position[ParameterDefinitions,Op];
-Print[rep];
 If[rep===ind,
 If[MemberQ[listP,conj[sameDis[[i]]]] && MemberQ[listP,sameDis[[i]]],symmetry=Hermitian;,symmetry=Symmetric;];
 PrintDebug["   Defined ",Op," as ",symmetry];
@@ -1668,6 +1681,13 @@ Return[ToString[y]];
 ];
 ];
 
+getEntryFieldAux[y_,Type_]:=Block[{pos,field,i,states,des},field=y;
+If[FreeQ[WeylFermionAndIndermediate,field]==False,
+pos=Position[Transpose[WeylFermionAndIndermediate][[1]],field];
+];
+If[Head[pos]===List,If[FreeQ[WeylFermionAndIndermediate[[pos[[1,1]]]][[2]],Type],Return[None];,Return[Type/. WeylFermionAndIndermediate[[pos[[1,1]]]][[2]]];];,Return[None];];]
+
+
 getElectricCharge[x_conj]:=-getElectricCharge[RE[x]];
 getElectricCharge[x_bar]:=-getElectricCharge[RE[x]];
 getElectricCharge[x_]:=getEntryField[x,ElectricCharge] /; (getType[x]=!=A);
@@ -2189,11 +2209,13 @@ repsDoub=Intersection[Select[fields,(Count[fields,#]>1)&]];
 If[repsDoub==={},Return[];];
 Switch[Length[Dimensions[InvMatFull[nr]]],
 2,
-	If[Length[Intersection[Table[CGCBroken[fields][i,i],{i,1,Dimensions[InvMatFull[nr]][[1]]}]]]>1,
+	If[(Table[CGCBroken[fields][i,j],{i,1,Dimensions[InvMatFull[nr]][[1]]},{j,1,Dimensions[InvMatFull[nr]][[1]]}]==Transpose[Table[CGCBroken[fields][i,j],{i,1,Dimensions[InvMatFull[nr]][[1]]},{j,1,Dimensions[InvMatFull[nr]][[1]]}]]),
 	CGCBroken[fields][a_,b_]:= CGCBroken[fields][b,a] /;(OrderedQ[{a,b}]==False);
 	InvMat[nr][a_,b_]:= InvMat[nr][b,a] /;(OrderedQ[{a,b}]==False);,
+If[(Table[CGCBroken[fields][i,j],{i,1,Dimensions[InvMatFull[nr]][[1]]},{j,1,Dimensions[InvMatFull[nr]][[1]]}]==-Transpose[Table[CGCBroken[fields][i,j],{i,1,Dimensions[InvMatFull[nr]][[1]]},{j,1,Dimensions[InvMatFull[nr]][[1]]}]]),
 	CGCBroken[fields][a_,b_]:= -CGCBroken[fields][b,a] /;(OrderedQ[{a,b}]==False);
 	InvMat[nr][a_,b_]:= -InvMat[nr][b,a] /;(OrderedQ[{a,b}]==False);
+];
 	];,
 3,
 For[j=1,j<=Length[repsDoub],
@@ -2315,8 +2337,8 @@ subInv=Join[subInv,{invFields[[j]][{b__}][{genf[j],d___}]->1,invFields[[j]][{gen
 ];
 j++;];
 subInv=Flatten[subInv];
-temp=SumOverExpandedIndizes[contraction*particles /. sum[a__]->1 /.A_[{b__}][c_Integer]->A[{b}] /.A_[{b__}][{d__}][c_Integer]->A[{b}][{d}] /. subInv,invFields] /. A_[{b__}][c_Integer]->A/. A_[{b__}]->A/.conj[x_]->x/.(a_?NumericQ b_Symbol)[c_Symbol]->a b[c];
-temp = temp //. Flatten[subs] /. Delta[a__]->1 /. epsTensor[a__]->1 /. CG[a__][b__]->1 /. conj[x_]->x;
+temp=SumOverExpandedIndizes[contraction*particles /. sum[a__]->1 /.A_[{b__}][c_Integer]->A[{b}] /.A_[{b__}][{d__}][c_Integer]->A[{b}][{d}]/.conj[x_]->x  /. subInv,invFields] /. A_[{b__}][c_Integer]->A/. A_[{b__}]->A (*/.conj[x_]\[Rule]x *)/.(a_?NumericQ b_Symbol)[c_Symbol]->a b[c];
+temp = temp /. conj[x_[y_]]:>ToExpression[ToString[x]<>"c"][y] //. Flatten[subs] /. Delta[a__]->1 /. epsTensor[a__]->1 /. CG[a__][b__]->1 (*/. conj[x_]\[Rule]x*);
 temp=temp/.sub2;
 
 Switch[Length[dims],

@@ -423,7 +423,7 @@ Print["Finished! SPheno code generated in ",TimeUsed[]-startedtime,"s"];
 Print["Output saved in ",StyleForm[$sarahCurrentSPhenoDir,"Section",FontSize->10] ];
 Print[""];
 Print["The following steps are now necessary to implement the model in SPheno: "];
-Print["  1. Copy the created files to a new subdirectory \"/",NameForModel,"\" of your SPheno "<>ToString[StyleForm["3.3.6 (or later)","Section",FontSize->10]]<>" installation"];
+Print["  1. Copy the created files to a new subdirectory \"/",NameForModel,"\" of your SPheno "<>ToString[StyleForm["3.3.8 (or later)","Section",FontSize->10]]<>" installation"];
 Print["  2. Compile the model by using "];
 Print["        make Model=",NameForModel];
 Print["     in the main directory of SPheno"];
@@ -652,6 +652,15 @@ SubSolutionsTadpolesLoop = {};
 SubSolutionsTadpolesTree = {};
 ];
 
+If[Head[AftermathTadpoles]===List,
+If[Head[SubSolutionsTadpolesLoop[[1]]]===Rule,
+SubSolutionsTadpolesLoop=Join[SubSolutionsTadpolesLoop,AftermathTadpoles];
+SubSolutionsTadpolesTree=Join[SubSolutionsTadpolesTree,AftermathTadpoles];,
+SubSolutionsTadpolesLoop=Join[#,AftermathTadpoles]&/@SubSolutionsTadpolesLoop;
+SubSolutionsTadpolesTree=Join[#,AftermathTadpoles]&/@SubSolutionsTadpolesTree;
+];
+];
+
 ];
 
 
@@ -672,6 +681,18 @@ neededParameterNames={"Up-Yukawa-Coupling","Down-Yukawa-Coupling","Lepton-Yukawa
 neededParameters=Flatten[{UpYukawa,DownYukawa,ElectronYukawa,leftCoupling,strongCoupling,ElectronMatrixL,ElectronMatrixR,DownMatrixL,DownMatrixR,UpMatrixL,UpMatrixR,VEVSM,hyperchargeAuxParameters}];
 neededParameterNames={"Up-Yukawa-Coupling","Down-Yukawa-Coupling","Lepton-Yukawa-Coupling","Left-Coupling","Strong-Coupling","Left-Lepton-Mixing-Matrix","Right-Lepton-Mixing-Matrix","Left-Down-Mixing-Matrix","Right-Down-Mixing-Matrix","Left-Up-Mixing-Matrix","Right-Up-Mixing-Matrix","EW-VEV"};
 ];
+];
+
+If[DEFINITION[UseNonStandardYukwas]===True,
+neededParameters=DeleteCases[neededParameters,UpYukawa|DownYukawa|ElectronYukawa];
+neededParameterNames=DeleteCases[neededParameterNames,"Up-Yukawa-Coupling"|"Down-Yukawa-Coupling"|"Lepton-Yukawa-Coupling"];
+neededParameters=Join[neededParameters,DEFINITION[NonStandardYukawas]];
+neededParameterNames=Join[neededParameterNames,ToString/@DEFINITION[NonStandardYukawas]];
+];
+
+If[Head[DEFINITION[MoreEWvevs]]===List,
+neededParameters=DeleteCases[neededParameters,VEVSM|VEVSM1|VEVSM2];
+neededParameterNames=DeleteCases[neededParameterNames,"EW-VEV"|"Down-VEV"|"Up-VEV"];
 ];
 
 For[i=1,i<=Length[neededParameters],
@@ -829,8 +850,11 @@ If[AuxiliaryHyperchargeCoupling=!=True,
 LowScaleParameter = {hyperchargeCoupling,leftCoupling,strongCoupling,ElectronYukawa,DownYukawa,UpYukawa};,
 LowScaleParameter = Flatten[{hyperchargeAuxParameters,leftCoupling,strongCoupling,ElectronYukawa,DownYukawa,UpYukawa}];
 ];
+If[DEFINITION[UseNonStandardYukwas]==True,
+LowScaleParameter=DeleteCases[LowScaleParameter,ElectronYukawa|DownYukawa|UpYukawa];
+LowScaleParameter=Join[LowScaleParameter,DEFINITION[NonStandardYukawas]];
 ];
-
+];
 NeededForTracesTemp={};
 NeededForTraces={};
 
@@ -892,7 +916,7 @@ i++;];
 If[Length[BetaMuij]!= 0,
 If[SupersymmetricModel===True,
 tempList=Transpose[Transpose[listWbiOne/. Delta[a__]->1 /. epsTensor[a__]->1 /. InvMat[a__][b__]->1][[2]]][[2]];,
-tempList=Transpose[BetaMuij[[1]]]/. Delta[a__]->1 /. epsTensor[a__]->1 /. InvMat[a__][b__]->1 /. {i1->gen1,i2->gen2,i3->gen3,i4->gen4};
+tempList=Transpose[BetaMuij][[1]]/. Delta[a__]->1 /. epsTensor[a__]->1 /. InvMat[a__][b__]->1 /. {i1->gen1,i2->gen2,i3->gen3,i4->gen4};
 ];
 HighScaleParameter = Join[HighScaleParameter,tempList];
 
@@ -987,6 +1011,8 @@ i++;];
 
 ];
 
+NeededParametersForRGEs = NeededParametersForRGEs/. A_[b_Integer]->A;
+
 For[i=1,i<=Length[BoundaryEWSB],
 If[FreeQ[HighScaleParameter,BoundaryEWSB[[i,1]]]==False,
 LowScaleParameter=Join[LowScaleParameter,{BoundaryEWSB[[i,1]]}];
@@ -1079,16 +1105,30 @@ CheckSMrges:=Block[{},
 AddOHDM = False;
 If[SupersymmetricModel===True,
 If[AuxiliaryHyperchargeCoupling=!=True,
+If[Head[DEFINITION[NonStandardYukawas]]=!=List,
 If[Select[{"Up-Yukawa-Coupling","Down-Yukawa-Coupling","Lepton-Yukawa-Coupling","Hypercharge-Coupling","Left-Coupling","Strong-Coupling"},(FreeQ[ParameterDefinitions,#])& ] === {}  && (FreeQ[ParameterDefinitions,"Down-VEV"]==False || FreeQ[ParameterDefinitions,"EW-VEV"]),
 AddSMrunning = True;,
 AddSMrunning=False;
 ];,
+If[Select[{"Hypercharge-Coupling","Left-Coupling","Strong-Coupling"},(FreeQ[ParameterDefinitions,#])& ] === {}  && (FreeQ[ParameterDefinitions,"Down-VEV"]==False || FreeQ[ParameterDefinitions,"EW-VEV"]),
+AddSMrunning = True;,
+AddSMrunning=False;
+];
+];,
+If[Head[DEFINITION[NonStandardYukawas]]=!=List,
 If[Select[{"Up-Yukawa-Coupling","Down-Yukawa-Coupling","Lepton-Yukawa-Coupling","Left-Coupling","Strong-Coupling"},(FreeQ[ParameterDefinitions,#])& ] === {}  && (FreeQ[ParameterDefinitions,"Down-VEV"]==False || FreeQ[ParameterDefinitions,"EW-VEV"]),
+AddSMrunning = True;,
+AddSMrunning=False;
+];,
+If[Select[{"Left-Coupling","Strong-Coupling"},(FreeQ[ParameterDefinitions,#])& ] === {}  && (FreeQ[ParameterDefinitions,"Down-VEV"]==False || FreeQ[ParameterDefinitions,"EW-VEV"]),
 AddSMrunning = True;,
 AddSMrunning=False;
 ];
 ];
+];
 AddOHDM = False;,
+
+If[Head[DEFINITION[NonStandardYukawas]]=!=List,
 If[Select[{"Up-Yukawa-Coupling","Down-Yukawa-Coupling","Lepton-Yukawa-Coupling","Hypercharge-Coupling","Left-Coupling","Strong-Coupling","Down-VEV","Up-VEV"},(FreeQ[ParameterDefinitions,#])& ] === {} ,
 AddSMrunning = True;
 AddOHDM = False;,
@@ -1096,6 +1136,16 @@ If[Select[{"Up-Yukawa-Coupling","Down-Yukawa-Coupling","Lepton-Yukawa-Coupling",
 AddSMrunning=True;
 AddOHDM= True;,
 AddSMrunning=False;
+];
+];,
+If[Select[{"Hypercharge-Coupling","Left-Coupling","Strong-Coupling","Down-VEV","Up-VEV"},(FreeQ[ParameterDefinitions,#])& ] === {} ,
+AddSMrunning = True;
+AddOHDM = False;,
+If[Select[{"Hypercharge-Coupling","Left-Coupling","Strong-Coupling","EW-VEV"},(FreeQ[ParameterDefinitions,#])& ] === {} ,
+AddSMrunning=True;
+AddOHDM= True;,
+AddSMrunning=False;
+];
 ];
 ];
 ];
@@ -1486,11 +1536,13 @@ Return[];
 If[IntermediateScale =!= True && Head[RegimeNr] =!= Integer,
 If[Head[ConditionGUTscale]=!=Equal,
 ConditionGUTscale = Gauge[[1,4]]==Gauge[[2,4]];
+If[Length[UseParameterAsGUTscale]===0,
 Message[SPheno::NoGUTcondition,Gauge[[1,4]]==Gauge[[2,4]]];
+];
 ];
 If[SeveralBoundaryConditions==True,
 For[k=1,k<=Length[BoundaryHighScale],
-temp=Select[HighScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale[[k]]][[1]],#]==False)&];
+temp=Select[HighScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale[[k]]][[1]]/. A_[b__Integer]->A,#]==False)&];
 For[i=1,i<=Length[temp],
 If[MemberQ[ParametersToSolveTadpoles,temp[[i]]],
 BoundaryHighScale[[k]] = Join[BoundaryHighScale[[k]],{{temp[[i]],0}}];,
@@ -1498,11 +1550,16 @@ Message[SPheno::NoBoundaryGUT,temp[[i]]];
 ];
 i++;];
 
-temp=Select[LowScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale[[k]]][[1]],#]==False && MemberQ[TransposeChecked[BoundaryEWSBScale[[k]]][[1]],#]==False && MemberQ[TransposeChecked[BoundarySUSYScale[[k]]][[1]],#]==False)&];
+temp=Select[LowScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale[[k]]][[1]]/. A_[b__Integer]->A,#]==False && MemberQ[TransposeChecked[BoundaryEWSBScale[[k]]][[1]]/. A_[b__Integer]->A,#]==False && MemberQ[TransposeChecked[BoundarySUSYScale[[k]]][[1]] /. A_[b__Integer]->A,#]==False)&];
 If[AuxiliaryHyperchargeCoupling=!=True,
 temp=Select[temp,(FreeQ[{UpYukawa,DownYukawa,ElectronYukawa,hyperchargeCoupling,leftCoupling,strongCoupling},#])&];,
 temp=Select[temp,(FreeQ[Flatten[{UpYukawa,DownYukawa,ElectronYukawa,hyperchargeAuxParameters,leftCoupling,strongCoupling}],#])&];
 ];
+
+If[DEFINITION[UseNonStandardYukwas]===True,
+temp=Select[temp,(FreeQ[DEFINITION[NonStandardYukawas],#])&];
+];
+
 
 For[i=1,i<=Length[temp],
 If[MemberQ[ParametersToSolveTadpoles /.{re[x_]->x,im[x_]->x},temp[[i]]]==False,
@@ -1517,7 +1574,7 @@ down = Table[TransposeChecked[BoundaryConditionsDown[[i]]][[1]],{i,1,Length[Boun
 up = Table[TransposeChecked[BoundaryConditionsUp[[i]]][[1]],{i,1,Length[BoundaryConditionsUp]}][[1]]/. {a_[index1,b___]->a};
 ];
 
-temp=Select[HighScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale][[1]],#]==False)&];
+temp=Select[HighScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale][[1]]/. A_[b__Integer]->A,#]==False)&];
 For[i=1,i<=Length[temp],
 If[MemberQ[ParametersToSolveTadpoles,temp[[i]]] || MemberQ[ParametersToSolveTadpoles,re[temp[[i]]]],
 BoundaryHighScale = Join[BoundaryHighScale,{{temp[[i]],0}}];,
@@ -1528,10 +1585,14 @@ Message[SPheno::NoBoundaryGUT,temp[[i]]];
 ];
 i++;];
 
-temp=Select[LowScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale][[1]],#]==False && MemberQ[TransposeChecked[BoundaryEWSBScale][[1]],#]==False && MemberQ[TransposeChecked[BoundarySUSYScale][[1]],#]==False && MemberQ[down,#]==False && MemberQ[up,#]==False)&];
+temp=Select[LowScaleParameter,(MemberQ[TransposeChecked[BoundaryHighScale][[1]]/. A_[b__Integer]->A,#]==False && MemberQ[TransposeChecked[BoundaryEWSBScale][[1]]/. A_[b__Integer]->A,#]==False && MemberQ[TransposeChecked[BoundarySUSYScale][[1]]/. A_[b__Integer]->A,#]==False && MemberQ[down,#]==False && MemberQ[up,#]==False)&];
 If[AuxiliaryHyperchargeCoupling=!=True,
 temp=Select[temp,(FreeQ[{UpYukawa,DownYukawa,ElectronYukawa,hyperchargeCoupling,leftCoupling,strongCoupling},#])&];,temp=Select[temp,(FreeQ[Flatten[{UpYukawa,DownYukawa,ElectronYukawa,hyperchargeAuxParameters,leftCoupling,strongCoupling}],#])&];
 ];
+If[DEFINITION[UseNonStandardYukwas]===True,
+temp=Select[temp,(FreeQ[DEFINITION[NonStandardYukawas],#])&];
+];
+
 For[i=1,i<=Length[temp],
 If[MemberQ[ParametersToSolveTadpoles /. {re[x_]->x,im[x_]->x},temp[[i]]]==False,
 Message[SPheno::NoConditionForParameter,temp[[i]]];
