@@ -114,7 +114,7 @@ dnl #################################################################
 
 CS_SECTION([Configuring SARAH])
 
-tarball_sarah_prefix=SARAH-4.5.5
+tarball_sarah_prefix=SARAH-4.5.8
 tarball_sarah="${tarball_sarah_prefix}.tar.gz"
 tarball_sarah_path="$TARBALLS/$tarball_sarah"
 
@@ -125,7 +125,7 @@ fi
 CS_PROVIDE_FILE(
    [http://www.hepforge.org/archive/sarah/$tarball_sarah],
    [$tarball_sarah_path],
-   [b5a5691350791acfe74a028244903e68])
+   [4782edc6b5f20f6870bc3d3ca3704f50])
 CS_UNTAR([$tarball_sarah_path],[$tarball_sarah_prefix],[SARAH])
 
 dnl #################################################################
