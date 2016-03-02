@@ -15,15 +15,12 @@ directory.
 
  $ make
 
-To update to a new version X.X.X  downloaded in the .. dir:
+To update to a new version X.X.X of some of tarballs, simply cd to the root dir where the tool is located
 
- $ rsync -avxz toolbox-X.X.X/ toolbox
+  $ tar -zxvf tarball.X.X.X.tar.gz -C tool_DIR --skip-components=1
 
-all the old downloaded dirs are removed:
+Recompile the tool accordingly.
 
- $ rm -rf calchep/ madgraph/ micromegas/ SARAH/ SPHENO/ SSP/ tarballs/ 
-
-From here, we repeat the steps 1) 2), check status, add possible new files and 
 commit with the new version in the message:
 
  $ git commit -a -m "toolbox X.X.X"
@@ -31,4 +28,4 @@ commit with the new version in the message:
  
  Finally we push into the remote server including the tags:
  
-  $ git push origin --tags
+  $ git push origin master --tags
