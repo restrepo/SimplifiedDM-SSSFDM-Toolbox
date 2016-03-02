@@ -3550,7 +3550,7 @@ $as_echo "$as_me: ==============================================================
    echo
 
 
-tarball_sarah_prefix=SARAH-4.5.5
+tarball_sarah_prefix=SARAH-4.5.8
 tarball_sarah="${tarball_sarah_prefix}.tar.gz"
 tarball_sarah_path="$TARBALLS/$tarball_sarah"
 
@@ -3615,13 +3615,13 @@ Rerun configure afterwards.
    fi
 
    fi
-   if test -n "b5a5691350791acfe74a028244903e68"; then
+   if test -n "4782edc6b5f20f6870bc3d3ca3704f50"; then
 
    if test -n "$md5sum_path"; then
       { $as_echo "$as_me:${as_lineno-$LINENO}: checking  $tarball_sarah_path" >&5
 $as_echo_n "checking  $tarball_sarah_path... " >&6; }
       md5sum=`$md5sum_path "$tarball_sarah_path" | $SED 's/ .*//'`
-      if test "b5a5691350791acfe74a028244903e68" = $md5sum; then
+      if test "4782edc6b5f20f6870bc3d3ca3704f50" = $md5sum; then
          { $as_echo "$as_me:${as_lineno-$LINENO}: result: checksum OK" >&5
 $as_echo "checksum OK" >&6; }
       else
@@ -3630,7 +3630,7 @@ $as_echo "checksum failed!" >&6; }
          as_fn_error $? "
 
 File $tarball_sarah_path : md5 checksum mismatch:
-expected b5a5691350791acfe74a028244903e68, but got $md5sum.
+expected 4782edc6b5f20f6870bc3d3ca3704f50, but got $md5sum.
 Please remove the file and rerun configure to redownload it. Please contact
 the authors if this error persists.
          " "$LINENO" 5
