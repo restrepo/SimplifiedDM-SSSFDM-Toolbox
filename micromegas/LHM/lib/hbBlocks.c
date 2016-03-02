@@ -29,7 +29,7 @@ int  HBblocks(char * fname)
     MH = findValW("MH"),
     aQCD=alphaQCD(MH)/M_PI,
     LGGSM=lGGhSM(MH,aQCD, findValW("Mcp"),findValW("Mbp"),findValW("Mtp"),vev), 
-    LAASM=lGGhSM(MH,aQCD, findValW("Mcp"),findValW("Mbp"),findValW("Mtp"),vev);
+    LAASM=lAAhSM(MH,aQCD, findValW("Mcp"),findValW("Mbp"),findValW("Mtp"),vev);
 
     
     fprintf(f," %12.4E  3    25    21    21 # higgs-gluon-gluon\n",  SQR(findValW("LGGH")/LGGSM) );           
