@@ -6,7 +6,7 @@
 # F90 = gfortran
 # F90 = g95
 # F90 = lf95
-F90 = gfortran
+F90 = ifort
 Model = src
 version = 330.00
 bin/SPheno:
