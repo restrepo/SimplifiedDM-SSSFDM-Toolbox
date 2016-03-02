@@ -1,3 +1,12 @@
+Run SARAH models precompiled by the butler script of SARAH Toolbox.
+
+Try directly here:
+
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/BSM-Toolbox)
+
+
+Official READM stars here
+
 This README file describes the contents and usage of the SUSY toolbox package.
 
 1) Content
