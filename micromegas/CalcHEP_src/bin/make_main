@@ -1,5 +1,5 @@
 : 
-  CALCHEP=/home/main/notebooks/micromegas/CalcHEP_src 
+  CALCHEP=  
 #---------------
 
 lib=$CALCHEP/lib
