@@ -133,7 +133,6 @@ C      CALL printVar(6)
          endif
       endif
 
-
 #ifdef MASSES_INFO  
       CALL printHiggs(6)
       write(*,*) '=== MASSES OF HIGGS AND ODD SECTOR: ===' 
@@ -150,12 +149,14 @@ C      CALL printVar(6)
       write(*,*)
       write(*,*) '==== Calculation of relic density ====='
       write(*,*) 'Dark Matter candidate is ', cdmName                                                                                                             
-      Omega=darkOmega2(fast,Beps)
       if(CDM1.ne.' '.and. CDM2.ne.' ') then  
-      write(*,'(a,3x,1PE10.2)') 'Omega_1h^2=',Omega*(1-fracCDM2)
-      write(*,'(a,3x,1PE10.2)') 'Omega_2h^2=',Omega*fracCDM2 
-      else 
-      write(*,'(a,3x,1PE10.2)') 'Omegah^2=',Omega
+         Omega=darkOmega2(fast,Beps)
+         write(*,'(a,3x,1PE10.2)') 'Omega_1h^2=',Omega*(1-fracCDM2)
+         write(*,'(a,3x,1PE10.2)') 'Omega_2h^2=',Omega*fracCDM2 
+      else
+         Omega=darkOmega(Xf,fast,Beps) 
+         write(*,'(a,3x,1PE10.2)') 'Omegah^2=',Omega
+         OmegaAppr=printChannels(Xf,cut,Beps,1,6)
       endif
 #endif
 
@@ -365,8 +366,6 @@ C ======  Contained events
       write(*,fmt='("E>", 1PE8.2," Contained muon flux =", E8.2," [1/Year/km^3]")') Emin,IntFlux
       endif
 #endif
-
-
 
 
 #ifdef DECAYS

@@ -1,43 +1,21 @@
-darkLR  % Created by SARAH v4.7.0 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 20:21 on 1.3.2016  
-Particles  
-Full name |A       |A+      | number |2*spin| mass |width |color|aux|>LaTex(A)             <|>LaTex(A+)               <<| 
-hh[{1}]   |hh1     |hh1     |25      |0     |Mhh1  |!Whh1 |1    |0  |h_{1}                  |h_{1}               
-hh[{2}]   |hh2     |hh2     |35      |0     |Mhh2  |!Whh2 |1    |0  |h_{2}                  |h_{2}               
-hh[{3}]   |hh3     |hh3     |335     |0     |Mhh3  |!Whh3 |1    |0  |h_{3}                  |h_{3}               
-hh[{4}]   |hh4     |hh4     |6000029 |0     |Mhh4  |!Whh4 |1    |0  |h_{4}                  |h_{4}               
-hh[{5}]   |hh5     |hh5     |6000030 |0     |Mhh5  |!Whh5 |1    |0  |h_{5}                  |h_{5}               
-hh[{6}]   |hh6     |hh6     |6000031 |0     |Mhh6  |!Whh6 |1    |0  |h_{6}                  |h_{6}               
-Ah[{3}]   |Ah3     |Ah3     |36      |0     |MAh3  |!WAh3 |1    |0  |A_{3}^{0}              |A_{3}^{0}           
-Ah[{4}]   |Ah4     |Ah4     |6000021 |0     |MAh4  |!WAh4 |1    |0  |A_{4}^{0}              |A_{4}^{0}           
-Ah[{5}]   |Ah5     |Ah5     |6000022 |0     |MAh5  |!WAh5 |1    |0  |A_{5}^{0}              |A_{5}^{0}           
-Ah[{6}]   |Ah6     |Ah6     |6000023 |0     |MAh6  |!WAh6 |1    |0  |A_{6}^{0}              |A_{6}^{0}           
-Hpm[{3}]  |Hm3     |Hp3     |-37     |0     |MHm3  |!WHm3 |1    |-3 |H_{3}^{-}              |H_{3}^{+}           
-Hpm[{4}]  |Hm4     |Hp4     |-6000034|0     |MHm4  |!WHm4 |1    |-3 |H_{4}^{-}              |H_{4}^{+}           
-Hpm[{5}]  |Hm5     |Hp5     |-6000035|0     |MHm5  |!WHm5 |1    |-3 |H_{5}^{-}              |H_{5}^{+}           
-Hpm[{6}]  |Hm6     |Hp6     |-6000036|0     |MHm6  |!WHm6 |1    |-3 |H_{6}^{-}              |H_{6}^{+}           
-Hppmm[{1}]|Hmm1    |Hpp1    |-9000055|0     |MHmm1 |!WHmm1|1    |-6 |\delta_{1}^{c--}       |\delta_{1}^{c++}    
-Hppmm[{2}]|Hmm2    |Hpp2    |-9000065|0     |MHmm2 |!WHmm2|1    |-6 |\delta_{2}^{c--}       |\delta_{2}^{c++}    
-VG        |g       |g       |21      |2     |0     |0     |8    |0 G|G_{1}                  |G_{1}               
-VP        |A       |A       |22      |2     |0     |0     |1    |0 G|\gamma_{1}             |\gamma_{1}          
-VZ        |Z       |Z       |23      |2     |MZ    |WZ    |1    |0 G|Z_{1}                  |Z_{1}               
-VZR       |Zp      |Zp      |32      |2     |MZp   |!WZp  |1    |0 G|{Z'}_{1}               |{Z'}_{1}            
-VWLm      |WLm     |WLp     |-24     |2     |MWLm  |WWLm  |1    |-3G|W_{1}^{-}              |W_{1}^{+}           
-VWRm      |WRm     |WRp     |-34     |2     |MWRm  |!WWRm |1    |-3G|W_{R,1}^{-}            |W_{R,1}^{+}         
-Fd[{1}]   |d1      |D1      |1       |1     |Md1   |Wd1   |3    |-1 |d_{1}                  |\bar{d}_{1}         
-Fd[{2}]   |d2      |D2      |3       |1     |Md2   |Wd2   |3    |-1 |d_{2}                  |\bar{d}_{2}         
-Fd[{3}]   |d3      |D3      |5       |1     |Md3   |Wd3   |3    |-1 |d_{3}                  |\bar{d}_{3}         
-Fd[{4}]   |d4      |D4      |6000001 |1     |Md4   |!Wd4  |3    |-1 |d_{4}                  |\bar{d}_{4}         
-Fd[{5}]   |d5      |D5      |6000003 |1     |Md5   |!Wd5  |3    |-1 |d_{5}                  |\bar{d}_{5}         
-Fd[{6}]   |d6      |D6      |6000005 |1     |Md6   |!Wd6  |3    |-1 |d_{6}                  |\bar{d}_{6}         
-Fu[{1}]   |u1      |U1      |2       |1     |Mu1   |Wu1   |3    |2  |u_{1}                  |\bar{u}_{1}         
-Fu[{2}]   |u2      |U2      |4       |1     |Mu2   |Wu2   |3    |2  |u_{2}                  |\bar{u}_{2}         
-Fu[{3}]   |u3      |U3      |6       |1     |Mu3   |Wu3   |3    |2  |u_{3}                  |\bar{u}_{3}         
-Fe[{1}]   |e1      |E1      |11      |1     |Me1   |We1   |1    |-3 |e_{1}                  |\bar{e}_{1}         
-Fe[{2}]   |e2      |E2      |13      |1     |Me2   |We2   |1    |-3 |e_{2}                  |\bar{e}_{2}         
-Fe[{3}]   |e3      |E3      |15      |1     |Me3   |We3   |1    |-3 |e_{3}                  |\bar{e}_{3}         
-Fv[{1}]   |nu1     |nu1     |12      |1     |Mnu1  |!Wnu1 |1    |0  |\nu_{1}                |\nu_{1}             
-Fv[{2}]   |nu2     |nu2     |14      |1     |Mnu2  |!Wnu2 |1    |0  |\nu_{2}                |\nu_{2}             
-Fv[{3}]   |nu3     |nu3     |16      |1     |Mnu3  |!Wnu3 |1    |0  |\nu_{3}                |\nu_{3}             
-Fv[{4}]   |nu4     |nu4     |6000012 |1     |Mnu4  |!Wnu4 |1    |0  |\nu_{4}                |\nu_{4}             
-Fv[{5}]   |nu5     |nu5     |6000014 |1     |Mnu5  |!Wnu5 |1    |0  |\nu_{5}                |\nu_{5}             
-Fv[{6}]   |nu6     |nu6     |6000016 |1     |Mnu6  |!Wnu6 |1    |0  |\nu_{6}                |\nu_{6}             
+Standard Model(CKM=1)
+ Particles 
+ Full  name  |A  |A+ | number |2*spin| mass |width |color|aux|>LaTex(A)<|>LaTeX(A+)   <|
+gluon        |G  |G  |21      |2     |0     |0     |8    |G  |g         |g              
+photon       |A  |A  |22      |2     |0     |0     |1    |G  |\gamma    |\gamma         
+Z-boson      |Z  |Z  |23      |2     |MZ    |wZ    |1    |G  |Z         |Z              
+W-boson      |W+ |W- |24      |2     |MW    |wW    |1    |G  |W^+       |W^-            
+Higgs        |h  |h  |25      |0     |Mh    |!wh   |1    |   |h         |h              
+electron     |e  |E  |11      |1     |0     |0     |1    |   |e         |\bar{e}        
+e-neutrino   |ne |Ne |12      |1     |0     |0     |1    |L  |\nu_e     |\bar{\nu}_e    
+muon         |m  |M  |13      |1     |Mm    |0     |1    |   |\mu       |\bar{\mu}      
+m-neutrino   |nm |Nm |14      |1     |0     |0     |1    |L  |\nu_\mu   |\bar{\nu}_\mu  
+tau-lepton   |l  |L  |15      |1     |Ml    |0     |1    |   |\tau      |\bar{\tau}     
+t-neutrino   |nl |Nl |16      |1     |0     |0     |1    |L  |\nu_\tau  |\bar{\nu}_\tau 
+d-quark      |d' |D' |81      |1     |0     |0     |3    |   |d'        |\bar{d'}       
+u-quark      |u  |U  |2       |1     |0     |0     |3    |   |u         |\bar{u}        
+s-quark      |s' |S' |83      |1     |0     |0     |3    |   |s'        |\bar{s'}       
+c-quark      |c  |C  |4       |1     |Mc    |0     |3    |   |c         |\bar{c}        
+b-quark      |b  |B  |5       |1     |Mb    |0     |3    |   |b         |\bar{b}        
+t-quark      |t  |T  |6       |1     |Mt    |wt    |3    |   |t         |\bar{t}        
+========================================================================================

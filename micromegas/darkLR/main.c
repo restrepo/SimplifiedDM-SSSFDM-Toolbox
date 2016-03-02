@@ -15,15 +15,15 @@
      Calculate galactic propagation of positrons and antiprotons.      
   */
       
-/*#define RESET_FORMFACTORS*/
+//#define RESET_FORMFACTORS
   /* Modify default nucleus form factors, 
     DM velocity distribution,
     A-dependence of Fermi-dencity
   */     
-//#define CDM_NUCLEON     
+#define CDM_NUCLEON     
   /* Calculate amplitudes and cross-sections for  CDM-mucleon collisions */  
 
-/*#define CDM_NUCLEUS*/      
+//#define CDM_NUCLEUS     
   /* Calculate number of events for 1kg*day and recoil energy distibution
       for various nuclei
   */
@@ -31,6 +31,8 @@
  /*  Neutrino signal of DM annihilation in Sun and Earth */
 
 #define DECAYS
+
+//#define CROSS_SECTIONS 
   
 /*===== end of Modules  ======*/
 
@@ -78,7 +80,7 @@ int main(int argc,char** argv)
      qNumbers(CDM1, &spin2, &charge3, &cdim);
      printf("\nDark matter candidate is '%s' with spin=%d/2 mass=%.2E\n",CDM1,  spin2,Mcdm1); 
      if(charge3) printf("Dark Matter has electric charge %d/3\n",charge3);
-     if(cdim!=1) printf("Dark Matter ia a color particle\n");
+     if(cdim!=1) printf("Dark Matter is a color particle\n");
   }
   if(CDM2) 
   { 
@@ -91,7 +93,7 @@ int main(int argc,char** argv)
   
 #ifdef MASSES_INFO
 {
-  printf("\n=== MASSES OF HIGG AND ODD PARTICLES: ===\n");
+  printf("\n=== MASSES OF HIGGS AND ODD PARTICLES: ===\n");
   printHiggs(stdout);
   printMasses(stdout,1);
 }
@@ -100,38 +102,41 @@ int main(int argc,char** argv)
 #ifdef OMEGA
 { int fast=1;
   double Beps=1.E-4, cut=0.01;
-  double Omega,Xf;  
+  double Omega;  
   int i,err; 
-  double Lmin,Lmax;
   printf("\n==== Calculation of relic density =====\n");   
 
-  Omega= darkOmega2(fast,Beps);
+  if(CDM1 && CDM2) 
+  {
   
+    Omega= darkOmega2(fast,Beps);
+  /*
+    displayFunc(vs1120F, Tend, Tstart,"vs1120F");
+    displayFunc(vs2200F, Tend, Tstart,"vs2200F");
+    displayFunc(vs1100F, Tend, Tstart,"vs1100F");
+    displayFunc(vs1210F, Tend, Tstart,"vs1210F");
+    displayFunc(vs1122F, Tend, Tstart,"vs1122F");
+    displayFunc(vs2211F, Tend, Tstart,"vs2211F");
   
-/*
-  displayFunc(vs1120F, Tend, Tstart,"vs1120F");
-  displayFunc(vs2200F, Tend, Tstart,"vs2200F");
-  displayFunc(vs1100F, Tend, Tstart,"vs1100F");
-  displayFunc(vs1210F, Tend, Tstart,"vs1210F");
-  displayFunc(vs1122F, Tend, Tstart,"vs1122F");
-  displayFunc(vs2211F, Tend, Tstart,"vs2211F");
-
-  displayFunc(vs1110F, Tend, Tstart,"vs1110F");
-  displayFunc(vs2220F, Tend, Tstart,"vs2220F");
-  displayFunc(vs1112F, Tend, Tstart,"vs1110F");
-  displayFunc(vs1222F, Tend, Tstart,"vs1222F");
-  displayFunc(vs1220F, Tend, Tstart,"vs1220F");
-  displayFunc(vs2210F, Tend, Tstart,"vs2210F");
-  displayFunc(vs2221F, Tend, Tstart,"vs2221F");
-  displayFunc(vs1211F, Tend, Tstart,"vs1211F");
-*/
-
-if(CDM1 && CDM2) 
-{
-  printf("Omega_1h^2=%.2E\n", Omega*(1-fracCDM2));
-  printf("Omega_2h^2=%.2E\n", Omega*fracCDM2);
-} else  printf("omega_h^2 = %.2E\n", Omega); 
-
+    displayFunc(vs1110F, Tend, Tstart,"vs1110F");
+    displayFunc(vs2220F, Tend, Tstart,"vs2220F");
+    displayFunc(vs1112F, Tend, Tstart,"vs1110F");
+    displayFunc(vs1222F, Tend, Tstart,"vs1222F");
+    displayFunc(vs1220F, Tend, Tstart,"vs1220F");
+    displayFunc(vs2210F, Tend, Tstart,"vs2210F");
+    displayFunc(vs2221F, Tend, Tstart,"vs2221F");
+    displayFunc(vs1211F, Tend, Tstart,"vs1211F");
+  */
+  
+    printf("Omega_1h^2=%.2E\n", Omega*(1-fracCDM2));
+    printf("Omega_2h^2=%.2E\n", Omega*fracCDM2);
+  } else
+  {  double Xf;
+     Omega=darkOmega(&Xf,fast,Beps);
+     printf("Xf=%.2e Omega=%.2e\n",Xf,Omega);
+     printChannels(Xf,cut,Beps,1,stdout);
+     printf("omega_h^2 = %.2E\n", Omega); 
+  }
 }
 
 #endif
@@ -160,6 +165,7 @@ printf("\n==== Indirect detection =======\n");
     */
 
 
+
   if(SpA)
   { 
      double fi=0.1,dfi=0.05; /* angle of sight and 1/2 of cone angle in [rad] */ 
@@ -169,7 +175,7 @@ printf("\n==== Indirect detection =======\n");
      "and spherical region described by cone with angle %.2f[rad]\n",fi,2*dfi);
 #ifdef SHOWPLOTS
      sprintf(txt,"Photon flux[cm^2 s GeV]^{-1} at f=%.2f[rad], cone angle %.2f[rad]",fi,2*dfi);
-     displaySpectrum(FluxA,txt,Emin,Mcdm);
+     displaySpectrum(txt,Emin,Mcdm,FluxA);
 #endif
      printf("Photon flux = %.2E[cm^2 s GeV]^{-1} for E=%.1f[GeV]\n",SpectdNdE(Etest, FluxA), Etest);       
   }
@@ -178,7 +184,7 @@ printf("\n==== Indirect detection =======\n");
   { 
     posiFluxTab(Emin, sigmaV, SpE,  FluxE);
 #ifdef SHOWPLOTS     
-    displaySpectrum(FluxE,"positron flux [cm^2 s sr GeV]^{-1}" ,Emin,Mcdm);
+    displaySpectrum("positron flux [cm^2 s sr GeV]^{-1}" ,Emin,Mcdm,FluxE);
 #endif
     printf("Positron flux  =  %.2E[cm^2 sr s GeV]^{-1} for E=%.1f[GeV] \n",
     SpectdNdE(Etest, FluxE),  Etest);           
@@ -188,7 +194,7 @@ printf("\n==== Indirect detection =======\n");
   { 
     pbarFluxTab(Emin, sigmaV, SpP,  FluxP  ); 
 #ifdef SHOWPLOTS    
-     displaySpectrum(FluxP,"antiproton flux [cm^2 s sr GeV]^{-1}" ,Emin, Mcdm);
+     displaySpectrum("antiproton flux [cm^2 s sr GeV]^{-1}" ,Emin, Mcdm,FluxP);
 #endif
     printf("Antiproton flux  =  %.2E[cm^2 sr s GeV]^{-1} for E=%.1f[GeV] \n",
     SpectdNdE(Etest, FluxP),  Etest);             
@@ -219,16 +225,6 @@ printf("\n==== Indirect detection =======\n");
   printf("protonFF (new)     d %.2E, u %.2E, s %.2E\n",ScalarFFPd, ScalarFFPu,ScalarFFPs);                               
   printf("neutronFF(new)     d %.2E, u %.2E, s %.2E\n",ScalarFFNd, ScalarFFNu,ScalarFFNs);
 
-
-/* Option to change parameters of DM velocity  distribution  */   
-   SetfMaxwell(220.,600.);
-/* 
-    dN  ~  exp(-v^2/arg1^2)*Theta(v-arg2)  d^3v     
-    Earth velocity with respect to Galaxy defined by 'Vearth' parameter.
-    All parameters are  in [km/s] units.       
-*/
-
-
 }
 #endif
 
@@ -241,7 +237,7 @@ printf("\n==== Calculation of CDM-nucleons amplitudes  =====\n");
 
   if(CDM1)
   {  
-    nucleonAmplitudes(CDM1,NULL, pA0,pA5,nA0,nA5);
+    nucleonAmplitudes(CDM1, pA0,pA5,nA0,nA5);
     printf("CDM[antiCDM]-nucleon micrOMEGAs amplitudes for %s \n",CDM1);
     printf("proton:  SI  %.3E [%.3E]  SD  %.3E [%.3E]\n",pA0[0], pA0[1],  pA5[0], pA5[1] );
     printf("neutron: SI  %.3E [%.3E]  SD  %.3E [%.3E]\n",nA0[0], nA0[1],  nA5[0], nA5[1] ); 
@@ -255,7 +251,7 @@ printf("\n==== Calculation of CDM-nucleons amplitudes  =====\n");
   }
   if(CDM2)
   {
-    nucleonAmplitudes(CDM2,NULL, pA0,pA5,nA0,nA5);
+    nucleonAmplitudes(CDM2, pA0,pA5,nA0,nA5);
     printf("CDM[antiCDM]-nucleon micrOMEGAs amplitudes for %s \n",CDM2);
     printf("proton:  SI  %.3E [%.3E]  SD  %.3E [%.3E]\n",pA0[0], pA0[1],  pA5[0], pA5[1] );
     printf("neutron: SI  %.3E [%.3E]  SD  %.3E [%.3E]\n",nA0[0], nA0[1],  nA5[0], nA5[1] ); 
@@ -276,7 +272,7 @@ printf("\n==== Calculation of CDM-nucleons amplitudes  =====\n");
 
 printf("\n======== Direct Detection ========\n");    
 
-  nEvents=nucleusRecoil(Maxwell,73,Z_Ge,J_Ge73,S00Ge73,S01Ge73,S11Ge73,NULL,dNdE);
+  nEvents=nucleusRecoil(Maxwell,73,Z_Ge,J_Ge73,SxxGe73,NULL,dNdE);
 
   printf("73Ge: Total number of events=%.2E /day/kg\n",nEvents);
   printf("Number of events in 10 - 50 KeV region=%.2E /day/kg\n",
@@ -286,7 +282,7 @@ printf("\n======== Direct Detection ========\n");
     displayRecoilPlot(dNdE,"Distribution of recoil energy of 73Ge",0,199);
 #endif
 
-  nEvents=nucleusRecoil(Maxwell,131,Z_Xe,J_Xe131,S00Xe131,S01Xe131,S11Xe131,NULL,dNdE);
+  nEvents=nucleusRecoil(Maxwell,131,Z_Xe,J_Xe131,SxxXe131,NULL,dNdE);
 
   printf("131Xe: Total number of events=%.2E /day/kg\n",nEvents);
   printf("Number of events in 10 - 50 KeV region=%.2E /day/kg\n",
@@ -295,7 +291,7 @@ printf("\n======== Direct Detection ========\n");
     displayRecoilPlot(dNdE,"Distribution of recoil energy of 131Xe",0,199);
 #endif
 
-  nEvents=nucleusRecoil(Maxwell,23,Z_Na,J_Na23,S00Na23,S01Na23,S11Na23,NULL,dNdE);
+  nEvents=nucleusRecoil(Maxwell,23,Z_Na,J_Na23,SxxNa23,NULL,dNdE);
 
   printf("23Na: Total number of events=%.2E /day/kg\n",nEvents);
   printf("Number of events in 10 - 50 KeV region=%.2E /day/kg\n",
@@ -304,7 +300,7 @@ printf("\n======== Direct Detection ========\n");
     displayRecoilPlot(dNdE,"Distribution of recoil energy of 23Na",0,199);
 #endif
 
-  nEvents=nucleusRecoil(Maxwell,127,Z_I,J_I127,S00I127,S01I127,S11I127,NULL,dNdE);
+  nEvents=nucleusRecoil(Maxwell,127,Z_I,J_I127,SxxI127,NULL,dNdE);
 
   printf("I127: Total number of events=%.2E /day/kg\n",nEvents);
   printf("Number of events in 10 - 50 KeV region=%.2E /day/kg\n",
@@ -321,7 +317,7 @@ if(!CDM1 || !CDM2)
 { double nu[NZ], nu_bar[NZ],mu[NZ];
   double Ntot;
   int forSun=1;
-  double Emin=0.01;
+  double Emin=1;
   
  printf("\n===============Neutrino Telescope=======  for  "); 
  if(forSun) printf("Sun\n"); else printf("Earth\n");  
@@ -331,39 +327,28 @@ if(!CDM1 || !CDM2)
 
 printf(  "nu[0]=%E nu_bar[0]=%E\n", nu[0], nu_bar[0]);
 
-  displaySpectrum(nu,"nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm);
-  displaySpectrum(nu_bar,"nu-bar from Sun [1/Year/km^2/GeV]",Emin,Mcdm);
+  displaySpectrum("nu flux from Sun [1/Year/km^2/GeV]",Emin,Mcdm,nu);
+  displaySpectrum("nu-bar from Sun [1/Year/km^2/GeV]",Emin,Mcdm,nu_bar);
 #endif
-{ double Ntot;
-  double Emin=1; //GeV
-  spectrInfo(Emin/Mcdm,nu, &Ntot,NULL);
-    printf(" E>%.1E GeV neutrino flux       %.2E [1/Year/km^2] \n",Emin,Ntot);
-  spectrInfo(Emin/Mcdm,nu_bar, &Ntot,NULL);
-    printf(" E>%.1E GeV anti-neutrino flux  %.2E [1/Year/km^2]\n",Emin,Ntot);  
+{ 
+    printf(" E>%.1E GeV neutrino flux       %.2E [1/Year/km^2] \n",Emin,spectrInfo(Emin,nu,NULL));
+    printf(" E>%.1E GeV anti-neutrino flux  %.2E [1/Year/km^2]\n",Emin,spectrInfo(Emin,nu_bar,NULL));  
 } 
   
 /* Upward events */
   
   muonUpward(nu,nu_bar, mu);
 #ifdef SHOWPLOTS  
-  displaySpectrum(mu,"Upward muons[1/Year/km^2/GeV]",1,Mcdm/2);
+  displaySpectrum("Upward muons[1/Year/km^2/GeV]",1,Mcdm/2,mu);
 #endif
-  { double Ntot;
-    double Emin=1; //GeV
-    spectrInfo(Emin/Mcdm,mu, &Ntot,NULL);
-    printf(" E>%.1E GeV Upward muon flux    %.2E [1/Year/km^2]\n",Emin,Ntot);
-  } 
+    printf(" E>%.1E GeV Upward muon flux    %.2E [1/Year/km^2]\n",Emin,spectrInfo(Emin,mu,NULL));
   
 /* Contained events */
   muonContained(nu,nu_bar,1., mu);
 #ifdef SHOWPLOTS  
-  displaySpectrum(mu,"Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm); 
+  displaySpectrum("Contained  muons[1/Year/km^3/GeV]",Emin,Mcdm,mu); 
 #endif
-  { double Ntot;
-    double Emin=1; //GeV
-    spectrInfo(Emin/Mcdm,mu, &Ntot,NULL);
-    printf(" E>%.1E GeV Contained muon flux %.2E [1/Year/km^3]\n",Emin,Ntot);
-  }  
+  printf(" E>%.1E GeV Contained muon flux %.2E [1/Year/km^3]\n",Emin,spectrInfo(Emin/Mcdm,mu,NULL));
 }        
 #endif 
 
@@ -388,6 +373,24 @@ printf(  "nu[0]=%E nu_bar[0]=%E\n", nu[0], nu_bar[0]);
   } 
 }            
 #endif
+
+#ifdef CROSS_SECTIONS
+{
+  double cs, Pcm=4000, Qren,Qfact,pTmin=200;
+  int nf=3;
+  
+  Qfact=pMass(CDM1);
+  Qren=pTmin;
+
+  printf("pp -> DM,DM +jet(pt>%.2E GeV)  at %.2E GeV\n",pTmin,Pcm);  
+  
+  cs=hCollider(Pcm,1,nf,Qren, Qfact, CDM1,aCDM1,pTmin,1);
+  printf("cs(pp->~o1,~o2)=%.2E[pb]\n",cs);
+ 
+}
+#endif 
+
+
 
   killPlots();
   return 0;
