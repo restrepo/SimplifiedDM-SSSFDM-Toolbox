@@ -13,7 +13,8 @@ extern "C" {
 
 
 /*==================== displayPlot =================*/
-extern void displayPlot(char*title,char*xName,char*yName,double xMin,double xMax,int dim,double*f,double*ff);
+extern void displayPlotN(char * title, double xMin, double xMax,  char*xName,  int dim, int N, double**f,double**ff,char**Y);
+extern void displayPlot(char*title,double xMin,double xMax, char*xName,  int dim,  int N, ...);
 
 /*======================
    Lock/UnLock service
@@ -60,9 +61,9 @@ extern double vegas_chain(int ndim, double (*Integrand)(double*, double),
 extern int  odeint(double*ystart,int nvar,double x1,double x2, double eps,
                    double h1, void(*derivs)(double,double*,double *));
 
-extern int stiff(            double xstart, double xend, int n, double*y, double *yscal, double eps, double*htry,
+extern int stiff( int first,double xstart, double xend, int n, double*y, double *yscal, double eps, double*htry,
     void (*derivs)(double, double*, double*, double,double*,double*));
-extern int stiffbs(int first,double xstart, double xend, int nv, double*y, double *yscal, double eps, double*htry,
+extern int stifbs(int first,double xstart, double xend, int nv, double*y, double *yscal, double eps, double*htry,
     void (*derivs)(double,double*,double*,double,double*,double*));
    
     
@@ -73,10 +74,15 @@ extern double  polint3(double x, int n,  double *xa, double *ya);
 extern double  polint4(double x, int n,  double *xa, double *ya);
 extern int buildInterpolation( double (*Fun)(double), double x1,double x2, 
             double eps, double delt, int * N, double ** xa, double **ya);
+            
+extern void spline(double*x,double*y,int n,double*y2);            
+extern void splint(double*xa, double*ya, double*y2a, int n, double x, double *y);
+            
 /*======= special functions ========*/
-extern double bessk0(double x);
-extern double bessk1(double x);
-extern double bessk2(double x);
+extern double bessI0(double x);
+extern double bessK0(double x);
+extern double bessK1(double x);
+extern double bessK2(double x);
 extern double K2pol(double x); /*bessk1(1/x)*exp(1/x)*sqrt(2/M_PI/x);*/
 extern double K1pol(double x); /*bessk2(1/x)*exp(1/x)*sqrt(2/M_PI/x);*/
 
@@ -96,27 +102,34 @@ extern numout*newProcess_(int twidth, int model,int UG,char*Process,
 
 //=====  2->2 processes ===========
 
-extern double (*sqme22)(int nsub, double GG, REAL *pvect, int * err_code); 
+extern double (*sqme22)(int nsub, double GG, REAL *pvect, REAL*cb_coeff, int * err_code); 
 
 extern int     kin22(double PcmIn,REAL * pmass);
 extern double  kinematic_23(double Pcm,int i3, double M45, double cs1, double cs2,  double fi,REAL*pmass, REAL*pvect);
+extern double  kinematic_24(double Pcm,int i3, int i4, double M1, double M2, double xcos,double xcos1, double xcos2, double fi1, double fi2,
+                            REAL*pmass, REAL * P);
+                            
 extern double  dSigma_dCos(double  cos_f);
 extern int  nsub22;
+
+extern double  vcs22(numout * cc,int nsub,int * err); 
+
+
 
 #define NTOF(X) extern forCalchep1 X; double X(double ok){return findValW(#X);}
 
 typedef  double (forCalchep1)(double);
 typedef  double (forCalchep2)(double,double);
 
-/*  Loop integrals I1 ... I5 */
-
-extern double   LintIk(int i,double MSQ,double MQ,double MNE);
+/*  Loop integrals I1 ... I5   DreesNojiri */
+extern double   LintIk(int II,double MSQ,double MQ,double MNE);
 
 extern int readVarSpecial(char *fname, int nVar, char ** names);
 
 extern double parton_x( int pNum, double  Q);
-extern double parton_alpha(double q);
-extern double parton_distr(int pNum, double x, double q);
+
+extern double (*parton_alpha)(double q);
+extern double (*parton_distr)(int pNum, double x, double q);
 
 
 
@@ -140,6 +153,15 @@ extern REAL *Qaddress;
 
 extern double lGGhSM(double Mh, double aQCDh, double Mcp,double Mbp,double Mtp,double vev);
 extern double lAAhSM(double Mh, double aQCDh, double Mcp,double Mbp,double Mtp,double vev);
+
+extern int makePdtConv(void);
+extern int initPDFconv(void);
+
+// Statistics
+extern double FeldmanCousins(int n0, double b, double cl);
+extern double ch2pval(int nexp, double ch2obs);
+
+
 
 #include"../CalcHEP_src/include/num_in.h"
 

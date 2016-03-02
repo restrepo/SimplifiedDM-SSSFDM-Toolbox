@@ -6,6 +6,9 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <pthread.h>
+
+#include <dlfcn.h>
 
 #include "files.h"
 #include "interface.h"
@@ -16,15 +19,18 @@
 #include "lha.h"
 #include "alphas2.h"
 #include "../../../include/VandP.h"
-
+#include "n_proc.h"
 #include "sf_lha.h"
+
+
+
 static double xMin[2]={0,0},xMax[2]={0,0},qMin[2]={1,1},qMax[2]={1E10,1E10};
 
 /*static char * pdfName[2]={NULL,NULL}; */
 
-static int nGroup[2]={3,3}, nSet[2]={41,41}, sgn[2]={1,1};
+static int nGroup[2]={3,3}, nSet[2]={41,41}, sgn[2]={1,1},lastLHA=0;
 
-static int parton[15]={83,81,2,1,4,3,5,21,-5,-3,-4,-1,-2,-81,-83};
+static int parton[11]={2,1,4,3,5,21,-5,-3,-4,-1,-2};
 
 static int pnum[2]={0,0};
 
@@ -45,15 +51,17 @@ static int initLHA(void)
 { 
   int i;  
   char buff[500];
-  
+
   if(dataPath) return 1;
   
-  getdatapath(buff,500);
+  getdatapath(buff,500);  
   for(i=499; i>=0 && buff[i]==' '; i--) ;
-  if(i<0) return 0;
+  if(i<0) {  return 0;}
   buff[i+1]=0;
+  
   dataPath=malloc(strlen(buff)+1);
   strcpy(dataPath,buff);
+  
   return 1;  
 }
 
@@ -62,33 +70,19 @@ int p_lha(int * pNum)
   int i;
   if(!initLHA())return 0;
   for(;*pNum;pNum++) 
-  { for(i=0;i<15;i++) if(*pNum==parton[i]) break;
-    if(i==15) return 0;
+  { for(i=0;i<11;i++) if(*pNum==parton[i]) break;
+    if(i==11) return 0;
   }
   return 1;
 }
 
 void n_lha(int i, char *name) 
 {  int i1=i-1;
+
    if(strlen(fname[i1]))  sprintf(name,"LHA:%s:%d:%d",fname[i1],setNum[i1],sgn[i1]);
    else  strcpy(name,"LHA:"); 
 }
 
-int r_lha(int i, char *name)
-{ int i1=i-1;
-  char txt[50];
-  int max;
-  if(!initLHA())return 0; 
-  if(3!=sscanf(name,"LHA:%[^:]%*c%d:%d",txt,setNum+i1,sgn+i1)) return 0;
-  if(abs(sgn[i1])!=1) return 0; 
-  initpdfsetbynamem(&i,txt,strlen(txt));
-  if(i==0) return 0;
-  numberpdfm(&i,&max);
-  if(max<setNum[i1] || setNum[i1]<0) return 0;
-  initpdfm(&i,setNum+i1,xMin+i1,xMax+i1,qMin+i1,qMax+i1);
-  strcpy(fname[i1],txt);
-  return 1;
-}
 
 
 int init_lha(int i,double * be, double * mass) 
@@ -103,7 +97,7 @@ int init_lha(int i,double * be, double * mass)
    *mass=0.9383;
    *be=1;
    sf_alpha=&(alpha_lha);   
-   for(k=0;k<15;k++) if(parton[k]==N) {pnum[i-1]=N; return 1;}
+   for(k=0;k<11;k++) if(parton[k]==N) {pnum[i-1]=N; return 1;}
    pnum[i-1]=0; 
    return 0;
 }
@@ -129,9 +123,45 @@ static char * lhaMenu(void)
   struct  dirent **namelist;
   int N,i,width;
   char * menutxt=NULL;
+  void*h;
+ 
+  void (*getpdfsetlist)(char* s, size_t len)=NULL;
 
   if(!dataPath) return NULL;
-
+  h=dlopen(NULL,RTLD_NOW); 
+  getpdfsetlist=dlsym(h,"lhapdf_getpdfsetlist_");
+  if(!getpdfsetlist) getpdfsetlist=dlsym(h,"_lhapdf_getpdfsetlist_");
+ 
+  if(getpdfsetlist)
+  {  char buff[10000];
+     char *ch1,*ch2;
+     getpdfsetlist(buff,10000);
+     for(i=9999; i>=0 && buff[i]==' '; i--) ;
+     buff[i+1]=0;
+     i=strlen(buff);
+     
+     width=0; N=0;
+     ch1=ch2=buff;
+     if(ch1[0]==0) return NULL;
+     for(;ch2!=buff+i; ch1=ch2+1,N++)
+     {  ch2=strchr(ch1,' ');
+        if(ch2==NULL) ch2=buff+i;
+        if(ch2-ch1>width) width=ch2-ch1;   
+     }
+     
+     menutxt=malloc(N*(width+2)+2);
+     N=0;
+     menutxt[0]=width+2; 
+     for(ch1=buff;ch1; ch1=strchr(ch1,' '),N++)
+    {  char name[50];
+       while(ch1[0]==' ') ch1++;
+       sscanf(ch1,"%s",name);
+       sprintf(menutxt+1+N*(width+2)," %-*.*s ",width,width,name);
+    }
+    return menutxt;  
+  } 
+  
+  
   N=scandir(dataPath, &namelist,filter ,alphasort);   
   if(N<=0) return NULL;
                               
@@ -150,6 +180,37 @@ static char * lhaMenu(void)
   menutxt[N*(width+1)+1]=0;
   return menutxt;
 }  
+
+
+int r_lha(int i, char *name)
+{ int i1=i-1;
+  char txt[50];
+  char*men,*c;
+  int max;
+  if(!initLHA())return 0; 
+  if(3!=sscanf(name,"LHA:%[^:]:%d:%d",txt+1,setNum+i1,sgn+i1)) return 0;  
+  if(abs(sgn[i1])!=1) return 0;
+  men=lhaMenu();
+
+  if(!men) return 0;
+  men[0]=' ';
+
+  txt[0]=' ';
+  txt[strlen(txt)+1]=0;
+  txt[strlen(txt)]=' ';
+  c=strstr(men,txt);
+  trim(txt);
+  free(men);
+  if(!c) return 0;
+  initpdfsetbynamem(&i,txt,strlen(txt));
+  if(i==0) return 0;
+  lastLHA=i;
+  numberpdfm(&i,&max);
+  if(max<setNum[i1] || setNum[i1]<0) return 0;
+  initpdfm(&i,setNum+i1,xMin+i1,xMax+i1,qMin+i1,qMax+i1);
+  strcpy(fname[i1],txt);
+  return 1;
+}
 
                         
 int m_lha(int i,int*pString)
@@ -179,13 +240,14 @@ int m_lha(int i,int*pString)
     { strcpy(fname[i1],buff);
       setNum[i1]=0;
       initpdfsetbynamem(&i,buff,strlen(buff));
+      lastLHA=i;
       initpdfm(&i,setNum+i1,xMin+i1,xMax+i1,qMin+i1,qMax+i1);
     }
   }  
   else 
   { fname[i1][0]=0;
     setNum[i1]=0;
-    sgn[i1]=0;
+    sgn[i1]=1;
     return 0;
   } 
 
@@ -224,6 +286,18 @@ int m_lha(int i,int*pString)
   return 1;
 }
 
+static pthread_mutex_t strfun_key=PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t alpha_key=PTHREAD_MUTEX_INITIALIZER;
+
+double alpha_lha(double q ) 
+{ double al;
+   if(nPROCSS) pthread_mutex_lock(&alpha_key);                               
+   al=alphaspdfm(&lastLHA,&q);
+   if(nPROCSS) pthread_mutex_unlock(&alpha_key);
+  return al; 
+}
+
+
 double c_lha(int i, double x, double q)
 {
   double f[14];
@@ -233,11 +307,14 @@ double c_lha(int i, double x, double q)
   
   p=pnum[i1];
 
+  if(nPROCSS) pthread_mutex_lock(&strfun_key);    
+
   if(x<xMin[i1]) x=xMin[i1]; else if(x>xMax[i1]) x=xMax[i1];
   if(q<qMin[i1]) q=qMin[i1]; else if(q>qMax[i1]) q=qMax[i1];
   
-    
   evolvepdfm(&i,&x,&q,f);  
+  
+  if(nPROCSS) pthread_mutex_unlock(&strfun_key);  
   if(sgn[i1]<0) p=-p;
 /*
   switch(p)
