@@ -54,7 +54,7 @@ Block SPhenoInput   # SPheno specific input
  38 2               # 1- or 2-Loop RGEs 
  50 1               # Majorana phases: use only positive masses (put 0 to use file with CalcHep/Micromegas!) 
  51 0               # Write Output in CKM basis 
- 52 0               # Write spectrum in case of tachyonic states 
+ 52 1               # Write spectrum in case of tachyonic states 
  55 0               # Calculate loop corrected masses 
  61 0               # Running SM parameters
  57 1               # Calculate low energy constraints 
