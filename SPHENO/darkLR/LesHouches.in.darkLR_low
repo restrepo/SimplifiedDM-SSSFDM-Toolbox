@@ -22,7 +22,7 @@ Block MINPAR      # Input parameters
 12   1.0000000E+00    # rho2INPUT
 13   1.0000000E-01    # rho3INPUT
 14   2.0000000E-01    # alp1INPUT
-15   1.0000000E-08    # alp3INPUT
+15   -1.0000000E-08    # alp3INPUT
 16   1.0000000E-08    # beta2INPUT
 17   1.0000000E-01    # etaLLINPUT
 18   1.0000000E-08    # etaLRINPUT
