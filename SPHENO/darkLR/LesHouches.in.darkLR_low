@@ -26,18 +26,18 @@ Block MINPAR      # Input parameters
 16   1.0000000E-05   # beta2INPUT
 17   1.0000000E-01    # etaLLINPUT
 18   1.0000000E-08    # etaLRINPUT
-19   1.0000000E-05    # etaRLINPUT
-20   2.0000000E-01    # etaRRINPUT
-21   5.0000000E-08    # etaRR1INPUT
-22   2.0000000E-08    # etaRR2INPUT
-23   5.0000000E+00    # lamLINPUT
-24   8.0000000E-02    # lamRINPUT
-25   3.0000000E-08    # lamLRINPUT
-26   5.0000000E-01    # betaLINPUT
-27   3.0000000E-08    # betaRINPUT
-28   2.0000000E-08    # alpINPUT
-29   6.0000000E+02    # xiRINPUT
-30   2.0000000E-08    # xiLRINPUT
+19   1.0000000E-08    # etaRLINPUT
+20   1.0000000E-01    # etaRRINPUT
+21   1.0000000E-08    # etaRR1INPUT
+22   1.0000000E-08    # etaRR2INPUT
+23   1.0000000E+00    # lamLINPUT
+24   5.0000000E-02    # lamRINPUT
+25   1.0000000E-08    # lamLRINPUT
+26   2.0000000E-01    # betaLINPUT
+27   1.0000000E-08    # betaRINPUT
+28   1.0000000E-08    # alpINPUT
+29   3.0000000E+02    # xiRINPUT
+30   1.0000000E-08    # xiLRINPUT
 Block SPhenoInput   # SPheno specific input 
   1 -1              # error level 
   2  0              # SPA conventions 
