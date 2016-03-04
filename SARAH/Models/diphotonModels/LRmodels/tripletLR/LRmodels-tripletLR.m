@@ -13,31 +13,35 @@ Model`Date = "2016-01-08";
 (*-------------------------------------------*)
 (*   Particle Content*)
 (*-------------------------------------------*)
+(* Global Symmetries *)
+
+Global[[1]] = {Z[2], Z2};
+
 
 (* Gauge Groups *)
 
-Gauge[[1]]={B,   U[1], bminl,       gBL,False};
-Gauge[[2]]={WL, SU[2], left,        g2,True};
-Gauge[[3]]={WR, SU[2], right,       gR,True};
-Gauge[[4]]={G,  SU[3], color,       g3,False};
+Gauge[[1]]={B,   U[1], bminl,       gBL,False,1};
+Gauge[[2]]={WL, SU[2], left,        g2,True,1};
+Gauge[[3]]={WR, SU[2], right,       gR,True,1};
+Gauge[[4]]={G,  SU[3], color,       g3,False,1};
 
 
 (* Matter Fields: Using Q=T3L+T3R+QBL)*)
 
-FermionFields[[1]] = {QLbar, 3, {conj[uL], conj[dL]},        -1/6, -2,  1, -3};  
-FermionFields[[2]] = {LLbar, 3, {conj[nuL], conj[eL]},        1/2, -2,  1,  1};
-FermionFields[[3]] = {QR,  3, {uR,  dR},                      1/6,  1,  2,  3};
-FermionFields[[4]] = {LR,  3, {nuR, eR},                     -1/2,  1,  2,  1};
-FermionFields[[5]] = {T1,1, {{t10/Sqrt[2], t1p},
-                                 {t1m, - t10/Sqrt[2]}},         0,  1,  3,  1};
-FermionFields[[6]] = {T2,1, {{t2p/Sqrt[2], t2pp},
-                                 {t20, - t2p/Sqrt[2]}},         1,  1,  3,  1};
-FermionFields[[7]] = {T3,1, {{t3m/Sqrt[2], t30},
-                                 {t3mm, - t3m/Sqrt[2]}},       -1,  1,  3,  1};                                 
-
-ScalarFields[[1]]  = {Phi, 1, {{H0, Hp},{Hm, HPrime0}},         0,  2, -2,  1}; 
-ScalarFields[[2]]  = {deltaR,1, {{deltaRp/Sqrt[2], deltaRpp},
-                                 {deltaR0, - deltaRp/Sqrt[2]}}, 1,  1,  3,  1};
+FermionFields[[1]] = {QLbar, 3, {conj[uL], conj[dL]},        -1/6, -2,  1, -3,1};  
+FermionFields[[2]] = {LLbar, 3, {conj[nuL], conj[eL]},        1/2, -2,  1,  1,1};
+FermionFields[[3]] = {QR,  3, {uR,  dR},                      1/6,  1,  2,  3,1};
+FermionFields[[4]] = {LR,  3, {nuR, eR},                     -1/2,  1,  2,  1,1};
+FermionFields[[5]] = {T1,1, {{t10/Sqrt[2], t1p},			     
+                                 {t1m, - t10/Sqrt[2]}},         0,  1,  3,  1,-1};
+FermionFields[[6]] = {T2,1, {{t2p/Sqrt[2], t2pp},			     
+                                 {t20, - t2p/Sqrt[2]}},         1,  1,  3,  1,-1};
+FermionFields[[7]] = {T3,1, {{t3m/Sqrt[2], t30},			     
+                                 {t3mm, - t3m/Sqrt[2]}},       -1,  1,  3,  1,-1};                                 
+									     
+ScalarFields[[1]]  = {Phi, 1, {{H0, Hp},{Hm, HPrime0}},         0,  2, -2,  1,1}; 
+ScalarFields[[2]]  = {deltaR,1, {{deltaRp/Sqrt[2], deltaRpp},		     
+                                 {deltaR0, - deltaRp/Sqrt[2]}}, 1,  1,  3,  1,1};
 
         
 (*----------------------------------------------*)

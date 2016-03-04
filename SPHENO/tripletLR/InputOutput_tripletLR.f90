@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 22:08 on 3.3.2016   
+! File created at 10:18 on 4.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1782,11 +1782,77 @@ Write(io_L,100) "#   PDG code      mass          particle"
  Write(io_L,102) INT(Abs(PDGFv(5))),MFv(5),"# "//Trim(NameParticleFv(5))// "" 
  Write(io_L,102) INT(Abs(PDGFv(6))),MFv(6),"# "//Trim(NameParticleFv(6))// "" 
  Write(io_L,102) 6000055,MFcpp,"# Fcpp" 
+If (MassLSP(1).gt.Abs(MFcpp)) Then 
+PDGLSP(2) = PDGLSP(1) 
+PDGLSP(1) = 6000055 
+MassLSP(2) = MassLSP(1) 
+MassLSP(1) = Abs(MFcpp)
+Else 
+If (MassLSP(2).gt.Abs(MFcpp)) Then 
+PDGLSP(2) = 6000055 
+MassLSP(2) = Abs(MFcpp)
+End if 
+End if 
  Write(io_L,102) INT(Abs(PDGFcp(1))),MFcp(1),"# "//Trim(NameParticleFcp(1))// "" 
+If (MassLSP(1).gt.Abs(MFcp(1))) Then 
+PDGLSP(2) = PDGLSP(1) 
+PDGLSP(1) = 17 
+MassLSP(2) = MassLSP(1) 
+MassLSP(1) = Abs(MFcp(1))
+Else 
+If (MassLSP(2).gt.Abs(MFcp(1))) Then 
+PDGLSP(2) = 17 
+MassLSP(2) = Abs(MFcp(1))
+End if 
+End if 
  Write(io_L,102) INT(Abs(PDGFcp(2))),MFcp(2),"# "//Trim(NameParticleFcp(2))// "" 
+If (MassLSP(1).gt.Abs(MFcp(2))) Then 
+PDGLSP(2) = PDGLSP(1) 
+PDGLSP(1) = 19 
+MassLSP(2) = MassLSP(1) 
+MassLSP(1) = Abs(MFcp(2))
+Else 
+If (MassLSP(2).gt.Abs(MFcp(2))) Then 
+PDGLSP(2) = 19 
+MassLSP(2) = Abs(MFcp(2))
+End if 
+End if 
  Write(io_L,102) INT(Abs(PDGFc(1))),MFc(1),"# "//Trim(NameParticleFc(1))// "" 
+If (MassLSP(1).gt.Abs(MFc(1))) Then 
+PDGLSP(2) = PDGLSP(1) 
+PDGLSP(1) = 9000012 
+MassLSP(2) = MassLSP(1) 
+MassLSP(1) = Abs(MFc(1))
+Else 
+If (MassLSP(2).gt.Abs(MFc(1))) Then 
+PDGLSP(2) = 9000012 
+MassLSP(2) = Abs(MFc(1))
+End if 
+End if 
  Write(io_L,102) INT(Abs(PDGFc(2))),MFc(2),"# "//Trim(NameParticleFc(2))// "" 
+If (MassLSP(1).gt.Abs(MFc(2))) Then 
+PDGLSP(2) = PDGLSP(1) 
+PDGLSP(1) = 9000014 
+MassLSP(2) = MassLSP(1) 
+MassLSP(1) = Abs(MFc(2))
+Else 
+If (MassLSP(2).gt.Abs(MFc(2))) Then 
+PDGLSP(2) = 9000014 
+MassLSP(2) = Abs(MFc(2))
+End if 
+End if 
  Write(io_L,102) INT(Abs(PDGFc(3))),MFc(3),"# "//Trim(NameParticleFc(3))// "" 
+If (MassLSP(1).gt.Abs(MFc(3))) Then 
+PDGLSP(2) = PDGLSP(1) 
+PDGLSP(1) = 9000016 
+MassLSP(2) = MassLSP(1) 
+MassLSP(1) = Abs(MFc(3))
+Else 
+If (MassLSP(2).gt.Abs(MFc(3))) Then 
+PDGLSP(2) = 9000016 
+MassLSP(2) = Abs(MFc(3))
+End if 
+End if 
 
  
 Write(io_L,106) "Block SCALARMIX Q=",Q,"# ()" 
