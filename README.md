@@ -4,8 +4,17 @@ Try directly here:
 
 [![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/BSM-Toolbox)
 
+To build a model:
+./butler MODEL
+cd micromegas/MODEL
+make clean
+mkdir work/so_generated/
+touch work/so_generated/.hidden
+commit and push changes
 
-Official READM stars here
+
+
+Official README stars here
 
 This README file describes the contents and usage of the SUSY toolbox package.
 
