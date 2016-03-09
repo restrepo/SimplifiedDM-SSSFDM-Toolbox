@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:12 on 9.3.2016   
+! File created at 15:43 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -17,30 +17,30 @@ Contains
  
  Subroutine AllCouplingsReallyAll(RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,v1,               & 
 & v2,vtl,vtr,ZH,UP,UC,UCC,RHO2,gBL,g2,gR,ZZ,PhiW,g3,YQ1,ZDL,ZDR,YL1,ZEL,ZER,             & 
-& ZUL,ZUR,YDR,YDL,UV,cplAhAhhh,cplAhHpmcHpm,cplAhHppmmcHppmm,cplhhhhhh,cplhhHpmcHpm,     & 
-& cplhhHppmmcHppmm,cplHpmHpmcHppmm,cplHppmmcHpmcHpm,cplAhAhAhAh,cplAhAhhhhh,             & 
-& cplAhAhHpmcHpm,cplAhAhHppmmcHppmm,cplAhhhHpmcHpm,cplAhhhHppmmcHppmm,cplAhHpmHpmcHppmm, & 
-& cplAhHppmmcHpmcHpm,cplhhhhhhhh,cplhhhhHpmcHpm,cplhhhhHppmmcHppmm,cplhhHpmHpmcHppmm,    & 
-& cplhhHppmmcHpmcHpm,cplHpmHpmcHpmcHpm,cplHpmHppmmcHpmcHppmm,cplHppmmHppmmcHppmmcHppmm,  & 
-& cplAhhhVP,cplAhhhVZ,cplAhhhVZR,cplAhHpmcVWLm,cplAhHpmcVWRm,cplAhcHpmVWLm,              & 
-& cplAhcHpmVWRm,cplhhHpmcVWLm,cplhhHpmcVWRm,cplhhcHpmVWLm,cplhhcHpmVWRm,cplHpmcHpmVP,    & 
-& cplHpmcHppmmVWLm,cplHpmcHppmmVWRm,cplHpmcHpmVZ,cplHpmcHpmVZR,cplHppmmcHppmmVP,         & 
-& cplHppmmcHppmmVZ,cplHppmmcHppmmVZR,cplHppmmcHpmcVWLm,cplHppmmcHpmcVWRm,cplAhcVWRmVWLm, & 
-& cplAhcVWLmVWRm,cplhhVPVZ,cplhhVPVZR,cplhhcVWLmVWLm,cplhhcVWRmVWLm,cplhhcVWLmVWRm,      & 
-& cplhhcVWRmVWRm,cplhhVZVZ,cplhhVZVZR,cplhhVZRVZR,cplHpmcVWLmVP,cplHpmcVWRmVP,           & 
-& cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplHppmmcVWLmcVWLm,          & 
-& cplHppmmcVWLmcVWRm,cplHppmmcVWRmcVWRm,cplcHpmVPVWLm,cplcHpmVPVWRm,cplcHppmmVWLmVWLm,   & 
-& cplcHppmmVWLmVWRm,cplcHpmVWLmVZ,cplcHpmVWLmVZR,cplcHppmmVWRmVWRm,cplcHpmVWRmVZ,        & 
-& cplcHpmVWRmVZR,cplAhAhVPVP,cplAhAhVPVZ,cplAhAhVPVZR,cplAhAhcVWLmVWLm,cplAhAhcVWRmVWLm, & 
-& cplAhAhcVWLmVWRm,cplAhAhcVWRmVWRm,cplAhAhVZVZ,cplAhAhVZVZR,cplAhAhVZRVZR,              & 
-& cplAhhhcVWRmVWLm,cplAhhhcVWLmVWRm,cplAhHpmcVWLmVP,cplAhHpmcVWRmVP,cplAhHpmcVWLmVZ,     & 
-& cplAhHpmcVWRmVZ,cplAhHpmcVWLmVZR,cplAhHpmcVWRmVZR,cplAhHppmmcVWLmcVWLm,cplAhHppmmcVWLmcVWRm,& 
-& cplAhHppmmcVWRmcVWRm,cplAhcHpmVPVWLm,cplAhcHpmVPVWRm,cplAhcHppmmVWLmVWLm,              & 
-& cplAhcHppmmVWLmVWRm,cplAhcHpmVWLmVZ,cplAhcHpmVWLmVZR,cplAhcHppmmVWRmVWRm,              & 
-& cplAhcHpmVWRmVZ,cplAhcHpmVWRmVZR,cplhhhhVPVP,cplhhhhVPVZ,cplhhhhVPVZR,cplhhhhcVWLmVWLm,& 
-& cplhhhhcVWRmVWLm,cplhhhhcVWLmVWRm,cplhhhhcVWRmVWRm,cplhhhhVZVZ,cplhhhhVZVZR,           & 
-& cplhhhhVZRVZR,cplhhHpmcVWLmVP,cplhhHpmcVWRmVP,cplhhHpmcVWLmVZ,cplhhHpmcVWRmVZ,         & 
-& cplhhHpmcVWLmVZR,cplhhHpmcVWRmVZR,cplhhHppmmcVWLmcVWLm,cplhhHppmmcVWLmcVWRm,           & 
+& ZUL,ZUR,YDR,YDL,UV,UT,cplAhAhhh,cplAhHpmcHpm,cplAhHppmmcHppmm,cplhhhhhh,               & 
+& cplhhHpmcHpm,cplhhHppmmcHppmm,cplHpmHpmcHppmm,cplHppmmcHpmcHpm,cplAhAhAhAh,            & 
+& cplAhAhhhhh,cplAhAhHpmcHpm,cplAhAhHppmmcHppmm,cplAhhhHpmcHpm,cplAhhhHppmmcHppmm,       & 
+& cplAhHpmHpmcHppmm,cplAhHppmmcHpmcHpm,cplhhhhhhhh,cplhhhhHpmcHpm,cplhhhhHppmmcHppmm,    & 
+& cplhhHpmHpmcHppmm,cplhhHppmmcHpmcHpm,cplHpmHpmcHpmcHpm,cplHpmHppmmcHpmcHppmm,          & 
+& cplHppmmHppmmcHppmmcHppmm,cplAhhhVP,cplAhhhVZ,cplAhhhVZR,cplAhHpmcVWLm,cplAhHpmcVWRm,  & 
+& cplAhcHpmVWLm,cplAhcHpmVWRm,cplhhHpmcVWLm,cplhhHpmcVWRm,cplhhcHpmVWLm,cplhhcHpmVWRm,   & 
+& cplHpmcHpmVP,cplHpmcHppmmVWLm,cplHpmcHppmmVWRm,cplHpmcHpmVZ,cplHpmcHpmVZR,             & 
+& cplHppmmcHppmmVP,cplHppmmcHppmmVZ,cplHppmmcHppmmVZR,cplHppmmcHpmcVWLm,cplHppmmcHpmcVWRm,& 
+& cplAhcVWRmVWLm,cplAhcVWLmVWRm,cplhhVPVZ,cplhhVPVZR,cplhhcVWLmVWLm,cplhhcVWRmVWLm,      & 
+& cplhhcVWLmVWRm,cplhhcVWRmVWRm,cplhhVZVZ,cplhhVZVZR,cplhhVZRVZR,cplHpmcVWLmVP,          & 
+& cplHpmcVWRmVP,cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplHpmcVWLmVZR,cplHpmcVWRmVZR,               & 
+& cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,cplHppmmcVWRmcVWRm,cplcHpmVPVWLm,cplcHpmVPVWRm,  & 
+& cplcHppmmVWLmVWLm,cplcHppmmVWLmVWRm,cplcHpmVWLmVZ,cplcHpmVWLmVZR,cplcHppmmVWRmVWRm,    & 
+& cplcHpmVWRmVZ,cplcHpmVWRmVZR,cplAhAhVPVP,cplAhAhVPVZ,cplAhAhVPVZR,cplAhAhcVWLmVWLm,    & 
+& cplAhAhcVWRmVWLm,cplAhAhcVWLmVWRm,cplAhAhcVWRmVWRm,cplAhAhVZVZ,cplAhAhVZVZR,           & 
+& cplAhAhVZRVZR,cplAhhhcVWRmVWLm,cplAhhhcVWLmVWRm,cplAhHpmcVWLmVP,cplAhHpmcVWRmVP,       & 
+& cplAhHpmcVWLmVZ,cplAhHpmcVWRmVZ,cplAhHpmcVWLmVZR,cplAhHpmcVWRmVZR,cplAhHppmmcVWLmcVWLm,& 
+& cplAhHppmmcVWLmcVWRm,cplAhHppmmcVWRmcVWRm,cplAhcHpmVPVWLm,cplAhcHpmVPVWRm,             & 
+& cplAhcHppmmVWLmVWLm,cplAhcHppmmVWLmVWRm,cplAhcHpmVWLmVZ,cplAhcHpmVWLmVZR,              & 
+& cplAhcHppmmVWRmVWRm,cplAhcHpmVWRmVZ,cplAhcHpmVWRmVZR,cplhhhhVPVP,cplhhhhVPVZ,          & 
+& cplhhhhVPVZR,cplhhhhcVWLmVWLm,cplhhhhcVWRmVWLm,cplhhhhcVWLmVWRm,cplhhhhcVWRmVWRm,      & 
+& cplhhhhVZVZ,cplhhhhVZVZR,cplhhhhVZRVZR,cplhhHpmcVWLmVP,cplhhHpmcVWRmVP,cplhhHpmcVWLmVZ,& 
+& cplhhHpmcVWRmVZ,cplhhHpmcVWLmVZR,cplhhHpmcVWRmVZR,cplhhHppmmcVWLmcVWLm,cplhhHppmmcVWLmcVWRm,& 
 & cplhhHppmmcVWRmcVWRm,cplhhcHpmVPVWLm,cplhhcHpmVPVWRm,cplhhcHppmmVWLmVWLm,              & 
 & cplhhcHppmmVWLmVWRm,cplhhcHpmVWLmVZ,cplhhcHpmVWLmVZR,cplhhcHppmmVWRmVWRm,              & 
 & cplhhcHpmVWRmVZ,cplhhcHpmVWRmVZR,cplHpmHpmcVWLmcVWLm,cplHpmHpmcVWLmcVWRm,              & 
@@ -59,69 +59,75 @@ Contains
 & cplcFuFuAhR,cplFvFvAhL,cplFvFvAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdcHpmL,               & 
 & cplcFuFdcHpmR,cplFeFecHppmmL,cplFeFecHppmmR,cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,       & 
 & cplcFuFuhhR,cplcFdFuHpmL,cplcFdFuHpmR,cplFvFvhhL,cplFvFvhhR,cplcFecFeHppmmL,           & 
-& cplcFecFeHppmmR,cplcFdFdVGL,cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,           & 
-& cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,    & 
-& cplcFuFdcVWRmR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,           & 
-& cplcFeFeVZRR,cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFdFuVWLmL,            & 
-& cplcFdFuVWLmR,cplcFdFuVWRmL,cplcFdFuVWRmR,cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,        & 
-& cplcFuFuVZRR,cplFvFvVPL,cplFvFvVPR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,      & 
-& cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,            & 
-& cplcVWLmVPVPVWLm3,cplcVWRmVPVPVWLm1,cplcVWRmVPVPVWLm2,cplcVWRmVPVPVWLm3,               & 
-& cplcVWLmVPVPVWRm1,cplcVWLmVPVPVWRm2,cplcVWLmVPVPVWRm3,cplcVWRmVPVPVWRm1,               & 
-& cplcVWRmVPVPVWRm2,cplcVWRmVPVPVWRm3,cplcVWLmVPVWLmVZ1,cplcVWLmVPVWLmVZ2,               & 
-& cplcVWLmVPVWLmVZ3,cplcVWRmVPVWLmVZ1,cplcVWRmVPVWLmVZ2,cplcVWRmVPVWLmVZ3,               & 
-& cplcVWLmVPVWLmVZR1,cplcVWLmVPVWLmVZR2,cplcVWLmVPVWLmVZR3,cplcVWRmVPVWLmVZR1,           & 
-& cplcVWRmVPVWLmVZR2,cplcVWRmVPVWLmVZR3,cplcVWLmVPVWRmVZ1,cplcVWLmVPVWRmVZ2,             & 
-& cplcVWLmVPVWRmVZ3,cplcVWRmVPVWRmVZ1,cplcVWRmVPVWRmVZ2,cplcVWRmVPVWRmVZ3,               & 
-& cplcVWLmVPVWRmVZR1,cplcVWLmVPVWRmVZR2,cplcVWLmVPVWRmVZR3,cplcVWRmVPVWRmVZR1,           & 
-& cplcVWRmVPVWRmVZR2,cplcVWRmVPVWRmVZR3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,   & 
-& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWLm1,cplcVWLmcVWRmVWLmVWLm2,cplcVWLmcVWRmVWLmVWLm3,& 
-& cplcVWRmcVWRmVWLmVWLm1,cplcVWRmcVWRmVWLmVWLm2,cplcVWRmcVWRmVWLmVWLm3,cplcVWLmcVWLmVWLmVWRm1,& 
-& cplcVWLmcVWLmVWLmVWRm2,cplcVWLmcVWLmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,& 
-& cplcVWLmcVWRmVWLmVWRm3,cplcVWRmcVWRmVWLmVWRm1,cplcVWRmcVWRmVWLmVWRm2,cplcVWRmcVWRmVWLmVWRm3,& 
-& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWLmVZVZ1,               & 
-& cplcVWRmVWLmVZVZ2,cplcVWRmVWLmVZVZ3,cplcVWLmVWLmVZVZR1,cplcVWLmVWLmVZVZR2,             & 
-& cplcVWLmVWLmVZVZR3,cplcVWRmVWLmVZVZR1,cplcVWRmVWLmVZVZR2,cplcVWRmVWLmVZVZR3,           & 
-& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWRmVWLmVZRVZR1,       & 
-& cplcVWRmVWLmVZRVZR2,cplcVWRmVWLmVZRVZR3,cplcVWLmcVWLmVWRmVWRm1,cplcVWLmcVWLmVWRmVWRm2, & 
-& cplcVWLmcVWLmVWRmVWRm3,cplcVWLmcVWRmVWRmVWRm1,cplcVWLmcVWRmVWRmVWRm2,cplcVWLmcVWRmVWRmVWRm3,& 
-& cplcVWRmcVWRmVWRmVWRm1,cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,cplcVWLmVWRmVZVZ1,& 
-& cplcVWLmVWRmVZVZ2,cplcVWLmVWRmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,               & 
-& cplcVWRmVWRmVZVZ3,cplcVWLmVWRmVZVZR1,cplcVWLmVWRmVZVZR2,cplcVWLmVWRmVZVZR3,            & 
-& cplcVWRmVWRmVZVZR1,cplcVWRmVWRmVZVZR2,cplcVWRmVWRmVZVZR3,cplcVWLmVWRmVZRVZR1,          & 
-& cplcVWLmVWRmVZRVZR2,cplcVWLmVWRmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,       & 
-& cplcVWRmVWRmVZRVZR3,cplcgGgGVG,cplcgWLmgPVWLm,cplcgWRmgPVWLm,cplcgWLmgPVWRm,           & 
-& cplcgWRmgPVWRm,cplcgWLpgPcVWLm,cplcgWLpgPcVWRm,cplcgWRpgPcVWLm,cplcgWRpgPcVWRm,        & 
-& cplcgWLmgWLmVP,cplcgWRmgWLmVP,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLmgWLmVZR,           & 
-& cplcgWRmgWLmVZR,cplcgPgWLmcVWLm,cplcgPgWLmcVWRm,cplcgZgWLmcVWLm,cplcgZgWLmcVWRm,       & 
-& cplcgZpgWLmcVWLm,cplcgZpgWLmcVWRm,cplcgWLpgWLpVP,cplcgWRpgWLpVP,cplcgPgWLpVWLm,        & 
-& cplcgZgWLpVWLm,cplcgZpgWLpVWLm,cplcgPgWLpVWRm,cplcgZgWLpVWRm,cplcgZpgWLpVWRm,          & 
-& cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWLmgWRmVP,          & 
-& cplcgWRmgWRmVP,cplcgWLmgWRmVZ,cplcgWRmgWRmVZ,cplcgWLmgWRmVZR,cplcgWRmgWRmVZR,          & 
-& cplcgPgWRmcVWLm,cplcgPgWRmcVWRm,cplcgZgWRmcVWLm,cplcgZgWRmcVWRm,cplcgZpgWRmcVWLm,      & 
-& cplcgZpgWRmcVWRm,cplcgWLpgWRpVP,cplcgWRpgWRpVP,cplcgPgWRpVWLm,cplcgZgWRpVWLm,          & 
-& cplcgZpgWRpVWLm,cplcgPgWRpVWRm,cplcgZgWRpVWRm,cplcgZpgWRpVWRm,cplcgWLpgWRpVZ,          & 
-& cplcgWRpgWRpVZ,cplcgWLpgWRpVZR,cplcgWRpgWRpVZR,cplcgWLmgZVWLm,cplcgWRmgZVWLm,          & 
-& cplcgWLmgZVWRm,cplcgWRmgZVWRm,cplcgWLpgZcVWLm,cplcgWLpgZcVWRm,cplcgWRpgZcVWLm,         & 
-& cplcgWRpgZcVWRm,cplcgWLmgZpVWLm,cplcgWRmgZpVWLm,cplcgWLmgZpVWRm,cplcgWRmgZpVWRm,       & 
-& cplcgWLpgZpcVWLm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWLm,cplcgWRpgZpcVWRm,cplcgWLmgWLmAh,    & 
-& cplcgWRmgWLmAh,cplcgWLpgWLpAh,cplcgWRpgWLpAh,cplcgWLmgWRmAh,cplcgWRmgWRmAh,            & 
-& cplcgWLpgWRpAh,cplcgWRpgWRpAh,cplcgZgPhh,cplcgZpgPhh,cplcgWLmgPHpm,cplcgWRmgPHpm,      & 
-& cplcgWLpgPcHpm,cplcgWRpgPcHpm,cplcgWLmgWLmhh,cplcgWRmgWLmhh,cplcgWLpgWLmcHppmm,        & 
-& cplcgWRpgWLmcHppmm,cplcgZgWLmcHpm,cplcgZpgWLmcHpm,cplcgWLpgWLphh,cplcgWRpgWLphh,       & 
-& cplcgZgWLpHpm,cplcgZpgWLpHpm,cplcgWLmgWLpHppmm,cplcgWRmgWLpHppmm,cplcgWLmgWRmhh,       & 
-& cplcgWRmgWRmhh,cplcgWLpgWRmcHppmm,cplcgWRpgWRmcHppmm,cplcgZgWRmcHpm,cplcgZpgWRmcHpm,   & 
-& cplcgWLpgWRphh,cplcgWRpgWRphh,cplcgZgWRpHpm,cplcgZpgWRpHpm,cplcgWLmgWRpHppmm,          & 
-& cplcgWRmgWRpHppmm,cplcgZgZhh,cplcgZpgZhh,cplcgWLmgZHpm,cplcgWRmgZHpm,cplcgWLpgZcHpm,   & 
-& cplcgWRpgZcHpm,cplcgZgZphh,cplcgZpgZphh,cplcgWLmgZpHpm,cplcgWRmgZpHpm,cplcgWLpgZpcHpm, & 
-& cplcgWRpgZpcHpm)
+& cplcFecFeHppmmR,cplFcFcVPL,cplFcFcVPR,cplFcFcVZL,cplFcFcVZR,cplFcFcVZRL,               & 
+& cplFcFcVZRR,cplFcFcpVWLmL,cplFcFcpVWLmR,cplFcFcpVWRmL,cplFcFcpVWRmR,cplcFcpFccVWLmL,   & 
+& cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVPL,cplcFcpFcpVPR,           & 
+& cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,           & 
+& cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVPL,cplcFcppFcppVPR, & 
+& cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcppFcppVZL,   & 
+& cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVGL,cplcFdFdVGR,             & 
+& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,             & 
+& cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFeFeVPL,               & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVGL,             & 
+& cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFdFuVWLmL,cplcFdFuVWLmR,cplcFdFuVWRmL,         & 
+& cplcFdFuVWRmR,cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVPL,            & 
+& cplFvFvVPR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,cplVGVGVGVG1,cplVGVGVGVG2,    & 
+& cplVGVGVGVG3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmVPVPVWLm3,cplcVWRmVPVPVWLm1,  & 
+& cplcVWRmVPVPVWLm2,cplcVWRmVPVPVWLm3,cplcVWLmVPVPVWRm1,cplcVWLmVPVPVWRm2,               & 
+& cplcVWLmVPVPVWRm3,cplcVWRmVPVPVWRm1,cplcVWRmVPVPVWRm2,cplcVWRmVPVPVWRm3,               & 
+& cplcVWLmVPVWLmVZ1,cplcVWLmVPVWLmVZ2,cplcVWLmVPVWLmVZ3,cplcVWRmVPVWLmVZ1,               & 
+& cplcVWRmVPVWLmVZ2,cplcVWRmVPVWLmVZ3,cplcVWLmVPVWLmVZR1,cplcVWLmVPVWLmVZR2,             & 
+& cplcVWLmVPVWLmVZR3,cplcVWRmVPVWLmVZR1,cplcVWRmVPVWLmVZR2,cplcVWRmVPVWLmVZR3,           & 
+& cplcVWLmVPVWRmVZ1,cplcVWLmVPVWRmVZ2,cplcVWLmVPVWRmVZ3,cplcVWRmVPVWRmVZ1,               & 
+& cplcVWRmVPVWRmVZ2,cplcVWRmVPVWRmVZ3,cplcVWLmVPVWRmVZR1,cplcVWLmVPVWRmVZR2,             & 
+& cplcVWLmVPVWRmVZR3,cplcVWRmVPVWRmVZR1,cplcVWRmVPVWRmVZR2,cplcVWRmVPVWRmVZR3,           & 
+& cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWLm1,& 
+& cplcVWLmcVWRmVWLmVWLm2,cplcVWLmcVWRmVWLmVWLm3,cplcVWRmcVWRmVWLmVWLm1,cplcVWRmcVWRmVWLmVWLm2,& 
+& cplcVWRmcVWRmVWLmVWLm3,cplcVWLmcVWLmVWLmVWRm1,cplcVWLmcVWLmVWLmVWRm2,cplcVWLmcVWLmVWLmVWRm3,& 
+& cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWRmcVWRmVWLmVWRm1,& 
+& cplcVWRmcVWRmVWLmVWRm2,cplcVWRmcVWRmVWLmVWRm3,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,     & 
+& cplcVWLmVWLmVZVZ3,cplcVWRmVWLmVZVZ1,cplcVWRmVWLmVZVZ2,cplcVWRmVWLmVZVZ3,               & 
+& cplcVWLmVWLmVZVZR1,cplcVWLmVWLmVZVZR2,cplcVWLmVWLmVZVZR3,cplcVWRmVWLmVZVZR1,           & 
+& cplcVWRmVWLmVZVZR2,cplcVWRmVWLmVZVZR3,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,         & 
+& cplcVWLmVWLmVZRVZR3,cplcVWRmVWLmVZRVZR1,cplcVWRmVWLmVZRVZR2,cplcVWRmVWLmVZRVZR3,       & 
+& cplcVWLmcVWLmVWRmVWRm1,cplcVWLmcVWLmVWRmVWRm2,cplcVWLmcVWLmVWRmVWRm3,cplcVWLmcVWRmVWRmVWRm1,& 
+& cplcVWLmcVWRmVWRmVWRm2,cplcVWLmcVWRmVWRmVWRm3,cplcVWRmcVWRmVWRmVWRm1,cplcVWRmcVWRmVWRmVWRm2,& 
+& cplcVWRmcVWRmVWRmVWRm3,cplcVWLmVWRmVZVZ1,cplcVWLmVWRmVZVZ2,cplcVWLmVWRmVZVZ3,          & 
+& cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplcVWLmVWRmVZVZR1,              & 
+& cplcVWLmVWRmVZVZR2,cplcVWLmVWRmVZVZR3,cplcVWRmVWRmVZVZR1,cplcVWRmVWRmVZVZR2,           & 
+& cplcVWRmVWRmVZVZR3,cplcVWLmVWRmVZRVZR1,cplcVWLmVWRmVZRVZR2,cplcVWLmVWRmVZRVZR3,        & 
+& cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,cplcgGgGVG,cplcgWLmgPVWLm, & 
+& cplcgWRmgPVWLm,cplcgWLmgPVWRm,cplcgWRmgPVWRm,cplcgWLpgPcVWLm,cplcgWLpgPcVWRm,          & 
+& cplcgWRpgPcVWLm,cplcgWRpgPcVWRm,cplcgWLmgWLmVP,cplcgWRmgWLmVP,cplcgWLmgWLmVZ,          & 
+& cplcgWRmgWLmVZ,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgPgWLmcVWLm,cplcgPgWLmcVWRm,        & 
+& cplcgZgWLmcVWLm,cplcgZgWLmcVWRm,cplcgZpgWLmcVWLm,cplcgZpgWLmcVWRm,cplcgWLpgWLpVP,      & 
+& cplcgWRpgWLpVP,cplcgPgWLpVWLm,cplcgZgWLpVWLm,cplcgZpgWLpVWLm,cplcgPgWLpVWRm,           & 
+& cplcgZgWLpVWRm,cplcgZpgWLpVWRm,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWLpgWLpVZR,          & 
+& cplcgWRpgWLpVZR,cplcgWLmgWRmVP,cplcgWRmgWRmVP,cplcgWLmgWRmVZ,cplcgWRmgWRmVZ,           & 
+& cplcgWLmgWRmVZR,cplcgWRmgWRmVZR,cplcgPgWRmcVWLm,cplcgPgWRmcVWRm,cplcgZgWRmcVWLm,       & 
+& cplcgZgWRmcVWRm,cplcgZpgWRmcVWLm,cplcgZpgWRmcVWRm,cplcgWLpgWRpVP,cplcgWRpgWRpVP,       & 
+& cplcgPgWRpVWLm,cplcgZgWRpVWLm,cplcgZpgWRpVWLm,cplcgPgWRpVWRm,cplcgZgWRpVWRm,           & 
+& cplcgZpgWRpVWRm,cplcgWLpgWRpVZ,cplcgWRpgWRpVZ,cplcgWLpgWRpVZR,cplcgWRpgWRpVZR,         & 
+& cplcgWLmgZVWLm,cplcgWRmgZVWLm,cplcgWLmgZVWRm,cplcgWRmgZVWRm,cplcgWLpgZcVWLm,           & 
+& cplcgWLpgZcVWRm,cplcgWRpgZcVWLm,cplcgWRpgZcVWRm,cplcgWLmgZpVWLm,cplcgWRmgZpVWLm,       & 
+& cplcgWLmgZpVWRm,cplcgWRmgZpVWRm,cplcgWLpgZpcVWLm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWLm,    & 
+& cplcgWRpgZpcVWRm,cplcgWLmgWLmAh,cplcgWRmgWLmAh,cplcgWLpgWLpAh,cplcgWRpgWLpAh,          & 
+& cplcgWLmgWRmAh,cplcgWRmgWRmAh,cplcgWLpgWRpAh,cplcgWRpgWRpAh,cplcgZgPhh,cplcgZpgPhh,    & 
+& cplcgWLmgPHpm,cplcgWRmgPHpm,cplcgWLpgPcHpm,cplcgWRpgPcHpm,cplcgWLmgWLmhh,              & 
+& cplcgWRmgWLmhh,cplcgWLpgWLmcHppmm,cplcgWRpgWLmcHppmm,cplcgZgWLmcHpm,cplcgZpgWLmcHpm,   & 
+& cplcgWLpgWLphh,cplcgWRpgWLphh,cplcgZgWLpHpm,cplcgZpgWLpHpm,cplcgWLmgWLpHppmm,          & 
+& cplcgWRmgWLpHppmm,cplcgWLmgWRmhh,cplcgWRmgWRmhh,cplcgWLpgWRmcHppmm,cplcgWRpgWRmcHppmm, & 
+& cplcgZgWRmcHpm,cplcgZpgWRmcHpm,cplcgWLpgWRphh,cplcgWRpgWRphh,cplcgZgWRpHpm,            & 
+& cplcgZpgWRpHpm,cplcgWLmgWRpHppmm,cplcgWRmgWRpHppmm,cplcgZgZhh,cplcgZpgZhh,             & 
+& cplcgWLmgZHpm,cplcgWRmgZHpm,cplcgWLpgZcHpm,cplcgWRpgZcHpm,cplcgZgZphh,cplcgZpgZphh,    & 
+& cplcgWLmgZpHpm,cplcgWRmgZpHpm,cplcgWLpgZpcHpm,cplcgWRpgZpcHpm)
 
 Implicit None 
 Real(dp), Intent(in) :: RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,ZH(4,4),UP(4,4),UC(4,4),UCC(2,2),        & 
 & RHO2,gBL,g2,gR,PhiW,g3
 
 Complex(dp), Intent(in) :: rh3,ZZ(3,3),YQ1(3,3),ZDL(3,3),ZDR(3,3),YL1(3,3),ZEL(3,3),ZER(3,3),ZUL(3,3),           & 
-& ZUR(3,3),YDR(3,3),YDL(3,3),UV(6,6)
+& ZUR(3,3),YDR(3,3),YDL(3,3),UV(6,6),UT(2,2)
 
 Complex(dp), Intent(out) :: cplAhAhhh(4,4,4),cplAhHpmcHpm(4,4,4),cplAhHppmmcHppmm(4,2,2),cplhhhhhh(4,4,4),        & 
 & cplhhHpmcHpm(4,4,4),cplhhHppmmcHppmm(4,2,2),cplHpmHpmcHppmm(4,4,2),cplHppmmcHpmcHpm(2,4,4),& 
@@ -177,68 +183,74 @@ Complex(dp), Intent(out) :: cplHpmcHppmmVWRmVZR(4,2),cplHpmcHpmcVWLmVWRm(4,4),cp
 & cplcFuFdcHpmR(3,3,4),cplFeFecHppmmL(3,3,2),cplFeFecHppmmR(3,3,2),cplcFeFehhL(3,3,4),   & 
 & cplcFeFehhR(3,3,4),cplcFuFuhhL(3,3,4),cplcFuFuhhR(3,3,4),cplcFdFuHpmL(3,3,4),          & 
 & cplcFdFuHpmR(3,3,4),cplFvFvhhL(6,6,4),cplFvFvhhR(6,6,4),cplcFecFeHppmmL(3,3,2),        & 
-& cplcFecFeHppmmR(3,3,2),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),             & 
-& cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),& 
-& cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),       & 
-& cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3), & 
-& cplcFeFeVZRR(3,3),cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3), & 
-& cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),cplcFdFuVWRmR(3,3),           & 
-& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFvFvVPL(6,6), & 
-& cplFvFvVPR(6,6),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),     & 
-& cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,            & 
-& cplcVWLmVPVPVWLm3,cplcVWRmVPVPVWLm1,cplcVWRmVPVPVWLm2,cplcVWRmVPVPVWLm3,               & 
-& cplcVWLmVPVPVWRm1,cplcVWLmVPVPVWRm2,cplcVWLmVPVPVWRm3,cplcVWRmVPVPVWRm1,               & 
-& cplcVWRmVPVPVWRm2,cplcVWRmVPVPVWRm3,cplcVWLmVPVWLmVZ1,cplcVWLmVPVWLmVZ2,               & 
-& cplcVWLmVPVWLmVZ3,cplcVWRmVPVWLmVZ1,cplcVWRmVPVWLmVZ2,cplcVWRmVPVWLmVZ3,               & 
-& cplcVWLmVPVWLmVZR1,cplcVWLmVPVWLmVZR2,cplcVWLmVPVWLmVZR3,cplcVWRmVPVWLmVZR1,           & 
-& cplcVWRmVPVWLmVZR2,cplcVWRmVPVWLmVZR3,cplcVWLmVPVWRmVZ1,cplcVWLmVPVWRmVZ2,             & 
-& cplcVWLmVPVWRmVZ3,cplcVWRmVPVWRmVZ1,cplcVWRmVPVWRmVZ2,cplcVWRmVPVWRmVZ3,               & 
-& cplcVWLmVPVWRmVZR1,cplcVWLmVPVWRmVZR2,cplcVWLmVPVWRmVZR3,cplcVWRmVPVWRmVZR1,           & 
-& cplcVWRmVPVWRmVZR2,cplcVWRmVPVWRmVZR3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,   & 
-& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWLm1,cplcVWLmcVWRmVWLmVWLm2,cplcVWLmcVWRmVWLmVWLm3,& 
-& cplcVWRmcVWRmVWLmVWLm1,cplcVWRmcVWRmVWLmVWLm2,cplcVWRmcVWRmVWLmVWLm3,cplcVWLmcVWLmVWLmVWRm1,& 
-& cplcVWLmcVWLmVWLmVWRm2,cplcVWLmcVWLmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2
+& cplcFecFeHppmmR(3,3,2),cplFcFcVPL(2,2),cplFcFcVPR(2,2),cplFcFcVZL(2,2),cplFcFcVZR(2,2),& 
+& cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),cplFcFcpVWLmL(2),cplFcFcpVWLmR(2),cplFcFcpVWRmL(2),  & 
+& cplFcFcpVWRmR(2),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),             & 
+& cplcFcpFccVWRmR(2),cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,            & 
+& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,   & 
+& cplcFcppFcpcVWRmR,cplcFcppFcppVPL,cplcFcppFcppVPR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,   & 
+& cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,    & 
+& cplcFcppFcppVZRR,cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),  & 
+& cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFuFdcVWLmL(3,3),& 
+& cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFeFeVPL(3,3),          & 
+& cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),& 
+& cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFdFuVWLmL(3,3),& 
+& cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),cplcFdFuVWRmR(3,3),cplcFuFuVZL(3,3),             & 
+& cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFvFvVPL(6,6),cplFvFvVPR(6,6),  & 
+& cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplVGVGVGVG1,        & 
+& cplVGVGVGVG2,cplVGVGVGVG3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmVPVPVWLm3,       & 
+& cplcVWRmVPVPVWLm1,cplcVWRmVPVPVWLm2,cplcVWRmVPVPVWLm3,cplcVWLmVPVPVWRm1,               & 
+& cplcVWLmVPVPVWRm2,cplcVWLmVPVPVWRm3,cplcVWRmVPVPVWRm1,cplcVWRmVPVPVWRm2,               & 
+& cplcVWRmVPVPVWRm3,cplcVWLmVPVWLmVZ1,cplcVWLmVPVWLmVZ2,cplcVWLmVPVWLmVZ3,               & 
+& cplcVWRmVPVWLmVZ1,cplcVWRmVPVWLmVZ2,cplcVWRmVPVWLmVZ3,cplcVWLmVPVWLmVZR1,              & 
+& cplcVWLmVPVWLmVZR2,cplcVWLmVPVWLmVZR3,cplcVWRmVPVWLmVZR1,cplcVWRmVPVWLmVZR2
 
-Complex(dp), Intent(out) :: cplcVWLmcVWRmVWLmVWRm3,cplcVWRmcVWRmVWLmVWRm1,cplcVWRmcVWRmVWLmVWRm2,cplcVWRmcVWRmVWLmVWRm3,& 
-& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWLmVZVZ1,               & 
-& cplcVWRmVWLmVZVZ2,cplcVWRmVWLmVZVZ3,cplcVWLmVWLmVZVZR1,cplcVWLmVWLmVZVZR2,             & 
-& cplcVWLmVWLmVZVZR3,cplcVWRmVWLmVZVZR1,cplcVWRmVWLmVZVZR2,cplcVWRmVWLmVZVZR3,           & 
-& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWRmVWLmVZRVZR1,       & 
-& cplcVWRmVWLmVZRVZR2,cplcVWRmVWLmVZRVZR3,cplcVWLmcVWLmVWRmVWRm1,cplcVWLmcVWLmVWRmVWRm2, & 
-& cplcVWLmcVWLmVWRmVWRm3,cplcVWLmcVWRmVWRmVWRm1,cplcVWLmcVWRmVWRmVWRm2,cplcVWLmcVWRmVWRmVWRm3,& 
-& cplcVWRmcVWRmVWRmVWRm1,cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,cplcVWLmVWRmVZVZ1,& 
-& cplcVWLmVWRmVZVZ2,cplcVWLmVWRmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,               & 
-& cplcVWRmVWRmVZVZ3,cplcVWLmVWRmVZVZR1,cplcVWLmVWRmVZVZR2,cplcVWLmVWRmVZVZR3,            & 
-& cplcVWRmVWRmVZVZR1,cplcVWRmVWRmVZVZR2,cplcVWRmVWRmVZVZR3,cplcVWLmVWRmVZRVZR1,          & 
-& cplcVWLmVWRmVZRVZR2,cplcVWLmVWRmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,       & 
-& cplcVWRmVWRmVZRVZR3,cplcgGgGVG,cplcgWLmgPVWLm,cplcgWRmgPVWLm,cplcgWLmgPVWRm,           & 
-& cplcgWRmgPVWRm,cplcgWLpgPcVWLm,cplcgWLpgPcVWRm,cplcgWRpgPcVWLm,cplcgWRpgPcVWRm,        & 
-& cplcgWLmgWLmVP,cplcgWRmgWLmVP,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLmgWLmVZR,           & 
-& cplcgWRmgWLmVZR,cplcgPgWLmcVWLm,cplcgPgWLmcVWRm,cplcgZgWLmcVWLm,cplcgZgWLmcVWRm,       & 
-& cplcgZpgWLmcVWLm,cplcgZpgWLmcVWRm,cplcgWLpgWLpVP,cplcgWRpgWLpVP,cplcgPgWLpVWLm,        & 
-& cplcgZgWLpVWLm,cplcgZpgWLpVWLm,cplcgPgWLpVWRm,cplcgZgWLpVWRm,cplcgZpgWLpVWRm,          & 
-& cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWLmgWRmVP,          & 
-& cplcgWRmgWRmVP,cplcgWLmgWRmVZ,cplcgWRmgWRmVZ,cplcgWLmgWRmVZR,cplcgWRmgWRmVZR,          & 
-& cplcgPgWRmcVWLm,cplcgPgWRmcVWRm,cplcgZgWRmcVWLm,cplcgZgWRmcVWRm,cplcgZpgWRmcVWLm,      & 
-& cplcgZpgWRmcVWRm,cplcgWLpgWRpVP,cplcgWRpgWRpVP,cplcgPgWRpVWLm,cplcgZgWRpVWLm,          & 
-& cplcgZpgWRpVWLm,cplcgPgWRpVWRm,cplcgZgWRpVWRm,cplcgZpgWRpVWRm,cplcgWLpgWRpVZ,          & 
-& cplcgWRpgWRpVZ,cplcgWLpgWRpVZR,cplcgWRpgWRpVZR,cplcgWLmgZVWLm,cplcgWRmgZVWLm,          & 
-& cplcgWLmgZVWRm,cplcgWRmgZVWRm,cplcgWLpgZcVWLm,cplcgWLpgZcVWRm,cplcgWRpgZcVWLm,         & 
-& cplcgWRpgZcVWRm,cplcgWLmgZpVWLm,cplcgWRmgZpVWLm,cplcgWLmgZpVWRm,cplcgWRmgZpVWRm,       & 
-& cplcgWLpgZpcVWLm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWLm,cplcgWRpgZpcVWRm,cplcgWLmgWLmAh(4), & 
-& cplcgWRmgWLmAh(4),cplcgWLpgWLpAh(4),cplcgWRpgWLpAh(4),cplcgWLmgWRmAh(4),               & 
-& cplcgWRmgWRmAh(4),cplcgWLpgWRpAh(4),cplcgWRpgWRpAh(4),cplcgZgPhh(4),cplcgZpgPhh(4),    & 
-& cplcgWLmgPHpm(4),cplcgWRmgPHpm(4),cplcgWLpgPcHpm(4),cplcgWRpgPcHpm(4),cplcgWLmgWLmhh(4),& 
-& cplcgWRmgWLmhh(4),cplcgWLpgWLmcHppmm(2),cplcgWRpgWLmcHppmm(2),cplcgZgWLmcHpm(4),       & 
-& cplcgZpgWLmcHpm(4),cplcgWLpgWLphh(4),cplcgWRpgWLphh(4),cplcgZgWLpHpm(4),               & 
-& cplcgZpgWLpHpm(4),cplcgWLmgWLpHppmm(2),cplcgWRmgWLpHppmm(2),cplcgWLmgWRmhh(4),         & 
-& cplcgWRmgWRmhh(4),cplcgWLpgWRmcHppmm(2),cplcgWRpgWRmcHppmm(2),cplcgZgWRmcHpm(4),       & 
-& cplcgZpgWRmcHpm(4),cplcgWLpgWRphh(4),cplcgWRpgWRphh(4),cplcgZgWRpHpm(4),               & 
-& cplcgZpgWRpHpm(4),cplcgWLmgWRpHppmm(2),cplcgWRmgWRpHppmm(2),cplcgZgZhh(4),             & 
-& cplcgZpgZhh(4),cplcgWLmgZHpm(4),cplcgWRmgZHpm(4),cplcgWLpgZcHpm(4),cplcgWRpgZcHpm(4)
+Complex(dp), Intent(out) :: cplcVWRmVPVWLmVZR3,cplcVWLmVPVWRmVZ1,cplcVWLmVPVWRmVZ2,cplcVWLmVPVWRmVZ3,              & 
+& cplcVWRmVPVWRmVZ1,cplcVWRmVPVWRmVZ2,cplcVWRmVPVWRmVZ3,cplcVWLmVPVWRmVZR1,              & 
+& cplcVWLmVPVWRmVZR2,cplcVWLmVPVWRmVZR3,cplcVWRmVPVWRmVZR1,cplcVWRmVPVWRmVZR2,           & 
+& cplcVWRmVPVWRmVZR3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,& 
+& cplcVWLmcVWRmVWLmVWLm1,cplcVWLmcVWRmVWLmVWLm2,cplcVWLmcVWRmVWLmVWLm3,cplcVWRmcVWRmVWLmVWLm1,& 
+& cplcVWRmcVWRmVWLmVWLm2,cplcVWRmcVWRmVWLmVWLm3,cplcVWLmcVWLmVWLmVWRm1,cplcVWLmcVWLmVWLmVWRm2,& 
+& cplcVWLmcVWLmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,& 
+& cplcVWRmcVWRmVWLmVWRm1,cplcVWRmcVWRmVWLmVWRm2,cplcVWRmcVWRmVWLmVWRm3,cplcVWLmVWLmVZVZ1,& 
+& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWLmVZVZ1,cplcVWRmVWLmVZVZ2,               & 
+& cplcVWRmVWLmVZVZ3,cplcVWLmVWLmVZVZR1,cplcVWLmVWLmVZVZR2,cplcVWLmVWLmVZVZR3,            & 
+& cplcVWRmVWLmVZVZR1,cplcVWRmVWLmVZVZR2,cplcVWRmVWLmVZVZR3,cplcVWLmVWLmVZRVZR1,          & 
+& cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWRmVWLmVZRVZR1,cplcVWRmVWLmVZRVZR2,       & 
+& cplcVWRmVWLmVZRVZR3,cplcVWLmcVWLmVWRmVWRm1,cplcVWLmcVWLmVWRmVWRm2,cplcVWLmcVWLmVWRmVWRm3,& 
+& cplcVWLmcVWRmVWRmVWRm1,cplcVWLmcVWRmVWRmVWRm2,cplcVWLmcVWRmVWRmVWRm3,cplcVWRmcVWRmVWRmVWRm1,& 
+& cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,cplcVWLmVWRmVZVZ1,cplcVWLmVWRmVZVZ2,     & 
+& cplcVWLmVWRmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,               & 
+& cplcVWLmVWRmVZVZR1,cplcVWLmVWRmVZVZR2,cplcVWLmVWRmVZVZR3,cplcVWRmVWRmVZVZR1,           & 
+& cplcVWRmVWRmVZVZR2,cplcVWRmVWRmVZVZR3,cplcVWLmVWRmVZRVZR1,cplcVWLmVWRmVZRVZR2,         & 
+& cplcVWLmVWRmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,       & 
+& cplcgGgGVG,cplcgWLmgPVWLm,cplcgWRmgPVWLm,cplcgWLmgPVWRm,cplcgWRmgPVWRm,cplcgWLpgPcVWLm,& 
+& cplcgWLpgPcVWRm,cplcgWRpgPcVWLm,cplcgWRpgPcVWRm,cplcgWLmgWLmVP,cplcgWRmgWLmVP,         & 
+& cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgPgWLmcVWLm,         & 
+& cplcgPgWLmcVWRm,cplcgZgWLmcVWLm,cplcgZgWLmcVWRm,cplcgZpgWLmcVWLm,cplcgZpgWLmcVWRm,     & 
+& cplcgWLpgWLpVP,cplcgWRpgWLpVP,cplcgPgWLpVWLm,cplcgZgWLpVWLm,cplcgZpgWLpVWLm,           & 
+& cplcgPgWLpVWRm,cplcgZgWLpVWRm,cplcgZpgWLpVWRm,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,           & 
+& cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWLmgWRmVP,cplcgWRmgWRmVP,cplcgWLmgWRmVZ,          & 
+& cplcgWRmgWRmVZ,cplcgWLmgWRmVZR,cplcgWRmgWRmVZR,cplcgPgWRmcVWLm,cplcgPgWRmcVWRm,        & 
+& cplcgZgWRmcVWLm,cplcgZgWRmcVWRm,cplcgZpgWRmcVWLm,cplcgZpgWRmcVWRm,cplcgWLpgWRpVP,      & 
+& cplcgWRpgWRpVP,cplcgPgWRpVWLm,cplcgZgWRpVWLm,cplcgZpgWRpVWLm,cplcgPgWRpVWRm,           & 
+& cplcgZgWRpVWRm,cplcgZpgWRpVWRm,cplcgWLpgWRpVZ,cplcgWRpgWRpVZ,cplcgWLpgWRpVZR,          & 
+& cplcgWRpgWRpVZR,cplcgWLmgZVWLm,cplcgWRmgZVWLm,cplcgWLmgZVWRm,cplcgWRmgZVWRm,           & 
+& cplcgWLpgZcVWLm,cplcgWLpgZcVWRm,cplcgWRpgZcVWLm,cplcgWRpgZcVWRm,cplcgWLmgZpVWLm,       & 
+& cplcgWRmgZpVWLm,cplcgWLmgZpVWRm,cplcgWRmgZpVWRm,cplcgWLpgZpcVWLm,cplcgWLpgZpcVWRm,     & 
+& cplcgWRpgZpcVWLm,cplcgWRpgZpcVWRm,cplcgWLmgWLmAh(4),cplcgWRmgWLmAh(4),cplcgWLpgWLpAh(4),& 
+& cplcgWRpgWLpAh(4),cplcgWLmgWRmAh(4),cplcgWRmgWRmAh(4),cplcgWLpgWRpAh(4),               & 
+& cplcgWRpgWRpAh(4),cplcgZgPhh(4),cplcgZpgPhh(4),cplcgWLmgPHpm(4),cplcgWRmgPHpm(4),      & 
+& cplcgWLpgPcHpm(4),cplcgWRpgPcHpm(4),cplcgWLmgWLmhh(4),cplcgWRmgWLmhh(4)
 
-Complex(dp), Intent(out) :: cplcgZgZphh(4),cplcgZpgZphh(4),cplcgWLmgZpHpm(4),cplcgWRmgZpHpm(4),cplcgWLpgZpcHpm(4), & 
-& cplcgWRpgZpcHpm(4)
+Complex(dp), Intent(out) :: cplcgWLpgWLmcHppmm(2),cplcgWRpgWLmcHppmm(2),cplcgZgWLmcHpm(4),cplcgZpgWLmcHpm(4),      & 
+& cplcgWLpgWLphh(4),cplcgWRpgWLphh(4),cplcgZgWLpHpm(4),cplcgZpgWLpHpm(4),cplcgWLmgWLpHppmm(2),& 
+& cplcgWRmgWLpHppmm(2),cplcgWLmgWRmhh(4),cplcgWRmgWRmhh(4),cplcgWLpgWRmcHppmm(2),        & 
+& cplcgWRpgWRmcHppmm(2),cplcgZgWRmcHpm(4),cplcgZpgWRmcHpm(4),cplcgWLpgWRphh(4),          & 
+& cplcgWRpgWRphh(4),cplcgZgWRpHpm(4),cplcgZpgWRpHpm(4),cplcgWLmgWRpHppmm(2),             & 
+& cplcgWRmgWRpHppmm(2),cplcgZgZhh(4),cplcgZpgZhh(4),cplcgWLmgZHpm(4),cplcgWRmgZHpm(4),   & 
+& cplcgWLpgZcHpm(4),cplcgWRpgZcHpm(4),cplcgZgZphh(4),cplcgZpgZphh(4),cplcgWLmgZpHpm(4),  & 
+& cplcgWRmgZpHpm(4),cplcgWLpgZpcHpm(4),cplcgWRpgZpcHpm(4)
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -2038,6 +2050,128 @@ Call CouplingcFecFeHppmmT(gt1,gt2,gt3,YDR,YDL,UCC,ZEL,ZER,cplcFecFeHppmmL(gt1,gt
 End Do 
 
 
+cplFcFcVPL = 0._dp 
+cplFcFcVPR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVPT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVPL(gt1,gt2),cplFcFcVPR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZL = 0._dp 
+cplFcFcVZR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZRL = 0._dp 
+cplFcFcVZRR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcpVWLmL = 0._dp 
+cplFcFcpVWLmR = 0._dp 
+Do gt1 = 1, 2
+Call CouplingFcFcpVWLmT(gt1,gR,UT,PhiW,cplFcFcpVWLmL(gt1),cplFcFcpVWLmR(gt1))
+
+End Do 
+
+
+cplFcFcpVWRmL = 0._dp 
+cplFcFcpVWRmR = 0._dp 
+Do gt1 = 1, 2
+Call CouplingFcFcpVWRmT(gt1,gR,UT,PhiW,cplFcFcpVWRmL(gt1),cplFcFcpVWRmR(gt1))
+
+End Do 
+
+
+cplcFcpFccVWLmL = 0._dp 
+cplcFcpFccVWLmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWLmT(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+
+End Do 
+
+
+cplcFcpFccVWRmL = 0._dp 
+cplcFcpFccVWRmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWRmT(gt2,gR,UT,PhiW,cplcFcpFccVWRmL(gt2),cplcFcpFccVWRmR(gt2))
+
+End Do 
+
+
+cplcFcpFcpVPL = 0._dp 
+cplcFcpFcpVPR = 0._dp 
+Call CouplingcFcpFcpVPT(gBL,ZZ,cplcFcpFcpVPL,cplcFcpFcpVPR)
+
+
+
+cplcFcpFcpVZL = 0._dp 
+cplcFcpFcpVZR = 0._dp 
+Call CouplingcFcpFcpVZT(gBL,ZZ,cplcFcpFcpVZL,cplcFcpFcpVZR)
+
+
+
+cplcFcpFcpVZRL = 0._dp 
+cplcFcpFcpVZRR = 0._dp 
+Call CouplingcFcpFcpVZRT(gBL,ZZ,cplcFcpFcpVZRL,cplcFcpFcpVZRR)
+
+
+
+cplcFcppFcpcVWLmL = 0._dp 
+cplcFcppFcpcVWLmR = 0._dp 
+Call CouplingcFcppFcpcVWLmT(gR,PhiW,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR)
+
+
+
+cplcFcppFcpcVWRmL = 0._dp 
+cplcFcppFcpcVWRmR = 0._dp 
+Call CouplingcFcppFcpcVWRmT(gR,PhiW,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR)
+
+
+
+cplcFcppFcppVPL = 0._dp 
+cplcFcppFcppVPR = 0._dp 
+Call CouplingcFcppFcppVPT(gBL,gR,ZZ,cplcFcppFcppVPL,cplcFcppFcppVPR)
+
+
+
+cplcFcpFcppVWLmL = 0._dp 
+cplcFcpFcppVWLmR = 0._dp 
+Call CouplingcFcpFcppVWLmT(gR,PhiW,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR)
+
+
+
+cplcFcpFcppVWRmL = 0._dp 
+cplcFcpFcppVWRmR = 0._dp 
+Call CouplingcFcpFcppVWRmT(gR,PhiW,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR)
+
+
+
+cplcFcppFcppVZL = 0._dp 
+cplcFcppFcppVZR = 0._dp 
+Call CouplingcFcppFcppVZT(gBL,gR,ZZ,cplcFcppFcppVZL,cplcFcppFcppVZR)
+
+
+
+cplcFcppFcppVZRL = 0._dp 
+cplcFcppFcppVZRR = 0._dp 
+Call CouplingcFcppFcppVZRT(gBL,gR,ZZ,cplcFcppFcppVZRL,cplcFcppFcppVZRR)
+
+
+
 cplcFdFdVGL = 0._dp 
 cplcFdFdVGR = 0._dp 
 Do gt1 = 1, 3
@@ -3213,23 +3347,30 @@ End Subroutine AllCouplingsReallyAll
 
 Subroutine AllCouplings(RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,             & 
 & ZH,UP,UC,UCC,RHO2,gBL,g2,gR,ZZ,PhiW,g3,YQ1,ZDL,ZDR,YL1,ZEL,ZER,ZUL,ZUR,YDR,            & 
-& YDL,UV,cplAhAhhh,cplAhHpmcHpm,cplAhHppmmcHppmm,cplhhhhhh,cplhhHpmcHpm,cplhhHppmmcHppmm,& 
-& cplHpmHpmcHppmm,cplHppmmcHpmcHpm,cplAhhhVP,cplAhhhVZ,cplAhhhVZR,cplAhHpmcVWLm,         & 
-& cplAhHpmcVWRm,cplAhcHpmVWLm,cplAhcHpmVWRm,cplhhHpmcVWLm,cplhhHpmcVWRm,cplhhcHpmVWLm,   & 
-& cplhhcHpmVWRm,cplHpmcHpmVP,cplHpmcHppmmVWLm,cplHpmcHppmmVWRm,cplHpmcHpmVZ,             & 
-& cplHpmcHpmVZR,cplHppmmcHppmmVP,cplHppmmcHppmmVZ,cplHppmmcHppmmVZR,cplHppmmcHpmcVWLm,   & 
-& cplHppmmcHpmcVWRm,cplAhcVWRmVWLm,cplAhcVWLmVWRm,cplhhVPVZ,cplhhVPVZR,cplhhcVWLmVWLm,   & 
-& cplhhcVWRmVWLm,cplhhcVWLmVWRm,cplhhcVWRmVWRm,cplhhVZVZ,cplhhVZVZR,cplhhVZRVZR,         & 
-& cplHpmcVWLmVP,cplHpmcVWRmVP,cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplHpmcVWLmVZR,cplHpmcVWRmVZR, & 
-& cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,cplHppmmcVWRmcVWRm,cplcHpmVPVWLm,cplcHpmVPVWRm,  & 
-& cplcHppmmVWLmVWLm,cplcHppmmVWLmVWRm,cplcHpmVWLmVZ,cplcHpmVWLmVZR,cplcHppmmVWRmVWRm,    & 
-& cplcHpmVWRmVZ,cplcHpmVWRmVZR,cplVGVGVG,cplcVWLmVPVWLm,cplcVWRmVPVWLm,cplcVWLmVPVWRm,   & 
-& cplcVWRmVPVWRm,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,          & 
-& cplcVWLmVWRmVZ,cplcVWRmVWRmVZ,cplcVWLmVWRmVZR,cplcVWRmVWRmVZR,cplcFdFdAhL,             & 
-& cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplFvFvAhL,cplFvFvAhR,     & 
-& cplcFdFdhhL,cplcFdFdhhR,cplcFuFdcHpmL,cplcFuFdcHpmR,cplFeFecHppmmL,cplFeFecHppmmR,     & 
-& cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcFdFuHpmL,cplcFdFuHpmR,             & 
-& cplFvFvhhL,cplFvFvhhR,cplcFecFeHppmmL,cplcFecFeHppmmR,cplcFdFdVGL,cplcFdFdVGR,         & 
+& YDL,UV,UT,cplAhAhhh,cplAhHpmcHpm,cplAhHppmmcHppmm,cplhhhhhh,cplhhHpmcHpm,              & 
+& cplhhHppmmcHppmm,cplHpmHpmcHppmm,cplHppmmcHpmcHpm,cplAhhhVP,cplAhhhVZ,cplAhhhVZR,      & 
+& cplAhHpmcVWLm,cplAhHpmcVWRm,cplAhcHpmVWLm,cplAhcHpmVWRm,cplhhHpmcVWLm,cplhhHpmcVWRm,   & 
+& cplhhcHpmVWLm,cplhhcHpmVWRm,cplHpmcHpmVP,cplHpmcHppmmVWLm,cplHpmcHppmmVWRm,            & 
+& cplHpmcHpmVZ,cplHpmcHpmVZR,cplHppmmcHppmmVP,cplHppmmcHppmmVZ,cplHppmmcHppmmVZR,        & 
+& cplHppmmcHpmcVWLm,cplHppmmcHpmcVWRm,cplAhcVWRmVWLm,cplAhcVWLmVWRm,cplhhVPVZ,           & 
+& cplhhVPVZR,cplhhcVWLmVWLm,cplhhcVWRmVWLm,cplhhcVWLmVWRm,cplhhcVWRmVWRm,cplhhVZVZ,      & 
+& cplhhVZVZR,cplhhVZRVZR,cplHpmcVWLmVP,cplHpmcVWRmVP,cplHpmcVWLmVZ,cplHpmcVWRmVZ,        & 
+& cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,cplHppmmcVWRmcVWRm,& 
+& cplcHpmVPVWLm,cplcHpmVPVWRm,cplcHppmmVWLmVWLm,cplcHppmmVWLmVWRm,cplcHpmVWLmVZ,         & 
+& cplcHpmVWLmVZR,cplcHppmmVWRmVWRm,cplcHpmVWRmVZ,cplcHpmVWRmVZR,cplVGVGVG,               & 
+& cplcVWLmVPVWLm,cplcVWRmVPVWLm,cplcVWLmVPVWRm,cplcVWRmVPVWRm,cplcVWLmVWLmVZ,            & 
+& cplcVWRmVWLmVZ,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWLmVWRmVZ,cplcVWRmVWRmVZ,          & 
+& cplcVWLmVWRmVZR,cplcVWRmVWRmVZR,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,       & 
+& cplcFuFuAhL,cplcFuFuAhR,cplFvFvAhL,cplFvFvAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdcHpmL,   & 
+& cplcFuFdcHpmR,cplFeFecHppmmL,cplFeFecHppmmR,cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,       & 
+& cplcFuFuhhR,cplcFdFuHpmL,cplcFdFuHpmR,cplFvFvhhL,cplFvFvhhR,cplcFecFeHppmmL,           & 
+& cplcFecFeHppmmR,cplFcFcVPL,cplFcFcVPR,cplFcFcVZL,cplFcFcVZR,cplFcFcVZRL,               & 
+& cplFcFcVZRR,cplFcFcpVWLmL,cplFcFcpVWLmR,cplFcFcpVWRmL,cplFcFcpVWRmR,cplcFcpFccVWLmL,   & 
+& cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVPL,cplcFcpFcpVPR,           & 
+& cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,           & 
+& cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVPL,cplcFcppFcppVPR, & 
+& cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcppFcppVZL,   & 
+& cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVGL,cplcFdFdVGR,             & 
 & cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,             & 
 & cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFeFeVPL,               & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVGL,             & 
@@ -3242,7 +3383,7 @@ Real(dp), Intent(in) :: RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,ZH(4,4),UP(
 & RHO2,gBL,g2,gR,PhiW,g3
 
 Complex(dp), Intent(in) :: rh3,ZZ(3,3),YQ1(3,3),ZDL(3,3),ZDR(3,3),YL1(3,3),ZEL(3,3),ZER(3,3),ZUL(3,3),           & 
-& ZUR(3,3),YDR(3,3),YDL(3,3),UV(6,6)
+& ZUR(3,3),YDR(3,3),YDL(3,3),UV(6,6),UT(2,2)
 
 Complex(dp), Intent(out) :: cplAhAhhh(4,4,4),cplAhHpmcHpm(4,4,4),cplAhHppmmcHppmm(4,2,2),cplhhhhhh(4,4,4),        & 
 & cplhhHpmcHpm(4,4,4),cplhhHppmmcHppmm(4,2,2),cplHpmHpmcHppmm(4,4,2),cplHppmmcHpmcHpm(2,4,4),& 
@@ -3266,6 +3407,13 @@ Complex(dp), Intent(out) :: cplAhAhhh(4,4,4),cplAhHpmcHpm(4,4,4),cplAhHppmmcHppm
 & cplFeFecHppmmL(3,3,2),cplFeFecHppmmR(3,3,2),cplcFeFehhL(3,3,4),cplcFeFehhR(3,3,4),     & 
 & cplcFuFuhhL(3,3,4),cplcFuFuhhR(3,3,4),cplcFdFuHpmL(3,3,4),cplcFdFuHpmR(3,3,4),         & 
 & cplFvFvhhL(6,6,4),cplFvFvhhR(6,6,4),cplcFecFeHppmmL(3,3,2),cplcFecFeHppmmR(3,3,2),     & 
+& cplFcFcVPL(2,2),cplFcFcVPR(2,2),cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplFcFcVZRL(2,2),      & 
+& cplFcFcVZRR(2,2),cplFcFcpVWLmL(2),cplFcFcpVWLmR(2),cplFcFcpVWRmL(2),cplFcFcpVWRmR(2),  & 
+& cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),           & 
+& cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR, & 
+& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,               & 
+& cplcFcppFcppVPL,cplcFcppFcppVPR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,    & 
+& cplcFcpFcppVWRmR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,    & 
 & cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
 & cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFuFdcVWLmL(3,3),              & 
 & cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFeFeVPL(3,3),          & 
@@ -3986,6 +4134,128 @@ Call CouplingcFecFeHppmmT(gt1,gt2,gt3,YDR,YDL,UCC,ZEL,ZER,cplcFecFeHppmmL(gt1,gt
   End Do 
  End Do 
 End Do 
+
+
+cplFcFcVPL = 0._dp 
+cplFcFcVPR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVPT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVPL(gt1,gt2),cplFcFcVPR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZL = 0._dp 
+cplFcFcVZR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZRL = 0._dp 
+cplFcFcVZRR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcpVWLmL = 0._dp 
+cplFcFcpVWLmR = 0._dp 
+Do gt1 = 1, 2
+Call CouplingFcFcpVWLmT(gt1,gR,UT,PhiW,cplFcFcpVWLmL(gt1),cplFcFcpVWLmR(gt1))
+
+End Do 
+
+
+cplFcFcpVWRmL = 0._dp 
+cplFcFcpVWRmR = 0._dp 
+Do gt1 = 1, 2
+Call CouplingFcFcpVWRmT(gt1,gR,UT,PhiW,cplFcFcpVWRmL(gt1),cplFcFcpVWRmR(gt1))
+
+End Do 
+
+
+cplcFcpFccVWLmL = 0._dp 
+cplcFcpFccVWLmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWLmT(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+
+End Do 
+
+
+cplcFcpFccVWRmL = 0._dp 
+cplcFcpFccVWRmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWRmT(gt2,gR,UT,PhiW,cplcFcpFccVWRmL(gt2),cplcFcpFccVWRmR(gt2))
+
+End Do 
+
+
+cplcFcpFcpVPL = 0._dp 
+cplcFcpFcpVPR = 0._dp 
+Call CouplingcFcpFcpVPT(gBL,ZZ,cplcFcpFcpVPL,cplcFcpFcpVPR)
+
+
+
+cplcFcpFcpVZL = 0._dp 
+cplcFcpFcpVZR = 0._dp 
+Call CouplingcFcpFcpVZT(gBL,ZZ,cplcFcpFcpVZL,cplcFcpFcpVZR)
+
+
+
+cplcFcpFcpVZRL = 0._dp 
+cplcFcpFcpVZRR = 0._dp 
+Call CouplingcFcpFcpVZRT(gBL,ZZ,cplcFcpFcpVZRL,cplcFcpFcpVZRR)
+
+
+
+cplcFcppFcpcVWLmL = 0._dp 
+cplcFcppFcpcVWLmR = 0._dp 
+Call CouplingcFcppFcpcVWLmT(gR,PhiW,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR)
+
+
+
+cplcFcppFcpcVWRmL = 0._dp 
+cplcFcppFcpcVWRmR = 0._dp 
+Call CouplingcFcppFcpcVWRmT(gR,PhiW,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR)
+
+
+
+cplcFcppFcppVPL = 0._dp 
+cplcFcppFcppVPR = 0._dp 
+Call CouplingcFcppFcppVPT(gBL,gR,ZZ,cplcFcppFcppVPL,cplcFcppFcppVPR)
+
+
+
+cplcFcpFcppVWLmL = 0._dp 
+cplcFcpFcppVWLmR = 0._dp 
+Call CouplingcFcpFcppVWLmT(gR,PhiW,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR)
+
+
+
+cplcFcpFcppVWRmL = 0._dp 
+cplcFcpFcppVWRmR = 0._dp 
+Call CouplingcFcpFcppVWRmT(gR,PhiW,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR)
+
+
+
+cplcFcppFcppVZL = 0._dp 
+cplcFcppFcppVZR = 0._dp 
+Call CouplingcFcppFcppVZT(gBL,gR,ZZ,cplcFcppFcppVZL,cplcFcppFcppVZR)
+
+
+
+cplcFcppFcppVZRL = 0._dp 
+cplcFcppFcppVZRR = 0._dp 
+Call CouplingcFcppFcppVZRT(gBL,gR,ZZ,cplcFcppFcppVZRL,cplcFcppFcppVZRR)
+
 
 
 cplcFdFdVGL = 0._dp 
@@ -14460,6 +14730,602 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingcFecFeHppmmT  
+ 
+ 
+Subroutine CouplingFcFcVPT(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcVP' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gBL*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(1,1))
+resL = resL+gBL*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(1,1)
+resL = resL+gR*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(3,1)
+resL = resL-(gR*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(3,1))
+resR = 0._dp 
+resR = resR+gBL*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(1,1)
+resR = resR-(gBL*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(1,1))
+resR = resR-(gR*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(3,1))
+resR = resR+gR*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(3,1)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcVPT  
+ 
+ 
+Subroutine CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcVZ' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gBL*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(1,2))
+resL = resL+gBL*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(1,2)
+resL = resL+gR*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(3,2)
+resL = resL-(gR*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(3,2))
+resR = 0._dp 
+resR = resR+gBL*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(1,2)
+resR = resR-(gBL*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(1,2))
+resR = resR-(gR*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(3,2))
+resR = resR+gR*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(3,2)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcVZT  
+ 
+ 
+Subroutine CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcVZR' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gBL*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(1,3))
+resL = resL+gBL*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(1,3)
+resL = resL+gR*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(3,3)
+resL = resL-(gR*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(3,3))
+resR = 0._dp 
+resR = resR+gBL*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(1,3)
+resR = resR-(gBL*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(1,3))
+resR = resR-(gR*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(3,3))
+resR = resR+gR*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(3,3)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcVZRT  
+ 
+ 
+Subroutine CouplingFcFcpVWLmT(gt1,gR,UT,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(in) :: UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcpVWLm' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gR*Sin(PhiW)*UT(gt1,1))
+resR = 0._dp 
+resR = resR-(gR*Conjg(UT(gt1,2))*Sin(PhiW))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcpVWLmT  
+ 
+ 
+Subroutine CouplingFcFcpVWRmT(gt1,gR,UT,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(in) :: UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcpVWRm' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gR*Cos(PhiW)*UT(gt1,1))
+resR = 0._dp 
+resR = resR-(gR*Conjg(UT(gt1,2))*Cos(PhiW))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcpVWRmT  
+ 
+ 
+Subroutine CouplingcFcpFccVWLmT(gt2,gR,UT,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(in) :: UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFccVWLm' 
+ 
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gR*Conjg(UT(gt2,1))*Sin(PhiW))
+resR = 0._dp 
+resR = resR-(gR*Sin(PhiW)*UT(gt2,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFccVWLmT  
+ 
+ 
+Subroutine CouplingcFcpFccVWRmT(gt2,gR,UT,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(in) :: UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFccVWRm' 
+ 
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gR*Conjg(UT(gt2,1))*Cos(PhiW))
+resR = 0._dp 
+resR = resR-(gR*Cos(PhiW)*UT(gt2,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFccVWRmT  
+ 
+ 
+Subroutine CouplingcFcpFcpVPT(gBL,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcpVP' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,1))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,1))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcpVPT  
+ 
+ 
+Subroutine CouplingcFcpFcpVZT(gBL,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcpVZ' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,2))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcpVZT  
+ 
+ 
+Subroutine CouplingcFcpFcpVZRT(gBL,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcpVZR' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,3))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,3))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcpVZRT  
+ 
+ 
+Subroutine CouplingcFcppFcpcVWLmT(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcpcVWLm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Sin(PhiW)
+resR = 0._dp 
+resR = resR+gR*Sin(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcpcVWLmT  
+ 
+ 
+Subroutine CouplingcFcppFcpcVWRmT(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcpcVWRm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Cos(PhiW)
+resR = 0._dp 
+resR = resR+gR*Cos(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcpcVWRmT  
+ 
+ 
+Subroutine CouplingcFcppFcppVPT(gBL,gR,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcppVP' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,1))
+resL = resL-(gR*ZZ(3,1))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,1))
+resR = resR-(gR*ZZ(3,1))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcppVPT  
+ 
+ 
+Subroutine CouplingcFcpFcppVWLmT(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcppVWLm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Sin(PhiW)
+resR = 0._dp 
+resR = resR+gR*Sin(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcppVWLmT  
+ 
+ 
+Subroutine CouplingcFcpFcppVWRmT(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcppVWRm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Cos(PhiW)
+resR = 0._dp 
+resR = resR+gR*Cos(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcppVWRmT  
+ 
+ 
+Subroutine CouplingcFcppFcppVZT(gBL,gR,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcppVZ' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,2))
+resL = resL-(gR*ZZ(3,2))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,2))
+resR = resR-(gR*ZZ(3,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcppVZT  
+ 
+ 
+Subroutine CouplingcFcppFcppVZRT(gBL,gR,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcppVZR' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,3))
+resL = resL-(gR*ZZ(3,3))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,3))
+resR = resR-(gR*ZZ(3,3))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcppVZRT  
  
  
 Subroutine CouplingcFdFdVGT(gt1,gt2,g3,resL,resR)
@@ -24985,7 +25851,7 @@ End Subroutine CouplingcFuFuVG2L
  
 Subroutine CouplingsForLoopMasses(RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,v1,              & 
 & v2,vtl,vtr,UP,gBL,g2,gR,ZZ,YQ1,ZDL,ZDR,YL1,ZEL,ZER,ZUL,ZUR,YDR,YDL,UV,PhiW,            & 
-& ZH,UC,RHO2,UCC,g3,cplAhAhUhh,cplAhUhhVP,cplAhUhhVZ,cplAhUhhVZR,cplcFdFdUhhL,           & 
+& ZH,UC,RHO2,UCC,g3,UT,cplAhAhUhh,cplAhUhhVP,cplAhUhhVZ,cplAhUhhVZR,cplcFdFdUhhL,        & 
 & cplcFdFdUhhR,cplcFeFeUhhL,cplcFeFeUhhR,cplcFuFuUhhL,cplcFuFuUhhR,cplFvFvUhhL,          & 
 & cplFvFvUhhR,cplcgWLmgWLmUhh,cplcgWRmgWLmUhh,cplcgWLmgWRmUhh,cplcgWLpgWLpUhh,           & 
 & cplcgWRpgWLpUhh,cplcgWLpgWRpUhh,cplcgWRmgWRmUhh,cplcgWRpgWRpUhh,cplcgZgZUhh,           & 
@@ -25026,43 +25892,49 @@ Subroutine CouplingsForLoopMasses(RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,v1,        
 & cplcUFeFehhL,cplcUFeFehhR,cplcUFeFeVPL,cplcUFeFeVPR,cplcUFeFeVZL,cplcUFeFeVZR,         & 
 & cplcUFeFeVZRL,cplcUFeFeVZRR,cplcUFecFeHppmmL,cplcUFecFeHppmmR,cplUFvFvAhL,             & 
 & cplUFvFvAhR,cplUFvFvhhL,cplUFvFvhhR,cplUFvFvVPL,cplUFvFvVPR,cplUFvFvVZL,               & 
-& cplUFvFvVZR,cplUFvFvVZRL,cplUFvFvVZRR,cplAhhhVZ,cplcFdFdVZL,cplcFdFdVZR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,  & 
-& cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
-& cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,               & 
-& cplHppmmcHppmmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,             & 
-& cplhhhhVZVZ,cplHpmcHpmVZVZ,cplHppmmcHppmmVZVZ,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,     & 
-& cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,               & 
-& cplAhhhVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,           & 
-& cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,  & 
-& cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZRVZR,cplHpmcHpmVZR,  & 
-& cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplHppmmcHppmmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,       & 
-& cplcVWRmVWRmVZR,cplAhAhVZRVZR,cplhhhhVZRVZR,cplHpmcHpmVZRVZR,cplHppmmcHppmmVZRVZR,     & 
-& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWRmVWRmVZRVZR1,       & 
-& cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFuFdcVWLmL,   & 
-& cplcFuFdcVWLmR,cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,        & 
-& cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,     & 
-& cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm,cplhhcVWLmVWLm,        & 
-& cplhhcVWLmVWRm,cplHpmcVWLmVP,cplHppmmcHpmcVWLm,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,  & 
-& cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm,         & 
-& cplhhhhcVWLmVWLm,cplHpmcHpmcVWLmVWLm,cplHppmmcHppmmcVWLmVWLm,cplcVWLmVPVPVWLm1,        & 
-& cplcVWLmVPVPVWLm2,cplcVWLmVPVPVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,     & 
-& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,& 
-& cplAhHpmcVWRm,cplAhcVWRmVWLm,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcgWLpgPcVWRm,            & 
-& cplcgWRpgPcVWRm,cplcgPgWLmcVWRm,cplcgZgWLmcVWRm,cplcgZpgWLmcVWRm,cplcgPgWRmcVWRm,      & 
-& cplcgZgWRmcVWRm,cplcgZpgWRmcVWRm,cplcgWLpgZcVWRm,cplcgWRpgZcVWRm,cplcgWLpgZpcVWRm,     & 
-& cplcgWRpgZpcVWRm,cplhhHpmcVWRm,cplhhcVWRmVWLm,cplhhcVWRmVWRm,cplHpmcVWRmVP,            & 
-& cplHppmmcHpmcVWRm,cplHppmmcVWRmcVWRm,cplcVWRmVPVWLm,cplcVWRmVPVWRm,cplAhAhcVWRmVWRm,   & 
-& cplhhhhcVWRmVWRm,cplHpmcHpmcVWRmVWRm,cplHppmmcHppmmcVWRmVWRm,cplcVWRmVPVPVWRm1,        & 
-& cplcVWRmVPVPVWRm2,cplcVWRmVPVPVWRm3,cplcVWRmcVWRmVWRmVWRm1,cplcVWRmcVWRmVWRmVWRm2,     & 
-& cplcVWRmcVWRmVWRmVWRm3)
+& cplUFvFvVZR,cplUFvFvVZRL,cplUFvFvVZRR,cplUFcFcVPL,cplUFcFcVPR,cplUFcFcVZL,             & 
+& cplUFcFcVZR,cplUFcFcVZRL,cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,cplUFcFcpVWRmL,    & 
+& cplUFcFcpVWRmR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,        & 
+& cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR, & 
+& cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcppFcpcVWLmL, & 
+& cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVPL,cplcFcppFcppVPR, & 
+& cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplAhhhVZ,           & 
+& cplFcFcVZL,cplFcFcVZR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,     & 
+& cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,        & 
+& cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,           & 
+& cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplHppmmcHppmmVZ,cplcVWLmVWLmVZ,              & 
+& cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,cplHppmmcHppmmVZVZ,& 
+& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
+& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplAhhhVZR,cplFcFcVZRL,cplFcFcVZRR,cplcFdFdVZRL,   & 
+& cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVZRL,          & 
+& cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,           & 
+& cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZRVZR,cplHpmcHpmVZR,cplHpmcVWLmVZR,   & 
+& cplHpmcVWRmVZR,cplHppmmcHppmmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,      & 
+& cplAhAhVZRVZR,cplhhhhVZRVZR,cplHpmcHpmVZRVZR,cplHppmmcHppmmVZRVZR,cplcVWLmVWLmVZRVZR1, & 
+& cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,       & 
+& cplcVWRmVWRmVZRVZR3,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFuFdcVWLmL,cplcFuFdcVWLmR,        & 
+& cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,      & 
+& cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,      & 
+& cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm,cplhhcVWLmVWLm,cplhhcVWLmVWRm,         & 
+& cplHpmcVWLmVP,cplHppmmcHpmcVWLm,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,cplcVWLmVPVWLm,  & 
+& cplcVWLmVPVWRm,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm,cplhhhhcVWLmVWLm,       & 
+& cplHpmcHpmcVWLmVWLm,cplHppmmcHppmmcVWLmVWLm,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,       & 
+& cplcVWLmVPVPVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,& 
+& cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplAhHpmcVWRm,    & 
+& cplAhcVWRmVWLm,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcgWLpgPcVWRm,cplcgWRpgPcVWRm,          & 
+& cplcgPgWLmcVWRm,cplcgZgWLmcVWRm,cplcgZpgWLmcVWRm,cplcgPgWRmcVWRm,cplcgZgWRmcVWRm,      & 
+& cplcgZpgWRmcVWRm,cplcgWLpgZcVWRm,cplcgWRpgZcVWRm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWRm,    & 
+& cplhhHpmcVWRm,cplhhcVWRmVWLm,cplhhcVWRmVWRm,cplHpmcVWRmVP,cplHppmmcHpmcVWRm,           & 
+& cplHppmmcVWRmcVWRm,cplcVWRmVPVWLm,cplcVWRmVPVWRm,cplAhAhcVWRmVWRm,cplhhhhcVWRmVWRm,    & 
+& cplHpmcHpmcVWRmVWRm,cplHppmmcHppmmcVWRmVWRm,cplcVWRmVPVPVWRm1,cplcVWRmVPVPVWRm2,       & 
+& cplcVWRmVPVPVWRm3,cplcVWRmcVWRmVWRmVWRm1,cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3)
 
 Implicit None 
 Real(dp), Intent(in) :: RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,UP(4,4),gBL,g2,gR,PhiW,ZH(4,4),          & 
 & UC(4,4),RHO2,UCC(2,2),g3
 
 Complex(dp), Intent(in) :: rh3,ZZ(3,3),YQ1(3,3),ZDL(3,3),ZDR(3,3),YL1(3,3),ZEL(3,3),ZER(3,3),ZUL(3,3),           & 
-& ZUR(3,3),YDR(3,3),YDL(3,3),UV(6,6)
+& ZUR(3,3),YDR(3,3),YDL(3,3),UV(6,6),UT(2,2)
 
 Complex(dp), Intent(out) :: cplAhAhUhh(4,4,4),cplAhUhhVP(4,4),cplAhUhhVZ(4,4),cplAhUhhVZR(4,4),cplcFdFdUhhL(3,3,4),& 
 & cplcFdFdUhhR(3,3,4),cplcFeFeUhhL(3,3,4),cplcFeFeUhhR(3,3,4),cplcFuFuUhhL(3,3,4),       & 
@@ -25119,28 +25991,36 @@ Complex(dp), Intent(out) :: cplhhhhUHppmmcUHppmm(4,4,2,2),cplHpmUHppmmcHpmcUHppm
 & cplcUFeFeVZRR(3,3),cplcUFecFeHppmmL(3,3,2),cplcUFecFeHppmmR(3,3,2),cplUFvFvAhL(6,6,4), & 
 & cplUFvFvAhR(6,6,4),cplUFvFvhhL(6,6,4),cplUFvFvhhR(6,6,4),cplUFvFvVPL(6,6),             & 
 & cplUFvFvVPR(6,6),cplUFvFvVZL(6,6),cplUFvFvVZR(6,6),cplUFvFvVZRL(6,6),cplUFvFvVZRR(6,6),& 
-& cplAhhhVZ(4,4),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),    & 
-& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplcgWLmgWLmVZ,      & 
-& cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
-& cplhhVPVZ(4),cplhhVZVZ(4),cplhhVZVZR(4),cplHpmcHpmVZ(4,4),cplHpmcVWLmVZ(4),            & 
-& cplHpmcVWRmVZ(4),cplHppmmcHppmmVZ(2,2),cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,   & 
-& cplAhAhVZVZ(4,4),cplhhhhVZVZ(4,4),cplHpmcHpmVZVZ(4,4),cplHppmmcHppmmVZVZ(2,2),         & 
-& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
-& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplAhhhVZR(4,4),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),& 
+& cplUFcFcVPL(2,2),cplUFcFcVPR(2,2),cplUFcFcVZL(2,2),cplUFcFcVZR(2,2),cplUFcFcVZRL(2,2), & 
+& cplUFcFcVZRR(2,2),cplUFcFcpVWLmL(2),cplUFcFcpVWLmR(2),cplUFcFcpVWRmL(2),               & 
+& cplUFcFcpVWRmR(2),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),            & 
+& cplcFcpFccVWRmR(2),cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,            & 
+& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,      & 
+& cplcFcpFcppVWRmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,& 
+& cplcFcppFcppVPL,cplcFcppFcppVPR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,      & 
+& cplcFcppFcppVZRR,cplAhhhVZ(4,4),cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplcFdFdVZL(3,3),      & 
+& cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),  & 
+& cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,          & 
+& cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ(4),cplhhVZVZ(4),cplhhVZVZR(4),  & 
+& cplHpmcHpmVZ(4,4),cplHpmcVWLmVZ(4),cplHpmcVWRmVZ(4),cplHppmmcHppmmVZ(2,2),             & 
+& cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ(4,4),cplhhhhVZVZ(4,4),        & 
+& cplHpmcHpmVZVZ(4,4),cplHppmmcHppmmVZVZ(2,2),cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,       & 
+& cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,               & 
+& cplAhhhVZR(4,4),cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3), & 
 & cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),               & 
 & cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,     & 
 & cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR(4),cplhhVZRVZR(4),          & 
-& cplHpmcHpmVZR(4,4),cplHpmcVWLmVZR(4),cplHpmcVWRmVZR(4),cplHppmmcHppmmVZR(2,2),         & 
-& cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR(4,4),cplhhhhVZRVZR(4,4), & 
+& cplHpmcHpmVZR(4,4),cplHpmcVWLmVZR(4),cplHpmcVWRmVZR(4),cplHppmmcHppmmVZR(2,2)
+
+Complex(dp), Intent(out) :: cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR(4,4),cplhhhhVZRVZR(4,4), & 
 & cplHpmcHpmVZRVZR(4,4),cplHppmmcHppmmVZRVZR(2,2),cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,& 
 & cplcVWLmVWLmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,       & 
 & cplAhHpmcVWLm(4,4),cplAhcVWLmVWRm(4),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),          & 
 & cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,      & 
 & cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,      & 
 & cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm(4,4),cplhhcVWLmVWLm(4),cplhhcVWLmVWRm(4),& 
-& cplHpmcVWLmVP(4),cplHppmmcHpmcVWLm(2,4),cplHppmmcVWLmcVWLm(2),cplHppmmcVWLmcVWRm(2)
-
-Complex(dp), Intent(out) :: cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm(4,4),    & 
+& cplHpmcVWLmVP(4),cplHppmmcHpmcVWLm(2,4),cplHppmmcVWLmcVWLm(2),cplHppmmcVWLmcVWRm(2),   & 
+& cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm(4,4),    & 
 & cplhhhhcVWLmVWLm(4,4),cplHpmcHpmcVWLmVWLm(4,4),cplHppmmcHppmmcVWLmVWLm(2,2),           & 
 & cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmVPVPVWLm3,cplcVWLmcVWLmVWLmVWLm1,          & 
 & cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,& 
@@ -26831,10 +27711,142 @@ Call CouplingUFvFvVZRL(gt1,gt2,gBL,g2,gR,ZZ,UV,cplUFvFvVZRL(gt1,gt2),cplUFvFvVZR
 End Do 
 
 
+cplUFcFcVPL = 0._dp 
+cplUFcFcVPR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingUFcFcVPL(gt1,gt2,gBL,gR,ZZ,UT,cplUFcFcVPL(gt1,gt2),cplUFcFcVPR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplUFcFcVZL = 0._dp 
+cplUFcFcVZR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingUFcFcVZL(gt1,gt2,gBL,gR,ZZ,UT,cplUFcFcVZL(gt1,gt2),cplUFcFcVZR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplUFcFcVZRL = 0._dp 
+cplUFcFcVZRR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingUFcFcVZRL(gt1,gt2,gBL,gR,ZZ,UT,cplUFcFcVZRL(gt1,gt2),cplUFcFcVZRR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplUFcFcpVWLmL = 0._dp 
+cplUFcFcpVWLmR = 0._dp 
+Do gt1 = 1, 2
+Call CouplingUFcFcpVWLmL(gt1,gR,PhiW,cplUFcFcpVWLmL(gt1),cplUFcFcpVWLmR(gt1))
+
+End Do 
+
+
+cplUFcFcpVWRmL = 0._dp 
+cplUFcFcpVWRmR = 0._dp 
+Do gt1 = 1, 2
+Call CouplingUFcFcpVWRmL(gt1,gR,PhiW,cplUFcFcpVWRmL(gt1),cplUFcFcpVWRmR(gt1))
+
+End Do 
+
+
+cplcFcpFccVWLmL = 0._dp 
+cplcFcpFccVWLmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWLmL(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+
+End Do 
+
+
+cplcFcpFccVWRmL = 0._dp 
+cplcFcpFccVWRmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWRmL(gt2,gR,UT,PhiW,cplcFcpFccVWRmL(gt2),cplcFcpFccVWRmR(gt2))
+
+End Do 
+
+
+cplcFcpFcpVPL = 0._dp 
+cplcFcpFcpVPR = 0._dp 
+Call CouplingcFcpFcpVPL(gBL,ZZ,cplcFcpFcpVPL,cplcFcpFcpVPR)
+
+
+
+cplcFcpFcpVZL = 0._dp 
+cplcFcpFcpVZR = 0._dp 
+Call CouplingcFcpFcpVZL(gBL,ZZ,cplcFcpFcpVZL,cplcFcpFcpVZR)
+
+
+
+cplcFcpFcpVZRL = 0._dp 
+cplcFcpFcpVZRR = 0._dp 
+Call CouplingcFcpFcpVZRL(gBL,ZZ,cplcFcpFcpVZRL,cplcFcpFcpVZRR)
+
+
+
+cplcFcpFcppVWLmL = 0._dp 
+cplcFcpFcppVWLmR = 0._dp 
+Call CouplingcFcpFcppVWLmL(gR,PhiW,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR)
+
+
+
+cplcFcpFcppVWRmL = 0._dp 
+cplcFcpFcppVWRmR = 0._dp 
+Call CouplingcFcpFcppVWRmL(gR,PhiW,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR)
+
+
+
+cplcFcppFcpcVWLmL = 0._dp 
+cplcFcppFcpcVWLmR = 0._dp 
+Call CouplingcFcppFcpcVWLmL(gR,PhiW,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR)
+
+
+
+cplcFcppFcpcVWRmL = 0._dp 
+cplcFcppFcpcVWRmR = 0._dp 
+Call CouplingcFcppFcpcVWRmL(gR,PhiW,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR)
+
+
+
+cplcFcppFcppVPL = 0._dp 
+cplcFcppFcppVPR = 0._dp 
+Call CouplingcFcppFcppVPL(gBL,gR,ZZ,cplcFcppFcppVPL,cplcFcppFcppVPR)
+
+
+
+cplcFcppFcppVZL = 0._dp 
+cplcFcppFcppVZR = 0._dp 
+Call CouplingcFcppFcppVZL(gBL,gR,ZZ,cplcFcppFcppVZL,cplcFcppFcppVZR)
+
+
+
+cplcFcppFcppVZRL = 0._dp 
+cplcFcppFcppVZRR = 0._dp 
+Call CouplingcFcppFcppVZRL(gBL,gR,ZZ,cplcFcppFcppVZRL,cplcFcppFcppVZRR)
+
+
+
 cplAhhhVZ = 0._dp 
 Do gt1 = 1, 4
  Do gt2 = 1, 4
 Call CouplingAhhhVZL(gt1,gt2,gBL,g2,gR,ZZ,ZH,UP,cplAhhhVZ(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZL = 0._dp 
+cplFcFcVZR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZL(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
 
  End Do 
 End Do 
@@ -27034,6 +28046,16 @@ cplAhhhVZR = 0._dp
 Do gt1 = 1, 4
  Do gt2 = 1, 4
 Call CouplingAhhhVZRL(gt1,gt2,gBL,g2,gR,ZZ,ZH,UP,cplAhhhVZR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZRL = 0._dp 
+cplFcFcVZRR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZRL(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
 
  End Do 
 End Do 
@@ -41634,6 +42656,654 @@ Iname = Iname - 1
 End Subroutine CouplingUFvFvVZRL  
  
  
+Subroutine CouplingUFcFcVPL(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUFcFcVP' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((1.eq.gt1)) Then 
+resL = resL-(gBL*Conjg(UT(gt2,1))*ZZ(1,1))
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL+gBL*Conjg(UT(gt2,2))*ZZ(1,1)
+End If 
+If ((1.eq.gt1)) Then 
+resL = resL+gR*Conjg(UT(gt2,1))*ZZ(3,1)
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL-(gR*Conjg(UT(gt2,2))*ZZ(3,1))
+End If 
+resR = 0._dp 
+If ((1.eq.gt1)) Then 
+resR = resR+gBL*UT(gt2,1)*ZZ(1,1)
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR-(gBL*UT(gt2,2)*ZZ(1,1))
+End If 
+If ((1.eq.gt1)) Then 
+resR = resR-(gR*UT(gt2,1)*ZZ(3,1))
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR+gR*UT(gt2,2)*ZZ(3,1)
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUFcFcVPL  
+ 
+ 
+Subroutine CouplingUFcFcVZL(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUFcFcVZ' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((1.eq.gt1)) Then 
+resL = resL-(gBL*Conjg(UT(gt2,1))*ZZ(1,2))
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL+gBL*Conjg(UT(gt2,2))*ZZ(1,2)
+End If 
+If ((1.eq.gt1)) Then 
+resL = resL+gR*Conjg(UT(gt2,1))*ZZ(3,2)
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL-(gR*Conjg(UT(gt2,2))*ZZ(3,2))
+End If 
+resR = 0._dp 
+If ((1.eq.gt1)) Then 
+resR = resR+gBL*UT(gt2,1)*ZZ(1,2)
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR-(gBL*UT(gt2,2)*ZZ(1,2))
+End If 
+If ((1.eq.gt1)) Then 
+resR = resR-(gR*UT(gt2,1)*ZZ(3,2))
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR+gR*UT(gt2,2)*ZZ(3,2)
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUFcFcVZL  
+ 
+ 
+Subroutine CouplingUFcFcVZRL(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUFcFcVZR' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((1.eq.gt1)) Then 
+resL = resL-(gBL*Conjg(UT(gt2,1))*ZZ(1,3))
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL+gBL*Conjg(UT(gt2,2))*ZZ(1,3)
+End If 
+If ((1.eq.gt1)) Then 
+resL = resL+gR*Conjg(UT(gt2,1))*ZZ(3,3)
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL-(gR*Conjg(UT(gt2,2))*ZZ(3,3))
+End If 
+resR = 0._dp 
+If ((1.eq.gt1)) Then 
+resR = resR+gBL*UT(gt2,1)*ZZ(1,3)
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR-(gBL*UT(gt2,2)*ZZ(1,3))
+End If 
+If ((1.eq.gt1)) Then 
+resR = resR-(gR*UT(gt2,1)*ZZ(3,3))
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR+gR*UT(gt2,2)*ZZ(3,3)
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUFcFcVZRL  
+ 
+ 
+Subroutine CouplingUFcFcpVWLmL(gt1,gR,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUFcFcpVWLm' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((1.eq.gt1)) Then 
+resL = resL-(gR*Sin(PhiW))
+End If 
+resR = 0._dp 
+If ((2.eq.gt1)) Then 
+resR = resR-(gR*Sin(PhiW))
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUFcFcpVWLmL  
+ 
+ 
+Subroutine CouplingUFcFcpVWRmL(gt1,gR,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUFcFcpVWRm' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((1.eq.gt1)) Then 
+resL = resL-(gR*Cos(PhiW))
+End If 
+resR = 0._dp 
+If ((2.eq.gt1)) Then 
+resR = resR-(gR*Cos(PhiW))
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUFcFcpVWRmL  
+ 
+ 
+Subroutine CouplingcFcpFccVWLmL(gt2,gR,UT,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(in) :: UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFccVWLm' 
+ 
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gR*Conjg(UT(gt2,1))*Sin(PhiW))
+resR = 0._dp 
+resR = resR-(gR*Sin(PhiW)*UT(gt2,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFccVWLmL  
+ 
+ 
+Subroutine CouplingcFcpFccVWRmL(gt2,gR,UT,PhiW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(in) :: UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFccVWRm' 
+ 
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gR*Conjg(UT(gt2,1))*Cos(PhiW))
+resR = 0._dp 
+resR = resR-(gR*Cos(PhiW)*UT(gt2,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFccVWRmL  
+ 
+ 
+Subroutine CouplingcFcpFcpVPL(gBL,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcpVP' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,1))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,1))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcpVPL  
+ 
+ 
+Subroutine CouplingcFcpFcpVZL(gBL,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcpVZ' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,2))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcpVZL  
+ 
+ 
+Subroutine CouplingcFcpFcpVZRL(gBL,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcpVZR' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,3))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,3))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcpVZRL  
+ 
+ 
+Subroutine CouplingcFcpFcppVWLmL(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcppVWLm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Sin(PhiW)
+resR = 0._dp 
+resR = resR+gR*Sin(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcppVWLmL  
+ 
+ 
+Subroutine CouplingcFcpFcppVWRmL(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcpFcppVWRm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Cos(PhiW)
+resR = 0._dp 
+resR = resR+gR*Cos(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcpFcppVWRmL  
+ 
+ 
+Subroutine CouplingcFcppFcpcVWLmL(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcpcVWLm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Sin(PhiW)
+resR = 0._dp 
+resR = resR+gR*Sin(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcpcVWLmL  
+ 
+ 
+Subroutine CouplingcFcppFcpcVWRmL(gR,PhiW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gR,PhiW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcpcVWRm' 
+ 
+resL = 0._dp 
+resL = resL+gR*Cos(PhiW)
+resR = 0._dp 
+resR = resR+gR*Cos(PhiW)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcpcVWRmL  
+ 
+ 
+Subroutine CouplingcFcppFcppVPL(gBL,gR,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcppVP' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,1))
+resL = resL-(gR*ZZ(3,1))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,1))
+resR = resR-(gR*ZZ(3,1))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcppVPL  
+ 
+ 
+Subroutine CouplingcFcppFcppVZL(gBL,gR,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcppVZ' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,2))
+resL = resL-(gR*ZZ(3,2))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,2))
+resR = resR-(gR*ZZ(3,2))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcppVZL  
+ 
+ 
+Subroutine CouplingcFcppFcppVZRL(gBL,gR,ZZ,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFcppFcppVZR' 
+ 
+resL = 0._dp 
+resL = resL-(gBL*ZZ(1,3))
+resL = resL-(gR*ZZ(3,3))
+resR = 0._dp 
+resR = resR-(gBL*ZZ(1,3))
+resR = resR-(gR*ZZ(3,3))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFcppFcppVZRL  
+ 
+ 
 Subroutine CouplingAhhhVZL(gt1,gt2,gBL,g2,gR,ZZ,ZH,UP,res)
 
 Implicit None 
@@ -41685,6 +43355,58 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingAhhhVZL  
+ 
+ 
+Subroutine CouplingFcFcVZL(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcVZ' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gBL*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(1,2))
+resL = resL+gBL*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(1,2)
+resL = resL+gR*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(3,2)
+resL = resL-(gR*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(3,2))
+resR = 0._dp 
+resR = resR+gBL*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(1,2)
+resR = resR-(gBL*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(1,2))
+resR = resR-(gR*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(3,2))
+resR = resR+gR*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(3,2)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcVZL  
  
  
 Subroutine CouplingcFdFdVZL(gt1,gt2,gBL,g2,gR,ZZ,resL,resR)
@@ -42851,6 +44573,58 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingAhhhVZRL  
+ 
+ 
+Subroutine CouplingFcFcVZRL(gt1,gt2,gBL,gR,ZZ,UT,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: gBL,gR
+
+Complex(dp), Intent(in) :: ZZ(3,3),UT(2,2)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingFcFcVZR' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.2)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(gBL*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(1,3))
+resL = resL+gBL*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(1,3)
+resL = resL+gR*Conjg(UT(gt2,1))*UT(gt1,1)*ZZ(3,3)
+resL = resL-(gR*Conjg(UT(gt2,2))*UT(gt1,2)*ZZ(3,3))
+resR = 0._dp 
+resR = resR+gBL*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(1,3)
+resR = resR-(gBL*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(1,3))
+resR = resR-(gR*Conjg(UT(gt1,1))*UT(gt2,1)*ZZ(3,3))
+resR = resR+gR*Conjg(UT(gt1,2))*UT(gt2,2)*ZZ(3,3)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingFcFcVZRL  
  
  
 Subroutine CouplingcFdFdVZRL(gt1,gt2,gBL,g2,gR,ZZ,resL,resR)
@@ -46142,37 +47916,41 @@ Iname = Iname - 1
 End Subroutine CouplingcVWRmcVWRmVWRmVWRmL  
  
  
-Subroutine CouplingsForVectorBosons(gBL,g2,gR,ZZ,ZH,UP,UV,PhiW,v1,v2,vtl,             & 
-& vtr,UC,UCC,ZDL,ZDR,ZUL,ZUR,cplAhhhVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,              & 
-& cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,              & 
-& cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
-& cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,               & 
-& cplHppmmcHppmmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,             & 
-& cplhhhhVZVZ,cplHpmcHpmVZVZ,cplHppmmcHppmmVZVZ,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,     & 
-& cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,               & 
-& cplHpmcVWLmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,& 
-& cplcVWLmVWLmVZRVZR3,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFuFdcVWLmL,cplcFuFdcVWLmR,        & 
-& cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,      & 
-& cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,      & 
-& cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm,cplhhcVWLmVWLm,cplhhcVWLmVWRm,         & 
-& cplHpmcVWLmVP,cplHppmmcHpmcVWLm,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,cplcVWLmVPVWLm,  & 
-& cplcVWLmVPVWRm,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm,cplhhhhcVWLmVWLm,       & 
-& cplHpmcHpmcVWLmVWLm,cplHppmmcHppmmcVWLmVWLm,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,       & 
-& cplcVWLmVPVPVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,& 
-& cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplAhcVWRmVWLm,   & 
-& cplhhcVWRmVWLm,cplcVWRmVPVWLm)
+Subroutine CouplingsForVectorBosons(gR,UT,PhiW,gBL,ZZ,g2,ZH,UP,UV,v1,v2,              & 
+& vtl,vtr,UC,UCC,ZDL,ZDR,ZUL,ZUR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFcpVZL,          & 
+& cplcFcpFcpVZR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,   & 
+& cplcFcppFcppVZL,cplcFcppFcppVZR,cplAhhhVZ,cplFcFcVZL,cplFcFcVZR,cplcFdFdVZL,           & 
+& cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,     & 
+& cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,            & 
+& cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,              & 
+& cplHpmcVWRmVZ,cplHppmmcHppmmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,           & 
+& cplAhAhVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,cplHppmmcHppmmVZVZ,cplcVWLmVWLmVZVZ1,           & 
+& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,               & 
+& cplcVWRmVWRmVZVZ3,cplHpmcVWLmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWLmVWLmVZRVZR1,  & 
+& cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFuFdcVWLmL,   & 
+& cplcFuFdcVWLmR,cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,        & 
+& cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,     & 
+& cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm,cplhhcVWLmVWLm,        & 
+& cplhhcVWLmVWRm,cplHpmcVWLmVP,cplHppmmcHpmcVWLm,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,  & 
+& cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm,         & 
+& cplhhhhcVWLmVWLm,cplHpmcHpmcVWLmVWLm,cplHppmmcHppmmcVWLmVWLm,cplcVWLmVPVPVWLm1,        & 
+& cplcVWLmVPVPVWLm2,cplcVWLmVPVPVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,     & 
+& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,& 
+& cplAhcVWRmVWLm,cplhhcVWRmVWLm,cplcVWRmVPVWLm)
 
 Implicit None 
-Real(dp), Intent(in) :: gBL,g2,gR,ZH(4,4),UP(4,4),PhiW,v1,v2,vtl,vtr,UC(4,4),UCC(2,2)
+Real(dp), Intent(in) :: gR,PhiW,gBL,g2,ZH(4,4),UP(4,4),v1,v2,vtl,vtr,UC(4,4),UCC(2,2)
 
-Complex(dp), Intent(in) :: ZZ(3,3),UV(6,6),ZDL(3,3),ZDR(3,3),ZUL(3,3),ZUR(3,3)
+Complex(dp), Intent(in) :: UT(2,2),ZZ(3,3),UV(6,6),ZDL(3,3),ZDR(3,3),ZUL(3,3),ZUR(3,3)
 
-Complex(dp), Intent(out) :: cplAhhhVZ(4,4),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),   & 
-& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplcgWLmgWLmVZ,      & 
-& cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
-& cplhhVPVZ(4),cplhhVZVZ(4),cplhhVZVZR(4),cplHpmcHpmVZ(4,4),cplHpmcVWLmVZ(4),            & 
-& cplHpmcVWRmVZ(4),cplHppmmcHppmmVZ(2,2),cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,   & 
-& cplAhAhVZVZ(4,4),cplhhhhVZVZ(4,4),cplHpmcHpmVZVZ(4,4),cplHppmmcHppmmVZVZ(2,2),         & 
+Complex(dp), Intent(out) :: cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcppVWLmL,   & 
+& cplcFcpFcppVWLmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcppVZL,cplcFcppFcppVZR,  & 
+& cplAhhhVZ(4,4),cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),      & 
+& cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),   & 
+& cplFvFvVZR(6,6),cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,           & 
+& cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ(4),cplhhVZVZ(4),cplhhVZVZR(4),cplHpmcHpmVZ(4,4),& 
+& cplHpmcVWLmVZ(4),cplHpmcVWRmVZ(4),cplHppmmcHppmmVZ(2,2),cplcVWLmVWLmVZ,cplcVWRmVWLmVZ, & 
+& cplcVWRmVWRmVZ,cplAhAhVZVZ(4,4),cplhhhhVZVZ(4,4),cplHpmcHpmVZVZ(4,4),cplHppmmcHppmmVZVZ(2,2),& 
 & cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
 & cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplHpmcVWLmVZR(4),cplcVWLmVWLmVZR,cplcVWRmVWLmVZR, & 
 & cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplAhHpmcVWLm(4,4),        & 
@@ -46192,10 +47970,52 @@ Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'CouplingsForVectorBosons'
  
+cplcFcpFccVWLmL = 0._dp 
+cplcFcpFccVWLmR = 0._dp 
+Do gt2 = 1, 2
+Call CouplingcFcpFccVWLmL(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+
+End Do 
+
+
+cplcFcpFcpVZL = 0._dp 
+cplcFcpFcpVZR = 0._dp 
+Call CouplingcFcpFcpVZL(gBL,ZZ,cplcFcpFcpVZL,cplcFcpFcpVZR)
+
+
+
+cplcFcpFcppVWLmL = 0._dp 
+cplcFcpFcppVWLmR = 0._dp 
+Call CouplingcFcpFcppVWLmL(gR,PhiW,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR)
+
+
+
+cplcFcppFcpcVWLmL = 0._dp 
+cplcFcppFcpcVWLmR = 0._dp 
+Call CouplingcFcppFcpcVWLmL(gR,PhiW,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR)
+
+
+
+cplcFcppFcppVZL = 0._dp 
+cplcFcppFcppVZR = 0._dp 
+Call CouplingcFcppFcppVZL(gBL,gR,ZZ,cplcFcppFcppVZL,cplcFcppFcppVZR)
+
+
+
 cplAhhhVZ = 0._dp 
 Do gt1 = 1, 4
  Do gt2 = 1, 4
 Call CouplingAhhhVZL(gt1,gt2,gBL,g2,gR,ZZ,ZH,UP,cplAhhhVZ(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplFcFcVZL = 0._dp 
+cplFcFcVZR = 0._dp 
+Do gt1 = 1, 2
+ Do gt2 = 1, 2
+Call CouplingFcFcVZL(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
 
  End Do 
 End Do 

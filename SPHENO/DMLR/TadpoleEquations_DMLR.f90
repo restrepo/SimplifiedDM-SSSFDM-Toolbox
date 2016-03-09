@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:16 on 9.3.2016   
+! File created at 15:47 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -20,17 +20,17 @@ Contains
 
 
 Subroutine SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,           & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr,Tad1Loop)
+& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,Tad1Loop)
 
 Implicit None
-Real(dp),Intent(inout) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12,v1,v2,vtl,vtr
+Real(dp),Intent(inout) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
 
 Complex(dp),Intent(inout) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
 Complex(dp), Intent(in) :: Tad1Loop(4)
 
 ! For numerical routines 
-Real(dp) :: gC(94)
+Real(dp) :: gC(95)
 logical :: broycheck 
 Real(dp) :: broyx(4)
 
@@ -120,9 +120,9 @@ End If
 End Subroutine SolveTadpoleEquations
 
 Subroutine CalculateTadpoles(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr,Tad1Loop,TadpoleValues)
+& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,Tad1Loop,TadpoleValues)
 
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12,v1,v2,vtl,vtr
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
 
 Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 

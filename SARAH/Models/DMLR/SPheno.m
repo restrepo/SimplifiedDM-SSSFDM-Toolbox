@@ -4,8 +4,9 @@ OnlyLowEnergySPheno = True;
 
 MINPAR={{1, gRinput},
         {2, vtRinput},
-        {3, vHRinput},
-        {4, vHLinput},
+	{3, M23INPUT},
+        (*{3, vHRinput},
+        {4, vHLinput},*)
         {5, vtLinput},
         {6, TanBeta},
         {10, lam1INPUT},
@@ -41,11 +42,12 @@ BoundaryLowScaleInput={
  {gR, gRinput},
  {gBL, (g1SM*gR)/Sqrt[-g1SM^2 + gR^2]},
  {vtR, vtRinput},
- {vHR, vHRinput},
+ (*{vHR, vHRinput},*)
  {vtL, vtLinput},
- {vHL, vHLinput},
- {v2, TanBeta*Sqrt[vSM^2 - vHL^2 - 2*vtL^2]/Sqrt[1 + TanBeta^2]},
+ (*{vHL, vHLinput},*)
+ {v2, TanBeta*Sqrt[vSM^2 (*- vHL^2*) - 2*vtL^2]/Sqrt[1 + TanBeta^2]},
  {v1, v2/TanBeta},
+ {M23, M23INPUT},
  {lam1, lam1INPUT},
  {rho1, rho1INPUT},
  {rho2, rho2INPUT},
@@ -85,17 +87,18 @@ e.g., correct Higgs masses.
 
 DefaultInputValues ={gRinput -> 0.5,
         vtRinput -> 2000,
-        vHRinput -> 5000,
-        vHLinput -> 1.1,
+        (*vHRinput -> 5000,
+        vHLinput -> 1.1,*)
         vtLinput -> 2.2,
         TanBeta -> 10,
+        M23INPUT -> 1000,
         lam1INPUT -> 0.12,
         rho1INPUT -> 0.2,
         rho2INPUT -> 1,
         rho3INPUT -> 0.1,
         alp1INPUT -> 0.2,
-        alp3INPUT -> 10^(-8),
-        beta2INPUT -> 10^(-8),
+        alp3INPUT -> 0.,
+        beta2INPUT -> 0.,
         (*etaLLINPUT -> 0.1,
         etaLRINPUT -> 10^(-8),
         etaRLINPUT -> 10^(-8),
@@ -107,8 +110,8 @@ DefaultInputValues ={gRinput -> 0.5,
         lamLRINPUT -> 10^(-8),
         betaLINPUT -> 0.2,
         betaRINPUT -> 10^(-8),*)
-        alpINPUT -> 10^(-8),
+        alpINPUT -> 0.,
         xiRINPUT -> 300,
-        xiLRINPUT -> 10^(-8)
+        xiLRINPUT -> 0.,
                      };
 

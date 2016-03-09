@@ -232,7 +232,37 @@ ParticleDefinitions[EWSB] = {
      OutputName -> "Zp",
      PDG -> {32},
      ElectricCharge -> 0,
-     Width -> Automatic}}
+     Width -> Automatic}},
+{Fcpp,   { Description -> "doubly charged exotic fermions",
+      LaTeX -> "\\chi^{++}",
+      OutputName -> "cpp",
+      PDG -> {6000055},
+      PDG.IX ->{990000001},
+      ElectricCharge -> 2,
+      FeynArtsNr -> 990000001,
+      Width -> External, 
+      Mass -> LesHouches
+	}},
+{Fcp,	{ Description -> "singly charged exotic fermions",
+      LaTeX -> "\\chi^{+}",
+      OutputName -> "cp",
+      PDG -> {17},
+      PDG.IX ->{110000604},
+      ElectricCharge -> 1,
+      FeynArtsNr -> {110000604},
+	Width -> {External}, 
+	Mass -> LesHouches
+	}},	    
+{Fc,   { Description -> "neutral exotic fermions",
+      LaTeX -> "\\chi^{0}",
+      OutputName -> "c0",
+      PDG -> {9000012,9000014},
+      PDG.IX ->{990000007,990000008},
+      ElectricCharge -> 0,
+      FeynArtsNr -> {990000007},
+	Width -> {External}, 
+	Mass -> {LesHouches}
+	}}
 };
 
 
@@ -524,7 +554,6 @@ ParticleDefinitions[GaugeES] = {
      Mass -> LesHouches,
      OutputName -> "xL",
      PDG -> {7,8,9}}}
-
 };
 
 
@@ -666,7 +695,10 @@ WeylFermionAndIndermediate = {
      LaTeX -> "{W}_R"}},
 
 {XVLbar,{
-     LaTeX -> "\\bar{xvl}"}}
+    LaTeX -> "\\bar{xvl}"}},
+{TPL,     {LaTeX -> "TP_L" }},
+{TMR,     {LaTeX -> "TM_R" }},
+{Ft0,     {LaTeX -> "T_0" }}
 };
 
 

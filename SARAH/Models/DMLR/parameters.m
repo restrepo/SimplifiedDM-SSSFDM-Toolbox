@@ -512,6 +512,11 @@ ParameterDefinitions = {
      LaTeX -> "U^u_R",
      OutputName -> ZUR}},
 
+{UT, {OutputName -> UT,
+      LaTeX -> "U^{0}_T",
+      LesHouches -> UTMIX}},      
+    
+
 {v1,{ Description -> "Down-VEV",
      Dependence -> None,
      DependenceNum -> None,
@@ -717,5 +722,11 @@ ParameterDefinitions = {
      Real -> False,
      LesHouches -> {DARKLR, 34},
      LaTeX -> "M_{VWLm}",
-     OutputName -> Mvwlm}}
+    OutputName -> Mvwlm}},
+
+{M23,   { LaTeX -> "M_{23}",
+	Real -> True,
+        OutputName -> M23,
+        LesHouches -> {LRINPUT,201} }}
+    
 }

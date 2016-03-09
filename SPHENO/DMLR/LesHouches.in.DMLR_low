@@ -13,8 +13,7 @@ Block SMINPUTS    # Standard Model inputs
 Block MINPAR      # Input parameters 
 1   5.0000000E-01    # gRinput
 2   2.0000000E+03    # vtRinput
-3   5.0000000E+03    # vHRinput
-4   1.1000000E+00    # vHLinput
+3   1.0000000E+03    # M23INPUT
 5   2.2000000E+00    # vtLinput
 6   1.0000000E+01    # TanBeta
 10   1.2000000E-01    # lam1INPUT

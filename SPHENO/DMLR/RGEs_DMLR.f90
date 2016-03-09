@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:12 on 9.3.2016   
+! File created at 15:43 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -24,19 +24,19 @@ Real(dp),Parameter::id3R(3,3)=&
 Contains 
 
 
-Subroutine GToParameters90(g,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12)
+Subroutine GToParameters91(g,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
+& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12)
 
 Implicit None 
-Real(dp), Intent(in) :: g(90) 
-Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12
+Real(dp), Intent(in) :: g(91) 
+Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
 
 Complex(dp),Intent(out) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'GToParameters90' 
+NameOfUnit(Iname) = 'GToParameters91' 
  
 gBL= g(1) 
 g2= g(2) 
@@ -82,10 +82,11 @@ YQ1(i1,i2) = Cmplx( g(SumI+68), g(SumI+69), dp)
 End Do 
  End Do 
  
-mudl2= Cmplx(g(86),g(87),dp) 
-mudr2= Cmplx(g(88),g(89),dp) 
-MU12= g(90) 
-Do i1=1,90 
+M23= g(86) 
+mudl2= Cmplx(g(87),g(88),dp) 
+mudr2= Cmplx(g(89),g(90),dp) 
+MU12= g(91) 
+Do i1=1,91 
 If (g(i1).ne.g(i1)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Write(*,*) "At position ", i1 
@@ -94,21 +95,21 @@ End if
 End do 
 Iname = Iname - 1 
  
-End Subroutine GToParameters90
+End Subroutine GToParameters91
 
-Subroutine ParametersToG90(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
-& LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,g)
+Subroutine ParametersToG91(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
+& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,g)
 
 Implicit None 
-Real(dp), Intent(out) :: g(90) 
-Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12
+Real(dp), Intent(out) :: g(91) 
+Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
 
 Complex(dp), Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'ParametersToG90' 
+NameOfUnit(Iname) = 'ParametersToG91' 
  
 g(1) = gBL  
 g(2) = g2  
@@ -159,16 +160,17 @@ g(SumI+69) = Aimag(YQ1(i1,i2))
 End Do 
 End Do 
 
-g(86) = Real(mudl2,dp)  
-g(87) = Aimag(mudl2)  
-g(88) = Real(mudr2,dp)  
-g(89) = Aimag(mudr2)  
-g(90) = MU12  
+g(86) = M23  
+g(87) = Real(mudl2,dp)  
+g(88) = Aimag(mudl2)  
+g(89) = Real(mudr2,dp)  
+g(90) = Aimag(mudr2)  
+g(91) = MU12  
 Iname = Iname - 1 
  
-End Subroutine ParametersToG90
+End Subroutine ParametersToG91
 
-Subroutine rge90(len, T, GY, F) 
+Subroutine rge91(len, T, GY, F) 
 Implicit None 
 Integer, Intent(in) :: len 
 Real(dp), Intent(in) :: T, GY(len) 
@@ -180,20 +182,21 @@ Real(dp) :: gBL,betagBL1,betagBL2,DgBL,g2,betag21,betag22,Dg2,gR,betagR1,       
 & betagR2,DgR,g3,betag31,betag32,Dg3,RHO2,betaRHO21,betaRHO22,DRHO2,RHO1,betaRHO11,      & 
 & betaRHO12,DRHO1,ALP3,betaALP31,betaALP32,DALP3,ALP1,betaALP11,betaALP12,               & 
 & DALP1,LAM1,betaLAM11,betaLAM12,DLAM1,BETA2,betaBETA21,betaBETA22,DBETA2,               & 
-& LAM3,betaLAM31,betaLAM32,DLAM3,MU12,betaMU121,betaMU122,DMU12
+& LAM3,betaLAM31,betaLAM32,DLAM3,M23,betaM231,betaM232,DM23,MU12,betaMU121,              & 
+& betaMU122,DMU12
 Complex(dp) :: rh3,betarh31,betarh32,Drh3,YDR(3,3),betaYDR1(3,3),betaYDR2(3,3)        & 
 & ,DYDR(3,3),adjYDR(3,3),YL1(3,3),betaYL11(3,3),betaYL12(3,3),DYL1(3,3),adjYL1(3,3)      & 
 & ,YDL(3,3),betaYDL1(3,3),betaYDL2(3,3),DYDL(3,3),adjYDL(3,3),YQ1(3,3),betaYQ11(3,3)     & 
 & ,betaYQ12(3,3),DYQ1(3,3),adjYQ1(3,3),mudl2,betamudl21,betamudl22,Dmudl2,               & 
 & mudr2,betamudr21,betamudr22,Dmudr2
 Iname = Iname +1 
-NameOfUnit(Iname) = 'rge90' 
+NameOfUnit(Iname) = 'rge91' 
  
 OnlyDiagonal = .Not.GenerationMixing 
 q = t 
  
-Call GToParameters90(gy,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
-& LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12)
+Call GToParameters91(gy,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
+& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12)
 
 Call Adjungate(YDR,adjYDR)
 Call Adjungate(YL1,adjYL1)
@@ -535,6 +538,26 @@ End If
  
 Call Chop(DYQ1) 
 
+!-------------------- 
+! M23 
+!-------------------- 
+ 
+betaM231  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaM232 = 0
+
+ 
+DM23 = oo16pi2*( betaM231 + oo16pi2 * betaM232 ) 
+
+ 
+Else 
+DM23 = oo16pi2* betaM231 
+End If 
+ 
+ 
 !-------------------- 
 ! mudl2 
 !-------------------- 
@@ -599,26 +622,26 @@ DMU12 = oo16pi2* betaMU121
 End If 
  
  
-Call ParametersToG90(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,Drh3,DALP3,DALP1,DLAM1,             & 
-& DBETA2,DLAM3,DYDR,DYL1,DYDL,DYQ1,Dmudl2,Dmudr2,DMU12,f)
+Call ParametersToG91(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,Drh3,DALP3,DALP1,DLAM1,             & 
+& DBETA2,DLAM3,DYDR,DYL1,DYDL,DYQ1,DM23,Dmudl2,Dmudr2,DMU12,f)
 
 Iname = Iname - 1 
  
-End Subroutine rge90  
+End Subroutine rge91  
 
-Subroutine GToParameters94(g,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
+Subroutine GToParameters95(g,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
+& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
 
 Implicit None 
-Real(dp), Intent(in) :: g(94) 
-Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: g(95) 
+Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
 
 Complex(dp),Intent(out) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'GToParameters94' 
+NameOfUnit(Iname) = 'GToParameters95' 
  
 gBL= g(1) 
 g2= g(2) 
@@ -664,14 +687,15 @@ YQ1(i1,i2) = Cmplx( g(SumI+68), g(SumI+69), dp)
 End Do 
  End Do 
  
-mudl2= Cmplx(g(86),g(87),dp) 
-mudr2= Cmplx(g(88),g(89),dp) 
-MU12= g(90) 
-v1= g(91) 
-v2= g(92) 
-vtl= g(93) 
-vtr= g(94) 
-Do i1=1,94 
+M23= g(86) 
+mudl2= Cmplx(g(87),g(88),dp) 
+mudr2= Cmplx(g(89),g(90),dp) 
+MU12= g(91) 
+v1= g(92) 
+v2= g(93) 
+vtl= g(94) 
+vtr= g(95) 
+Do i1=1,95 
 If (g(i1).ne.g(i1)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Write(*,*) "At position ", i1 
@@ -680,21 +704,21 @@ End if
 End do 
 Iname = Iname - 1 
  
-End Subroutine GToParameters94
+End Subroutine GToParameters95
 
-Subroutine ParametersToG94(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
-& LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr,g)
+Subroutine ParametersToG95(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
+& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,g)
 
 Implicit None 
-Real(dp), Intent(out) :: g(94) 
-Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12,v1,v2,vtl,vtr
+Real(dp), Intent(out) :: g(95) 
+Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
 
 Complex(dp), Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'ParametersToG94' 
+NameOfUnit(Iname) = 'ParametersToG95' 
  
 g(1) = gBL  
 g(2) = g2  
@@ -745,20 +769,21 @@ g(SumI+69) = Aimag(YQ1(i1,i2))
 End Do 
 End Do 
 
-g(86) = Real(mudl2,dp)  
-g(87) = Aimag(mudl2)  
-g(88) = Real(mudr2,dp)  
-g(89) = Aimag(mudr2)  
-g(90) = MU12  
-g(91) = v1  
-g(92) = v2  
-g(93) = vtl  
-g(94) = vtr  
+g(86) = M23  
+g(87) = Real(mudl2,dp)  
+g(88) = Aimag(mudl2)  
+g(89) = Real(mudr2,dp)  
+g(90) = Aimag(mudr2)  
+g(91) = MU12  
+g(92) = v1  
+g(93) = v2  
+g(94) = vtl  
+g(95) = vtr  
 Iname = Iname - 1 
  
-End Subroutine ParametersToG94
+End Subroutine ParametersToG95
 
-Subroutine rge94(len, T, GY, F) 
+Subroutine rge95(len, T, GY, F) 
 Implicit None 
 Integer, Intent(in) :: len 
 Real(dp), Intent(in) :: T, GY(len) 
@@ -770,22 +795,22 @@ Real(dp) :: gBL,betagBL1,betagBL2,DgBL,g2,betag21,betag22,Dg2,gR,betagR1,       
 & betagR2,DgR,g3,betag31,betag32,Dg3,RHO2,betaRHO21,betaRHO22,DRHO2,RHO1,betaRHO11,      & 
 & betaRHO12,DRHO1,ALP3,betaALP31,betaALP32,DALP3,ALP1,betaALP11,betaALP12,               & 
 & DALP1,LAM1,betaLAM11,betaLAM12,DLAM1,BETA2,betaBETA21,betaBETA22,DBETA2,               & 
-& LAM3,betaLAM31,betaLAM32,DLAM3,MU12,betaMU121,betaMU122,DMU12,v1,betav11,              & 
-& betav12,Dv1,v2,betav21,betav22,Dv2,vtl,betavtl1,betavtl2,Dvtl,vtr,betavtr1,            & 
-& betavtr2,Dvtr
+& LAM3,betaLAM31,betaLAM32,DLAM3,M23,betaM231,betaM232,DM23,MU12,betaMU121,              & 
+& betaMU122,DMU12,v1,betav11,betav12,Dv1,v2,betav21,betav22,Dv2,vtl,betavtl1,            & 
+& betavtl2,Dvtl,vtr,betavtr1,betavtr2,Dvtr
 Complex(dp) :: rh3,betarh31,betarh32,Drh3,YDR(3,3),betaYDR1(3,3),betaYDR2(3,3)        & 
 & ,DYDR(3,3),adjYDR(3,3),YL1(3,3),betaYL11(3,3),betaYL12(3,3),DYL1(3,3),adjYL1(3,3)      & 
 & ,YDL(3,3),betaYDL1(3,3),betaYDL2(3,3),DYDL(3,3),adjYDL(3,3),YQ1(3,3),betaYQ11(3,3)     & 
 & ,betaYQ12(3,3),DYQ1(3,3),adjYQ1(3,3),mudl2,betamudl21,betamudl22,Dmudl2,               & 
 & mudr2,betamudr21,betamudr22,Dmudr2
 Iname = Iname +1 
-NameOfUnit(Iname) = 'rge94' 
+NameOfUnit(Iname) = 'rge95' 
  
 OnlyDiagonal = .Not.GenerationMixing 
 q = t 
  
-Call GToParameters94(gy,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
-& LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
+Call GToParameters95(gy,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
+& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
 
 Call Adjungate(YDR,adjYDR)
 Call Adjungate(YL1,adjYL1)
@@ -1127,6 +1152,26 @@ End If
  
 Call Chop(DYQ1) 
 
+!-------------------- 
+! M23 
+!-------------------- 
+ 
+betaM231  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaM232 = 0
+
+ 
+DM23 = oo16pi2*( betaM231 + oo16pi2 * betaM232 ) 
+
+ 
+Else 
+DM23 = oo16pi2* betaM231 
+End If 
+ 
+ 
 !-------------------- 
 ! mudl2 
 !-------------------- 
@@ -1271,12 +1316,12 @@ Dvtr = oo16pi2* betavtr1
 End If 
  
  
-Call ParametersToG94(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,Drh3,DALP3,DALP1,DLAM1,             & 
-& DBETA2,DLAM3,DYDR,DYL1,DYDL,DYQ1,Dmudl2,Dmudr2,DMU12,Dv1,Dv2,Dvtl,Dvtr,f)
+Call ParametersToG95(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,Drh3,DALP3,DALP1,DLAM1,             & 
+& DBETA2,DLAM3,DYDR,DYL1,DYDL,DYQ1,DM23,Dmudl2,Dmudr2,DMU12,Dv1,Dv2,Dvtl,Dvtr,f)
 
 Iname = Iname - 1 
  
-End Subroutine rge94  
+End Subroutine rge95  
 
 End Module RGEs_DMLR 
  

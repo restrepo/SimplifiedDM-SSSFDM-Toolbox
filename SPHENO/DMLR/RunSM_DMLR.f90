@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:16 on 9.3.2016   
+! File created at 15:47 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -21,18 +21,19 @@ Contains
  
  Subroutine RunSM_and_SUSY_RGEs(Qout,gBLinput,g2input,gRinput,g3input,RHO2input,       & 
 & RHO1input,rh3input,ALP3input,ALP1input,LAM1input,BETA2input,LAM3input,YDRinput,        & 
-& YL1input,YDLinput,YQ1input,mudl2input,mudr2input,MU12input,v1input,v2input,            & 
-& vtlinput,vtrinput,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,YDR,            & 
-& YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr,CKMout,sinW2_out,Alpha_out,AlphaS_out,realCKM)
+& YL1input,YDLinput,YQ1input,M23input,mudl2input,mudr2input,MU12input,v1input,           & 
+& v2input,vtlinput,vtrinput,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,             & 
+& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,CKMout,sinW2_out,              & 
+& Alpha_out,AlphaS_out,realCKM)
 
 Implicit None 
 Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP3input,ALP1input,             & 
-& LAM1input,BETA2input,LAM3input,MU12input,v1input,v2input,vtlinput,vtrinput
+& LAM1input,BETA2input,LAM3input,M23input,MU12input,v1input,v2input,vtlinput,vtrinput
 
 Complex(dp),Intent(in) :: rh3input,YDRinput(3,3),YL1input(3,3),YDLinput(3,3),YQ1input(3,3),mudl2input,          & 
 & mudr2input
 
-Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12,v1,v2,vtl,vtr
+Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
 
 Complex(dp),Intent(out) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
@@ -46,19 +47,19 @@ Integer :: kont
 Logical :: OnlyDiagonal 
 Logical :: realCKM 
 Real(dp) :: deltaM = 0.000001_dp, test(3)  
-Real(dp) :: scale_save, Qin, tz, dt, g1D(94), g62_SM(62) 
+Real(dp) :: scale_save, Qin, tz, dt, g1D(95), g62_SM(62) 
  
  
 ! Run SUSY RGEs from M_SUSY to Qin 
 Qin=sqrt(getRenormalizationScale()) 
 scale_save = Qin 
-Call ParametersToG94(gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,            & 
+Call ParametersToG95(gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,            & 
 & rh3input,ALP3input,ALP1input,LAM1input,BETA2input,LAM3input,YDRinput,YL1input,         & 
-& YDLinput,YQ1input,mudl2input,mudr2input,MU12input,v1input,v2input,vtlinput,            & 
-& vtrinput,g1D)
+& YDLinput,YQ1input,M23input,mudl2input,mudr2input,MU12input,v1input,v2input,            & 
+& vtlinput,vtrinput,g1D)
 
-Call GToParameters94(g1D,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,             & 
-& LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
+Call GToParameters95(g1D,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,             & 
+& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
 
 gBL = Sqrt(3._dp/2._dp)*gBL 
 

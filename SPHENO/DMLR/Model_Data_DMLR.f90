@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:13 on 9.3.2016   
+! File created at 15:44 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -192,28 +192,31 @@ Complex(dp) :: mudr22L
 Integer :: SolutionTadpoleNr = 1 
 Character(len=15)::HighScaleModel
 Complex(dp) :: CG1(2, 3, 2) 
- Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12
+ Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
 
 Complex(dp) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
-Real(dp) :: gBLIN,g2IN,gRIN,g3IN,RHO2IN,RHO1IN,ALP3IN,ALP1IN,LAM1IN,BETA2IN,LAM3IN,MU12IN
+Real(dp) :: gBLIN,g2IN,gRIN,g3IN,RHO2IN,RHO1IN,ALP3IN,ALP1IN,LAM1IN,BETA2IN,LAM3IN,               & 
+& M23IN,MU12IN
 
 Complex(dp) :: rh3IN,YDRIN(3,3),YL1IN(3,3),YDLIN(3,3),YQ1IN(3,3),mudl2IN,mudr2IN
 
-Real(dp) :: gBLMZ,g2MZ,gRMZ,g3MZ,RHO2MZ,RHO1MZ,ALP3MZ,ALP1MZ,LAM1MZ,BETA2MZ,LAM3MZ,MU12MZ
+Real(dp) :: gBLMZ,g2MZ,gRMZ,g3MZ,RHO2MZ,RHO1MZ,ALP3MZ,ALP1MZ,LAM1MZ,BETA2MZ,LAM3MZ,               & 
+& M23MZ,MU12MZ
 
 Complex(dp) :: rh3MZ,YDRMZ(3,3),YL1MZ(3,3),YDLMZ(3,3),YQ1MZ(3,3),mudl2MZ,mudr2MZ
 
 Real(dp) :: gBLGUT,g2GUT,gRGUT,g3GUT,RHO2GUT,RHO1GUT,ALP3GUT,ALP1GUT,LAM1GUT,BETA2GUT,            & 
-& LAM3GUT,MU12GUT
+& LAM3GUT,M23GUT,MU12GUT
 
 Complex(dp) :: rh3GUT,YDRGUT(3,3),YL1GUT(3,3),YDLGUT(3,3),YQ1GUT(3,3),mudl2GUT,mudr2GUT
 
-Real(dp) :: MAh(4),MAh2(4),MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),           & 
-& Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),MHppmm2(2),MVWLm,MVWLm2,MVWRm,               & 
-& MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
+& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
+& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
+& UCC(2,2),UP(4,4),ZH(4,4)
 
-Complex(dp) :: UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: v1,v2,vtl,vtr
 
@@ -221,11 +224,11 @@ Real(dp) :: v1IN,v2IN,vtlIN,vtrIN
 
 Real(dp) :: v1Fix,v2Fix,vtlFix,vtrFix
 
-Real(dp) :: gPFu(3,225),gTFu(3),BRFu(3,225),gPFe(3,219),gTFe(3),BRFe(3,219),gPFd(3,225),          & 
-& gTFd(3),BRFd(3,225),gPhh(4,87),gThh(4),BRhh(4,87),gPFv(6,426),gTFv(6),BRFv(6,426),     & 
-& gPVZ(1,79),gTVZ,BRVZ(1,79),gPVZR(1,79),gTVZR,BRVZR(1,79),gPHppmm(2,32),gTHppmm(2),     & 
+Real(dp) :: gPFu(3,252),gTFu(3),BRFu(3,252),gPFe(3,237),gTFe(3),BRFe(3,237),gPFd(3,252),          & 
+& gTFd(3),BRFd(3,252),gPhh(4,87),gThh(4),BRhh(4,87),gPFv(6,462),gTFv(6),BRFv(6,462),     & 
+& gPVZ(1,84),gTVZ,BRVZ(1,84),gPVZR(1,84),gTVZR,BRVZR(1,84),gPHppmm(2,32),gTHppmm(2),     & 
 & BRHppmm(2,32),gPHpm(4,49),gTHpm(4),BRHpm(4,49),gPAh(4,79),gTAh(4),BRAh(4,79),          & 
-& gPVWLm(1,47),gTVWLm,BRVWLm(1,47),gPVWRm(1,47),gTVWRm,BRVWRm(1,47)
+& gPVWLm(1,50),gTVWLm,BRVWLm(1,50),gPVWRm(1,50),gTVWRm,BRVWRm(1,50)
 
 Real(dp) :: ratioFd(4,3),ratioFe(4,3),ratioFu(4,3),ratioHpm(4,4),ratioHppmm(4,2),ratioVWLm(4),    & 
 & ratioVWRm(4)
@@ -237,7 +240,7 @@ Real(dp) :: ratioPFd(4,3),ratioPFe(4,3),ratioPFu(4,3),ratioPHpm(4,4),ratioPHppmm
 
 Complex(dp) :: ratioPGG(4),ratioPPP(4)
 
-Real(dp) :: gForTadpoles(94)
+Real(dp) :: gForTadpoles(95)
 Complex(dp) :: tForTadpoles(4)
 Real(dp) :: gBL_saveEP 
 Real(dp) :: g2_saveEP 
@@ -286,6 +289,7 @@ Logical, save :: InputValueforYDR =.False.
 Logical, save :: InputValueforYL1 =.False. 
 Logical, save :: InputValueforYDL =.False. 
 Logical, save :: InputValueforYQ1 =.False. 
+Logical, save :: InputValueforM23 =.False. 
 Logical, save :: InputValueformudl2 =.False. 
 Logical, save :: InputValueformudr2 =.False. 
 Logical, save :: InputValueforMU12 =.False. 
@@ -306,18 +310,13 @@ Complex(dp) :: nuMixing(6,6)
 Complex(dp) :: temporaryValue 
 Complex(dp) :: alp
 Complex(dp) :: alpIN
-Complex(dp) :: vHL
-Complex(dp) :: vHLIN
-Complex(dp) :: vHR
-Complex(dp) :: vHRIN
 Complex(dp) :: xiLR
 Complex(dp) :: xiLRIN
 Complex(dp) :: xiR
 Complex(dp) :: xiRIN
 Complex(dp) :: gRinput
 Complex(dp) :: vtRinput
-Complex(dp) :: vHRinput
-Complex(dp) :: vHLinput
+Complex(dp) :: M23INPUT
 Complex(dp) :: vtLinput
 Complex(dp) :: TanBeta
 Complex(dp) :: lam1INPUT
@@ -962,6 +961,7 @@ YDRIN = 0._dp
 YL1IN = 0._dp 
 YDLIN = 0._dp 
 YQ1IN = 0._dp 
+M23IN = 0._dp 
 mudl2IN = 0._dp 
 mudr2IN = 0._dp 
 MU12IN = 0._dp 
@@ -997,6 +997,8 @@ YDL = 0._dp
 YDLMZ = 0._dp 
 YQ1 = 0._dp 
 YQ1MZ = 0._dp 
+M23 = 0._dp 
+M23MZ = 0._dp 
 mudl2 = 0._dp 
 mudl2MZ = 0._dp 
 mudr2 = 0._dp 
@@ -1009,6 +1011,12 @@ vtlIN = 0._dp
 vtrIN = 0._dp 
 MAh = 0._dp 
 MAh2 = 0._dp 
+MFc = 0._dp 
+MFc2 = 0._dp 
+MFcp = 0._dp 
+MFcp2 = 0._dp 
+MFcpp = 0._dp 
+MFcpp2 = 0._dp 
 MFd = 0._dp 
 MFd2 = 0._dp 
 MFe = 0._dp 
@@ -1039,6 +1047,7 @@ UCC = 0._dp
 ZDR = 0._dp 
 ZER = 0._dp 
 UP = 0._dp 
+UT = 0._dp 
 ZUR = 0._dp 
 ZDL = 0._dp 
 ZEL = 0._dp 
@@ -1106,8 +1115,7 @@ ratioPGG =  0._dp
 ratioPPP =  0._dp  
 gRinput=(0._dp,0._dp) 
 vtRinput=(0._dp,0._dp) 
-vHRinput=(0._dp,0._dp) 
-vHLinput=(0._dp,0._dp) 
+M23INPUT=(0._dp,0._dp) 
 vtLinput=(0._dp,0._dp) 
 TanBeta=(0._dp,0._dp) 
 lam1INPUT=(0._dp,0._dp) 

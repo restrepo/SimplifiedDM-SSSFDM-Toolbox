@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:13 on 9.3.2016   
+! File created at 15:44 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -361,9 +361,11 @@ Iname = Iname -1
 End Subroutine LeptonEDM 
  
  
-Subroutine DeltaRho(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,            & 
-& MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,               & 
-& cplAhAhcVWLmVWLm,cplAhAhVZVZ,cplAhcVWLmVWRm,cplAhhhVZ,cplAhHpmcVWLm,cplcFdFdVZL,       & 
+Subroutine DeltaRho(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,               & 
+& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,            & 
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,cplAhAhcVWLmVWLm,cplAhAhVZVZ,cplAhcVWLmVWRm,          & 
+& cplAhhhVZ,cplAhHpmcVWLm,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFcpVZL,cplcFcpFcpVZR,   & 
+& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL,       & 
 & cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFuVZL,         & 
 & cplcFuFuVZR,cplcgPgWLmcVWLm,cplcgPgWRmcVWLm,cplcgWLmgWLmVZ,cplcgWLpgPcVWLm,            & 
 & cplcgWLpgWLpVZ,cplcgWLpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRmgWLmVZ,cplcgWRmgWRmVZ,         & 
@@ -374,36 +376,38 @@ Subroutine DeltaRho(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,      
 & cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWLmVZRVZR1,      & 
 & cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,           & 
 & cplcVWLmVWLmVZVZ3,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,        & 
-& cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplFvFvVZL,cplFvFvVZR,           & 
-& cplhhcVWLmVWLm,cplhhcVWLmVWRm,cplhhhhcVWLmVWLm,cplhhhhVZVZ,cplhhHpmcVWLm,              & 
-& cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmcVWLmVWLm,cplHpmcHpmVZ,cplHpmcHpmVZVZ,        & 
-& cplHpmcVWLmVP,cplHpmcVWLmVZ,cplHpmcVWLmVZR,cplHpmcVWRmVZ,cplHppmmcHpmcVWLm,            & 
-& cplHppmmcHppmmcVWLmVWLm,cplHppmmcHppmmVZ,cplHppmmcHppmmVZVZ,cplHppmmcVWLmcVWLm,        & 
-& cplHppmmcVWLmcVWRm,rho)
+& cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplFcFcVZL,cplFcFcVZR,           & 
+& cplFvFvVZL,cplFvFvVZR,cplhhcVWLmVWLm,cplhhcVWLmVWRm,cplhhhhcVWLmVWLm,cplhhhhVZVZ,      & 
+& cplhhHpmcVWLm,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmcVWLmVWLm,cplHpmcHpmVZ,         & 
+& cplHpmcHpmVZVZ,cplHpmcVWLmVP,cplHpmcVWLmVZ,cplHpmcVWLmVZR,cplHpmcVWRmVZ,               & 
+& cplHppmmcHpmcVWLm,cplHppmmcHppmmcVWLmVWLm,cplHppmmcHppmmVZ,cplHppmmcHppmmVZVZ,         & 
+& cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,rho)
 
 Implicit None
-Real(dp),Intent(in)  :: MAh(4),MAh2(4),MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),           & 
-& Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),MHppmm2(2),MVWLm,MVWLm2,MVWRm,               & 
-& MVWRm2,MVZ,MVZ2,MVZR,MVZR2
+Real(dp),Intent(in)  :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
+& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
+& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2
 
 Complex(dp),Intent(in)  :: cplAhAhcVWLmVWLm(4,4),cplAhAhVZVZ(4,4),cplAhcVWLmVWRm(4),cplAhhhVZ(4,4),              & 
-& cplAhHpmcVWLm(4,4),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),& 
-& cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),             & 
-& cplcgPgWLmcVWLm,cplcgPgWRmcVWLm,cplcgWLmgWLmVZ,cplcgWLpgPcVWLm,cplcgWLpgWLpVZ,         & 
-& cplcgWLpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRmgWLmVZ,cplcgWRmgWRmVZ,cplcgWRpgPcVWLm,        & 
-& cplcgWRpgWLpVZ,cplcgWRpgWRpVZ,cplcgWRpgZcVWLm,cplcgWRpgZpcVWLm,cplcgZgWLmcVWLm,        & 
-& cplcgZgWRmcVWLm,cplcgZpgWLmcVWLm,cplcgZpgWRmcVWLm,cplcVWLmcVWLmVWLmVWLm1,              & 
-& cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmcVWRmVWLmVWRm2,& 
-& cplcVWLmcVWRmVWLmVWRm3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmVPVPVWLm3,          & 
-& cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWLmVZRVZR1,      & 
-& cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,           & 
-& cplcVWLmVWLmVZVZ3,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,        & 
-& cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplFvFvVZL(6,6),cplFvFvVZR(6,6), & 
-& cplhhcVWLmVWLm(4),cplhhcVWLmVWRm(4),cplhhhhcVWLmVWLm(4,4),cplhhhhVZVZ(4,4),            & 
-& cplhhHpmcVWLm(4,4),cplhhVPVZ(4),cplhhVZVZ(4),cplhhVZVZR(4),cplHpmcHpmcVWLmVWLm(4,4),   & 
-& cplHpmcHpmVZ(4,4),cplHpmcHpmVZVZ(4,4),cplHpmcVWLmVP(4),cplHpmcVWLmVZ(4),               & 
-& cplHpmcVWLmVZR(4),cplHpmcVWRmVZ(4),cplHppmmcHpmcVWLm(2,4),cplHppmmcHppmmcVWLmVWLm(2,2),& 
-& cplHppmmcHppmmVZ(2,2),cplHppmmcHppmmVZVZ(2,2),cplHppmmcVWLmcVWLm(2),cplHppmmcVWLmcVWRm(2)
+& cplAhHpmcVWLm(4,4),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFcpVZL,cplcFcpFcpVZR,  & 
+& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL(3,3),  & 
+& cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),& 
+& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcgPgWLmcVWLm,cplcgPgWRmcVWLm,cplcgWLmgWLmVZ,      & 
+& cplcgWLpgPcVWLm,cplcgWLpgWLpVZ,cplcgWLpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRmgWLmVZ,        & 
+& cplcgWRmgWRmVZ,cplcgWRpgPcVWLm,cplcgWRpgWLpVZ,cplcgWRpgWRpVZ,cplcgWRpgZcVWLm,          & 
+& cplcgWRpgZpcVWLm,cplcgZgWLmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWLmcVWLm,cplcgZpgWRmcVWLm,    & 
+& cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWRmVWLmVWRm1,& 
+& cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,     & 
+& cplcVWLmVPVPVWLm3,cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,        & 
+& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplcVWLmVWLmVZVZ1,         & 
+& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcVWRmVWLmVZ,     & 
+& cplcVWRmVWRmVZ,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplFcFcVZL(2,2),  & 
+& cplFcFcVZR(2,2),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplhhcVWLmVWLm(4),cplhhcVWLmVWRm(4),   & 
+& cplhhhhcVWLmVWLm(4,4),cplhhhhVZVZ(4,4),cplhhHpmcVWLm(4,4),cplhhVPVZ(4),cplhhVZVZ(4),   & 
+& cplhhVZVZR(4),cplHpmcHpmcVWLmVWLm(4,4),cplHpmcHpmVZ(4,4),cplHpmcHpmVZVZ(4,4),          & 
+& cplHpmcVWLmVP(4),cplHpmcVWLmVZ(4),cplHpmcVWLmVZR(4),cplHpmcVWRmVZ(4),cplHppmmcHpmcVWLm(2,4),& 
+& cplHppmmcHppmmcVWLmVWLm(2,2),cplHppmmcHppmmVZ(2,2),cplHppmmcHppmmVZVZ(2,2),            & 
+& cplHppmmcVWLmcVWLm(2),cplHppmmcVWLmcVWRm(2)
 
 Real(dp), Intent(out) :: rho 
 Integer :: i1, i2, i3, kont 
@@ -411,29 +415,32 @@ Real(dp) ::  delta_rho, delta_rho0, Drho_top, mu_old
 Complex(dp) ::  dmW2, dmz2 
 mu_old = SetRenormalizationScale(mZ2) 
  
-Call Pi1LoopVZ(0._dp,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,           & 
-& MVZ,MVZ2,MVZR,MVZR2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MHppmm,MHppmm2,               & 
-& cplAhhhVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,     & 
-& cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,     & 
-& cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,             & 
-& cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplHppmmcHppmmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,            & 
-& cplcVWRmVWRmVZ,cplAhAhVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,cplHppmmcHppmmVZVZ,              & 
-& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
-& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,kont,dmZ2)
+Call Pi1LoopVZ(0._dp,Mhh,Mhh2,MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,              & 
+& MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,MVZR2,MHpm,MHpm2,MVWLm,              & 
+& MVWLm2,MVWRm,MVWRm2,MHppmm,MHppmm2,cplAhhhVZ,cplFcFcVZL,cplFcFcVZR,cplcFcpFcpVZL,      & 
+& cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,     & 
+& cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,              & 
+& cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
+& cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,               & 
+& cplHppmmcHppmmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,             & 
+& cplhhhhVZVZ,cplHpmcHpmVZVZ,cplHppmmcHppmmVZVZ,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,     & 
+& cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,               & 
+& kont,dmZ2)
 
-Call Pi1LoopVWLm(0._dp,MHpm,MHpm2,MAh,MAh2,MVWRm,MVWRm2,MFu,MFu2,MFd,MFd2,            & 
-& Mhh,Mhh2,MVWLm,MVWLm2,MVZ,MVZ2,MVZR,MVZR2,MHppmm,MHppmm2,cplAhHpmcVWLm,cplAhcVWLmVWRm, & 
-& cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,         & 
-& cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,     & 
-& cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm,       & 
-& cplhhcVWLmVWLm,cplhhcVWLmVWRm,cplHpmcVWLmVP,cplHpmcVWLmVZ,cplHpmcVWLmVZR,              & 
-& cplHppmmcHpmcVWLm,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,cplcVWLmVPVWLm,cplcVWLmVPVWRm, & 
-& cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm,        & 
-& cplhhhhcVWLmVWLm,cplHpmcHpmcVWLmVWLm,cplHppmmcHppmmcVWLmVWLm,cplcVWLmVPVPVWLm3,        & 
-& cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,     & 
-& cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,& 
-& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWLmVWLmVZRVZR1,             & 
-& cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,kont,dmW2)
+Call Pi1LoopVWLm(0._dp,MHpm,MHpm2,MAh,MAh2,MVWRm,MVWRm2,MFcp,MFcp2,MFc,               & 
+& MFc2,MFcpp,MFcpp2,MFu,MFu2,MFd,MFd2,Mhh,Mhh2,MVWLm,MVWLm2,MVZ,MVZ2,MVZR,               & 
+& MVZR2,MHppmm,MHppmm2,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFcpFccVWLmL,cplcFcpFccVWLmR,     & 
+& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcgWLpgPcVWLm,     & 
+& cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,      & 
+& cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,     & 
+& cplcgWRpgZpcVWLm,cplhhHpmcVWLm,cplhhcVWLmVWLm,cplhhcVWLmVWRm,cplHpmcVWLmVP,            & 
+& cplHpmcVWLmVZ,cplHpmcVWLmVZR,cplHppmmcHpmcVWLm,cplHppmmcVWLmcVWLm,cplHppmmcVWLmcVWRm,  & 
+& cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,           & 
+& cplcVWLmVWRmVZR,cplAhAhcVWLmVWLm,cplhhhhcVWLmVWLm,cplHpmcHpmcVWLmVWLm,cplHppmmcHppmmcVWLmVWLm,& 
+& cplcVWLmVPVPVWLm3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmcVWLmVWLmVWLm2,          & 
+& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,& 
+& cplcVWLmcVWRmVWLmVWRm1,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,          & 
+& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,kont,dmW2)
 
 Drho_top = 3*G_F*mf_u(3)**2*oosqrt2*oo8pi2 
  

@@ -73,8 +73,7 @@ DEFINITION[a_][SMINPUTS]={
 DEFINITION[a_][MINPAR]={ 
 {{1},{Value->0}} (*gRinput*), 
 {{2},{Value->0}} (*vtRinput*), 
-{{3},{Value->0}} (*vHRinput*), 
-{{4},{Value->0}} (*vHLinput*), 
+{{3},{Value->0}} (*M23INPUT*), 
 {{5},{Value->0}} (*vtLinput*), 
 {{6},{Value->0}} (*TanBeta*), 
 {{10},{Value->0}} (*lam1INPUT*), 

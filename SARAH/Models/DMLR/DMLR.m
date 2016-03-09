@@ -38,6 +38,11 @@ FermionFields[[4]] = {LR,  3, {nuR, eR},                     -1/2,  1,  2,  1,  
 (* FermionFields[[5]] = {DVR,  3, dVR,                          -1/3,  1,  1,  3,     0};*)
 (*FermionFields[[6]] = {XVLbar,  3, conj[xL],                   1/3,  1,  1, -3,    -1};*)
 
+FermionFields[[5]] = {T2,1, {{t2p/Sqrt[2], t2pp},			     
+                                 {t20, - t2p/Sqrt[2]}},         1,  1,  3,  1,-1};
+FermionFields[[6]] = {T3,1, {{t3m/Sqrt[2], t30},			     
+                                 {t3mm, - t3m/Sqrt[2]}},       -1,  1,  3,  1,-1};                    
+
 ScalarFields[[1]]  = {Phi, 1, {{H0, Hp},{Hm, HPrime0}},         0,  2, -2,  1,  1};
 ScalarFields[[2]]  = {deltaL,1, {{deltaLp/Sqrt[2], deltaLpp},
                                  {deltaL0, - deltaLp/Sqrt[2]}}, 1,  3,  1,  1,   1};
@@ -110,7 +115,8 @@ LagHC = - ( YL1 Phi.LLbar.LR
           + YDR LR.deltaR.LR
           (*  scalar [+h.c.] parts *)
           (*+ alp conj[HL].Phi.deltaR.conj[HR]
-          + xiR HR.conj[deltaR].HR + xiLR HR.Phi.conj[HL]*)
+	    + xiR HR.conj[deltaR].HR + xiLR HR.Phi.conj[HL]*)
+	  + M23 T2.T3
           );
 
 
@@ -144,7 +150,8 @@ DEFINITION[EWSB][MatterSector]=
      {{{dL(*,xL*)}, {conj[dR](*,conj[dVR]*)}}, {{DL,Vd}, {DR,Ud}}},
      {{{uL}, {conj[uR]}}, {{UL,Vu}, {UR,Uu}}},
      {{{eL}, {conj[eR]}}, {{EL,Ve}, {ER,Ue}}},
-     {{conj[nuL], nuR},{Fv0,PMNS}}
+     {{conj[nuL], nuR},{Fv0,PMNS}},
+     {{t20, t30},{Ft0,UT}}
      };
 
 
@@ -167,7 +174,10 @@ DEFINITION[EWSB][DiracSpinors]={
  Fd ->{  DL, conj[DR]},
  Fe ->{  EL, conj[ER]},
  Fu ->{  UL, conj[UR]},
- Fv ->{Fv0, conj[Fv0]}
+ Fv ->{Fv0, conj[Fv0]},
+ Fc ->{Ft0, conj[Ft0]},
+ Fcpp -> {t2pp, conj[t3mm]},   
+ Fcp ->{ t2p, conj[t3m]}
  };
 
 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:12 on 9.3.2016   
+! File created at 15:43 on 9.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -20,23 +20,24 @@ Logical :: SignOfMassChanged =.False.
 Logical :: SignOfMuChanged =.False.  
 Contains 
  
-Subroutine TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,               & 
-& Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,          & 
-& PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,v1,v2,vtl,vtr,gBL,               & 
-& g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,YDR,YL1,YDL,YQ1,mudl2,mudr2,          & 
-& MU12,GenerationMixing,kont)
+Subroutine TreeMasses(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,             & 
+& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,            & 
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,ZUR,ZDL,              & 
+& ZEL,ZUL,ZH,ZW,ZZ,v1,v2,vtl,vtr,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,              & 
+& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
 
 Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
-Real(dp),Intent(out) :: MAh(4),MAh2(4),MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),           & 
-& Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),MHppmm2(2),MVWLm,MVWLm2,MVWRm,               & 
-& MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp),Intent(out) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
+& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
+& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
+& UCC(2,2),UP(4,4),ZH(4,4)
 
-Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp),Intent(in) :: v1,v2,vtl,vtr
 
@@ -52,6 +53,26 @@ Call CalculateVPVZVZR(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 Call CalculateVWLmVWRm(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,              & 
 & PhiW,kont)
 
+! ------------------------------- 
+! Mass of Fcp 
+MFcp = M23 
+If (RotateNegativeFermionMasses) Then 
+MFcp = Abs(MFcp) 
+MFcp2 = MFcp**2 
+Else 
+MFcp2 = MFcp**2 
+End if
+! ------------------------------- 
+! ------------------------------- 
+! Mass of Fcpp 
+MFcpp = M23 
+If (RotateNegativeFermionMasses) Then 
+MFcpp = Abs(MFcpp) 
+MFcpp2 = MFcpp**2 
+Else 
+MFcpp2 = MFcpp**2 
+End if
+! ------------------------------- 
 Call CalculateMhh(mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,v1,             & 
 & v2,vtl,vtr,ZH,Mhh,Mhh2,kont)
 
@@ -80,11 +101,15 @@ MFe2 = MFe**2
 Call CalculateMFv(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
 
 MFv2 = MFv**2 
+Call CalculateMFc(M23,UT,MFc,kont)
+
+MFc2 = MFc**2 
 
  
- Call SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,            & 
-& MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,               & 
-& PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,kont)
+ Call SortGoldstones(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,               & 
+& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,            & 
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,ZUR,ZDL,              & 
+& ZEL,ZUL,ZH,ZW,ZZ,kont)
 
 If (SignOfMassChanged) Then  
  If (.Not.IgnoreNegativeMasses) Then 
@@ -116,23 +141,24 @@ Iname = Iname - 1
 End Subroutine  TreeMasses 
  
  
-Subroutine TreeMassesEffPot(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,             & 
-& Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,            & 
-& MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,v1,v2,vtl,vtr,             & 
-& gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,YDR,YL1,YDL,YQ1,mudl2,            & 
-& mudr2,MU12,GenerationMixing,kont)
+Subroutine TreeMassesEffPot(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,            & 
+& MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,              & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,               & 
+& ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,v1,v2,vtl,vtr,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,           & 
+& LAM1,BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
 
 Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
-Real(dp),Intent(out) :: MAh(4),MAh2(4),MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),           & 
-& Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),MHppmm2(2),MVWLm,MVWLm2,MVWRm,               & 
-& MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp),Intent(out) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
+& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
+& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
+& UCC(2,2),UP(4,4),ZH(4,4)
 
-Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp),Intent(in) :: v1,v2,vtl,vtr
 
@@ -148,6 +174,26 @@ Call CalculateVPVZVZREffPot(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 Call CalculateVWLmVWRmEffPot(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,               & 
 & MVWRm2,PhiW,kont)
 
+! ------------------------------- 
+! Mass of Fcp 
+MFcp = M23 
+If (RotateNegativeFermionMasses) Then 
+MFcp = Abs(MFcp) 
+MFcp2 = MFcp**2 
+Else 
+MFcp2 = MFcp**2 
+End if
+! ------------------------------- 
+! ------------------------------- 
+! Mass of Fcpp 
+MFcpp = M23 
+If (RotateNegativeFermionMasses) Then 
+MFcpp = Abs(MFcpp) 
+MFcpp2 = MFcpp**2 
+Else 
+MFcpp2 = MFcpp**2 
+End if
+! ------------------------------- 
 Call CalculateMhhEffPot(mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,               & 
 & LAM3,v1,v2,vtl,vtr,ZH,Mhh,Mhh2,kont)
 
@@ -176,6 +222,9 @@ MFe2 = MFe**2
 Call CalculateMFvEffPot(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
 
 MFv2 = MFv**2 
+Call CalculateMFcEffPot(M23,UT,MFc,kont)
+
+MFc2 = MFc**2 
 
  
  If (SignOfMassChanged) Then  
@@ -1456,6 +1505,171 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFv 
 
+Subroutine CalculateMFc(M23,UT,MFc,kont)
+
+Real(dp) ,Intent(in) :: M23
+
+Integer, Intent(inout) :: kont 
+Integer :: i1,i2,i3,i4, ierr, pos 
+Integer :: j1,j2,j3,j4 
+Logical :: SecondDiagonalisationNeeded 
+Real(dp), Intent(out) :: MFc(2) 
+Complex(dp), Intent(out) ::  UT(2,2) 
+                              
+Complex(dp) :: mat(2,2), mat2(2,2), phaseM, E2(2) 
+
+Real(dp) :: UTa(2,2), test(2), eig(2) 
+
+Iname = Iname + 1 
+NameOfUnit(Iname) = 'CalculateMFc'
+ 
+mat(1,1) = 0._dp 
+mat(1,2) = 0._dp 
+mat(1,2) = mat(1,2)+M23
+mat(2,2) = 0._dp 
+
+ 
+ Do i1=2,2
+  Do i2 = 1, i1-1 
+  mat(i1,i2) = mat(i2,i1) 
+  End do 
+End do 
+
+ 
+If (Maxval(Abs(Aimag(mat))).Eq.0._dp) Then 
+Call EigenSystem(Real(mat,dp),Eig,UTa,ierr,test) 
+ 
+   Do i1=1,2
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MFc(i1) = - Eig(i1) 
+    UT(i1,:) = (0._dp,1._dp)*UTa(i1,:) 
+   Else 
+    MFc(i1) = Eig(i1) 
+    UT(i1,:) = UTa(i1,:)
+    End If 
+   End Do 
+ 
+Do i1=1,1
+  Do i2=i1+1,2
+    If (MFc(i1).Gt.MFc(i2)) Then 
+      Eig(1) = MFc(i1) 
+      MFc(i1) = MFc(i2) 
+      MFc(i2) =  Eig(1) 
+      E2 = UT(i1,:) 
+      UT(i1,:) = UT(i2,:) 
+      UT(i2,:) = E2
+    End If 
+   End Do 
+End Do 
+ 
+Else 
+ 
+mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
+Call Eigensystem(mat2, Eig, UT, ierr, test) 
+mat2 = Matmul( Conjg(UT), Matmul( mat, Transpose( Conjg(UT)))) 
+! Special efforts are needed for matrices like the Higgsinos one 
+SecondDiagonalisationNeeded = .False. 
+Do i1=1,2-1
+If (MaxVal(Abs(mat2(i1,(i1+1):2))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNeeded = .True. 
+
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+    If (ErrorLevel.Ge.0) Then 
+      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(10,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Write(*,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(*,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Call TerminateProgram 
+    End If 
+     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(ErrCan,*) 'in the calculation of the masses' 
+     Write(ErrCan,*) 'occurred a negative mass squared!' 
+     Write(ErrCan,*) i1,Eig(i1) 
+     Write(*,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(*,*) 'in the calculation of the masses' 
+     Write(*,*) 'occurred a negative mass squared!' 
+     Write(*,*) i1,Eig(i1) 
+  Eig(i1) = 1._dp 
+   SignOfMassChanged = .True. 
+! kont = -104 
+ End if 
+End do 
+If (SecondDiagonalisationNeeded) Then 
+Call EigenSystem(Real(mat2,dp),Eig,UTa,ierr,test) 
+ 
+     UT = MatMul(UT,UTa)
+  Do i1=1,2
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MFc(i1) = - Eig(i1) 
+    UT(i1,:) = (0._dp,1._dp)*UTa(i1,:) 
+   Else 
+    MFc(i1) = Eig(i1) 
+    UT(i1,:) = UTa(i1,:)
+    End If 
+   End Do 
+ 
+Else 
+Do i1=1,2
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+If (Abs(mat2(i1,i1)).gt.0._dp) Then 
+  phaseM = Sqrt( mat2(i1,i1) / Abs(mat2(i1,i1))) 
+  UT(i1,:)= phaseM * UT(i1,:) 
+End if 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+    If (ErrorLevel.Ge.0) Then 
+      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(10,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Write(*,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(*,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Call TerminateProgram 
+    End If 
+     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(ErrCan,*) 'in the calculation of the masses' 
+     Write(ErrCan,*) 'occurred a negative mass squared!' 
+     Write(ErrCan,*) i1,Eig(i1) 
+     Write(*,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(*,*) 'in the calculation of the masses' 
+     Write(*,*) 'occurred a negative mass squared!' 
+     Write(*,*) i1,Eig(i1) 
+  Eig(i1) = 1._dp 
+   SignOfMassChanged = .True. 
+! kont = -104 
+ End if 
+End Do 
+MFc = Sqrt( Eig ) 
+ 
+End if ! Second diagonalisation 
+End If 
+ 
+If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
+  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
+  If (ErrorLevel.Eq.2) Then 
+  Write(*,*) "Possible numerical problem in "//NameOfUnit(Iname) 
+    Call TerminateProgram 
+  End If 
+  ierr = 0 
+End If 
+ 
+If (ierr.Ne.0.) Then 
+  Write(ErrCan,*) 'Warning from Subroutine CalculateMFc, ierr =',ierr 
+  kont = ierr 
+  Iname = Iname - 1 
+  Return 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CalculateMFc 
+
 Subroutine CalculateVPVZVZR(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 
 Real(dp), Intent(in) :: gBL,g2,gR,v1,v2,vtl,vtr
@@ -2691,6 +2905,150 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFvEffPot 
 
+Subroutine CalculateMFcEffPot(M23,UT,MFc,kont)
+
+Real(dp) ,Intent(in) :: M23
+
+Integer, Intent(inout) :: kont 
+Integer :: i1,i2,i3,i4, ierr, pos 
+Integer :: j1,j2,j3,j4 
+Logical :: SecondDiagonalisationNeeded 
+Real(dp), Intent(out) :: MFc(2) 
+Complex(dp), Intent(out) ::  UT(2,2) 
+                              
+Complex(dp) :: mat(2,2), mat2(2,2), phaseM, E2(2) 
+
+Real(dp) :: UTa(2,2), test(2), eig(2) 
+
+Iname = Iname + 1 
+NameOfUnit(Iname) = 'CalculateMFc'
+ 
+mat(1,1) = 0._dp 
+mat(1,2) = 0._dp 
+mat(1,2) = mat(1,2)+M23
+mat(2,2) = 0._dp 
+
+ 
+ Do i1=2,2
+  Do i2 = 1, i1-1 
+  mat(i1,i2) = mat(i2,i1) 
+  End do 
+End do 
+
+ 
+If (Maxval(Abs(Aimag(mat))).Eq.0._dp) Then 
+Call EigenSystem(Real(mat,dp),Eig,UTa,ierr,test) 
+ 
+   Do i1=1,2
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MFc(i1) = - Eig(i1) 
+    UT(i1,:) = (0._dp,1._dp)*UTa(i1,:) 
+   Else 
+    MFc(i1) = Eig(i1) 
+    UT(i1,:) = UTa(i1,:)
+    End If 
+   End Do 
+ 
+  Do i1=1,2
+   pos=Maxloc(Abs(UT(i1,:)),1) 
+   If (Abs(Real(UT(i1,pos),dp)).gt.Abs(Aimag(UT(i1,pos)))) Then 
+      If (Real(UT(i1,pos),dp).lt.0._dp) Then 
+        UT(i1,:)=-UT(i1,:) 
+       End If 
+    Else 
+      If (Aimag(UT(i1,pos)).lt.0._dp) Then 
+        UT(i1,:)=-UT(i1,:) 
+      End If 
+    End If 
+ End Do 
+ 
+Do i1=1,1
+  Do i2=i1+1,2
+    If (MFc(i1).Gt.MFc(i2)) Then 
+      Eig(1) = MFc(i1) 
+      MFc(i1) = MFc(i2) 
+      MFc(i2) =  Eig(1) 
+      E2 = UT(i1,:) 
+      UT(i1,:) = UT(i2,:) 
+      UT(i2,:) = E2
+    End If 
+   End Do 
+End Do 
+ 
+Else 
+ 
+mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
+Call Eigensystem(mat2, Eig, UT, ierr, test) 
+mat2 = Matmul( Conjg(UT), Matmul( mat, Transpose( Conjg(UT)))) 
+! Special efforts are needed for matrices like the Higgsinos one 
+SecondDiagonalisationNeeded = .False. 
+Do i1=1,2-1
+If (MaxVal(Abs(mat2(i1,(i1+1):2))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNeeded = .True. 
+
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+! kont = -104 
+ End if 
+End do 
+If (SecondDiagonalisationNeeded) Then 
+Call EigenSystem(Real(mat2,dp),Eig,UTa,ierr,test) 
+ 
+     UT = MatMul(UT,UTa)
+  Do i1=1,2
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MFc(i1) = - Eig(i1) 
+    UT(i1,:) = (0._dp,1._dp)*UTa(i1,:) 
+   Else 
+    MFc(i1) = Eig(i1) 
+    UT(i1,:) = UTa(i1,:)
+    End If 
+   End Do 
+ 
+Else 
+Do i1=1,2
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+If (Abs(mat2(i1,i1)).gt.0._dp) Then 
+  phaseM = Sqrt( mat2(i1,i1) / Abs(mat2(i1,i1))) 
+  UT(i1,:)= phaseM * UT(i1,:) 
+End if 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+! kont = -104 
+ End if 
+End Do 
+MFc = Sqrt( Eig ) 
+ 
+End if ! Second diagonalisation 
+End If 
+ 
+If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
+  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
+  If (ErrorLevel.Eq.2) Then 
+  Write(*,*) "Possible numerical problem in "//NameOfUnit(Iname) 
+    Call TerminateProgram 
+  End If 
+  ierr = 0 
+End If 
+ 
+If (ierr.Ne.0.) Then 
+  Write(ErrCan,*) 'Warning from Subroutine CalculateMFc, ierr =',ierr 
+  kont = ierr 
+  Iname = Iname - 1 
+  Return 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CalculateMFcEffPot 
+
 Subroutine CalculateVPVZVZREffPot(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,           & 
 & MVZR2,kont)
 
@@ -2890,11 +3248,11 @@ End Subroutine CalculateVWLmVWRmEffPot
 Subroutine TreeMassesSM(MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVWLm,MVWLm2,             & 
 & MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v1,             & 
 & v2,vtl,vtr,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,YDR,YL1,               & 
-& YDL,YQ1,mudl2,mudr2,MU12,GenerationMixing,kont)
+& YDL,YQ1,M23,mudl2,mudr2,MU12,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,MU12
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
 
 Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
 
@@ -2936,15 +3294,17 @@ Iname = Iname - 1
 End Subroutine  TreeMassesSM 
  
  
-Subroutine SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,               & 
-& Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,            & 
-& MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,kont)
+Subroutine SortGoldstones(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,              & 
+& MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,              & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,               & 
+& ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,kont)
 
-Real(dp),Intent(inout) :: MAh(4),MAh2(4),MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),           & 
-& Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),MHppmm2(2),MVWLm,MVWLm2,MVWRm,               & 
-& MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp),Intent(inout) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
+& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
+& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
+& UCC(2,2),UP(4,4),ZH(4,4)
 
-Complex(dp),Intent(inout) :: UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(inout) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1, i2, pos 
