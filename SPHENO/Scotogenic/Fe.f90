@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:00 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -63,7 +63,7 @@ Logical :: check
 Iname = Iname +1 
 NameOfUnit(Iname) = 'FeThreeBodyDecay' 
  
-Allocate( IntegralVs(25000,8) ) 
+Allocate( IntegralVs(25000,9) ) 
 Allocate( IntegralVst(25000,12) ) 
 Allocate( IntegralSs(500000,10) ) 
 Allocate( IntegralVVst(25000,12) ) 
@@ -429,7 +429,7 @@ Real(dp),Intent(in) :: MFe(3),MFd(3),MVZ,Mhh
 Complex(dp),Intent(in) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFehhL(3,3), & 
 & cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3)
 
-Real(dp),Intent(inout) :: IntegralSs(500000,10),IntegralVs(25000,8),IntegralVVss(500000,12)
+Real(dp),Intent(inout) :: IntegralSs(500000,10),IntegralVs(25000,9),IntegralVVss(500000,12)
 
 Complex(dp),Intent(inout) :: IntegralSSss(500000,12),IntegralVSss(500000,12)
 
@@ -625,7 +625,7 @@ Real(dp),Intent(in) :: MFe(3),MVZ,Mhh
 
 Complex(dp),Intent(in) :: cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3)
 
-Real(dp),Intent(inout) :: IntegralSs(500000,10),IntegralVs(25000,8),IntegralVVss(500000,12)
+Real(dp),Intent(inout) :: IntegralSs(500000,10),IntegralVs(25000,9),IntegralVVss(500000,12)
 
 Complex(dp),Intent(inout) :: IntegralSSss(500000,12),IntegralSSst(500000,16),IntegralVSss(500000,12),              & 
 & IntegralVSst(500000,16),IntegralVVst(25000,12)
@@ -968,7 +968,7 @@ Real(dp),Intent(in) :: MFe(3),MFu(3),MVZ,Mhh
 Complex(dp),Intent(in) :: cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuhhL(3,3), & 
 & cplcFuFuhhR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3)
 
-Real(dp),Intent(inout) :: IntegralSs(500000,10),IntegralVs(25000,8),IntegralVVss(500000,12)
+Real(dp),Intent(inout) :: IntegralSs(500000,10),IntegralVs(25000,9),IntegralVVss(500000,12)
 
 Complex(dp),Intent(inout) :: IntegralSSss(500000,12),IntegralVSss(500000,12)
 
@@ -1164,7 +1164,7 @@ Real(dp),Intent(in) :: MFe(3),MFv(3),MVZ,MVWp
 Complex(dp),Intent(in) :: cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),              & 
 & cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3)
 
-Real(dp),Intent(inout) :: IntegralVs(25000,8),IntegralVVss(500000,12)
+Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
 
 Complex(dp),Intent(inout) :: IntegralVVst(25000,12)
 
@@ -1442,7 +1442,7 @@ Real(dp),Intent(in) :: MFv(3),MFu(3),MFd(3),MVWp,MFe(3)
 
 Complex(dp),Intent(in) :: cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3)
 
-Real(dp),Intent(inout) :: IntegralVs(25000,8),IntegralVVss(500000,12)
+Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
 
 Real(dp),Intent(inout) :: gTVWp
 

@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:01 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -357,7 +357,7 @@ Real(dp)::m1,m2,r
 
 !  C0
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -380,7 +380,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -417,7 +417,7 @@ Real(dp)::m1,m2,r
 
 !  C1
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -440,7 +440,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -477,7 +477,7 @@ Real(dp)::m1,m2,r
 
 !  C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -500,7 +500,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -537,7 +537,7 @@ Real(dp)::m1,m2,r
 
 !  C11
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -560,7 +560,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -597,7 +597,7 @@ Real(dp)::m1,m2,r
 
 !  C12
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -620,7 +620,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -657,7 +657,7 @@ Real(dp)::m1,m2,r
 
 !  C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -680,7 +680,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -717,7 +717,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C2 + C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -740,7 +740,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -777,7 +777,7 @@ Real(dp)::m1,m2,r
 
 !  C1 + C11 + C12
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -800,7 +800,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -837,7 +837,7 @@ Real(dp)::m1,m2,r
 
 !  C0 + C1 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -860,7 +860,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -897,7 +897,7 @@ Real(dp)::m1,m2,r
 
 !  2 C11 + 2 C12 - C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -920,7 +920,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -957,7 +957,7 @@ Real(dp)::m1,m2,r
 
 !  -C1 + 2 C12 + 2 C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -980,7 +980,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -1017,7 +1017,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -1040,7 +1040,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -1077,7 +1077,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -1100,7 +1100,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -1137,7 +1137,7 @@ Real(dp)::m1,m2,r
 
 !  C1 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -1160,7 +1160,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 

@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:44 on 28.11.2015   
+! File created at 17:02 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -22,7 +22,7 @@ Contains
  Subroutine RunSM_and_SUSY_RGEs(Qout,g1input,g2input,g3input,lam1input,lam2input,      & 
 & lam4input,lam3input,lam5input,Yninput,Yuinput,Ydinput,Yeinput,Mninput,mH2input,        & 
 & mEt2input,vinput,g1,g2,g3,lam1,lam2,lam4,lam3,lam5,Yn,Yu,Yd,Ye,Mn,mH2,mEt2,            & 
-& v,CKMout,sinW2_out,Alpha_out,AlphaS_out)
+& v,CKMout,sinW2_out,Alpha_out,AlphaS_out,realCKM)
 
 Implicit None 
 Real(dp),Intent(in) :: g1input,g2input,g3input,lam5input,vinput
@@ -42,6 +42,7 @@ Real(dp) :: g1SM, g2SM, g3SM, vevSM
 Complex(dp) :: lambdaSM, muSM, dummy(3,3) 
 Integer :: kont 
 Logical :: OnlyDiagonal 
+Logical :: realCKM 
 Real(dp) :: deltaM = 0.000001_dp, test(3)  
 Real(dp) :: scale_save, Qin, tz, dt, g1D(107), g62_SM(62) 
  
@@ -64,7 +65,8 @@ If (RunningSMparametersLowEnergy) Then
 ! Run SM RGEs separately 
  
 ! Get values of gauge and Yukawa couplings at M_Z 
-Call GetRunningSMparametersMZ(YdSM,YeSM,YuSM,g1SM,g2SM,g3SM,lambdaSM,muSM,vevSM)
+Call GetRunningSMparametersMZ(YdSM,YeSM,YuSM,g1SM,g2SM,g3SM,lambdaSM,muSM,            & 
+& vevSM,realCKM)
 
 Call ParametersToG62_SM(g1SM, g2SM, g3SM, lambdaSM, YuSM, YdSM, YeSM, muSM, vevSM, g62_SM) 
 ! Run to output scale 
@@ -106,7 +108,7 @@ End Subroutine RunSM_and_SUSY_RGEs
  
  
 Subroutine GetRunningSMparametersMZ(YdSM,YeSM,YuSM,g1SM,g2SM,g3SM,lambdaSM,           & 
-& muSM,vevSM)
+& muSM,vevSM,realCKM)
 
 Implicit None 
 Complex(dp), Intent(out) :: YdSM(3,3), YuSM(3,3), YeSM(3,3) 
@@ -116,6 +118,7 @@ Real(dp) :: vev2, sinW2, CosW2SinW2
 Real(dp) :: gSM2(2), gSM3(3), mtopMS, mtopMS_MZ 
 Real(dp) :: dt, tz
 Real(dp) :: deltaM = 0.000001_dp, test(3)  
+Logical :: realCKM 
 Integer :: i1,kont 
  
  
@@ -156,7 +159,11 @@ mtopMS_MZ=gSM3(3)
 YuSM(3,3) = sqrt2*mtopMS_MZ/vevSM 
  
 
-YuSM = Transpose(Matmul(Transpose(CKMcomplex),Transpose(YuSM))) 
+If (realCKM) Then 
+ YuSM = Transpose(Matmul(Transpose(Real(CKMcomplex,dp)),Transpose(YuSM))) 
+Else 
+ YuSM = Transpose(Matmul(Transpose(CKMcomplex),Transpose(YuSM))) 
+End if 
 g1SM=sqrt(Alpha_MZ/(1-sinW2)*4._dp*Pi) 
 g2SM=sqrt(Alpha_MZ/sinW2*4._dp*Pi) 
 g3SM=sqrt(AlphaS_MZ*4._dp*Pi) 

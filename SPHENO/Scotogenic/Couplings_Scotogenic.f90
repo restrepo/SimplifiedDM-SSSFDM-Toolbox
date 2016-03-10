@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:00 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1613,7 +1613,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcHp'
 res = 0._dp 
 res = res-(lam4*v)/2._dp
 res = res+(lam5*v)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -1643,7 +1643,7 @@ NameOfUnit(Iname) = 'CouplingetIHpcetp'
 res = 0._dp 
 res = res+(lam4*v)/2._dp
 res = res-(lam5*v)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2078,7 +2078,7 @@ NameOfUnit(Iname) = 'CouplingAhetpetRcHp'
 res = 0._dp 
 res = res+lam4/2._dp
 res = res-1._dp*(lam5)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2108,7 +2108,7 @@ NameOfUnit(Iname) = 'CouplingAhetRHpcetp'
 res = 0._dp 
 res = res-1._dp*(lam4)/2._dp
 res = res+lam5/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2267,7 +2267,7 @@ NameOfUnit(Iname) = 'CouplingetIetphhcHp'
 res = 0._dp 
 res = res-1._dp*(lam4)/2._dp
 res = res+lam5/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2297,7 +2297,7 @@ NameOfUnit(Iname) = 'CouplingetIhhHpcetp'
 res = 0._dp 
 res = res+lam4/2._dp
 res = res-1._dp*(lam5)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2686,7 +2686,7 @@ NameOfUnit(Iname) = 'CouplingAhhhVZ'
 res = 0._dp 
 res = res+(g2*Cos(TW))/2._dp
 res = res+(g1*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2713,7 +2713,7 @@ NameOfUnit(Iname) = 'CouplingAhHpcVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2740,7 +2740,7 @@ NameOfUnit(Iname) = 'CouplingAhcHpVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2767,7 +2767,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2795,7 +2795,7 @@ NameOfUnit(Iname) = 'CouplingetIetRVZ'
 res = 0._dp 
 res = res+(g2*Cos(TW))/2._dp
 res = res+(g1*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -2822,7 +2822,7 @@ NameOfUnit(Iname) = 'CouplingetIcetpVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3257,7 +3257,7 @@ NameOfUnit(Iname) = 'CouplingAhHpcVWpVP'
  
 res = 0._dp 
 res = res+(g1*g2*Cos(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3284,7 +3284,7 @@ NameOfUnit(Iname) = 'CouplingAhHpcVWpVZ'
  
 res = 0._dp 
 res = res-(g1*g2*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3311,7 +3311,7 @@ NameOfUnit(Iname) = 'CouplingAhcHpVPVWp'
  
 res = 0._dp 
 res = res-(g1*g2*Cos(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3338,7 +3338,7 @@ NameOfUnit(Iname) = 'CouplingAhcHpVWpVZ'
  
 res = 0._dp 
 res = res+(g1*g2*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3417,7 +3417,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcVWpVP'
  
 res = 0._dp 
 res = res+(g1*g2*Cos(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3444,7 +3444,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcVWpVZ'
  
 res = 0._dp 
 res = res-(g1*g2*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3471,7 +3471,7 @@ NameOfUnit(Iname) = 'CouplingetIcetpVPVWp'
  
 res = 0._dp 
 res = res-(g1*g2*Cos(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3498,7 +3498,7 @@ NameOfUnit(Iname) = 'CouplingetIcetpVWpVZ'
  
 res = 0._dp 
 res = res+(g1*g2*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -4041,7 +4041,7 @@ NameOfUnit(Iname) = 'CouplingVGVGVG'
  
 res = 0._dp 
 res = res+g3
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -5629,7 +5629,7 @@ NameOfUnit(Iname) = 'CouplingcgGgGVG'
  
 res = 0._dp 
 res = res+g3
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -5956,7 +5956,7 @@ NameOfUnit(Iname) = 'CouplingcgWpgWpAh'
  
 res = 0._dp 
 res = res+(g2**2*v*RXiWp)/4._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -5983,7 +5983,7 @@ NameOfUnit(Iname) = 'CouplingcgWCgWCAh'
  
 res = 0._dp 
 res = res-(g2**2*v*RXiWp)/4._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -7342,7 +7342,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcHp'
 res = 0._dp 
 res = res-(lam4*v)/2._dp
 res = res+(lam5*v)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -7372,7 +7372,7 @@ NameOfUnit(Iname) = 'CouplingetIHpcetp'
 res = 0._dp 
 res = res+(lam4*v)/2._dp
 res = res-(lam5*v)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -7565,7 +7565,7 @@ NameOfUnit(Iname) = 'CouplingVGVGVG'
  
 res = 0._dp 
 res = res+g3
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -10891,7 +10891,7 @@ NameOfUnit(Iname) = 'CouplingAhcHpVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -10921,7 +10921,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcHp'
 res = 0._dp 
 res = res-(lam4*v)/2._dp
 res = res+(lam5*v)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -11613,7 +11613,7 @@ NameOfUnit(Iname) = 'CouplingetIHpcetp'
 res = 0._dp 
 res = res+(lam4*v)/2._dp
 res = res-(lam5*v)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -11640,7 +11640,7 @@ NameOfUnit(Iname) = 'CouplingetIcetpVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -12223,7 +12223,7 @@ NameOfUnit(Iname) = 'CouplingcgWpgWpAh'
  
 res = 0._dp 
 res = res+(g2**2*v*RXiWp)/4._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -12250,7 +12250,7 @@ NameOfUnit(Iname) = 'CouplingcgWCgWCAh'
  
 res = 0._dp 
 res = res-(g2**2*v*RXiWp)/4._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -12278,7 +12278,7 @@ NameOfUnit(Iname) = 'CouplingAhhhVZ'
 res = 0._dp 
 res = res+(g2*Cos(TW))/2._dp
 res = res+(g1*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -12305,7 +12305,7 @@ NameOfUnit(Iname) = 'CouplingAhHpcVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -13078,7 +13078,7 @@ NameOfUnit(Iname) = 'CouplingetIetpcVWp'
  
 res = 0._dp 
 res = res-1._dp*(g2)/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -13106,7 +13106,7 @@ NameOfUnit(Iname) = 'CouplingetIetRVZ'
 res = 0._dp 
 res = res+(g2*Cos(TW))/2._dp
 res = res+(g1*Sin(TW))/2._dp
-res = (0.,1.)*res 
+res = -(0.,1.)*res 
  
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 

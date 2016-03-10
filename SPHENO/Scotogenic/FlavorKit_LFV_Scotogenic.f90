@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:01 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -38,7 +38,7 @@ Subroutine CalculateBox2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Box2L2d 
-! 'PreSARAH' output has been generated  at 19:25 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 13:45 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -1764,7 +1764,7 @@ Subroutine CalculatePengS2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengS2L2d 
-! 'PreSARAH' output has been generated  at 19:26 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 13:46 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -4883,7 +4883,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFdFdAhL(gt4,gt3)
 coup4R = cplcFdFdAhR(gt4,gt3)
 ! Masses in loop
@@ -4932,7 +4932,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFdFdAhL(gt4,gt3)
 coup4R = cplcFdFdAhR(gt4,gt3)
 ! Masses in loop
@@ -5329,7 +5329,7 @@ coup1L = cplcFdFdVZL(i1,gt3)
 coup1R = cplcFdFdVZR(i1,gt3)
 coup2L = cplcFdFdhhL(gt4,i1)
 coup2R = cplcFdFdhhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -5378,7 +5378,7 @@ coup1L = cplcFdFdhhL(i1,gt3)
 coup1R = cplcFdFdhhR(i1,gt3)
 coup2L = cplcFdFdVZL(gt4,i1)
 coup2R = cplcFdFdVZR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -5956,7 +5956,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFdFdhhL(gt4,gt3)
 coup4R = cplcFdFdhhR(gt4,gt3)
 ! Masses in loop
@@ -6049,7 +6049,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFdFdhhL(gt4,gt3)
 coup4R = cplcFdFdhhR(gt4,gt3)
 ! Masses in loop
@@ -6446,7 +6446,7 @@ coup1L = cplcFdFdVZL(i1,gt3)
 coup1R = cplcFdFdVZR(i1,gt3)
 coup2L = cplcFdFdAhL(gt4,i1)
 coup2R = cplcFdFdAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -6539,7 +6539,7 @@ coup1L = cplcFdFdAhL(i1,gt3)
 coup1R = cplcFdFdAhR(i1,gt3)
 coup2L = cplcFdFdVZL(gt4,i1)
 coup2R = cplcFdFdVZR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -6844,7 +6844,7 @@ Subroutine CalculatePengV2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengV2L2d 
-! 'PreSARAH' output has been generated  at 19:29 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 13:50 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -8769,7 +8769,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFdFdVZL(gt4,gt3)
 coup4R = cplcFdFdVZR(gt4,gt3)
 ! Masses in loop
@@ -8813,7 +8813,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFdFdVZL(gt4,gt3)
 coup4R = cplcFdFdVZR(gt4,gt3)
 ! Masses in loop
@@ -9210,7 +9210,7 @@ coup1L = cplcFdFdhhL(i1,gt3)
 coup1R = cplcFdFdhhR(i1,gt3)
 coup2L = cplcFdFdAhL(gt4,i1)
 coup2R = cplcFdFdAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -9254,7 +9254,7 @@ coup1L = cplcFdFdAhL(i1,gt3)
 coup1R = cplcFdFdAhR(i1,gt3)
 coup2L = cplcFdFdhhL(gt4,i1)
 coup2R = cplcFdFdhhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -9594,7 +9594,7 @@ Subroutine CalculateTreeS2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeS2L2d 
-! 'PreSARAH' output has been generated  at 19:29 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 13:50 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -9686,10 +9686,10 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOllddSLL=TSOllddSLL+ 1*coup1L*coup2L*IMP2
-  TSOllddSRR=TSOllddSRR+ 1*coup1R*coup2R*IMP2
-  TSOllddSRL=TSOllddSRL+ 1*coup1R*coup2L*IMP2
-  TSOllddSLR=TSOllddSLR+ 1*coup1L*coup2R*IMP2
+  TSOllddSLL=TSOllddSLL+ coup1L*coup2L*IMP2
+  TSOllddSRR=TSOllddSRR+ coup1R*coup2R*IMP2
+  TSOllddSRL=TSOllddSRL+ coup1R*coup2L*IMP2
+  TSOllddSLR=TSOllddSLR+ coup1L*coup2R*IMP2
   TSOllddVRR=TSOllddVRR+ 0.
   TSOllddVLL=TSOllddVLL+ 0.
   TSOllddVRL=TSOllddVRL+ 0.
@@ -9716,10 +9716,10 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOllddSLL=TSOllddSLL+ 1*coup1L*coup2L*IMP2
-  TSOllddSRR=TSOllddSRR+ 1*coup1R*coup2R*IMP2
-  TSOllddSRL=TSOllddSRL+ 1*coup1R*coup2L*IMP2
-  TSOllddSLR=TSOllddSLR+ 1*coup1L*coup2R*IMP2
+  TSOllddSLL=TSOllddSLL+ coup1L*coup2L*IMP2
+  TSOllddSRR=TSOllddSRR+ coup1R*coup2R*IMP2
+  TSOllddSRL=TSOllddSRL+ coup1R*coup2L*IMP2
+  TSOllddSLR=TSOllddSLR+ coup1L*coup2R*IMP2
   TSOllddVRR=TSOllddVRR+ 0.
   TSOllddVLL=TSOllddVLL+ 0.
   TSOllddVRL=TSOllddVRL+ 0.
@@ -9755,7 +9755,7 @@ Subroutine CalculateTreeV2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeV2L2d 
-! 'PreSARAH' output has been generated  at 19:29 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 13:50 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -9851,10 +9851,10 @@ IMP2 = 1._dp/MP2
   TVOllddSRR=TVOllddSRR+ 0.
   TVOllddSRL=TVOllddSRL+ 0.
   TVOllddSLR=TVOllddSLR+ 0.
-  TVOllddVRR=TVOllddVRR-1*coup1R*coup2R*IMP2
-  TVOllddVLL=TVOllddVLL-1*coup1L*coup2L*IMP2
-  TVOllddVRL=TVOllddVRL-1*coup1R*coup2L*IMP2
-  TVOllddVLR=TVOllddVLR-1*coup1L*coup2R*IMP2
+  TVOllddVRR=TVOllddVRR-1.*coup1R*coup2R*IMP2
+  TVOllddVLL=TVOllddVLL-1.*coup1L*coup2L*IMP2
+  TVOllddVRL=TVOllddVRL-1.*coup1R*coup2L*IMP2
+  TVOllddVLR=TVOllddVLR-1.*coup1L*coup2R*IMP2
   TVOllddTLL=TVOllddTLL+ 0.
   TVOllddTLR=TVOllddTLR+ 0.
   TVOllddTRL=TVOllddTRL+ 0.
@@ -9886,7 +9886,7 @@ Subroutine CalculateBox2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Box2L2u 
-! 'PreSARAH' output has been generated  at 19:36 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:40 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -11599,7 +11599,7 @@ Subroutine CalculatePengS2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengS2L2u 
-! 'PreSARAH' output has been generated  at 19:38 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:41 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -14718,7 +14718,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFuFuAhL(gt4,gt3)
 coup4R = cplcFuFuAhR(gt4,gt3)
 ! Masses in loop
@@ -14767,7 +14767,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFuFuAhL(gt4,gt3)
 coup4R = cplcFuFuAhR(gt4,gt3)
 ! Masses in loop
@@ -15158,7 +15158,7 @@ coup1L = cplcFuFuVZL(i1,gt3)
 coup1R = cplcFuFuVZR(i1,gt3)
 coup2L = cplcFuFuhhL(gt4,i1)
 coup2R = cplcFuFuhhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -15207,7 +15207,7 @@ coup1L = cplcFuFuhhL(i1,gt3)
 coup1R = cplcFuFuhhR(i1,gt3)
 coup2L = cplcFuFuVZL(gt4,i1)
 coup2R = cplcFuFuVZR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -15791,7 +15791,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFuFuhhL(gt4,gt3)
 coup4R = cplcFuFuhhR(gt4,gt3)
 ! Masses in loop
@@ -15884,7 +15884,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFuFuhhL(gt4,gt3)
 coup4R = cplcFuFuhhR(gt4,gt3)
 ! Masses in loop
@@ -16363,7 +16363,7 @@ coup1L = cplcFuFuVZL(i1,gt3)
 coup1R = cplcFuFuVZR(i1,gt3)
 coup2L = cplcFuFuAhL(gt4,i1)
 coup2R = cplcFuFuAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -16456,7 +16456,7 @@ coup1L = cplcFuFuAhL(i1,gt3)
 coup1R = cplcFuFuAhR(i1,gt3)
 coup2L = cplcFuFuVZL(gt4,i1)
 coup2R = cplcFuFuVZR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -16679,7 +16679,7 @@ Subroutine CalculatePengV2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengV2L2u 
-! 'PreSARAH' output has been generated  at 19:45 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:46 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -18604,7 +18604,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFuFuVZL(gt4,gt3)
 coup4R = cplcFuFuVZR(gt4,gt3)
 ! Masses in loop
@@ -18648,7 +18648,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFuFuVZL(gt4,gt3)
 coup4R = cplcFuFuVZR(gt4,gt3)
 ! Masses in loop
@@ -19121,7 +19121,7 @@ coup1L = cplcFuFuhhL(i1,gt3)
 coup1R = cplcFuFuhhR(i1,gt3)
 coup2L = cplcFuFuAhL(gt4,i1)
 coup2R = cplcFuFuAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -19165,7 +19165,7 @@ coup1L = cplcFuFuAhL(i1,gt3)
 coup1R = cplcFuFuAhR(i1,gt3)
 coup2L = cplcFuFuhhL(gt4,i1)
 coup2R = cplcFuFuhhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -19429,7 +19429,7 @@ Subroutine CalculateTreeS2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeS2L2u 
-! 'PreSARAH' output has been generated  at 19:45 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:46 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -19521,10 +19521,10 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOlluuSLL=TSOlluuSLL+ 1*coup1L*coup2L*IMP2
-  TSOlluuSRR=TSOlluuSRR+ 1*coup1R*coup2R*IMP2
-  TSOlluuSRL=TSOlluuSRL+ 1*coup1R*coup2L*IMP2
-  TSOlluuSLR=TSOlluuSLR+ 1*coup1L*coup2R*IMP2
+  TSOlluuSLL=TSOlluuSLL+ coup1L*coup2L*IMP2
+  TSOlluuSRR=TSOlluuSRR+ coup1R*coup2R*IMP2
+  TSOlluuSRL=TSOlluuSRL+ coup1R*coup2L*IMP2
+  TSOlluuSLR=TSOlluuSLR+ coup1L*coup2R*IMP2
   TSOlluuVRR=TSOlluuVRR+ 0.
   TSOlluuVLL=TSOlluuVLL+ 0.
   TSOlluuVRL=TSOlluuVRL+ 0.
@@ -19551,10 +19551,10 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOlluuSLL=TSOlluuSLL+ 1*coup1L*coup2L*IMP2
-  TSOlluuSRR=TSOlluuSRR+ 1*coup1R*coup2R*IMP2
-  TSOlluuSRL=TSOlluuSRL+ 1*coup1R*coup2L*IMP2
-  TSOlluuSLR=TSOlluuSLR+ 1*coup1L*coup2R*IMP2
+  TSOlluuSLL=TSOlluuSLL+ coup1L*coup2L*IMP2
+  TSOlluuSRR=TSOlluuSRR+ coup1R*coup2R*IMP2
+  TSOlluuSRL=TSOlluuSRL+ coup1R*coup2L*IMP2
+  TSOlluuSLR=TSOlluuSLR+ coup1L*coup2R*IMP2
   TSOlluuVRR=TSOlluuVRR+ 0.
   TSOlluuVLL=TSOlluuVLL+ 0.
   TSOlluuVRL=TSOlluuVRL+ 0.
@@ -19590,7 +19590,7 @@ Subroutine CalculateTreeV2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeV2L2u 
-! 'PreSARAH' output has been generated  at 19:46 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:46 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -19686,10 +19686,10 @@ IMP2 = 1._dp/MP2
   TVOlluuSRR=TVOlluuSRR+ 0.
   TVOlluuSRL=TVOlluuSRL+ 0.
   TVOlluuSLR=TVOlluuSLR+ 0.
-  TVOlluuVRR=TVOlluuVRR-1*coup1R*coup2R*IMP2
-  TVOlluuVLL=TVOlluuVLL-1*coup1L*coup2L*IMP2
-  TVOlluuVRL=TVOlluuVRL-1*coup1R*coup2L*IMP2
-  TVOlluuVLR=TVOlluuVLR-1*coup1L*coup2R*IMP2
+  TVOlluuVRR=TVOlluuVRR-1.*coup1R*coup2R*IMP2
+  TVOlluuVLL=TVOlluuVLL-1.*coup1L*coup2L*IMP2
+  TVOlluuVRL=TVOlluuVRL-1.*coup1R*coup2L*IMP2
+  TVOlluuVLR=TVOlluuVLR-1.*coup1L*coup2R*IMP2
   TVOlluuTLL=TVOlluuTLL+ 0.
   TVOlluuTLR=TVOlluuTLR+ 0.
   TVOlluuTRL=TVOlluuTRL+ 0.
@@ -19716,7 +19716,7 @@ Subroutine CalculateBox4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,Metp,      
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Box4L 
-! 'PreSARAH' output has been generated  at 18:46 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:36 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -21660,7 +21660,7 @@ Subroutine CalculatePengS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengS4L 
-! 'PreSARAH' output has been generated  at 18:47 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:36 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -25018,7 +25018,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt3)
 coup4R = cplcFeFeAhR(gt4,gt3)
 ! Masses in loop
@@ -25067,7 +25067,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt3)
 coup4R = cplcFeFeAhR(gt4,gt3)
 ! Masses in loop
@@ -25458,7 +25458,7 @@ coup1L = cplcFeFeVZL(i1,gt3)
 coup1R = cplcFeFeVZR(i1,gt3)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -25507,7 +25507,7 @@ coup1L = cplcFeFehhL(i1,gt3)
 coup1R = cplcFeFehhR(i1,gt3)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -25987,7 +25987,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt3)
 coup4R = cplcFeFehhR(gt4,gt3)
 ! Masses in loop
@@ -26080,7 +26080,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt3)
 coup4R = cplcFeFehhR(gt4,gt3)
 ! Masses in loop
@@ -26603,7 +26603,7 @@ coup1L = cplcFeFeVZL(i1,gt3)
 coup1R = cplcFeFeVZR(i1,gt3)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -26696,7 +26696,7 @@ coup1L = cplcFeFeAhL(i1,gt3)
 coup1R = cplcFeFeAhR(i1,gt3)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -26811,7 +26811,7 @@ Subroutine CalculatePengV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengV4L 
-! 'PreSARAH' output has been generated  at 18:49 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:37 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -28853,7 +28853,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt4,gt3)
 coup4R = cplcFeFeVZR(gt4,gt3)
 ! Masses in loop
@@ -28897,7 +28897,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt4,gt3)
 coup4R = cplcFeFeVZR(gt4,gt3)
 ! Masses in loop
@@ -29520,7 +29520,7 @@ coup1L = cplcFeFehhL(i1,gt3)
 coup1R = cplcFeFehhR(i1,gt3)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -29564,7 +29564,7 @@ coup1L = cplcFeFeAhL(i1,gt3)
 coup1R = cplcFeFeAhR(i1,gt3)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -29718,7 +29718,7 @@ Subroutine CalculateTreeS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeS4L 
-! 'PreSARAH' output has been generated  at 18:49 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:37 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -29805,10 +29805,10 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSO4lSLL=TSO4lSLL+ 1*coup1L*coup2L*IMP2
-  TSO4lSRR=TSO4lSRR+ 1*coup1R*coup2R*IMP2
-  TSO4lSRL=TSO4lSRL+ 1*coup1R*coup2L*IMP2
-  TSO4lSLR=TSO4lSLR+ 1*coup1L*coup2R*IMP2
+  TSO4lSLL=TSO4lSLL+ coup1L*coup2L*IMP2
+  TSO4lSRR=TSO4lSRR+ coup1R*coup2R*IMP2
+  TSO4lSRL=TSO4lSRL+ coup1R*coup2L*IMP2
+  TSO4lSLR=TSO4lSLR+ coup1L*coup2R*IMP2
   TSO4lVRR=TSO4lVRR+ 0.
   TSO4lVLL=TSO4lVLL+ 0.
   TSO4lVRL=TSO4lVRL+ 0.
@@ -29835,10 +29835,10 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSO4lSLL=TSO4lSLL+ 1*coup1L*coup2L*IMP2
-  TSO4lSRR=TSO4lSRR+ 1*coup1R*coup2R*IMP2
-  TSO4lSRL=TSO4lSRL+ 1*coup1R*coup2L*IMP2
-  TSO4lSLR=TSO4lSLR+ 1*coup1L*coup2R*IMP2
+  TSO4lSLL=TSO4lSLL+ coup1L*coup2L*IMP2
+  TSO4lSRR=TSO4lSRR+ coup1R*coup2R*IMP2
+  TSO4lSRL=TSO4lSRL+ coup1R*coup2L*IMP2
+  TSO4lSLR=TSO4lSLR+ coup1L*coup2R*IMP2
   TSO4lVRR=TSO4lVRR+ 0.
   TSO4lVLL=TSO4lVLL+ 0.
   TSO4lVRL=TSO4lVRL+ 0.
@@ -29870,7 +29870,7 @@ Subroutine CalculateTreeV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeV4L 
-! 'PreSARAH' output has been generated  at 18:49 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:37 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -29961,10 +29961,10 @@ IMP2 = 1._dp/MP2
   TVO4lSRR=TVO4lSRR+ 0.
   TVO4lSRL=TVO4lSRL+ 0.
   TVO4lSLR=TVO4lSLR+ 0.
-  TVO4lVRR=TVO4lVRR-1*coup1R*coup2R*IMP2
-  TVO4lVLL=TVO4lVLL-1*coup1L*coup2L*IMP2
-  TVO4lVRL=TVO4lVRL-1*coup1R*coup2L*IMP2
-  TVO4lVLR=TVO4lVLR-1*coup1L*coup2R*IMP2
+  TVO4lVRR=TVO4lVRR-1.*coup1R*coup2R*IMP2
+  TVO4lVLL=TVO4lVLL-1.*coup1L*coup2L*IMP2
+  TVO4lVRL=TVO4lVRL-1.*coup1R*coup2L*IMP2
+  TVO4lVLR=TVO4lVLR-1.*coup1L*coup2R*IMP2
   TVO4lTLL=TVO4lTLL+ 0.
   TVO4lTLR=TVO4lTLR+ 0.
   TVO4lTRL=TVO4lTRL+ 0.
@@ -29992,7 +29992,7 @@ Subroutine CalculateBox4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,      
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Box4Lcross 
-! 'PreSARAH' output has been generated  at 13:53 on 1.7.2014 
+! 'PreSARAH' output has been generated  at 15:51 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -30401,10 +30401,10 @@ mF22 = MFv2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 - & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 - & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
 &  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
@@ -30453,10 +30453,10 @@ mF22 = MFv2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 - & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 - & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
@@ -31380,10 +31380,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 - & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 - & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
 &  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
@@ -31432,10 +31432,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 - & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 - & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
 &  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
@@ -31570,10 +31570,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 - & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 - & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
 &  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
@@ -31622,10 +31622,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 - & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 - & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
 &  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
@@ -31674,10 +31674,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 - & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 - & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
@@ -31726,10 +31726,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 - & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 - & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
@@ -31870,10 +31870,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 - & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 - & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
@@ -31922,10 +31922,10 @@ mF22 = MFe2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 - & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 - & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
@@ -33939,7 +33939,7 @@ Subroutine CalculatePengS4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,    
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengS4Lcross 
-! 'PreSARAH' output has been generated  at 10:53 on 13.6.2014 
+! 'PreSARAH' output has been generated  at 15:52 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -40093,16 +40093,16 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -40243,16 +40243,16 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -40295,16 +40295,16 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C0check(mF22, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -40417,7 +40417,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt3)
 coup4R = cplcFeFeAhR(gt4,gt3)
 ! Masses in loop
@@ -40466,7 +40466,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt3)
 coup4R = cplcFeFeAhR(gt4,gt3)
 ! Masses in loop
@@ -40533,26 +40533,26 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -40689,26 +40689,26 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -40743,26 +40743,26 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C0check(mF22, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1L*coup2R*coup4L*IMP2*(-          & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1R*coup2L*coup4R*IMP2*(-          & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -40867,7 +40867,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt3)
 coup4R = cplcFeFeAhR(gt2,gt3)
 ! Masses in loop
@@ -40918,7 +40918,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt3)
 coup4R = cplcFeFeAhR(gt2,gt3)
 ! Masses in loop
@@ -40987,16 +40987,16 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -41137,16 +41137,16 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -41189,16 +41189,16 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C0check(mF22, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -41311,7 +41311,7 @@ coup1L = cplcFeFeVZL(i1,gt3)
 coup1R = cplcFeFeVZR(i1,gt3)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -41360,7 +41360,7 @@ coup1L = cplcFeFehhL(i1,gt3)
 coup1R = cplcFeFehhR(i1,gt3)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt2,gt1)
 coup4R = cplcFeFeAhR(gt2,gt1)
 ! Masses in loop
@@ -41427,26 +41427,26 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C0check(mF12, mF22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -41551,7 +41551,7 @@ coup1L = Conjg(-cplcFeFeVZR(gt2,i1))
 coup1R = Conjg(-cplcFeFeVZL(gt2,i1))
 coup2L = cplcFeFehhL(i1,gt3)
 coup2R = cplcFeFehhR(i1,gt3)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt1)
 coup4R = cplcFeFeAhR(gt4,gt1)
 ! Masses in loop
@@ -41602,7 +41602,7 @@ coup1L = cplcFeFehhL(gt2,i1)
 coup1R = cplcFeFehhR(gt2,i1)
 coup2L = Conjg(-cplcFeFeVZR(i1,gt3))
 coup2R = Conjg(-cplcFeFeVZL(i1,gt3))
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt1)
 coup4R = cplcFeFeAhR(gt4,gt1)
 ! Masses in loop
@@ -41773,26 +41773,26 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C0check(mF12, mF22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -41827,26 +41827,26 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mV12)
   int2=C0check(mF12, mF22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1R*coup2L*coup4L*IMP2*(-          & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1L*coup2R*coup4R*IMP2*(-          & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -41882,16 +41882,16 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -42164,16 +42164,16 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -42216,16 +42216,16 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C0check(mF22, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -42294,7 +42294,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt3)
 coup4R = cplcFeFehhR(gt4,gt3)
 ! Masses in loop
@@ -42387,7 +42387,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt3)
 coup4R = cplcFeFehhR(gt4,gt3)
 ! Masses in loop
@@ -42498,26 +42498,26 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -42786,26 +42786,26 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -42840,26 +42840,26 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C0check(mF22, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1L*coup2R*coup4L*IMP2*(-          & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1R*coup2L*coup4R*IMP2*(-          & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -42920,7 +42920,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt3)
 coup4R = cplcFeFehhR(gt2,gt3)
 ! Masses in loop
@@ -43015,7 +43015,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt3)
 coup4R = cplcFeFehhR(gt2,gt3)
 ! Masses in loop
@@ -43128,16 +43128,16 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -43410,16 +43410,16 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C0check(mF22, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +   & 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +   & 
+&  coup3R*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -43462,16 +43462,16 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C0check(mF22, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
-  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
+  PSO4lSRLcross=PSO4lSRLcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
+  PSO4lSLRcross=PSO4lSLRcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
   PSO4lVRLcross=PSO4lVRLcross+0.
@@ -43540,7 +43540,7 @@ coup1L = cplcFeFeVZL(i1,gt3)
 coup1R = cplcFeFeVZR(i1,gt3)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -43633,7 +43633,7 @@ coup1L = cplcFeFeAhL(i1,gt3)
 coup1R = cplcFeFeAhR(i1,gt3)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt2,gt1)
 coup4R = cplcFeFehhR(gt2,gt1)
 ! Masses in loop
@@ -43744,26 +43744,26 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C0check(mF12, mF22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -43868,7 +43868,7 @@ coup1L = Conjg(-cplcFeFeVZR(gt2,i1))
 coup1R = Conjg(-cplcFeFeVZL(gt2,i1))
 coup2L = cplcFeFeAhL(i1,gt3)
 coup2R = cplcFeFeAhR(i1,gt3)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt1)
 coup4R = cplcFeFehhR(gt4,gt1)
 ! Masses in loop
@@ -43963,7 +43963,7 @@ coup1L = cplcFeFeAhL(gt2,i1)
 coup1R = cplcFeFeAhR(gt2,i1)
 coup2L = Conjg(-cplcFeFeVZR(i1,gt3))
 coup2R = Conjg(-cplcFeFeVZL(i1,gt3))
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt1)
 coup4R = cplcFeFehhR(gt4,gt1)
 ! Masses in loop
@@ -44266,26 +44266,26 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C0check(mF12, mF22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*int2*mF1*mF2 +& 
-&  coup3R*(int1 + int2*mS12))
+  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3R*int1 +& 
+&  coup3L*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*int2*mF1*mF2 +& 
-&  coup3L*(int1 + int2*mS12))
+  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3L*int1 +& 
+&  coup3R*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -44320,26 +44320,26 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mV12)
   int2=C0check(mF12, mF22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
+  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
   PSO4lSRLcross=PSO4lSRLcross+0.
   PSO4lSLRcross=PSO4lSLRcross+0.
   PSO4lVRRcross=PSO4lVRRcross+0.
   PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(2.*coup3R*int2*mF1*mF2 +& 
-&  coup3L*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(2.*coup3L*int2*mF1*mF2 +& 
-&  coup3R*(-1.*Finite + 2.*(int1 + int2*mV12)))
-  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1R*coup2L*coup4L*IMP2*(-          & 
-& 2.*coup3R*int2*mF1*mF2 + coup3L*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lVRLcross=PSO4lVRLcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
+& 1.*coup3L*Finite + 2.*coup3L*int1 + 2.*coup3R*int2*mF1*mF2)
+  PSO4lVLRcross=PSO4lVLRcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
+& 1.*coup3R*Finite + 2.*coup3R*int1 + 2.*coup3L*int2*mF1*mF2)
+  PSO4lTLLcross=PSO4lTLLcross+0.25*chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1) - 2.*coup3R*int2*mF1*mF2)
   PSO4lTLRcross=PSO4lTLRcross+0.
   PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1L*coup2R*coup4R*IMP2*(-          & 
-& 2.*coup3L*int2*mF1*mF2 + coup3R*(Finite - 2.*(int1 + int2*mV12)))
+  PSO4lTRRcross=PSO4lTRRcross+0.25*chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1) - 2.*coup3L*int2*mF1*mF2)
   End if 
 End if 
    End Do 
@@ -44378,7 +44378,7 @@ Subroutine CalculatePengV4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,    
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengV4Lcross 
-! 'PreSARAH' output has been generated  at 10:55 on 13.6.2014 
+! 'PreSARAH' output has been generated  at 15:56 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -47411,21 +47411,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -47690,21 +47690,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -47743,21 +47743,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -47796,21 +47796,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C00_3m(mF22, mF12, mV12)
   int3=C0check(mF22, mF12, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -47849,21 +47849,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C00_3m(mF22, mF12, mV12)
   int3=C0check(mF22, mF12, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -47884,7 +47884,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt4,gt3)
 coup4R = cplcFeFeVZR(gt4,gt3)
 ! Masses in loop
@@ -47928,7 +47928,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt4,gt3)
 coup4R = cplcFeFeVZR(gt4,gt3)
 ! Masses in loop
@@ -48078,19 +48078,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-          & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-          & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
+& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
+& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -48357,19 +48357,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-          & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-          & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
+& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
+& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -48410,19 +48410,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-          & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-          & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
+& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
+& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -48463,19 +48463,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C00_3m(mF22, mF12, mV12)
   int3=C0check(mF22, mF12, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -48516,19 +48516,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C00_3m(mF22, mF12, mV12)
   int3=C0check(mF22, mF12, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -48551,7 +48551,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt3)
 coup4R = cplcFeFeVZR(gt2,gt3)
 ! Masses in loop
@@ -48595,7 +48595,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt3)
 coup4R = cplcFeFeVZR(gt2,gt3)
 ! Masses in loop
@@ -48745,21 +48745,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -49024,21 +49024,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -49077,21 +49077,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mS12)
   int2=C00_3m(mF22, mF12, mS12)
   int3=C0check(mF22, mF12, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -49130,21 +49130,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C00_3m(mF22, mF12, mV12)
   int3=C0check(mF22, mF12, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -49183,21 +49183,21 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF22, mF12, mV12)
   int2=C00_3m(mF22, mF12, mV12)
   int3=C0check(mF22, mF12, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
   PVO4lSRLcross=PVO4lSRLcross+0.
   PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
   PVO4lTLLcross=PVO4lTLLcross+0.
   PVO4lTLRcross=PVO4lTLRcross+0.
   PVO4lTRLcross=PVO4lTRLcross+0.
@@ -49218,7 +49218,7 @@ coup1L = cplcFeFehhL(i1,gt3)
 coup1R = cplcFeFehhR(i1,gt3)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -49262,7 +49262,7 @@ coup1L = cplcFeFeAhL(i1,gt3)
 coup1R = cplcFeFeAhR(i1,gt3)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt2,gt1)
 coup4R = cplcFeFeVZR(gt2,gt1)
 ! Masses in loop
@@ -49412,19 +49412,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C00_3m(mF12, mF22, mS12)
   int3=C0check(mF12, mF22, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-          & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-          & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
+& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
+& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -49491,7 +49491,7 @@ coup1L = cplcFeFehhL(gt2,i1)
 coup1R = cplcFeFehhR(gt2,i1)
 coup2L = cplcFeFeAhL(i1,gt3)
 coup2R = cplcFeFeAhR(i1,gt3)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
 coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
 ! Masses in loop
@@ -49535,7 +49535,7 @@ coup1L = cplcFeFeAhL(gt2,i1)
 coup1R = cplcFeFeAhR(gt2,i1)
 coup2L = cplcFeFehhL(i1,gt3)
 coup2R = cplcFeFehhR(i1,gt3)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
 coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
 ! Masses in loop
@@ -49867,19 +49867,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C00_3m(mF12, mF22, mS12)
   int3=C0check(mF12, mF22, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-          & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-          & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
+& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
+& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -49920,19 +49920,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mV12)
   int2=C00_3m(mF12, mF22, mV12)
   int3=C0check(mF12, mF22, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -49973,19 +49973,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mS12)
   int2=C00_3m(mF12, mF22, mS12)
   int3=C0check(mF12, mF22, mS12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-          & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-          & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(-               & 
-& 1.*coup3R*int3*mF1*mF2 + coup3L*(int1 - 2.*int2 + int3*mS12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(-               & 
-& 1.*coup3L*int3*mF1*mF2 + coup3R*(int1 - 2.*int2 + int3*mS12))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
+& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
+& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(int1 -  & 
+&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(int1 -  & 
+&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -50026,19 +50026,19 @@ MP2 = MVZ2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  int1=B0(0._dp, mF12, mF22)
+  int1=B0C0check(mF12, mF22, mV12)
   int2=C00_3m(mF12, mF22, mV12)
   int3=C0check(mF12, mF22, mV12)
   PVO4lSLLcross=PVO4lSLLcross+0.
   PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(2.*coup3L*int3*mF1*mF2 +& 
-&  coup3R*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(2.*coup3R*int3*mF1*mF2 +& 
-&  coup3L*(Finite - 2.*(int1 - 2.*int2 + int3*mV12)))
+  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
+  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
+  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
+&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
   PVO4lVRLcross=PVO4lVRLcross+0.
   PVO4lVLRcross=PVO4lVLRcross+0.
   PVO4lTLLcross=PVO4lTLLcross+0.
@@ -50083,7 +50083,7 @@ Subroutine CalculateTreeS4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,    
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeS4Lcross 
-! 'PreSARAH' output has been generated  at 12:17 on 4.11.2014 
+! 'PreSARAH' output has been generated  at 15:56 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -50170,10 +50170,10 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSO4lSLLcross=TSO4lSLLcross+ 1*coup1L*coup2L*IMP2
-  TSO4lSRRcross=TSO4lSRRcross+ 1*coup1R*coup2R*IMP2
-  TSO4lSRLcross=TSO4lSRLcross+ 1*coup1R*coup2L*IMP2
-  TSO4lSLRcross=TSO4lSLRcross+ 1*coup1L*coup2R*IMP2
+  TSO4lSLLcross=TSO4lSLLcross+ coup1L*coup2L*IMP2
+  TSO4lSRRcross=TSO4lSRRcross+ coup1R*coup2R*IMP2
+  TSO4lSRLcross=TSO4lSRLcross+ coup1R*coup2L*IMP2
+  TSO4lSLRcross=TSO4lSLRcross+ coup1L*coup2R*IMP2
   TSO4lVRRcross=TSO4lVRRcross+ 0.
   TSO4lVLLcross=TSO4lVLLcross+ 0.
   TSO4lVRLcross=TSO4lVRLcross+ 0.
@@ -50229,10 +50229,10 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSO4lSLLcross=TSO4lSLLcross+ 1*coup1L*coup2L*IMP2
-  TSO4lSRRcross=TSO4lSRRcross+ 1*coup1R*coup2R*IMP2
-  TSO4lSRLcross=TSO4lSRLcross+ 1*coup1R*coup2L*IMP2
-  TSO4lSLRcross=TSO4lSLRcross+ 1*coup1L*coup2R*IMP2
+  TSO4lSLLcross=TSO4lSLLcross+ coup1L*coup2L*IMP2
+  TSO4lSRRcross=TSO4lSRRcross+ coup1R*coup2R*IMP2
+  TSO4lSRLcross=TSO4lSRLcross+ coup1R*coup2L*IMP2
+  TSO4lSLRcross=TSO4lSLRcross+ coup1L*coup2R*IMP2
   TSO4lVRRcross=TSO4lVRRcross+ 0.
   TSO4lVLLcross=TSO4lVLLcross+ 0.
   TSO4lVRLcross=TSO4lVRLcross+ 0.
@@ -50293,7 +50293,7 @@ Subroutine CalculateTreeV4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,    
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeV4Lcross 
-! 'PreSARAH' output has been generated  at 12:17 on 4.11.2014 
+! 'PreSARAH' output has been generated  at 15:56 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -50384,10 +50384,10 @@ IMP2 = 1._dp/MP2
   TVO4lSRRcross=TVO4lSRRcross+ 0.
   TVO4lSRLcross=TVO4lSRLcross+ 0.
   TVO4lSLRcross=TVO4lSLRcross+ 0.
-  TVO4lVRRcross=TVO4lVRRcross-1*coup1R*coup2R*IMP2
-  TVO4lVLLcross=TVO4lVLLcross-1*coup1L*coup2L*IMP2
-  TVO4lVRLcross=TVO4lVRLcross-1*coup1R*coup2L*IMP2
-  TVO4lVLRcross=TVO4lVLRcross-1*coup1L*coup2R*IMP2
+  TVO4lVRRcross=TVO4lVRRcross-1.*coup1R*coup2R*IMP2
+  TVO4lVLLcross=TVO4lVLLcross-1.*coup1L*coup2L*IMP2
+  TVO4lVRLcross=TVO4lVRLcross-1.*coup1R*coup2L*IMP2
+  TVO4lVLRcross=TVO4lVLRcross-1.*coup1L*coup2R*IMP2
   TVO4lTLLcross=TVO4lTLLcross+ 0.
   TVO4lTLRcross=TVO4lTLRcross+ 0.
   TVO4lTRLcross=TVO4lTRLcross+ 0.
@@ -50411,10 +50411,10 @@ IMP2 = 1._dp/MP2
 ! Amplitude 
   TVO4lSLLcross=TVO4lSLLcross+ 0.
   TVO4lSRRcross=TVO4lSRRcross+ 0.
-  TVO4lSRLcross=TVO4lSRLcross+ 2*coup1R*coup2L*IMP2
-  TVO4lSLRcross=TVO4lSLRcross+ 2*coup1L*coup2R*IMP2
-  TVO4lVRRcross=TVO4lVRRcross-1*coup1R*coup2R*IMP2
-  TVO4lVLLcross=TVO4lVLLcross-1*coup1L*coup2L*IMP2
+  TVO4lSRLcross=TVO4lSRLcross+ 2.*coup1R*coup2L*IMP2
+  TVO4lSLRcross=TVO4lSLRcross+ 2.*coup1L*coup2R*IMP2
+  TVO4lVRRcross=TVO4lVRRcross-1.*coup1R*coup2R*IMP2
+  TVO4lVLLcross=TVO4lVLLcross-1.*coup1L*coup2L*IMP2
   TVO4lVRLcross=TVO4lVRLcross+ 0.
   TVO4lVLRcross=TVO4lVLRcross+ 0.
   TVO4lTLLcross=TVO4lTLLcross+ 0.
@@ -50440,7 +50440,7 @@ Subroutine CalculateGamma2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MChi,MChi2,Metp,        
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Gamma2l 
-! 'PreSARAH' output has been generated  at 11:48 on 2.2.2015 
+! 'PreSARAH' output has been generated  at 15:56 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -51301,7 +51301,7 @@ Subroutine CalculateH2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MChi,MChi2,Metp,Metp2,      
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process H2l 
-! 'PreSARAH' output has been generated  at 13:01 on 4.11.2014 
+! 'PreSARAH' output has been generated  at 10:48 on 14.1.2016 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -52198,7 +52198,7 @@ coup1L = cplcFeFeVZL(i1,gt1)
 coup1R = cplcFeFeVZR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 ! Masses in loop
 mF1 = MFe(i1)
 mF12 = MFe2(i1)
@@ -52253,7 +52253,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFeVZL(gt2,i1)
 coup2R = cplcFeFeVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 ! Masses in loop
 mF1 = MFe(i1)
 mF12 = MFe2(i1)
@@ -52316,7 +52316,7 @@ Subroutine CalculateZ2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MChi,MChi2,Metp,Metp2,      
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Z2l 
-! 'PreSARAH' output has been generated  at 13:02 on 4.11.2014 
+! 'PreSARAH' output has been generated  at 10:49 on 14.1.2016 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -53337,7 +53337,7 @@ coup1L = cplcFeFehhL(i1,gt1)
 coup1R = cplcFeFehhR(i1,gt1)
 coup2L = cplcFeFeAhL(gt2,i1)
 coup2R = cplcFeFeAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 ! Masses in loop
 mF1 = MFe(i1)
 mF12 = MFe2(i1)
@@ -53369,7 +53369,7 @@ coup1L = cplcFeFeAhL(i1,gt1)
 coup1R = cplcFeFeAhR(i1,gt1)
 coup2L = cplcFeFehhL(gt2,i1)
 coup2R = cplcFeFehhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 ! Masses in loop
 mF1 = MFe(i1)
 mF12 = MFe2(i1)
@@ -53475,7 +53475,7 @@ Real(dp)::m1,m2,r
 
 !  C0
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53498,7 +53498,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53535,7 +53535,7 @@ Real(dp)::m1,m2,r
 
 !  C1
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53558,7 +53558,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53595,7 +53595,7 @@ Real(dp)::m1,m2,r
 
 !  C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53618,7 +53618,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53655,7 +53655,7 @@ Real(dp)::m1,m2,r
 
 !  C11
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53678,7 +53678,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53715,7 +53715,7 @@ Real(dp)::m1,m2,r
 
 !  C12
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53738,7 +53738,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53775,7 +53775,7 @@ Real(dp)::m1,m2,r
 
 !  C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53798,7 +53798,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53835,7 +53835,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C2 + C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53858,7 +53858,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53895,7 +53895,7 @@ Real(dp)::m1,m2,r
 
 !  C1 + C11 + C12
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53918,7 +53918,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -53955,7 +53955,7 @@ Real(dp)::m1,m2,r
 
 !  C0 + C1 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -53978,7 +53978,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -54015,7 +54015,7 @@ Real(dp)::m1,m2,r
 
 !  2 C11 + 2 C12 - C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -54038,7 +54038,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -54075,7 +54075,7 @@ Real(dp)::m1,m2,r
 
 !  -C1 + 2 C12 + 2 C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -54098,7 +54098,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -54135,7 +54135,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -54158,7 +54158,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -54195,7 +54195,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -54218,7 +54218,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -54255,7 +54255,7 @@ Real(dp)::m1,m2,r
 
 !  C1 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -54278,7 +54278,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 

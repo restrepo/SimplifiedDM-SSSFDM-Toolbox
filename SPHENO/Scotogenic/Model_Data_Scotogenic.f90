@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:01 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -18,6 +18,7 @@ Logical, Save :: Enable3BDecaysF = .True.
 Logical, Save :: FirstRun = .True. 
 Logical, Save :: RunningCouplingsDecays = .True. 
 Logical, Save :: WriteSLHA1 = .False. 
+Logical, Save :: MakeQTEST = .False. 
 Logical, Save :: CalculateOneLoopMasses = .True. 
 Logical, Save :: CalculateOneLoopMassesSave = .True. 
 Logical, Save :: CalculateTwoLoopHiggsMasses = .True. 
@@ -26,7 +27,7 @@ Logical :: CalculateTwoLoopHiggsMassesSave = .True.
 Logical, Save :: CalculateLowEnergy = .True. 
 Logical, Save :: WriteParametersAtQ = .False. 
 Logical, Save :: TwoLoopRGE=.True.
-Logical, Save :: SMrunningLowScaleInput=.True.
+Logical, Save :: SMrunningLowScaleInput=.False.
 Logical, Save :: RunningSUSYparametersLowEnergy=.True.
 Logical, Save :: RunningSMparametersLowEnergy=.True.
 Integer, Save :: MinimalNumberIterations = 5
@@ -43,7 +44,9 @@ Logical :: TwoLoopSafeMode
 Integer :: TwoLoopMethod = 3 
 Logical :: WriteTreeLevelTadpoleParameters = .false. 
 Logical :: IncludeDeltaVB = .True. 
+Logical :: IncludeBSMdeltaVB = .True. 
 Real(dp) :: WidthToBeInvisible = 0._dp 
+Logical :: HigherOrderDiboson = .True. 
 Real(dp) :: nLep = 3._dp, mf_u_mz_running 
 Real(dp) :: nUp = 2._dp 
 Real(dp) :: err2L = 0._dp 
@@ -106,30 +109,63 @@ Real(dp) :: f_Dsp_CONST=0.256_dp
 Complex(dp) :: coeffC7sm = 0._dp
 Complex(dp) :: coeffC7 = 0._dp
 Complex(dp) :: coeffC7p = 0._dp
+Complex(dp) :: coeffC7NP = 0._dp
+Complex(dp) :: coeffC7pNP = 0._dp
 Complex(dp) :: coeffC8sm = 0._dp
 Complex(dp) :: coeffC8 = 0._dp
 Complex(dp) :: coeffC8p = 0._dp
+Complex(dp) :: coeffC8NP = 0._dp
+Complex(dp) :: coeffC8pNP = 0._dp
 Complex(dp) :: coeffC9eeSM = 0._dp
 Complex(dp) :: coeffC9ee = 0._dp
 Complex(dp) :: coeffC9Pee = 0._dp
+Complex(dp) :: coeffC9eeNP = 0._dp
+Complex(dp) :: coeffC9PeeNP = 0._dp
 Complex(dp) :: coeffC10eeSM = 0._dp
 Complex(dp) :: coeffC10ee = 0._dp
 Complex(dp) :: coeffC10Pee = 0._dp
+Complex(dp) :: coeffC10eeNP = 0._dp
+Complex(dp) :: coeffC10PeeNP = 0._dp
 Complex(dp) :: coeffC9mumuSM = 0._dp
 Complex(dp) :: coeffC9mumu = 0._dp
 Complex(dp) :: coeffC9Pmumu = 0._dp
+Complex(dp) :: coeffC9mumuNP = 0._dp
+Complex(dp) :: coeffC9PmumuNP = 0._dp
 Complex(dp) :: coeffC10mumuSM = 0._dp
 Complex(dp) :: coeffC10mumu = 0._dp
 Complex(dp) :: coeffC10Pmumu = 0._dp
-Complex(dp) :: coeffC11nu1nu1SM = 0._dp
-Complex(dp) :: coeffC11nu1nu1 = 0._dp
-Complex(dp) :: coeffC11Pnu1nu1 = 0._dp
-Complex(dp) :: coeffC11nu2nu2SM = 0._dp
-Complex(dp) :: coeffC11nu2nu2 = 0._dp
-Complex(dp) :: coeffC11Pnu2nu2 = 0._dp
-Complex(dp) :: coeffC11nu3nu3SM = 0._dp
-Complex(dp) :: coeffC11nu3nu3 = 0._dp
-Complex(dp) :: coeffC11Pnu3nu3 = 0._dp
+Complex(dp) :: coeffC10mumuNP = 0._dp
+Complex(dp) :: coeffC10PmumuNP = 0._dp
+Complex(dp) :: coeffCLnu1nu1SM = 0._dp
+Complex(dp) :: coeffCLnu1nu1 = 0._dp
+Complex(dp) :: coeffCLPnu1nu1 = 0._dp
+Complex(dp) :: coeffCLnu1nu1NP = 0._dp
+Complex(dp) :: coeffCLPnu1nu1NP = 0._dp
+Complex(dp) :: coeffCLnu2nu2SM = 0._dp
+Complex(dp) :: coeffCLnu2nu2 = 0._dp
+Complex(dp) :: coeffCLPnu2nu2 = 0._dp
+Complex(dp) :: coeffCLnu2nu2NP = 0._dp
+Complex(dp) :: coeffCLPnu2nu2NP = 0._dp
+Complex(dp) :: coeffCLnu3nu3SM = 0._dp
+Complex(dp) :: coeffCLnu3nu3 = 0._dp
+Complex(dp) :: coeffCLPnu3nu3 = 0._dp
+Complex(dp) :: coeffCLnu3nu3NP = 0._dp
+Complex(dp) :: coeffCLPnu3nu3NP = 0._dp
+Complex(dp) :: coeffCRnu1nu1SM = 0._dp
+Complex(dp) :: coeffCRnu1nu1 = 0._dp
+Complex(dp) :: coeffCRPnu1nu1 = 0._dp
+Complex(dp) :: coeffCRnu1nu1NP = 0._dp
+Complex(dp) :: coeffCRPnu1nu1NP = 0._dp
+Complex(dp) :: coeffCRnu2nu2SM = 0._dp
+Complex(dp) :: coeffCRnu2nu2 = 0._dp
+Complex(dp) :: coeffCRPnu2nu2 = 0._dp
+Complex(dp) :: coeffCRnu2nu2NP = 0._dp
+Complex(dp) :: coeffCRPnu2nu2NP = 0._dp
+Complex(dp) :: coeffCRnu3nu3SM = 0._dp
+Complex(dp) :: coeffCRnu3nu3 = 0._dp
+Complex(dp) :: coeffCRPnu3nu3 = 0._dp
+Complex(dp) :: coeffCRnu3nu3NP = 0._dp
+Complex(dp) :: coeffCRPnu3nu3NP = 0._dp
 Real(dp) :: MW_SM 
 Real(dp) :: Alpha_160, AlphaS_160, SinW2_160, sinW2_MZ 
 Real(dp) :: mf_d_160(3), mf_u_160(3), mf_l_160(3), mf_d2_160(3), mf_u2_160(3), mf_l2_160(3) 
@@ -173,9 +209,9 @@ Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(
 
 Real(dp) :: v
 
-Complex(dp) :: vIN
+Real(dp) :: vIN
 
-Complex(dp) :: vFix
+Real(dp) :: vFix
 
 Real(dp) :: gPFu(3,144),gTFu(3),BRFu(3,144),gPFe(3,174),gTFe(3),BRFe(3,174),gPFd(3,144),          & 
 & gTFd(3),BRFd(3,144),gPFv(3,12),gTFv(3),BRFv(3,12),gPVZ(1,37),gTVZ,BRVZ(1,37),          & 
@@ -202,6 +238,8 @@ Logical,save::IgnoreNegativeMassesMZ= .False.
 Logical,save::Write_WHIZARD= .False.
 Integer,save::BoundaryCondition=1 
 Logical,Save::MZ_input= .False. 
+ 
+Real(dp) :: CS_Higgs_LHC(5,1,5) 
  
 Real (dp) :: MhhL, Mhh2L 
 Real (dp) :: Mhh_s, Mhh2_s
@@ -267,7 +305,7 @@ Real(dp) :: rHB_P_VZ(1),rHB_S_VZ(1)
 Real(dp) :: rHB_P_VG(1),rHB_S_VG(1)
 Real(dp) :: rHB_P_VWp(1),rHB_S_VWp(1)
 Real(dp) :: rHB_P_P_Fv(1,3),rHB_P_S_Fv(1,3),rHB_S_S_Fv(1,3),rHB_S_P_Fv(1,3)
-Complex(dp) :: CPL_A_H_Z(1,1) 
+Complex(dp) :: CPL_A_H_Z 
  Complex(dp) :: CPL_H_H_Z(1,1) 
  Complex(dp) :: CoupHPP, CoupHGG 
 Complex(dp) :: CPL_A_A_Z(1,1) 

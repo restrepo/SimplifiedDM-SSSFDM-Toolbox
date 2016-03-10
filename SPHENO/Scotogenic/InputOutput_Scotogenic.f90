@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:44 on 28.11.2015   
+! File created at 17:02 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -17,7 +17,7 @@ Use StandardModel
 Use LoopCouplings_Scotogenic 
  
 Logical,Save::LesHouches_Format
-Character(len=8),Save,Private::versionSARAH="4.5.8"
+Character(len=8),Save,Private::versionSARAH="4.8.1"
 Integer,Private::i_cpv=0
 Integer,Save,Private::in_kont(2)
 Logical,Save::Add_Rparity= .False. 
@@ -867,7 +867,12 @@ End Subroutine Read_EXTPAR
 
      Case(58)
       If (wert.Ne.0._dp) Then
-       IncludeDeltaVB=.True.
+        IncludeDeltaVB=.True.
+        If (wert.Ne.2._dp) Then
+         IncludeBSMdeltaVB=.True.
+        Else
+         IncludeBSMdeltaVB=.False.
+        End If
       Else
        IncludeDeltaVB=.False.
       End If
@@ -975,6 +980,12 @@ End Subroutine Read_EXTPAR
        WriteEffHiggsCouplingRatios=.True.
       End If
 
+     Case(521)
+      If (wert.Ne.1._dp) Then
+       HigherOrderDiboson=.False.
+      Else
+       HigherOrderDiboson=.True.
+      End If      
 
      Case(525)
       If (wert.Ne.1._dp) Then
@@ -1006,6 +1017,12 @@ End Subroutine Read_EXTPAR
 
 
 
+     Case(990)
+      If (wert.Ne.1._dp) Then
+       MakeQTEST=.False.
+      Else
+       MakeQTEST=.True.
+      End If
       
 
      Case(999)
@@ -1907,7 +1924,7 @@ End if
 
 Write(io_L,102) 31,m_GUT,"# GUT scale"
 
-Write(io_L,102) 33,Q,"# SUSY scale"
+Write(io_L,102) 33,Q,"# Renormalization scale"
 
 Write(io_L,102) 34,delta_mass,"# Precision"
 
@@ -1987,6 +2004,91 @@ Write(io_L,102) 65,1.*SolutionTadpoleNr,"# Solution of tadpole equation"
 If(Write_WHIZARD) Call WriteWHIZARD 
  
 If(Write_HiggsBounds) Call WriteHiggsBounds
+ 
+
+ 
+If (L_BR) Then 
+If (WriteEffHiggsCouplingRatios) Then 
+Write(io_L,100) "Block HiggsBoundsInputHiggsCouplingsFermions # " 
+Write(io_L,1101) rHB_S_S_Fd(1,3),rHB_S_P_Fd(1,3), 3 ,25,5,5, " # h_1 b b coupling " 
+Write(io_L,1101) rHB_S_S_Fd(1,2),rHB_S_P_Fd(1,2), 3 ,25,3,3, " # h_1 s s coupling " 
+Write(io_L,1101) rHB_S_S_Fu(1,3),rHB_S_P_Fu(1,3), 3 ,25,6,6, " # h_1 t t coupling  " 
+Write(io_L,1101) rHB_S_S_Fu(1,2),rHB_S_P_Fu(1,2),3 ,25,4,4, " # h_1 c c coupling " 
+Write(io_L,1101) rHB_S_S_Fe(1,3),rHB_S_P_Fe(1,3), 3 ,25,15,15, " # h_1 tau tau coupling " 
+Write(io_L,1101) rHB_S_S_Fe(1,2),rHB_S_P_Fe(1,2), 3 ,25,13,13, " # h_1 mu mu coupling  " 
+Write(io_L,100) "Block HiggsBoundsInputHiggsCouplingsBosons # " 
+Write(io_L,1102) rHB_S_VWp(1),3 ,25,24,24, " # h_1 W W coupling " 
+Write(io_L,1102) rHB_S_VZ(1),3 ,25,23,23, " # h_1 Z Z coupling  " 
+Write(io_L,1102) 0._dp ,3 ,25,23,22, " # h_1 Z gamma coupling " 
+Write(io_L,1102) Real(ratioPP,dp),3 ,25,22,22, " # h_1 gamma gamma coupling " 
+Write(io_L,1102) Real(ratioGG,dp),3 ,25,21,21, " # h_1 g g coupling " 
+Write(io_L,1103) 0._dp,4 ,25,21,21,23, " # h_1 g g Z coupling " 
+Write(io_L,1102) Real(CPL_H_H_Z(1,1), dp),3 ,25,25,23, " # h_1 h_1 Z coupling  "
+End If 
+
+ 
+If (WriteHiggsDiphotonLoopContributions) Then 
+Write(io_L,100) "Block HPPloops # Loop contributions to H-Photon-Photon coupling " 
+Do i1=1,1
+CurrentPDG2(1) = Abs(PDGhh) 
+Do i2=2,1
+CurrentPDG2(2) = Abs(PDGHp) 
+Write(io_L,122) CurrentPDG2(1), CurrentPDG2(2), HPPloopHp, " # h(",i1,")-Hp(",i2,")-loop " 
+End do 
+Do i2=1,1
+CurrentPDG2(2) = Abs(PDGetp) 
+Write(io_L,122) CurrentPDG2(1), CurrentPDG2(2), HPPloopetp, " # h(",i1,")-etp(",i2,")-loop " 
+End do 
+Do i2=1,1
+CurrentPDG2(2) = Abs(PDGVWp) 
+Write(io_L,122) CurrentPDG2(1), CurrentPDG2(2), HPPloopVWp, " # h(",i1,")-VWp(",i2,")-loop " 
+End do 
+Do i2=1,3
+CurrentPDG2(2) = Abs(PDGFd(i2)) 
+Write(io_L,122) CurrentPDG2(1), CurrentPDG2(2), HPPloopFd(i2), " # h(",i1,")-Fd(",i2,")-loop " 
+End do 
+Do i2=1,3
+CurrentPDG2(2) = Abs(PDGFu(i2)) 
+Write(io_L,122) CurrentPDG2(1), CurrentPDG2(2), HPPloopFu(i2), " # h(",i1,")-Fu(",i2,")-loop " 
+End do 
+Do i2=1,3
+CurrentPDG2(2) = Abs(PDGFe(i2)) 
+Write(io_L,122) CurrentPDG2(1), CurrentPDG2(2), HPPloopFe(i2), " # h(",i1,")-Fe(",i2,")-loop " 
+End do 
+End Do 
+End if 
+
+ 
+Write(io_L,100) "Block EFFHIGGSCOUPLINGS # values of loop-induced couplings " 
+facPP = Alpha*Sqrt(2._dp*G_F/sqrt(2._dp))/(2._dp*Pi) 
+facGG = Sqrt(2._dp*G_F/sqrt(2._dp))/(Sqrt(2._dp)*2._dp*Pi)*sqrt(8._dp/9._dp)
+facPZ = 0._dp 
+Do i1=1,1
+CurrentPDG3(1) = Abs(PDGhh) 
+CurrentPDG3(2) = Abs(PDGVP) 
+CurrentPDG3(3) = Abs(PDGVP) 
+Write(io_L,121) CurrentPDG3(1), CurrentPDG3(2), CurrentPDG3(3), Abs(CoupHPP)*facPP, " # H-Photon-Photon " 
+CurrentPDG3(2) = Abs(PDGVG) 
+CurrentPDG3(3) = Abs(PDGVG) 
+Write(io_L,121) CurrentPDG3(1), CurrentPDG3(2), CurrentPDG3(3), Abs(CoupHGG)*facGG, " # H-Gluon-Gluon " 
+CurrentPDG3(2) = Abs(PDGVP) 
+CurrentPDG3(3) = Abs(PDGVZ) 
+Write(io_L,121) CurrentPDG3(1), CurrentPDG3(2), CurrentPDG3(3), 0._dp, " # H-Photon-Z (not yet calculated by SPheno) " 
+End Do 
+Do i1=2,1
+CurrentPDG3(1) = Abs(PDGAh) 
+CurrentPDG3(2) = Abs(PDGVP) 
+CurrentPDG3(3) = Abs(PDGVP) 
+Write(io_L,121) CurrentPDG3(1), CurrentPDG3(2), CurrentPDG3(3), Abs(CoupAPP)*facPP, " # A-Photon-Photon " 
+CurrentPDG3(2) = Abs(PDGVG) 
+CurrentPDG3(3) = Abs(PDGVG) 
+Write(io_L,121) CurrentPDG3(1), CurrentPDG3(2), CurrentPDG3(3), Abs(CoupAGG)*facGG, " # A-Gluon-Gluon " 
+CurrentPDG3(2) = Abs(PDGVP) 
+CurrentPDG3(3) = Abs(PDGVZ) 
+Write(io_L,121) CurrentPDG3(1), CurrentPDG3(2), CurrentPDG3(3), 0._dp, " # A-Photon-Z (not yet calculated by SPheno) " 
+End Do 
+End If 
+
  
 Write(io_L,100) "Block SPhenoLowEnergy # low energy observables " 
 Write(io_L,1010) 20,ae,  "# (g-2)_e" 
@@ -2082,58 +2184,124 @@ Write(io_L,100) "Block FWCOEF Q=  1.60000000E+02  # Wilson coefficients at scale
 Write(io_L,222) "     0305" , "4422" , "00", "0", Real(coeffC7sm,dp),  " # coeffC7sm"  
 Write(io_L,222) "     0305" , "4422" , "00", "2", Real(coeffC7,dp),  " # coeffC7"  
 Write(io_L,222) "     0305" , "4322" , "00", "2", Real(coeffC7p,dp),  " # coeffC7p"  
+Write(io_L,222) "     0305" , "4422" , "00", "1", Real(coeffC7NP,dp),  " # coeffC7NP"  
+Write(io_L,222) "     0305" , "4322" , "00", "1", Real(coeffC7pNP,dp),  " # coeffC7pNP"  
 Write(io_L,222) "     0305" , "6421" , "00", "0", Real(coeffC8sm,dp),  " # coeffC8sm"  
 Write(io_L,222) "     0305" , "6421" , "00", "2", Real(coeffC8,dp),  " # coeffC8"  
 Write(io_L,222) "     0305" , "6321" , "00", "2", Real(coeffC8p,dp),  " # coeffC8p"  
+Write(io_L,222) "     0305" , "6421" , "00", "1", Real(coeffC8NP,dp),  " # coeffC8NP"  
+Write(io_L,222) "     0305" , "6321" , "00", "1", Real(coeffC8pNP,dp),  " # coeffC8pNP"  
 Write(io_L,222) " 03051111" , "4133" , "00", "0", Real(coeffC9eeSM,dp),  " # coeffC9eeSM"  
 Write(io_L,222) " 03051111" , "4133" , "00", "2", Real(coeffC9ee,dp),  " # coeffC9ee"  
 Write(io_L,222) " 03051111" , "4233" , "00", "2", Real(coeffC9Pee,dp),  " # coeffC9Pee"  
+Write(io_L,222) " 03051111" , "4133" , "00", "1", Real(coeffC9eeNP,dp),  " # coeffC9eeNP"  
+Write(io_L,222) " 03051111" , "4233" , "00", "1", Real(coeffC9PeeNP,dp),  " # coeffC9PeeNP"  
 Write(io_L,222) " 03051111" , "4137" , "00", "0", Real(coeffC10eeSM,dp),  " # coeffC10eeSM"  
 Write(io_L,222) " 03051111" , "4137" , "00", "2", Real(coeffC10ee,dp),  " # coeffC10ee"  
 Write(io_L,222) " 03051111" , "4237" , "00", "2", Real(coeffC10Pee,dp),  " # coeffC10Pee"  
+Write(io_L,222) " 03051111" , "4137" , "00", "1", Real(coeffC10eeNP,dp),  " # coeffC10eeNP"  
+Write(io_L,222) " 03051111" , "4237" , "00", "1", Real(coeffC10PeeNP,dp),  " # coeffC10PeeNP"  
 Write(io_L,222) " 03051313" , "4133" , "00", "0", Real(coeffC9mumuSM,dp),  " # coeffC9mumuSM"  
 Write(io_L,222) " 03051313" , "4133" , "00", "2", Real(coeffC9mumu,dp),  " # coeffC9mumu"  
 Write(io_L,222) " 03051313" , "4233" , "00", "2", Real(coeffC9Pmumu,dp),  " # coeffC9Pmumu"  
+Write(io_L,222) " 03051313" , "4133" , "00", "1", Real(coeffC9mumuNP,dp),  " # coeffC9mumuNP"  
+Write(io_L,222) " 03051313" , "4233" , "00", "1", Real(coeffC9PmumuNP,dp),  " # coeffC9PmumuNP"  
 Write(io_L,222) " 03051313" , "4137" , "00", "0", Real(coeffC10mumuSM,dp),  " # coeffC10mumuSM"  
 Write(io_L,222) " 03051313" , "4137" , "00", "2", Real(coeffC10mumu,dp),  " # coeffC10mumu"  
 Write(io_L,222) " 03051313" , "4237" , "00", "2", Real(coeffC10Pmumu,dp),  " # coeffC10Pmumu"  
-Write(io_L,222) " 03051212" , "4137" , "00", "0", Real(coeffC11nu1nu1SM,dp),  " # coeffC11nu1nu1SM"  
-Write(io_L,222) " 03051212" , "4137" , "00", "2", Real(coeffC11nu1nu1,dp),  " # coeffC11nu1nu1"  
-Write(io_L,222) " 03051212" , "4237" , "00", "2", Real(coeffC11Pnu1nu1,dp),  " # coeffC11Pnu1nu1"  
-Write(io_L,222) " 03051414" , "4137" , "00", "0", Real(coeffC11nu2nu2SM,dp),  " # coeffC11nu2nu2SM"  
-Write(io_L,222) " 03051414" , "4137" , "00", "2", Real(coeffC11nu2nu2,dp),  " # coeffC11nu2nu2"  
-Write(io_L,222) " 03051414" , "4237" , "00", "2", Real(coeffC11Pnu2nu2,dp),  " # coeffC11Pnu2nu2"  
-Write(io_L,222) " 03051616" , "4137" , "00", "0", Real(coeffC11nu3nu3SM,dp),  " # coeffC11nu3nu3SM"  
-Write(io_L,222) " 03051616" , "4137" , "00", "2", Real(coeffC11nu3nu3,dp),  " # coeffC11nu3nu3"  
-Write(io_L,222) " 03051616" , "4237" , "00", "2", Real(coeffC11Pnu3nu3,dp),  " # coeffC11Pnu3nu3"  
+Write(io_L,222) " 03051313" , "4137" , "00", "1", Real(coeffC10mumuNP,dp),  " # coeffC10mumuNP"  
+Write(io_L,222) " 03051313" , "4237" , "00", "1", Real(coeffC10PmumuNP,dp),  " # coeffC10PmumuNP"  
+Write(io_L,222) " 03051212" , "4141" , "00", "0", Real(coeffCLnu1nu1SM,dp),  " # coeffCLnu1nu1SM"  
+Write(io_L,222) " 03051212" , "4141" , "00", "2", Real(coeffCLnu1nu1,dp),  " # coeffCLnu1nu1"  
+Write(io_L,222) " 03051212" , "4241" , "00", "2", Real(coeffCLPnu1nu1,dp),  " # coeffCLPnu1nu1"  
+Write(io_L,222) " 03051212" , "4141" , "00", "1", Real(coeffCLnu1nu1NP,dp),  " # coeffCLnu1nu1NP"  
+Write(io_L,222) " 03051212" , "4241" , "00", "1", Real(coeffCLPnu1nu1NP,dp),  " # coeffCLPnu1nu1NP"  
+Write(io_L,222) " 03051414" , "4141" , "00", "0", Real(coeffCLnu2nu2SM,dp),  " # coeffCLnu2nu2SM"  
+Write(io_L,222) " 03051414" , "4141" , "00", "2", Real(coeffCLnu2nu2,dp),  " # coeffCLnu2nu2"  
+Write(io_L,222) " 03051414" , "4241" , "00", "2", Real(coeffCLPnu2nu2,dp),  " # coeffCLPnu2nu2"  
+Write(io_L,222) " 03051414" , "4141" , "00", "1", Real(coeffCLnu2nu2NP,dp),  " # coeffCLnu2nu2NP"  
+Write(io_L,222) " 03051414" , "4241" , "00", "1", Real(coeffCLPnu2nu2NP,dp),  " # coeffCLPnu2nu2NP"  
+Write(io_L,222) " 03051616" , "4141" , "00", "0", Real(coeffCLnu3nu3SM,dp),  " # coeffCLnu3nu3SM"  
+Write(io_L,222) " 03051616" , "4141" , "00", "2", Real(coeffCLnu3nu3,dp),  " # coeffCLnu3nu3"  
+Write(io_L,222) " 03051616" , "4241" , "00", "2", Real(coeffCLPnu3nu3,dp),  " # coeffCLPnu3nu3"  
+Write(io_L,222) " 03051616" , "4141" , "00", "1", Real(coeffCLnu3nu3NP,dp),  " # coeffCLnu3nu3NP"  
+Write(io_L,222) " 03051616" , "4241" , "00", "1", Real(coeffCLPnu3nu3NP,dp),  " # coeffCLPnu3nu3NP"  
+Write(io_L,222) " 03051212" , "4142" , "00", "0", Real(coeffCRnu1nu1SM,dp),  " # coeffCRnu1nu1SM"  
+Write(io_L,222) " 03051212" , "4142" , "00", "2", Real(coeffCRnu1nu1,dp),  " # coeffCRnu1nu1"  
+Write(io_L,222) " 03051212" , "4242" , "00", "2", Real(coeffCRPnu1nu1,dp),  " # coeffCRPnu1nu1"  
+Write(io_L,222) " 03051212" , "4142" , "00", "1", Real(coeffCRnu1nu1NP,dp),  " # coeffCRnu1nu1NP"  
+Write(io_L,222) " 03051212" , "4242" , "00", "1", Real(coeffCRPnu1nu1NP,dp),  " # coeffCRPnu1nu1NP"  
+Write(io_L,222) " 03051414" , "4142" , "00", "0", Real(coeffCRnu2nu2SM,dp),  " # coeffCRnu2nu2SM"  
+Write(io_L,222) " 03051414" , "4142" , "00", "2", Real(coeffCRnu2nu2,dp),  " # coeffCRnu2nu2"  
+Write(io_L,222) " 03051414" , "4242" , "00", "2", Real(coeffCRPnu2nu2,dp),  " # coeffCRPnu2nu2"  
+Write(io_L,222) " 03051414" , "4142" , "00", "1", Real(coeffCRnu2nu2NP,dp),  " # coeffCRnu2nu2NP"  
+Write(io_L,222) " 03051414" , "4242" , "00", "1", Real(coeffCRPnu2nu2NP,dp),  " # coeffCRPnu2nu2NP"  
+Write(io_L,222) " 03051616" , "4142" , "00", "0", Real(coeffCRnu3nu3SM,dp),  " # coeffCRnu3nu3SM"  
+Write(io_L,222) " 03051616" , "4142" , "00", "2", Real(coeffCRnu3nu3,dp),  " # coeffCRnu3nu3"  
+Write(io_L,222) " 03051616" , "4242" , "00", "2", Real(coeffCRPnu3nu3,dp),  " # coeffCRPnu3nu3"  
+Write(io_L,222) " 03051616" , "4142" , "00", "1", Real(coeffCRnu3nu3NP,dp),  " # coeffCRnu3nu3NP"  
+Write(io_L,222) " 03051616" , "4242" , "00", "1", Real(coeffCRPnu3nu3NP,dp),  " # coeffCRPnu3nu3NP"  
 Write(io_L,100) "Block IMFWCOEF Q=  1.60000000E+02  # Im(Wilson coefficients) at scale Q " 
 Write(io_L,222) "     0305" , "4422" , "00", "0", Aimag(coeffC7sm),  " # coeffC7sm"  
 Write(io_L,222) "     0305" , "4422" , "00", "2", Aimag(coeffC7),  " # coeffC7"  
 Write(io_L,222) "     0305" , "4322" , "00", "2", Aimag(coeffC7p),  " # coeffC7p"  
+Write(io_L,222) "     0305" , "4422" , "00", "1", Aimag(coeffC7NP),  " # coeffC7NP"  
+Write(io_L,222) "     0305" , "4322" , "00", "1", Aimag(coeffC7pNP),  " # coeffC7pNP"  
 Write(io_L,222) "     0305" , "6421" , "00", "0", Aimag(coeffC8sm),  " # coeffC8sm"  
 Write(io_L,222) "     0305" , "6421" , "00", "2", Aimag(coeffC8),  " # coeffC8"  
 Write(io_L,222) "     0305" , "6321" , "00", "2", Aimag(coeffC8p),  " # coeffC8p"  
+Write(io_L,222) "     0305" , "6421" , "00", "1", Aimag(coeffC8NP),  " # coeffC8NP"  
+Write(io_L,222) "     0305" , "6321" , "00", "1", Aimag(coeffC8pNP),  " # coeffC8pNP"  
 Write(io_L,222) " 03051111" , "4133" , "00", "0", Aimag(coeffC9eeSM),  " # coeffC9eeSM"  
 Write(io_L,222) " 03051111" , "4133" , "00", "2", Aimag(coeffC9ee),  " # coeffC9ee"  
 Write(io_L,222) " 03051111" , "4233" , "00", "2", Aimag(coeffC9Pee),  " # coeffC9Pee"  
+Write(io_L,222) " 03051111" , "4133" , "00", "1", Aimag(coeffC9eeNP),  " # coeffC9eeNP"  
+Write(io_L,222) " 03051111" , "4233" , "00", "1", Aimag(coeffC9PeeNP),  " # coeffC9PeeNP"  
 Write(io_L,222) " 03051111" , "4137" , "00", "0", Aimag(coeffC10eeSM),  " # coeffC10eeSM"  
 Write(io_L,222) " 03051111" , "4137" , "00", "2", Aimag(coeffC10ee),  " # coeffC10ee"  
 Write(io_L,222) " 03051111" , "4237" , "00", "2", Aimag(coeffC10Pee),  " # coeffC10Pee"  
+Write(io_L,222) " 03051111" , "4137" , "00", "1", Aimag(coeffC10eeNP),  " # coeffC10eeNP"  
+Write(io_L,222) " 03051111" , "4237" , "00", "1", Aimag(coeffC10PeeNP),  " # coeffC10PeeNP"  
 Write(io_L,222) " 03051313" , "4133" , "00", "0", Aimag(coeffC9mumuSM),  " # coeffC9mumuSM"  
 Write(io_L,222) " 03051313" , "4133" , "00", "2", Aimag(coeffC9mumu),  " # coeffC9mumu"  
 Write(io_L,222) " 03051313" , "4233" , "00", "2", Aimag(coeffC9Pmumu),  " # coeffC9Pmumu"  
+Write(io_L,222) " 03051313" , "4133" , "00", "1", Aimag(coeffC9mumuNP),  " # coeffC9mumuNP"  
+Write(io_L,222) " 03051313" , "4233" , "00", "1", Aimag(coeffC9PmumuNP),  " # coeffC9PmumuNP"  
 Write(io_L,222) " 03051313" , "4137" , "00", "0", Aimag(coeffC10mumuSM),  " # coeffC10mumuSM"  
 Write(io_L,222) " 03051313" , "4137" , "00", "2", Aimag(coeffC10mumu),  " # coeffC10mumu"  
 Write(io_L,222) " 03051313" , "4237" , "00", "2", Aimag(coeffC10Pmumu),  " # coeffC10Pmumu"  
-Write(io_L,222) " 03051212" , "4137" , "00", "0", Aimag(coeffC11nu1nu1SM),  " # coeffC11nu1nu1SM"  
-Write(io_L,222) " 03051212" , "4137" , "00", "2", Aimag(coeffC11nu1nu1),  " # coeffC11nu1nu1"  
-Write(io_L,222) " 03051212" , "4237" , "00", "2", Aimag(coeffC11Pnu1nu1),  " # coeffC11Pnu1nu1"  
-Write(io_L,222) " 03051414" , "4137" , "00", "0", Aimag(coeffC11nu2nu2SM),  " # coeffC11nu2nu2SM"  
-Write(io_L,222) " 03051414" , "4137" , "00", "2", Aimag(coeffC11nu2nu2),  " # coeffC11nu2nu2"  
-Write(io_L,222) " 03051414" , "4237" , "00", "2", Aimag(coeffC11Pnu2nu2),  " # coeffC11Pnu2nu2"  
-Write(io_L,222) " 03051616" , "4137" , "00", "0", Aimag(coeffC11nu3nu3SM),  " # coeffC11nu3nu3SM"  
-Write(io_L,222) " 03051616" , "4137" , "00", "2", Aimag(coeffC11nu3nu3),  " # coeffC11nu3nu3"  
-Write(io_L,222) " 03051616" , "4237" , "00", "2", Aimag(coeffC11Pnu3nu3),  " # coeffC11Pnu3nu3"  
+Write(io_L,222) " 03051313" , "4137" , "00", "1", Aimag(coeffC10mumuNP),  " # coeffC10mumuNP"  
+Write(io_L,222) " 03051313" , "4237" , "00", "1", Aimag(coeffC10PmumuNP),  " # coeffC10PmumuNP"  
+Write(io_L,222) " 03051212" , "4141" , "00", "0", Aimag(coeffCLnu1nu1SM),  " # coeffCLnu1nu1SM"  
+Write(io_L,222) " 03051212" , "4141" , "00", "2", Aimag(coeffCLnu1nu1),  " # coeffCLnu1nu1"  
+Write(io_L,222) " 03051212" , "4241" , "00", "2", Aimag(coeffCLPnu1nu1),  " # coeffCLPnu1nu1"  
+Write(io_L,222) " 03051212" , "4141" , "00", "1", Aimag(coeffCLnu1nu1NP),  " # coeffCLnu1nu1NP"  
+Write(io_L,222) " 03051212" , "4241" , "00", "1", Aimag(coeffCLPnu1nu1NP),  " # coeffCLPnu1nu1NP"  
+Write(io_L,222) " 03051414" , "4141" , "00", "0", Aimag(coeffCLnu2nu2SM),  " # coeffCLnu2nu2SM"  
+Write(io_L,222) " 03051414" , "4141" , "00", "2", Aimag(coeffCLnu2nu2),  " # coeffCLnu2nu2"  
+Write(io_L,222) " 03051414" , "4241" , "00", "2", Aimag(coeffCLPnu2nu2),  " # coeffCLPnu2nu2"  
+Write(io_L,222) " 03051414" , "4141" , "00", "1", Aimag(coeffCLnu2nu2NP),  " # coeffCLnu2nu2NP"  
+Write(io_L,222) " 03051414" , "4241" , "00", "1", Aimag(coeffCLPnu2nu2NP),  " # coeffCLPnu2nu2NP"  
+Write(io_L,222) " 03051616" , "4141" , "00", "0", Aimag(coeffCLnu3nu3SM),  " # coeffCLnu3nu3SM"  
+Write(io_L,222) " 03051616" , "4141" , "00", "2", Aimag(coeffCLnu3nu3),  " # coeffCLnu3nu3"  
+Write(io_L,222) " 03051616" , "4241" , "00", "2", Aimag(coeffCLPnu3nu3),  " # coeffCLPnu3nu3"  
+Write(io_L,222) " 03051616" , "4141" , "00", "1", Aimag(coeffCLnu3nu3NP),  " # coeffCLnu3nu3NP"  
+Write(io_L,222) " 03051616" , "4241" , "00", "1", Aimag(coeffCLPnu3nu3NP),  " # coeffCLPnu3nu3NP"  
+Write(io_L,222) " 03051212" , "4142" , "00", "0", Aimag(coeffCRnu1nu1SM),  " # coeffCRnu1nu1SM"  
+Write(io_L,222) " 03051212" , "4142" , "00", "2", Aimag(coeffCRnu1nu1),  " # coeffCRnu1nu1"  
+Write(io_L,222) " 03051212" , "4242" , "00", "2", Aimag(coeffCRPnu1nu1),  " # coeffCRPnu1nu1"  
+Write(io_L,222) " 03051212" , "4142" , "00", "1", Aimag(coeffCRnu1nu1NP),  " # coeffCRnu1nu1NP"  
+Write(io_L,222) " 03051212" , "4242" , "00", "1", Aimag(coeffCRPnu1nu1NP),  " # coeffCRPnu1nu1NP"  
+Write(io_L,222) " 03051414" , "4142" , "00", "0", Aimag(coeffCRnu2nu2SM),  " # coeffCRnu2nu2SM"  
+Write(io_L,222) " 03051414" , "4142" , "00", "2", Aimag(coeffCRnu2nu2),  " # coeffCRnu2nu2"  
+Write(io_L,222) " 03051414" , "4242" , "00", "2", Aimag(coeffCRPnu2nu2),  " # coeffCRPnu2nu2"  
+Write(io_L,222) " 03051414" , "4142" , "00", "1", Aimag(coeffCRnu2nu2NP),  " # coeffCRnu2nu2NP"  
+Write(io_L,222) " 03051414" , "4242" , "00", "1", Aimag(coeffCRPnu2nu2NP),  " # coeffCRPnu2nu2NP"  
+Write(io_L,222) " 03051616" , "4142" , "00", "0", Aimag(coeffCRnu3nu3SM),  " # coeffCRnu3nu3SM"  
+Write(io_L,222) " 03051616" , "4142" , "00", "2", Aimag(coeffCRnu3nu3),  " # coeffCRnu3nu3"  
+Write(io_L,222) " 03051616" , "4242" , "00", "2", Aimag(coeffCRPnu3nu3),  " # coeffCRPnu3nu3"  
+Write(io_L,222) " 03051616" , "4142" , "00", "1", Aimag(coeffCRnu3nu3NP),  " # coeffCRnu3nu3NP"  
+Write(io_L,222) " 03051616" , "4242" , "00", "1", Aimag(coeffCRPnu3nu3NP),  " # coeffCRPnu3nu3NP"  
 
  
  !-------------------------------
@@ -5085,8 +5253,7 @@ Backspace(io)! resetting to the beginning of the line
 If ((read_line(1:1).Eq."B").Or.(read_line(1:1).Eq."b")) Exit! this loop 
 Read(io,*) i_par,wert!,read_line 
 If (i_par.Eq.3) Then 
-If (i_c.Eq.0) vIN= Cmplx(wert,Aimag(vIN),dp) 
-If (i_c.Eq.1) vIN= Cmplx(Real(vIN,dp),wert,dp) 
+vIN= wert 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
 If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block HMIXIN ",i_par

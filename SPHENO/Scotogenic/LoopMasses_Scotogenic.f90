@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:01 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -101,6 +101,12 @@ NameOfUnit(Iname) = 'OneLoopMasses'
  
 kont = 0 
  
+! Set Gauge fixing parameters 
+RXi= RXiNew 
+RXiG = RXi 
+RXiP = RXi 
+RXiWp = RXi 
+RXiZ = RXi 
 Call TreeMasses(MAh,MAh2,MChi,MChi2,MetI,MetI2,Metp,Metp2,MetR,MetR2,MFd,             & 
 & MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,              & 
 & ZDR,ZER,ZUR,ZDL,ZEL,ZUL,UV,ZW,ZX,ZZ,v,g1,g2,g3,lam1,lam2,lam4,lam3,lam5,               & 
@@ -182,6 +188,10 @@ Call OneLoopTadpoleshh(v,MAh,MAh2,MetI,MetI2,Metp,Metp2,MetR,MetR2,MFd,         
 & cplhhcVWpVWp,cplhhVZVZ,Tad1Loop(1:1))
 
 mH2Tree  = mH2
+Call SolveTadpoleEquations(g1,g2,g3,lam1,lam2,lam4,lam3,lam5,Yn,Yu,Yd,Ye,             & 
+& Mn,mH2,mEt2,v,Tad1Loop)
+
+mH21L = mH2
 Call OneLoopChi(Mn,MFv,MFv2,MetI,MetI2,MFe,MFe2,Metp,Metp2,MetR,MetR2,cplUChiFvetIL,  & 
 & cplUChiFvetIR,cplUChiFeetpL,cplUChiFeetpR,cplUChiFvetRL,cplUChiFvetRR,0.1_dp*delta_mass,& 
 & MChi_1L,MChi2_1L,ZX_1L,kont)
@@ -271,6 +281,11 @@ MFu2(1:3) = mf_u**2
 MFd(1:3) = mf_d 
 MFd2(1:3) = mf_d**2 
 ! Shift Everything to t'Hooft Gauge
+RXi=  1._dp 
+RXiG = 1._dp 
+RXiP = 1._dp 
+RXiWp = 1._dp 
+RXiZ = 1._dp 
 MAh=MVZ
 MAh2=MVZ2
 MHp=MVWp
@@ -396,7 +411,7 @@ End Do
  !------------------------ 
 ! bar[gWp] 
 !------------------------ 
-A0m = 1._dp*A0(MVWp2) 
+A0m = 1._dp*A0(MVWp2*RXi) 
   Do gO1 = 1, 1
     coup = cplcgWpgWphh
     sumI(gO1) = coup*A0m 
@@ -406,7 +421,7 @@ tadpoles =  tadpoles + 1._dp*sumI
 !------------------------ 
 ! bar[gWpC] 
 !------------------------ 
-A0m = 1._dp*A0(MVWp2) 
+A0m = 1._dp*A0(MVWp2*RXi) 
   Do gO1 = 1, 1
     coup = cplcgWCgWChh
     sumI(gO1) = coup*A0m 
@@ -416,7 +431,7 @@ tadpoles =  tadpoles + 1._dp*sumI
 !------------------------ 
 ! bar[gZ] 
 !------------------------ 
-A0m = 1._dp*A0(MVZ2) 
+A0m = 1._dp*A0(MVZ2*RXi) 
   Do gO1 = 1, 1
     coup = cplcgZgZhh
     sumI(gO1) = coup*A0m 
@@ -446,7 +461,7 @@ tadpoles =  tadpoles + 1._dp*sumI
 !------------------------ 
 ! conj[VWp] 
 !------------------------ 
-A0m = 4._dp*(A0(MVWp2) - 0.5_dp*MVWp2*rMS) 
+A0m = 3._dp*A0(MVWp2)+RXi*A0(MVWp2*RXi) - 2._dp*MVWp2*rMS 
   Do gO1 = 1, 1
     coup = cplhhcVWpVWp
     sumI(gO1) = coup*A0m 
@@ -456,7 +471,7 @@ tadpoles =  tadpoles + 1._dp*sumI
 !------------------------ 
 ! VZ 
 !------------------------ 
-A0m = 4._dp*(A0(MVZ2) - 0.5_dp*MVZ2*rMS) 
+A0m = 3._dp*A0(MVZ2)+RXi*A0(MVZ2*RXi) - 2._dp*MVZ2*rMS 
   Do gO1 = 1, 1
     coup = cplhhVZVZ
     sumI(gO1) = coup*A0m 
@@ -1146,7 +1161,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = -2._dp*B1(p2,MFe2(i2),MVWp2) 
+B1m2 = -2._dp*(B1(p2,MFe2(i2),MVWp2) + 0.5_dp*rMS) 
 B0m2 = -8._dp*MFe(i2)*(B0(p2,MFe2(i2),MVWp2) - 0.5_dp*rMS) 
 coupL1 = cplUFvFeVWpL(gO1,i2)
 coupR1 = cplUFvFeVWpR(gO1,i2)
@@ -1170,7 +1185,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = -2._dp*B1(p2,MFv2(i2),MVZ2) 
+B1m2 = -2._dp*(B1(p2,MFv2(i2),MVZ2) + 0.5_dp*rMS) 
 B0m2 = -8._dp*MFv(i2)*(B0(p2,MFv2(i2),MVZ2) - 0.5_dp*rMS) 
 coupL1 = cplUFvFvVZL(gO1,i2)
 coupR1 = cplUFvFvVZR(gO1,i2)
@@ -1449,7 +1464,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFd2(i2),0._dp),dp) 
+B1m2 = - Real(B1(p2,MFd2(i2),0._dp)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFd(i2)*Real(B0(p2,MFd2(i2),0._dp)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFdFdVGL(gO1,i2)
 coupR1 = cplcUFdFdVGR(gO1,i2)
@@ -1473,7 +1488,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFd2(i2),0._dp),dp) 
+B1m2 = - Real(B1(p2,MFd2(i2),0._dp)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFd(i2)*Real(B0(p2,MFd2(i2),0._dp)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFdFdVPL(gO1,i2)
 coupR1 = cplcUFdFdVPR(gO1,i2)
@@ -1497,7 +1512,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFd2(i2),MVZ2),dp) 
+B1m2 = - Real(B1(p2,MFd2(i2),MVZ2)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFd(i2)*Real(B0(p2,MFd2(i2),MVZ2)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFdFdVZL(gO1,i2)
 coupR1 = cplcUFdFdVZR(gO1,i2)
@@ -1545,7 +1560,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFu2(i2),MVWp2),dp) 
+B1m2 = - Real(B1(p2,MFu2(i2),MVWp2)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFu(i2)*Real(B0(p2,MFu2(i2),MVWp2)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFdFucVWpL(gO1,i2)
 coupR1 = cplcUFdFucVWpR(gO1,i2)
@@ -1821,7 +1836,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFd2(i2),MVWp2),dp) 
+B1m2 = - Real(B1(p2,MFd2(i2),MVWp2)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFd(i2)*Real(B0(p2,MFd2(i2),MVWp2)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFuFdVWpL(gO1,i2)
 coupR1 = cplcUFuFdVWpR(gO1,i2)
@@ -1869,7 +1884,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFu2(i2),0._dp),dp) 
+B1m2 = - Real(B1(p2,MFu2(i2),0._dp)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFu(i2)*Real(B0(p2,MFu2(i2),0._dp)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFuFuVGL(gO1,i2)
 coupR1 = cplcUFuFuVGR(gO1,i2)
@@ -1893,7 +1908,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFu2(i2),0._dp),dp) 
+B1m2 = - Real(B1(p2,MFu2(i2),0._dp)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFu(i2)*Real(B0(p2,MFu2(i2),0._dp)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFuFuVPL(gO1,i2)
 coupR1 = cplcUFuFuVPR(gO1,i2)
@@ -1917,7 +1932,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFu2(i2),MVZ2),dp) 
+B1m2 = - Real(B1(p2,MFu2(i2),MVZ2)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFu(i2)*Real(B0(p2,MFu2(i2),MVZ2)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFuFuVZL(gO1,i2)
 coupR1 = cplcUFuFuVZR(gO1,i2)
@@ -2223,7 +2238,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFe2(i2),0._dp),dp) 
+B1m2 = - Real(B1(p2,MFe2(i2),0._dp)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFe(i2)*Real(B0(p2,MFe2(i2),0._dp)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFeFeVPL(gO1,i2)
 coupR1 = cplcUFeFeVPR(gO1,i2)
@@ -2247,7 +2262,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFe2(i2),MVZ2),dp) 
+B1m2 = - Real(B1(p2,MFe2(i2),MVZ2)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFe(i2)*Real(B0(p2,MFe2(i2),MVZ2)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFeFeVZL(gO1,i2)
 coupR1 = cplcUFeFeVZR(gO1,i2)
@@ -2295,7 +2310,7 @@ sumR = 0._dp
 sumL = 0._dp 
 Do gO1 = 1, 3
   Do gO2 = 1, 3
-B1m2 = - Real(B1(p2,MFv2(i2),MVWp2),dp) 
+B1m2 = - Real(B1(p2,MFv2(i2),MVWp2)+ 0.5_dp*rMS,dp) 
 B0m2 = -4._dp*MFv(i2)*Real(B0(p2,MFv2(i2),MVWp2)-0.5_dp*rMS,dp) 
 coupL1 = cplcUFeFvcVWpL(gO1,i2)
 coupR1 = cplcUFeFvcVWpR(gO1,i2)
@@ -2348,10 +2363,10 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopHp'
  
-mi2 = MHp2 
+mi2 = -1._dp*(mH2) + (lam1*v**2)/2._dp + (g2**2*v**2*RXiWp)/4._dp 
 
  
-p2 = MHp2
+p2 = 0._dp 
 PiSf = ZeroC 
 Call Pi1LoopHp(p2,MVWp,MVWp2,MAh,MAh2,Metp,Metp2,MetI,MetI2,MetR,MetR2,               & 
 & MFd,MFd2,MFu,MFu2,MFe,MFe2,MFv,MFv2,MHp,MHp2,Mhh,Mhh2,MVZ,MVZ2,cplAhcHpVWp,            & 
@@ -2385,7 +2400,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -2442,7 +2459,7 @@ res = 0._dp
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MAh2,MVWp2) 
+F0m2 = FloopRXi(p2,MAh2,MVWp2) 
 coup1 = cplAhcHpVWp
 coup2 =  Conjg(cplAhcHpVWp)
     SumI = coup1*coup2*F0m2 
@@ -2508,7 +2525,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVWp2,MVZ2),dp) 
+F0m2 =  -Real(B0(p2,MVWp2*RXi,MVZ2*RXi),dp) 
  coup1 = cplcgZgWpcHp
 coup2 =  cplcgWpgZHp 
     SumI = coup1*coup2*F0m2 
@@ -2518,7 +2535,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVZ2,MVWp2),dp) 
+F0m2 =  -Real(B0(p2,MVZ2*RXi,MVWp2*RXi),dp) 
  coup1 = cplcgWCgZcHp
 coup2 =  cplcgZgWCHp 
     SumI = coup1*coup2*F0m2 
@@ -2538,7 +2555,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,Mhh2,MVWp2) 
+F0m2 = FloopRXi(p2,Mhh2,MVWp2) 
 coup1 = cplhhcHpVWp
 coup2 =  Conjg(cplhhcHpVWp)
     SumI = coup1*coup2*F0m2 
@@ -2548,7 +2565,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MHp2,0._dp) 
+F0m2 = FloopRXi(p2,MHp2,0._dp) 
 coup1 = cplHpcHpVP
 coup2 =  Conjg(cplHpcHpVP)
     SumI = coup1*coup2*F0m2 
@@ -2558,7 +2575,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MHp2,MVZ2) 
+F0m2 = FloopRXi(p2,MHp2,MVZ2) 
 coup1 = cplHpcHpVZ
 coup2 =  Conjg(cplHpcHpVZ)
     SumI = coup1*coup2*F0m2 
@@ -2568,7 +2585,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = 4._dp*Real(B0(p2,0._dp,MVWp2) - 0.5_dp*rMS,dp) 
+F0m2 = SVVloop(p2,0._dp,MVWp2) 
 coup1 = cplcHpVPVWp
 coup2 =  Conjg(cplcHpVPVWp)
     SumI = coup1*coup2*F0m2 
@@ -2578,7 +2595,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = 4._dp*Real(B0(p2,MVWp2,MVZ2) - 0.5_dp*rMS,dp) 
+F0m2 = SVVloop(p2,MVWp2,MVZ2) 
 coup1 = cplcHpVWpVZ
 coup2 =  Conjg(cplcHpVWpVZ)
     SumI = coup1*coup2*F0m2 
@@ -2591,7 +2608,7 @@ sumI = 0._dp
 A0m2 = A0(MAh2) 
 coup1 = cplAhAhHpcHp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! etI, etI 
 !------------------------ 
@@ -2600,7 +2617,7 @@ sumI = 0._dp
 A0m2 = A0(MetI2) 
 coup1 = cpletIetIHpcHp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[etp], etp 
 !------------------------ 
@@ -2618,7 +2635,7 @@ sumI = 0._dp
 A0m2 = A0(MetR2) 
 coup1 = cpletRetRHpcHp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! hh, hh 
 !------------------------ 
@@ -2627,7 +2644,7 @@ sumI = 0._dp
 A0m2 = A0(Mhh2) 
 coup1 = cplhhhhHpcHp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[Hp], Hp 
 !------------------------ 
@@ -2642,7 +2659,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(0._dp) - 0.5_dp*0._dp*rMS
+A0m2 =  0.75_dp*A0(0._dp) + 0.25_dp*RXi*A0(0._dp*RXi) - 0.5_dp*0._dp*rMS 
 coup1 = cplHpcHpVPVP
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -2651,7 +2668,7 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVWp2) - 0.5_dp*MVWp2*rMS
+A0m2 =  0.75_dp*A0(MVWp2) + 0.25_dp*RXi*A0(MVWp2*RXi) - 0.5_dp*MVWp2*rMS 
 coup1 = cplHpcHpcVWpVWp
     SumI = coup1*A0m2 
 res = res +4._dp* SumI  
@@ -2660,7 +2677,7 @@ res = res +4._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVZ2) - 0.5_dp*MVZ2*rMS
+A0m2 =  0.75_dp*A0(MVZ2) + 0.25_dp*RXi*A0(MVZ2*RXi) - 0.5_dp*MVZ2*rMS 
 coup1 = cplHpcHpVZVZ
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -2698,7 +2715,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopetp'
  
-mi2 = Metp2 
+mi2 = mEt2 + (lam3*v**2)/2._dp 
 
  
 p2 = Metp2
@@ -2733,7 +2750,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -2815,7 +2834,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MetI2,MVWp2) 
+F0m2 = FloopRXi(p2,MetI2,MVWp2) 
 coup1 = cpletIcetpVWp
 coup2 =  Conjg(cpletIcetpVWp)
     SumI = coup1*coup2*F0m2 
@@ -2835,7 +2854,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,Metp2,0._dp) 
+F0m2 = FloopRXi(p2,Metp2,0._dp) 
 coup1 = cpletpcetpVP
 coup2 =  Conjg(cpletpcetpVP)
     SumI = coup1*coup2*F0m2 
@@ -2845,7 +2864,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,Metp2,MVZ2) 
+F0m2 = FloopRXi(p2,Metp2,MVZ2) 
 coup1 = cpletpcetpVZ
 coup2 =  Conjg(cpletpcetpVZ)
     SumI = coup1*coup2*F0m2 
@@ -2865,7 +2884,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MetR2,MVWp2) 
+F0m2 = FloopRXi(p2,MetR2,MVWp2) 
 coup1 = cpletRcetpVWp
 coup2 =  Conjg(cpletRcetpVWp)
     SumI = coup1*coup2*F0m2 
@@ -2878,7 +2897,7 @@ sumI = 0._dp
 A0m2 = A0(MAh2) 
 coup1 = cplAhAhetpcetp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! etI, etI 
 !------------------------ 
@@ -2887,7 +2906,7 @@ sumI = 0._dp
 A0m2 = A0(MetI2) 
 coup1 = cpletIetIetpcetp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[etp], etp 
 !------------------------ 
@@ -2905,7 +2924,7 @@ sumI = 0._dp
 A0m2 = A0(MetR2) 
 coup1 = cpletpetRetRcetp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! hh, hh 
 !------------------------ 
@@ -2914,7 +2933,7 @@ sumI = 0._dp
 A0m2 = A0(Mhh2) 
 coup1 = cpletphhhhcetp
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[Hp], Hp 
 !------------------------ 
@@ -2929,7 +2948,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(0._dp) - 0.5_dp*0._dp*rMS
+A0m2 =  0.75_dp*A0(0._dp) + 0.25_dp*RXi*A0(0._dp*RXi) - 0.5_dp*0._dp*rMS 
 coup1 = cpletpcetpVPVP
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -2938,7 +2957,7 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVWp2) - 0.5_dp*MVWp2*rMS
+A0m2 =  0.75_dp*A0(MVWp2) + 0.25_dp*RXi*A0(MVWp2*RXi) - 0.5_dp*MVWp2*rMS 
 coup1 = cpletpcetpcVWpVWp
     SumI = coup1*A0m2 
 res = res +4._dp* SumI  
@@ -2947,7 +2966,7 @@ res = res +4._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVZ2) - 0.5_dp*MVZ2*rMS
+A0m2 =  0.75_dp*A0(MVZ2) + 0.25_dp*RXi*A0(MVZ2*RXi) - 0.5_dp*MVZ2*rMS 
 coup1 = cpletpcetpVZVZ
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -2985,10 +3004,10 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopAh'
  
-mi2 = MAh2 
+mi2 = (-4._dp*(mH2) + 2*lam1*v**2 + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
 
  
-p2 = MAh2
+p2 = 0._dp 
 PiSf = ZeroC 
 Call Pi1LoopAh(p2,Mhh,Mhh2,MAh,MAh2,MetR,MetR2,MetI,MetI2,MFd,MFd2,MFe,               & 
 & MFe2,MFu,MFu2,MVZ,MVZ2,MVWp,MVWp2,MHp,MHp2,Metp,Metp2,cplAhAhhh,cplAhetIetR,           & 
@@ -3020,7 +3039,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -3148,7 +3169,7 @@ res = res +3._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVWp2,MVWp2),dp) 
+F0m2 =  -Real(B0(p2,MVWp2*RXi,MVWp2*RXi),dp) 
  coup1 = cplcgWpgWpAh
 coup2 =  cplcgWpgWpAh 
     SumI = coup1*coup2*F0m2 
@@ -3158,7 +3179,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVWp2,MVWp2),dp) 
+F0m2 =  -Real(B0(p2,MVWp2*RXi,MVWp2*RXi),dp) 
  coup1 = cplcgWCgWCAh
 coup2 =  cplcgWCgWCAh 
     SumI = coup1*coup2*F0m2 
@@ -3168,7 +3189,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,Mhh2,MVZ2) 
+F0m2 = FloopRXi(p2,Mhh2,MVZ2) 
 coup1 = cplAhhhVZ
 coup2 =  Conjg(cplAhhhVZ)
     SumI = coup1*coup2*F0m2 
@@ -3178,7 +3199,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MHp2,MVWp2) 
+F0m2 = FloopRXi(p2,MHp2,MVWp2) 
 coup1 = cplAhHpcVWp
 coup2 =  Conjg(cplAhHpcVWp)
     SumI = coup1*coup2*F0m2 
@@ -3191,7 +3212,7 @@ sumI = 0._dp
 A0m2 = A0(MAh2) 
 coup1 = cplAhAhAhAh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! etI, etI 
 !------------------------ 
@@ -3200,7 +3221,7 @@ sumI = 0._dp
 A0m2 = A0(MetI2) 
 coup1 = cplAhAhetIetI
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[etp], etp 
 !------------------------ 
@@ -3218,7 +3239,7 @@ sumI = 0._dp
 A0m2 = A0(MetR2) 
 coup1 = cplAhAhetRetR
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! hh, hh 
 !------------------------ 
@@ -3227,7 +3248,7 @@ sumI = 0._dp
 A0m2 = A0(Mhh2) 
 coup1 = cplAhAhhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[Hp], Hp 
 !------------------------ 
@@ -3242,7 +3263,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVWp2) - 0.5_dp*MVWp2*rMS
+A0m2 =  0.75_dp*A0(MVWp2) + 0.25_dp*RXi*A0(MVWp2*RXi) - 0.5_dp*MVWp2*rMS 
 coup1 = cplAhAhcVWpVWp
     SumI = coup1*A0m2 
 res = res +4._dp* SumI  
@@ -3251,7 +3272,7 @@ res = res +4._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVZ2) - 0.5_dp*MVZ2*rMS
+A0m2 =  0.75_dp*A0(MVZ2) + 0.25_dp*RXi*A0(MVZ2*RXi) - 0.5_dp*MVZ2*rMS 
 coup1 = cplAhAhVZVZ
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -3291,7 +3312,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoophh'
  
-mi2 = Mhh2 
+mi2 = -1._dp*(mH2) + (3*lam1*v**2)/2._dp 
 
  
 p2 = Mhh2
@@ -3328,7 +3349,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -3394,7 +3417,7 @@ res = res +1._dp/2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MAh2,MVZ2) 
+F0m2 = FloopRXi(p2,MAh2,MVZ2) 
 coup1 = cplAhhhVZ
 coup2 =  Conjg(cplAhhhVZ)
     SumI = coup1*coup2*F0m2 
@@ -3488,7 +3511,7 @@ res = res +3._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVWp2,MVWp2),dp) 
+F0m2 =  -Real(B0(p2,MVWp2*RXi,MVWp2*RXi),dp) 
  coup1 = cplcgWpgWphh
 coup2 =  cplcgWpgWphh 
     SumI = coup1*coup2*F0m2 
@@ -3498,7 +3521,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVWp2,MVWp2),dp) 
+F0m2 =  -Real(B0(p2,MVWp2*RXi,MVWp2*RXi),dp) 
  coup1 = cplcgWCgWChh
 coup2 =  cplcgWCgWChh 
     SumI = coup1*coup2*F0m2 
@@ -3508,7 +3531,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = -Real(B0(p2,MVZ2,MVZ2),dp) 
+F0m2 =  -Real(B0(p2,MVZ2*RXi,MVZ2*RXi),dp) 
  coup1 = cplcgZgZhh
 coup2 =  cplcgZgZhh 
     SumI = coup1*coup2*F0m2 
@@ -3538,7 +3561,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MHp2,MVWp2) 
+F0m2 = FloopRXi(p2,MHp2,MVWp2) 
 coup1 = cplhhHpcVWp
 coup2 =  Conjg(cplhhHpcVWp)
     SumI = coup1*coup2*F0m2 
@@ -3548,7 +3571,7 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = 4._dp*Real(B0(p2,MVWp2,MVWp2) - 0.5_dp*rMS,dp) 
+F0m2 = SVVloop(p2,MVWp2,MVWp2) 
 coup1 = cplhhcVWpVWp
 coup2 =  Conjg(cplhhcVWpVWp)
     SumI = coup1*coup2*F0m2 
@@ -3558,7 +3581,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = 4._dp*Real(B0(p2,MVZ2,MVZ2) - 0.5_dp*rMS,dp) 
+F0m2 = SVVloop(p2,MVZ2,MVZ2) 
 coup1 = cplhhVZVZ
 coup2 =  Conjg(cplhhVZVZ)
     SumI = coup1*coup2*F0m2 
@@ -3571,7 +3594,7 @@ sumI = 0._dp
 A0m2 = A0(MAh2) 
 coup1 = cplAhAhhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! etI, etI 
 !------------------------ 
@@ -3580,7 +3603,7 @@ sumI = 0._dp
 A0m2 = A0(MetI2) 
 coup1 = cpletIetIhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[etp], etp 
 !------------------------ 
@@ -3598,7 +3621,7 @@ sumI = 0._dp
 A0m2 = A0(MetR2) 
 coup1 = cpletRetRhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! hh, hh 
 !------------------------ 
@@ -3607,7 +3630,7 @@ sumI = 0._dp
 A0m2 = A0(Mhh2) 
 coup1 = cplhhhhhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[Hp], Hp 
 !------------------------ 
@@ -3622,7 +3645,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVWp2) - 0.5_dp*MVWp2*rMS
+A0m2 =  0.75_dp*A0(MVWp2) + 0.25_dp*RXi*A0(MVWp2*RXi) - 0.5_dp*MVWp2*rMS 
 coup1 = cplhhhhcVWpVWp
     SumI = coup1*A0m2 
 res = res +4._dp* SumI  
@@ -3631,7 +3654,7 @@ res = res +4._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVZ2) - 0.5_dp*MVZ2*rMS
+A0m2 =  0.75_dp*A0(MVZ2) + 0.25_dp*RXi*A0(MVZ2*RXi) - 0.5_dp*MVZ2*rMS 
 coup1 = cplhhhhVZVZ
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -3667,7 +3690,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopetI'
  
-mi2 = MetI2 
+mi2 = (2._dp*(mEt2) + (lam3 + lam4 - lam5)*v**2)/2._dp 
 
  
 p2 = MetI2
@@ -3700,7 +3723,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -3801,7 +3826,7 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,Metp2,MVWp2) 
+F0m2 = FloopRXi(p2,Metp2,MVWp2) 
 coup1 = cpletIetpcVWp
 coup2 =  Conjg(cpletIetpcVWp)
     SumI = coup1*coup2*F0m2 
@@ -3811,7 +3836,7 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MetR2,MVZ2) 
+F0m2 = FloopRXi(p2,MetR2,MVZ2) 
 coup1 = cpletIetRVZ
 coup2 =  Conjg(cpletIetRVZ)
     SumI = coup1*coup2*F0m2 
@@ -3824,7 +3849,7 @@ sumI = 0._dp
 A0m2 = A0(MAh2) 
 coup1 = cplAhAhetIetI
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! etI, etI 
 !------------------------ 
@@ -3833,7 +3858,7 @@ sumI = 0._dp
 A0m2 = A0(MetI2) 
 coup1 = cpletIetIetIetI
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[etp], etp 
 !------------------------ 
@@ -3851,7 +3876,7 @@ sumI = 0._dp
 A0m2 = A0(MetR2) 
 coup1 = cpletIetIetRetR
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! hh, hh 
 !------------------------ 
@@ -3860,7 +3885,7 @@ sumI = 0._dp
 A0m2 = A0(Mhh2) 
 coup1 = cpletIetIhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[Hp], Hp 
 !------------------------ 
@@ -3875,7 +3900,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVWp2) - 0.5_dp*MVWp2*rMS
+A0m2 =  0.75_dp*A0(MVWp2) + 0.25_dp*RXi*A0(MVWp2*RXi) - 0.5_dp*MVWp2*rMS 
 coup1 = cpletIetIcVWpVWp
     SumI = coup1*A0m2 
 res = res +4._dp* SumI  
@@ -3884,7 +3909,7 @@ res = res +4._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVZ2) - 0.5_dp*MVZ2*rMS
+A0m2 =  0.75_dp*A0(MVZ2) + 0.25_dp*RXi*A0(MVZ2*RXi) - 0.5_dp*MVZ2*rMS 
 coup1 = cpletIetIVZVZ
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -3920,7 +3945,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopetR'
  
-mi2 = MetR2 
+mi2 = (2._dp*(mEt2) + (lam3 + lam4 + lam5)*v**2)/2._dp 
 
  
 p2 = MetR2
@@ -3953,7 +3978,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -4034,7 +4061,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,MetI2,MVZ2) 
+F0m2 = FloopRXi(p2,MetI2,MVZ2) 
 coup1 = cpletIetRVZ
 coup2 =  Conjg(cpletIetRVZ)
     SumI = coup1*coup2*F0m2 
@@ -4054,7 +4081,7 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-F0m2 = Floop(p2,Metp2,MVWp2) 
+F0m2 = FloopRXi(p2,Metp2,MVWp2) 
 coup1 = cpletpetRcVWp
 coup2 =  Conjg(cpletpetRcVWp)
     SumI = coup1*coup2*F0m2 
@@ -4077,7 +4104,7 @@ sumI = 0._dp
 A0m2 = A0(MAh2) 
 coup1 = cplAhAhetRetR
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! etI, etI 
 !------------------------ 
@@ -4086,7 +4113,7 @@ sumI = 0._dp
 A0m2 = A0(MetI2) 
 coup1 = cpletIetIetRetR
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[etp], etp 
 !------------------------ 
@@ -4104,7 +4131,7 @@ sumI = 0._dp
 A0m2 = A0(MetR2) 
 coup1 = cpletRetRetRetR
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! hh, hh 
 !------------------------ 
@@ -4113,7 +4140,7 @@ sumI = 0._dp
 A0m2 = A0(Mhh2) 
 coup1 = cpletRetRhhhh
     SumI = -coup1*A0m2 
-res = res +1._dp* SumI  
+res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[Hp], Hp 
 !------------------------ 
@@ -4128,7 +4155,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVWp2) - 0.5_dp*MVWp2*rMS
+A0m2 =  0.75_dp*A0(MVWp2) + 0.25_dp*RXi*A0(MVWp2*RXi) - 0.5_dp*MVWp2*rMS 
 coup1 = cpletRetRcVWpVWp
     SumI = coup1*A0m2 
 res = res +4._dp* SumI  
@@ -4137,7 +4164,7 @@ res = res +4._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-A0m2 = A0(MVZ2) - 0.5_dp*MVZ2*rMS
+A0m2 =  0.75_dp*A0(MVZ2) + 0.25_dp*RXi*A0(MVZ2*RXi) - 0.5_dp*MVZ2*rMS 
 coup1 = cpletRetRVZVZ
     SumI = coup1*A0m2 
 res = res +2._dp* SumI  
@@ -4212,7 +4239,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -4269,7 +4298,7 @@ res = 0._dp
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,MAh2,Mhh2)  
+B22m2 = VSSloop(p2,MAh2,Mhh2)  
 coup1 = cplAhhhVZ
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4278,7 +4307,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,MetI2,MetR2)  
+B22m2 = VSSloop(p2,MetI2,MetR2)  
 coup1 = cpletIetRVZ
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4287,7 +4316,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,Metp2,Metp2)  
+B22m2 = VSSloop(p2,Metp2,Metp2)  
 coup1 = cpletpcetpVZ
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4361,7 +4390,7 @@ res = res +0.5_dp* SumI
 sumI = 0._dp 
  
 SumI = 0._dp 
-B0m2 = B00(p2,MVWp2,MVWp2)
+B0m2 = VGGloop(p2,MVWp2,MVWp2)
 coup1 = cplcgWpgWpVZ
 coup2 = Conjg(coup1) 
    SumI = coup1*coup2*B0m2 
@@ -4372,7 +4401,7 @@ res = res +1._dp* SumI
 sumI = 0._dp 
  
 SumI = 0._dp 
-B0m2 = B00(p2,MVWp2,MVWp2)
+B0m2 = VGGloop(p2,MVWp2,MVWp2)
 coup1 = cplcgWCgWCVZ
 coup2 = Conjg(coup1) 
    SumI = coup1*coup2*B0m2 
@@ -4382,7 +4411,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = B0(p2,MVZ2,Mhh2) 
+B0m2 = VVSloop(p2,MVZ2,Mhh2) 
 coup1 = cplhhVZVZ
     SumI = Abs(coup1)**2*B0m2 
 res = res +1._dp* SumI  
@@ -4391,7 +4420,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,MHp2,MHp2)  
+B22m2 = VSSloop(p2,MHp2,MHp2)  
 coup1 = cplHpcHpVZ
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4400,7 +4429,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = B0(p2,MVWp2,MHp2) 
+B0m2 = VVSloop(p2,MVWp2,MHp2) 
 coup1 = cplHpcVWpVZ
     SumI = Abs(coup1)**2*B0m2 
 res = res +2._dp* SumI  
@@ -4409,13 +4438,9 @@ res = res +2._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = 10._dp*B00(p2,MVWp2,MVWp2)+(MVWp2+MVWp2+4._dp*p2)*B0(p2,MVWp2,MVWp2)
-A0m12 = A0(MVWp2) 
-A0m22 =A0(MVWp2) 
 coup1 = cplcVWpVWpVZ
 coup2 = Conjg(coup1) 
-    SumI = -2._dp*rMS*(MVWp2+MVWp2-p2/3._dp)+A0m12+A0m22+B0m2  
-    SumI = -SumI*coup1*coup2 
+    SumI = -VVVloop(p2,MVWp2,MVWp2)*coup1*coup2 
 res = res +1._dp* SumI  
 !------------------------ 
 ! Ah 
@@ -4469,11 +4494,11 @@ res = res +1* SumI
 ! conj[VWp] 
 !------------------------ 
 SumI = 0._dp 
-A0m2 = A0(MVWp2) 
+A0m2 = 3._dp/4._dp*A0(MVWp2) +RXi/4._dp*A0(MVWp2*RXi) 
 coup1 = cplcVWpVWpVZVZ1
 coup2 = cplcVWpVWpVZVZ2
 coup3 = cplcVWpVWpVZVZ3
-SumI = (2._dp*rMS*coup1*MVWp2-(4._dp*coup1+coup2+coup3)*A0m2)
+SumI = ((2._dp*rMS*coup1+(1-RXi**2)/8._dp*(coup2+coup3))*MVWp2-(4._dp*coup1+coup2+coup3)*A0m2)
 res = res +1* SumI  
 res = oo16pi2*res 
  
@@ -4549,7 +4574,9 @@ mass = sqrt(mass2)
     test_m2 = Abs(mass2) 
  End If 
  If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
     mass = sqrt(mass2) 
+   End if 
   Else 
  If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
      Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
@@ -4609,7 +4636,7 @@ res = 0._dp
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,MAh2,MHp2)  
+B22m2 = VSSloop(p2,MAh2,MHp2)  
 coup1 = cplAhHpcVWp
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4618,7 +4645,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,MetI2,Metp2)  
+B22m2 = VSSloop(p2,MetI2,Metp2)  
 coup1 = cpletIetpcVWp
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4627,7 +4654,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,Metp2,MetR2)  
+B22m2 = VSSloop(p2,Metp2,MetR2)  
 coup1 = cpletpetRcVWp
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4669,7 +4696,7 @@ res = res +1._dp* SumI
 sumI = 0._dp 
  
 SumI = 0._dp 
-B0m2 = B00(p2,0._dp,MVWp2)
+B0m2 = VGGloop(p2,0._dp,MVWp2)
 coup1 = cplcgWCgAcVWp
 coup2 = Conjg(coup1) 
    SumI = coup1*coup2*B0m2 
@@ -4680,7 +4707,7 @@ res = res +1._dp* SumI
 sumI = 0._dp 
  
 SumI = 0._dp 
-B0m2 = B00(p2,MVWp2,0._dp)
+B0m2 = VGGloop(p2,MVWp2,0._dp)
 coup1 = cplcgAgWpcVWp
 coup2 = Conjg(coup1) 
    SumI = coup1*coup2*B0m2 
@@ -4691,7 +4718,7 @@ res = res +1._dp* SumI
 sumI = 0._dp 
  
 SumI = 0._dp 
-B0m2 = B00(p2,MVWp2,MVZ2)
+B0m2 = VGGloop(p2,MVWp2,MVZ2)
 coup1 = cplcgZgWpcVWp
 coup2 = Conjg(coup1) 
    SumI = coup1*coup2*B0m2 
@@ -4702,7 +4729,7 @@ res = res +1._dp* SumI
 sumI = 0._dp 
  
 SumI = 0._dp 
-B0m2 = B00(p2,MVZ2,MVWp2)
+B0m2 = VGGloop(p2,MVZ2,MVWp2)
 coup1 = cplcgWCgZcVWp
 coup2 = Conjg(coup1) 
    SumI = coup1*coup2*B0m2 
@@ -4712,7 +4739,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B22m2 = -4._dp*B00(p2,Mhh2,MHp2)  
+B22m2 = VSSloop(p2,Mhh2,MHp2)  
 coup1 = cplhhHpcVWp
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
@@ -4721,7 +4748,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = B0(p2,MVWp2,Mhh2) 
+B0m2 = VVSloop(p2,MVWp2,Mhh2) 
 coup1 = cplhhcVWpVWp
     SumI = Abs(coup1)**2*B0m2 
 res = res +1._dp* SumI  
@@ -4730,7 +4757,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = B0(p2,0._dp,MHp2) 
+B0m2 = VVSloop(p2,0._dp,MHp2) 
 coup1 = cplHpcVWpVP
     SumI = Abs(coup1)**2*B0m2 
 res = res +1._dp* SumI  
@@ -4739,7 +4766,7 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = B0(p2,MVZ2,MHp2) 
+B0m2 = VVSloop(p2,MVZ2,MHp2) 
 coup1 = cplHpcVWpVZ
     SumI = Abs(coup1)**2*B0m2 
 res = res +1._dp* SumI  
@@ -4748,26 +4775,18 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = 10._dp*B00(p2,MVWp2,0._dp)+(MVWp2+0._dp+4._dp*p2)*B0(p2,MVWp2,0._dp)
-A0m12 = A0(MVWp2) 
-A0m22 =A0(0._dp) 
 coup1 = cplcVWpVPVWp
 coup2 = Conjg(coup1) 
-    SumI = -2._dp*rMS*(MVWp2+0._dp-p2/3._dp)+A0m12+A0m22+B0m2  
-    SumI = -SumI*coup1*coup2 
+    SumI = -VVVloop(p2,MVWp2,0._dp)*coup1*coup2 
 res = res +1._dp* SumI  
 !------------------------ 
 ! VZ, VWp 
 !------------------------ 
 sumI = 0._dp 
  
-B0m2 = 10._dp*B00(p2,MVZ2,MVWp2)+(MVZ2+MVWp2+4._dp*p2)*B0(p2,MVZ2,MVWp2)
-A0m12 = A0(MVZ2) 
-A0m22 =A0(MVWp2) 
 coup1 = cplcVWpVWpVZ
 coup2 = Conjg(coup1) 
-    SumI = -2._dp*rMS*(MVZ2+MVWp2-p2/3._dp)+A0m12+A0m22+B0m2  
-    SumI = -SumI*coup1*coup2 
+    SumI = -VVVloop(p2,MVZ2,MVWp2)*coup1*coup2 
 res = res +1._dp* SumI  
 !------------------------ 
 ! Ah 
@@ -4821,34 +4840,248 @@ res = res +1* SumI
 ! VP 
 !------------------------ 
 SumI = 0._dp 
-A0m2 = A0(0._dp) 
+A0m2 = 3._dp/4._dp*A0(0._dp) +RXi/4._dp*A0(0._dp*RXi) 
 coup1 = cplcVWpVPVPVWp3
 coup2 = cplcVWpVPVPVWp1
 coup3 = cplcVWpVPVPVWp2
-SumI = (2._dp*rMS*coup1*0._dp-(4._dp*coup1+coup2+coup3)*A0m2)
+SumI = ((2._dp*rMS*coup1+(1-RXi**2)/8._dp*(coup2+coup3))*0._dp-(4._dp*coup1+coup2+coup3)*A0m2)
 res = res +1._dp/2._dp* SumI  
 !------------------------ 
 ! conj[VWp] 
 !------------------------ 
 SumI = 0._dp 
-A0m2 = A0(MVWp2) 
+A0m2 = 3._dp/4._dp*A0(MVWp2) +RXi/4._dp*A0(MVWp2*RXi) 
 coup1 = cplcVWpcVWpVWpVWp2
 coup2 = cplcVWpcVWpVWpVWp3
 coup3 = cplcVWpcVWpVWpVWp1
-SumI = (2._dp*rMS*coup1*MVWp2-(4._dp*coup1+coup2+coup3)*A0m2)
+SumI = ((2._dp*rMS*coup1+(1-RXi**2)/8._dp*(coup2+coup3))*MVWp2-(4._dp*coup1+coup2+coup3)*A0m2)
 res = res +1* SumI  
 !------------------------ 
 ! VZ 
 !------------------------ 
 SumI = 0._dp 
-A0m2 = A0(MVZ2) 
+A0m2 = 3._dp/4._dp*A0(MVZ2) +RXi/4._dp*A0(MVZ2*RXi) 
 coup1 = cplcVWpVWpVZVZ1
 coup2 = cplcVWpVWpVZVZ2
 coup3 = cplcVWpVWpVZVZ3
-SumI = (2._dp*rMS*coup1*MVZ2-(4._dp*coup1+coup2+coup3)*A0m2)
+SumI = ((2._dp*rMS*coup1+(1-RXi**2)/8._dp*(coup2+coup3))*MVZ2-(4._dp*coup1+coup2+coup3)*A0m2)
 res = res +1._dp/2._dp* SumI  
 res = oo16pi2*res 
  
 End Subroutine Pi1LoopVWp 
  
+
+  Complex(dp) Function FloopRXi(p2,m12,m22) 
+   Implicit None 
+   Real(dp),Intent(in)::p2,m12,m22 
+    
+   
+    If (RXi.eq.1._dp) Then
+       FloopRXi=Floop(p2,m12,m22)
+    Else
+       If ((m12.gt.1.0E-10_dp).and.(m22.gt.1.0E-10_dp)) Then
+          FloopRXi=A0(m12)-A0(m22)+((m12-p2)*A0(m22))/m22-&
+               & ((m12-p2+m22*RXi)*A0(m22*RXi))/m22+(-m12+m22+p2)*b0(p2,m12,m22)-&
+               & (m12-(m12-p2)**2/m22+3._dp*p2)*b0(p2,m12,m22)-((m12-p2)**2*b0(p2,m12,m22*RXi))/m22
+       Else
+          If (m12.gt.1.0E-10_dp) Then
+              FloopRXi=A0(m12)-2._dp*(m12+p2)*B0(p2,0._dp,m12)
+          Else If (m22.gt.1.0E-10_dp) Then
+              FloopRXi=(-((m22+p2)*A0(m22))+(p2-m22*RXi)*A0(m22*RXi)+(m22-p2)**2*B0(p2,0._dp,m22)-p2**2*B0(p2,0._dp,m22*RXi))/m22
+          Else
+              FloopRXi=0._dp
+          End if
+       End if
+    End if
+     If (Real(FloopRXi,dp).ne.Real(FloopRXi,dp)) Write(*,*) "NaN in FloopRXi", p2,m12,m22
+  End Function FloopRXi
+
+
+  
+  Complex(dp) Function SVVloop(p2,m12,m22)
+    Implicit None
+
+    Real(dp),Intent(in)::p2,m12,m22
+    
+
+    If (RXi.eq.1._dp) Then
+	   
+        SVVloop = 4._dp*Real(B0(p2,m12,m22)-0.5_dp*rMS,dp)
+    Else If (RXi.lt.0.1_dp) Then
+	If (m12.gt.1.0E-10_dp) Then
+	    If (p2.gt.0.1_dp) Then
+		SVVloop = -2._dp*(rMS-A0(m12)/(8._dp*m12)+(RXi*A0(m12))/(8._dp*m12)-A0(m22)/(8._dp*m22)+(RXi*A0(m22))/(8._dp*m22)+A0(m12*RXi)/(8._dp*m12)&
+               &-(RXi*A0(m12*RXi))/(8._dp*m12)+A0(m22*RXi)/(8._dp*m22)-&
+               &(RXi*A0(m22*RXi))/(8._dp*m22)-(5._dp*B0(p2,m12,m22))/4._dp-(m12*B0(p2,m12,m22))/(8._dp*m22)&
+               &-(m22*B0(p2,m12,m22))/(8._dp*m12)+(p2*B0(p2,m12,m22))/(4._dp*m12)+(p2*B0(p2,m12,m22))/(4._dp*m22)-&
+               &(p2**2*B0(p2,m12,m22))/(8._dp*m12*m22)+(m12*B0(p2,m12,m22*RXi))/(8._dp*m22)-(p2*B0(p2,m12,m22*RXi))/(4._dp*m22)&
+               &+(p2**2*B0(p2,m12,m22*RXi))/(8._dp*m12*m22)-(RXi*B0(p2,m12,m22*RXi))/4._dp-&
+               &(p2*RXi*B0(p2,m12,m22*RXi))/(4._dp*m12)+(m22*RXi**2*B0(p2,m12,m22*RXi))/(8._dp*m12)&
+               &+(m22*B0(p2,m22,m12*RXi))/(8._dp*m12)-(p2*B0(p2,m22,m12*RXi))/(4._dp*m12)+&
+               &(p2**2*B0(p2,m22,m12*RXi))/(8._dp*m12*m22)-(RXi*B0(p2,m22,m12*RXi))/4._dp-(p2*RXi*B0(p2,m22,m12*RXi))/(4._dp*m22)&
+               &+(m12*RXi**2*B0(p2,m22,m12*RXi))/(8._dp*m22)-&
+               &(p2**2*B0(p2,m12*RXi,m22*RXi))/(8._dp*m12*m22)+(p2*RXi*B0(p2,m12*RXi,m22*RXi))/(4._dp*m12)&
+               &+(p2*RXi*B0(p2,m12*RXi,m22*RXi))/(4._dp*m22)-(RXi**2*B0(p2,m12*RXi,m22*RXi))/4._dp-&
+               &(m12*RXi**2*B0(p2,m12*RXi,m22*RXi))/(8._dp*m22)-(m22*RXi**2*B0(p2,m12*RXi,m22*RXi))/(8._dp*m12))
+!                Write(*,*) SVVloop
+	    Else
+	     If (m12.eq.m22) Then 
+	        SVVloop = 0._dp
+	     Else 
+		SVVloop = (2._dp*rMS*(-m12+m22)+3._dp*A0(m12)-3._dp*A0(m22))/(m12-m22)
+             End if
+	    End if
+        Else
+	     If (p2.gt.0.1) Then
+		SVVloop = (-8._dp*rMS*m22+A0(m22)+2._dp*p2*B0(p2,0._dp,0._dp)+2._dp*(5._dp*m22-p2)*B0(p2,0._dp,m22))/(4._dp*m22)
+	    Else
+		SVVloop = -2._dp*rMS + 3._dp*B0(0._dp,0._dp,m22)
+	    End if
+	End if
+    Else
+    
+       If ((m12.gt.1.0E-10_dp).and.(m22.gt.1.0E-10_dp)) Then
+	  If (p2.lt.0.1) Then
+	      SVVloop = (-2._dp*rMS*m12+2._dp*rMS*m22+3._dp*A0(m12)-3._dp*A0(m22)+RXi*A0(m12*RXi)-RXi*A0(m22*RXi))/(m12-m22)
+	  Else
+	  
+	   If (m12-m22.lt.1_dp) Then 
+	     SVVloop=  (p2**2*(B0(p2,m12,m12) - 2*B0(p2,m12,m12*RXi) + B0(p2,m12*RXi,m12*RXi)) + &
+     &  4*m12*p2*(-B0(p2,m12,m12) + (1 + RXi)*B0(p2,m12,m12*RXi) - RXi*B0(p2,m12*RXi,m12*RXi)) + &
+     &  2*m12*((1 - RXi)*A0(m12) + (-1 + RXi)*A0(m12*RXi) - m12*(4*rMS - 6*B0(p2,m12,m12) + (-1 + RXi)**2*B0(p2,m12,m12*RXi) - 2*RXi**2*B0(p2,m12*RXi,m12*RXi))))/(4*m12**2)
+	   Else 
+	      SVVloop = -2._dp*(rMS-A0(m12)/(8._dp*m12)+(RXi*A0(m12))/(8._dp*m12)-A0(m22)/(8._dp*m22)+(RXi*A0(m22))/(8._dp*m22)+A0(m12*RXi)/(8._dp*m12)&
+               &-(RXi*A0(m12*RXi))/(8._dp*m12)+A0(m22*RXi)/(8._dp*m22)-&
+               &(RXi*A0(m22*RXi))/(8._dp*m22)-(5._dp*B0(p2,m12,m22))/4._dp-(m12*B0(p2,m12,m22))/(8._dp*m22)&
+               &-(m22*B0(p2,m12,m22))/(8._dp*m12)+(p2*B0(p2,m12,m22))/(4._dp*m12)+(p2*B0(p2,m12,m22))/(4._dp*m22)-&
+               &(p2**2*B0(p2,m12,m22))/(8._dp*m12*m22)+(m12*B0(p2,m12,m22*RXi))/(8._dp*m22)-(p2*B0(p2,m12,m22*RXi))/(4._dp*m22)&
+               &+(p2**2*B0(p2,m12,m22*RXi))/(8._dp*m12*m22)-(RXi*B0(p2,m12,m22*RXi))/4._dp-&
+               &(p2*RXi*B0(p2,m12,m22*RXi))/(4._dp*m12)+(m22*RXi**2*B0(p2,m12,m22*RXi))/(8._dp*m12)&
+               &+(m22*B0(p2,m22,m12*RXi))/(8._dp*m12)-(p2*B0(p2,m22,m12*RXi))/(4._dp*m12)+&
+               &(p2**2*B0(p2,m22,m12*RXi))/(8._dp*m12*m22)-(RXi*B0(p2,m22,m12*RXi))/4._dp-(p2*RXi*B0(p2,m22,m12*RXi))/(4._dp*m22)&
+               &+(m12*RXi**2*B0(p2,m22,m12*RXi))/(8._dp*m22)-&
+               &(p2**2*B0(p2,m12*RXi,m22*RXi))/(8._dp*m12*m22)+(p2*RXi*B0(p2,m12*RXi,m22*RXi))/(4._dp*m12)&
+               &+(p2*RXi*B0(p2,m12*RXi,m22*RXi))/(4._dp*m22)-(RXi**2*B0(p2,m12*RXi,m22*RXi))/4._dp-&
+               &(m12*RXi**2*B0(p2,m12*RXi,m22*RXi))/(8._dp*m22)-(m22*RXi**2*B0(p2,m12*RXi,m22*RXi))/(8._dp*m12))
+!                Write(*,*) SVVloop
+          End if
+          End if 
+       Else If ((m12.gt.1.0E-10_dp).and.(m22.lt.1.0E-10_dp)) Then
+	  If (p2.lt.0.1) Then
+	      SVVloop = (-8._dp*rMS*m22+(11._dp+RXi)*A0(m22)+(1._dp+3._dp*RXi)*A0(m22*RXi))/(4._dp*m22)
+	  Else
+	      SVVloop =  -2._dp*rMS+A0(m12)/(4._dp*m12)-(RXi*A0(m12))/(4._dp*m12)-A0(m12*RXi)/(4._dp*m12)+(RXi*A0(m12*RXi))/(4._dp*m12)&
+              &+(5._dp*B0(p2,0._dp,m12))/2._dp-(p2*B0(p2,0._dp,m12))/(2._dp*m12)+(RXi*B0(p2,0._dp,m12))/2._dp+(p2*RXi*B0(p2,0._dp,m12))/(2._dp*m12)& 
+              &+(p2*B0(p2,0._dp,m12*RXi))/(2._dp*m12)+(RXi*B0(p2,0._dp,m12*RXi))/2._dp-(p2*RXi*B0(p2,0._dp,m12*RXi))/(2._dp*m12) + (RXi**2*B0(p2,0._dp,m12*RXi))/2._dp
+          End if 
+          
+       Else If ((m22.gt.1.0E-10_dp).and.(m12.lt.1.0E-10_dp)) Then
+	  If (p2.lt.0.1) Then
+	      SVVloop = -2._dp*rMS + (1.0_dp*RXi)*B0(0._dp,0._dp,m22*RXi) + (3._dp)*B0(0._dp,0._dp,m22) !+ A0(m22)/m22
+	  Else
+	       SVVloop =  -2._dp*rMS+A0(m22)/(4._dp*m22)-(RXi*A0(m22))/(4._dp*m22)-A0(m22*RXi)/(4._dp*m22)+(RXi*A0(m22*RXi))/(4._dp*m22)&
+              &+(5._dp*B0(p2,0._dp,m22))/2._dp-(p2*B0(p2,0._dp,m22))/(2._dp*m22)+(RXi*B0(p2,0._dp,m22))/2._dp+(p2*RXi*B0(p2,0._dp,m22))/(2._dp*m22)& 
+              &+(p2*B0(p2,0._dp,m22*RXi))/(2._dp*m22)+(RXi*B0(p2,0._dp,m22*RXi))/2._dp-(p2*RXi*B0(p2,0._dp,m22*RXi))/(2._dp*m22) + (RXi**2*B0(p2,0._dp,m22*RXi))/2._dp
+          End if 
+          
+       End if
+    End if
+         If (Real(SVVloop,dp).ne.Real(SVVloop,dp)) Write(*,*) "NaN in SVVloop", p2,m12,m22
+  End Function SVVloop
+
+Complex(dp) Function VSSloop(p2,m12,m22) 
+Implicit None 
+Real(dp),Intent(in)::p2,m12,m22 
+
+VSSloop=  -4._dp*B00(p2,m12,m22) 
+
+! If (RXi.eq.1._dp) Then 
+!   VSSloop=  -4._dp*B00(p2,m12,m22) 
+! Else
+!   If (p2.gt.0) Then 
+!         VSSloop=   -(6*(m12 + m22)*(-1 + RXi) + (2*p2*(-p2 + 3*(m12 + m22)*RXi) + &
+!       & 3*(p2 + (m12 - m22)*RXi)*A0(m12) + 3*(p2 - m12*RXi + m22*RXi)*A0(m22) - &
+!       & 3*(p2**2 - 2*(m12 + m22)*p2*RXi + (m12 - m22)**2*RXi**2)*B0(p2,m12,m22))/p2)/9._dp  &
+!       &  + rMS*(2._dp/3._dp)*(m12 + m22)*(-1._dp + RXi)
+!   Else ! to be added
+!      VSSloop= 0._dp
+!    End if
+! End if
+End Function VSSloop
+
+Complex(dp) Function VVSloop(p2,m12,m22) 
+Implicit None 
+Real(dp),Intent(in)::p2,m12,m22 
+
+If (RXi.eq.1._dp) Then 
+  VVSloop=  B0(p2,m12,m22) 
+Else
+  ! VVSloop = B0(p2,m12,m22) - 0.25_dp*(B00(p2,m12,m22) + B00(p2,rxi*m12,m22))/m12  !! Mark
+   VVSloop = B0(p2,m12,m22) + (-B00(p2,m12,m22) + B00(p2,m22,rxi*m12))/m12 !! FeynArts
+End if
+
+End Function VVSloop
+
+
+Complex(dp) Function VVVloop(p2,m12,m22) 
+Implicit None 
+Real(dp),Intent(in)::p2,m12,m22 
+Real(dp) :: b001
+
+If (RXi.eq.1._dp) Then 
+  VVVloop=   -2._dp*rMS*(m12 + m22 - p2/3._dp) + 10._dp*B00(p2,m12,m22) &
+     & + (m12+m22+4._dp*p2)*B0(p2,m12,m22)+  A0(m12) + A0(m22)
+Else
+!   If ((m12.eq.m22).and.(m22.gt.0._dp)) Then 
+!       b001 = (-A0(m22)+(p2+m12-m22)*B11(MZ2,m22,m22) + 2._dp*m22*B1(MZ2,m22,m22) - 1._dp/6._dp*(-p2 + 2._dp*m22+4._dp*m22))/8._dp
+!       VVVloop =        ((m22*(96._dp*b001*MZ2 + 16._dp*m22*MZ2*rMS - 3._dp*m22**2*(-1._dp + 32._dp*rMS + RXi**2)) + 6._dp*m22*(4*MZ2 + m22*(-3._dp + 4._dp*RXi))*A0(m22) + 6._dp*m22*(-4._dp*MZ2 + m22*(4._dp + 3._dp*RXi))*A0(m22*RXi) +  &
+!        &      24._dp*(7._dp*m22**2*MZ2*B0(MZ2,m22,m22) + m22**2*(m22 - 2._dp*MZ2 - 4._dp*MZ2*RXi + m22*RXi**2)*B0(MZ2,m22,m22*RXi) + 12._dp*m22**2*B00(MZ2,m22,m22) - 7._dp*m22*MZ2*B00(MZ2,m22,m22) +  &
+!        &         MZ2**2*B00(MZ2,m22,m22) - m22**2*B00(MZ2,m22,m22*RXi) + 9._dp*m22*MZ2*B00(MZ2,m22,m22*RXi) - 2._dp*MZ2**2*B00(MZ2,m22,m22*RXi) - m22**2*RXi*B00(MZ2,m22,m22*RXi) +  &
+!        &         MZ2**2*B00(MZ2,m22*RXi,m22*RXi) - 2._dp*m22**2*MZ2*b1(MZ2,m22,m22) - 4._dp*m22**2*MZ2*RXi*b1(MZ2,m22,m22*RXi) - 4._dp*m22*MZ2**2*b11(MZ2,m22,m22) + 4._dp*m22*MZ2**2*b11(MZ2,m22,m22*RXi))))/ &
+!        &  (24._dp*m22**2)
+!   Else      
+    
+  If ((p2.gt.0).and.(m12.gt.0_dp).and.(m22.gt.0._dp)) Then 
+      VVVloop= ((m12*m22*p2*(-3*m12 - 3*m22 - 40*p2 - 12*(m12 + m22 - 4*p2)*RXi - 9*(m12 + m22)*RXi**2) +  &
+     &      6*m22*(-m22**2 - 9*m22*p2 + m12*(-9*m22 + p2*(13 - 2*RXi)) + m12**2*(9 + RXi) + p2**2*(9 + RXi))*A0(m12) -  &
+     &      6*m12*(m12**2 + 9*m12*(m22 + p2) - m22**2*(9 + RXi) - p2**2*(9 + RXi) + m22*p2*(-13 + 2*RXi))*A0(m22) +  &
+     &      6*(m22*(m22**2 + m22*(9*p2 - m12*RXi) - p2*(-11*m12*RXi + p2*(9 + RXi)))*A0(m12*RXi) + m12*(m12**2 + 9*m12*p2 - 9*p2**2 - (m12*m22 - 11*m22*p2 + p2**2)*RXi)*A0(m22*RXi) -  &
+     &         m12**4*B0(p2,m12,m22) - 8*m12**3*m22*B0(p2,m12,m22) + 18*m12**2*m22**2*B0(p2,m12,m22) - 8*m12*m22**3*B0(p2,m12,m22) - m22**4*B0(p2,m12,m22) - 8*m12**3*p2*B0(p2,m12,m22) + &  
+     &         32*m12**2*m22*p2*B0(p2,m12,m22) + 32*m12*m22**2*p2*B0(p2,m12,m22) - 8*m22**3*p2*B0(p2,m12,m22) + 18*m12**2*p2**2*B0(p2,m12,m22) + 32*m12*m22*p2**2*B0(p2,m12,m22) +  &
+     &         18*m22**2*p2**2*B0(p2,m12,m22) - 8*m12*p2**3*B0(p2,m12,m22) - 8*m22*p2**3*B0(p2,m12,m22) - p2**4*B0(p2,m12,m22) + m12**4*B0(p2,m12,m22*RXi) + 8*m12**3*p2*B0(p2,m12,m22*RXi) -  &
+     &         18*m12**2*p2**2*B0(p2,m12,m22*RXi) + 8*m12*p2**3*B0(p2,m12,m22*RXi) + p2**4*B0(p2,m12,m22*RXi) - 2*m12**3*m22*RXi*B0(p2,m12,m22*RXi) + 2*m12**2*m22*p2*RXi*B0(p2,m12,m22*RXi) +  &
+     &         2*m12*m22*p2**2*RXi*B0(p2,m12,m22*RXi) - 2*m22*p2**3*RXi*B0(p2,m12,m22*RXi) + m12**2*m22**2*RXi**2*B0(p2,m12,m22*RXi) - 2*m12*m22**2*p2*RXi**2*B0(p2,m12,m22*RXi) +  &
+     &         m22**2*p2**2*RXi**2*B0(p2,m12,m22*RXi) + m22**4*B0(p2,m22,m12*RXi) + 8*m22**3*p2*B0(p2,m22,m12*RXi) - 18*m22**2*p2**2*B0(p2,m22,m12*RXi) + 8*m22*p2**3*B0(p2,m22,m12*RXi) +  &
+     &         p2**4*B0(p2,m22,m12*RXi) - 2*m12*m22**3*RXi*B0(p2,m22,m12*RXi) + 2*m12*m22**2*p2*RXi*B0(p2,m22,m12*RXi) + 2*m12*m22*p2**2*RXi*B0(p2,m22,m12*RXi) - 2*m12*p2**3*RXi*B0(p2,m22,m12*RXi) +  &
+     &         m12**2*m22**2*RXi**2*B0(p2,m22,m12*RXi) - 2*m12**2*m22*p2*RXi**2*B0(p2,m22,m12*RXi) + m12**2*p2**2*RXi**2*B0(p2,m22,m12*RXi) -  &
+     &         p2**2*(p2**2 - 2*(m12 + m22)*p2*RXi + (m12 - m22)**2*RXi**2)*B0(p2,m12*RXi,m22*RXi))))/(72.*m12*m22*p2) -2._dp*(rMS-1._dp)*(m12 + m22 - p2/3._dp)
+  Else ! to be added
+     Write(*,*) "Warning from VVVloop", p2,m12,m22
+     VVVloop= 0._dp
+   End if
+! End if
+End if
+End Function VVVloop
+
+
+Complex(dp) Function VGGloop(p2,m12,m22) 
+Implicit None 
+Real(dp),Intent(in)::p2,m12,m22 
+
+
+If (RXi.eq.1._dp) Then 
+  VGGloop=  B00(p2,m12,m22) 
+Else
+  VGGloop=  B00(p2,m12*RXi,m22*RXi) 
+
+!   If (p2.gt.0) Then 
+!       VGGloop=   -((2*p2*(p2 - 3*(m12 + m22)*RXi) - 3*(p2 + (m12 - m22)*RXi)*A0(m12*RXi)  &
+!       & - 3*(p2 - m12*RXi + m22*RXi)*A0(m22*RXi) +  &
+!     &       3*(p2**2 - 2*(m12 + m22)*p2*RXi + (m12 - m22)**2*RXi**2)*B0(p2,m12*RXi,m22*RXi)))/(36.*p2)
+!   Else  ! to be added
+!          Write(*,*) "Warning from VVSloop", p2,m12,m22
+!      VGGloop= 0._dp
+!    End if
+End if
+End Function VGGloop
 End Module LoopMasses_Scotogenic 

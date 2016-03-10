@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:01 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -38,7 +38,7 @@ Subroutine CalculateBox2d2L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Box2d2L 
-! 'PreSARAH' output has been generated  at 18:47 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:39 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -1764,7 +1764,7 @@ Subroutine CalculatePengS2d2L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengS2d2L 
-! 'PreSARAH' output has been generated  at 18:48 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:40 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -4889,7 +4889,7 @@ coup1L = cplcFdFdVZL(i1,gt1)
 coup1R = cplcFdFdVZR(i1,gt1)
 coup2L = cplcFdFdhhL(gt2,i1)
 coup2R = cplcFdFdhhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt3)
 coup4R = cplcFeFeAhR(gt4,gt3)
 ! Masses in loop
@@ -4938,7 +4938,7 @@ coup1L = cplcFdFdhhL(i1,gt1)
 coup1R = cplcFdFdhhR(i1,gt1)
 coup2L = cplcFdFdVZL(gt2,i1)
 coup2R = cplcFdFdVZR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeAhL(gt4,gt3)
 coup4R = cplcFeFeAhR(gt4,gt3)
 ! Masses in loop
@@ -5427,7 +5427,7 @@ coup1L = cplcFeFeVZL(i1,gt3)
 coup1R = cplcFeFeVZR(i1,gt3)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFdFdAhL(gt2,gt1)
 coup4R = cplcFdFdAhR(gt2,gt1)
 ! Masses in loop
@@ -5476,7 +5476,7 @@ coup1L = cplcFeFehhL(i1,gt3)
 coup1R = cplcFeFehhR(i1,gt3)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFdFdAhL(gt2,gt1)
 coup4R = cplcFdFdAhR(gt2,gt1)
 ! Masses in loop
@@ -5830,7 +5830,7 @@ coup1L = cplcFdFdVZL(i1,gt1)
 coup1R = cplcFdFdVZR(i1,gt1)
 coup2L = cplcFdFdAhL(gt2,i1)
 coup2R = cplcFdFdAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt3)
 coup4R = cplcFeFehhR(gt4,gt3)
 ! Masses in loop
@@ -5923,7 +5923,7 @@ coup1L = cplcFdFdAhL(i1,gt1)
 coup1R = cplcFdFdAhR(i1,gt1)
 coup2L = cplcFdFdVZL(gt2,i1)
 coup2R = cplcFdFdVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFehhL(gt4,gt3)
 coup4R = cplcFeFehhR(gt4,gt3)
 ! Masses in loop
@@ -6632,7 +6632,7 @@ coup1L = cplcFeFeVZL(i1,gt3)
 coup1R = cplcFeFeVZR(i1,gt3)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFdFdhhL(gt2,gt1)
 coup4R = cplcFdFdhhR(gt2,gt1)
 ! Masses in loop
@@ -6725,7 +6725,7 @@ coup1L = cplcFeFeAhL(i1,gt3)
 coup1R = cplcFeFeAhR(i1,gt3)
 coup2L = cplcFeFeVZL(gt4,i1)
 coup2R = cplcFeFeVZR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFdFdhhL(gt2,gt1)
 coup4R = cplcFdFdhhR(gt2,gt1)
 ! Masses in loop
@@ -6844,7 +6844,7 @@ Subroutine CalculatePengV2d2L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process PengV2d2L 
-! 'PreSARAH' output has been generated  at 18:51 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:41 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -8543,7 +8543,7 @@ coup1L = cplcFdFdhhL(i1,gt1)
 coup1R = cplcFdFdhhR(i1,gt1)
 coup2L = cplcFdFdAhL(gt2,i1)
 coup2R = cplcFdFdAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFeFeVZL(gt4,gt3)
 coup4R = cplcFeFeVZR(gt4,gt3)
 ! Masses in loop
@@ -8587,7 +8587,7 @@ coup1L = cplcFdFdAhL(i1,gt1)
 coup1R = cplcFdFdAhR(i1,gt1)
 coup2L = cplcFdFdhhL(gt2,i1)
 coup2R = cplcFdFdhhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFeFeVZL(gt4,gt3)
 coup4R = cplcFeFeVZR(gt4,gt3)
 ! Masses in loop
@@ -9392,7 +9392,7 @@ coup1L = cplcFeFehhL(i1,gt3)
 coup1R = cplcFeFehhR(i1,gt3)
 coup2L = cplcFeFeAhL(gt4,i1)
 coup2R = cplcFeFeAhR(gt4,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplcFdFdVZL(gt2,gt1)
 coup4R = cplcFdFdVZR(gt2,gt1)
 ! Masses in loop
@@ -9436,7 +9436,7 @@ coup1L = cplcFeFeAhL(i1,gt3)
 coup1R = cplcFeFeAhR(i1,gt3)
 coup2L = cplcFeFehhL(gt4,i1)
 coup2R = cplcFeFehhR(gt4,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplcFdFdVZL(gt2,gt1)
 coup4R = cplcFdFdVZR(gt2,gt1)
 ! Masses in loop
@@ -9594,7 +9594,7 @@ Subroutine CalculateTreeS2d2L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeS2d2L 
-! 'PreSARAH' output has been generated  at 18:51 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:41 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -9686,10 +9686,10 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOddllSLL=TSOddllSLL+ 1*coup1L*coup2L*IMP2
-  TSOddllSRR=TSOddllSRR+ 1*coup1R*coup2R*IMP2
-  TSOddllSRL=TSOddllSRL+ 1*coup1R*coup2L*IMP2
-  TSOddllSLR=TSOddllSLR+ 1*coup1L*coup2R*IMP2
+  TSOddllSLL=TSOddllSLL+ coup1L*coup2L*IMP2
+  TSOddllSRR=TSOddllSRR+ coup1R*coup2R*IMP2
+  TSOddllSRL=TSOddllSRL+ coup1R*coup2L*IMP2
+  TSOddllSLR=TSOddllSLR+ coup1L*coup2R*IMP2
   TSOddllVRR=TSOddllVRR+ 0.
   TSOddllVLL=TSOddllVLL+ 0.
   TSOddllVRL=TSOddllVRL+ 0.
@@ -9716,10 +9716,10 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOddllSLL=TSOddllSLL+ 1*coup1L*coup2L*IMP2
-  TSOddllSRR=TSOddllSRR+ 1*coup1R*coup2R*IMP2
-  TSOddllSRL=TSOddllSRL+ 1*coup1R*coup2L*IMP2
-  TSOddllSLR=TSOddllSLR+ 1*coup1L*coup2R*IMP2
+  TSOddllSLL=TSOddllSLL+ coup1L*coup2L*IMP2
+  TSOddllSRR=TSOddllSRR+ coup1R*coup2R*IMP2
+  TSOddllSRL=TSOddllSRL+ coup1R*coup2L*IMP2
+  TSOddllSLR=TSOddllSLR+ coup1L*coup2R*IMP2
   TSOddllVRR=TSOddllVRR+ 0.
   TSOddllVLL=TSOddllVLL+ 0.
   TSOddllVRL=TSOddllVRL+ 0.
@@ -9755,7 +9755,7 @@ Subroutine CalculateTreeV2d2L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeV2d2L 
-! 'PreSARAH' output has been generated  at 18:51 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 15:41 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -9851,10 +9851,10 @@ IMP2 = 1._dp/MP2
   TVOddllSRR=TVOddllSRR+ 0.
   TVOddllSRL=TVOddllSRL+ 0.
   TVOddllSLR=TVOddllSLR+ 0.
-  TVOddllVRR=TVOddllVRR-1*coup1R*coup2R*IMP2
-  TVOddllVLL=TVOddllVLL-1*coup1L*coup2L*IMP2
-  TVOddllVRL=TVOddllVRL-1*coup1R*coup2L*IMP2
-  TVOddllVLR=TVOddllVLR-1*coup1L*coup2R*IMP2
+  TVOddllVRR=TVOddllVRR-1.*coup1R*coup2R*IMP2
+  TVOddllVLL=TVOddllVLL-1.*coup1L*coup2L*IMP2
+  TVOddllVRL=TVOddllVRL-1.*coup1R*coup2L*IMP2
+  TVOddllVLR=TVOddllVLR-1.*coup1L*coup2R*IMP2
   TVOddllTLL=TVOddllTLL+ 0.
   TVOddllTLR=TVOddllTLR+ 0.
   TVOddllTRL=TVOddllTRL+ 0.
@@ -11947,7 +11947,7 @@ coup1L = cplcFdFdhhL(i1,gt1)
 coup1R = cplcFdFdhhR(i1,gt1)
 coup2L = cplcFdFdAhL(gt2,i1)
 coup2R = cplcFdFdAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 coup4L = cplFvFvVZL(gt4,gt3)
 coup4R = cplFvFvVZR(gt4,gt3)
 ! Masses in loop
@@ -11983,7 +11983,7 @@ coup1L = cplcFdFdAhL(i1,gt1)
 coup1R = cplcFdFdAhR(i1,gt1)
 coup2L = cplcFdFdhhL(gt2,i1)
 coup2R = cplcFdFdhhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 coup4L = cplFvFvVZL(gt4,gt3)
 coup4R = cplFvFvVZR(gt4,gt3)
 ! Masses in loop
@@ -12241,7 +12241,7 @@ coup1L = cplChiFvetRL(i1,gt3)
 coup1R = cplChiFvetRR(i1,gt3)
 coup2L = cplChiFvetIL(i1,gt4)
 coup2R = cplChiFvetIR(i1,gt4)
-coup3 = -cpletIetRVZ
+coup3 = cpletIetRVZ
 coup4L = cplcFdFdVZL(gt2,gt1)
 coup4R = cplcFdFdVZR(gt2,gt1)
 ! Masses in loop
@@ -12277,7 +12277,7 @@ coup1L = cplChiFvetIL(i1,gt3)
 coup1R = cplChiFvetIR(i1,gt3)
 coup2L = cplChiFvetRL(i1,gt4)
 coup2R = cplChiFvetRR(i1,gt4)
-coup3 = cpletIetRVZ
+coup3 = -cpletIetRVZ
 coup4L = cplcFdFdVZL(gt2,gt1)
 coup4R = cplcFdFdVZR(gt2,gt1)
 ! Masses in loop
@@ -13019,7 +13019,7 @@ Subroutine CalculateBox4d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFu,         
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Box4d 
-! 'PreSARAH' output has been generated  at 19:49 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 11:24 on 15.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -14414,10 +14414,10 @@ mF22 = MFd2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4dSLL=BO4dSLL+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 -           & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4dSRR=BO4dSRR+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 -           & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4dSLL=BO4dSLL+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -              & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4dSRR=BO4dSRR+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -              & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4dSRL=BO4dSRL+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L - 1.*coup1L*coup2L*coup3L*coup4R)& 
 & *int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4dSLR=BO4dSLR+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +               & 
@@ -14478,10 +14478,10 @@ mF22 = MFd2(i2)
   int1=C0D0check(mF22, mF12, mV22, mS12)
   int2=D00check(mF22, mF12, mS12, mV22)
   int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4dSLL=BO4dSLL+0.25*chargefactor*(-3.*coup1R*coup2R*coup3R*coup4L*int2 -           & 
-&  1.*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4dSRR=BO4dSRR+0.25*chargefactor*(-3.*coup1L*coup2L*coup3L*coup4R*int2 -           & 
-&  1.*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4dSLL=BO4dSLL+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -              & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4dSRR=BO4dSRR+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -              & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
   BO4dSRL=BO4dSRL+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L - 1.*coup1L*coup2L*coup3L*coup4R)& 
 & *int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
   BO4dSLR=BO4dSLR+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +               & 
@@ -14536,10 +14536,10 @@ mF22 = MFd2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4dSLL=BO4dSLL+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 -           & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4dSRR=BO4dSRR+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 -           & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4dSLL=BO4dSLL+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -              & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4dSRR=BO4dSRR+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -              & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4dSRL=BO4dSRL+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +               & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4dSLR=BO4dSLR+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L - 1.*coup1R*coup2L*coup3R*coup4R)& 
@@ -14588,10 +14588,10 @@ mF22 = MFd2(i2)
   int1=C0D0check(mF22, mF12, mS22, mV12)
   int2=D00check(mF22, mF12, mV12, mS22)
   int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4dSLL=BO4dSLL+0.25*chargefactor*(-3.*coup1R*coup2L*coup3R*coup4R*int2 -           & 
-&  1.*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4dSRR=BO4dSRR+0.25*chargefactor*(-3.*coup1L*coup2R*coup3L*coup4L*int2 -           & 
-&  1.*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4dSLL=BO4dSLL+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -              & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4dSRR=BO4dSRR+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -              & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
   BO4dSRL=BO4dSRL+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +               & 
 &  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
   BO4dSLR=BO4dSLR+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L - 1.*coup1R*coup2L*coup3R*coup4R)& 
@@ -16446,7 +16446,7 @@ Subroutine CalculateTreeS4d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFu,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeS4d 
-! 'PreSARAH' output has been generated  at 19:49 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 11:24 on 15.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -16533,10 +16533,10 @@ MP2 = MAh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSO4dSLL=TSO4dSLL+ 1*coup1L*coup2L*IMP2
-  TSO4dSRR=TSO4dSRR+ 1*coup1R*coup2R*IMP2
-  TSO4dSRL=TSO4dSRL+ 1*coup1R*coup2L*IMP2
-  TSO4dSLR=TSO4dSLR+ 1*coup1L*coup2R*IMP2
+  TSO4dSLL=TSO4dSLL+ coup1L*coup2L*IMP2
+  TSO4dSRR=TSO4dSRR+ coup1R*coup2R*IMP2
+  TSO4dSRL=TSO4dSRL+ coup1R*coup2L*IMP2
+  TSO4dSLR=TSO4dSLR+ coup1L*coup2R*IMP2
   TSO4dVRR=TSO4dVRR+ 0.
   TSO4dVLL=TSO4dVLL+ 0.
   TSO4dVRL=TSO4dVRL+ 0.
@@ -16592,10 +16592,10 @@ MP2 = Mhh2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSO4dSLL=TSO4dSLL+ 1*coup1L*coup2L*IMP2
-  TSO4dSRR=TSO4dSRR+ 1*coup1R*coup2R*IMP2
-  TSO4dSRL=TSO4dSRL+ 1*coup1R*coup2L*IMP2
-  TSO4dSLR=TSO4dSLR+ 1*coup1L*coup2R*IMP2
+  TSO4dSLL=TSO4dSLL+ coup1L*coup2L*IMP2
+  TSO4dSRR=TSO4dSRR+ coup1R*coup2R*IMP2
+  TSO4dSRL=TSO4dSRL+ coup1R*coup2L*IMP2
+  TSO4dSLR=TSO4dSLR+ coup1L*coup2R*IMP2
   TSO4dVRR=TSO4dVRR+ 0.
   TSO4dVLL=TSO4dVLL+ 0.
   TSO4dVRL=TSO4dVRL+ 0.
@@ -16656,7 +16656,7 @@ Subroutine CalculateTreeV4d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFu,       
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeV4d 
-! 'PreSARAH' output has been generated  at 19:49 on 4.3.2015 
+! 'PreSARAH' output has been generated  at 11:24 on 15.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -16747,10 +16747,10 @@ IMP2 = 1._dp/MP2
   TVO4dSRR=TVO4dSRR+ 0.
   TVO4dSRL=TVO4dSRL+ 0.
   TVO4dSLR=TVO4dSLR+ 0.
-  TVO4dVRR=TVO4dVRR-1*coup1R*coup2R*IMP2
-  TVO4dVLL=TVO4dVLL-1*coup1L*coup2L*IMP2
-  TVO4dVRL=TVO4dVRL-1*coup1R*coup2L*IMP2
-  TVO4dVLR=TVO4dVLR-1*coup1L*coup2R*IMP2
+  TVO4dVRR=TVO4dVRR-1.*coup1R*coup2R*IMP2
+  TVO4dVLL=TVO4dVLL-1.*coup1L*coup2L*IMP2
+  TVO4dVRL=TVO4dVRL-1.*coup1R*coup2L*IMP2
+  TVO4dVLR=TVO4dVLR-1.*coup1L*coup2R*IMP2
   TVO4dTLL=TVO4dTLL+ 0.
   TVO4dTLR=TVO4dTLR+ 0.
   TVO4dTRL=TVO4dTRL+ 0.
@@ -16774,10 +16774,10 @@ IMP2 = 1._dp/MP2
 ! Amplitude 
   TVO4dSLL=TVO4dSLL+ 0.
   TVO4dSRR=TVO4dSRR+ 0.
-  TVO4dSRL=TVO4dSRL+ 2*coup1R*coup2L*IMP2
-  TVO4dSLR=TVO4dSLR+ 2*coup1L*coup2R*IMP2
-  TVO4dVRR=TVO4dVRR-1*coup1R*coup2R*IMP2
-  TVO4dVLL=TVO4dVLL-1*coup1L*coup2L*IMP2
+  TVO4dSRL=TVO4dSRL+ 2.*coup1R*coup2L*IMP2
+  TVO4dSLR=TVO4dSLR+ 2.*coup1L*coup2R*IMP2
+  TVO4dVRR=TVO4dVRR-1.*coup1R*coup2R*IMP2
+  TVO4dVLL=TVO4dVLL-1.*coup1L*coup2L*IMP2
   TVO4dVRL=TVO4dVRL+ 0.
   TVO4dVLR=TVO4dVLR+ 0.
   TVO4dTLL=TVO4dTLL+ 0.
@@ -17691,7 +17691,7 @@ coup1L = cplcFdFdVZL(i1,gt1)
 coup1R = cplcFdFdVZR(i1,gt1)
 coup2L = cplcFdFdhhL(gt2,i1)
 coup2R = cplcFdFdhhR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 ! Masses in loop
 mF1 = MFd(i1)
 mF12 = MFd2(i1)
@@ -17725,7 +17725,7 @@ coup1L = cplcFdFdhhL(i1,gt1)
 coup1R = cplcFdFdhhR(i1,gt1)
 coup2L = cplcFdFdVZL(gt2,i1)
 coup2R = cplcFdFdVZR(gt2,i1)
-coup3 = cplAhhhVZ
+coup3 = -cplAhhhVZ
 ! Masses in loop
 mF1 = MFd(i1)
 mF12 = MFd2(i1)
@@ -17823,39 +17823,47 @@ Iname=Iname-1
 
 End Subroutine CalculateA2q 
 
-Subroutine CalculateTreeSdulv(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,          & 
-& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
-& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
-& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
-& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,   & 
-& cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TSOdulvSLL,       & 
-& TSOdulvSRR,TSOdulvSRL,TSOdulvSLR,TSOdulvVRR,TSOdulvVLL,TSOdulvVRL,TSOdulvVLR)
+Subroutine CalculateTreeSdulv(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,             & 
+& MetI,MetI2,Metp,Metp2,MetR,MetR2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,              & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,     & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,               & 
+& cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeChicetpL,cplcFeChicetpR,   & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
+& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
+& cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,             & 
+& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
+& cplChiFeetpL,cplChiFeetpR,cplChiFvetIL,cplChiFvetIR,cplChiFvetRL,cplChiFvetRR,         & 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cpletIetpcHp,cpletIetpcVWp,cpletpetRcHp,          & 
+& cpletpetRcVWp,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,     & 
+& cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,     & 
+& cplHpcVWpVZ,TSOdulvSLL,TSOdulvSRR,TSOdulvSRL,TSOdulvSLR,TSOdulvVRR,TSOdulvVLL,         & 
+& TSOdulvVRL,TSOdulvVLR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeSdulv 
-! 'PreSARAH' output has been generated  at 12:49 on 4.11.2014 
+! 'PreSARAH' output has been generated  at 15:42 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MChi(3),MChi2(3),MetI,MetI2,Metp,Metp2,MetR,MetR2,MFd(3),MFd2(3),            & 
+& MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFdFdhhL(3,3),           & 
 & cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),  & 
 & cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),             & 
-& cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),  & 
-& cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),& 
-& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),               & 
-& cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcFuFuhhL(3,3),& 
-& cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),  & 
-& cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFeChicetpL(3,3),cplcFeChicetpR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),             & 
+& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
+& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
+& cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),& 
+& cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),  & 
+& cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplChiFeetpL(3,3),cplChiFeetpR(3,3),& 
+& cplChiFvetIL(3,3),cplChiFvetIR(3,3),cplChiFvetRL(3,3),cplChiFvetRR(3,3),               & 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cpletIetpcHp,cpletIetpcVWp,cpletpetRcHp,          & 
+& cpletpetRcVWp,cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),       & 
+& cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,       & 
+& cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -17920,10 +17928,35 @@ MP2 = MHp2
 IMP = 1._dp/MP  
 IMP2 = 1._dp/MP2 
 ! Amplitude 
-  TSOdulvSLL=TSOdulvSLL+ 1*coup1L*coup2L*IMP2
-  TSOdulvSRR=TSOdulvSRR+ 1*coup1R*coup2R*IMP2
-  TSOdulvSRL=TSOdulvSRL+ 1*coup1R*coup2L*IMP2
-  TSOdulvSLR=TSOdulvSLR+ 1*coup1L*coup2R*IMP2
+  TSOdulvSLL=TSOdulvSLL+ coup1L*coup2L*IMP2
+  TSOdulvSRR=TSOdulvSRR+ coup1R*coup2R*IMP2
+  TSOdulvSRL=TSOdulvSRL+ coup1R*coup2L*IMP2
+  TSOdulvSLR=TSOdulvSLR+ coup1L*coup2R*IMP2
+  TSOdulvVRR=TSOdulvVRR+ 0.
+  TSOdulvVLL=TSOdulvVLL+ 0.
+  TSOdulvVRL=TSOdulvVRL+ 0.
+  TSOdulvVLR=TSOdulvVLR+ 0.
+ End if 
+
+
+ ! Propagator: bar[Fd]
+! InsertionOrder: 1
+chargefactor = 1 
+If ((OnlySM).or.(.not.OnlySM)) Then 
+coup1L = cplcFuFdHpL(gt2,gt1)
+coup1R = cplcFuFdHpR(gt2,gt1)
+coup2L = cplcFeFvcHpL(gt4,gt3)
+coup2R = cplcFeFvcHpR(gt4,gt3)
+! Propagator and inverse propagator mass 
+MP = MHp
+MP2 = MHp2
+IMP = 1._dp/MP  
+IMP2 = 1._dp/MP2 
+! Amplitude 
+  TSOdulvSLL=TSOdulvSLL+ coup1L*coup2L*IMP2
+  TSOdulvSRR=TSOdulvSRR+ coup1R*coup2R*IMP2
+  TSOdulvSRL=TSOdulvSRL+ coup1R*coup2L*IMP2
+  TSOdulvSLR=TSOdulvSLR+ coup1L*coup2R*IMP2
   TSOdulvVRR=TSOdulvVRR+ 0.
   TSOdulvVLL=TSOdulvVLL+ 0.
   TSOdulvVRL=TSOdulvVRL+ 0.
@@ -17935,39 +17968,47 @@ IMP2 = 1._dp/MP2
 
 End Subroutine CalculateTreeSdulv 
 
-Subroutine CalculateTreeVdulv(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,          & 
-& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
-& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
-& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
-& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,   & 
-& cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TVOdulvSLL,       & 
-& TVOdulvSRR,TVOdulvSRL,TVOdulvSLR,TVOdulvVRR,TVOdulvVLL,TVOdulvVRL,TVOdulvVLR)
+Subroutine CalculateTreeVdulv(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MChi,MChi2,             & 
+& MetI,MetI2,Metp,Metp2,MetR,MetR2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,              & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,     & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,               & 
+& cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeChicetpL,cplcFeChicetpR,   & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
+& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
+& cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,             & 
+& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
+& cplChiFeetpL,cplChiFeetpR,cplChiFvetIL,cplChiFvetIR,cplChiFvetRL,cplChiFvetRR,         & 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cpletIetpcHp,cpletIetpcVWp,cpletpetRcHp,          & 
+& cpletpetRcVWp,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,     & 
+& cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,     & 
+& cplHpcVWpVZ,TVOdulvSLL,TVOdulvSRR,TVOdulvSRL,TVOdulvSLR,TVOdulvVRR,TVOdulvVLL,         & 
+& TVOdulvVRL,TVOdulvVLR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process TreeVdulv 
-! 'PreSARAH' output has been generated  at 12:49 on 4.11.2014 
+! 'PreSARAH' output has been generated  at 15:42 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MChi(3),MChi2(3),MetI,MetI2,Metp,Metp2,MetR,MetR2,MFd(3),MFd2(3),            & 
+& MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFdFdhhL(3,3),           & 
 & cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),  & 
 & cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),             & 
-& cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),  & 
-& cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),& 
-& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),               & 
-& cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcFuFuhhL(3,3),& 
-& cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),  & 
-& cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFeChicetpL(3,3),cplcFeChicetpR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),             & 
+& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
+& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
+& cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),& 
+& cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),  & 
+& cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplChiFeetpL(3,3),cplChiFeetpR(3,3),& 
+& cplChiFvetIL(3,3),cplChiFvetIR(3,3),cplChiFvetRL(3,3),cplChiFvetRR(3,3),               & 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cpletIetpcHp,cpletIetpcVWp,cpletpetRcHp,          & 
+& cpletpetRcVWp,cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),       & 
+& cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,       & 
+& cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -18036,10 +18077,35 @@ IMP2 = 1._dp/MP2
   TVOdulvSRR=TVOdulvSRR+ 0.
   TVOdulvSRL=TVOdulvSRL+ 0.
   TVOdulvSLR=TVOdulvSLR+ 0.
-  TVOdulvVRR=TVOdulvVRR+1*coup1R*coup2L*IMP2
-  TVOdulvVLL=TVOdulvVLL+1*coup1L*coup2R*IMP2
-  TVOdulvVRL=TVOdulvVRL+1*coup1R*coup2R*IMP2
-  TVOdulvVLR=TVOdulvVLR+1*coup1L*coup2L*IMP2
+  TVOdulvVRR=TVOdulvVRR+ coup1R*coup2L*IMP2
+  TVOdulvVLL=TVOdulvVLL+ coup1L*coup2R*IMP2
+  TVOdulvVRL=TVOdulvVRL+ coup1R*coup2R*IMP2
+  TVOdulvVLR=TVOdulvVLR+ coup1L*coup2L*IMP2
+ End if 
+
+
+ ! Propagator: bar[Fd]
+! InsertionOrder: 1
+chargefactor = 1 
+If ((OnlySM).or.(.not.OnlySM)) Then 
+coup1L = cplcFuFdVWpL(gt2,gt1)
+coup1R = cplcFuFdVWpR(gt2,gt1)
+coup2L = cplcFeFvcVWpL(gt4,gt3)
+coup2R = cplcFeFvcVWpR(gt4,gt3)
+! Propagator and inverse propagator mass 
+MP = MVWp
+MP2 = MVWp2
+IMP = 1._dp/MP  
+IMP2 = 1._dp/MP2 
+! Amplitude 
+  TVOdulvSLL=TVOdulvSLL+ 0.
+  TVOdulvSRR=TVOdulvSRR+ 0.
+  TVOdulvSRL=TVOdulvSRL+ 0.
+  TVOdulvSLR=TVOdulvSLR+ 0.
+  TVOdulvVRR=TVOdulvVRR+ coup1R*coup2L*IMP2
+  TVOdulvVLL=TVOdulvVLL+ coup1L*coup2R*IMP2
+  TVOdulvVRL=TVOdulvVRL+ coup1R*coup2R*IMP2
+  TVOdulvVLR=TVOdulvVLR+ coup1L*coup2L*IMP2
  End if 
 
 
@@ -18058,7 +18124,7 @@ Subroutine CalculateGamma2Q(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFd,MFd2,MFu,MFu2,      
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process Gamma2Q 
-! 'PreSARAH' output has been generated  at 11:48 on 2.2.2015 
+! 'PreSARAH' output has been generated  at 15:35 on 16.12.2015 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -19835,7 +19901,7 @@ Subroutine CalculateH2q(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFd,MFd2,MFu,MFu2,Mhh,      
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
 ! Expressions for amplitudes are obtained by FeynArts/FormCalc 
 ! Based on user input for process H2q 
-! 'PreSARAH' output has been generated  at 11:59 on 3.4.2014 
+! 'PreSARAH' output has been generated  at 10:50 on 14.1.2016 
 ! ---------------------------------------------------------------- 
  
 Implicit None 
@@ -20480,17 +20546,17 @@ mF2 = MFd(i3)
 mF22 = MFd2(i3)
 ! Amplitude 
   int1=B0(0._dp, mF12, mF22)
-  int2=C0m(mF22, mF12, mS12)
-  int3=C1m(mF22, mF12, mS12)
-  int4=C2m(mF22, mF12, mS12)
-  OH2qSL=OH2qSL+chargefactor*(coup1R*MassEx1*(coup2R*coup3L*int4*MassEx2 -            & 
-&  1.*coup2L*(coup3R*int3*mF1 + coup3L*(int2 + int3)*mF2)) + coup1L*(coup2R*MassEx2*(coup3L*(int3 + int4)& 
-& *mF1 + coup3R*(int2 + int3 + int4)*mF2) - 1.*coup2L*(coup3L*int2*mF1*mF2 +             & 
-&  coup3R*(int1 + int3*MassEx12 - 1.*int2*MassEx22 - 1.*int3*MassEx22 - 1.*int4*MassEx22 + int2*mS12))))
-  OH2qSR=OH2qSR+chargefactor*(coup1L*MassEx1*(coup2L*coup3R*int4*MassEx2 -            & 
-&  1.*coup2R*(coup3L*int3*mF1 + coup3R*(int2 + int3)*mF2)) + coup1R*(coup2L*MassEx2*(coup3R*(int3 + int4)& 
-& *mF1 + coup3L*(int2 + int3 + int4)*mF2) - 1.*coup2R*(coup3R*int2*mF1*mF2 +             & 
-&  coup3L*(int1 + int3*MassEx12 - 1.*int2*MassEx22 - 1.*int3*MassEx22 - 1.*int4*MassEx22 + int2*mS12))))
+  int2=C0g(mF22, mF12, mS12)
+  int3=C1g(mF22, mF12, mS12)
+  int4=C2g(mF22, mF12, mS12)
+  OH2qSL=OH2qSL+chargefactor*(-2.*coup1R*MassEx1*(-1.*coup2R*coup3L*int4*MassEx2 +    & 
+&  coup2L*(coup3R*int3*mF1 + coup3L*(int2 + int3)*mF2)) + coup1L*(2.*coup2R*MassEx2*(coup3L*(int3 + int4)& 
+& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(-2.*coup3L*int2*mF1*mF2 +            & 
+&  coup3R*(-1.*int1 - 1.*int3*MassEx12 + int2*MassEx22 + int3*MassEx22 + int4*MassEx22 - 1.*int2*mS12))))
+  OH2qSR=OH2qSR+chargefactor*(2.*coup1L*MassEx1*(coup2L*coup3R*int4*MassEx2 -         & 
+&  1.*coup2R*(coup3L*int3*mF1 + coup3R*(int2 + int3)*mF2)) + coup1R*(2.*coup2L*MassEx2*(coup3R*(int3 + int4)& 
+& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(-2.*coup3R*int2*mF1*mF2 +            & 
+&  coup3L*(-1.*int1 - 1.*int3*MassEx12 + int2*MassEx22 + int3*MassEx22 + int4*MassEx22 - 1.*int2*mS12))))
   End if 
 End if 
    End Do 
@@ -20519,17 +20585,17 @@ mF2 = MFd(i3)
 mF22 = MFd2(i3)
 ! Amplitude 
   int1=B0(0._dp, mF12, mF22)
-  int2=C0m(mF22, mF12, mS12)
-  int3=C1m(mF22, mF12, mS12)
-  int4=C2m(mF22, mF12, mS12)
-  OH2qSL=OH2qSL+chargefactor*(coup1R*MassEx1*(coup2R*coup3L*int4*MassEx2 -            & 
-&  1.*coup2L*(coup3R*int3*mF1 + coup3L*(int2 + int3)*mF2)) + coup1L*(coup2R*MassEx2*(coup3L*(int3 + int4)& 
-& *mF1 + coup3R*(int2 + int3 + int4)*mF2) - 1.*coup2L*(coup3L*int2*mF1*mF2 +             & 
-&  coup3R*(int1 + int3*MassEx12 - 1.*int2*MassEx22 - 1.*int3*MassEx22 - 1.*int4*MassEx22 + int2*mS12))))
-  OH2qSR=OH2qSR+chargefactor*(coup1L*MassEx1*(coup2L*coup3R*int4*MassEx2 -            & 
-&  1.*coup2R*(coup3L*int3*mF1 + coup3R*(int2 + int3)*mF2)) + coup1R*(coup2L*MassEx2*(coup3R*(int3 + int4)& 
-& *mF1 + coup3L*(int2 + int3 + int4)*mF2) - 1.*coup2R*(coup3R*int2*mF1*mF2 +             & 
-&  coup3L*(int1 + int3*MassEx12 - 1.*int2*MassEx22 - 1.*int3*MassEx22 - 1.*int4*MassEx22 + int2*mS12))))
+  int2=C0g(mF22, mF12, mS12)
+  int3=C1g(mF22, mF12, mS12)
+  int4=C2g(mF22, mF12, mS12)
+  OH2qSL=OH2qSL+chargefactor*(-2.*coup1R*MassEx1*(-1.*coup2R*coup3L*int4*MassEx2 +    & 
+&  coup2L*(coup3R*int3*mF1 + coup3L*(int2 + int3)*mF2)) + coup1L*(2.*coup2R*MassEx2*(coup3L*(int3 + int4)& 
+& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(-2.*coup3L*int2*mF1*mF2 +            & 
+&  coup3R*(-1.*int1 - 1.*int3*MassEx12 + int2*MassEx22 + int3*MassEx22 + int4*MassEx22 - 1.*int2*mS12))))
+  OH2qSR=OH2qSR+chargefactor*(2.*coup1L*MassEx1*(coup2L*coup3R*int4*MassEx2 -         & 
+&  1.*coup2R*(coup3L*int3*mF1 + coup3R*(int2 + int3)*mF2)) + coup1R*(2.*coup2L*MassEx2*(coup3R*(int3 + int4)& 
+& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(-2.*coup3R*int2*mF1*mF2 +            & 
+&  coup3L*(-1.*int1 - 1.*int3*MassEx12 + int2*MassEx22 + int3*MassEx22 + int4*MassEx22 - 1.*int2*mS12))))
   End if 
 End if 
    End Do 
@@ -20558,17 +20624,17 @@ mF2 = MFu(i3)
 mF22 = MFu2(i3)
 ! Amplitude 
   int1=B0(0._dp, mF12, mF22)
-  int2=C0m(mF22, mF12, mS12)
-  int3=C1m(mF22, mF12, mS12)
-  int4=C2m(mF22, mF12, mS12)
-  OH2qSL=OH2qSL+chargefactor*(coup1R*MassEx1*(coup2R*coup3L*int4*MassEx2 -            & 
-&  1.*coup2L*(coup3R*int3*mF1 + coup3L*(int2 + int3)*mF2)) + coup1L*(coup2R*MassEx2*(coup3L*(int3 + int4)& 
-& *mF1 + coup3R*(int2 + int3 + int4)*mF2) - 1.*coup2L*(coup3L*int2*mF1*mF2 +             & 
-&  coup3R*(int1 + int3*MassEx12 - 1.*int2*MassEx22 - 1.*int3*MassEx22 - 1.*int4*MassEx22 + int2*mS12))))
-  OH2qSR=OH2qSR+chargefactor*(coup1L*MassEx1*(coup2L*coup3R*int4*MassEx2 -            & 
-&  1.*coup2R*(coup3L*int3*mF1 + coup3R*(int2 + int3)*mF2)) + coup1R*(coup2L*MassEx2*(coup3R*(int3 + int4)& 
-& *mF1 + coup3L*(int2 + int3 + int4)*mF2) - 1.*coup2R*(coup3R*int2*mF1*mF2 +             & 
-&  coup3L*(int1 + int3*MassEx12 - 1.*int2*MassEx22 - 1.*int3*MassEx22 - 1.*int4*MassEx22 + int2*mS12))))
+  int2=C0g(mF22, mF12, mS12)
+  int3=C1g(mF22, mF12, mS12)
+  int4=C2g(mF22, mF12, mS12)
+  OH2qSL=OH2qSL+chargefactor*(-2.*coup1R*MassEx1*(-1.*coup2R*coup3L*int4*MassEx2 +    & 
+&  coup2L*(coup3R*int3*mF1 + coup3L*(int2 + int3)*mF2)) + coup1L*(2.*coup2R*MassEx2*(coup3L*(int3 + int4)& 
+& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(-2.*coup3L*int2*mF1*mF2 +            & 
+&  coup3R*(-1.*int1 - 1.*int3*MassEx12 + int2*MassEx22 + int3*MassEx22 + int4*MassEx22 - 1.*int2*mS12))))
+  OH2qSR=OH2qSR+chargefactor*(2.*coup1L*MassEx1*(coup2L*coup3R*int4*MassEx2 -         & 
+&  1.*coup2R*(coup3L*int3*mF1 + coup3R*(int2 + int3)*mF2)) + coup1R*(2.*coup2L*MassEx2*(coup3R*(int3 + int4)& 
+& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(-2.*coup3R*int2*mF1*mF2 +            & 
+&  coup3L*(-1.*int1 - 1.*int3*MassEx12 + int2*MassEx22 + int3*MassEx22 + int4*MassEx22 - 1.*int2*mS12))))
   End if 
 End if 
    End Do 
@@ -20597,17 +20663,17 @@ mF2 = MFu(i3)
 mF22 = MFu2(i3)
 ! Amplitude 
   int1=B0(0._dp, mF12, mF22)
-  int2=C0m(mF22, mF12, mV12)
-  int3=C1m(mF22, mF12, mV12)
-  int4=C2m(mF22, mF12, mV12)
-  OH2qSL=OH2qSL+2.*chargefactor*(-1.*coup1R*coup2R*MassEx1*(coup3L*int3*mF1 +         & 
-&  coup3R*(int2 + int3)*mF2) + coup1L*(coup2L*MassEx2*(coup3R*(int3 + int4)              & 
-& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(2.*coup3R*int2*mF1*mF2 -             & 
-&  1.*coup3L*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
-  OH2qSR=OH2qSR+2.*chargefactor*(-1.*coup1L*coup2L*MassEx1*(coup3R*int3*mF1 +         & 
-&  coup3L*(int2 + int3)*mF2) + coup1R*(coup2R*MassEx2*(coup3L*(int3 + int4)              & 
-& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(2.*coup3L*int2*mF1*mF2 -             & 
-&  1.*coup3R*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
+  int2=C0g(mF22, mF12, mV12)
+  int3=C1g(mF22, mF12, mV12)
+  int4=C2g(mF22, mF12, mV12)
+  OH2qSL=OH2qSL+chargefactor*(-4.*coup1R*coup2R*MassEx1*(coup3L*int3*mF1 +            & 
+&  coup3R*(int2 + int3)*mF2) + coup1L*(4.*coup2L*MassEx2*(coup3R*(int3 + int4)           & 
+& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(8.*coup3R*int2*mF1*mF2 -             & 
+&  2.*coup3L*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
+  OH2qSR=OH2qSR+chargefactor*(-4.*coup1L*coup2L*MassEx1*(coup3R*int3*mF1 +            & 
+&  coup3L*(int2 + int3)*mF2) + coup1R*(4.*coup2R*MassEx2*(coup3L*(int3 + int4)           & 
+& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(8.*coup3L*int2*mF1*mF2 -             & 
+&  2.*coup3R*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
   End if 
 End if 
    End Do 
@@ -20636,17 +20702,17 @@ mF2 = MFd(i3)
 mF22 = MFd2(i3)
 ! Amplitude 
   int1=B0(0._dp, mF12, mF22)
-  int2=C0m(mF22, mF12, mV12)
-  int3=C1m(mF22, mF12, mV12)
-  int4=C2m(mF22, mF12, mV12)
-  OH2qSL=OH2qSL+2.*chargefactor*(-1.*coup1R*coup2R*MassEx1*(coup3L*int3*mF1 +         & 
-&  coup3R*(int2 + int3)*mF2) + coup1L*(coup2L*MassEx2*(coup3R*(int3 + int4)              & 
-& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(2.*coup3R*int2*mF1*mF2 -             & 
-&  1.*coup3L*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
-  OH2qSR=OH2qSR+2.*chargefactor*(-1.*coup1L*coup2L*MassEx1*(coup3R*int3*mF1 +         & 
-&  coup3L*(int2 + int3)*mF2) + coup1R*(coup2R*MassEx2*(coup3L*(int3 + int4)              & 
-& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(2.*coup3L*int2*mF1*mF2 -             & 
-&  1.*coup3R*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
+  int2=C0g(mF22, mF12, mV12)
+  int3=C1g(mF22, mF12, mV12)
+  int4=C2g(mF22, mF12, mV12)
+  OH2qSL=OH2qSL+chargefactor*(-4.*coup1R*coup2R*MassEx1*(coup3L*int3*mF1 +            & 
+&  coup3R*(int2 + int3)*mF2) + coup1L*(4.*coup2L*MassEx2*(coup3R*(int3 + int4)           & 
+& *mF1 + coup3L*(int2 + int3 + int4)*mF2) + coup2R*(8.*coup3R*int2*mF1*mF2 -             & 
+&  2.*coup3L*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
+  OH2qSR=OH2qSR+chargefactor*(-4.*coup1L*coup2L*MassEx1*(coup3R*int3*mF1 +            & 
+&  coup3L*(int2 + int3)*mF2) + coup1R*(4.*coup2R*MassEx2*(coup3L*(int3 + int4)           & 
+& *mF1 + coup3R*(int2 + int3 + int4)*mF2) + coup2L*(8.*coup3L*int2*mF1*mF2 -             & 
+&  2.*coup3R*(Finite - 2.*int1 - 2.*int3*MassEx12 + 2.*int2*MassEx22 + 2.*int3*MassEx22 + 2.*int4*MassEx22 - 2.*int2*mV12))))
   End if 
 End if 
    End Do 
@@ -20672,9 +20738,9 @@ mS12 = MAh2
 mS2 = MAh
 mS22 = MAh2
 ! Amplitude 
-  int1=C0m(mF12, mS22, mS12)
-  int2=C1m(mF12, mS22, mS12)
-  int3=C2m(mF12, mS22, mS12)
+  int1=C0g(mF12, mS22, mS12)
+  int2=C1g(mF12, mS22, mS12)
+  int3=C2g(mF12, mS22, mS12)
   OH2qSL=OH2qSL+chargefactor*coup3*(coup1R*coup2L*int3*MassEx1 + coup1L*coup2R*int2*MassEx2 -& 
 &  1.*coup1L*coup2L*int1*mF1)
   OH2qSR=OH2qSR+chargefactor*coup3*(coup1L*coup2R*int3*MassEx1 + coup1R*coup2L*int2*MassEx2 -& 
@@ -20694,7 +20760,7 @@ coup1L = cplcFdFdVZL(i1,gt1)
 coup1R = cplcFdFdVZR(i1,gt1)
 coup2L = cplcFdFdAhL(gt2,i1)
 coup2R = cplcFdFdAhR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 ! Masses in loop
 mF1 = MFd(i1)
 mF12 = MFd2(i1)
@@ -20704,14 +20770,14 @@ mS2 = MAh
 mS22 = MAh2
 ! Amplitude 
   int1=B0(0._dp, mS22, mV12)
-  int2=C0m(mF12, mS22, mV12)
-  int3=C1m(mF12, mS22, mV12)
-  int4=C2m(mF12, mS22, mV12)
-  OH2qSL=OH2qSL+chargefactor*coup3*(coup1R*MassEx1*(coup2R*(int3 + 2.*int4)           & 
-& *MassEx2 + coup2L*(-1.*int2 + int4)*mF1) + coup1L*(coup2R*(2.*int2 + int3)             & 
+  int2=C0g(mF12, mS22, mV12)
+  int3=C1g(mF12, mS22, mV12)
+  int4=C2g(mF12, mS22, mV12)
+  OH2qSL=OH2qSL+chargefactor*coup3*(2.*coup1R*MassEx1*(coup2R*(int3 + 2.*int4)        & 
+& *MassEx2 + coup2L*(-1.*int2 + int4)*mF1) + coup1L*(2.*coup2R*(2.*int2 + int3)          & 
 & *MassEx2*mF1 - 1.*coup2L*(int1 - 1.*int4*MassEx12 + 2.*int3*MassEx22 + int2*mF12)))
-  OH2qSR=OH2qSR+chargefactor*coup3*(coup1L*MassEx1*(coup2L*(int3 + 2.*int4)           & 
-& *MassEx2 + coup2R*(-1.*int2 + int4)*mF1) + coup1R*(coup2L*(2.*int2 + int3)             & 
+  OH2qSR=OH2qSR+chargefactor*coup3*(2.*coup1L*MassEx1*(coup2L*(int3 + 2.*int4)        & 
+& *MassEx2 + coup2R*(-1.*int2 + int4)*mF1) + coup1R*(2.*coup2L*(2.*int2 + int3)          & 
 & *MassEx2*mF1 - 1.*coup2R*(int1 - 1.*int4*MassEx12 + 2.*int3*MassEx22 + int2*mF12)))
   End if 
 End if 
@@ -20737,9 +20803,9 @@ mS12 = Mhh2
 mS2 = Mhh
 mS22 = Mhh2
 ! Amplitude 
-  int1=C0m(mF12, mS22, mS12)
-  int2=C1m(mF12, mS22, mS12)
-  int3=C2m(mF12, mS22, mS12)
+  int1=C0g(mF12, mS22, mS12)
+  int2=C1g(mF12, mS22, mS12)
+  int3=C2g(mF12, mS22, mS12)
   OH2qSL=OH2qSL+chargefactor*coup3*(coup1R*coup2L*int3*MassEx1 + coup1L*coup2R*int2*MassEx2 -& 
 &  1.*coup1L*coup2L*int1*mF1)
   OH2qSR=OH2qSR+chargefactor*coup3*(coup1L*coup2R*int3*MassEx1 + coup1R*coup2L*int2*MassEx2 -& 
@@ -20759,7 +20825,7 @@ coup1L = cplcFdFdAhL(i1,gt1)
 coup1R = cplcFdFdAhR(i1,gt1)
 coup2L = cplcFdFdVZL(gt2,i1)
 coup2R = cplcFdFdVZR(gt2,i1)
-coup3 = -cplAhhhVZ
+coup3 = cplAhhhVZ
 ! Masses in loop
 mF1 = MFd(i1)
 mF12 = MFd2(i1)
@@ -20769,15 +20835,17 @@ mV2 = MVZ
 mV22 = MVZ2
 ! Amplitude 
   int1=B0(0._dp, mS12, mV22)
-  int2=C0m(mF12, mV22, mS12)
-  int3=C1m(mF12, mV22, mS12)
-  int4=C2m(mF12, mV22, mS12)
-  OH2qSL=OH2qSL+chargefactor*coup3*(-1.*coup1R*MassEx1*(coup2L*(2.*int3 +             & 
-&  int4)*MassEx2 + coup2R*(2.*int2 + int4)*mF1) + coup1L*(coup2L*(int2 - 1.*int3)        & 
-& *MassEx2*mF1 + coup2R*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 + int2*mF12)))
-  OH2qSR=OH2qSR+chargefactor*coup3*(-1.*coup1L*MassEx1*(coup2R*(2.*int3 +             & 
-&  int4)*MassEx2 + coup2L*(2.*int2 + int4)*mF1) + coup1R*(coup2R*(int2 - 1.*int3)        & 
-& *MassEx2*mF1 + coup2L*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 + int2*mF12)))
+  int2=C0g(mF12, mV22, mS12)
+  int3=C1g(mF12, mV22, mS12)
+  int4=C2g(mF12, mV22, mS12)
+  OH2qSL=OH2qSL+chargefactor*coup3*(-2.*coup1R*MassEx1*(coup2L*(2.*int3 +             & 
+&  int4)*MassEx2 + coup2R*(2.*int2 + int4)*mF1) + coup1L*(2.*coup2L*(int2 -              & 
+&  1.*int3)*MassEx2*mF1 + coup2R*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 +           & 
+&  int2*mF12)))
+  OH2qSR=OH2qSR+chargefactor*coup3*(-2.*coup1L*MassEx1*(coup2R*(2.*int3 +             & 
+&  int4)*MassEx2 + coup2L*(2.*int2 + int4)*mF1) + coup1R*(2.*coup2R*(int2 -              & 
+&  1.*int3)*MassEx2*mF1 + coup2L*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 +           & 
+&  int2*mF12)))
   End if 
 End if 
     End Do 
@@ -20802,9 +20870,9 @@ mV12 = MVZ2
 mV2 = MVZ
 mV22 = MVZ2
 ! Amplitude 
-  int1=C0m(mF12, mV22, mV12)
-  int2=C1m(mF12, mV22, mV12)
-  int3=C2m(mF12, mV22, mV12)
+  int1=C0g(mF12, mV22, mV12)
+  int2=C1g(mF12, mV22, mV12)
+  int3=C2g(mF12, mV22, mV12)
   OH2qSL=OH2qSL - 2.*chargefactor*coup3*(coup1R*coup2R*int3*MassEx1 + coup1L*coup2L*int2*MassEx2 +& 
 &  2.*coup1L*coup2R*int1*mF1)
   OH2qSR=OH2qSR - 2.*chargefactor*coup3*(coup1L*coup2L*int3*MassEx1 + coup1R*coup2R*int2*MassEx2 +& 
@@ -20833,9 +20901,9 @@ mS12 = MHp2
 mS2 = MHp
 mS22 = MHp2
 ! Amplitude 
-  int1=C0m(mF12, mS22, mS12)
-  int2=C1m(mF12, mS22, mS12)
-  int3=C2m(mF12, mS22, mS12)
+  int1=C0g(mF12, mS22, mS12)
+  int2=C1g(mF12, mS22, mS12)
+  int3=C2g(mF12, mS22, mS12)
   OH2qSL=OH2qSL+chargefactor*coup3*(coup1R*coup2L*int3*MassEx1 + coup1L*coup2R*int2*MassEx2 -& 
 &  1.*coup1L*coup2L*int1*mF1)
   OH2qSR=OH2qSR+chargefactor*coup3*(coup1L*coup2R*int3*MassEx1 + coup1R*coup2L*int2*MassEx2 -& 
@@ -20865,14 +20933,14 @@ mS2 = MHp
 mS22 = MHp2
 ! Amplitude 
   int1=B0(0._dp, mS22, mV12)
-  int2=C0m(mF12, mS22, mV12)
-  int3=C1m(mF12, mS22, mV12)
-  int4=C2m(mF12, mS22, mV12)
-  OH2qSL=OH2qSL+chargefactor*coup3*(coup1R*MassEx1*(coup2R*(int3 + 2.*int4)           & 
-& *MassEx2 + coup2L*(-1.*int2 + int4)*mF1) + coup1L*(coup2R*(2.*int2 + int3)             & 
+  int2=C0g(mF12, mS22, mV12)
+  int3=C1g(mF12, mS22, mV12)
+  int4=C2g(mF12, mS22, mV12)
+  OH2qSL=OH2qSL+chargefactor*coup3*(2.*coup1R*MassEx1*(coup2R*(int3 + 2.*int4)        & 
+& *MassEx2 + coup2L*(-1.*int2 + int4)*mF1) + coup1L*(2.*coup2R*(2.*int2 + int3)          & 
 & *MassEx2*mF1 - 1.*coup2L*(int1 - 1.*int4*MassEx12 + 2.*int3*MassEx22 + int2*mF12)))
-  OH2qSR=OH2qSR+chargefactor*coup3*(coup1L*MassEx1*(coup2L*(int3 + 2.*int4)           & 
-& *MassEx2 + coup2R*(-1.*int2 + int4)*mF1) + coup1R*(coup2L*(2.*int2 + int3)             & 
+  OH2qSR=OH2qSR+chargefactor*coup3*(2.*coup1L*MassEx1*(coup2L*(int3 + 2.*int4)        & 
+& *MassEx2 + coup2R*(-1.*int2 + int4)*mF1) + coup1R*(2.*coup2L*(2.*int2 + int3)          & 
 & *MassEx2*mF1 - 1.*coup2R*(int1 - 1.*int4*MassEx12 + 2.*int3*MassEx22 + int2*mF12)))
   End if 
 End if 
@@ -20899,15 +20967,17 @@ mV2 = MVWp
 mV22 = MVWp2
 ! Amplitude 
   int1=B0(0._dp, mS12, mV22)
-  int2=C0m(mF12, mV22, mS12)
-  int3=C1m(mF12, mV22, mS12)
-  int4=C2m(mF12, mV22, mS12)
-  OH2qSL=OH2qSL+chargefactor*coup3*(-1.*coup1R*MassEx1*(coup2L*(2.*int3 +             & 
-&  int4)*MassEx2 + coup2R*(2.*int2 + int4)*mF1) + coup1L*(coup2L*(int2 - 1.*int3)        & 
-& *MassEx2*mF1 + coup2R*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 + int2*mF12)))
-  OH2qSR=OH2qSR+chargefactor*coup3*(-1.*coup1L*MassEx1*(coup2R*(2.*int3 +             & 
-&  int4)*MassEx2 + coup2L*(2.*int2 + int4)*mF1) + coup1R*(coup2R*(int2 - 1.*int3)        & 
-& *MassEx2*mF1 + coup2L*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 + int2*mF12)))
+  int2=C0g(mF12, mV22, mS12)
+  int3=C1g(mF12, mV22, mS12)
+  int4=C2g(mF12, mV22, mS12)
+  OH2qSL=OH2qSL+chargefactor*coup3*(-2.*coup1R*MassEx1*(coup2L*(2.*int3 +             & 
+&  int4)*MassEx2 + coup2R*(2.*int2 + int4)*mF1) + coup1L*(2.*coup2L*(int2 -              & 
+&  1.*int3)*MassEx2*mF1 + coup2R*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 +           & 
+&  int2*mF12)))
+  OH2qSR=OH2qSR+chargefactor*coup3*(-2.*coup1L*MassEx1*(coup2R*(2.*int3 +             & 
+&  int4)*MassEx2 + coup2L*(2.*int2 + int4)*mF1) + coup1R*(2.*coup2R*(int2 -              & 
+&  1.*int3)*MassEx2*mF1 + coup2L*(int1 + 2.*int4*MassEx12 - 1.*int3*MassEx22 +           & 
+&  int2*mF12)))
   End if 
 End if 
     End Do 
@@ -20932,9 +21002,9 @@ mV12 = MVWp2
 mV2 = MVWp
 mV22 = MVWp2
 ! Amplitude 
-  int1=C0m(mF12, mV22, mV12)
-  int2=C1m(mF12, mV22, mV12)
-  int3=C2m(mF12, mV22, mV12)
+  int1=C0g(mF12, mV22, mV12)
+  int2=C1g(mF12, mV22, mV12)
+  int3=C2g(mF12, mV22, mV12)
   OH2qSL=OH2qSL - 2.*chargefactor*coup3*(coup1R*coup2R*int3*MassEx1 + coup1L*coup2L*int2*MassEx2 +& 
 &  2.*coup1L*coup2R*int1*mF1)
   OH2qSR=OH2qSR - 2.*chargefactor*coup3*(coup1L*coup2L*int3*MassEx1 + coup1R*coup2R*int2*MassEx2 +& 
@@ -20966,7 +21036,7 @@ Real(dp)::m1,m2,r
 
 !  C0
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -20989,7 +21059,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21026,7 +21096,7 @@ Real(dp)::m1,m2,r
 
 !  C1
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21049,7 +21119,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21086,7 +21156,7 @@ Real(dp)::m1,m2,r
 
 !  C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21109,7 +21179,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21146,7 +21216,7 @@ Real(dp)::m1,m2,r
 
 !  C11
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21169,7 +21239,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21206,7 +21276,7 @@ Real(dp)::m1,m2,r
 
 !  C12
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21229,7 +21299,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21266,7 +21336,7 @@ Real(dp)::m1,m2,r
 
 !  C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21289,7 +21359,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21326,7 +21396,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C2 + C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21349,7 +21419,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21386,7 +21456,7 @@ Real(dp)::m1,m2,r
 
 !  C1 + C11 + C12
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21409,7 +21479,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21446,7 +21516,7 @@ Real(dp)::m1,m2,r
 
 !  C0 + C1 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21469,7 +21539,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21506,7 +21576,7 @@ Real(dp)::m1,m2,r
 
 !  2 C11 + 2 C12 - C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21529,7 +21599,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21566,7 +21636,7 @@ Real(dp)::m1,m2,r
 
 !  -C1 + 2 C12 + 2 C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21589,7 +21659,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21626,7 +21696,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C22
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21649,7 +21719,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21686,7 +21756,7 @@ Real(dp)::m1,m2,r
 
 !  C12 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21709,7 +21779,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 
@@ -21746,7 +21816,7 @@ Real(dp)::m1,m2,r
 
 !  C1 + C2
 
-If (Abs(m1in-m2in).lt.eps) Then! m1==m2 
+If (Abs(m1in-m2in)/Abs(m1in+m2in).lt.eps) Then! m1==m2 
  m1=m1in
  m2=m3in
    If (m1.gt.m2) Then 
@@ -21769,7 +21839,7 @@ If (Abs(m1in-m2in).lt.eps) Then! m1==m2
     End if 
    End if 
 
-Else if (Abs(m2in-m3in).lt.eps) Then! m2==m3 
+Else if (Abs(m2in-m3in)/Abs(m2in+m3in).lt.eps) Then! m2==m3 
  m1=m1in 
  m2=m3in 
    If (m1.gt.m2) Then 

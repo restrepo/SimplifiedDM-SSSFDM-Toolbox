@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:42 on 28.11.2015   
+! File created at 17:00 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -76,6 +76,7 @@ MHp = sqrt(MHp2)
  End if 
 
 
+! ------------------------------- 
 Metp2 = mEt2 + (lam3*v**2)/2._dp 
   If (Metp2.ne.Metp2) Then 
       Write(*,*) 'NaN appearing in Metp2' 
@@ -102,6 +103,7 @@ Metp = sqrt(Metp2)
  End if 
 
 
+! ------------------------------- 
 MAh2 = (-4._dp*(mH2) + 2*lam1*v**2 + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))              & 
 & **2)/4._dp 
   If (MAh2.ne.MAh2) Then 
@@ -129,6 +131,7 @@ MAh = sqrt(MAh2)
  End if 
 
 
+! ------------------------------- 
 Mhh2 = -1._dp*(mH2) + (3*lam1*v**2)/2._dp 
   If (Mhh2.ne.Mhh2) Then 
       Write(*,*) 'NaN appearing in Mhh2' 
@@ -155,6 +158,7 @@ Mhh = sqrt(Mhh2)
  End if 
 
 
+! ------------------------------- 
 MetI2 = (2._dp*(mEt2) + (lam3 + lam4 - lam5)*v**2)/2._dp 
   If (MetI2.ne.MetI2) Then 
       Write(*,*) 'NaN appearing in MetI2' 
@@ -181,6 +185,7 @@ MetI = sqrt(MetI2)
  End if 
 
 
+! ------------------------------- 
 MetR2 = (2._dp*(mEt2) + (lam3 + lam4 + lam5)*v**2)/2._dp 
   If (MetR2.ne.MetR2) Then 
       Write(*,*) 'NaN appearing in MetR2' 
@@ -207,6 +212,7 @@ MetR = sqrt(MetR2)
  End if 
 
 
+! ------------------------------- 
 Call CalculateMChi(Mn,ZX,MChi,kont)
 
 MChi2 = MChi**2 
@@ -298,6 +304,7 @@ MHp = sqrt(MHp2)
  End if 
 
 
+! ------------------------------- 
 Metp2 = mEt2 + (lam3*v**2)/2._dp 
   If (Metp2.ne.Metp2) Then 
       Write(*,*) 'NaN appearing in Metp2' 
@@ -309,6 +316,7 @@ Metp = sqrt(Metp2)
  End if 
 
 
+! ------------------------------- 
 MAh2 = (-4._dp*(mH2) + 2*lam1*v**2 + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))              & 
 & **2)/4._dp 
   If (MAh2.ne.MAh2) Then 
@@ -321,6 +329,7 @@ MAh = sqrt(MAh2)
  End if 
 
 
+! ------------------------------- 
 Mhh2 = -1._dp*(mH2) + (3*lam1*v**2)/2._dp 
   If (Mhh2.ne.Mhh2) Then 
       Write(*,*) 'NaN appearing in Mhh2' 
@@ -332,6 +341,7 @@ Mhh = sqrt(Mhh2)
  End if 
 
 
+! ------------------------------- 
 MetI2 = (2._dp*(mEt2) + (lam3 + lam4 - lam5)*v**2)/2._dp 
   If (MetI2.ne.MetI2) Then 
       Write(*,*) 'NaN appearing in MetI2' 
@@ -343,6 +353,7 @@ MetI = sqrt(MetI2)
  End if 
 
 
+! ------------------------------- 
 MetR2 = (2._dp*(mEt2) + (lam3 + lam4 + lam5)*v**2)/2._dp 
   If (MetR2.ne.MetR2) Then 
       Write(*,*) 'NaN appearing in MetR2' 
@@ -354,6 +365,7 @@ MetR = sqrt(MetR2)
  End if 
 
 
+! ------------------------------- 
 Call CalculateMChiEffPot(Mn,ZX,MChi,kont)
 
 MChi2 = MChi**2 
@@ -401,6 +413,7 @@ Complex(dp) ,Intent(in) :: Mn(3,3)
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
+Logical :: SecondDiagonalisationNeeded 
 Real(dp), Intent(out) :: MChi(3) 
 Complex(dp), Intent(out) ::  ZX(3,3) 
                               
@@ -466,6 +479,52 @@ Else
 mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
 Call Eigensystem(mat2, Eig, ZX, ierr, test) 
 mat2 = Matmul( Conjg(ZX), Matmul( mat, Transpose( Conjg(ZX)))) 
+! Special efforts are needed for matrices like the Higgsinos one 
+SecondDiagonalisationNeeded = .False. 
+Do i1=1,3-1
+If (MaxVal(Abs(mat2(i1,(i1+1):3))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNeeded = .True. 
+
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+    If (ErrorLevel.Ge.0) Then 
+      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(10,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Write(*,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(*,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Call TerminateProgram 
+    End If 
+     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(ErrCan,*) 'in the calculation of the masses' 
+     Write(ErrCan,*) 'occurred a negative mass squared!' 
+     Write(ErrCan,*) i1,Eig(i1) 
+     Write(*,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(*,*) 'in the calculation of the masses' 
+     Write(*,*) 'occurred a negative mass squared!' 
+     Write(*,*) i1,Eig(i1) 
+  Eig(i1) = 1._dp 
+   SignOfMassChanged = .True. 
+! kont = -104 
+ End if 
+End do 
+If (SecondDiagonalisationNeeded) Then 
+Call EigenSystem(Real(mat2,dp),Eig,ZXa,ierr,test) 
+ 
+     ZX = MatMul(ZX,ZXa)
+  Do i1=1,3
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MChi(i1) = - Eig(i1) 
+    ZX(i1,:) = (0._dp,1._dp)*ZXa(i1,:) 
+   Else 
+    MChi(i1) = Eig(i1) 
+    ZX(i1,:) = ZXa(i1,:)
+    End If 
+   End Do 
+ 
+Else 
 Do i1=1,3
   If (Eig(i1).ne.Eig(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -499,6 +558,7 @@ End if
 End Do 
 MChi = Sqrt( Eig ) 
  
+End if ! Second diagonalisation 
 End If 
  
 If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
@@ -527,6 +587,7 @@ Subroutine CalculateMFv(UV,MFv,kont)
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
+Logical :: SecondDiagonalisationNeeded 
 Real(dp), Intent(out) :: MFv(3) 
 Complex(dp), Intent(out) ::  UV(3,3) 
                               
@@ -583,6 +644,52 @@ Else
 mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
 Call Eigensystem(mat2, Eig, UV, ierr, test) 
 mat2 = Matmul( Conjg(UV), Matmul( mat, Transpose( Conjg(UV)))) 
+! Special efforts are needed for matrices like the Higgsinos one 
+SecondDiagonalisationNeeded = .False. 
+Do i1=1,3-1
+If (MaxVal(Abs(mat2(i1,(i1+1):3))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNeeded = .True. 
+
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+    If (ErrorLevel.Ge.0) Then 
+      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(10,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Write(*,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
+      Write(*,*) 'a mass squarred is negative: ',i1,Eig(i1) 
+      Call TerminateProgram 
+    End If 
+     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(ErrCan,*) 'in the calculation of the masses' 
+     Write(ErrCan,*) 'occurred a negative mass squared!' 
+     Write(ErrCan,*) i1,Eig(i1) 
+     Write(*,*) 'Warning from routine '//NameOfUnit(Iname) 
+     Write(*,*) 'in the calculation of the masses' 
+     Write(*,*) 'occurred a negative mass squared!' 
+     Write(*,*) i1,Eig(i1) 
+  Eig(i1) = 1._dp 
+   SignOfMassChanged = .True. 
+! kont = -104 
+ End if 
+End do 
+If (SecondDiagonalisationNeeded) Then 
+Call EigenSystem(Real(mat2,dp),Eig,UVa,ierr,test) 
+ 
+     UV = MatMul(UV,UVa)
+  Do i1=1,3
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MFv(i1) = - Eig(i1) 
+    UV(i1,:) = (0._dp,1._dp)*UVa(i1,:) 
+   Else 
+    MFv(i1) = Eig(i1) 
+    UV(i1,:) = UVa(i1,:)
+    End If 
+   End Do 
+ 
+Else 
 Do i1=1,3
   If (Eig(i1).ne.Eig(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -616,6 +723,7 @@ End if
 End Do 
 MFv = Sqrt( Eig ) 
  
+End if ! Second diagonalisation 
 End If 
  
 If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
@@ -1251,6 +1359,7 @@ Complex(dp) ,Intent(in) :: Mn(3,3)
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
+Logical :: SecondDiagonalisationNeeded 
 Real(dp), Intent(out) :: MChi(3) 
 Complex(dp), Intent(out) ::  ZX(3,3) 
                               
@@ -1329,6 +1438,35 @@ Else
 mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
 Call Eigensystem(mat2, Eig, ZX, ierr, test) 
 mat2 = Matmul( Conjg(ZX), Matmul( mat, Transpose( Conjg(ZX)))) 
+! Special efforts are needed for matrices like the Higgsinos one 
+SecondDiagonalisationNeeded = .False. 
+Do i1=1,3-1
+If (MaxVal(Abs(mat2(i1,(i1+1):3))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNeeded = .True. 
+
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+! kont = -104 
+ End if 
+End do 
+If (SecondDiagonalisationNeeded) Then 
+Call EigenSystem(Real(mat2,dp),Eig,ZXa,ierr,test) 
+ 
+     ZX = MatMul(ZX,ZXa)
+  Do i1=1,3
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MChi(i1) = - Eig(i1) 
+    ZX(i1,:) = (0._dp,1._dp)*ZXa(i1,:) 
+   Else 
+    MChi(i1) = Eig(i1) 
+    ZX(i1,:) = ZXa(i1,:)
+    End If 
+   End Do 
+ 
+Else 
 Do i1=1,3
   If (Eig(i1).ne.Eig(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -1345,6 +1483,7 @@ End if
 End Do 
 MChi = Sqrt( Eig ) 
  
+End if ! Second diagonalisation 
 End If 
  
 If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
@@ -1373,6 +1512,7 @@ Subroutine CalculateMFvEffPot(UV,MFv,kont)
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
+Logical :: SecondDiagonalisationNeeded 
 Real(dp), Intent(out) :: MFv(3) 
 Complex(dp), Intent(out) ::  UV(3,3) 
                               
@@ -1442,6 +1582,35 @@ Else
 mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
 Call Eigensystem(mat2, Eig, UV, ierr, test) 
 mat2 = Matmul( Conjg(UV), Matmul( mat, Transpose( Conjg(UV)))) 
+! Special efforts are needed for matrices like the Higgsinos one 
+SecondDiagonalisationNeeded = .False. 
+Do i1=1,3-1
+If (MaxVal(Abs(mat2(i1,(i1+1):3))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNeeded = .True. 
+
+  If (Eig(i1).ne.Eig(i1)) Then 
+      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
+      Call TerminateProgram 
+    End If 
+  If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
+  If (Eig(i1).Le.0._dp) Then 
+! kont = -104 
+ End if 
+End do 
+If (SecondDiagonalisationNeeded) Then 
+Call EigenSystem(Real(mat2,dp),Eig,UVa,ierr,test) 
+ 
+     UV = MatMul(UV,UVa)
+  Do i1=1,3
+   If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
+    MFv(i1) = - Eig(i1) 
+    UV(i1,:) = (0._dp,1._dp)*UVa(i1,:) 
+   Else 
+    MFv(i1) = Eig(i1) 
+    UV(i1,:) = UVa(i1,:)
+    End If 
+   End Do 
+ 
+Else 
 Do i1=1,3
   If (Eig(i1).ne.Eig(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -1458,6 +1627,7 @@ End if
 End Do 
 MFv = Sqrt( Eig ) 
  
+End if ! Second diagonalisation 
 End If 
  
 If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 

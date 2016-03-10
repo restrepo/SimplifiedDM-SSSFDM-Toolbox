@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.5.8 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:44 on 28.11.2015   
+! File created at 17:02 on 10.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -46,8 +46,10 @@ If (Real(mH2,dp).ne.Real(mH2,dp)) Then
  End If 
  If (Abs(AImag(mH2)).gt.1.0E-04_dp) Then 
    Write(*,*) "No real solution of tadpole equations for mH2" 
-   Call TerminateProgram  
- End If 
+   !Call TerminateProgram  
+   mH2 = Real(mH2,dp) 
+  SignOfMuChanged= .True. 
+End If 
  Else 
 mH2 = (lam1*v**2)/2._dp - Tad1Loop(1)/v
 
@@ -60,8 +62,10 @@ If (Real(mH2,dp).ne.Real(mH2,dp)) Then
  End If 
  If (Abs(AImag(mH2)).gt.1.0E-04_dp) Then 
    Write(*,*) "No real solution of tadpole equations for mH2" 
-   Call TerminateProgram  
- End If 
+   !Call TerminateProgram  
+   mH2 = Real(mH2,dp) 
+  SignOfMuChanged= .True. 
+End If 
  End if 
 End Subroutine SolveTadpoleEquations
 
