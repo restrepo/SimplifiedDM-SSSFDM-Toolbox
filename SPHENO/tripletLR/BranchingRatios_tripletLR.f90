@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:13 on 4.3.2016   
+! File created at 13:05 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -82,7 +82,6 @@ gTVZ = gamZ
 gPFu = 0._dp 
 gTFu = 0._dp 
 BRFu = 0._dp 
-If (.Not.CTBD) Then 
 Call FuTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,            & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,            & 
 & MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,              & 
@@ -90,41 +89,6 @@ Call FuTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,      
 & ALP3,ALP2,LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,             & 
 & MU12,vd,vu,vR,gPFu(:,1:27),gTFu,BRFu(:,1:27))
 
-If (Enable3BDecaysF) Then 
-If (MaxVal(gTFu).Lt.MaxVal(fac3*Abs(MFu))) Then 
-Call FuThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFuFuFcFc,gFuFucFcpFcp,gFuFucFdFd,      & 
-& gFuFucFeFe,gFuFucFuFu,gFuFuFvFv,gFuFdFcpFc,gFuFdcFcpFcpp,gFuFdFvFe,gFuFucFcppFcpp,     & 
-& epsI,deltaM,.False.,gTFu,gPFu(:,28:336),BRFu(:,28:336))
-
-Else 
-Call FuThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFuFuFcFc,gFuFucFcpFcp,gFuFucFdFd,      & 
-& gFuFucFeFe,gFuFucFuFu,gFuFuFvFv,gFuFdFcpFc,gFuFdcFcpFcpp,gFuFdFvFe,gFuFucFcppFcpp,     & 
-& epsI,deltaM,.True.,gTFu,gPFu(:,28:336),BRFu(:,28:336))
-
-End If 
- 
-End If 
-Else 
-Call FuThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFuFuFcFc,gFuFucFcpFcp,gFuFucFdFd,      & 
-& gFuFucFeFe,gFuFucFuFu,gFuFuFvFv,gFuFdFcpFc,gFuFdcFcpFcpp,gFuFdFvFe,gFuFucFcppFcpp,     & 
-& epsI,deltaM,.False.,gTFu,gPFu(:,28:336),BRFu(:,28:336))
-
-End If 
 Do i1=1,3
 gTFu(i1) =Sum(gPFu(i1,:)) 
 If (gTFu(i1).Gt.0._dp) BRFu(i1,: ) =gPFu(i1,:)/gTFu(i1) 
@@ -134,7 +98,6 @@ End Do
 gPFe = 0._dp 
 gTFe = 0._dp 
 BRFe = 0._dp 
-If (.Not.CTBD) Then 
 Call FeTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,            & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,            & 
 & MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,              & 
@@ -142,44 +105,6 @@ Call FeTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,      
 & ALP3,ALP2,LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,             & 
 & MU12,vd,vu,vR,gPFe(:,1:39),gTFe,BRFe(:,1:39))
 
-If (Enable3BDecaysF) Then 
-If (MaxVal(gTFe).Lt.MaxVal(fac3*Abs(MFe))) Then 
-Call FeThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gTdeltaRpp,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFeFeFcFc,gFeFecFcpFcp,      & 
-& gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFeFvFv,gFecFeFcppFc,gFecFeFcpFcp,gFeFecFcppFcpp,   & 
-& gFeFvFcpFc,gFeFvcFcpFcpp,gFeFvcFdFu,epsI,deltaM,.False.,gTFe,gPFe(:,40:393)            & 
-& ,BRFe(:,40:393))
-
-Else 
-Call FeThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gTdeltaRpp,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFeFeFcFc,gFeFecFcpFcp,      & 
-& gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFeFvFv,gFecFeFcppFc,gFecFeFcpFcp,gFeFecFcppFcpp,   & 
-& gFeFvFcpFc,gFeFvcFcpFcpp,gFeFvcFdFu,epsI,deltaM,.True.,gTFe,gPFe(:,40:393)             & 
-& ,BRFe(:,40:393))
-
-End If 
- 
-End If 
-Else 
-Call FeThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gTdeltaRpp,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFeFeFcFc,gFeFecFcpFcp,      & 
-& gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFeFvFv,gFecFeFcppFc,gFecFeFcpFcp,gFeFecFcppFcpp,   & 
-& gFeFvFcpFc,gFeFvcFcpFcpp,gFeFvcFdFu,epsI,deltaM,.False.,gTFe,gPFe(:,40:393)            & 
-& ,BRFe(:,40:393))
-
-End If 
 Do i1=1,3
 gTFe(i1) =Sum(gPFe(i1,:)) 
 If (gTFe(i1).Gt.0._dp) BRFe(i1,: ) =gPFe(i1,:)/gTFe(i1) 
@@ -189,7 +114,6 @@ End Do
 gPFd = 0._dp 
 gTFd = 0._dp 
 BRFd = 0._dp 
-If (.Not.CTBD) Then 
 Call FdTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,            & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,            & 
 & MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,              & 
@@ -197,41 +121,6 @@ Call FdTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,      
 & ALP3,ALP2,LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,             & 
 & MU12,vd,vu,vR,gPFd(:,1:27),gTFd,BRFd(:,1:27))
 
-If (Enable3BDecaysF) Then 
-If (MaxVal(gTFd).Lt.MaxVal(fac3*Abs(MFd))) Then 
-Call FdThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFdFdFcFc,gFdFdcFcpFcp,gFdFdcFdFd,      & 
-& gFdFdcFeFe,gFdFdcFuFu,gFdFdFvFv,gFdFdcFcppFcpp,gFdFucFcpFc,gFdFucFcppFcp,              & 
-& gFdFucFeFv,epsI,deltaM,.False.,gTFd,gPFd(:,28:336),BRFd(:,28:336))
-
-Else 
-Call FdThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFdFdFcFc,gFdFdcFcpFcp,gFdFdcFdFd,      & 
-& gFdFdcFeFe,gFdFdcFuFu,gFdFdFvFv,gFdFdcFcppFcpp,gFdFucFcpFc,gFdFucFcppFcp,              & 
-& gFdFucFeFv,epsI,deltaM,.True.,gTFd,gPFd(:,28:336),BRFd(:,28:336))
-
-End If 
- 
-End If 
-Else 
-Call FdThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFdFdFcFc,gFdFdcFcpFcp,gFdFdcFdFd,      & 
-& gFdFdcFeFe,gFdFdcFuFu,gFdFdFvFv,gFdFdcFcppFcpp,gFdFucFcpFc,gFdFucFcppFcp,              & 
-& gFdFucFeFv,epsI,deltaM,.False.,gTFd,gPFd(:,28:336),BRFd(:,28:336))
-
-End If 
 Do i1=1,3
 gTFd(i1) =Sum(gPFd(i1,:)) 
 If (gTFd(i1).Gt.0._dp) BRFd(i1,: ) =gPFd(i1,:)/gTFd(i1) 
@@ -251,7 +140,6 @@ Call hhTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,      
 gPFv = 0._dp 
 gTFv = 0._dp 
 BRFv = 0._dp 
-If (.Not.CTBD) Then 
 Call FvTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,            & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,            & 
 & MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,              & 
@@ -259,41 +147,6 @@ Call FvTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,      
 & ALP3,ALP2,LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,             & 
 & MU12,vd,vu,vR,gPFv(:,1:45),gTFv,BRFv(:,1:45))
 
-If (Enable3BDecaysF) Then 
-If (MaxVal(gTFv).Lt.MaxVal(fac3*Abs(MFv))) Then 
-Call FvThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFvFvFcFc,gFvFvcFcpFcp,gFvFvcFdFd,      & 
-& gFvFvcFeFe,gFvFvcFuFu,gFvFvFvFv,gFvFecFcpFc,gFvFecFcppFcp,gFvFecFuFd,gFvFvcFcppFcpp,   & 
-& epsI,deltaM,.False.,gTFv,gPFv(:,46:558),BRFv(:,46:558))
-
-Else 
-Call FvThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFvFvFcFc,gFvFvcFcpFcp,gFvFvcFdFd,      & 
-& gFvFvcFeFe,gFvFvcFuFu,gFvFvFvFv,gFvFecFcpFc,gFvFecFcppFcp,gFvFecFuFd,gFvFvcFcppFcpp,   & 
-& epsI,deltaM,.True.,gTFv,gPFv(:,46:558),BRFv(:,46:558))
-
-End If 
- 
-End If 
-Else 
-Call FvThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
-& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
-& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFvFvFcFc,gFvFvcFcpFcp,gFvFvcFdFd,      & 
-& gFvFvcFeFe,gFvFvcFuFu,gFvFvFvFv,gFvFecFcpFc,gFvFecFcppFcp,gFvFecFuFd,gFvFvcFcppFcpp,   & 
-& epsI,deltaM,.False.,gTFv,gPFv(:,46:558),BRFv(:,46:558))
-
-End If 
 Do i1=1,6
 gTFv(i1) =Sum(gPFv(i1,:)) 
 If (gTFv(i1).Gt.0._dp) BRFv(i1,: ) =gPFv(i1,:)/gTFv(i1) 
@@ -396,6 +249,185 @@ Call VWRmTwoBodyDecay(-1,DeltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,         
 gTHpm(2)=gTVWRm
 
 
+If (.Not.CTBD) Then 
+If (Enable3BDecaysF) Then 
+If (MaxVal(gTFu).Lt.MaxVal(fac3*Abs(MFu))) Then 
+Call FuThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFuFuFcFc,gFuFucFcpFcp,gFuFucFdFd,      & 
+& gFuFucFeFe,gFuFucFuFu,gFuFuFvFv,gFuFdFcpFc,gFuFdcFcpFcpp,gFuFdFvFe,gFuFucFcppFcpp,     & 
+& epsI,deltaM,.False.,gTFu,gPFu(:,28:336),BRFu(:,28:336))
+
+Else 
+Call FuThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFuFuFcFc,gFuFucFcpFcp,gFuFucFdFd,      & 
+& gFuFucFeFe,gFuFucFuFu,gFuFuFvFv,gFuFdFcpFc,gFuFdcFcpFcpp,gFuFdFvFe,gFuFucFcppFcpp,     & 
+& epsI,deltaM,.True.,gTFu,gPFu(:,28:336),BRFu(:,28:336))
+
+End If 
+ 
+End If 
+Else 
+Call FuThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFuFuFcFc,gFuFucFcpFcp,gFuFucFdFd,      & 
+& gFuFucFeFe,gFuFucFuFu,gFuFuFvFv,gFuFdFcpFc,gFuFdcFcpFcpp,gFuFdFvFe,gFuFucFcppFcpp,     & 
+& epsI,deltaM,.False.,gTFu,gPFu(:,28:336),BRFu(:,28:336))
+
+End If 
+Do i1=1,3
+gTFu(i1) =Sum(gPFu(i1,:)) 
+If (gTFu(i1).Gt.0._dp) BRFu(i1,: ) =gPFu(i1,:)/gTFu(i1) 
+End Do 
+ 
+
+If (.Not.CTBD) Then 
+If (Enable3BDecaysF) Then 
+If (MaxVal(gTFe).Lt.MaxVal(fac3*Abs(MFe))) Then 
+Call FeThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gTdeltaRpp,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFeFeFcFc,gFeFecFcpFcp,      & 
+& gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFeFvFv,gFecFeFcppFc,gFecFeFcpFcp,gFeFecFcppFcpp,   & 
+& gFeFvFcpFc,gFeFvcFcpFcpp,gFeFvcFdFu,epsI,deltaM,.False.,gTFe,gPFe(:,40:393)            & 
+& ,BRFe(:,40:393))
+
+Else 
+Call FeThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gTdeltaRpp,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFeFeFcFc,gFeFecFcpFcp,      & 
+& gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFeFvFv,gFecFeFcppFc,gFecFeFcpFcp,gFeFecFcppFcpp,   & 
+& gFeFvFcpFc,gFeFvcFcpFcpp,gFeFvcFdFu,epsI,deltaM,.True.,gTFe,gPFe(:,40:393)             & 
+& ,BRFe(:,40:393))
+
+End If 
+ 
+End If 
+Else 
+Call FeThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gTdeltaRpp,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFeFeFcFc,gFeFecFcpFcp,      & 
+& gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFeFvFv,gFecFeFcppFc,gFecFeFcpFcp,gFeFecFcppFcpp,   & 
+& gFeFvFcpFc,gFeFvcFcpFcpp,gFeFvcFdFu,epsI,deltaM,.False.,gTFe,gPFe(:,40:393)            & 
+& ,BRFe(:,40:393))
+
+End If 
+Do i1=1,3
+gTFe(i1) =Sum(gPFe(i1,:)) 
+If (gTFe(i1).Gt.0._dp) BRFe(i1,: ) =gPFe(i1,:)/gTFe(i1) 
+End Do 
+ 
+
+If (.Not.CTBD) Then 
+If (Enable3BDecaysF) Then 
+If (MaxVal(gTFd).Lt.MaxVal(fac3*Abs(MFd))) Then 
+Call FdThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFdFdFcFc,gFdFdcFcpFcp,gFdFdcFdFd,      & 
+& gFdFdcFeFe,gFdFdcFuFu,gFdFdFvFv,gFdFdcFcppFcpp,gFdFucFcpFc,gFdFucFcppFcp,              & 
+& gFdFucFeFv,epsI,deltaM,.False.,gTFd,gPFd(:,28:336),BRFd(:,28:336))
+
+Else 
+Call FdThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFdFdFcFc,gFdFdcFcpFcp,gFdFdcFdFd,      & 
+& gFdFdcFeFe,gFdFdcFuFu,gFdFdFvFv,gFdFdcFcppFcpp,gFdFucFcpFc,gFdFucFcppFcp,              & 
+& gFdFucFeFv,epsI,deltaM,.True.,gTFd,gPFd(:,28:336),BRFd(:,28:336))
+
+End If 
+ 
+End If 
+Else 
+Call FdThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFdFdFcFc,gFdFdcFcpFcp,gFdFdcFdFd,      & 
+& gFdFdcFeFe,gFdFdcFuFu,gFdFdFvFv,gFdFdcFcppFcpp,gFdFucFcpFc,gFdFucFcppFcp,              & 
+& gFdFucFeFv,epsI,deltaM,.False.,gTFd,gPFd(:,28:336),BRFd(:,28:336))
+
+End If 
+Do i1=1,3
+gTFd(i1) =Sum(gPFd(i1,:)) 
+If (gTFd(i1).Gt.0._dp) BRFd(i1,: ) =gPFd(i1,:)/gTFd(i1) 
+End Do 
+ 
+
+! No 3-body decays for hh  
+If (.Not.CTBD) Then 
+If (Enable3BDecaysF) Then 
+If (MaxVal(gTFv).Lt.MaxVal(fac3*Abs(MFv))) Then 
+Call FvThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFvFvFcFc,gFvFvcFcpFcp,gFvFvcFdFd,      & 
+& gFvFvcFeFe,gFvFvcFuFu,gFvFvFvFv,gFvFecFcpFc,gFvFecFcppFcp,gFvFecFuFd,gFvFvcFcppFcpp,   & 
+& epsI,deltaM,.False.,gTFv,gPFv(:,46:558),BRFv(:,46:558))
+
+Else 
+Call FvThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFvFvFcFc,gFvFvcFcpFcp,gFvFvcFdFd,      & 
+& gFvFvcFeFe,gFvFvcFuFu,gFvFvFvFv,gFvFecFcpFc,gFvFecFcppFcp,gFvFecFuFd,gFvFvcFcppFcpp,   & 
+& epsI,deltaM,.True.,gTFv,gPFv(:,46:558),BRFv(:,46:558))
+
+End If 
+ 
+End If 
+Else 
+Call FvThreeBodyDecay(-1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& UTE,ZUR,ZDL,ZEL,VTE,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,           & 
+& LAM4,LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,               & 
+& vu,vR,gTAh,gThh,gTHpm,gTVWLm,gTVWRm,gTVZ,gTVZR,gFvFvFcFc,gFvFvcFcpFcp,gFvFvcFdFd,      & 
+& gFvFvcFeFe,gFvFvcFuFu,gFvFvFvFv,gFvFecFcpFc,gFvFecFcppFcp,gFvFecFuFd,gFvFvcFcppFcpp,   & 
+& epsI,deltaM,.False.,gTFv,gPFv(:,46:558),BRFv(:,46:558))
+
+End If 
+Do i1=1,6
+gTFv(i1) =Sum(gPFv(i1,:)) 
+If (gTFv(i1).Gt.0._dp) BRFv(i1,: ) =gPFv(i1,:)/gTFv(i1) 
+End Do 
+ 
+
+! No 3-body decays for VZ  
+! No 3-body decays for VZR  
+! No 3-body decays for deltaRpp  
+! No 3-body decays for Hpm  
+! No 3-body decays for Ah  
+! No 3-body decays for VWLm  
+! No 3-body decays for VWRm  
 Iname = Iname - 1 
  
 End Subroutine CalculateBR 

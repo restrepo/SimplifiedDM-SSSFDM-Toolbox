@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:13 on 4.3.2016   
+! File created at 13:04 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -237,16 +237,34 @@ End Subroutine CoupPseudoHiggsToGluonSM
 
 Complex(dp) Function cNLO_onehalf(mH,mQ,g) 
 Real(dp), Intent(in) :: mH, mQ, g
+Real(dp)::tau 
+tau=mH**2/(4._dp*mQ**2) 
 If (g.lt.0._dp) Then 
   cNLO_onehalf = 1._dp 
 Else 
   If (mH.lt.mQ) Then 
     cNLO_onehalf = 1._dp - oo4pi2*g**2  
   Else if (mH.gt.(2._dp*mQ)) Then 
-    cNLO_onehalf=1._dp+(g**2/(4*Pi**2))*& 
-  &   (-(2._dp*Log(mH**2/mQ**2))/3._dp+(Pi**2-(Log(mH**2/mQ**2))**2)/18._dp+2*log(mH**2/4/mQ**2)& 
-  &   +(0._dp,1._dp)*Pi/3*((Log(mH**2/mQ**2))/3+1._dp))
-  Else  
+   If (tau.lt.100._dp) Then 
+    If (tau.lt.1.1_dp) Then 
+      cNLO_onehalf=1._dp+(g**2/(4*Pi**2))*(&
+       & (-1.033208159703536+7.10655096733206*tau-88.20900604676405*tau**2+598.6773733788388*tau**3-1967.3257953814561*tau**4+& 
+       & 3247.6715405319346*tau**5-2330.127086890616*tau**6+677.9294006001846*tau**8-142.7923161120851*tau**10)& 
+       &+(0._dp,1._dp)*(8.29739339711994-7.888861883558018/tau**3+10.437838040782095/tau**2-8.42394029242545/tau+0.2842283337270764*tau-&
+       & 0.054995208547411904*tau*Log(tau)-1.6113597681662795*Log(4*tau)+0.000021811438531828155*tau**2*Log(tau**2))) 
+    Else 
+      cNLO_onehalf=1._dp+(g**2/(4*Pi**2))*(&
+       & (-1.6170280814404576+0.40530581525102677/tau**3-0.33530992103515084/tau**2+3.9718559902660684/tau-0.000111953515865919*tau+& 
+       & 9.129881821626589e-6*tau*Log(tau)+0.1338033886479311*Log(4*tau)-1.121902907800696e-12*tau**2*Log(tau**2))& 
+       &+(0._dp,1._dp)*(8.29739339711994-7.888861883558018/tau**3+10.437838040782095/tau**2-8.42394029242545/tau+0.2842283337270764*tau-& 
+       & 0.054995208547411904*tau*Log(tau)-1.6113597681662795*Log(4*tau)+0.000021811438531828155*tau**2*Log(tau**2))) 
+    End if 
+   Else ! mQ->0 
+     cNLO_onehalf=1._dp+(g**2/(4*Pi**2))*&
+      & (-(2._dp*Log(mH**2/mQ**2))/3._dp+(Pi**2-(Log(mH**2/mQ**2))**2)/18._dp+2*log(mH**2/4/mQ**2)&
+      &+(0._dp,1._dp)*Pi/3*((Log(mH**2/mQ**2))/3+2._dp))
+    End if 
+  Else ! mQ~mH 
     cNLO_onehalf = 1._dp 
   End if 
 End if 
@@ -254,16 +272,34 @@ End Function cNLO_onehalf
  
 Complex(dp) Function cANLO_onehalf(mH,mQ,g) 
 Real(dp), Intent(in) :: mH, mQ, g
+Real(dp)::tau 
+tau=mH**2/(4._dp*mQ**2) 
 If (g.lt.0._dp) Then 
   cANLO_onehalf = 1._dp 
 Else 
   If (mH.lt.mQ) Then 
     cANLO_onehalf = 1._dp  
   Else if (mH.gt.(2._dp*mQ)) Then 
-    cANLO_onehalf=1._dp+(g**2/(4*Pi**2))*& 
-  &   (-(2._dp*Log(mH**2/mQ**2))/3._dp+(Pi**2-(Log(mH**2/mQ**2))**2)/18._dp+2*log(mH**2/4/mQ**2)& 
-  &   +(0._dp,1._dp)*Pi/3*((Log(mH**2/mQ**2))/3+1._dp))
-  Else  
+   If (tau.lt.100._dp) Then 
+    If (tau.lt.1.1_dp) Then 
+      cANLO_onehalf=1._dp+(g**2/(4*Pi**2))*(&
+       & (-1.033208159703536+7.10655096733206*tau-88.20900604676405*tau**2+598.6773733788388*tau**3-1967.3257953814561*tau**4+& 
+       & 3247.6715405319346*tau**5-2330.127086890616*tau**6+677.9294006001846*tau**8-142.7923161120851*tau**10)& 
+       &+(0._dp,1._dp)*(8.29739339711994-7.888861883558018/tau**3+10.437838040782095/tau**2-8.42394029242545/tau+0.2842283337270764*tau-&
+       & 0.054995208547411904*tau*Log(tau)-1.6113597681662795*Log(4*tau)+0.000021811438531828155*tau**2*Log(tau**2))) 
+    Else 
+      cANLO_onehalf=1._dp+(g**2/(4*Pi**2))*(&
+       & (-1.6170280814404576+0.40530581525102677/tau**3-0.33530992103515084/tau**2+3.9718559902660684/tau-0.000111953515865919*tau+& 
+       & 9.129881821626589e-6*tau*Log(tau)+0.1338033886479311*Log(4*tau)-1.121902907800696e-12*tau**2*Log(tau**2))& 
+       &+(0._dp,1._dp)*(8.29739339711994-7.888861883558018/tau**3+10.437838040782095/tau**2-8.42394029242545/tau+0.2842283337270764*tau-& 
+       & 0.054995208547411904*tau*Log(tau)-1.6113597681662795*Log(4*tau)+0.000021811438531828155*tau**2*Log(tau**2))) 
+    End if 
+   Else ! mQ->0 
+     cANLO_onehalf=1._dp+(g**2/(4*Pi**2))*&
+      & (-(2._dp*Log(mH**2/mQ**2))/3._dp+(Pi**2-(Log(mH**2/mQ**2))**2)/18._dp+2*log(mH**2/4/mQ**2)&
+      &+(0._dp,1._dp)*Pi/3*((Log(mH**2/mQ**2))/3+2._dp))
+    End if 
+  Else ! mQ~mH 
     cANLO_onehalf = 1._dp 
   End if 
 End if 

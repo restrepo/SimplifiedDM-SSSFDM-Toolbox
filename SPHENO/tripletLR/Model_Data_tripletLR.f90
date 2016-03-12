@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:13 on 4.3.2016   
+! File created at 13:05 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -109,30 +109,63 @@ Real(dp) :: f_Dsp_CONST=0.256_dp
 Complex(dp) :: coeffC7sm = 0._dp
 Complex(dp) :: coeffC7 = 0._dp
 Complex(dp) :: coeffC7p = 0._dp
+Complex(dp) :: coeffC7NP = 0._dp
+Complex(dp) :: coeffC7pNP = 0._dp
 Complex(dp) :: coeffC8sm = 0._dp
 Complex(dp) :: coeffC8 = 0._dp
 Complex(dp) :: coeffC8p = 0._dp
+Complex(dp) :: coeffC8NP = 0._dp
+Complex(dp) :: coeffC8pNP = 0._dp
 Complex(dp) :: coeffC9eeSM = 0._dp
 Complex(dp) :: coeffC9ee = 0._dp
 Complex(dp) :: coeffC9Pee = 0._dp
+Complex(dp) :: coeffC9eeNP = 0._dp
+Complex(dp) :: coeffC9PeeNP = 0._dp
 Complex(dp) :: coeffC10eeSM = 0._dp
 Complex(dp) :: coeffC10ee = 0._dp
 Complex(dp) :: coeffC10Pee = 0._dp
+Complex(dp) :: coeffC10eeNP = 0._dp
+Complex(dp) :: coeffC10PeeNP = 0._dp
 Complex(dp) :: coeffC9mumuSM = 0._dp
 Complex(dp) :: coeffC9mumu = 0._dp
 Complex(dp) :: coeffC9Pmumu = 0._dp
+Complex(dp) :: coeffC9mumuNP = 0._dp
+Complex(dp) :: coeffC9PmumuNP = 0._dp
 Complex(dp) :: coeffC10mumuSM = 0._dp
 Complex(dp) :: coeffC10mumu = 0._dp
 Complex(dp) :: coeffC10Pmumu = 0._dp
-Complex(dp) :: coeffC11nu1nu1SM = 0._dp
-Complex(dp) :: coeffC11nu1nu1 = 0._dp
-Complex(dp) :: coeffC11Pnu1nu1 = 0._dp
-Complex(dp) :: coeffC11nu2nu2SM = 0._dp
-Complex(dp) :: coeffC11nu2nu2 = 0._dp
-Complex(dp) :: coeffC11Pnu2nu2 = 0._dp
-Complex(dp) :: coeffC11nu3nu3SM = 0._dp
-Complex(dp) :: coeffC11nu3nu3 = 0._dp
-Complex(dp) :: coeffC11Pnu3nu3 = 0._dp
+Complex(dp) :: coeffC10mumuNP = 0._dp
+Complex(dp) :: coeffC10PmumuNP = 0._dp
+Complex(dp) :: coeffCLnu1nu1SM = 0._dp
+Complex(dp) :: coeffCLnu1nu1 = 0._dp
+Complex(dp) :: coeffCLPnu1nu1 = 0._dp
+Complex(dp) :: coeffCLnu1nu1NP = 0._dp
+Complex(dp) :: coeffCLPnu1nu1NP = 0._dp
+Complex(dp) :: coeffCLnu2nu2SM = 0._dp
+Complex(dp) :: coeffCLnu2nu2 = 0._dp
+Complex(dp) :: coeffCLPnu2nu2 = 0._dp
+Complex(dp) :: coeffCLnu2nu2NP = 0._dp
+Complex(dp) :: coeffCLPnu2nu2NP = 0._dp
+Complex(dp) :: coeffCLnu3nu3SM = 0._dp
+Complex(dp) :: coeffCLnu3nu3 = 0._dp
+Complex(dp) :: coeffCLPnu3nu3 = 0._dp
+Complex(dp) :: coeffCLnu3nu3NP = 0._dp
+Complex(dp) :: coeffCLPnu3nu3NP = 0._dp
+Complex(dp) :: coeffCRnu1nu1SM = 0._dp
+Complex(dp) :: coeffCRnu1nu1 = 0._dp
+Complex(dp) :: coeffCRPnu1nu1 = 0._dp
+Complex(dp) :: coeffCRnu1nu1NP = 0._dp
+Complex(dp) :: coeffCRPnu1nu1NP = 0._dp
+Complex(dp) :: coeffCRnu2nu2SM = 0._dp
+Complex(dp) :: coeffCRnu2nu2 = 0._dp
+Complex(dp) :: coeffCRPnu2nu2 = 0._dp
+Complex(dp) :: coeffCRnu2nu2NP = 0._dp
+Complex(dp) :: coeffCRPnu2nu2NP = 0._dp
+Complex(dp) :: coeffCRnu3nu3SM = 0._dp
+Complex(dp) :: coeffCRnu3nu3 = 0._dp
+Complex(dp) :: coeffCRPnu3nu3 = 0._dp
+Complex(dp) :: coeffCRnu3nu3NP = 0._dp
+Complex(dp) :: coeffCRPnu3nu3NP = 0._dp
 Real(dp) :: MW_SM 
 Real(dp) :: Alpha_160, AlphaS_160, SinW2_160, sinW2_MZ 
 Real(dp) :: mf_d_160(3), mf_u_160(3), mf_l_160(3), mf_d2_160(3), mf_u2_160(3), mf_l2_160(3) 
@@ -220,7 +253,9 @@ Logical,save::Write_WHIZARD= .False.
 Integer,save::BoundaryCondition=1 
 Logical,Save::MZ_input= .False. 
  
-Real(dp) :: CS_Higgs_LHC(2,3,5) 
+Real(dp) :: CS_Higgs_LHC(5,3,5) 
+ 
+Real(dp) :: CS_PHiggs_LHC(5,3,5) 
  
 Real (dp) :: MhhL(3), Mhh2L(3) 
 Real (dp) :: Mhh_s(3), Mhh2_s(3) 

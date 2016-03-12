@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:12 on 4.3.2016   
+! File created at 13:04 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -48,7 +48,7 @@ Logical, Intent(in) :: GenerationMixing
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,kontSave 
 Iname = Iname + 1 
-NameOfUnit(Iname) = 'TreeMassestripletLR'
+NameOfUnit(Iname) = 'TreeMassesLRmodels/tripletLR'
  
 kont = 0 
 Call CalculateVPVZVZR(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
@@ -191,7 +191,7 @@ Logical, Intent(in) :: GenerationMixing
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,kontSave 
 Iname = Iname + 1 
-NameOfUnit(Iname) = 'TreeMassestripletLR'
+NameOfUnit(Iname) = 'TreeMassesLRmodels/tripletLR'
  
 kont = 0 
 Call CalculateVPVZVZREffPot(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
@@ -3267,7 +3267,7 @@ Logical, Intent(in) :: GenerationMixing
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,kontSave 
 Iname = Iname + 1 
-NameOfUnit(Iname) = 'TreeMassestripletLR'
+NameOfUnit(Iname) = 'TreeMassesLRmodels/tripletLR'
  
 kont = 0 
 Call CalculateMFd(YQ1,YQ2,vd,vu,ZDL,ZDR,MFd,kont)

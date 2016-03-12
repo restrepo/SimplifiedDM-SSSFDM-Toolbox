@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:13 on 4.3.2016   
+! File created at 13:05 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -16,17 +16,19 @@ Contains
 Subroutine HiggsCrossSections(mh,ratGG,ratPP,ratWW,ratZZ,ratTT,CS,kont)
 
 Implicit None 
-Real(dp), Intent(in) :: mh(3)  
-Complex(dp), Intent(in) :: ratPP(3), ratGG(3)  
-Real(dp), Intent(in) :: ratZZ(3), ratWW(3), ratTT(3)  
-Real(dp), Intent(Out) :: CS(2,3,5)  
+Real(dp), Intent(in) :: mh(:)  
+Complex(dp), Intent(in) :: ratPP(:), ratGG(:)  
+Real(dp), Intent(in) :: ratZZ(:), ratWW(:), ratTT(:)  
+Real(dp), Intent(Out) :: CS(:,:,:)  
 Integer, Intent(inout) :: kont 
 Real(dp) :: x, res 
 Integer :: i1 
+Integer :: nG 
+nG = Size(mh) 
 !-------------------- 
 ! LHC 7 
 !-------------------- 
-Do i1=1,3 
+Do i1=1, nG 
 x = mh(i1) 
 ! Gluon fusion 
 If ((x.gt.50._dp).AND.(x.lt.400._dp)) Then 
@@ -84,7 +86,7 @@ End Do
 !-------------------- 
 ! LHC 8 
 !-------------------- 
-Do i1=1,3 
+Do i1=1,nG 
 x = mh(i1) 
 ! Gluon fusion 
 If ((x.gt.50._dp).AND.(x.lt.400._dp)) Then 
@@ -133,6 +135,69 @@ Else
 res = - 1._dp 
 End if 
 CS(2,i1,5) = res 
+End Do 
+!-------------------- 
+! LHC 13 
+!-------------------- 
+Do i1=1,nG 
+x = mh(i1) 
+! Gluon fusion 
+If ((x.gt.50._dp).AND.(x.lt.400._dp)) Then 
+res = (11616.77702766903 + 700.9534922253372*x + 0.6550151443825573*x**2 - 0.0010432868789482976*x**3 + 1.208231269118169e-6*x**4 - 6.502604577273565e-10*x**5 &
+&  - 5555.016263186344*Log(x) - 66.97248427992604*x*Log(x) - 33.486242139963004*x*Log(x**2))*ratGG(i1) 
+Else If ((x.gt.400._dp).AND.(x.lt.1000._dp)) Then 
+res = (-37568.9089823239 - 544.6657590030997*x - 0.11932971667208431*x**2 + 0.000055460517739423844*x**3 - 1.909418438981979e-8*x**4 + 3.1219539385171897e-12*x**5 &
+& + 11611.750198662685*Log(x) + 42.11680032656563*x*Log(x) + 21.058400163282815*x*Log(x**2))*ratGG(i1) 
+Else 
+res = - 1._dp 
+End if 
+CS(3,i1,1) = res 
+CS(3,i1,2) = -1._dp 
+CS(3,i1,3) = -1._dp 
+CS(3,i1,4) = -1._dp 
+CS(3,i1,5) = -1._dp 
+End Do 
+!-------------------- 
+! LHC 14 
+!-------------------- 
+Do i1=1,nG 
+x = mh(i1) 
+! Gluon fusion 
+If ((x.gt.50._dp).AND.(x.lt.400._dp)) Then 
+res = (12627.037286907853 + 761.7561325918041*x + 0.7127313611572541*x**2 - 0.001136747682670838*x**3 + 1.3186088702471044e-6*x**4 - 7.109649199986356e-10*x**5 - &
+& 6035.831412165335*Log(x) - 72.79453235633025*x*Log(x) - 36.39726617816514*x*Log(x**2))*ratGG(i1) 
+Else If ((x.gt.400._dp).AND.(x.lt.1000._dp)) Then 
+res = (-44114.027394060526 - 638.1870701097589*x - 0.1396008932035218*x**2 + 0.00006481592980613609*x**3 - 2.229740732085902e-8*x**4 + 3.643396291746081e-12*x**5 & 
+ & + 13626.22975496127*Log(x) + 49.33683580242861*x*Log(x) + 24.66841790121431*x*Log(x**2))*ratGG(i1) 
+Else 
+res = - 1._dp 
+End if 
+CS(4,i1,1) = res 
+CS(4,i1,2) = -1._dp 
+CS(4,i1,3) = -1._dp 
+CS(4,i1,4) = -1._dp 
+CS(4,i1,5) = -1._dp 
+End Do 
+!-------------------- 
+! FCC 100 
+!-------------------- 
+Do i1=1,nG 
+x = mh(i1) 
+! Gluon fusion 
+If ((x.gt.50._dp).AND.(x.lt.400._dp)) Then 
+res = (91563.13847371943 + 5841.145237134141*x + 5.929645328153345*x**2 - 0.010165009857023455*x**3 + 0.000012703573375868591*x**4 - 7.36545750406916e-9*x**5 - &
+ & 44361.1760451764*Log(x) - 565.3597702677172*x*Log(x) - 282.6798851338586*x*Log(x**2))*ratGG(i1) 
+Else If ((x.gt.400._dp).AND.(x.lt.1000._dp)) Then 
+res = (-1.2460207772054581e6 - 17442.734204568525*x - 3.72429466661745*x**2 + 0.0017023146911045368*x**3 - 5.785813311932391e-7*x**4 + 9.364790456487542e-11*x**5 &
+& + 381260.0641650691*Log(x) + 1343.5646363825153*x*Log(x) + 671.7823181912577*x*Log(x**2))*ratGG(i1) 
+Else 
+res = - 1._dp 
+End if 
+CS(5,i1,1) = res 
+CS(5,i1,2) = -1._dp 
+CS(5,i1,3) = -1._dp 
+CS(5,i1,4) = -1._dp 
+CS(5,i1,5) = -1._dp 
 End Do 
 End Subroutine HiggsCrossSections 
 End Module HiggsCS_tripletLR

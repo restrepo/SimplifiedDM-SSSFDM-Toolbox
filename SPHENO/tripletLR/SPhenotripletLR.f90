@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:18 on 4.3.2016   
+! File created at 13:10 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -311,6 +311,9 @@ If ((L_BR).And.(kont.Eq.0)) Then
 
 Call HiggsCrossSections(Mhh,ratioGG,ratioPP,rHB_S_VWLm,rHB_S_VZ,rHB_S_S_Fu(:,3)       & 
 & ,CS_Higgs_LHC,kont)
+
+Call HiggsCrossSections(MAh,ratioPGG,ratioPPP,0._dp*rHB_S_VWLm,0._dp*rHB_S_VZ,        & 
+& rHB_P_S_Fu(:,3),CS_PHiggs_LHC,kont)
 
 End If 
  
@@ -3325,30 +3328,63 @@ If(RKSM.ne.RKSM) RKSM = 0._dp
 coeffC7sm = CC7SM(3,2)
 coeffC7 = CC7(3,2)
 coeffC7p = CC7p(3,2)
+coeffC7NP = CC7(3,2) - CC7SM(3,2)
+coeffC7pNP = CC7p(3,2)
 coeffC8sm = CC8SM(3,2)
 coeffC8 = CC8(3,2)
 coeffC8p = CC8p(3,2)
-coeffC9eeSM = OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1)
-coeffC9ee = OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1)
-coeffC9Pee = OddllVRL(3,2,1,1) + OddllVRR(3,2,1,1)
-coeffC10eeSM = -OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1)
-coeffC10ee = -OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1)
-coeffC10Pee = OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1)
-coeffC9mumuSM = OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2)
-coeffC9mumu = OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2)
-coeffC9Pmumu = OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2)
-coeffC10mumuSM = -OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2)
-coeffC10mumu = -OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2)
-coeffC10Pmumu = OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2)
-coeffC11nu1nu1SM = OddvvVLLSM(3,2,1,1) + OddvvVLRSM(3,2,1,1)
-coeffC11nu1nu1 = OddvvVLL(3,2,1,1) + OddvvVLR(3,2,1,1)
-coeffC11Pnu1nu1 = OddvvVRL(3,2,1,1) + OddvvVRR(3,2,1,1)
-coeffC11nu2nu2SM = OddvvVLLSM(3,2,2,2) + OddvvVLRSM(3,2,2,2)
-coeffC11nu2nu2 = OddvvVLL(3,2,2,2) + OddvvVLR(3,2,2,2)
-coeffC11Pnu2nu2 = OddvvVRL(3,2,2,2) + OddvvVRR(3,2,2,2)
-coeffC11nu3nu3SM = OddvvVLLSM(3,2,3,3) + OddvvVLRSM(3,2,3,3)
-coeffC11nu3nu3 = OddvvVLL(3,2,3,3) + OddvvVLR(3,2,3,3)
-coeffC11Pnu3nu3 = OddvvVRL(3,2,3,3) + OddvvVRR(3,2,3,3)
+coeffC8NP = CC8(3,2) - CC8SM(3,2)
+coeffC8pNP = CC8p(3,2)
+coeffC9eeSM = (OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1))/2._dp
+coeffC9ee = (OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1))/2._dp
+coeffC9Pee = (OddllVRL(3,2,1,1) + OddllVRR(3,2,1,1))/2._dp
+coeffC9eeNP = (OddllVLL(3,2,1,1) - OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - OddllVLRSM(3,2,1,1))/2._dp
+coeffC9PeeNP = (OddllVRL(3,2,1,1) + OddllVRR(3,2,1,1))/2._dp
+coeffC10eeSM = (-OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1))/2._dp
+coeffC10ee = (-OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1))/2._dp
+coeffC10Pee = (OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
+coeffC10eeNP = (-OddllVLL(3,2,1,1) + OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - OddllVLRSM(3,2,1,1))/2._dp
+coeffC10PeeNP = (OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
+coeffC9mumuSM = (OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
+coeffC9mumu = (OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
+coeffC9Pmumu = (OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2))/2._dp
+coeffC9mumuNP = (OddllVLL(3,2,2,2) - OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - OddllVLRSM(3,2,2,2))/2._dp
+coeffC9PmumuNP = (OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2))/2._dp
+coeffC10mumuSM = (-OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
+coeffC10mumu = (-OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
+coeffC10Pmumu = (OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
+coeffC10mumuNP = (-OddllVLL(3,2,2,2) + OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - OddllVLRSM(3,2,2,2))/2._dp
+coeffC10PmumuNP = (OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
+coeffCLnu1nu1SM = OddvvVLLSM(3,2,1,1)
+coeffCLnu1nu1 = OddvvVLL(3,2,1,1)
+coeffCLPnu1nu1 = OddvvVRL(3,2,1,1)
+coeffCLnu1nu1NP = OddvvVLL(3,2,1,1) - OddvvVLLSM(3,2,1,1)
+coeffCLPnu1nu1NP = OddvvVRL(3,2,1,1)
+coeffCLnu2nu2SM = OddvvVLLSM(3,2,2,2)
+coeffCLnu2nu2 = OddvvVLL(3,2,2,2)
+coeffCLPnu2nu2 = OddvvVRL(3,2,2,2)
+coeffCLnu2nu2NP = OddvvVLL(3,2,2,2) - OddvvVLLSM(3,2,2,2)
+coeffCLPnu2nu2NP = OddvvVRL(3,2,2,2)
+coeffCLnu3nu3SM = OddvvVLLSM(3,2,3,3)
+coeffCLnu3nu3 = OddvvVLL(3,2,3,3)
+coeffCLPnu3nu3 = OddvvVRL(3,2,3,3)
+coeffCLnu3nu3NP = OddvvVLL(3,2,3,3) - OddvvVLLSM(3,2,3,3)
+coeffCLPnu3nu3NP = OddvvVRL(3,2,3,3)
+coeffCRnu1nu1SM = 0
+coeffCRnu1nu1 = OddvvVLR(3,2,1,1)
+coeffCRPnu1nu1 = OddvvVRR(3,2,1,1)
+coeffCRnu1nu1NP = OddvvVLR(3,2,1,1)
+coeffCRPnu1nu1NP = OddvvVRR(3,2,1,1)
+coeffCRnu2nu2SM = 0
+coeffCRnu2nu2 = OddvvVLR(3,2,2,2)
+coeffCRPnu2nu2 = OddvvVRR(3,2,2,2)
+coeffCRnu2nu2NP = OddvvVLR(3,2,2,2)
+coeffCRPnu2nu2NP = OddvvVRR(3,2,2,2)
+coeffCRnu3nu3SM = 0
+coeffCRnu3nu3 = OddvvVLR(3,2,3,3)
+coeffCRPnu3nu3 = OddvvVRR(3,2,3,3)
+coeffCRnu3nu3NP = OddvvVLR(3,2,3,3)
+coeffCRPnu3nu3NP = OddvvVRR(3,2,3,3)
 CKM = CKMsave 
 !-------------------------------------
 ! running to M_Z 
@@ -3419,6 +3455,10 @@ Call AllCouplings(RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR,ZH,UP,       
 & cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVPL,cplFvFvVPR,cplFvFvVZL,cplFvFvVZR,     & 
 & cplFvFvVZRL,cplFvFvVZRR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR)
 
+Mhh_s = Mhh 
+Mhh2_s  = Mhh2   
+MAh_s = MAh 
+MAh2_s  = MAh2   
 Mhh= MhhL 
 Mhh2 = Mhh2L 
 MAh= MAhL 

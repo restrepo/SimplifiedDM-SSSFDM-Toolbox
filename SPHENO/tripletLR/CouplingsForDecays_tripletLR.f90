@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.7.0 
+! This file was automatically created by SARAH version 4.8.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:18 on 4.3.2016   
+! File created at 13:10 on 11.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -690,7 +690,7 @@ Complex(dp) :: ratdeltaRpp,ratFcp(2),ratFd(3),ratFe(3),ratFu(3),ratHpm(3),ratVWL
 Complex(dp) :: ratPdeltaRpp,ratPFcp(2),ratPFd(3),ratPFe(3),ratPFu(3),ratPHpm(3),ratPVWLm,ratPVWRm
 
 Complex(dp) :: coup 
-Real(dp) :: vev, gNLO, NLOqcd, NNLOqcd, NNNLOqcd, AlphaSQ 
+Real(dp) :: vev, gNLO, NLOqcd, NNLOqcd, NNNLOqcd, AlphaSQ, AlphaSQhlf 
 Real(dp) :: g1SM,g2SM,g3SM,vSM
 Complex(dp) ::YuSM(3,3),YdSM(3,3),YeSM(3,3)
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
@@ -729,7 +729,12 @@ vR = vRinput
 Qin=sqrt(getRenormalizationScale()) 
 ! Run always SM gauge couplings if present 
   Qin=sqrt(getRenormalizationScale()) 
-  Call RunSMohdm(Qin,deltaM,g1SM,g2SM,g3SM,YuSM,YdSM,YeSM,vSM) 
+  Call RunSMohdm(m_in,deltaM,g1SM,g2SM,g3SM,YuSM,YdSM,YeSM,vSM) 
+   ! SM pole masses needed for diphoton/digluon rate 
+   ! But only top and W play a role. 
+   vSM=1/Sqrt((G_F*Sqrt(2._dp))) ! On-Shell VEV needed for loop 
+   YuSM(3,3)=sqrt(2._dp)*mf_u(3)/vSM  ! On-Shell top needed in loop 
+   ! Other running values kept to get H->ff correct 
 g3=g3SM
 g2=g2SM
 gBL=(g1SM*gR)/Sqrt(-g1SM**2 + gR**2)
@@ -737,6 +742,7 @@ vd=vSM/Sqrt(1 + TanBeta**2)
 vu=(TanBeta*vSM)/Sqrt(1 + TanBeta**2)
 YQ2=-((vd*vSM*Transpose(YdSM) - vu*vSM*Transpose(YuSM))/(-vd**2 + vu**2))
 YQ1=(vu*vSM*Transpose(YdSM) - vd*vSM*Transpose(YuSM))/(-vd**2 + vu**2)
+AlphaSQhlf=g3**2/(4._dp*Pi) 
 AlphaSQ=g3**2/(4._dp*Pi) 
 Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,           & 
 & LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,vu,vR,              & 
@@ -979,7 +985,7 @@ End Do
 ratVWLm = -0.5_dp*cplhhcVWLmVWLm(i1)*vev/MVWLm2 
 ratVWRm = -0.5_dp*cplhhcVWRmVWRm(i1)*vev/MVWRm2 
 If (HigherOrderDiboson) Then 
-  gNLO = g3 
+  gNLO = Sqrt(AlphaSQhlf*4._dp*Pi) 
 Else  
   gNLO = -1._dp 
 End if 
@@ -2519,7 +2525,7 @@ Complex(dp) :: ratdeltaRpp,ratFcp(2),ratFd(3),ratFe(3),ratFu(3),ratHpm(3),ratVWL
 Complex(dp) :: ratPdeltaRpp,ratPFcp(2),ratPFd(3),ratPFe(3),ratPFu(3),ratPHpm(3),ratPVWLm,ratPVWRm
 
 Complex(dp) :: coup 
-Real(dp) :: vev, gNLO, NLOqcd, NNLOqcd, NNNLOqcd, AlphaSQ 
+Real(dp) :: vev, gNLO, NLOqcd, NNLOqcd, NNNLOqcd, AlphaSQ, AlphaSQhlf 
 Real(dp) :: g1SM,g2SM,g3SM,vSM
 Complex(dp) ::YuSM(3,3),YdSM(3,3),YeSM(3,3)
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
@@ -2558,7 +2564,12 @@ vR = vRinput
 Qin=sqrt(getRenormalizationScale()) 
 ! Run always SM gauge couplings if present 
   Qin=sqrt(getRenormalizationScale()) 
-  Call RunSMohdm(Qin,deltaM,g1SM,g2SM,g3SM,YuSM,YdSM,YeSM,vSM) 
+  Call RunSMohdm(m_in,deltaM,g1SM,g2SM,g3SM,YuSM,YdSM,YeSM,vSM) 
+   ! SM pole masses needed for diphoton/digluon rate 
+   ! But only top and W play a role. 
+   vSM=1/Sqrt((G_F*Sqrt(2._dp))) ! On-Shell VEV needed for loop 
+   YuSM(3,3)=sqrt(2._dp)*mf_u(3)/vSM  ! On-Shell top needed in loop 
+   ! Other running values kept to get H->ff correct 
 g3=g3SM
 g2=g2SM
 gBL=(g1SM*gR)/Sqrt(-g1SM**2 + gR**2)
@@ -2566,6 +2577,7 @@ vd=vSM/Sqrt(1 + TanBeta**2)
 vu=(TanBeta*vSM)/Sqrt(1 + TanBeta**2)
 YQ2=-((vd*vSM*Transpose(YdSM) - vu*vSM*Transpose(YuSM))/(-vd**2 + vu**2))
 YQ1=(vu*vSM*Transpose(YdSM) - vd*vSM*Transpose(YuSM))/(-vd**2 + vu**2)
+AlphaSQhlf=g3**2/(4._dp*Pi) 
 AlphaSQ=g3**2/(4._dp*Pi) 
 Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,           & 
 & LAM2,LAM3,LAMT1,YDR,YL1,YQ1,LAMT2,YL2,YQ2,M1,M23,mu32,MU22,MU12,vd,vu,vR,              & 
