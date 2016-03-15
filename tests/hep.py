@@ -150,9 +150,10 @@ class hep(model):
         assert os.path.isfile('SPheno.spc.%s' %self.MODEL)
         #print a
         if a.find('Problem')==-1:
-            return pyslha.readSLHAFile('SPheno.spc.%s' %self.MODEL)
+            self.LHA_out=pyslha.readSLHAFile('SPheno.spc.%s' %self.MODEL)
         else:
-            return False
+            self.LHA_out=False
+        return self.LHA_out
         
     def branchings(self,SPCdecays):
         "Convert decays blocks into widhts and branchings: Input: SPC.decays"
@@ -274,4 +275,233 @@ class THDM(model):
         
     def test_higgs_to_phys(self):
         pass    
+
+def _neutrino_data(CL=3,IH=False):
+    import numpy as np
+    '''From arxiv:1405.7540 (table I)
+    and asumming a Normal Hierarchy:
+    Output:
+    mnu1in: laightest neutrino mass
+    Dms2: \Delta m^2_{12}
+    Dma2: \Delta m^2_{13}
+    ThetSol,ThetAtm,ThetRec: in radians
+    '''
+    if CL==3:
+        Dms2=np.array([7.11e-5, 7.60e-5, 8.18e-5])*1e-18 # In GeV
+        Dma2=np.array([2.30e-3, 2.48e-3, 2.65e-3])*1e-18 # In GeV
+        if IH:
+            Dma2=np.array([2.20e-3, 2.38e-3, 2.54e-3])*1e-18 # In GeV
+        #input real values:
+        #
+        ThetSol = np.array([0.278,  0.323,  0.375]) 
+        ThetAtm = np.array([0.393,  0.567,  0.643])
+        if IH:
+            ThetAtm = np.array([0.403,  0.573,  0.640])
+        ThetRec = np.array([0.0190, 0.0226, 0.0262])
+        if IH:
+            ThetRec = np.array([0.0193, 0.0229, 0.0265])
+            
+        delta=np.array([0,np.pi,2.*np.pi])
+    elif CL==1:
+        Dms2=np.array([7.42e-5, 7.60e-5, 7.79e-5])*1e-18 # In GeV
+        Dma2=np.array([2.41e-3, 2.48e-3, 2.53e-3])*1e-18 # In GeV
+        if IH:
+            Dma2=np.array([2.32e-3, 2.38e-3, 2.43e-3])*1e-18 # In GeV
+        #input real values:
+        #
+        ThetSol = np.array([0.307,  0.323,  0.339]) 
+        ThetAtm = np.array([0.443,  0.567,  0.599])
+        if IH:
+            ThetAtm = np.array([0.534,  0.573,  0.598])
+        ThetRec = np.array([0.0214, 0.0226, 0.0238])
+        if IH:
+            ThetRec = np.array([0.0217, 0.0229, 0.0241])
+        delta=np.array([1.01*np.pi,1.41*np.pi,1.96*np.pi])
+        if IH:
+            delta=np.array([1.17*np.pi,1.48*np.pi,1.79*np.pi])
+    mnu1in=1E-5*1E-9
+
+    return mnu1in,Dms2,Dma2,ThetSol,ThetAtm,ThetRec,delta
+
+
+class CasasIbarra(hep):
+    '''
+    Fill SPhenoInput with Yukawas compatible with neutrino pysics
+    Define a function: func to calculate the Yukawa independent para of the
+    analytical neutrino mass matrix with use a pyslha object as input, e.g
+       def _Lambda(LHA_out):
+       mH0=LHA.blocks['MASS'][1001]
+       ...
+       #Casas Ibarra inverse high energy input matrix Lambda...
+       return np.diag( Casas Ibarra inverse high energy input matrix Lambda  )
+       
+    Yuk_key: key for Yukawa block for input LesHoches File
+    
+    '''
+    def __init__(self,func,Yuk_key='YNIN',norotate1=False,norotate2=False,norotate3=False,bestfit=False,\
+                    nophases=True,massless_nulight=False,min_nulight=1E-9,max_nulight=0.5,\
+                    IH=False,R_complex=False,min_angle=0,CL=3, *args, **kwargs):
+        "See: http://stackoverflow.com/questions/23027846/def-init-self-args-kwargs-initialization-of-class-in-python"
+        super(CasasIbarra, self).__init__(*args, **kwargs)
+        self.CI_opt=pd.Series({'norotate1':norotate1,'norotate2':norotate2,'norotate3':norotate3,\
+                               'bestfit':bestfit,'nophases':nophases,\
+                               'massless_nulight':massless_nulight,'min_nulight':min_nulight,\
+                               'max_nulight':max_nulight,'IH':IH,\
+                               'R_complex':R_complex,'min_angle':min_angle,'CL':CL})
+        #print self.to_Series()
+        self.func=func
+        self.Yuk_key=Yuk_key
+        
+    def to_yukawas(self):
+        """
+        min_nulight=1E-9,
+        max_nulight=0.5 in eV: pdg neutrino review
+           NH: nu1<nu2<nu3
+        We assume mass ordering for Heavy particles but inverse hierarchy (IH) for neutrinos could imply:
+           IH: nu3<nu1<nu2
+        di.keys()-> ['MH0','MA0','Mtr01','Mtr02','Mtr03',]
+        """
+        import numpy as np
+        import pandas as pd
+        norotate1       =self.CI_opt.norotate1
+        norotate2       =self.CI_opt.norotate2
+        norotate3       =self.CI_opt.norotate3
+        bestfit         =self.CI_opt.bestfit
+        nophases        =self.CI_opt.nophases
+        massless_nulight=self.CI_opt.massless_nulight
+        min_nulight     =self.CI_opt.min_nulight
+        max_nulight     =self.CI_opt.max_nulight
+        IH              =self.CI_opt.IH
+        R_complex       =self.CI_opt.R_complex
+        min_angle       =self.CI_opt.min_angle
+        CL              =self.CI_opt.CL
+        
+        if massless_nulight:
+            norotate2=True #R13=1
+            if not IH:
+                #cos(t_2)=R_{12}; sin(t_2)=R_{13}
+                #sqrt(m_2)cos(t_2)U^*_{i2}+sqrt(m_3)sin(t_2)U^*_{i3}
+                #-sqrt(m_2)sin(t_2)U^*_{i2}+sqrt(m_3)cos(t_2)U^*_{i3}
+                norotate1=True #R12=1
+            else:
+                #cos(t_1)=R_{11}; sin(t_1)=R_{12}
+                #sqrt(m_1)cos(t_1)U^*_{i1}+sqrt(m_2)sin(t_1)U^*_{i2}
+                #-sqrt(m_2)sin(t_1)U^*_{i1}+sqrt(m_2)cos(t_1)U^*_{i2}
+                norotate3=True #R23=1
+            
+            
+        
+        ignore,Dms2,Dma2,ThetSol,ThetAtm,ThetRec,deltaD=_neutrino_data(CL=CL,IH=IH) 
      
+        
+        #Inverse MR masses. M^R_3 -> infty corresponds to zero entry
+        
+        spc=self.runSPheno()
+        DMR=np.diag(  np.sqrt( np.abs( 1./ self.func(spc) ) ) )
+        
+        if massless_nulight and not IH:
+            DMR[0,0]=0. 
+        if massless_nulight and IH:
+            DMR[2,2]=0. 
+        
+        #print self.func(spc)
+        #print DMR
+        #phases of the PMNS matrix
+        
+        delta=1.*(0 if nophases else np.random.uniform(deltaD[0],deltaD[2]))
+        eta1 =1.*(0 if nophases else np.random.uniform(0.,np.pi)) 
+        eta2 =1.*(0 if nophases else np.random.uniform(0.,np.pi))
+        if bestfit:
+            delta=deltaD[1]
+        
+        if not IH:
+            mnu1=1.*(0. if massless_nulight else np.exp(np.random.uniform(np.log(min_nulight),np.log(max_nulight)))*1e-9 ) 
+            #m_3=m_3^2-m_1^2+m_1^2
+            mnu3=1.*(np.sqrt(Dma2[1]+mnu1**2)     if bestfit else  np.sqrt(np.random.uniform(Dma2[0],Dma2[2]) + mnu1**2) )
+        else:
+            mnu3=1.*(0. if massless_nulight else np.exp(np.random.uniform(np.log(min_nulight),np.log(max_nulight)))*1e-9 )
+            #m_1=|m_3^2-m_1^2|+m_3^2=m_1^2-m_3^2+m_3^2=
+            mnu1=1.*(np.sqrt(Dma2[1]+mnu3**2)     if bestfit else  np.sqrt(np.random.uniform(Dma2[0],Dma2[2]) + mnu3**2) )
+     
+        #m_2=m_2^2-m_1^2+m_1^2    
+        mnu2=1.*(np.sqrt(Dms2[1]+mnu1**2)     if bestfit else  np.sqrt(np.random.uniform(Dms2[0],Dms2[2]) + mnu1**2) ) 
+     
+     
+        #light neutrino masses only for an estimation 
+        #mnu1=0
+        #mnu2=sqrt(8.2e-5*1e-18+mnu1**2)
+        #mnu3=sqrt(2.74e-3*1e-18+mnu1**2)
+        
+        #Square root of left-handed nuetrino mass matrix 
+        DMnu=np.asarray([ [np.sqrt(mnu1),0,0],[0,np.sqrt(mnu2),0],[0,0,np.sqrt(mnu3)] ])
+        
+        #mixing angles using 3 sigma data from arxiv:1405.7540 (table I)                        
+        #and asumming a Normal Hierarchy'''
+     
+     
+     
+        t12 = 1.*( np.arcsin(np.sqrt(ThetSol[1])) if bestfit else np.arcsin(np.sqrt(np.random.uniform(ThetSol[0],ThetSol[2]))))
+        t23 = 1.*( np.arcsin(np.sqrt(ThetAtm[1])) if bestfit else np.arcsin(np.sqrt(np.random.uniform(ThetAtm[0],ThetAtm[2]))))
+        t13 = 1.*( np.arcsin(np.sqrt(ThetRec[1])) if bestfit else np.arcsin(np.sqrt(np.random.uniform(ThetRec[0],ThetRec[2]))))
+        
+        
+        #Building PMNS matrix: http://pdg.lbl.gov/2014/reviews/rpp2014-rev-neutrino-mixing.pdf
+        
+        U12 = np.array([ [np.cos(t12),np.sin(t12),0], [-np.sin(t12),np.cos(t12),0], [0,0,1.0] ])
+        U13 = np.array([ [np.cos(t13),0,np.sin(t13)*np.exp(-delta*1j)], [0,1.0,0],\
+                         [-np.sin(t13)*np.exp(delta*1j),0,np.cos(t13)] ])
+        U23 = np.array([ [1.0,0,0], [0,np.cos(t23),np.sin(t23)], [0,-np.sin(t23),np.cos(t23)] ])
+        Uphases = np.diag([1.,np.exp(eta1*1j/2.),np.exp(eta2*1j/2.)])
+        U=((U23.dot(U13)).dot(U12)).dot(Uphases)
+        #print U-np.dot(U23,np.dot(U13,np.dot(U12,Uphases)))
+        #Building R matrix of the Casas-Ibarra parametrization
+        
+        
+        min_real=min_angle
+        max_real=2.*np.pi
+        phases2=np.random.uniform(min_real,max_real ,3) 
+        if R_complex:
+            min_imag=1E-12
+            max_imag=20. #2E-1
+            phases2=phases2+1j*np.exp(np.random.uniform(\
+                                np.log(min_imag),np.log(max_imag) ,3) )*np.random.choice([1,-1])
+        
+     
+        b12 = 1.*(0 if norotate1 else phases2[0])
+        b13 = 1.*(0 if norotate2 else phases2[1])
+        b23 = 1.*(0 if norotate3 else phases2[2])
+        
+      
+        # R 
+        R12 = np.array([ [np.cos(b12),np.sin(b12),0], [-np.sin(b12),np.cos(b12),0], [0,0,1.0] ])
+        R13 = np.array([ [np.cos(b13),0,np.sin(b13)], [0,1.0,0], [-np.sin(b13),0,np.cos(b13)] ])
+        R23 = np.array([ [1.0,0,0], [0,np.cos(b23),np.sin(b23)], [0,-np.sin(b23),np.cos(b23)] ])
+        R=np.dot(R23,np.dot(R13,R12))
+        #1assert(np.abs(np.dot(R, R.transpose()))[1,2]<1E-10)
+        #Yukawa matrix of the Casas-Ibarra parametrization
+        yuk2=np.dot(DMR,np.dot(R,np.dot(DMnu,np.transpose(np.conjugate(U)))))
+        for i in range(1,yuk2.shape[0]+1):
+            for j in range(1,yuk2.shape[1]+1):
+                if R_complex:
+                    self.LHA.blocks[self.Yuk_key][i,j]=yuk2[i-1,j-1]
+                else:
+                    self.LHA.blocks[self.Yuk_key][i,j]='%0.8E       #Yn(%d,%d)' %(yuk2[i-1,j-1].real,i,j)
+        return yuk2,U,DMnu.dot(DMnu),phases2
+    
+    
+#    def __call__(self):
+#        print lambdas
+#        print("call")
+
+    def test(self):
+        h,U,Mnuin,phases=self.to_yukawas()
+        Lamb = np.diag(self.func(self.LHA_out))
+        Mint = np.dot( h.transpose(),np.dot(Lamb,h) )
+        
+        Mnu,U=np.linalg.eig(Mint) 
+        lo=np.argsort(np.abs(Mnu))
+        Mnu=np.array([Mnu[lo[0]],Mnu[lo[1]],Mnu[lo[2]]])
+        U=np.matrix(U)
+        U=np.asarray(np.hstack((U[:,lo[0]],U[:,lo[1]],U[:,lo[2]])))
+        print Mnu
+        print U    
