@@ -165,10 +165,10 @@ class hep(model):
                 self.Br[i][tuple(SPCdecays[i].decays[j].ids)]=SPCdecays[i].decays[j].br
         return SPCdecays.keys()
     
-    def run_micromegas(self,func,path='../micromegas',
+    def run_micromegas(self,func,param={},path='../micromegas',
                   var_min=60,var_max=1000,npoints=1,scale='log',CI=True):
         '''Run micromegas with output in MODEL.csv
-         func -> func(x,lha,...) and returns lha
+         func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
          path='../micromegas';var_min=60;
          var_max=1000;npoints=2;scale='log';CI=True'''
 
@@ -177,12 +177,15 @@ class hep(model):
         if scale=='log':
             xrange=np.logspace(np.log10(var_min),np.log10(var_max),npoints)
         elif scale=='lin':
-            xrange=np.linspace(np.log10(var_min),np.log10(var_max),npoints)
+            xrange=np.linspace(var_min,var_max,npoints)
         
         for x in xrange:
             i=i+1
             if i%10==0: print i
-            self.LHA=func(x,self.LHA)
+            if param:
+                self.LHA=func(x,self.LHA,param=param)
+            else:
+                self.LHA=func(x,self.LHA)
             if CI: #see defintion of to_Yukawas in class CasasIbarra(hep) below,
                 h,U,Mnuin,phases=self.to_yukawas() #test Mnuin/0.9628#/0.968
             spc=self.runSPheno()
