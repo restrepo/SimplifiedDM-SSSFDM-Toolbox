@@ -53,6 +53,7 @@ class model(object):
     m_top  =1.735000E+02    # m_top(pole)
     mtau   =1.776690E+00    # m_tau(pole)
     m_h0   =125. #Higg mass
+    vev    =1./np.sqrt(np.sqrt(2)*G_F)
     #FIX pdgs
     pdg.h0=25;pdg.H0=35;pdg.A0=36;pdg.Hp=37;pdg.Hm=-37
     def __init__(self,MODEL='SM',ignorenobr=True,ignorenomass=True,updateSMINPUTS=False,\
@@ -163,6 +164,42 @@ class hep(model):
             for j in range( len(SPCdecays[i].decays) ):
                 self.Br[i][tuple(SPCdecays[i].decays[j].ids)]=SPCdecays[i].decays[j].br
         return SPCdecays.keys()
+    
+    def run_micromegas(self,func,path='../micromegas',
+                  var_min=60,var_max=1000,npoints=1,scale='log',CI=True):
+        '''Run micromegas with output in MODEL.csv
+         func -> func(x,lha,...) and returns lha
+         path='../micromegas';var_min=60;
+         var_max=1000;npoints=2;scale='log';CI=True'''
+
+        df=pd.DataFrame()
+        i=0
+        if scale=='log':
+            xrange=np.logspace(np.log10(var_min),np.log10(var_max),npoints)
+        elif scale=='lin':
+            xrange=np.linspace(np.log10(var_min),np.log10(var_max),npoints)
+        
+        for x in xrange:
+            i=i+1
+            if i%10==0: print i
+            self.LHA=func(x,self.LHA)
+            if CI: #see defintion of to_Yukawas in class CasasIbarra(hep) below,
+                h,U,Mnuin,phases=self.to_yukawas() #test Mnuin/0.9628#/0.968
+            spc=self.runSPheno()
+            oh=commands.getoutput('%s/%s/CalcOmega SPheno.spc.%s' %(path,self.MODEL,self.MODEL) )
+            oh2=-1
+            ll=oh.split('Omega h^2=')
+            if len(ll)>1:
+                oh2=eval(ll[1].split('\n')[0])
+        
+        
+            self.to_series()
+            self.Series['Omega_h2']=oh2
+            df=df.append(self.Series,ignore_index=True)
+            df.to_csv('Scotogenic.csv')
+        return df
+        
+
     
 class THDM(model):
     '''
