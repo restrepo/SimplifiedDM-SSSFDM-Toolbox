@@ -1,706 +1,474 @@
-(* SARAH generated template for particles.m file for darkLR *)
-(* File created at 20:11 on 15.1.2016  *)
-
-(* IMPORTANT: *)
-(* check/adjust in particular the lines which contain "CHECK!" *)
-(* the correct information is needed there to have correct results! *)
-
-
-(* ###############            EWSB       ################# *)
-
-ParticleDefinitions[EWSB] = {
-
-(* ----------- Already defined particles in existing particles.m -------------- *)
-
-{Ah,{
-     Description -> "Pseudo-Scalar Higgs",
-     FeynArtsNr -> 2,
-     LaTeX -> "A^0",
-     Mass -> {0, 0, LesHouches},
-     OutputName -> "Ah",
-     PDG -> {0, 0, 36, 6000021(*, 6000022, 6000023*)},
-     ElectricCharge -> 0,
-     Width -> {0, 0, External}}},
-
-{Fd,{
-     Description -> "Down-Quarks",
-     FeynArtsNr -> 4,
-     LaTeX -> "d",
-     Mass -> {0.0035, 0.104, 4.2(*, LesHouches, LesHouches, LesHouches*)},
-     OutputName -> "d",
-     PDG -> {1, 3, 5(*, 6000001, 6000003, 6000005*)},
-     ElectricCharge -> -1/3,
-     Width -> {0, 0, 0(*, External, External, External*)}}},
-
-{Fe,{
-     Description -> "Leptons",
-     FeynArtsNr -> 2,
-     LaTeX -> "e",
-     Mass -> {0.000511, 0.105, 1.776},
-     OutputName -> "e",
-     PDG -> {11, 13, 15},
-     ElectricCharge -> -1,
-     Width -> {0, 0, 0}}},
-
-{Fu,{
-     Description -> "Up-Quarks",
-     FeynArtsNr -> 3,
-     LaTeX -> "u",
-     Mass -> {0.0015, 1.27, 171.2},
-     OutputName -> "u",
-     PDG -> {2, 4, 6},
-     ElectricCharge -> 2/3,
-     Width -> {0, 0, 1.51}}},
-
-{Fv,{
-     Description -> "Neutrinos",
-     FeynArtsNr -> 1,
-     LaTeX -> "\\nu",
-     Mass -> {LesHouches, LesHouches, LesHouches, LesHouches, LesHouches, LesHouches},
-     OutputName -> "nu",
-     PDG -> {12, 14, 16, 6000012, 6000014, 6000016},
-     ElectricCharge -> 0,
-     Width -> {External, External, External, External, External, External}}},
-
-{gG,{
-     Description -> "Gluon Ghost",
-     FeynArtsNr -> 5,
-     LaTeX -> "\\eta^G",
-     Mass -> 0,
-     OutputName -> "gG",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{gP,{
-     FeynArtsNr -> 1,
-     LaTeX -> "\\eta^P",
-     Mass -> 0,
-     OutputName -> "gP",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{gWLm,{
-     Description -> "Negative W-Boson Ghost",
-     FeynArtsNr -> 3,
-     LaTeX -> "\\eta_L^-",
-     Mass -> Mass[VWLm],
-     OutputName -> "gWLm",
-     PDG -> {0},
-     ElectricCharge -> -1,
-     Width -> Automatic}},
-
-{gWLmC,{
-     Description -> "Positive W-Boson Ghost",
-     FeynArtsNr -> 4,
-     LaTeX -> "\\eta_L^+",
-     Mass -> Mass[VWLm],
-     OutputName -> "gWLp",
-     PDG -> {0},
-     ElectricCharge -> 1,
-     Width -> Automatic}},
-
-{gWRm,{
-     Description -> "Negative W'-Boson Ghost",
-     FeynArtsNr -> 93,
-     LaTeX -> "\\eta_R^-",
-     Mass -> Mass[VWRm],
-     OutputName -> "gWRm",
-     PDG -> {0},
-     ElectricCharge -> -1,
-     Width -> 0}},
-
-{gWRmC,{
-     Description -> "Positive W'-Boson Ghost",
-     FeynArtsNr -> 83,
-     LaTeX -> "\\eta_R^+",
-     Mass -> Mass[VWRm],
-     OutputName -> "gWRp",
-     PDG -> {0},
-     ElectricCharge -> 1,
-     Width -> 0}},
-
-{gZ,{
-     Description -> "Z-Boson Ghost",
-     FeynArtsNr -> 2,
-     LaTeX -> "\\eta^Z",
-     Mass -> Mass[VZ],
-     OutputName -> "gZ",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> Automatic}},
-
-{gZR,{
-     Description -> "Z'-Ghost",
-     FeynArtsNr -> 10,
-     LaTeX -> "\\eta^{Z'}",
-     Mass -> Mass[VZR],
-     OutputName -> "gZp",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{hh,{
-     Description -> "Higgs",
-     FeynArtsNr -> 1,
-     LaTeX -> "h",
-     Mass -> LesHouches,
-     OutputName -> "hh",
-     PDG -> {25, 35, 335, 6000029(*, 6000030, 6000031*)},
-     ElectricCharge -> 0,
-     Width -> Automatic}},
-
-{Hpm,{
-     Description -> "Charged Higgs",
-     FeynArtsNr -> {0, 0, 3, 3003},
-     LaTeX -> {"H^-","H^+"},
-     Mass -> {0, 0, LesHouches},
-     OutputName -> {"Hm","Hp"},
-     PDG -> {0, 0, -37, -6000034(*, -6000035, -6000036*)},
-     ElectricCharge -> -1,
-     Width -> {0, 0, External}}},
-
-{Hppmm,{
-     FeynArtsNr -> {2337, 3447},
-     LaTeX -> {"\\delta^{c--}","\\delta^{c++}"},
-     Mass -> LesHouches,
-     OutputName -> {"Hmm","Hpp"},
-     PDG -> {-9000055, -9000065},
-     ElectricCharge -> -2,
-     Width -> Automatic}},
-
-{VG,{
-     Description -> "Gluon",
-     FeynArtsNr -> 5,
-     LaTeX -> "g",
-     Mass -> 0,
-     OutputName -> "g",
-     PDG -> {21},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{VP,{
-     Description -> "Photon",
-     FeynArtsNr -> 1,
-     LaTeX -> "\\gamma",
-     Mass -> 0,
-     OutputName -> "A",
-     PDG -> {22},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{VWLm,{
-     Description -> "W-Boson",
-     Goldstone -> Hpm[{1}],
-     FeynArtsNr -> 3,
-     LaTeX -> {"W^-","W^+"},
-     Mass -> Dependence,
-     MassDependence -> Sqrt[Mass[VZ]^2/2 + Sqrt[-((Pi*Mass[VZ]^2)/(Sqrt[2]*aEWinv*Gf)) + Mass[VZ]^4/4]],
-     OutputName -> {"WLm","WLp"},
-     PDG -> {-24},
-     ElectricCharge -> -1,
-     Width -> 2.141}},
-
-{VWRm,{
-     Goldstone -> Hpm[{2}],
-     FeynArtsNr -> 20,
-     LaTeX -> {"W_R^-","W_R^+"},
-     Mass -> LesHouches,
-     OutputName -> {"WRm","WRp"},
-     PDG -> {-34},
-     ElectricCharge -> -1,
-     Width -> Automatic}},
-
-{VZ,{
-     Description -> "Z-Boson",
-     Goldstone -> Ah[{1}],
-     FeynArtsNr -> 2,
-     LaTeX -> "Z",
-     Mass -> 91.1876,
-     OutputName -> "Z",
-     PDG -> {23},
-     ElectricCharge -> 0,
-     Width -> 2.4952}},
-
-{VZR,{
-     Description -> "Z'-Boson",
-     Goldstone -> Ah[{2}],
-     FeynArtsNr -> 10,
-     LaTeX -> "{Z'}",
-     Mass -> LesHouches,
-     OutputName -> "Zp",
-     PDG -> {32},
-     ElectricCharge -> 0,
-     Width -> Automatic}},
-{Fcpp,   { Description -> "doubly charged exotic fermions",
-      LaTeX -> "\\chi^{++}",
-      OutputName -> "cpp",
-      PDG -> {6000055},
-      PDG.IX ->{990000001},
-      ElectricCharge -> 2,
-      FeynArtsNr -> 990000001,
-      Width -> External, 
-      Mass -> LesHouches
-	}},
-{Fcp,	{ Description -> "singly charged exotic fermions",
-      LaTeX -> "\\chi^{+}",
-      OutputName -> "cp",
-      PDG -> {17},
-      PDG.IX ->{110000604},
-      ElectricCharge -> 1,
-      FeynArtsNr -> {110000604},
-	Width -> {External}, 
-	Mass -> LesHouches
-	}},	    
-{Fc,   { Description -> "neutral exotic fermions",
-      LaTeX -> "\\chi^{0}",
-      OutputName -> "c0",
-      PDG -> {9000012,9000014},
-      PDG.IX ->{990000007,990000008},
-      ElectricCharge -> 0,
-      FeynArtsNr -> {990000007},
-	Width -> {External}, 
-	Mass -> {LesHouches}
-	}}
-};
-
-
-
-
-(* ###############            GaugeES       ################# *)
+(* ::Package:: *)
 
 ParticleDefinitions[GaugeES] = {
-
-(* ----------- Already defined particles in existing particles.m -------------- *)
-
-{deltaL0,{
-     FeynArtsNr -> {511},
-     LaTeX -> "\\Delta_{1L0}",
-     Mass -> Automatic,
-     OutputName -> "dlt1L0",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> {0}}},
-
-{deltaLp,{
-     FeynArtsNr -> {512},
-     LaTeX -> {"\\Delta_{L}^+","\\Delta_{L}^+"},
-     Mass -> Automatic,
-     OutputName -> {"dlt1Lp","dlt1Lp"},
-     PDG -> {0},
-     ElectricCharge -> 1,
-     Width -> {0}}},
-
-{deltaLpp,{
-     Description -> "LH Doubly-Charged Higgs",
-     FeynArtsNr -> {5053},
-     LaTeX -> {"HL^{++}","HL^{++}"},
-     Mass -> {0},
-     OutputName -> {"HLpp","HLpp"},
-     PDG -> {0},
-     ElectricCharge -> 2,
-     Width -> {0}}},
-
-{deltaR0,{
-     FeynArtsNr -> {501},
-     LaTeX -> "\\Delta_{1R0}",
-     Mass -> Automatic,
-     OutputName -> "dlt1R0",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> {0}}},
-
-{deltaRp,{
-     FeynArtsNr -> {502},
-     LaTeX -> {"\\Delta_{R}^+","\\Delta_{R}^+"},
-     Mass -> Automatic,
-     OutputName -> {"dlt1Rp","dlt1Rp"},
-     PDG -> {0},
-     ElectricCharge -> 1,
-     Width -> {0}}},
-
-{deltaRpp,{
-     Description -> "RH Doubly-Charged Higgs",
-     FeynArtsNr -> {5052},
-     LaTeX -> {"HR^{++}","HR^{++}"},
-     Mass -> {0},
-     OutputName -> {"HRpp","HRpp"},
-     PDG -> {0},
-     ElectricCharge -> 2,
-     Width -> {0}}},
-
-{dVR,{
-     FeynArtsNr -> {5053},
-     LaTeX -> "dvr",
-     Mass -> LesHouches,
-     OutputName -> "dvr",
-     PDG -> {35, 36, 37},
-     Width -> Automatic}},
-
-{Fd1,{
-     Description -> "Dirac Left Down-Quark",
-     FeynArtsNr -> 120,
-     LaTeX -> "d^1",
-     Mass -> LesHouches,
-     OutputName -> "d1",
-     PDG -> {1, 3, 5},
-     Width -> {0, 0, 0}}},
-
-{Fd2,{
-     Description -> "Dirac Right Down-Quark",
-     FeynArtsNr -> 121,
-     LaTeX -> "d^2",
-     Mass -> LesHouches,
-     OutputName -> "d2",
-     PDG -> {0, 0, 0},
-     Width -> {0, 0, 0}}},
-
-{Fe1,{
-     Description -> "Dirac Left Electron",
-     FeynArtsNr -> 130,
-     LaTeX -> "e^1",
-     Mass -> LesHouches,
-     OutputName -> "e1",
-     PDG -> {11, 13, 15},
-     Width -> {0, 0, 0}}},
-
-{Fe2,{
-     Description -> "Dirac Right Electron",
-     FeynArtsNr -> 131,
-     LaTeX -> "e^2",
-     Mass -> LesHouches,
-     OutputName -> "e2",
-     PDG -> {0, 0, 0},
-     Width -> {0, 0, 0}}},
-
-{Fu1,{
-     Description -> "Dirac Left Up-Quark",
-     FeynArtsNr -> 110,
-     LaTeX -> "u^1",
-     Mass -> LesHouches,
-     OutputName -> "u1",
-     PDG -> {2, 4, 6},
-     Width -> {0, 0, 0}}},
-
-{Fu2,{
-     Description -> "Dirac Right Up-Quark",
-     FeynArtsNr -> 111,
-     LaTeX -> "u^2",
-     Mass -> LesHouches,
-     OutputName -> "u2",
-     PDG -> {0, 0, 0},
-     Width -> {0, 0, 0}}},
-
-{Fv1,{
-     Description -> "Dirac Left Neutrino",
-     FeynArtsNr -> 140,
-     LaTeX -> "\\nu^1",
-     Mass -> LesHouches,
-     OutputName -> "v1",
-     PDG -> {12, 14, 16},
-     Width -> {0, 0, 0}}},
-
-{Fv2,{
-     Description -> "Dirac Right Neutrino",
-     FeynArtsNr -> 141,
-     LaTeX -> "\\nu^2",
-     Mass -> LesHouches,
-     OutputName -> "v2",
-     PDG -> {0, 0, 0},
-     Width -> {0, 0, 0}}},
-
-{gB,{
-     Description -> "B-Boson Ghost",
-     FeynArtsNr -> 1,
-     LaTeX -> "\\eta^B",
-     Mass -> 0,
-     OutputName -> "gB",
-     PDG -> {0},
-     Width -> 0}},
-
-{gG,{
-     Description -> "Gluon Ghost",
-     FeynArtsNr -> 5,
-     LaTeX -> "\\eta^G",
-     Mass -> 0,
-     OutputName -> "gG",
-     PDG -> {0},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{gWL,{
-     Description -> "W-Boson Ghost",
-     FeynArtsNr -> 2,
-     LaTeX -> "\\eta^W",
-     Mass -> 0,
-     OutputName -> "gW",
-     PDG -> {0}   (* adjusted number of PDGs to number of generations  *),
-     Width -> 0}},
-
-{gWR,{
-     FeynArtsNr -> 3,
-     LaTeX -> "\\eta^{WR}",
-     Mass -> LesHouches,
-     OutputName -> "gWR",
-     PDG -> {0}   (* adjusted number of PDGs to number of generations  *),
-     Width -> Automatic}},
-
-{H0,{
-     FeynArtsNr -> {1191},
-     LaTeX -> "{h}^0",
-     Mass -> LesHouches,
-     OutputName -> "h0",
-     PDG -> {39},
-     Width -> Automatic}},
-
-{hL0,{
-     FeynArtsNr -> 1,
-     LaTeX -> "HL^0",
-     Mass -> Automatic,
-     OutputName -> "HL0",
-     PDG -> {0},
-     Width -> 0}},
-
-{hLp,{
-     Description -> "Charged Left Higgs",
-     FeynArtsNr -> {500},
-     LaTeX -> {"HL^+","HL^+"},
-     Mass -> {0},
-     OutputName -> {"HLp","HLp"},
-     PDG -> {0},
-     ElectricCharge -> 1,
-     Width -> {0}}},
-
-{Hm,{
-     FeynArtsNr -> {1192},
-     LaTeX -> "hm",
-     Mass -> LesHouches,
-     OutputName -> "hm",
-     PDG -> {41},
-     Width -> Automatic}},
-
-{Hp,{
-     FeynArtsNr -> {1193},
-     LaTeX -> "hp",
-     Mass -> LesHouches,
-     OutputName -> "hp",
-     PDG -> {43},
-     Width -> Automatic}},
-
-{HPrime0,{
-    FeynArtsNr -> {1194},
-     LaTeX -> "{hprime}^0",
-     Mass -> LesHouches,
-     OutputName -> "hprime0",
-     PDG -> {45},
-     Width -> Automatic}},
-
-{hR0,{
-     FeynArtsNr -> 301,
-     LaTeX -> "{HR}^0",
-     Mass -> Automatic,
-     OutputName -> "HR0",
-     PDG -> {0},
-     Width -> Automatic}},
-
-{hRp,{
-     Description -> "Charged Right Higgs",
-     FeynArtsNr -> {4},
-     LaTeX -> {"HR^+","HR^+"},
-     Mass -> {0},
-     OutputName -> {"HRp","HRp"},
-     PDG -> {0},
-     ElectricCharge -> 1,
-     Width -> {0}}},
-
-{VB,{
-     Description -> "B-Boson",
-     FeynArtsNr -> 1,
-     LaTeX -> "B",
-     Mass -> 0,
-     OutputName -> "B",
-     PDG -> {0},
-     Width -> 0}},
-
-{VG,{
-     Description -> "Gluon",
-     FeynArtsNr -> 5,
-     LaTeX -> "g",
-     Mass -> 0,
-     OutputName -> "g",
-     PDG -> {21},
-     ElectricCharge -> 0,
-     Width -> 0}},
-
-{VWL,{
-     Description -> "W-Bosons",
-     FeynArtsNr -> 2,
-     LaTeX -> "W",
-     Mass -> 0,
-     OutputName -> "W",
-     PDG -> {0, 24, 25},
-     Width -> 0}},
-
-{VWR,{
-     FeynArtsNr -> 20,
-     LaTeX -> "W_R",
-     Mass -> LesHouches,
-     OutputName -> "WR",
-     PDG -> {29, 30, 31},
-     Width -> Automatic}},
-{xL,{FeynArtsNr -> {9878},
-     LaTeX -> "x_L",
-     Mass -> LesHouches,
-     OutputName -> "xL",
-     PDG -> {7,8,9}}}
-};
-
-
-
-
-(* ###############            Weyl Spinors and intermediate states       ################# *)
-
-WeylFermionAndIndermediate = {
-
-(* ----------- Already defined particles in existing particles.m -------------- *)
-
-{dL,{
-     LaTeX -> "d_L"}},
-
-{uL,{
-     LaTeX -> "u_L"}},
-
-{eL,{
-     LaTeX -> "e_L"}},
-
-{nuL,{
-     LaTeX -> "\\nu_L"}},
-
-{dR,{
-     LaTeX -> "d_R"}},
-
-{uR,{
-     LaTeX -> "u_R"}},
-
-{eR,{
-     LaTeX -> "e_R"}},
-
-{nuR,{
-     LaTeX -> "\\nu_R"}},
-
-{dVR,{
-     LaTeX -> "dvr"}},
-
-{xL,{
-     LaTeX -> "evl"}},
-
-{DL,{
-     LaTeX -> "D_L"}},
-
-{DR,{
-     LaTeX -> "D_R"}},
-
-{UL,{
-     LaTeX -> "U_L"}},
-
-{UR,{
-     LaTeX -> "U_R"}},
-
-{EL,{
-     LaTeX -> "E_L"}},
-
-{ER,{
-     LaTeX -> "E_R"}},
-
-{Fv0,{
-     LaTeX -> "\\nu_0"}},
-
-{sigmaH10,{
-     LaTeX -> "{{\\sigma}_{h1}}^0"}},
-
-{phiH10,{
-     LaTeX -> "{{\\phi}_{h1}}^0"}},
-
-{sigmaH20,{
-     LaTeX -> "{{\\sigma}_{h2}}^0"}},
-
-{phiH20,{
-     LaTeX -> "{{\\phi}_{h2}}^0"}},
-
-{sigmadL,{
-     LaTeX -> "{\\sigma}_{dl}"}},
-
-{phidL,{
-     LaTeX -> "{\\phi}_{dl}"}},
-
-{sigmadR,{
-     LaTeX -> "{\\sigma}_{dr}"}},
-
-{phidR,{
-     LaTeX -> "{\\phi}_{dr}"}},
-
-{sigmaHL,{
-     LaTeX -> "{\\sigma}_{hl}"}},
-
-{phiHL,{
-     LaTeX -> "{\\phi}_{hl}"}},
-
-{sigmaHR,{
-     LaTeX -> "{\\sigma}_{hr}"}},
-
-{phiHR,{
-     LaTeX -> "{\\phi}_{hr}"}},
-
-{deltaL,{
-     LaTeX -> "{\\delta}_{l}"}},
-
-{deltaR,{
-     LaTeX -> "\\hat{\\Delta}^c"}},
-
-{DVR,{
-     LaTeX -> "dvr"}},
-
-{HL,{
-     LaTeX -> "hl"}},
-
-{HR,{
-     LaTeX -> "hr"}},
-
-{LLbar,{
-     LaTeX -> "\\bar{ll}"}},
-
-{LR,{
-     LaTeX -> "lr"}},
-
-{Phi,{
-     LaTeX -> "\\phi"}},
-
-{QLbar,{
-     LaTeX -> "\\bar{ql}"}},
-
-{QR,{
-     LaTeX -> "qr"}},
-
-{VB,{
-     LaTeX -> "B"}},
-
-{VG,{
-     LaTeX -> "G"}},
-
-{VWL,{
-     LaTeX -> "{W}_L"}},
-
-{VWR,{
-     LaTeX -> "{W}_R"}},
-
-{XVLbar,{
-    LaTeX -> "\\bar{xvl}"}},
-{TPL,     {LaTeX -> "TP_L" }},
-{TMR,     {LaTeX -> "TM_R" }},
-{Ft0,     {LaTeX -> "T_0" }}
-};
-
-
+{H0,  { PDG -> {0},
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 FeynArtsNr -> 1,
+                 LaTeX -> "H^0",
+                 OutputName -> "H0" }},                         
+      
+      {HPrime0,{    (*Description -> "Neutral Up-Higgs",*)
+                 PDG -> {0},
+		 PDG.IX -> {0},
+                 Mass -> Automatic,
+              (* FeynArtsNr -> 21,*)
+                 FeynArtsNr -> 301,
+                 LaTeX -> "{H'}^0",
+                 OutputName -> "Hp0" }},
+
+     {Hp,     { Description -> "Charged Higgs", 
+                PDG -> {0},
+		PDG.IX ->{0},
+		Width -> {0}, 
+		Mass -> {0},
+		ElectricCharge -> 1,
+		FeynArtsNr -> {500},
+		LaTeX -> {"H^+","H^-"},
+		OutputName -> {"Hp","Hm"}
+                 }},                                
+                  
+     {Hm,     { Description -> "Charged Higgs", 
+                 PDG -> {0},
+                 PDG.IX ->{0},
+                 Width -> {0}, 
+                 Mass -> {0},
+                 ElectricCharge -> -1,
+		 FeynArtsNr -> {4},
+                 LaTeX -> {"H_1^-","H_1^+"},
+                 OutputName -> {"Hm","Hp"}
+                 }},     
+
+     {deltaRpp,     { Description -> "RH Doubly-Charged Higgs", 
+                PDG -> {0},
+		PDG.IX ->{0},
+		Width -> {0}, 
+		Mass -> {0},
+		ElectricCharge -> 2,
+		FeynArtsNr -> {5052},
+		LaTeX -> {"HR^{++}","HR^{--}"},
+		OutputName -> {"HRpp","HRmm"}
+                 }},  
+
+     {deltaLpp,     { Description -> "LH Doubly-Charged Higgs", 
+                PDG -> {0},
+		PDG.IX ->{0},
+		Width -> {0}, 
+		Mass -> {0},
+		ElectricCharge -> 2,
+		FeynArtsNr -> {5053},
+		LaTeX -> {"HL^{++}","HL^{--}"},
+		OutputName -> {"HLpp","HLmm"}
+                 }},                                                         
+
+    {deltaR0,{(*RParity -> 1,*)  
+                 PDG -> {0},
+                 Width -> {0}, 
+                 Mass -> Automatic,
+                 ElectricCharge -> 0,
+		 FeynArtsNr -> {501},
+                 LaTeX -> "\\Delta_{1R0}",
+                 OutputName -> "dlt1R0" }},  
+
+     {deltaL0,{(*RParity -> 1,*)  
+                 PDG -> {0},
+                 Width -> {0}, 
+                 Mass -> Automatic,
+                 ElectricCharge -> 0,
+		 FeynArtsNr -> {511},
+                 LaTeX -> "\\Delta_{1L0}",
+                 OutputName -> "dlt1L0" }},                   
+
+      {deltaRp,{(*RParity -> 1,*)  
+                 PDG -> {0},
+                 Width -> {0}, 
+                 Mass -> Automatic,
+                 ElectricCharge -> 1,
+		 FeynArtsNr -> {502},
+                 LaTeX -> {"\\Delta_{R}^+","\\Delta_{R}^-"},
+                 OutputName -> {"dlt1Rp","dlt1Rm"} }},    
+
+      {deltaLp,{(*RParity -> 1,*)  
+                 PDG -> {0},
+                 Width -> {0}, 
+                 Mass -> Automatic,
+                 ElectricCharge -> 1,
+		 FeynArtsNr -> {512},
+                 LaTeX -> {"\\Delta_{L}^+","\\Delta_{L}^-"},
+                 OutputName -> {"dlt1Lp", "dlt1Lm"} }},                
+    
+      {VB,   { Description -> "B-Boson"}},                                                   
+      {VG,   { Description -> "Gluon"}},          
+      {VWL,  { Description -> "W-Bosons"}},
+      {VWR,  { (*Description -> "W-Bosons",*)
+	       FeynArtsNr -> 20,
+	       LaTeX -> "W_R",
+	       OutputName -> "WR"}},          
+      {gB,   { Description -> "B-Boson Ghost"}},                                                   
+      {gG,   { Description -> "Gluon Ghost" }},          
+      {gWL,  { Description -> "W-Boson Ghost"}},
+      {gWR,  { (*Description -> "W-Boson Ghost",*)
+	       FeynArtsNr -> 3,
+	       LaTeX -> "\\eta^{WR}",
+               OutputName -> "gWR"}},
+      
+      
+      {Fu1,  {    Description -> "Dirac Left Up-Quark",
+                  LaTeX -> "u^1",
+                  PDG -> {2,4,6},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 110,
+                  OutputName -> "u1"}},
+  
+      {Fu2,  {    Description -> "Dirac Right Up-Quark",
+                  LaTeX -> "u^2",
+                  PDG ->{0,0,0},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 111,
+                  OutputName -> "u2"}},
+
+      {Fd1,  {    Description -> "Dirac Left Down-Quark",
+                  LaTeX -> "d^1",
+                  PDG -> {1,3,5},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 120,
+                  OutputName -> "d1" }},  
+
+      {Fd2,  {    Description -> "Dirac Right Down-Quark",
+                  LaTeX -> "d^2",
+                  PDG ->{0,0,0},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 121,
+                  OutputName -> "d2" }},
+  
+      {Fe1,  {    Description -> "Dirac Left Electron" ,
+                  LaTeX -> "e^1",
+                  PDG -> {11,13,15},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 130,
+                  OutputName -> "e1"}},  
+
+      {Fe2,  {    Description -> "Dirac Right Electron",
+                  LaTeX -> "e^2",
+                  PDG -> {0,0,0},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 131,
+                  OutputName -> "e2" }},  
+
+      {Fv1,   {   Description -> "Dirac Left Neutrino",
+                  LaTeX -> "\\nu^1",
+                  PDG -> {12,14,16},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 140,
+                  OutputName -> "v1" }},
+
+      {Fv2,   {   Description -> "Dirac Right Neutrino",
+                  LaTeX -> "\\nu^2",
+                  PDG -> {0,0,0},
+                  Width -> {0, 0, 0}, 
+                  FeynArtsNr -> 141,
+                  OutputName -> "v2" }}
+                  
+                  
+
+      };
+      
+      
+      
+      
+  ParticleDefinitions[EWSB] = {
+            
+     {hh   ,  {  Description -> "Higgs",
+		PDG -> {25,35,335},
+		PDG.IX -> {101000001,101000002,101000003},
+		OutputName -> "hh",
+                LaTeX -> "h" }}, 
+                 
+    {Ah   ,  {  Description -> "Pseudo-Scalar Higgs",
+                 PDG -> {0,0,36},
+		PDG.IX ->{0,0,101000011},
+		Mass -> {0,0,LesHouches},
+                Width -> {0,0,External} }},
+
+    {Hpm,    {Description -> "Charged Higgs",
+             OutputName -> {"Hm","Hp"}, 
+             (*RParity -> 1,*) 
+             LaTeX -> {"H^-", "H^+"}, 
+             ElectricCharge -> -1,
+             PDG -> {0, 0,-37},
+             PDG.IX -> {0, 0,-100000601},
+             FeynArtsNr -> {0, 0, 3},
+             Width -> {0, 0,External}, 
+	      Mass -> {0, 0,LesHouches} }},
+
+      
+     (* {Hppmm, {OutputName -> {"Hmm","Hpp"}, 
+	       PDG -> {-9000055,-9000065},
+	       FeynArtsNr -> {2337,3447},
+	       ElectricCharge -> -2,
+	       LaTeX -> {"\\delta^{c--}","\\delta^{c++}"}}},*)
+	       
+      {deltaRpp, {OutputName -> {"Hmm","Hpp"}, 
+	       PDG -> {9000055},
+	       FeynArtsNr -> {2337},
+	       ElectricCharge -> 2,
+	       Mass -> {LesHouches},
+	       LaTeX -> {"\\delta^{c--}","\\delta^{c++}"}}},       
+      
+      {VP,   { Description -> "Photon"}}, 
+      {VZ,   { Description -> "Z-Boson",
+	       Goldstone -> Ah[{1}] }},
+	       
+          	       
+	       
+	       
+      {VZR,  { (*RParity -> 1,*)  
+               Description -> "Z'-Boson",
+	       Goldstone -> Ah[{2}],
+	       PDG -> {32} }},    
+
+      {VG,   { Description -> "Gluon" }},          
+      {VWLm,  { Description -> "W-Boson",
+	       Goldstone -> Hpm[{1}],
+	       OutputName -> {"WLm","WLp"}}},
+      {VWRm, { (*RParity -> 1,*)
+               Mass -> LesHouches,
+	       PDG -> {34},
+	       FeynArtsNr -> 20,
+	       ElectricCharge -> -1,
+	       LaTeX -> {"W_R^-","W_R^+"},
+	       Goldstone -> Hpm[{2}],
+	       OutputName -> {"WRm","WRp"} }},    
+
+   (*   {gP,   { Description -> "Photon Ghost"}},         *)  
+      
+      
+      {gP,    { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 ElectricCharge -> 0,
+                 Width -> 0, 
+                 Mass -> 0,
+                 FeynArtsNr -> 1,
+                 LaTeX -> "\\eta^P",
+                 OutputName -> "gP" }}, 
+                 
+   (*   {gWp,  { Description -> "Positive W+ - Boson Ghost"}}, 
+      {gWpC, { Description -> "Negative W+ - Boson Ghost" }}, *)
+      
+     {gWLm,    {Description -> "Negative W-Boson Ghost",
+                 Mass -> Mass[VWLm],
+                 (*
+                 (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 FeynArtsNr -> 82,*)
+                 LaTeX -> "\\eta_L^-",
+                 OutputName -> "gWLm" }},
+
+      {gWLmC,    {Description -> "Positive W-Boson Ghost", 
+                 Mass -> Mass[VWLm],
+                 (*
+                 (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 FeynArtsNr -> 92,*)
+                 LaTeX -> "\\eta_L^+",
+                 OutputName -> "gWLp" }},
+      
+      
+      {gWRmC, { Description -> "Positive W'-Boson Ghost",
+               (*RParity -> 1,*)  
+               PDG -> 0,
+	       Width -> 0, 
+	       Mass -> Mass[VWRm],
+	       FeynArtsNr -> 83,
+	       ElectricCharge -> 1,
+	       LaTeX -> "\\eta_R^+",
+	       OutputName -> "gWRp" }}, 
+                 
+      {gWRm,{ Description -> "Negative W'-Boson Ghost",
+               (*RParity -> 1,*)  
+               PDG -> 0,
+	       Width -> 0, 
+	       Mass -> Mass[VWRm],
+	       FeynArtsNr -> 93,
+	       ElectricCharge -> -1,
+	       LaTeX -> "\\eta_R^-",
+	       OutputName -> "gWRm" }},
+
+   (*   {gZ,   { Description -> "Z-Boson Ghost" }}, *)
+      
+      
+      {gZ,    {  Description -> "Z-Boson Ghost"(*,
+                 (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 FeynArtsNr -> 2,
+                 LaTeX -> "\\eta^Z",
+                 OutputName -> "gZ" *)}},  
+      
+      
+      {gZR,  { Description -> "Z'-Ghost",
+	       Mass -> Mass[VZR]}},
+
+      {gG,   { Description -> "Gluon Ghost" }},          
+                               
+                 
+      {Fd,   { Description -> "Down-Quarks"}}, (*, ElectricCharge -> 1/3, PDG -> {1,3,5}, PDG.IX->{110890201,110890202,110890203}}},  *) 
+      {Fu,   { Description -> "Up-Quarks"}}, (*, ElectricCharge -> -2/3, PDG -> {2,4,6}, PDG.IX->{-110100401,-110100402,-110100403}}},  *) 
+      {Fe,   { Description -> "Leptons", ElectricCharge -> 1, PDG -> {11,13,15}, PDG.IX -> {110000601,110000602,110000603} }},
+      {Fv,   { Description -> "Neutrinos",
+	       LaTeX -> "\\nu",
+	       OutputName -> "nu",
+	       PDG -> {12,14,16,6000012,6000014,6000016},
+	       PDG.IX ->{990000001,990000002,990000003,990000004,990000005,990000006},
+                 Width -> {External,External,External,External,External,External}, 
+                 Mass -> {LesHouches,LesHouches,LesHouches,LesHouches,LesHouches,LesHouches}
+                 }},
+       {Fcpp,   { Description -> "doubly charged exotic fermions",
+	       LaTeX -> "\\chi^{++}",
+	       OutputName -> "cpp",
+	       PDG -> {6000055},
+	       PDG.IX ->{990000001},
+	       ElectricCharge -> 2,
+	       FeynArtsNr -> 990000001,
+                 Width -> External, 
+                 Mass -> LesHouches
+                 }},
+         {Fcp,   { Description -> "singly charged exotic fermions",
+	       LaTeX -> "\\chi^{+}",
+	       OutputName -> "cp",
+	       PDG -> {17(*,19*)},
+	       PDG.IX ->{110000604(*,110000605*)},
+	       ElectricCharge -> 1,
+	       FeynArtsNr -> {110000604},
+                 Width -> {External}, 
+                 Mass -> {LesHouches}
+                 }},         
+         {Fc,   { Description -> "neutral exotic fermions",
+	       LaTeX -> "\\chi^{0}",
+	       OutputName -> "c0",
+	       PDG -> {9000012,9000014(*,9000016*)},
+	       PDG.IX ->{990000007,990000008(*,990000009*)},
+	       ElectricCharge -> 0,
+	       FeynArtsNr -> {990000007},
+                 Width -> {External}, 
+                 Mass -> {LesHouches}
+                 }}  
+        };    
+        
+        
+        
+ WeylFermionAndIndermediate = {
+     
+    {H,      {   PDG -> {0},
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "H",
+                 OutputName -> "" }},
+   {Phi,     {  PDG -> {0},
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\Phi",
+                 OutputName -> "" }},
+   {sigmaH10,  { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\sigma_{H10}",
+                 OutputName -> "" }},
+   {sigmaH20,  { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\sigma_{H20}",
+                 OutputName -> "" }},
+   {phiH10,    { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\phi_{H10}",
+                 OutputName -> "" }},
+   {phiH20,    { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\phi_{H20}",
+	         OutputName -> "" }},
+   {deltaR, {LaTeX -> "\\hat{\\Delta}^c"}},
+   {deltaL,{
+     LaTeX -> "{\\Delta}_{L}"}},  
+   {Hp,        { PDG -> {0},
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 FeynArtsNr -> 322,
+                 LaTeX -> "H^+",
+                 OutputName -> "Hp" }}, 
+   {Hm,       {(*Description -> "Charged Down-Higgs",*)
+                 PDG -> {0},
+		 PDG.IX -> {0},
+		 Mass -> Automatic,
+                 (* FeynArtsNr -> 23,*)
+		 FeynArtsNr -> 302,
+		 LaTeX -> "H_1^-",
+		 OutputName -> "Hm" }},
+   {sigmaR0,  { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\sigma_{R0}",
+                 OutputName -> "" }},
+   {phiR0,    { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\phi_{R0}",
+                 OutputName -> "" }},
+                 
+   {sigmaL0,  { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\sigma_{L0}",
+                 OutputName -> "" }},
+   {phiL0,    { (*RParity -> 1,*)  
+                 PDG -> 0,
+                 Width -> 0, 
+                 Mass -> Automatic,
+                 LaTeX -> "\\phi_{L0}",
+                 OutputName -> "" }},              
+
+   {dR,     {LaTeX -> "d_R" }},
+   {eR,     {LaTeX -> "e_R" }},
+   {lep,     {LaTeX -> "l" }},
+   {uR,     {LaTeX -> "u_R" }},
+   {q,     {LaTeX -> "q" }},
+   {l,     {LaTeX -> "l" }},
+   {qR,     {LaTeX -> "q_R" }},
+   {lR,     {LaTeX -> "l_R" }},  
+   {eL,     {LaTeX -> "e_L" }},
+   {dL,     {LaTeX -> "d_L" }},
+   {uL,     {LaTeX -> "u_L" }},
+   {nuL,     {LaTeX -> "\\nu_L" }},
+   {nuR,    { (*RParity -> 1,*)  
+             PDG -> 0,
+             Width -> 0, 
+             Mass -> Automatic,
+             LaTeX -> "\\nu_R",
+             OutputName -> "" }},
+   {Fv0,  { (*RParity -> 1,*)
+            (*PDG -> {0, 0, 0, 0, 0, 0, },*)
+            LaTeX -> "\\nu_0",
+            OutputName -> "Fv0"}},
+   {DR,     {LaTeX -> "D_R" }},
+   {ER,     {LaTeX -> "E_R" }},
+   {UR,     {LaTeX -> "U_R" }},
+   {EL,     {LaTeX -> "E_L" }},
+   {DL,     {LaTeX -> "D_L" }},
+   {UL,     {LaTeX -> "U_L" }},
+   {TPL,     {LaTeX -> "TP_L" }},
+   {TMR,     {LaTeX -> "TM_R" }},
+   {Ft0,     {LaTeX -> "T_0" }}
+        };       
 
 

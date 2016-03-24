@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 15:43 on 9.3.2016   
+! File created at 20:18 on 23.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -20,26 +20,27 @@ Logical :: SignOfMassChanged =.False.
 Logical :: SignOfMuChanged =.False.  
 Contains 
  
-Subroutine TreeMasses(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,             & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,            & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,ZUR,ZDL,              & 
-& ZEL,ZUL,ZH,ZW,ZZ,v1,v2,vtl,vtr,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,              & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,GenerationMixing,kont)
+Subroutine TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,              & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
+& ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,               & 
+& ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,MU12
 
-Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Real(dp),Intent(out) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
-& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
-& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
-& UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp),Intent(out) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
+& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
+& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
+& UP(3,3),ZH(3,3)
 
-Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(out) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
+& ZW(4,4),ZZ(3,3)
 
-Real(dp),Intent(in) :: v1,v2,vtl,vtr
+Real(dp),Intent(in) :: vd,vu,vR
 
 Logical, Intent(in) :: GenerationMixing 
 Integer, Intent(inout) :: kont 
@@ -48,10 +49,9 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'TreeMassesDMLR'
  
 kont = 0 
-Call CalculateVPVZVZR(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
+Call CalculateVPVZVZR(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 
-Call CalculateVWLmVWRm(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,              & 
-& PhiW,kont)
+Call CalculateVWLmVWRm(g2,gR,vd,vu,vR,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,PhiW,kont)
 
 ! ------------------------------- 
 ! Mass of Fcp 
@@ -67,38 +67,65 @@ End if
 ! Mass of Fcpp 
 MFcpp = M23 
 If (RotateNegativeFermionMasses) Then 
+phaT = Abs(MFcpp)/MFcpp
 MFcpp = Abs(MFcpp) 
 MFcpp2 = MFcpp**2 
 Else 
+phaT = 1._dp
 MFcpp2 = MFcpp**2 
 End if
 ! ------------------------------- 
-Call CalculateMhh(mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,v1,             & 
-& v2,vtl,vtr,ZH,Mhh,Mhh2,kont)
+MdeltaRpp2 = (-2._dp*(mu32) + ALP3*vd**2 - 4*ALP2*vd*vu + ALP1*(vd**2 +               & 
+&  vu**2) + 2*RHO1*vR**2 + 4*RHO2*vR**2)/2._dp 
+  If (MdeltaRpp2.ne.MdeltaRpp2) Then 
+      Write(*,*) 'NaN appearing in MdeltaRpp2' 
+      Call TerminateProgram 
+    End If 
+  If (MdeltaRpp2.Ge.0._dp) Then 
+MdeltaRpp = sqrt(MdeltaRpp2) 
+  Else 
+    If (ErrorLevel.Ge.0) Then 
+      Write(10,*) 'Warning from MdeltaRpp2' 
+      Write(10,*) 'mass squarred is negative: ',MdeltaRpp2 
+    End If 
+     Write(ErrCan,*) 'Warning from routine MdeltaRpp2' 
+     Write(ErrCan,*) 'in the calculation of the masses' 
+     Write(ErrCan,*) 'occurred a negative mass squared!' 
+     Write(ErrCan,*) MdeltaRpp2 
+     Write(*,*) 'Warning from routine MdeltaRpp2' 
+     Write(*,*) 'in the calculation of the masses' 
+     Write(*,*) 'occurred a negative mass squared!' 
+     Write(*,*) MdeltaRpp2 
+        MdeltaRpp= 1._dp 
+        MdeltaRpp2= 1._dp 
+   SignOfMassChanged = .True. 
+ End if 
+
+
+! ------------------------------- 
+Call CalculateMhh(mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,             & 
+& vd,vu,vR,ZH,Mhh,Mhh2,kont)
 
 kontSave = kont 
-Call CalculateMAh(gBL,g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
-& LAM3,v1,v2,vtl,vtr,ZZ,UP,MAh,MAh2,kont)
+Call CalculateMAh(gBL,g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
+& LAM2,LAM3,vd,vu,vR,ZZ,UP,MAh,MAh2,kont)
 
 kont = kontSave 
 kontSave = kont 
-Call CalculateMHpm(g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
-& LAM3,v1,v2,vtl,vtr,PhiW,UC,MHpm,MHpm2,kont)
+Call CalculateMHpm(g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,           & 
+& LAM3,vd,vu,vR,PhiW,UC,MHpm,MHpm2,kont)
 
 kont = kontSave 
-Call CalculateMHppmm(mudl2,mudr2,RHO2,RHO1,rh3,ALP3,ALP1,BETA2,v1,v2,vtl,             & 
-& vtr,UCC,MHppmm,MHppmm2,kont)
-
-Call CalculateMFd(YQ1,v1,ZDL,ZDR,MFd,kont)
+Call CalculateMFd(YQ1,YQ2,vd,vu,ZDL,ZDR,MFd,kont)
 
 MFd2 = MFd**2 
-Call CalculateMFu(YQ1,v2,ZUL,ZUR,MFu,kont)
+Call CalculateMFu(YQ1,YQ2,vd,vu,ZUL,ZUR,MFu,kont)
 
 MFu2 = MFu**2 
-Call CalculateMFe(YL1,v2,ZEL,ZER,MFe,kont)
+Call CalculateMFe(YL1,YL2,vd,vu,ZEL,ZER,MFe,kont)
 
 MFe2 = MFe**2 
-Call CalculateMFv(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
+Call CalculateMFv(YDR,YL1,YL2,vd,vu,vR,UV,MFv,kont)
 
 MFv2 = MFv**2 
 Call CalculateMFc(M23,UT,MFc,kont)
@@ -106,9 +133,9 @@ Call CalculateMFc(M23,UT,MFc,kont)
 MFc2 = MFc**2 
 
  
- Call SortGoldstones(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,MVWLm2,            & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,ZUR,ZDL,              & 
+ Call SortGoldstones(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,          & 
+& MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
 & ZEL,ZUL,ZH,ZW,ZZ,kont)
 
 If (SignOfMassChanged) Then  
@@ -134,33 +161,34 @@ End If
 ! Setting Goldstone masses 
 ! -------------------------------- 
  
-PhiW = ACos(Sqrt(Abs(ZW(1,1))**2 + Abs(ZW(1,2))**2))
 TW = ASin(Abs(ZZ(2,1)))
+PhiW = ACos(Sqrt(Abs(ZW(1,1))**2 + Abs(ZW(1,2))**2))
 Iname = Iname - 1 
  
 End Subroutine  TreeMasses 
  
  
-Subroutine TreeMassesEffPot(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,            & 
-& MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,              & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,               & 
-& ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,v1,v2,vtl,vtr,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,           & 
-& LAM1,BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,GenerationMixing,kont)
+Subroutine TreeMassesEffPot(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,              & 
+& MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,            & 
+& MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,              & 
+& UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,              & 
+& ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,MU12
 
-Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Real(dp),Intent(out) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
-& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
-& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
-& UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp),Intent(out) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
+& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
+& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
+& UP(3,3),ZH(3,3)
 
-Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(out) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
+& ZW(4,4),ZZ(3,3)
 
-Real(dp),Intent(in) :: v1,v2,vtl,vtr
+Real(dp),Intent(in) :: vd,vu,vR
 
 Logical, Intent(in) :: GenerationMixing 
 Integer, Intent(inout) :: kont 
@@ -169,10 +197,10 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'TreeMassesDMLR'
  
 kont = 0 
-Call CalculateVPVZVZREffPot(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
+Call CalculateVPVZVZREffPot(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 
-Call CalculateVWLmVWRmEffPot(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,               & 
-& MVWRm2,PhiW,kont)
+Call CalculateVWLmVWRmEffPot(g2,gR,vd,vu,vR,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,             & 
+& PhiW,kont)
 
 ! ------------------------------- 
 ! Mass of Fcp 
@@ -188,38 +216,50 @@ End if
 ! Mass of Fcpp 
 MFcpp = M23 
 If (RotateNegativeFermionMasses) Then 
+phaT = Abs(MFcpp)/MFcpp
 MFcpp = Abs(MFcpp) 
 MFcpp2 = MFcpp**2 
 Else 
+phaT = 1._dp
 MFcpp2 = MFcpp**2 
 End if
 ! ------------------------------- 
-Call CalculateMhhEffPot(mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,               & 
-& LAM3,v1,v2,vtl,vtr,ZH,Mhh,Mhh2,kont)
+MdeltaRpp2 = (-2._dp*(mu32) + ALP3*vd**2 - 4*ALP2*vd*vu + ALP1*(vd**2 +               & 
+&  vu**2) + 2*RHO1*vR**2 + 4*RHO2*vR**2)/2._dp 
+  If (MdeltaRpp2.ne.MdeltaRpp2) Then 
+      Write(*,*) 'NaN appearing in MdeltaRpp2' 
+      Call TerminateProgram 
+    End If 
+  If (MdeltaRpp2.Ge.0._dp) Then 
+MdeltaRpp = sqrt(MdeltaRpp2) 
+  Else 
+ End if 
+
+
+! ------------------------------- 
+Call CalculateMhhEffPot(mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,vd,vu,vR,ZH,Mhh,Mhh2,kont)
 
 kontSave = kont 
-Call CalculateMAhEffPot(gBL,g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,           & 
-& BETA2,LAM3,v1,v2,vtl,vtr,ZZ,UP,MAh,MAh2,kont)
+Call CalculateMAhEffPot(gBL,g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,            & 
+& LAM4,LAM2,LAM3,vd,vu,vR,ZZ,UP,MAh,MAh2,kont)
 
 kont = kontSave 
 kontSave = kont 
-Call CalculateMHpmEffPot(g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,              & 
-& BETA2,LAM3,v1,v2,vtl,vtr,PhiW,UC,MHpm,MHpm2,kont)
+Call CalculateMHpmEffPot(g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,               & 
+& LAM4,LAM2,LAM3,vd,vu,vR,PhiW,UC,MHpm,MHpm2,kont)
 
 kont = kontSave 
-Call CalculateMHppmmEffPot(mudl2,mudr2,RHO2,RHO1,rh3,ALP3,ALP1,BETA2,v1,              & 
-& v2,vtl,vtr,UCC,MHppmm,MHppmm2,kont)
-
-Call CalculateMFdEffPot(YQ1,v1,ZDL,ZDR,MFd,kont)
+Call CalculateMFdEffPot(YQ1,YQ2,vd,vu,ZDL,ZDR,MFd,kont)
 
 MFd2 = MFd**2 
-Call CalculateMFuEffPot(YQ1,v2,ZUL,ZUR,MFu,kont)
+Call CalculateMFuEffPot(YQ1,YQ2,vd,vu,ZUL,ZUR,MFu,kont)
 
 MFu2 = MFu**2 
-Call CalculateMFeEffPot(YL1,v2,ZEL,ZER,MFe,kont)
+Call CalculateMFeEffPot(YL1,YL2,vd,vu,ZEL,ZER,MFe,kont)
 
 MFe2 = MFe**2 
-Call CalculateMFvEffPot(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
+Call CalculateMFvEffPot(YDR,YL1,YL2,vd,vu,vR,UV,MFv,kont)
 
 MFv2 = MFv**2 
 Call CalculateMFcEffPot(M23,UT,MFc,kont)
@@ -250,20 +290,18 @@ Iname = Iname - 1
 End Subroutine  TreeMassesEffPot 
  
  
-Subroutine CalculateMhh(mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,               & 
-& LAM3,v1,v2,vtl,vtr,ZH,Mhh,Mhh2,kont)
+Subroutine CalculateMhh(mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,vd,vu,vR,ZH,Mhh,Mhh2,kont)
 
-Real(dp), Intent(in) :: MU12,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr
-
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3
+Real(dp), Intent(in) :: mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
 Integer :: j1,j2,j3,j4, pos 
-Real(dp), Intent(out) :: Mhh(4), Mhh2(4) 
-Real(dp), Intent(out) :: ZH(4,4) 
+Real(dp), Intent(out) :: Mhh(3), Mhh2(3) 
+Real(dp), Intent(out) :: ZH(3,3) 
  
-Real(dp) :: mat(4,4)  
+Real(dp) :: mat(3,3)  
 
 Real(dp) ::  test(2) 
 
@@ -271,57 +309,47 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMhh'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+MU12
-mat(1,1) = mat(1,1)+3*LAM1*v1**2
-mat(1,1) = mat(1,1)+LAM1*v2**2
-mat(1,1) = mat(1,1)+2*LAM3*v2**2
-mat(1,1) = mat(1,1)+(ALP1*vtl**2)/2._dp
-mat(1,1) = mat(1,1)-(BETA2*vtl*vtr)
-mat(1,1) = mat(1,1)+(ALP1*vtr**2)/2._dp
+mat(1,1) = mat(1,1)-1._dp*(MU12)
+mat(1,1) = mat(1,1)+3*LAM1*vd**2
+mat(1,1) = mat(1,1)-6*LAM4*vd*vu
+mat(1,1) = mat(1,1)+LAM1*vu**2
+mat(1,1) = mat(1,1)+4*LAM2*vu**2
+mat(1,1) = mat(1,1)+2*LAM3*vu**2
+mat(1,1) = mat(1,1)+(ALP1*vR**2)/2._dp
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+2*LAM1*v1*v2
-mat(1,2) = mat(1,2)+4*LAM3*v1*v2
+mat(1,2) = mat(1,2)+2._dp*(MU22)
+mat(1,2) = mat(1,2)-3*LAM4*vd**2
+mat(1,2) = mat(1,2)+2*LAM1*vd*vu
+mat(1,2) = mat(1,2)+8*LAM2*vd*vu
+mat(1,2) = mat(1,2)+4*LAM3*vd*vu
+mat(1,2) = mat(1,2)-3*LAM4*vu**2
+mat(1,2) = mat(1,2)-(ALP2*vR**2)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+ALP1*v1*vtl
-mat(1,3) = mat(1,3)-(BETA2*v1*vtr)
-mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)-(BETA2*v1*vtl)
-mat(1,4) = mat(1,4)+ALP1*v1*vtr
+mat(1,3) = mat(1,3)+ALP1*vd*vR
+mat(1,3) = mat(1,3)-2*ALP2*vu*vR
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+MU12
-mat(2,2) = mat(2,2)+LAM1*v1**2
-mat(2,2) = mat(2,2)+2*LAM3*v1**2
-mat(2,2) = mat(2,2)+3*LAM1*v2**2
-mat(2,2) = mat(2,2)+(ALP1*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtr**2)/2._dp
+mat(2,2) = mat(2,2)-1._dp*(MU12)
+mat(2,2) = mat(2,2)+LAM1*vd**2
+mat(2,2) = mat(2,2)+4*LAM2*vd**2
+mat(2,2) = mat(2,2)+2*LAM3*vd**2
+mat(2,2) = mat(2,2)-6*LAM4*vd*vu
+mat(2,2) = mat(2,2)+3*LAM1*vu**2
+mat(2,2) = mat(2,2)+(ALP1*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(ALP3*vR**2)/2._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+ALP1*v2*vtl
-mat(2,3) = mat(2,3)+ALP3*v2*vtl
-mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)+ALP1*v2*vtr
-mat(2,4) = mat(2,4)+ALP3*v2*vtr
+mat(2,3) = mat(2,3)-2*ALP2*vd*vR
+mat(2,3) = mat(2,3)+ALP1*vu*vR
+mat(2,3) = mat(2,3)+ALP3*vu*vR
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+mudl2
-mat(3,3) = mat(3,3)+(ALP1*v1**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP1*v2**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v2**2)/2._dp
-mat(3,3) = mat(3,3)+3*RHO1*vtl**2
-mat(3,3) = mat(3,3)+(rh3*vtr**2)/2._dp
-mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)-(BETA2*v1**2)/2._dp
-mat(3,4) = mat(3,4)+rh3*vtl*vtr
-mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+mudr2
-mat(4,4) = mat(4,4)+(ALP1*v1**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP1*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(rh3*vtl**2)/2._dp
-mat(4,4) = mat(4,4)+3*RHO1*vtr**2
+mat(3,3) = mat(3,3)-1._dp*(mu32)
+mat(3,3) = mat(3,3)+(ALP1*vd**2)/2._dp
+mat(3,3) = mat(3,3)-2*ALP2*vd*vu
+mat(3,3) = mat(3,3)+(ALP1*vu**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vu**2)/2._dp
+mat(3,3) = mat(3,3)+3*RHO1*vR**2
 
  
- Do i1=2,4
+ Do i1=2,3
   Do i2 = 1, i1-1 
   mat(i1,i2) = mat(i2,i1) 
   End do 
@@ -349,7 +377,7 @@ If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then
 End If 
 
 
-Do i1=1,4
+Do i1=1,3
   If (Abs(Mhh2(i1)).Le.MaxMassNumericalZero) Mhh2(i1) = 1.E-10_dp 
   If (Mhh2(i1).ne.Mhh2(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -380,20 +408,20 @@ Iname = Iname - 1
  
 End Subroutine CalculateMhh 
 
-Subroutine CalculateMAh(gBL,g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,           & 
-& BETA2,LAM3,v1,v2,vtl,vtr,ZZ,UP,MAh,MAh2,kont)
+Subroutine CalculateMAh(gBL,g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,            & 
+& LAM4,LAM2,LAM3,vd,vu,vR,ZZ,UP,MAh,MAh2,kont)
 
-Real(dp), Intent(in) :: gBL,g2,gR,MU12,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: gBL,g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR
 
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3,ZZ(3,3)
+Complex(dp), Intent(in) :: ZZ(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
 Integer :: j1,j2,j3,j4, pos 
-Real(dp), Intent(out) :: MAh(4), MAh2(4) 
-Real(dp), Intent(out) :: UP(4,4) 
+Real(dp), Intent(out) :: MAh(3), MAh2(3) 
+Real(dp), Intent(out) :: UP(3,3) 
  
-Real(dp) :: mat(4,4)  
+Real(dp) :: mat(3,3)  
 
 Real(dp) ::  test(2) 
 
@@ -401,158 +429,100 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMAh'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+MU12
-mat(1,1) = mat(1,1)+LAM1*v1**2
-mat(1,1) = mat(1,1)+LAM1*v2**2
-mat(1,1) = mat(1,1)+2*LAM3*v2**2
-mat(1,1) = mat(1,1)+(ALP1*vtl**2)/2._dp
-mat(1,1) = mat(1,1)+BETA2*vtl*vtr
-mat(1,1) = mat(1,1)+(ALP1*vtr**2)/2._dp
-mat(1,1) = mat(1,1)+(g2**2*v1**2*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,1) = mat(1,1)-(g2*gR*v1**2*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,1) = mat(1,1)+(g2**2*v1**2*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,1) = mat(1,1)-(g2*gR*v1**2*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,1) = mat(1,1)-(g2*gR*v1**2*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,1) = mat(1,1)+(gR**2*v1**2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,1) = mat(1,1)-(g2*gR*v1**2*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(1,1) = mat(1,1)+(gR**2*v1**2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/4._dp
+mat(1,1) = mat(1,1)-1._dp*(MU12)
+mat(1,1) = mat(1,1)+LAM1*vd**2
+mat(1,1) = mat(1,1)-2*LAM4*vd*vu
+mat(1,1) = mat(1,1)+LAM1*vu**2
+mat(1,1) = mat(1,1)-4*LAM2*vu**2
+mat(1,1) = mat(1,1)+2*LAM3*vu**2
+mat(1,1) = mat(1,1)+(ALP1*vR**2)/2._dp
+mat(1,1) = mat(1,1)+(g2**2*vd**2*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/4._dp
+mat(1,1) = mat(1,1)-(g2*gR*vd**2*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
+mat(1,1) = mat(1,1)+(g2**2*vd**2*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/4._dp
+mat(1,1) = mat(1,1)-(g2*gR*vd**2*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
+mat(1,1) = mat(1,1)-(g2*gR*vd**2*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
+mat(1,1) = mat(1,1)+(gR**2*vd**2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/4._dp
+mat(1,1) = mat(1,1)-(g2*gR*vd**2*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
+mat(1,1) = mat(1,1)+(gR**2*vd**2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/4._dp
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-(g2**2*v1*v2*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,2) = mat(1,2)+(g2*gR*v1*v2*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,2) = mat(1,2)-(g2**2*v1*v2*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,2) = mat(1,2)+(g2*gR*v1*v2*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,2) = mat(1,2)+(g2*gR*v1*v2*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,2) = mat(1,2)-(gR**2*v1*v2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,2) = mat(1,2)+(g2*gR*v1*v2*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(1,2) = mat(1,2)-(gR**2*v1*v2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/4._dp
+mat(1,2) = mat(1,2)-2._dp*(MU22)
+mat(1,2) = mat(1,2)+LAM4*vd**2
+mat(1,2) = mat(1,2)-8*LAM2*vd*vu
+mat(1,2) = mat(1,2)+LAM4*vu**2
+mat(1,2) = mat(1,2)+ALP2*vR**2
+mat(1,2) = mat(1,2)-(g2**2*vd*vu*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/4._dp
+mat(1,2) = mat(1,2)+(g2*gR*vd*vu*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
+mat(1,2) = mat(1,2)-(g2**2*vd*vu*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/4._dp
+mat(1,2) = mat(1,2)+(g2*gR*vd*vu*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
+mat(1,2) = mat(1,2)+(g2*gR*vd*vu*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
+mat(1,2) = mat(1,2)-(gR**2*vd*vu*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/4._dp
+mat(1,2) = mat(1,2)+(g2*gR*vd*vu*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
+mat(1,2) = mat(1,2)-(gR**2*vd*vu*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/4._dp
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+BETA2*v1*vtr
-mat(1,3) = mat(1,3)+(g2*gBL*v1*vtl*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/4._dp
-mat(1,3) = mat(1,3)-(gBL*gR*v1*vtl*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/4._dp
-mat(1,3) = mat(1,3)+(g2*gBL*v1*vtl*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/4._dp
-mat(1,3) = mat(1,3)-(gBL*gR*v1*vtl*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/4._dp
-mat(1,3) = mat(1,3)+(g2*gBL*v1*vtl*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,3) = mat(1,3)-(g2**2*v1*vtl*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/2._dp
-mat(1,3) = mat(1,3)+(g2*gR*v1*vtl*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,3) = mat(1,3)+(g2*gBL*v1*vtl*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,3) = mat(1,3)-(g2**2*v1*vtl*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/2._dp
-mat(1,3) = mat(1,3)+(g2*gR*v1*vtl*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,3) = mat(1,3)-(gBL*gR*v1*vtl*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,3) = mat(1,3)+(g2*gR*v1*vtl*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,3) = mat(1,3)-(gBL*gR*v1*vtl*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/4._dp
-mat(1,3) = mat(1,3)+(g2*gR*v1*vtl*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)-(BETA2*v1*vtl)
-mat(1,4) = mat(1,4)+(g2*gBL*v1*vtr*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/4._dp
-mat(1,4) = mat(1,4)-(gBL*gR*v1*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/4._dp
-mat(1,4) = mat(1,4)+(g2*gBL*v1*vtr*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/4._dp
-mat(1,4) = mat(1,4)-(gBL*gR*v1*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/4._dp
-mat(1,4) = mat(1,4)+(g2*gBL*v1*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,4) = mat(1,4)-(g2*gR*v1*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(1,4) = mat(1,4)+(g2*gBL*v1*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,4) = mat(1,4)-(g2*gR*v1*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(1,4) = mat(1,4)-(gBL*gR*v1*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,4) = mat(1,4)-(g2*gR*v1*vtr*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(1,4) = mat(1,4)+(gR**2*v1*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/2._dp
-mat(1,4) = mat(1,4)-(gBL*gR*v1*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/4._dp
-mat(1,4) = mat(1,4)-(g2*gR*v1*vtr*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(1,4) = mat(1,4)+(gR**2*v1*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/2._dp
+mat(1,3) = mat(1,3)+(g2*gBL*vd*vR*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/4._dp
+mat(1,3) = mat(1,3)-(gBL*gR*vd*vR*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/4._dp
+mat(1,3) = mat(1,3)+(g2*gBL*vd*vR*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/4._dp
+mat(1,3) = mat(1,3)-(gBL*gR*vd*vR*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/4._dp
+mat(1,3) = mat(1,3)+(g2*gBL*vd*vR*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/4._dp
+mat(1,3) = mat(1,3)-(g2*gR*vd*vR*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
+mat(1,3) = mat(1,3)+(g2*gBL*vd*vR*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/4._dp
+mat(1,3) = mat(1,3)-(g2*gR*vd*vR*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
+mat(1,3) = mat(1,3)-(gBL*gR*vd*vR*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/4._dp
+mat(1,3) = mat(1,3)-(g2*gR*vd*vR*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
+mat(1,3) = mat(1,3)+(gR**2*vd*vR*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/2._dp
+mat(1,3) = mat(1,3)-(gBL*gR*vd*vR*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/4._dp
+mat(1,3) = mat(1,3)-(g2*gR*vd*vR*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
+mat(1,3) = mat(1,3)+(gR**2*vd*vR*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/2._dp
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+MU12
-mat(2,2) = mat(2,2)+LAM1*v1**2
-mat(2,2) = mat(2,2)+2*LAM3*v1**2
-mat(2,2) = mat(2,2)+LAM1*v2**2
-mat(2,2) = mat(2,2)+(ALP1*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(g2**2*v2**2*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/4._dp
-mat(2,2) = mat(2,2)-(g2*gR*v2**2*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(2,2) = mat(2,2)+(g2**2*v2**2*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/4._dp
-mat(2,2) = mat(2,2)-(g2*gR*v2**2*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(2,2) = mat(2,2)-(g2*gR*v2**2*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(2,2) = mat(2,2)+(gR**2*v2**2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/4._dp
-mat(2,2) = mat(2,2)-(g2*gR*v2**2*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(2,2) = mat(2,2)+(gR**2*v2**2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/4._dp
+mat(2,2) = mat(2,2)-1._dp*(MU12)
+mat(2,2) = mat(2,2)+LAM1*vd**2
+mat(2,2) = mat(2,2)-4*LAM2*vd**2
+mat(2,2) = mat(2,2)+2*LAM3*vd**2
+mat(2,2) = mat(2,2)-2*LAM4*vd*vu
+mat(2,2) = mat(2,2)+LAM1*vu**2
+mat(2,2) = mat(2,2)+(ALP1*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(ALP3*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(g2**2*vu**2*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/4._dp
+mat(2,2) = mat(2,2)-(g2*gR*vu**2*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
+mat(2,2) = mat(2,2)+(g2**2*vu**2*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/4._dp
+mat(2,2) = mat(2,2)-(g2*gR*vu**2*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
+mat(2,2) = mat(2,2)-(g2*gR*vu**2*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
+mat(2,2) = mat(2,2)+(gR**2*vu**2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/4._dp
+mat(2,2) = mat(2,2)-(g2*gR*vu**2*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
+mat(2,2) = mat(2,2)+(gR**2*vu**2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/4._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)-(g2*gBL*v2*vtl*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/4._dp
-mat(2,3) = mat(2,3)+(gBL*gR*v2*vtl*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/4._dp
-mat(2,3) = mat(2,3)-(g2*gBL*v2*vtl*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/4._dp
-mat(2,3) = mat(2,3)+(gBL*gR*v2*vtl*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/4._dp
-mat(2,3) = mat(2,3)-(g2*gBL*v2*vtl*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/4._dp
-mat(2,3) = mat(2,3)+(g2**2*v2*vtl*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2))/2._dp
-mat(2,3) = mat(2,3)-(g2*gR*v2*vtl*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(2,3) = mat(2,3)-(g2*gBL*v2*vtl*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/4._dp
-mat(2,3) = mat(2,3)+(g2**2*v2*vtl*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3))/2._dp
-mat(2,3) = mat(2,3)-(g2*gR*v2*vtl*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(2,3) = mat(2,3)+(gBL*gR*v2*vtl*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/4._dp
-mat(2,3) = mat(2,3)-(g2*gR*v2*vtl*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(2,3) = mat(2,3)+(gBL*gR*v2*vtl*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/4._dp
-mat(2,3) = mat(2,3)-(g2*gR*v2*vtl*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)-(g2*gBL*v2*vtr*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/4._dp
-mat(2,4) = mat(2,4)+(gBL*gR*v2*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/4._dp
-mat(2,4) = mat(2,4)-(g2*gBL*v2*vtr*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/4._dp
-mat(2,4) = mat(2,4)+(gBL*gR*v2*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/4._dp
-mat(2,4) = mat(2,4)-(g2*gBL*v2*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/4._dp
-mat(2,4) = mat(2,4)+(g2*gR*v2*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
-mat(2,4) = mat(2,4)-(g2*gBL*v2*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/4._dp
-mat(2,4) = mat(2,4)+(g2*gR*v2*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
-mat(2,4) = mat(2,4)+(gBL*gR*v2*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/4._dp
-mat(2,4) = mat(2,4)+(g2*gR*v2*vtr*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
-mat(2,4) = mat(2,4)-(gR**2*v2*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/2._dp
-mat(2,4) = mat(2,4)+(gBL*gR*v2*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/4._dp
-mat(2,4) = mat(2,4)+(g2*gR*v2*vtr*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
-mat(2,4) = mat(2,4)-(gR**2*v2*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/2._dp
+mat(2,3) = mat(2,3)-(g2*gBL*vu*vR*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/4._dp
+mat(2,3) = mat(2,3)+(gBL*gR*vu*vR*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/4._dp
+mat(2,3) = mat(2,3)-(g2*gBL*vu*vR*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/4._dp
+mat(2,3) = mat(2,3)+(gBL*gR*vu*vR*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/4._dp
+mat(2,3) = mat(2,3)-(g2*gBL*vu*vR*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/4._dp
+mat(2,3) = mat(2,3)+(g2*gR*vu*vR*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/4._dp
+mat(2,3) = mat(2,3)-(g2*gBL*vu*vR*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/4._dp
+mat(2,3) = mat(2,3)+(g2*gR*vu*vR*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/4._dp
+mat(2,3) = mat(2,3)+(gBL*gR*vu*vR*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/4._dp
+mat(2,3) = mat(2,3)+(g2*gR*vu*vR*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/4._dp
+mat(2,3) = mat(2,3)-(gR**2*vu*vR*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2))/2._dp
+mat(2,3) = mat(2,3)+(gBL*gR*vu*vR*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/4._dp
+mat(2,3) = mat(2,3)+(g2*gR*vu*vR*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/4._dp
+mat(2,3) = mat(2,3)-(gR**2*vu*vR*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3))/2._dp
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+mudl2
-mat(3,3) = mat(3,3)+(ALP1*v1**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP1*v2**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v2**2)/2._dp
-mat(3,3) = mat(3,3)+RHO1*vtl**2
-mat(3,3) = mat(3,3)+(rh3*vtr**2)/2._dp
-mat(3,3) = mat(3,3)+gBL**2*vtl**2*Conjg(ZZ(1,2))*RXiZ*ZZ(1,2)
-mat(3,3) = mat(3,3)-(g2*gBL*vtl**2*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))
-mat(3,3) = mat(3,3)+gBL**2*vtl**2*Conjg(ZZ(1,3))*RXiZR*ZZ(1,3)
-mat(3,3) = mat(3,3)-(g2*gBL*vtl**2*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))
-mat(3,3) = mat(3,3)-(g2*gBL*vtl**2*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))
-mat(3,3) = mat(3,3)+g2**2*vtl**2*Conjg(ZZ(2,2))*RXiZ*ZZ(2,2)
-mat(3,3) = mat(3,3)-(g2*gBL*vtl**2*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))
-mat(3,3) = mat(3,3)+g2**2*vtl**2*Conjg(ZZ(2,3))*RXiZR*ZZ(2,3)
-mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)-(BETA2*v1**2)/2._dp
-mat(3,4) = mat(3,4)+gBL**2*vtl*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(1,2)
-mat(3,4) = mat(3,4)-(g2*gBL*vtl*vtr*Conjg(ZZ(2,2))*RXiZ*ZZ(1,2))/2._dp
-mat(3,4) = mat(3,4)-(gBL*gR*vtl*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))/2._dp
-mat(3,4) = mat(3,4)+gBL**2*vtl*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(1,3)
-mat(3,4) = mat(3,4)-(g2*gBL*vtl*vtr*Conjg(ZZ(2,3))*RXiZR*ZZ(1,3))/2._dp
-mat(3,4) = mat(3,4)-(gBL*gR*vtl*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))/2._dp
-mat(3,4) = mat(3,4)-(g2*gBL*vtl*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(2,2))/2._dp
-mat(3,4) = mat(3,4)+(g2*gR*vtl*vtr*Conjg(ZZ(3,2))*RXiZ*ZZ(2,2))/2._dp
-mat(3,4) = mat(3,4)-(g2*gBL*vtl*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(2,3))/2._dp
-mat(3,4) = mat(3,4)+(g2*gR*vtl*vtr*Conjg(ZZ(3,3))*RXiZR*ZZ(2,3))/2._dp
-mat(3,4) = mat(3,4)-(gBL*gR*vtl*vtr*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))/2._dp
-mat(3,4) = mat(3,4)+(g2*gR*vtl*vtr*Conjg(ZZ(2,2))*RXiZ*ZZ(3,2))/2._dp
-mat(3,4) = mat(3,4)-(gBL*gR*vtl*vtr*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))/2._dp
-mat(3,4) = mat(3,4)+(g2*gR*vtl*vtr*Conjg(ZZ(2,3))*RXiZR*ZZ(3,3))/2._dp
-mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+mudr2
-mat(4,4) = mat(4,4)+(ALP1*v1**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP1*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(rh3*vtl**2)/2._dp
-mat(4,4) = mat(4,4)+RHO1*vtr**2
-mat(4,4) = mat(4,4)+gBL**2*vtr**2*Conjg(ZZ(1,2))*RXiZ*ZZ(1,2)
-mat(4,4) = mat(4,4)-(gBL*gR*vtr**2*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))
-mat(4,4) = mat(4,4)+gBL**2*vtr**2*Conjg(ZZ(1,3))*RXiZR*ZZ(1,3)
-mat(4,4) = mat(4,4)-(gBL*gR*vtr**2*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))
-mat(4,4) = mat(4,4)-(gBL*gR*vtr**2*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))
-mat(4,4) = mat(4,4)+gR**2*vtr**2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2)
-mat(4,4) = mat(4,4)-(gBL*gR*vtr**2*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))
-mat(4,4) = mat(4,4)+gR**2*vtr**2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3)
+mat(3,3) = mat(3,3)-1._dp*(mu32)
+mat(3,3) = mat(3,3)+(ALP1*vd**2)/2._dp
+mat(3,3) = mat(3,3)-2*ALP2*vd*vu
+mat(3,3) = mat(3,3)+(ALP1*vu**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vu**2)/2._dp
+mat(3,3) = mat(3,3)+RHO1*vR**2
+mat(3,3) = mat(3,3)+gBL**2*vR**2*Conjg(ZZ(1,2))*RXiZ*ZZ(1,2)
+mat(3,3) = mat(3,3)-(gBL*gR*vR**2*Conjg(ZZ(3,2))*RXiZ*ZZ(1,2))
+mat(3,3) = mat(3,3)+gBL**2*vR**2*Conjg(ZZ(1,3))*RXiZR*ZZ(1,3)
+mat(3,3) = mat(3,3)-(gBL*gR*vR**2*Conjg(ZZ(3,3))*RXiZR*ZZ(1,3))
+mat(3,3) = mat(3,3)-(gBL*gR*vR**2*Conjg(ZZ(1,2))*RXiZ*ZZ(3,2))
+mat(3,3) = mat(3,3)+gR**2*vR**2*Conjg(ZZ(3,2))*RXiZ*ZZ(3,2)
+mat(3,3) = mat(3,3)-(gBL*gR*vR**2*Conjg(ZZ(1,3))*RXiZR*ZZ(3,3))
+mat(3,3) = mat(3,3)+gR**2*vR**2*Conjg(ZZ(3,3))*RXiZR*ZZ(3,3)
 
  
- Do i1=2,4
+ Do i1=2,3
   Do i2 = 1, i1-1 
   mat(i1,i2) = mat(i2,i1) 
   End do 
@@ -580,7 +550,7 @@ If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then
 End If 
 
 
-Do i1=1,4
+Do i1=1,3
   If (Abs(MAh2(i1)).Le.MaxMassNumericalZero) MAh2(i1) = 1.E-10_dp 
   If (MAh2(i1).ne.MAh2(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -611,20 +581,18 @@ Iname = Iname - 1
  
 End Subroutine CalculateMAh 
 
-Subroutine CalculateMHpm(g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,              & 
-& BETA2,LAM3,v1,v2,vtl,vtr,PhiW,UC,MHpm,MHpm2,kont)
+Subroutine CalculateMHpm(g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,               & 
+& LAM4,LAM2,LAM3,vd,vu,vR,PhiW,UC,MHpm,MHpm2,kont)
 
-Real(dp), Intent(in) :: g2,gR,MU12,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,PhiW
-
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3
+Real(dp), Intent(in) :: g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR,PhiW
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
 Integer :: j1,j2,j3,j4, pos 
-Real(dp), Intent(out) :: MHpm(4), MHpm2(4) 
-Real(dp), Intent(out) :: UC(4,4) 
+Real(dp), Intent(out) :: MHpm(3), MHpm2(3) 
+Real(dp), Intent(out) :: UC(3,3) 
  
-Real(dp) :: mat(4,4)  
+Real(dp) :: mat(3,3)  
 
 Real(dp) ::  test(2) 
 
@@ -632,94 +600,70 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMHpm'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+MU12
-mat(1,1) = mat(1,1)+LAM1*v1**2
-mat(1,1) = mat(1,1)+LAM1*v2**2
-mat(1,1) = mat(1,1)+(ALP1*vtl**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP3*vtl**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP1*vtr**2)/2._dp
-mat(1,1) = mat(1,1)+(g2**2*v1**2*Cos(PhiW)**2*RXiWLm)/4._dp
-mat(1,1) = mat(1,1)+(gR**2*v2**2*Cos(PhiW)**2*RXiWRm)/4._dp
-mat(1,1) = mat(1,1)-(g2*gR*v1*v2*Cos(PhiW)*RXiWLm*Sin(PhiW))/2._dp
-mat(1,1) = mat(1,1)+(g2*gR*v1*v2*Cos(PhiW)*RXiWRm*Sin(PhiW))/2._dp
-mat(1,1) = mat(1,1)+(gR**2*v2**2*RXiWLm*Sin(PhiW)**2)/4._dp
-mat(1,1) = mat(1,1)+(g2**2*v1**2*RXiWRm*Sin(PhiW)**2)/4._dp
+mat(1,1) = mat(1,1)-1._dp*(MU12)
+mat(1,1) = mat(1,1)+LAM1*vd**2
+mat(1,1) = mat(1,1)-2*LAM4*vd*vu
+mat(1,1) = mat(1,1)+LAM1*vu**2
+mat(1,1) = mat(1,1)+(ALP1*vR**2)/2._dp
+mat(1,1) = mat(1,1)+(g2**2*vd**2*Cos(PhiW)**2*RXiWLm)/4._dp
+mat(1,1) = mat(1,1)+(gR**2*vu**2*Cos(PhiW)**2*RXiWRm)/4._dp
+mat(1,1) = mat(1,1)-(g2*gR*vd*vu*Cos(PhiW)*RXiWLm*Sin(PhiW))/2._dp
+mat(1,1) = mat(1,1)+(g2*gR*vd*vu*Cos(PhiW)*RXiWRm*Sin(PhiW))/2._dp
+mat(1,1) = mat(1,1)+(gR**2*vu**2*RXiWLm*Sin(PhiW)**2)/4._dp
+mat(1,1) = mat(1,1)+(g2**2*vd**2*RXiWRm*Sin(PhiW)**2)/4._dp
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-2*LAM3*v1*v2
-mat(1,2) = mat(1,2)-(g2**2*v1*v2*Cos(PhiW)**2*RXiWLm)/4._dp
-mat(1,2) = mat(1,2)-(gR**2*v1*v2*Cos(PhiW)**2*RXiWRm)/4._dp
-mat(1,2) = mat(1,2)+(g2*gR*v1**2*Cos(PhiW)*RXiWLm*Sin(PhiW))/4._dp
-mat(1,2) = mat(1,2)+(g2*gR*v2**2*Cos(PhiW)*RXiWLm*Sin(PhiW))/4._dp
-mat(1,2) = mat(1,2)-(g2*gR*v1**2*Cos(PhiW)*RXiWRm*Sin(PhiW))/4._dp
-mat(1,2) = mat(1,2)-(g2*gR*v2**2*Cos(PhiW)*RXiWRm*Sin(PhiW))/4._dp
-mat(1,2) = mat(1,2)-(gR**2*v1*v2*RXiWLm*Sin(PhiW)**2)/4._dp
-mat(1,2) = mat(1,2)-(g2**2*v1*v2*RXiWRm*Sin(PhiW)**2)/4._dp
+mat(1,2) = mat(1,2)-2._dp*(MU22)
+mat(1,2) = mat(1,2)+LAM4*vd**2
+mat(1,2) = mat(1,2)-4*LAM2*vd*vu
+mat(1,2) = mat(1,2)-2*LAM3*vd*vu
+mat(1,2) = mat(1,2)+LAM4*vu**2
+mat(1,2) = mat(1,2)+ALP2*vR**2
+mat(1,2) = mat(1,2)-(g2**2*vd*vu*Cos(PhiW)**2*RXiWLm)/4._dp
+mat(1,2) = mat(1,2)-(gR**2*vd*vu*Cos(PhiW)**2*RXiWRm)/4._dp
+mat(1,2) = mat(1,2)+(g2*gR*vd**2*Cos(PhiW)*RXiWLm*Sin(PhiW))/4._dp
+mat(1,2) = mat(1,2)+(g2*gR*vu**2*Cos(PhiW)*RXiWLm*Sin(PhiW))/4._dp
+mat(1,2) = mat(1,2)-(g2*gR*vd**2*Cos(PhiW)*RXiWRm*Sin(PhiW))/4._dp
+mat(1,2) = mat(1,2)-(g2*gR*vu**2*Cos(PhiW)*RXiWRm*Sin(PhiW))/4._dp
+mat(1,2) = mat(1,2)-(gR**2*vd*vu*RXiWLm*Sin(PhiW)**2)/4._dp
+mat(1,2) = mat(1,2)-(g2**2*vd*vu*RXiWRm*Sin(PhiW)**2)/4._dp
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(ALP3*v1*vtl)/(2._dp*sqrt(2._dp))
-mat(1,3) = mat(1,3)+(BETA2*v1*vtr)/sqrt(2._dp)
-mat(1,3) = mat(1,3)-(g2**2*v1*vtl*Cos(PhiW)**2*RXiWLm)/(2._dp*sqrt(2._dp))
-mat(1,3) = mat(1,3)+(g2*gR*v2*vtl*Cos(PhiW)*RXiWLm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(1,3) = mat(1,3)-(g2*gR*v2*vtl*Cos(PhiW)*RXiWRm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(1,3) = mat(1,3)-(g2**2*v1*vtl*RXiWRm*Sin(PhiW)**2)/(2._dp*sqrt(2._dp))
-mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)+(ALP3*v2*vtr)/(2._dp*sqrt(2._dp))
-mat(1,4) = mat(1,4)+(gR**2*v2*vtr*Cos(PhiW)**2*RXiWRm)/(2._dp*sqrt(2._dp))
-mat(1,4) = mat(1,4)-(g2*gR*v1*vtr*Cos(PhiW)*RXiWLm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(1,4) = mat(1,4)+(g2*gR*v1*vtr*Cos(PhiW)*RXiWRm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(1,4) = mat(1,4)+(gR**2*v2*vtr*RXiWLm*Sin(PhiW)**2)/(2._dp*sqrt(2._dp))
+mat(1,3) = mat(1,3)+(ALP3*vu*vR)/(2._dp*sqrt(2._dp))
+mat(1,3) = mat(1,3)+(gR**2*vu*vR*Cos(PhiW)**2*RXiWRm)/(2._dp*sqrt(2._dp))
+mat(1,3) = mat(1,3)-(g2*gR*vd*vR*Cos(PhiW)*RXiWLm*Sin(PhiW))/(2._dp*sqrt(2._dp))
+mat(1,3) = mat(1,3)+(g2*gR*vd*vR*Cos(PhiW)*RXiWRm*Sin(PhiW))/(2._dp*sqrt(2._dp))
+mat(1,3) = mat(1,3)+(gR**2*vu*vR*RXiWLm*Sin(PhiW)**2)/(2._dp*sqrt(2._dp))
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+MU12
-mat(2,2) = mat(2,2)+LAM1*v1**2
-mat(2,2) = mat(2,2)+LAM1*v2**2
-mat(2,2) = mat(2,2)+(ALP1*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(g2**2*v2**2*Cos(PhiW)**2*RXiWLm)/4._dp
-mat(2,2) = mat(2,2)+(gR**2*v1**2*Cos(PhiW)**2*RXiWRm)/4._dp
-mat(2,2) = mat(2,2)-(g2*gR*v1*v2*Cos(PhiW)*RXiWLm*Sin(PhiW))/2._dp
-mat(2,2) = mat(2,2)+(g2*gR*v1*v2*Cos(PhiW)*RXiWRm*Sin(PhiW))/2._dp
-mat(2,2) = mat(2,2)+(gR**2*v1**2*RXiWLm*Sin(PhiW)**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*v2**2*RXiWRm*Sin(PhiW)**2)/4._dp
+mat(2,2) = mat(2,2)-1._dp*(MU12)
+mat(2,2) = mat(2,2)+LAM1*vd**2
+mat(2,2) = mat(2,2)-2*LAM4*vd*vu
+mat(2,2) = mat(2,2)+LAM1*vu**2
+mat(2,2) = mat(2,2)+(ALP1*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(ALP3*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(g2**2*vu**2*Cos(PhiW)**2*RXiWLm)/4._dp
+mat(2,2) = mat(2,2)+(gR**2*vd**2*Cos(PhiW)**2*RXiWRm)/4._dp
+mat(2,2) = mat(2,2)-(g2*gR*vd*vu*Cos(PhiW)*RXiWLm*Sin(PhiW))/2._dp
+mat(2,2) = mat(2,2)+(g2*gR*vd*vu*Cos(PhiW)*RXiWRm*Sin(PhiW))/2._dp
+mat(2,2) = mat(2,2)+(gR**2*vd**2*RXiWLm*Sin(PhiW)**2)/4._dp
+mat(2,2) = mat(2,2)+(g2**2*vu**2*RXiWRm*Sin(PhiW)**2)/4._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(ALP3*v2*vtl)/(2._dp*sqrt(2._dp))
-mat(2,3) = mat(2,3)+(g2**2*v2*vtl*Cos(PhiW)**2*RXiWLm)/(2._dp*sqrt(2._dp))
-mat(2,3) = mat(2,3)-(g2*gR*v1*vtl*Cos(PhiW)*RXiWLm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(2,3) = mat(2,3)+(g2*gR*v1*vtl*Cos(PhiW)*RXiWRm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(2,3) = mat(2,3)+(g2**2*v2*vtl*RXiWRm*Sin(PhiW)**2)/(2._dp*sqrt(2._dp))
-mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)+(BETA2*v1*vtl)/sqrt(2._dp)
-mat(2,4) = mat(2,4)+(ALP3*v1*vtr)/(2._dp*sqrt(2._dp))
-mat(2,4) = mat(2,4)-(gR**2*v1*vtr*Cos(PhiW)**2*RXiWRm)/(2._dp*sqrt(2._dp))
-mat(2,4) = mat(2,4)+(g2*gR*v2*vtr*Cos(PhiW)*RXiWLm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(2,4) = mat(2,4)-(g2*gR*v2*vtr*Cos(PhiW)*RXiWRm*Sin(PhiW))/(2._dp*sqrt(2._dp))
-mat(2,4) = mat(2,4)-(gR**2*v1*vtr*RXiWLm*Sin(PhiW)**2)/(2._dp*sqrt(2._dp))
+mat(2,3) = mat(2,3)+(ALP3*vd*vR)/(2._dp*sqrt(2._dp))
+mat(2,3) = mat(2,3)-(gR**2*vd*vR*Cos(PhiW)**2*RXiWRm)/(2._dp*sqrt(2._dp))
+mat(2,3) = mat(2,3)+(g2*gR*vu*vR*Cos(PhiW)*RXiWLm*Sin(PhiW))/(2._dp*sqrt(2._dp))
+mat(2,3) = mat(2,3)-(g2*gR*vu*vR*Cos(PhiW)*RXiWRm*Sin(PhiW))/(2._dp*sqrt(2._dp))
+mat(2,3) = mat(2,3)-(gR**2*vd*vR*RXiWLm*Sin(PhiW)**2)/(2._dp*sqrt(2._dp))
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+mudl2
-mat(3,3) = mat(3,3)+(ALP1*v1**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v1**2)/4._dp
-mat(3,3) = mat(3,3)+(ALP1*v2**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v2**2)/4._dp
-mat(3,3) = mat(3,3)+RHO1*vtl**2
-mat(3,3) = mat(3,3)+(rh3*vtr**2)/2._dp
-mat(3,3) = mat(3,3)+(g2**2*vtl**2*Cos(PhiW)**2*RXiWLm)/2._dp
-mat(3,3) = mat(3,3)+(g2**2*vtl**2*RXiWRm*Sin(PhiW)**2)/2._dp
-mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)-(BETA2*v1*v2)/2._dp
-mat(3,4) = mat(3,4)+(g2*gR*vtl*vtr*Cos(PhiW)*RXiWLm*Sin(PhiW))/2._dp
-mat(3,4) = mat(3,4)-(g2*gR*vtl*vtr*Cos(PhiW)*RXiWRm*Sin(PhiW))/2._dp
-mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+mudr2
-mat(4,4) = mat(4,4)+(ALP1*v1**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v1**2)/4._dp
-mat(4,4) = mat(4,4)+(ALP1*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v2**2)/4._dp
-mat(4,4) = mat(4,4)+(rh3*vtl**2)/2._dp
-mat(4,4) = mat(4,4)+RHO1*vtr**2
-mat(4,4) = mat(4,4)+(gR**2*vtr**2*Cos(PhiW)**2*RXiWRm)/2._dp
-mat(4,4) = mat(4,4)+(gR**2*vtr**2*RXiWLm*Sin(PhiW)**2)/2._dp
+mat(3,3) = mat(3,3)-1._dp*(mu32)
+mat(3,3) = mat(3,3)+(ALP1*vd**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vd**2)/4._dp
+mat(3,3) = mat(3,3)-2*ALP2*vd*vu
+mat(3,3) = mat(3,3)+(ALP1*vu**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vu**2)/4._dp
+mat(3,3) = mat(3,3)+RHO1*vR**2
+mat(3,3) = mat(3,3)+(gR**2*vR**2*Cos(PhiW)**2*RXiWRm)/2._dp
+mat(3,3) = mat(3,3)+(gR**2*vR**2*RXiWLm*Sin(PhiW)**2)/2._dp
 
  
- Do i1=2,4
+ Do i1=2,3
   Do i2 = 1, i1-1 
   mat(i1,i2) = mat(i2,i1) 
   End do 
@@ -747,7 +691,7 @@ If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then
 End If 
 
 
-Do i1=1,4
+Do i1=1,3
   If (Abs(MHpm2(i1)).Le.MaxMassNumericalZero) MHpm2(i1) = 1.E-10_dp 
   If (MHpm2(i1).ne.MHpm2(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
@@ -778,110 +722,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMHpm 
 
-Subroutine CalculateMHppmm(mudl2,mudr2,RHO2,RHO1,rh3,ALP3,ALP1,BETA2,v1,              & 
-& v2,vtl,vtr,UCC,MHppmm,MHppmm2,kont)
+Subroutine CalculateMFd(YQ1,YQ2,vd,vu,ZDL,ZDR,MFd,kont)
 
-Real(dp), Intent(in) :: RHO2,RHO1,ALP3,ALP1,BETA2,v1,v2,vtl,vtr
+Real(dp),Intent(in) :: vd,vu
 
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3
-
-Integer, Intent(inout) :: kont 
-Integer :: i1,i2,i3,i4, ierr 
-Integer :: j1,j2,j3,j4, pos 
-Real(dp), Intent(out) :: MHppmm(2), MHppmm2(2) 
-Real(dp), Intent(out) :: UCC(2,2) 
- 
-Real(dp) :: mat(2,2)  
-
-Real(dp) ::  test(2) 
-
-Iname = Iname + 1 
-NameOfUnit(Iname) = 'CalculateMHppmm'
- 
-mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+mudl2
-mat(1,1) = mat(1,1)+(ALP1*v1**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP3*v1**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP1*v2**2)/2._dp
-mat(1,1) = mat(1,1)+RHO1*vtl**2
-mat(1,1) = mat(1,1)+2*RHO2*vtl**2
-mat(1,1) = mat(1,1)+(rh3*vtr**2)/2._dp
-mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-(BETA2*v2**2)/2._dp
-mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+mudr2
-mat(2,2) = mat(2,2)+(ALP1*v1**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*v1**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*v2**2)/2._dp
-mat(2,2) = mat(2,2)+(rh3*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+RHO1*vtr**2
-mat(2,2) = mat(2,2)+2*RHO2*vtr**2
-
- 
- Do i1=2,2
-  Do i2 = 1, i1-1 
-  mat(i1,i2) = mat(i2,i1) 
-  End do 
-End do 
-
- 
-Call EigenSystem(mat,MHppmm2,UCC,ierr,test) 
- 
- 
-If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
-  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  If (ErrorLevel.Eq.2) Then 
-  Write(*,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-    Call TerminateProgram 
-  End If 
-  ierr = 0 
-End If 
- 
-If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then 
-  Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-  Write(10,*) 'Diagonalization failed, ierr : ',ierr 
-  kont = ierr 
-  Iname = Iname - 1 
-  Return 
-End If 
-
-
-Do i1=1,2
-  If (Abs(MHppmm2(i1)).Le.MaxMassNumericalZero) MHppmm2(i1) = 1.E-10_dp 
-  If (MHppmm2(i1).ne.MHppmm2(i1)) Then 
-      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
-      Call TerminateProgram 
-    End If 
-  If (MHppmm2(i1).Ge.0._dp) Then 
-  MHppmm(i1)=Sqrt(MHppmm2(i1) ) 
-  Else 
-    If (ErrorLevel.Ge.0) Then 
-      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-      Write(10,*) 'a mass squarred is negative: ',i1,MHppmm2(i1) 
-    End If 
-  MHppmm = 1._dp 
-     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
-     Write(ErrCan,*) 'in the calculation of the masses' 
-     Write(ErrCan,*) 'occurred a negative mass squared!' 
-     Write(ErrCan,*) i1,MHppmm2(i1) 
-     Write(*,*) 'Warning from routine '//NameOfUnit(Iname) 
-     Write(*,*) 'in the calculation of the masses' 
-     Write(*,*) 'occurred a negative mass squared!' 
-     Write(*,*) i1,MHppmm2(i1) 
-  MHppmm2(i1) = 1._dp 
-   SignOfMassChanged = .True. 
-! kont = -104 
- End if 
-End Do 
-Iname = Iname - 1 
- 
-End Subroutine CalculateMHppmm 
-
-Subroutine CalculateMFd(YQ1,v1,ZDL,ZDR,MFd,kont)
-
-Real(dp),Intent(in) :: v1
-
-Complex(dp),Intent(in) :: YQ1(3,3)
+Complex(dp),Intent(in) :: YQ1(3,3),YQ2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -902,23 +747,32 @@ MFd = 0._dp
 ZDL = 0._dp 
 ZDR = 0._dp 
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(v1*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vu*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vd*Conjg(YQ2(1,1)))/sqrt(2._dp)
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(v1*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vu*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vd*Conjg(YQ2(1,2)))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(v1*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vu*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vd*Conjg(YQ2(1,3)))/sqrt(2._dp)
 mat(2,1) = 0._dp 
-mat(2,1) = mat(2,1)+(v1*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vu*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vd*Conjg(YQ2(2,1)))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(v1*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vu*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vd*Conjg(YQ2(2,2)))/sqrt(2._dp)
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(v1*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vu*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vd*Conjg(YQ2(2,3)))/sqrt(2._dp)
 mat(3,1) = 0._dp 
-mat(3,1) = mat(3,1)+(v1*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vu*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vd*Conjg(YQ2(3,1)))/sqrt(2._dp)
 mat(3,2) = 0._dp 
-mat(3,2) = mat(3,2)+(v1*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vu*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vd*Conjg(YQ2(3,2)))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(v1*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vu*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vd*Conjg(YQ2(3,3)))/sqrt(2._dp)
 
  
 mat2 = Matmul(Transpose(Conjg(mat)),mat) 
@@ -1016,11 +870,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFd 
 
-Subroutine CalculateMFu(YQ1,v2,ZUL,ZUR,MFu,kont)
+Subroutine CalculateMFu(YQ1,YQ2,vd,vu,ZUL,ZUR,MFu,kont)
 
-Real(dp),Intent(in) :: v2
+Real(dp),Intent(in) :: vd,vu
 
-Complex(dp),Intent(in) :: YQ1(3,3)
+Complex(dp),Intent(in) :: YQ1(3,3),YQ2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -1041,23 +895,32 @@ MFu = 0._dp
 ZUL = 0._dp 
 ZUR = 0._dp 
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(v2*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vd*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vu*Conjg(YQ2(1,1)))/sqrt(2._dp)
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(v2*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vd*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vu*Conjg(YQ2(1,2)))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(v2*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vd*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vu*Conjg(YQ2(1,3)))/sqrt(2._dp)
 mat(2,1) = 0._dp 
-mat(2,1) = mat(2,1)+(v2*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vd*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vu*Conjg(YQ2(2,1)))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(v2*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vd*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vu*Conjg(YQ2(2,2)))/sqrt(2._dp)
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(v2*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vd*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vu*Conjg(YQ2(2,3)))/sqrt(2._dp)
 mat(3,1) = 0._dp 
-mat(3,1) = mat(3,1)+(v2*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vd*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vu*Conjg(YQ2(3,1)))/sqrt(2._dp)
 mat(3,2) = 0._dp 
-mat(3,2) = mat(3,2)+(v2*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vd*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vu*Conjg(YQ2(3,2)))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(v2*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vd*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vu*Conjg(YQ2(3,3)))/sqrt(2._dp)
 
  
 mat2 = Matmul(Transpose(Conjg(mat)),mat) 
@@ -1155,11 +1018,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFu 
 
-Subroutine CalculateMFe(YL1,v2,ZEL,ZER,MFe,kont)
+Subroutine CalculateMFe(YL1,YL2,vd,vu,ZEL,ZER,MFe,kont)
 
-Real(dp),Intent(in) :: v2
+Real(dp),Intent(in) :: vd,vu
 
-Complex(dp),Intent(in) :: YL1(3,3)
+Complex(dp),Intent(in) :: YL1(3,3),YL2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -1180,23 +1043,32 @@ MFe = 0._dp
 ZEL = 0._dp 
 ZER = 0._dp 
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(v2*Conjg(YL1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vu*YL1(1,1))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vd*YL2(1,1))/sqrt(2._dp)
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(v2*Conjg(YL1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vu*YL1(1,2))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vd*YL2(1,2))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(v2*Conjg(YL1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vu*YL1(1,3))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vd*YL2(1,3))/sqrt(2._dp)
 mat(2,1) = 0._dp 
-mat(2,1) = mat(2,1)+(v2*Conjg(YL1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vu*YL1(2,1))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vd*YL2(2,1))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(v2*Conjg(YL1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vu*YL1(2,2))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vd*YL2(2,2))/sqrt(2._dp)
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(v2*Conjg(YL1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vu*YL1(2,3))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vd*YL2(2,3))/sqrt(2._dp)
 mat(3,1) = 0._dp 
-mat(3,1) = mat(3,1)+(v2*Conjg(YL1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vu*YL1(3,1))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vd*YL2(3,1))/sqrt(2._dp)
 mat(3,2) = 0._dp 
-mat(3,2) = mat(3,2)+(v2*Conjg(YL1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vu*YL1(3,2))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vd*YL2(3,2))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(v2*Conjg(YL1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vu*YL1(3,3))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vd*YL2(3,3))/sqrt(2._dp)
 
  
 mat2 = Matmul(Transpose(Conjg(mat)),mat) 
@@ -1294,11 +1166,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFe 
 
-Subroutine CalculateMFv(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
+Subroutine CalculateMFv(YDR,YL1,YL2,vd,vu,vR,UV,MFv,kont)
 
-Real(dp) ,Intent(in) :: v1,vtl,vtr
+Real(dp) ,Intent(in) :: vd,vu,vR
 
-Complex(dp) ,Intent(in) :: YDR(3,3),YL1(3,3),YDL(3,3)
+Complex(dp) ,Intent(in) :: YDR(3,3),YL1(3,3),YL2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
@@ -1315,53 +1187,53 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMFv'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+sqrt(2._dp)*vtl*Conjg(YDL(1,1))
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(vtl*Conjg(YDL(1,2)))/sqrt(2._dp)
-mat(1,2) = mat(1,2)+(vtl*Conjg(YDL(2,1)))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(vtl*Conjg(YDL(1,3)))/sqrt(2._dp)
-mat(1,3) = mat(1,3)+(vtl*Conjg(YDL(3,1)))/sqrt(2._dp)
 mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)+(v1*YL1(1,1))/sqrt(2._dp)
+mat(1,4) = mat(1,4)+(vd*YL1(1,1))/sqrt(2._dp)
+mat(1,4) = mat(1,4)+(vu*YL2(1,1))/sqrt(2._dp)
 mat(1,5) = 0._dp 
-mat(1,5) = mat(1,5)+(v1*YL1(1,2))/sqrt(2._dp)
+mat(1,5) = mat(1,5)+(vd*YL1(1,2))/sqrt(2._dp)
+mat(1,5) = mat(1,5)+(vu*YL2(1,2))/sqrt(2._dp)
 mat(1,6) = 0._dp 
-mat(1,6) = mat(1,6)+(v1*YL1(1,3))/sqrt(2._dp)
+mat(1,6) = mat(1,6)+(vd*YL1(1,3))/sqrt(2._dp)
+mat(1,6) = mat(1,6)+(vu*YL2(1,3))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+sqrt(2._dp)*vtl*Conjg(YDL(2,2))
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(vtl*Conjg(YDL(2,3)))/sqrt(2._dp)
-mat(2,3) = mat(2,3)+(vtl*Conjg(YDL(3,2)))/sqrt(2._dp)
 mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)+(v1*YL1(2,1))/sqrt(2._dp)
+mat(2,4) = mat(2,4)+(vd*YL1(2,1))/sqrt(2._dp)
+mat(2,4) = mat(2,4)+(vu*YL2(2,1))/sqrt(2._dp)
 mat(2,5) = 0._dp 
-mat(2,5) = mat(2,5)+(v1*YL1(2,2))/sqrt(2._dp)
+mat(2,5) = mat(2,5)+(vd*YL1(2,2))/sqrt(2._dp)
+mat(2,5) = mat(2,5)+(vu*YL2(2,2))/sqrt(2._dp)
 mat(2,6) = 0._dp 
-mat(2,6) = mat(2,6)+(v1*YL1(2,3))/sqrt(2._dp)
+mat(2,6) = mat(2,6)+(vd*YL1(2,3))/sqrt(2._dp)
+mat(2,6) = mat(2,6)+(vu*YL2(2,3))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+sqrt(2._dp)*vtl*Conjg(YDL(3,3))
 mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)+(v1*YL1(3,1))/sqrt(2._dp)
+mat(3,4) = mat(3,4)+(vd*YL1(3,1))/sqrt(2._dp)
+mat(3,4) = mat(3,4)+(vu*YL2(3,1))/sqrt(2._dp)
 mat(3,5) = 0._dp 
-mat(3,5) = mat(3,5)+(v1*YL1(3,2))/sqrt(2._dp)
+mat(3,5) = mat(3,5)+(vd*YL1(3,2))/sqrt(2._dp)
+mat(3,5) = mat(3,5)+(vu*YL2(3,2))/sqrt(2._dp)
 mat(3,6) = 0._dp 
-mat(3,6) = mat(3,6)+(v1*YL1(3,3))/sqrt(2._dp)
+mat(3,6) = mat(3,6)+(vd*YL1(3,3))/sqrt(2._dp)
+mat(3,6) = mat(3,6)+(vu*YL2(3,3))/sqrt(2._dp)
 mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+sqrt(2._dp)*vtr*YDR(1,1)
+mat(4,4) = mat(4,4)+sqrt(2._dp)*vR*YDR(1,1)
 mat(4,5) = 0._dp 
-mat(4,5) = mat(4,5)+(vtr*YDR(1,2))/sqrt(2._dp)
-mat(4,5) = mat(4,5)+(vtr*YDR(2,1))/sqrt(2._dp)
+mat(4,5) = mat(4,5)+(vR*YDR(1,2))/sqrt(2._dp)
+mat(4,5) = mat(4,5)+(vR*YDR(2,1))/sqrt(2._dp)
 mat(4,6) = 0._dp 
-mat(4,6) = mat(4,6)+(vtr*YDR(1,3))/sqrt(2._dp)
-mat(4,6) = mat(4,6)+(vtr*YDR(3,1))/sqrt(2._dp)
+mat(4,6) = mat(4,6)+(vR*YDR(1,3))/sqrt(2._dp)
+mat(4,6) = mat(4,6)+(vR*YDR(3,1))/sqrt(2._dp)
 mat(5,5) = 0._dp 
-mat(5,5) = mat(5,5)+sqrt(2._dp)*vtr*YDR(2,2)
+mat(5,5) = mat(5,5)+sqrt(2._dp)*vR*YDR(2,2)
 mat(5,6) = 0._dp 
-mat(5,6) = mat(5,6)+(vtr*YDR(2,3))/sqrt(2._dp)
-mat(5,6) = mat(5,6)+(vtr*YDR(3,2))/sqrt(2._dp)
+mat(5,6) = mat(5,6)+(vR*YDR(2,3))/sqrt(2._dp)
+mat(5,6) = mat(5,6)+(vR*YDR(3,2))/sqrt(2._dp)
 mat(6,6) = 0._dp 
-mat(6,6) = mat(6,6)+sqrt(2._dp)*vtr*YDR(3,3)
+mat(6,6) = mat(6,6)+sqrt(2._dp)*vR*YDR(3,3)
 
  
  Do i1=2,6
@@ -1670,9 +1542,9 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFc 
 
-Subroutine CalculateVPVZVZR(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
+Subroutine CalculateVPVZVZR(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 
-Real(dp), Intent(in) :: gBL,g2,gR,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: gBL,g2,gR,vd,vu,vR
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -1691,23 +1563,20 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateVPVZVZR'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+gBL**2*vtl**2
-mat(1,1) = mat(1,1)+gBL**2*vtr**2
+mat(1,1) = mat(1,1)+gBL**2*vR**2
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-(g2*gBL*vtl**2)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)-(gBL*gR*vtr**2)
+mat(1,3) = mat(1,3)-(gBL*gR*vR**2)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(g2**2*v1**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*v2**2)/4._dp
-mat(2,2) = mat(2,2)+g2**2*vtl**2
+mat(2,2) = mat(2,2)+(g2**2*vd**2)/4._dp
+mat(2,2) = mat(2,2)+(g2**2*vu**2)/4._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)-(g2*gR*v1**2)/4._dp
-mat(2,3) = mat(2,3)-(g2*gR*v2**2)/4._dp
+mat(2,3) = mat(2,3)-(g2*gR*vd**2)/4._dp
+mat(2,3) = mat(2,3)-(g2*gR*vu**2)/4._dp
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(gR**2*v1**2)/4._dp
-mat(3,3) = mat(3,3)+(gR**2*v2**2)/4._dp
-mat(3,3) = mat(3,3)+gR**2*vtr**2
+mat(3,3) = mat(3,3)+(gR**2*vd**2)/4._dp
+mat(3,3) = mat(3,3)+(gR**2*vu**2)/4._dp
+mat(3,3) = mat(3,3)+gR**2*vR**2
 
  
  Do i1=2,3
@@ -1778,10 +1647,10 @@ MVZR2 = VPVZVZR2(3)
  
 End Subroutine CalculateVPVZVZR 
 
-Subroutine CalculateVWLmVWRm(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,               & 
-& MVWRm2,PhiW,kont)
+Subroutine CalculateVWLmVWRm(g2,gR,vd,vu,vR,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,             & 
+& PhiW,kont)
 
-Real(dp), Intent(in) :: g2,gR,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: g2,gR,vd,vu,vR
 
 Real(dp), Intent(out) :: PhiW
 
@@ -1802,29 +1671,27 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateVWLmVWRm'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(g2**2*v1**2)/4._dp
-mat(1,1) = mat(1,1)+(g2**2*v2**2)/4._dp
-mat(1,1) = mat(1,1)+(g2**2*vtl**2)/2._dp
+mat(1,1) = mat(1,1)+(g2**2*vd**2)/4._dp
+mat(1,1) = mat(1,1)+(g2**2*vu**2)/4._dp
 mat(1,2) = 0._dp 
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)-(g2*gR*v1*v2)/2._dp
+mat(1,3) = mat(1,3)-(g2*gR*vd*vu)/2._dp
 mat(1,4) = 0._dp 
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(g2**2*v1**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*v2**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*vtl**2)/2._dp
+mat(2,2) = mat(2,2)+(g2**2*vd**2)/4._dp
+mat(2,2) = mat(2,2)+(g2**2*vu**2)/4._dp
 mat(2,3) = 0._dp 
 mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)-(g2*gR*v1*v2)/2._dp
+mat(2,4) = mat(2,4)-(g2*gR*vd*vu)/2._dp
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(gR**2*v1**2)/4._dp
-mat(3,3) = mat(3,3)+(gR**2*v2**2)/4._dp
-mat(3,3) = mat(3,3)+(gR**2*vtr**2)/2._dp
+mat(3,3) = mat(3,3)+(gR**2*vd**2)/4._dp
+mat(3,3) = mat(3,3)+(gR**2*vu**2)/4._dp
+mat(3,3) = mat(3,3)+(gR**2*vR**2)/2._dp
 mat(3,4) = 0._dp 
 mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+(gR**2*v1**2)/4._dp
-mat(4,4) = mat(4,4)+(gR**2*v2**2)/4._dp
-mat(4,4) = mat(4,4)+(gR**2*vtr**2)/2._dp
+mat(4,4) = mat(4,4)+(gR**2*vd**2)/4._dp
+mat(4,4) = mat(4,4)+(gR**2*vu**2)/4._dp
+mat(4,4) = mat(4,4)+(gR**2*vR**2)/2._dp
 
  
  Do i1=2,4
@@ -1896,23 +1763,21 @@ PhiW = ACos(Sqrt(Abs(ZW(1,1))**2 + Abs(ZW(1,2))**2))
  
 End Subroutine CalculateVWLmVWRm 
 
-Subroutine CalculateMhhEffPot(mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,v1,v2,vtl,vtr,ZH,Mhh,Mhh2,kont)
+Subroutine CalculateMhhEffPot(mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,           & 
+& LAM2,LAM3,vd,vu,vR,ZH,Mhh,Mhh2,kont)
 
-Real(dp), Intent(in) :: MU12,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr
-
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3
+Real(dp), Intent(in) :: mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
 Integer :: j1,j2,j3,j4, pos 
-Real(dp), Intent(out) :: Mhh(4), Mhh2(4) 
-Real(dp), Intent(out) :: ZH(4,4) 
+Real(dp), Intent(out) :: Mhh(3), Mhh2(3) 
+Real(dp), Intent(out) :: ZH(3,3) 
  
-Real(dp) :: mat(4,4)  
+Real(dp) :: mat(3,3)  
 
-Real(dp) :: Mhh2temp(4), Q2 
-Real(dp) :: ZHtemp(4,4),ZHtemp2(4,4) 
+Real(dp) :: Mhh2temp(3), Q2 
+Real(dp) :: ZHtemp(3,3),ZHtemp2(3,3) 
  
 Real(dp) ::  test(2) 
 
@@ -1920,57 +1785,47 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMhh'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+MU12
-mat(1,1) = mat(1,1)+3*LAM1*v1**2
-mat(1,1) = mat(1,1)+LAM1*v2**2
-mat(1,1) = mat(1,1)+2*LAM3*v2**2
-mat(1,1) = mat(1,1)+(ALP1*vtl**2)/2._dp
-mat(1,1) = mat(1,1)-(BETA2*vtl*vtr)
-mat(1,1) = mat(1,1)+(ALP1*vtr**2)/2._dp
+mat(1,1) = mat(1,1)-1._dp*(MU12)
+mat(1,1) = mat(1,1)+3*LAM1*vd**2
+mat(1,1) = mat(1,1)-6*LAM4*vd*vu
+mat(1,1) = mat(1,1)+LAM1*vu**2
+mat(1,1) = mat(1,1)+4*LAM2*vu**2
+mat(1,1) = mat(1,1)+2*LAM3*vu**2
+mat(1,1) = mat(1,1)+(ALP1*vR**2)/2._dp
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+2*LAM1*v1*v2
-mat(1,2) = mat(1,2)+4*LAM3*v1*v2
+mat(1,2) = mat(1,2)+2._dp*(MU22)
+mat(1,2) = mat(1,2)-3*LAM4*vd**2
+mat(1,2) = mat(1,2)+2*LAM1*vd*vu
+mat(1,2) = mat(1,2)+8*LAM2*vd*vu
+mat(1,2) = mat(1,2)+4*LAM3*vd*vu
+mat(1,2) = mat(1,2)-3*LAM4*vu**2
+mat(1,2) = mat(1,2)-(ALP2*vR**2)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+ALP1*v1*vtl
-mat(1,3) = mat(1,3)-(BETA2*v1*vtr)
-mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)-(BETA2*v1*vtl)
-mat(1,4) = mat(1,4)+ALP1*v1*vtr
+mat(1,3) = mat(1,3)+ALP1*vd*vR
+mat(1,3) = mat(1,3)-2*ALP2*vu*vR
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+MU12
-mat(2,2) = mat(2,2)+LAM1*v1**2
-mat(2,2) = mat(2,2)+2*LAM3*v1**2
-mat(2,2) = mat(2,2)+3*LAM1*v2**2
-mat(2,2) = mat(2,2)+(ALP1*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtr**2)/2._dp
+mat(2,2) = mat(2,2)-1._dp*(MU12)
+mat(2,2) = mat(2,2)+LAM1*vd**2
+mat(2,2) = mat(2,2)+4*LAM2*vd**2
+mat(2,2) = mat(2,2)+2*LAM3*vd**2
+mat(2,2) = mat(2,2)-6*LAM4*vd*vu
+mat(2,2) = mat(2,2)+3*LAM1*vu**2
+mat(2,2) = mat(2,2)+(ALP1*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(ALP3*vR**2)/2._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+ALP1*v2*vtl
-mat(2,3) = mat(2,3)+ALP3*v2*vtl
-mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)+ALP1*v2*vtr
-mat(2,4) = mat(2,4)+ALP3*v2*vtr
+mat(2,3) = mat(2,3)-2*ALP2*vd*vR
+mat(2,3) = mat(2,3)+ALP1*vu*vR
+mat(2,3) = mat(2,3)+ALP3*vu*vR
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+mudl2
-mat(3,3) = mat(3,3)+(ALP1*v1**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP1*v2**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v2**2)/2._dp
-mat(3,3) = mat(3,3)+3*RHO1*vtl**2
-mat(3,3) = mat(3,3)+(rh3*vtr**2)/2._dp
-mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)-(BETA2*v1**2)/2._dp
-mat(3,4) = mat(3,4)+rh3*vtl*vtr
-mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+mudr2
-mat(4,4) = mat(4,4)+(ALP1*v1**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP1*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(rh3*vtl**2)/2._dp
-mat(4,4) = mat(4,4)+3*RHO1*vtr**2
+mat(3,3) = mat(3,3)-1._dp*(mu32)
+mat(3,3) = mat(3,3)+(ALP1*vd**2)/2._dp
+mat(3,3) = mat(3,3)-2*ALP2*vd*vu
+mat(3,3) = mat(3,3)+(ALP1*vu**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vu**2)/2._dp
+mat(3,3) = mat(3,3)+3*RHO1*vR**2
 
  
- Do i1=2,4
+ Do i1=2,3
   Do i2 = 1, i1-1 
   mat(i1,i2) = mat(i2,i1) 
   End do 
@@ -1981,7 +1836,7 @@ Call EigenSystem(mat,Mhh2,ZH,ierr,test)
  
  
 ! Fix phases
-Do i1=1,4
+Do i1=1,3
   pos=Maxloc(Abs(ZH(i1,:)),1)
   If (Real(ZH(i1,pos),dp).lt.0._dp) Then
     ZH(i1,:)=-ZH(i1,:)
@@ -2005,7 +1860,7 @@ If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then
 End If 
 
 
-Do i1=1,4
+Do i1=1,3
   If (Mhh2(i1).ne.Mhh2(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
       Call TerminateProgram 
@@ -2021,22 +1876,22 @@ Iname = Iname - 1
  
 End Subroutine CalculateMhhEffPot 
 
-Subroutine CalculateMAhEffPot(gBL,g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,               & 
-& ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,ZZ,UP,MAh,MAh2,kont)
+Subroutine CalculateMAhEffPot(gBL,g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,           & 
+& ALP2,LAM4,LAM2,LAM3,vd,vu,vR,ZZ,UP,MAh,MAh2,kont)
 
-Real(dp), Intent(in) :: gBL,g2,gR,MU12,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: gBL,g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR
 
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3,ZZ(3,3)
+Complex(dp), Intent(in) :: ZZ(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
-Real(dp), Intent(out) :: MAh(4), MAh2(4) 
-Real(dp), Intent(out) :: UP(4,4) 
+Real(dp), Intent(out) :: MAh(3), MAh2(3) 
+Real(dp), Intent(out) :: UP(3,3) 
  
-Real(dp) :: UPFIX(4,4) 
+Real(dp) :: UPFIX(3,3) 
  
-Real(dp) :: mat(4,4)  
+Real(dp) :: mat(3,3)  
 
 Real(dp) ::  test(2), Q2 
 
@@ -2044,48 +1899,40 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMAh'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+MU12
-mat(1,1) = mat(1,1)+LAM1*v1**2
-mat(1,1) = mat(1,1)+LAM1*v2**2
-mat(1,1) = mat(1,1)+2*LAM3*v2**2
-mat(1,1) = mat(1,1)+(ALP1*vtl**2)/2._dp
-mat(1,1) = mat(1,1)+BETA2*vtl*vtr
-mat(1,1) = mat(1,1)+(ALP1*vtr**2)/2._dp
+mat(1,1) = mat(1,1)-1._dp*(MU12)
+mat(1,1) = mat(1,1)+LAM1*vd**2
+mat(1,1) = mat(1,1)-2*LAM4*vd*vu
+mat(1,1) = mat(1,1)+LAM1*vu**2
+mat(1,1) = mat(1,1)-4*LAM2*vu**2
+mat(1,1) = mat(1,1)+2*LAM3*vu**2
+mat(1,1) = mat(1,1)+(ALP1*vR**2)/2._dp
 mat(1,2) = 0._dp 
+mat(1,2) = mat(1,2)-2._dp*(MU22)
+mat(1,2) = mat(1,2)+LAM4*vd**2
+mat(1,2) = mat(1,2)-8*LAM2*vd*vu
+mat(1,2) = mat(1,2)+LAM4*vu**2
+mat(1,2) = mat(1,2)+ALP2*vR**2
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+BETA2*v1*vtr
-mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)-(BETA2*v1*vtl)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+MU12
-mat(2,2) = mat(2,2)+LAM1*v1**2
-mat(2,2) = mat(2,2)+2*LAM3*v1**2
-mat(2,2) = mat(2,2)+LAM1*v2**2
-mat(2,2) = mat(2,2)+(ALP1*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtr**2)/2._dp
+mat(2,2) = mat(2,2)-1._dp*(MU12)
+mat(2,2) = mat(2,2)+LAM1*vd**2
+mat(2,2) = mat(2,2)-4*LAM2*vd**2
+mat(2,2) = mat(2,2)+2*LAM3*vd**2
+mat(2,2) = mat(2,2)-2*LAM4*vd*vu
+mat(2,2) = mat(2,2)+LAM1*vu**2
+mat(2,2) = mat(2,2)+(ALP1*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(ALP3*vR**2)/2._dp
 mat(2,3) = 0._dp 
-mat(2,4) = 0._dp 
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+mudl2
-mat(3,3) = mat(3,3)+(ALP1*v1**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP1*v2**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v2**2)/2._dp
-mat(3,3) = mat(3,3)+RHO1*vtl**2
-mat(3,3) = mat(3,3)+(rh3*vtr**2)/2._dp
-mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)-(BETA2*v1**2)/2._dp
-mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+mudr2
-mat(4,4) = mat(4,4)+(ALP1*v1**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP1*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(rh3*vtl**2)/2._dp
-mat(4,4) = mat(4,4)+RHO1*vtr**2
+mat(3,3) = mat(3,3)-1._dp*(mu32)
+mat(3,3) = mat(3,3)+(ALP1*vd**2)/2._dp
+mat(3,3) = mat(3,3)-2*ALP2*vd*vu
+mat(3,3) = mat(3,3)+(ALP1*vu**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vu**2)/2._dp
+mat(3,3) = mat(3,3)+RHO1*vR**2
 
  
- Do i1=2,4
+ Do i1=2,3
   Do i2 = 1, i1-1 
   mat(i1,i2) = mat(i2,i1) 
   End do 
@@ -2096,7 +1943,7 @@ Call EigenSystem(mat,MAh2,UP,ierr,test)
  
  
 ! Fix phases
-Do i1=1,4
+Do i1=1,3
   pos=Maxloc(Abs(UP(i1,:)),1)
   If (Real(UP(i1,pos),dp).lt.0._dp) Then
     UP(i1,:)=-UP(i1,:)
@@ -2120,7 +1967,7 @@ If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then
 End If 
 
 
-Do i1=1,4
+Do i1=1,3
   If (MAh2(i1).ne.MAh2(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
       Call TerminateProgram 
@@ -2136,22 +1983,20 @@ Iname = Iname - 1
  
 End Subroutine CalculateMAhEffPot 
 
-Subroutine CalculateMHpmEffPot(g2,gR,mudl2,mudr2,MU12,RHO1,rh3,ALP3,ALP1,             & 
-& LAM1,BETA2,LAM3,v1,v2,vtl,vtr,PhiW,UC,MHpm,MHpm2,kont)
+Subroutine CalculateMHpmEffPot(g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,              & 
+& ALP2,LAM4,LAM2,LAM3,vd,vu,vR,PhiW,UC,MHpm,MHpm2,kont)
 
-Real(dp), Intent(in) :: g2,gR,MU12,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,v1,v2,vtl,vtr,PhiW
-
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3
+Real(dp), Intent(in) :: g2,gR,mu32,MU22,MU12,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,vu,vR,PhiW
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
-Real(dp), Intent(out) :: MHpm(4), MHpm2(4) 
-Real(dp), Intent(out) :: UC(4,4) 
+Real(dp), Intent(out) :: MHpm(3), MHpm2(3) 
+Real(dp), Intent(out) :: UC(3,3) 
  
-Real(dp) :: UCFIX(4,4) 
+Real(dp) :: UCFIX(3,3) 
  
-Real(dp) :: mat(4,4)  
+Real(dp) :: mat(3,3)  
 
 Real(dp) ::  test(2), Q2 
 
@@ -2159,52 +2004,40 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMHpm'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+MU12
-mat(1,1) = mat(1,1)+LAM1*v1**2
-mat(1,1) = mat(1,1)+LAM1*v2**2
-mat(1,1) = mat(1,1)+(ALP1*vtl**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP3*vtl**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP1*vtr**2)/2._dp
+mat(1,1) = mat(1,1)-1._dp*(MU12)
+mat(1,1) = mat(1,1)+LAM1*vd**2
+mat(1,1) = mat(1,1)-2*LAM4*vd*vu
+mat(1,1) = mat(1,1)+LAM1*vu**2
+mat(1,1) = mat(1,1)+(ALP1*vR**2)/2._dp
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-2*LAM3*v1*v2
+mat(1,2) = mat(1,2)-2._dp*(MU22)
+mat(1,2) = mat(1,2)+LAM4*vd**2
+mat(1,2) = mat(1,2)-4*LAM2*vd*vu
+mat(1,2) = mat(1,2)-2*LAM3*vd*vu
+mat(1,2) = mat(1,2)+LAM4*vu**2
+mat(1,2) = mat(1,2)+ALP2*vR**2
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(ALP3*v1*vtl)/(2._dp*sqrt(2._dp))
-mat(1,3) = mat(1,3)+(BETA2*v1*vtr)/sqrt(2._dp)
-mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)+(ALP3*v2*vtr)/(2._dp*sqrt(2._dp))
+mat(1,3) = mat(1,3)+(ALP3*vu*vR)/(2._dp*sqrt(2._dp))
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+MU12
-mat(2,2) = mat(2,2)+LAM1*v1**2
-mat(2,2) = mat(2,2)+LAM1*v2**2
-mat(2,2) = mat(2,2)+(ALP1*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*vtr**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*vtr**2)/2._dp
+mat(2,2) = mat(2,2)-1._dp*(MU12)
+mat(2,2) = mat(2,2)+LAM1*vd**2
+mat(2,2) = mat(2,2)-2*LAM4*vd*vu
+mat(2,2) = mat(2,2)+LAM1*vu**2
+mat(2,2) = mat(2,2)+(ALP1*vR**2)/2._dp
+mat(2,2) = mat(2,2)+(ALP3*vR**2)/2._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(ALP3*v2*vtl)/(2._dp*sqrt(2._dp))
-mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)+(BETA2*v1*vtl)/sqrt(2._dp)
-mat(2,4) = mat(2,4)+(ALP3*v1*vtr)/(2._dp*sqrt(2._dp))
+mat(2,3) = mat(2,3)+(ALP3*vd*vR)/(2._dp*sqrt(2._dp))
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+mudl2
-mat(3,3) = mat(3,3)+(ALP1*v1**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v1**2)/4._dp
-mat(3,3) = mat(3,3)+(ALP1*v2**2)/2._dp
-mat(3,3) = mat(3,3)+(ALP3*v2**2)/4._dp
-mat(3,3) = mat(3,3)+RHO1*vtl**2
-mat(3,3) = mat(3,3)+(rh3*vtr**2)/2._dp
-mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)-(BETA2*v1*v2)/2._dp
-mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+mudr2
-mat(4,4) = mat(4,4)+(ALP1*v1**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v1**2)/4._dp
-mat(4,4) = mat(4,4)+(ALP1*v2**2)/2._dp
-mat(4,4) = mat(4,4)+(ALP3*v2**2)/4._dp
-mat(4,4) = mat(4,4)+(rh3*vtl**2)/2._dp
-mat(4,4) = mat(4,4)+RHO1*vtr**2
+mat(3,3) = mat(3,3)-1._dp*(mu32)
+mat(3,3) = mat(3,3)+(ALP1*vd**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vd**2)/4._dp
+mat(3,3) = mat(3,3)-2*ALP2*vd*vu
+mat(3,3) = mat(3,3)+(ALP1*vu**2)/2._dp
+mat(3,3) = mat(3,3)+(ALP3*vu**2)/4._dp
+mat(3,3) = mat(3,3)+RHO1*vR**2
 
  
- Do i1=2,4
+ Do i1=2,3
   Do i2 = 1, i1-1 
   mat(i1,i2) = mat(i2,i1) 
   End do 
@@ -2215,7 +2048,7 @@ Call EigenSystem(mat,MHpm2,UC,ierr,test)
  
  
 ! Fix phases
-Do i1=1,4
+Do i1=1,3
   pos=Maxloc(Abs(UC(i1,:)),1)
   If (Real(UC(i1,pos),dp).lt.0._dp) Then
     UC(i1,:)=-UC(i1,:)
@@ -2239,7 +2072,7 @@ If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then
 End If 
 
 
-Do i1=1,4
+Do i1=1,3
   If (MHpm2(i1).ne.MHpm2(i1)) Then 
       Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
       Call TerminateProgram 
@@ -2255,105 +2088,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMHpmEffPot 
 
-Subroutine CalculateMHppmmEffPot(mudl2,mudr2,RHO2,RHO1,rh3,ALP3,ALP1,BETA2,           & 
-& v1,v2,vtl,vtr,UCC,MHppmm,MHppmm2,kont)
+Subroutine CalculateMFdEffPot(YQ1,YQ2,vd,vu,ZDL,ZDR,MFd,kont)
 
-Real(dp), Intent(in) :: RHO2,RHO1,ALP3,ALP1,BETA2,v1,v2,vtl,vtr
+Real(dp),Intent(in) :: vd,vu
 
-Complex(dp), Intent(in) :: mudl2,mudr2,rh3
-
-Integer, Intent(inout) :: kont 
-Integer :: i1,i2,i3,i4, ierr 
-Integer :: j1,j2,j3,j4, pos 
-Real(dp), Intent(out) :: MHppmm(2), MHppmm2(2) 
-Real(dp), Intent(out) :: UCC(2,2) 
- 
-Real(dp) :: mat(2,2)  
-
-Real(dp) :: MHppmm2temp(2), Q2 
-Real(dp) :: UCCtemp(2,2),UCCtemp2(2,2) 
- 
-Real(dp) ::  test(2) 
-
-Iname = Iname + 1 
-NameOfUnit(Iname) = 'CalculateMHppmm'
- 
-mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+mudl2
-mat(1,1) = mat(1,1)+(ALP1*v1**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP3*v1**2)/2._dp
-mat(1,1) = mat(1,1)+(ALP1*v2**2)/2._dp
-mat(1,1) = mat(1,1)+RHO1*vtl**2
-mat(1,1) = mat(1,1)+2*RHO2*vtl**2
-mat(1,1) = mat(1,1)+(rh3*vtr**2)/2._dp
-mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-(BETA2*v2**2)/2._dp
-mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+mudr2
-mat(2,2) = mat(2,2)+(ALP1*v1**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP3*v1**2)/2._dp
-mat(2,2) = mat(2,2)+(ALP1*v2**2)/2._dp
-mat(2,2) = mat(2,2)+(rh3*vtl**2)/2._dp
-mat(2,2) = mat(2,2)+RHO1*vtr**2
-mat(2,2) = mat(2,2)+2*RHO2*vtr**2
-
- 
- Do i1=2,2
-  Do i2 = 1, i1-1 
-  mat(i1,i2) = mat(i2,i1) 
-  End do 
-End do 
-
- 
-Call EigenSystem(mat,MHppmm2,UCC,ierr,test) 
- 
- 
-! Fix phases
-Do i1=1,2
-  pos=Maxloc(Abs(UCC(i1,:)),1)
-  If (Real(UCC(i1,pos),dp).lt.0._dp) Then
-    UCC(i1,:)=-UCC(i1,:)
-  End if
-End do
-If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
-  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  If (ErrorLevel.Eq.2) Then 
-  Write(*,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-    Call TerminateProgram 
-  End If 
-  ierr = 0 
-End If 
- 
-If ((ierr.Ne.0.).And.(ErrorLevel.Ge.-1)) Then 
-  Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-  Write(10,*) 'Diagonalization failed, ierr : ',ierr 
-  kont = ierr 
-  Iname = Iname - 1 
-  Return 
-End If 
-
-
-Do i1=1,2
-  If (MHppmm2(i1).ne.MHppmm2(i1)) Then 
-      Write(*,*) 'NaN appearing in '//NameOfUnit(Iname) 
-      Call TerminateProgram 
-    End If 
-  If (MHppmm2(i1).Ge.0._dp) Then 
-  MHppmm(i1)=Sqrt(MHppmm2(i1) ) 
-  Else 
-  MHppmm = 1._dp 
-! kont = -104 
- End if 
-End Do 
-Iname = Iname - 1 
- 
-End Subroutine CalculateMHppmmEffPot 
-
-Subroutine CalculateMFdEffPot(YQ1,v1,ZDL,ZDR,MFd,kont)
-
-Real(dp),Intent(in) :: v1
-
-Complex(dp),Intent(in) :: YQ1(3,3)
+Complex(dp),Intent(in) :: YQ1(3,3),YQ2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -2374,23 +2113,32 @@ MFd = 0._dp
 ZDL = 0._dp 
 ZDR = 0._dp 
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(v1*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vu*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vd*Conjg(YQ2(1,1)))/sqrt(2._dp)
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(v1*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vu*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vd*Conjg(YQ2(1,2)))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(v1*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vu*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vd*Conjg(YQ2(1,3)))/sqrt(2._dp)
 mat(2,1) = 0._dp 
-mat(2,1) = mat(2,1)+(v1*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vu*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vd*Conjg(YQ2(2,1)))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(v1*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vu*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vd*Conjg(YQ2(2,2)))/sqrt(2._dp)
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(v1*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vu*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vd*Conjg(YQ2(2,3)))/sqrt(2._dp)
 mat(3,1) = 0._dp 
-mat(3,1) = mat(3,1)+(v1*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vu*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vd*Conjg(YQ2(3,1)))/sqrt(2._dp)
 mat(3,2) = 0._dp 
-mat(3,2) = mat(3,2)+(v1*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vu*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vd*Conjg(YQ2(3,2)))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(v1*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vu*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vd*Conjg(YQ2(3,3)))/sqrt(2._dp)
 
  
 mat2 = Matmul(Transpose(Conjg(mat)),mat) 
@@ -2471,11 +2219,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFdEffPot 
 
-Subroutine CalculateMFuEffPot(YQ1,v2,ZUL,ZUR,MFu,kont)
+Subroutine CalculateMFuEffPot(YQ1,YQ2,vd,vu,ZUL,ZUR,MFu,kont)
 
-Real(dp),Intent(in) :: v2
+Real(dp),Intent(in) :: vd,vu
 
-Complex(dp),Intent(in) :: YQ1(3,3)
+Complex(dp),Intent(in) :: YQ1(3,3),YQ2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -2496,23 +2244,32 @@ MFu = 0._dp
 ZUL = 0._dp 
 ZUR = 0._dp 
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(v2*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vd*Conjg(YQ1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vu*Conjg(YQ2(1,1)))/sqrt(2._dp)
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(v2*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vd*Conjg(YQ1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vu*Conjg(YQ2(1,2)))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(v2*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vd*Conjg(YQ1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vu*Conjg(YQ2(1,3)))/sqrt(2._dp)
 mat(2,1) = 0._dp 
-mat(2,1) = mat(2,1)+(v2*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vd*Conjg(YQ1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vu*Conjg(YQ2(2,1)))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(v2*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vd*Conjg(YQ1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vu*Conjg(YQ2(2,2)))/sqrt(2._dp)
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(v2*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vd*Conjg(YQ1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vu*Conjg(YQ2(2,3)))/sqrt(2._dp)
 mat(3,1) = 0._dp 
-mat(3,1) = mat(3,1)+(v2*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vd*Conjg(YQ1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vu*Conjg(YQ2(3,1)))/sqrt(2._dp)
 mat(3,2) = 0._dp 
-mat(3,2) = mat(3,2)+(v2*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vd*Conjg(YQ1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vu*Conjg(YQ2(3,2)))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(v2*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vd*Conjg(YQ1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vu*Conjg(YQ2(3,3)))/sqrt(2._dp)
 
  
 mat2 = Matmul(Transpose(Conjg(mat)),mat) 
@@ -2593,11 +2350,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFuEffPot 
 
-Subroutine CalculateMFeEffPot(YL1,v2,ZEL,ZER,MFe,kont)
+Subroutine CalculateMFeEffPot(YL1,YL2,vd,vu,ZEL,ZER,MFe,kont)
 
-Real(dp),Intent(in) :: v2
+Real(dp),Intent(in) :: vd,vu
 
-Complex(dp),Intent(in) :: YL1(3,3)
+Complex(dp),Intent(in) :: YL1(3,3),YL2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -2618,23 +2375,32 @@ MFe = 0._dp
 ZEL = 0._dp 
 ZER = 0._dp 
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(v2*Conjg(YL1(1,1)))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vu*YL1(1,1))/sqrt(2._dp)
+mat(1,1) = mat(1,1)+(vd*YL2(1,1))/sqrt(2._dp)
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(v2*Conjg(YL1(1,2)))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vu*YL1(1,2))/sqrt(2._dp)
+mat(1,2) = mat(1,2)+(vd*YL2(1,2))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(v2*Conjg(YL1(1,3)))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vu*YL1(1,3))/sqrt(2._dp)
+mat(1,3) = mat(1,3)+(vd*YL2(1,3))/sqrt(2._dp)
 mat(2,1) = 0._dp 
-mat(2,1) = mat(2,1)+(v2*Conjg(YL1(2,1)))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vu*YL1(2,1))/sqrt(2._dp)
+mat(2,1) = mat(2,1)+(vd*YL2(2,1))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(v2*Conjg(YL1(2,2)))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vu*YL1(2,2))/sqrt(2._dp)
+mat(2,2) = mat(2,2)+(vd*YL2(2,2))/sqrt(2._dp)
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(v2*Conjg(YL1(2,3)))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vu*YL1(2,3))/sqrt(2._dp)
+mat(2,3) = mat(2,3)+(vd*YL2(2,3))/sqrt(2._dp)
 mat(3,1) = 0._dp 
-mat(3,1) = mat(3,1)+(v2*Conjg(YL1(3,1)))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vu*YL1(3,1))/sqrt(2._dp)
+mat(3,1) = mat(3,1)+(vd*YL2(3,1))/sqrt(2._dp)
 mat(3,2) = 0._dp 
-mat(3,2) = mat(3,2)+(v2*Conjg(YL1(3,2)))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vu*YL1(3,2))/sqrt(2._dp)
+mat(3,2) = mat(3,2)+(vd*YL2(3,2))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(v2*Conjg(YL1(3,3)))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vu*YL1(3,3))/sqrt(2._dp)
+mat(3,3) = mat(3,3)+(vd*YL2(3,3))/sqrt(2._dp)
 
  
 mat2 = Matmul(Transpose(Conjg(mat)),mat) 
@@ -2715,11 +2481,11 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFeEffPot 
 
-Subroutine CalculateMFvEffPot(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
+Subroutine CalculateMFvEffPot(YDR,YL1,YL2,vd,vu,vR,UV,MFv,kont)
 
-Real(dp) ,Intent(in) :: v1,vtl,vtr
+Real(dp) ,Intent(in) :: vd,vu,vR
 
-Complex(dp) ,Intent(in) :: YDR(3,3),YL1(3,3),YDL(3,3)
+Complex(dp) ,Intent(in) :: YDR(3,3),YL1(3,3),YL2(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
@@ -2736,53 +2502,53 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMFv'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+sqrt(2._dp)*vtl*Conjg(YDL(1,1))
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(vtl*Conjg(YDL(1,2)))/sqrt(2._dp)
-mat(1,2) = mat(1,2)+(vtl*Conjg(YDL(2,1)))/sqrt(2._dp)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)+(vtl*Conjg(YDL(1,3)))/sqrt(2._dp)
-mat(1,3) = mat(1,3)+(vtl*Conjg(YDL(3,1)))/sqrt(2._dp)
 mat(1,4) = 0._dp 
-mat(1,4) = mat(1,4)+(v1*YL1(1,1))/sqrt(2._dp)
+mat(1,4) = mat(1,4)+(vd*YL1(1,1))/sqrt(2._dp)
+mat(1,4) = mat(1,4)+(vu*YL2(1,1))/sqrt(2._dp)
 mat(1,5) = 0._dp 
-mat(1,5) = mat(1,5)+(v1*YL1(1,2))/sqrt(2._dp)
+mat(1,5) = mat(1,5)+(vd*YL1(1,2))/sqrt(2._dp)
+mat(1,5) = mat(1,5)+(vu*YL2(1,2))/sqrt(2._dp)
 mat(1,6) = 0._dp 
-mat(1,6) = mat(1,6)+(v1*YL1(1,3))/sqrt(2._dp)
+mat(1,6) = mat(1,6)+(vd*YL1(1,3))/sqrt(2._dp)
+mat(1,6) = mat(1,6)+(vu*YL2(1,3))/sqrt(2._dp)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+sqrt(2._dp)*vtl*Conjg(YDL(2,2))
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)+(vtl*Conjg(YDL(2,3)))/sqrt(2._dp)
-mat(2,3) = mat(2,3)+(vtl*Conjg(YDL(3,2)))/sqrt(2._dp)
 mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)+(v1*YL1(2,1))/sqrt(2._dp)
+mat(2,4) = mat(2,4)+(vd*YL1(2,1))/sqrt(2._dp)
+mat(2,4) = mat(2,4)+(vu*YL2(2,1))/sqrt(2._dp)
 mat(2,5) = 0._dp 
-mat(2,5) = mat(2,5)+(v1*YL1(2,2))/sqrt(2._dp)
+mat(2,5) = mat(2,5)+(vd*YL1(2,2))/sqrt(2._dp)
+mat(2,5) = mat(2,5)+(vu*YL2(2,2))/sqrt(2._dp)
 mat(2,6) = 0._dp 
-mat(2,6) = mat(2,6)+(v1*YL1(2,3))/sqrt(2._dp)
+mat(2,6) = mat(2,6)+(vd*YL1(2,3))/sqrt(2._dp)
+mat(2,6) = mat(2,6)+(vu*YL2(2,3))/sqrt(2._dp)
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+sqrt(2._dp)*vtl*Conjg(YDL(3,3))
 mat(3,4) = 0._dp 
-mat(3,4) = mat(3,4)+(v1*YL1(3,1))/sqrt(2._dp)
+mat(3,4) = mat(3,4)+(vd*YL1(3,1))/sqrt(2._dp)
+mat(3,4) = mat(3,4)+(vu*YL2(3,1))/sqrt(2._dp)
 mat(3,5) = 0._dp 
-mat(3,5) = mat(3,5)+(v1*YL1(3,2))/sqrt(2._dp)
+mat(3,5) = mat(3,5)+(vd*YL1(3,2))/sqrt(2._dp)
+mat(3,5) = mat(3,5)+(vu*YL2(3,2))/sqrt(2._dp)
 mat(3,6) = 0._dp 
-mat(3,6) = mat(3,6)+(v1*YL1(3,3))/sqrt(2._dp)
+mat(3,6) = mat(3,6)+(vd*YL1(3,3))/sqrt(2._dp)
+mat(3,6) = mat(3,6)+(vu*YL2(3,3))/sqrt(2._dp)
 mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+sqrt(2._dp)*vtr*YDR(1,1)
+mat(4,4) = mat(4,4)+sqrt(2._dp)*vR*YDR(1,1)
 mat(4,5) = 0._dp 
-mat(4,5) = mat(4,5)+(vtr*YDR(1,2))/sqrt(2._dp)
-mat(4,5) = mat(4,5)+(vtr*YDR(2,1))/sqrt(2._dp)
+mat(4,5) = mat(4,5)+(vR*YDR(1,2))/sqrt(2._dp)
+mat(4,5) = mat(4,5)+(vR*YDR(2,1))/sqrt(2._dp)
 mat(4,6) = 0._dp 
-mat(4,6) = mat(4,6)+(vtr*YDR(1,3))/sqrt(2._dp)
-mat(4,6) = mat(4,6)+(vtr*YDR(3,1))/sqrt(2._dp)
+mat(4,6) = mat(4,6)+(vR*YDR(1,3))/sqrt(2._dp)
+mat(4,6) = mat(4,6)+(vR*YDR(3,1))/sqrt(2._dp)
 mat(5,5) = 0._dp 
-mat(5,5) = mat(5,5)+sqrt(2._dp)*vtr*YDR(2,2)
+mat(5,5) = mat(5,5)+sqrt(2._dp)*vR*YDR(2,2)
 mat(5,6) = 0._dp 
-mat(5,6) = mat(5,6)+(vtr*YDR(2,3))/sqrt(2._dp)
-mat(5,6) = mat(5,6)+(vtr*YDR(3,2))/sqrt(2._dp)
+mat(5,6) = mat(5,6)+(vR*YDR(2,3))/sqrt(2._dp)
+mat(5,6) = mat(5,6)+(vR*YDR(3,2))/sqrt(2._dp)
 mat(6,6) = 0._dp 
-mat(6,6) = mat(6,6)+sqrt(2._dp)*vtr*YDR(3,3)
+mat(6,6) = mat(6,6)+sqrt(2._dp)*vR*YDR(3,3)
 
  
  Do i1=2,6
@@ -3049,10 +2815,9 @@ Iname = Iname - 1
  
 End Subroutine CalculateMFcEffPot 
 
-Subroutine CalculateVPVZVZREffPot(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,           & 
-& MVZR2,kont)
+Subroutine CalculateVPVZVZREffPot(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 
-Real(dp), Intent(in) :: gBL,g2,gR,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: gBL,g2,gR,vd,vu,vR
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr 
@@ -3071,23 +2836,20 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateVPVZVZR'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+gBL**2*vtlFix**2
-mat(1,1) = mat(1,1)+gBL**2*vtrFix**2
+mat(1,1) = mat(1,1)+gBL**2*vRFix**2
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)-(g2*gBL*vtlFix**2)
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)-(gBL*gR*vtrFix**2)
+mat(1,3) = mat(1,3)-(gBL*gR*vRFix**2)
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(g2**2*v1Fix**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*v2Fix**2)/4._dp
-mat(2,2) = mat(2,2)+g2**2*vtlFix**2
+mat(2,2) = mat(2,2)+(g2**2*vdFix**2)/4._dp
+mat(2,2) = mat(2,2)+(g2**2*vuFix**2)/4._dp
 mat(2,3) = 0._dp 
-mat(2,3) = mat(2,3)-(g2*gR*v1Fix**2)/4._dp
-mat(2,3) = mat(2,3)-(g2*gR*v2Fix**2)/4._dp
+mat(2,3) = mat(2,3)-(g2*gR*vdFix**2)/4._dp
+mat(2,3) = mat(2,3)-(g2*gR*vuFix**2)/4._dp
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(gR**2*v1Fix**2)/4._dp
-mat(3,3) = mat(3,3)+(gR**2*v2Fix**2)/4._dp
-mat(3,3) = mat(3,3)+gR**2*vtrFix**2
+mat(3,3) = mat(3,3)+(gR**2*vdFix**2)/4._dp
+mat(3,3) = mat(3,3)+gR**2*vRFix**2
+mat(3,3) = mat(3,3)+(gR**2*vuFix**2)/4._dp
 
  
  Do i1=2,3
@@ -3143,10 +2905,10 @@ MVZR2 = VPVZVZR2(3)
  
 End Subroutine CalculateVPVZVZREffPot 
 
-Subroutine CalculateVWLmVWRmEffPot(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,         & 
+Subroutine CalculateVWLmVWRmEffPot(g2,gR,vd,vu,vR,ZW,MVWLm,MVWRm,MVWLm2,              & 
 & MVWRm2,PhiW,kont)
 
-Real(dp), Intent(in) :: g2,gR,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: g2,gR,vd,vu,vR
 
 Real(dp), Intent(out) :: PhiW
 
@@ -3167,29 +2929,27 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateVWLmVWRm'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)+(g2**2*v1Fix**2)/4._dp
-mat(1,1) = mat(1,1)+(g2**2*v2Fix**2)/4._dp
-mat(1,1) = mat(1,1)+(g2**2*vtlFix**2)/2._dp
+mat(1,1) = mat(1,1)+(g2**2*vdFix**2)/4._dp
+mat(1,1) = mat(1,1)+(g2**2*vuFix**2)/4._dp
 mat(1,2) = 0._dp 
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)-(g2*gR*v1Fix*v2Fix)/2._dp
+mat(1,3) = mat(1,3)-(g2*gR*vdFix*vuFix)/2._dp
 mat(1,4) = 0._dp 
 mat(2,2) = 0._dp 
-mat(2,2) = mat(2,2)+(g2**2*v1Fix**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*v2Fix**2)/4._dp
-mat(2,2) = mat(2,2)+(g2**2*vtlFix**2)/2._dp
+mat(2,2) = mat(2,2)+(g2**2*vdFix**2)/4._dp
+mat(2,2) = mat(2,2)+(g2**2*vuFix**2)/4._dp
 mat(2,3) = 0._dp 
 mat(2,4) = 0._dp 
-mat(2,4) = mat(2,4)-(g2*gR*v1Fix*v2Fix)/2._dp
+mat(2,4) = mat(2,4)-(g2*gR*vdFix*vuFix)/2._dp
 mat(3,3) = 0._dp 
-mat(3,3) = mat(3,3)+(gR**2*v1Fix**2)/4._dp
-mat(3,3) = mat(3,3)+(gR**2*v2Fix**2)/4._dp
-mat(3,3) = mat(3,3)+(gR**2*vtrFix**2)/2._dp
+mat(3,3) = mat(3,3)+(gR**2*vdFix**2)/4._dp
+mat(3,3) = mat(3,3)+(gR**2*vRFix**2)/2._dp
+mat(3,3) = mat(3,3)+(gR**2*vuFix**2)/4._dp
 mat(3,4) = 0._dp 
 mat(4,4) = 0._dp 
-mat(4,4) = mat(4,4)+(gR**2*v1Fix**2)/4._dp
-mat(4,4) = mat(4,4)+(gR**2*v2Fix**2)/4._dp
-mat(4,4) = mat(4,4)+(gR**2*vtrFix**2)/2._dp
+mat(4,4) = mat(4,4)+(gR**2*vdFix**2)/4._dp
+mat(4,4) = mat(4,4)+(gR**2*vRFix**2)/2._dp
+mat(4,4) = mat(4,4)+(gR**2*vuFix**2)/4._dp
 
  
  Do i1=2,4
@@ -3246,22 +3006,22 @@ MVWRm2 = VWLmVWRm2(3)
 End Subroutine CalculateVWLmVWRmEffPot 
 
 Subroutine TreeMassesSM(MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVWLm,MVWLm2,             & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v1,             & 
-& v2,vtl,vtr,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,LAM3,YDR,YL1,               & 
-& YDL,YQ1,M23,mudl2,mudr2,MU12,GenerationMixing,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,vd,             & 
+& vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,               & 
+& YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,MU12
 
-Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
 Real(dp),Intent(out) :: MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),MVWLm,MVWLm2,             & 
 & MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW
 
 Complex(dp),Intent(out) :: UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
-Real(dp),Intent(in) :: v1,v2,vtl,vtr
+Real(dp),Intent(in) :: vd,vu,vR
 
 Logical, Intent(in) :: GenerationMixing 
 Integer, Intent(inout) :: kont 
@@ -3270,48 +3030,48 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'TreeMassesDMLR'
  
 kont = 0 
-Call CalculateMFd(YQ1,v1,ZDL,ZDR,MFd,kont)
+Call CalculateMFd(YQ1,YQ2,vd,vu,ZDL,ZDR,MFd,kont)
 
 MFd2 = MFd**2 
-Call CalculateMFu(YQ1,v2,ZUL,ZUR,MFu,kont)
+Call CalculateMFu(YQ1,YQ2,vd,vu,ZUL,ZUR,MFu,kont)
 
 MFu2 = MFu**2 
-Call CalculateMFe(YL1,v2,ZEL,ZER,MFe,kont)
+Call CalculateMFe(YL1,YL2,vd,vu,ZEL,ZER,MFe,kont)
 
 MFe2 = MFe**2 
-Call CalculateMFv(YDR,YL1,YDL,v1,vtl,vtr,UV,MFv,kont)
+Call CalculateMFv(YDR,YL1,YL2,vd,vu,vR,UV,MFv,kont)
 
 MFv2 = MFv**2 
 
  
- Call CalculateVPVZVZR(gBL,g2,gR,v1,v2,vtl,vtr,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
+ Call CalculateVPVZVZR(gBL,g2,gR,vd,vu,vR,ZZ,MVZ,MVZR,MVZ2,MVZR2,kont)
 
-Call CalculateVWLmVWRm(g2,gR,v1,v2,vtl,vtr,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,              & 
-& PhiW,kont)
+Call CalculateVWLmVWRm(g2,gR,vd,vu,vR,ZW,MVWLm,MVWRm,MVWLm2,MVWRm2,PhiW,kont)
 
 Iname = Iname - 1 
  
 End Subroutine  TreeMassesSM 
  
  
-Subroutine SortGoldstones(MAh,MAh2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,              & 
-& MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MHppmm,MHppmm2,MVWLm,              & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,UV,TW,UC,UCC,ZDR,ZER,UP,UT,               & 
+Subroutine SortGoldstones(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,          & 
+& MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
 & ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,kont)
 
-Real(dp),Intent(inout) :: MAh(4),MAh2(4),MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),          & 
-& MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(4),Mhh2(4),MHpm(4),MHpm2(4),MHppmm(2),       & 
-& MHppmm2(2),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(4,4),              & 
-& UCC(2,2),UP(4,4),ZH(4,4)
+Real(dp),Intent(inout) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
+& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
+& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
+& UP(3,3),ZH(3,3)
 
-Complex(dp),Intent(inout) :: UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(inout) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
+& ZW(4,4),ZZ(3,3)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1, i2, pos 
-Real(dp) :: MAhtemp(4) 
-Complex(dp) :: ZAhtemp(4,4) 
-Real(dp) :: MHpmtemp(4) 
-Complex(dp) :: ZHpmtemp(4,4) 
+Real(dp) :: MAhtemp(3) 
+Complex(dp) :: ZAhtemp(3,3) 
+Real(dp) :: MHpmtemp(3) 
+Complex(dp) :: ZHpmtemp(3,3) 
 
 
 pos = MinLoc(Abs(MAh2-MVZ2*RXiZ),1) 
@@ -3334,8 +3094,8 @@ If (pos.ne.2) Then
 End if 
 
  ! Reorder the physical states by their mass 
-Do i1=3,4
- pos = Minloc(MAh2(i1:4),1) + i1 -1  
+Do i1=3,3
+ pos = Minloc(MAh2(i1:3),1) + i1 -1  
 If (pos.ne.i1) Then 
   MAhtemp = MAh2 
   ZAhtemp = UP 
@@ -3369,8 +3129,8 @@ If (pos.ne.2) Then
 End if 
 
  ! Reorder the physical states by their mass 
-Do i1=3,4
- pos = Minloc(MHpm2(i1:4),1) + i1 -1  
+Do i1=3,3
+ pos = Minloc(MHpm2(i1:3),1) + i1 -1  
 If (pos.ne.i1) Then 
   MHpmtemp = MHpm2 
   ZHpmtemp = UC 

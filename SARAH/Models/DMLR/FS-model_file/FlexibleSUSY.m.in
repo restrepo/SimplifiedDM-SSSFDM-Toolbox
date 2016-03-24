@@ -1,46 +1,32 @@
-
 FSModelName = "@CLASSNAME@";
-FSEigenstates = SARAH`EWSB;
-FSDefaultSARAHModel = LRmodels/darkLR;
+FSDefaultSARAHModel = LRmodels/tripletLR;
 FSRGELoopOrder = 0;
 
-(* left-right symmetric model of arXiv:1512.07212 *)
+OnlyLowEnergyFlexibleSUSY = True;
 
 MINPAR = {
-   {1, gRInput},
-   {2, vtRInput},
-   {3, vHRInput},
-   {4, vHLInput},
-   {5, vtLInput},
-   {6, TanBeta},
-   {10, lam1Input},
-   {11, rho1Input},
-   {12, rho2Input},
-   {13, rho3Input},
-   {14, alp1Input},
-   {15, alp3Input},
-   {16, beta2Input},
-   {17, etaLLInput},
-   {18, etaLRInput},
-   {19, etaRLInput},
-   {20, etaRRInput},
-   {21, etaRR1Input},
-   {22, etaRR2Input},
-   {23, lamLInput},
-   {24, lamRInput},
-   {25, lamLRInput},
-   {26, betaLInput},
-   {27, betaRInput},
-   {28, alpInput},
-   {29, xiRInput},
-   {30, xiLRInput}
+    {1, vRinput},
+    {2, TanBeta},
+    {3, lam1INPUT},
+    {4, lam2INPUT},
+    {5, lam3INPUT},
+    {6, lam4INPUT},
+    {7, rho1INPUT},
+    {8, rho2INPUT},
+    {9, alp1INPUT},
+    {10, alp2INPUT},
+    {11, alp3INPUT},
+    {12, M1INPUT},
+    {13, M23INPUT},
+    {14, lamT1INPUT},
+    {15, lamT2INPUT}
 };
 
 EXTPAR = {};
 
 FSExtraInputParameters = {};
 
-EWSBOutputParameters = {mu12, lam3, mudL2, mudR2, muL2, muR2};
+EWSBOutputParameters = {mu12, mu22, mu32};
 
 SUSYScale = LowScale;
 
@@ -50,98 +36,53 @@ SUSYScaleInput = {};
 
 LowScale = LowEnergyConstant[MZ];
 
-LowScaleFirstGuess = LowEnergyConstant[MZ];
+LowScaleFirstGuess = LowScale;
 
 LowScaleInput = {
-   {g3, LowEnergyConstant[g3SM]},
-   {g2, LowEnergyConstant[g2SM]},
-   {gR, gRInput},
-   {gBL, (LowEnergyConstant[g1SM]*gRInput)/Sqrt[-LowEnergyConstant[g1SM]^2 + gRInput^2]},
-   {vtR, vtRInput},
-   {vHR, vHRInput},
-   {vtL, vtLInput},
-   {vHL, vHLInput},
-   {v2, TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2]},
-   {v1, TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2]},
-   {lam1, lam1Input},
-   {rho1, rho1Input},
-   {rho2, rho2Input},
-   {rho3, rho3Input},
-   {alp1, alp1Input},
-   {alp3, alp3Input},
-   {beta2, beta2Input},
-   {etaLL, etaLLInput},
-   {etaLR, etaLRInput},
-   {etaRL, etaRLInput},
-   {etaRR, etaRRInput},
-   {eRR1, etaRR1Input},
-   {eRR2, etaRR2Input},
-   {lamL, lamLInput},
-   {lamR, lamRInput},
-   {lamLR, lamLRInput},
-   {betaL, betaLInput},
-   {betaR, betaRInput},
-   {alp, alpInput},
-   {xiR, xiRInput},
-   {xiLR, xiLRInput},
-   {YQ1[1,1], LowEnergyConstant[yuSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YQ1[2,2], LowEnergyConstant[ycSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YQ1[3,3], LowEnergyConstant[ytSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YL1[1,1], LowEnergyConstant[yeSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YL1[2,2], LowEnergyConstant[ymSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YL1[3,3], LowEnergyConstant[ylSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])}
+    {g3, LowEnergyConstant[g3SM]},
+    {g2, LowEnergyConstant[g2SM]},
+    {gR, g2},
+    {gBL, (LowEnergyConstant[g1SM]*gR)/Sqrt[-LowEnergyConstant[g1SM]^2 + gR^2]},
+    {v1, LowEnergyConstant[vSM] Cos[ArcTan[TanBeta]]},   
+    {v2, LowEnergyConstant[vSM] Sin[ArcTan[TanBeta]]},
+    {vR, vRinput},
+    {YQ2[1,1], -Sqrt[2]*(v1*LowEnergyConstant[ydSM] - v2*LowEnergyConstant[yuSM])/(-v1^2 + v2^2)},
+    {YQ2[2,2], -Sqrt[2]*(v1*LowEnergyConstant[ysSM] - v2*LowEnergyConstant[ycSM])/(-v1^2 + v2^2)},
+    {YQ2[3,3], -Sqrt[2]*(v1*LowEnergyConstant[ybSM] - v2*LowEnergyConstant[ytSM])/(-v1^2 + v2^2)},
+    {YQ1[1,1],  Sqrt[2]*(v2*LowEnergyConstant[ydSM] - v1*LowEnergyConstant[yuSM])/(-v1^2 + v2^2)},
+    {YQ1[2,2],  Sqrt[2]*(v2*LowEnergyConstant[ysSM] - v1*LowEnergyConstant[ycSM])/(-v1^2 + v2^2)},
+    {YQ1[3,3],  Sqrt[2]*(v2*LowEnergyConstant[ybSM] - v1*LowEnergyConstant[ytSM])/(-v1^2 + v2^2)},
+    {YL2, ZEROMATRIX[3,3]},
+    {YL1, ZEROMATRIX[3,3]},
+    {lam1, lam1INPUT},
+    {lam2, lam2INPUT},
+    {lam3, lam3INPUT},
+    {lam4, lam4INPUT},
+    {rho1, rho1INPUT},
+    {rho2, rho2INPUT},
+    {alp1, alp1INPUT},
+    {alp2, alp2INPUT},
+    {alp3, alp3INPUT},
+    {M1, M1INPUT},
+    {M23, M23INPUT},
+    {lamT1, lamT1INPUT},
+    {lamT2, lamT2INPUT}
 };
 
 InitialGuessAtLowScale = {
-   {g3, LowEnergyConstant[g3SM]},
-   {g2, LowEnergyConstant[g2SM]},
-   {gR, gRInput},
-   {gBL, (LowEnergyConstant[g1SM]*gRInput)/Sqrt[-LowEnergyConstant[g1SM]^2 + gRInput^2]},
-   {vtR, vtRInput},
-   {vHR, vHRInput},
-   {vtL, vtLInput},
-   {vHL, vHLInput},
-   {v2, TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2]},
-   {v1, Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2]},
-   {lam1, lam1Input},
-   {rho1, rho1Input},
-   {rho2, rho2Input},
-   {rho3, rho3Input},
-   {alp1, alp1Input},
-   {alp3, alp3Input},
-   {beta2, beta2Input},
-   {etaLL, etaLLInput},
-   {etaLR, etaLRInput},
-   {etaRL, etaRLInput},
-   {etaRR, etaRRInput},
-   {eRR1, etaRR1Input},
-   {eRR2, etaRR2Input},
-   {lamL, lamLInput},
-   {lamR, lamRInput},
-   {lamLR, lamLRInput},
-   {betaL, betaLInput},
-   {betaR, betaRInput},
-   {alp, alpInput},
-   {xiR, xiRInput},
-   {xiLR, xiLRInput},
-   {YQ1[1,1], LowEnergyConstant[yuSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YQ1[2,2], LowEnergyConstant[ycSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YQ1[3,3], LowEnergyConstant[ytSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YL1[1,1], LowEnergyConstant[yeSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YL1[2,2], LowEnergyConstant[ymSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])},
-   {YL1[3,3], LowEnergyConstant[ylSM]*LowEnergyConstant[vSM]/(TanBeta*Sqrt[LowEnergyConstant[vSM]^2 - vHLInput^2 - 2*vtLInput^2]/Sqrt[1 + TanBeta^2])}
+    {v1, LowEnergyConstant[vSM] Cos[ArcTan[TanBeta]]},   
+    {v2, LowEnergyConstant[vSM] Sin[ArcTan[TanBeta]]},
+    {YQ2[1,1], -Sqrt[2]*(v1*LowEnergyConstant[ydSM] - v2*LowEnergyConstant[yuSM])/(-v1^2 + v2^2)},
+    {YQ2[2,2], -Sqrt[2]*(v1*LowEnergyConstant[ysSM] - v2*LowEnergyConstant[ycSM])/(-v1^2 + v2^2)},
+    {YQ2[3,3], -Sqrt[2]*(v1*LowEnergyConstant[ybSM] - v2*LowEnergyConstant[ytSM])/(-v1^2 + v2^2)},
+    {YQ1[1,1],  Sqrt[2]*(v2*LowEnergyConstant[ydSM] - v1*LowEnergyConstant[yuSM])/(-v1^2 + v2^2)},
+    {YQ1[2,2],  Sqrt[2]*(v2*LowEnergyConstant[ysSM] - v1*LowEnergyConstant[ycSM])/(-v1^2 + v2^2)},
+    {YQ1[3,3],  Sqrt[2]*(v2*LowEnergyConstant[ybSM] - v1*LowEnergyConstant[ytSM])/(-v1^2 + v2^2)},
+    {YL2, ZEROMATRIX[3,3]},
+    {YL1, ZEROMATRIX[3,3]}
 };
 
-OnlyLowEnergyFlexibleSUSY = True;
-
-FSWeakMixingAngleOptions = FSSetOption[FSWeakMixingAngleOptions, FSWeakMixingAngleInput -> FSFermiConstant];
-
-DefaultPoleMassPrecision = MediumPrecision;
-HighPoleMassPrecision    = {hh, Ah};
-MediumPoleMassPrecision  = {};
-LowPoleMassPrecision     = {};
-
-PotentialLSPParticles    = {};
+PotentialLSPParticles = {};
 
 ExtraSLHAOutputBlocks = {
    {FlexibleSUSYOutput,

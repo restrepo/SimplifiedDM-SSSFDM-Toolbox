@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 15:47 on 9.3.2016   
+! File created at 20:24 on 23.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -19,30 +19,30 @@ Use Mathematics
 Contains 
 
 
-Subroutine SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,           & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,Tad1Loop)
+Subroutine SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,               & 
+& ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,Tad1Loop)
 
 Implicit None
-Real(dp),Intent(inout) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
+Real(dp),Intent(inout) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
+& MU12,vd,vu,vR
 
-Complex(dp),Intent(inout) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(inout) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp), Intent(in) :: Tad1Loop(4)
+Complex(dp), Intent(in) :: Tad1Loop(3)
 
 ! For numerical routines 
-Real(dp) :: gC(95)
+Real(dp) :: gC(110)
 logical :: broycheck 
-Real(dp) :: broyx(4)
+Real(dp) :: broyx(3)
 
 If (HighScaleModel.Eq."LOW") Then 
-MU12 = (-2*LAM1*(v1**4 - v2**4) + ALP3*v2**2*vtl**2 + 2*BETA2*v1**2*vtl*vtr + ALP3*v2**2*vtr**2 -& 
-&  ALP1*(v1**2 - v2**2)*(vtl**2 + vtr**2) + 2*v1*Tad1Loop(1) - 2*v2*Tad1Loop(2))/(2._dp*(v1**2 - v2**2))
-LAM3 = -((ALP3*v1*v2*vtl**2 + 2*BETA2*v1*v2*vtl*vtr + ALP3*v1*v2*vtr**2 + 2*v2*Tad1Loop(1) - & 
-&  2*v1*Tad1Loop(2))/(4*v1**3*v2 - 4*v1*v2**3))
-mudl2 = -(ALP3*v2**2*vtl + ALP1*(v1**2 + v2**2)*vtl + 2*RHO1*vtl**3 - BETA2*v1**2*vtr +       & 
-&  rh3*vtl*vtr**2 - 2*Tad1Loop(3))/(2._dp*vtl)
-mudr2 = -(-(BETA2*v1**2*vtl) + ALP3*v2**2*vtr + ALP1*(v1**2 + v2**2)*vtr + rh3*vtl**2*vtr +   & 
-&  2*RHO1*vtr**3 - 2*Tad1Loop(4))/(2._dp*vtr)
+MU12 = (2*LAM1*vd**4 - 4*LAM4*vd**3*vu + 4*LAM4*vd*vu**3 - 2*LAM1*vu**4 + ALP1*vd**2*vR**2 - & 
+&  ALP1*vu**2*vR**2 - ALP3*vu**2*vR**2 - 2*vd*Tad1Loop(1) + 2*vu*Tad1Loop(2))/(2*vd**2 - 2*vu**2)
+MU22 = (2*LAM4*vd**4 - 8*LAM2*vd**3*vu - 4*LAM3*vd**3*vu + 8*LAM2*vd*vu**3 + 4*LAM3*vd*vu**3 -& 
+&  2*LAM4*vu**4 + 2*ALP2*vd**2*vR**2 - ALP3*vd*vu*vR**2 - 2*ALP2*vu**2*vR**2 -           & 
+&  2*vu*Tad1Loop(1) + 2*vd*Tad1Loop(2))/(4*vd**2 - 4*vu**2)
+mu32 = (-4*ALP2*vd*vu*vR + ALP3*vu**2*vR + ALP1*(vd**2 + vu**2)*vR + 2*RHO1*vR**3 -          & 
+&  2*Tad1Loop(3))/(2._dp*vR)
 
  ! ----------- Check solutions for consistency  -------- 
 
@@ -51,39 +51,22 @@ If (MU12.ne.MU12) Then
    Write(*,*) "NaN appearing in solution of tadpole equations for MU12" 
    Call TerminateProgram  
  End If 
- If (LAM3.ne.LAM3) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for LAM3" 
+ If (MU22.ne.MU22) Then 
+   Write(*,*) "NaN appearing in solution of tadpole equations for MU22" 
    Call TerminateProgram  
  End If 
- If (Real(mudl2,dp).ne.Real(mudl2,dp)) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for mudl2" 
+ If (mu32.ne.mu32) Then 
+   Write(*,*) "NaN appearing in solution of tadpole equations for mu32" 
    Call TerminateProgram  
  End If 
- If (Abs(AImag(mudl2)).gt.1.0E-04_dp) Then 
-   Write(*,*) "No real solution of tadpole equations for mudl2" 
-   !Call TerminateProgram  
-   mudl2 = Real(mudl2,dp) 
-  SignOfMuChanged= .True. 
-End If 
- If (Real(mudr2,dp).ne.Real(mudr2,dp)) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for mudr2" 
-   Call TerminateProgram  
- End If 
- If (Abs(AImag(mudr2)).gt.1.0E-04_dp) Then 
-   Write(*,*) "No real solution of tadpole equations for mudr2" 
-   !Call TerminateProgram  
-   mudr2 = Real(mudr2,dp) 
-  SignOfMuChanged= .True. 
-End If 
  Else 
-MU12 = (-2*LAM1*(v1**4 - v2**4) + ALP3*v2**2*vtl**2 + 2*BETA2*v1**2*vtl*vtr + ALP3*v2**2*vtr**2 -& 
-&  ALP1*(v1**2 - v2**2)*(vtl**2 + vtr**2) + 2*v1*Tad1Loop(1) - 2*v2*Tad1Loop(2))/(2._dp*(v1**2 - v2**2))
-LAM3 = -((ALP3*v1*v2*vtl**2 + 2*BETA2*v1*v2*vtl*vtr + ALP3*v1*v2*vtr**2 + 2*v2*Tad1Loop(1) - & 
-&  2*v1*Tad1Loop(2))/(4*v1**3*v2 - 4*v1*v2**3))
-mudl2 = -(ALP3*v2**2*vtl + ALP1*(v1**2 + v2**2)*vtl + 2*RHO1*vtl**3 - BETA2*v1**2*vtr +       & 
-&  rh3*vtl*vtr**2 - 2*Tad1Loop(3))/(2._dp*vtl)
-mudr2 = -(-(BETA2*v1**2*vtl) + ALP3*v2**2*vtr + ALP1*(v1**2 + v2**2)*vtr + rh3*vtl**2*vtr +   & 
-&  2*RHO1*vtr**3 - 2*Tad1Loop(4))/(2._dp*vtr)
+MU12 = (2*LAM1*vd**4 - 4*LAM4*vd**3*vu + 4*LAM4*vd*vu**3 - 2*LAM1*vu**4 + ALP1*vd**2*vR**2 - & 
+&  ALP1*vu**2*vR**2 - ALP3*vu**2*vR**2 - 2*vd*Tad1Loop(1) + 2*vu*Tad1Loop(2))/(2*vd**2 - 2*vu**2)
+MU22 = (2*LAM4*vd**4 - 8*LAM2*vd**3*vu - 4*LAM3*vd**3*vu + 8*LAM2*vd*vu**3 + 4*LAM3*vd*vu**3 -& 
+&  2*LAM4*vu**4 + 2*ALP2*vd**2*vR**2 - ALP3*vd*vu*vR**2 - 2*ALP2*vu**2*vR**2 -           & 
+&  2*vu*Tad1Loop(1) + 2*vd*Tad1Loop(2))/(4*vd**2 - 4*vu**2)
+mu32 = (-4*ALP2*vd*vu*vR + ALP3*vu**2*vR + ALP1*(vd**2 + vu**2)*vR + 2*RHO1*vR**3 -          & 
+&  2*Tad1Loop(3))/(2._dp*vR)
 
  ! ----------- Check solutions for consistency  -------- 
 
@@ -92,52 +75,38 @@ If (MU12.ne.MU12) Then
    Write(*,*) "NaN appearing in solution of tadpole equations for MU12" 
    Call TerminateProgram  
  End If 
- If (LAM3.ne.LAM3) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for LAM3" 
+ If (MU22.ne.MU22) Then 
+   Write(*,*) "NaN appearing in solution of tadpole equations for MU22" 
    Call TerminateProgram  
  End If 
- If (Real(mudl2,dp).ne.Real(mudl2,dp)) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for mudl2" 
+ If (mu32.ne.mu32) Then 
+   Write(*,*) "NaN appearing in solution of tadpole equations for mu32" 
    Call TerminateProgram  
  End If 
- If (Abs(AImag(mudl2)).gt.1.0E-04_dp) Then 
-   Write(*,*) "No real solution of tadpole equations for mudl2" 
-   !Call TerminateProgram  
-   mudl2 = Real(mudl2,dp) 
-  SignOfMuChanged= .True. 
-End If 
- If (Real(mudr2,dp).ne.Real(mudr2,dp)) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for mudr2" 
-   Call TerminateProgram  
- End If 
- If (Abs(AImag(mudr2)).gt.1.0E-04_dp) Then 
-   Write(*,*) "No real solution of tadpole equations for mudr2" 
-   !Call TerminateProgram  
-   mudr2 = Real(mudr2,dp) 
-  SignOfMuChanged= .True. 
-End If 
  End if 
 End Subroutine SolveTadpoleEquations
 
-Subroutine CalculateTadpoles(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,Tad1Loop,TadpoleValues)
+Subroutine CalculateTadpoles(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,              & 
+& LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,Tad1Loop,               & 
+& TadpoleValues)
 
-Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
+Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
+& MU12,vd,vu,vR
 
-Complex(dp),Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp), Intent(in) :: Tad1Loop(4)
+Complex(dp), Intent(in) :: Tad1Loop(3)
 
-Real(dp), Intent(out) :: TadpoleValues(4)
+Real(dp), Intent(out) :: TadpoleValues(3)
 
-TadpoleValues(1) = Real((v1*(2._dp*(MU12) + 2*LAM1*v1**2 + 2*(LAM1 + 2._dp*(LAM3))    & 
-& *v2**2 + ALP1*vtl**2 - 2*BETA2*vtl*vtr + ALP1*vtr**2))/2._dp - Tad1Loop(1),dp) 
-TadpoleValues(2) = Real((v2*(2._dp*(MU12) + 2*(LAM1 + 2._dp*(LAM3))*v1**2 + 2*LAM1*v2**2 + ALP1*vtl**2 + ALP3*vtl**2 + ALP1*vtr**2 + ALP3*vtr**2))& 
-& /2._dp - Tad1Loop(2),dp) 
-TadpoleValues(3) = Real((2*RHO1*vtl**3 - BETA2*v1**2*vtr + vtl*(2._dp*(mudl2)         & 
-&  + ALP1*v1**2 + (ALP1 + ALP3)*v2**2 + rh3*vtr**2))/2._dp - Tad1Loop(3),dp) 
-TadpoleValues(4) = Real((v1**2*(-(BETA2*vtl) + ALP1*vtr) + vtr*(2._dp*(mudr2)         & 
-&  + (ALP1 + ALP3)*v2**2 + rh3*vtl**2 + 2*RHO1*vtr**2))/2._dp - Tad1Loop(4),dp) 
+TadpoleValues(1) = Real(LAM1*vd**3 - 3*LAM4*vd**2*vu - (vd*(2._dp*(MU12)              & 
+&  - 2*(LAM1 + 4._dp*(LAM2) + 2._dp*(LAM3))*vu**2 - ALP1*vR**2))/2._dp - vu*(-2._dp*(MU22)& 
+&  + LAM4*vu**2 + ALP2*vR**2) - Tad1Loop(1),dp) 
+TadpoleValues(2) = Real((-2*LAM4*vd**3 + 2*(LAM1 + 4._dp*(LAM2) + 2._dp*(LAM3))       & 
+& *vd**2*vu + vd*(4._dp*(MU22) - 6*LAM4*vu**2 - 2*ALP2*vR**2) + vu*(-2._dp*(MU12)        & 
+&  + 2*LAM1*vu**2 + (ALP1 + ALP3)*vR**2))/2._dp - Tad1Loop(2),dp) 
+TadpoleValues(3) = Real((vR*(-2._dp*(mu32) + ALP1*vd**2 - 4*ALP2*vd*vu + (ALP1 + ALP3)& 
+& *vu**2 + 2*RHO1*vR**2))/2._dp - Tad1Loop(3),dp) 
 End Subroutine CalculateTadpoles 
 
 End Module Tadpoles_DMLR 

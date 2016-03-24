@@ -3,55 +3,49 @@
 Off[General::spell]
 
 Model`Name = "DMLR";
-Model`NameLaTeX ="dark Left-Right Symmetric Model with global U(1) and extra quarks, Higgs sector including a bidoublet, two triplets and two doublets";
-Model`Authors = "M.E. Krauss";
-Model`Date = "2016-01-15";
+Model`NameLaTeX ="Left-Right Symmetric Model with fermionic and scalar triplets";
+Model`Authors = "M.E. Krauss, C. Bonilla";
+Model`Date = "2016-01-08";
 
-(* using the model defined in 1512.07212.
-   Added terms that aren't present in the presented Lagrangian like conj[Phi].deltaR.conj[Phi].conj[deltaL]
-   as well as all the left terms which they don't write down *)
+
 
 
 (*-------------------------------------------*)
 (*   Particle Content*)
 (*-------------------------------------------*)
+(* Global Symmetries *)
 
-(* Global symmetries *)
+Global[[1]] = {Z[2], Z2};
 
-Global[[1]]={Z[2], Z1};
 
 (* Gauge Groups *)
 
-Gauge[[1]]={B,   U[1], bminl,       gBL,False, 1};
-Gauge[[2]]={WL, SU[2], left,        g2,True, 1};
-Gauge[[3]]={WR, SU[2], right,       gR,True, 1};
-Gauge[[4]]={G,  SU[3], color,       g3,False, 1};
+Gauge[[1]]={B,   U[1], bminl,       gBL,False,1};
+Gauge[[2]]={WL, SU[2], left,        g2,True,1};
+Gauge[[3]]={WR, SU[2], right,       gR,True,1};
+Gauge[[4]]={G,  SU[3], color,       g3,False,1};
 
 
 (* Matter Fields: Using Q=T3L+T3R+QBL)*)
 
-FermionFields[[1]] = {QLbar, 3, {conj[uL], conj[dL]},        -1/6, -2,  1, -3,    1};
-FermionFields[[2]] = {LLbar, 3, {conj[nuL], conj[eL]},        1/2, -2,  1,  1,    1};
-FermionFields[[3]] = {QR,  3, {uR,  dR},                      1/6,  1,  2,  3,   1};
-FermionFields[[4]] = {LR,  3, {nuR, eR},                     -1/2,  1,  2,  1,   1};
-
-(* FermionFields[[5]] = {DVR,  3, dVR,                          -1/3,  1,  1,  3,     0};*)
-(*FermionFields[[6]] = {XVLbar,  3, conj[xL],                   1/3,  1,  1, -3,    -1};*)
-
+FermionFields[[1]] = {QLbar, 3, {conj[uL], conj[dL]},        -1/6, -2,  1, -3,1};  
+FermionFields[[2]] = {LLbar, 3, {conj[nuL], conj[eL]},        1/2, -2,  1,  1,1};
+FermionFields[[3]] = {QR,  3, {uR,  dR},                      1/6,  1,  2,  3,1};
+FermionFields[[4]] = {LR,  3, {nuR, eR},                     -1/2,  1,  2,  1,1};
+(*FermionFields[[5]] = {T1,1, {{t10/Sqrt[2], t1p},			     
+                                 {t1m, - t10/Sqrt[2]}},         0,  1,  3,  1,-1};*)
 FermionFields[[5]] = {T2,1, {{t2p/Sqrt[2], t2pp},			     
                                  {t20, - t2p/Sqrt[2]}},         1,  1,  3,  1,-1};
 FermionFields[[6]] = {T3,1, {{t3m/Sqrt[2], t30},			     
-                                 {t3mm, - t3m/Sqrt[2]}},       -1,  1,  3,  1,-1};                    
+                                 {t3mm, - t3m/Sqrt[2]}},       -1,  1,  3,  1,-1};                                 
+									     
+ScalarFields[[1]]  = {Phi, 1, {{H0, Hp},{Hm, HPrime0}},         0,  2, -2,  1,1}; 
+ScalarFields[[2]]  = {deltaR,1, {{deltaRp/Sqrt[2], deltaRpp},		     
+                                 {deltaR0, - deltaRp/Sqrt[2]}}, 1,  1,  3,  1,1};
+(*ScalarFields[[3]]  = {deltaL,1, {{deltaLp/Sqrt[2], deltaLpp},
+                                 {deltaL0, - deltaLp/Sqrt[2]}}, 1,  3,  1,  1,   -2};*)
 
-ScalarFields[[1]]  = {Phi, 1, {{H0, Hp},{Hm, HPrime0}},         0,  2, -2,  1,  1};
-ScalarFields[[2]]  = {deltaL,1, {{deltaLp/Sqrt[2], deltaLpp},
-                                 {deltaL0, - deltaLp/Sqrt[2]}}, 1,  3,  1,  1,   1};
-ScalarFields[[3]]  = {deltaR,1, {{deltaRp/Sqrt[2], deltaRpp},
-                                 {deltaR0, - deltaRp/Sqrt[2]}}, 1,  1,  3,  1,   1};
-(*ScalarFields[[4]]  = {HL,      1, {hLp, hL0},                 1/2,  2,  1,  1,    0};
-ScalarFields[[5]]  = {HR,      1, {hRp, hR0},                 1/2,  1,  2,  1, -1/2};*)
-
-
+        
 (*----------------------------------------------*)
 (*   DEFINITION                                 *)
 (*----------------------------------------------*)
@@ -69,95 +63,89 @@ DEFINITION[GaugeES][LagrangianInput]= {
 
 contraction1=Delta[rig1,rig2] Delta[lef2,lef1];
 contraction2=Delta[rig1,rig2] Delta[lef2,lef1] Delta[rig3,rig4] Delta[lef4,lef3];
-contraction3=epsTensor[lef2,lef1] epsTensor[rig2,rig1] epsTensor[rig4,rig3] epsTensor[lef4,lef3];
-contraction4a=Delta[rig1b,rig2b] Delta[rig2,rig1] Delta[rig3b,rig4b] Delta[rig4,rig3];
-contraction4b=Delta[lef1b,lef2b] Delta[lef2,lef1] Delta[lef3b,lef4b] Delta[lef4,lef3];
-contraction5a=Delta[rig1b,rig2] Delta[rig2b,rig1] Delta[rig3,rig4b] Delta[rig4,rig3b];
-contraction5b=Delta[lef1b,lef2] Delta[lef2b,lef1] Delta[lef3,lef4b] Delta[lef4,lef3b];
-contraction6a=Delta[rig1,rig2] Delta[lef2,lef1] Delta[rig3,rig4] Delta[rig4b,rig3b];
-contraction6b=Delta[rig1,rig2] Delta[lef2,lef1] Delta[lef3b,lef4b] Delta[lef4,lef3];
-contraction7a=Delta[lef1,lef2] Delta[rig2,rig3] Delta[rig3b,rig4b] Delta[rig4,rig1];
-contraction7b=Delta[rig1,rig2] Delta[lef2,lef3] Delta[lef3b,lef4b] Delta[lef4,lef1];
-contraction8a= epsTensor[rig1,rig2] Delta[rig2b,rig3] Delta[lef3,lef4b] epsTensor[lef4,lef1];
-contraction8b= epsTensor[lef2,lef1] Delta[lef2b,lef3] Delta[rig3,rig4b] epsTensor[rig1,rig4];
+contraction3a=epsTensor[lef2,lef1] epsTensor[rig2,rig1] epsTensor[lef4,lef3] epsTensor[rig4,rig3];
+contraction3b=epsTensor[rig2,rig1] epsTensor[lef2,lef1] epsTensor[rig4,rig3] epsTensor[lef4,lef3];
+contraction4=epsTensor[lef2,lef1] epsTensor[rig2,rig1] epsTensor[rig4,rig3] epsTensor[lef4,lef3];
+contraction5a=- Delta[rig1,rig2] Delta[lef2,lef1] epsTensor[lef4,lef3] epsTensor[rig4,rig3];
+contraction5b=- Delta[rig1,rig2] Delta[lef2,lef1] epsTensor[rig4,rig3] epsTensor[lef4,lef3];
+contraction6=Delta[rig1b,rig2b] Delta[rig2,rig1] Delta[rig3b,rig4b] Delta[rig4,rig3];
+contraction7=Delta[rig1b,rig2] Delta[rig2b,rig1] Delta[rig3,rig4b] Delta[rig4,rig3b];
+contraction8=Delta[rig1,rig2] Delta[lef2,lef1] Delta[rig3,rig4] Delta[rig4b,rig3b];
+contraction9a=- epsTensor[rig2,rig1] epsTensor[lef2,lef1] Delta[rig3,rig4] Delta[rig4b,rig3b];
+contraction9b=- epsTensor[lef2,lef1] epsTensor[rig2,rig1] Delta[rig3,rig4] Delta[rig4b,rig3b];
+contraction10=Delta[lef1,lef2] Delta[rig2,rig3] Delta[rig3b,rig4b] Delta[rig4,rig1]; 
 
 (*Contractions end*)
 
 
-LagNoHC = -( mu12 contraction1 Phi.conj[Phi]
-          + mudR2 deltaR.conj[deltaR] + mudL2 deltaL.conj[deltaL]
-          (*+ muL2 conj[HL].HL + muR2 conj[HR].HR*)
-          + lam1 contraction2 Phi.conj[Phi].Phi.conj[Phi]
-          + lam3 contraction3 conj[Phi].conj[Phi].Phi.Phi
-          + rho1 ( contraction4a deltaR.conj[deltaR].deltaR.conj[deltaR] + contraction4b deltaL.conj[deltaL].deltaL.conj[deltaL] )
-          + rho2 ( contraction5a deltaR.deltaR.conj[deltaR].conj[deltaR] + contraction5b deltaL.deltaL.conj[deltaL].conj[deltaL] )
-          + rho3 deltaL.conj[deltaL].deltaR.conj[deltaR]
-          + alp1 ( contraction6a Phi.conj[Phi].deltaR.conj[deltaR] + contraction6b Phi.conj[Phi].deltaL.conj[deltaL] )
-          + alp3 ( contraction7a conj[Phi].Phi.deltaR.conj[deltaR] + contraction7b Phi.conj[Phi].deltaL.conj[deltaL] )
-          + beta2 ( contraction8a conj[Phi].deltaR.conj[Phi].conj[deltaL] + contraction8b Phi.deltaL.Phi.conj[deltaR] )
-          (*+ etaLL conj[HL].HL.conj[deltaL].deltaL + etaRL conj[HR].HR.conj[deltaL].deltaL
-          + etaLR conj[HL].HL.conj[deltaR].deltaR + etaRR conj[HR].HR.conj[deltaR].deltaR
-          + eRR1 conj[HR].conj[deltaR].deltaR.HR - eRR2 conj[HR].deltaR.conj[deltaR].HR
-
-          + lamL conj[HL].HL.conj[HL].HL + lamR conj[HR].HR.conj[HR].HR
-          + lamLR conj[HL].HL.conj[HR].HR
-          + betaL conj[HL].HL.conj[Phi].Phi + betaR conj[HR].HR.conj[Phi].Phi*)
-
+LagNoHC = ( mu12 contraction1 Phi.conj[Phi]           
+           - mu22 ( conj[Phi].conj[Phi] +  Phi.Phi )
+           + mu32 deltaR.conj[deltaR]  
+           - lam1 contraction2 Phi.conj[Phi].Phi.conj[Phi] 
+          - lam2 ( contraction3a conj[Phi].conj[Phi].conj[Phi].conj[Phi] + contraction3b Phi.Phi.Phi.Phi )
+          - lam3 contraction4 conj[Phi].conj[Phi].Phi.Phi
+          - lam4 ( contraction5a Phi.conj[Phi].conj[Phi].conj[Phi] + contraction5b Phi.conj[Phi].Phi.Phi )                     
+          - rho1 contraction6 deltaR.conj[deltaR].deltaR.conj[deltaR] 
+          - rho2  contraction7 deltaR.deltaR.conj[deltaR].conj[deltaR]       
+          - alp1 contraction8 Phi.conj[Phi].deltaR.conj[deltaR] 
+          - alp2 ( contraction9a Phi.Phi.deltaR.conj[deltaR] + contraction9b conj[Phi].conj[Phi].deltaR.conj[deltaR] )     
+          - alp3 contraction10 conj[Phi].Phi.deltaR.conj[deltaR]  
           );
 
 
 
-LagHC = - ( YL1 Phi.LLbar.LR
-          + YQ1 conj[Phi].QLbar.QR
-	  (*+ YQ2 HL.QLbar.DVR*)
-          (*+ YQ3 conj[HR].XVLbar.QR*)
-          + YDL conj[LLbar].deltaL.conj[LLbar]
-          + YDR LR.deltaR.LR
-          (*  scalar [+h.c.] parts *)
-          (*+ alp conj[HL].Phi.deltaR.conj[HR]
-	    + xiR HR.conj[deltaR].HR + xiLR HR.Phi.conj[HL]*)
+LagHC = - ( YL1 Phi.LLbar.LR 
+          + YL2 conj[Phi].LLbar.LR  
+          + YQ1 Phi.QLbar.QR 
+          + YQ2 conj[Phi].QLbar.QR 
+          + YDR LR.deltaR.LR 
+	    (*+ 1/2 M1 T1.T1*)
 	  + M23 T2.T3
+	  (* + lamT1 deltaR.T3.T1 + lamT2 conj[deltaR].T2.T1 *)
           );
 
 
 (* Gauge Sector *)
 DEFINITION[EWSB][GaugeSector] =
 { {{VB,VWL[3],VWR[3]},{VP,VZ,VZR},ZZ},
-  {{VWL[1],VWL[2],VWR[1],VWR[2]},{VWLm,conj[VWLm],VWRm,conj[VWRm]},ZW} };
-
+  {{VWL[1],VWL[2],VWR[1],VWR[2]},{VWLm,conj[VWLm],VWRm,conj[VWRm]},ZW} };     
+        
 (* ----- VEVs ---- *)
 DEFINITION[EWSB][VEVs]={
-{H0,      {v1, 1/Sqrt[2]},
+{H0,       {v1, 1/Sqrt[2]}, 
                      {sigmaH10, I/Sqrt[2]},{phiH10, 1/Sqrt[2]}},
-{HPrime0, {v2, 1/Sqrt[2]},
+{HPrime0, {v2, 1/Sqrt[2]}, 
                      {sigmaH20, I/Sqrt[2]},{phiH20,1/Sqrt[2]}},
-{deltaL0, {vtL, 1/Sqrt[2]},
-                     {sigmadL, I/Sqrt[2]},{phidL,1/Sqrt[2]}},
-{deltaR0, {vtR, 1/Sqrt[2]},
-                     {sigmadR, I/Sqrt[2]},{phidR,1/Sqrt[2]}}(*,
-{hL0,     {vHL, 1/Sqrt[2]},
-                     {sigmaHL, I/Sqrt[2]},{phiHL, 1/Sqrt[2]}},
-{hR0,     {vHR, 1/Sqrt[2]},
-                     {sigmaHR, I/Sqrt[2]},{phiHR,1/Sqrt[2]}}*)
+{deltaR0, {vR, 1/Sqrt[2]}, 
+                     {sigmaR0, I/Sqrt[2]},{phiR0,1/Sqrt[2]}}
                      };
-
-DEFINITION[EWSB][MatterSector]=
-    {
-     {{phiH10,phiH20(*,phiHL*),phidL(*,phiHR*),phidR},{hh,ZH}},
-     {{sigmaH10,sigmaH20(*,sigmaHL*),sigmadL(*,sigmaHR*),sigmadR},{Ah,UP}},
-     {{Hm,conj[Hp](*,conj[hLp],conj[hRp]*),conj[deltaLp],conj[deltaRp]},{Hpm,UC}},
-     {{conj[deltaLpp],conj[deltaRpp]},{Hppmm,UCC}},
-     {{{dL(*,xL*)}, {conj[dR](*,conj[dVR]*)}}, {{DL,Vd}, {DR,Ud}}},
+ 
+DEFINITION[EWSB][MatterSector]=   
+    { (*Neutral scalars*)
+     {{phiH10,phiH20,phiR0},{hh,ZH}},
+      (*Pseudoscalars*)
+     {{sigmaH10,sigmaH20,sigmaR0},{Ah,UP}},
+      (*Singly charged scalars*)
+     {{Hm,conj[Hp],conj[deltaRp]},{Hpm,UC}},
+      (*Fermions*)
+     {{{dL}, {conj[dR]}}, {{DL,Vd}, {DR,Ud}}},
      {{{uL}, {conj[uR]}}, {{UL,Vu}, {UR,Uu}}},
-     {{{eL}, {conj[eR]}}, {{EL,Ve}, {ER,Ue}}},
+     {{{conj[eL]}, {eR}}, {{EL,Ve}, {ER,Ue}}},
      {{conj[nuL], nuR},{Fv0,PMNS}},
-     {{t20, t30},{Ft0,UT}}
-     };
+     {{(*t10,*) t20, t30},{Ft0,UT}}(*,
+     {{{t1p, t2p}, {t1m, t3m}}, {{TPL,VTe}, {TMR,UTe}}}*)
+     };  
 
 
 (*------------------------------------------------------*)
 (* Dirac-Spinors *)
 (*------------------------------------------------------*)
+
+DEFINITION[EWSB][Phases]=
+{    {t3mm, PhaseT}
+    }; 
+
+
 DEFINITION[GaugeES][DiracSpinors]={
   Fd1 -> {dL, 0},
   Fd2 -> {0, dR},
@@ -176,7 +164,7 @@ DEFINITION[EWSB][DiracSpinors]={
  Fu ->{  UL, conj[UR]},
  Fv ->{Fv0, conj[Fv0]},
  Fc ->{Ft0, conj[Ft0]},
- Fcpp -> {t2pp, conj[t3mm]},   
+ Fcpp -> {t2pp, conj[t3mm]},
  Fcp ->{ t2p, conj[t3m]}
  };
 

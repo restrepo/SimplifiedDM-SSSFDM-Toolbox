@@ -1,732 +1,536 @@
-(* SARAH generated template for parameters.m file for darkLR*)
-(* File created at 20:11 on 15.1.2016  *)
-(* IMPORTANT: *)
-(* check/adjust in particular the lines which contain "CHECK!" *)
-(* the correct information is needed there to have correct results! *)
+(* ::Package:: *)
+
+ParameterDefinitions = { 
+
+ (*{g1,        { Description -> "Hypercharge-Coupling"}},*)
 
 
-ParameterDefinitions = {
+ (*{gBL,      { LaTeX -> "g_{BL}",
+             LesHouches -> {gauge,4},
+		GUTnormalization -> Sqrt[3/2] }},*)
 
-(* ----------- Already defined parameters in existing parameters.m ----------- *)
-
-{aEWinv,{
-     Description -> "inverse weak coupling constant at mZ",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     Value -> 137.035999679,
-     LesHouches -> {SMINPUTS, 1},
-     LaTeX -> "\\alpha^{-1}",
-     OutputName -> aEWinv}},
-
-{alp,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 2},
-     LaTeX -> "alp",
-     OutputName -> alp}},
-
-{xiR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 3},
-     LaTeX -> "\\xi_R",
-     OutputName -> xiR}},
-
-
-
-{xiLR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 5},
-     LaTeX -> "\\xi_{LR}",
-     OutputName -> xiLR}},
-
-{alp1,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 14},
-     LaTeX -> "\\alpha_1",
-     OutputName -> ALP1}},
-
-{alp2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 15},
-     LaTeX -> "\\alpha_2",
-     OutputName -> ALP2}},
-
-{alp2P,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 16},
-     LaTeX -> "\\alpha_2'",
-     OutputName -> AL2P}},
-
-
-{alp3,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 20},
-     LaTeX -> "\\alpha_3",
-     OutputName -> ALP3}},
-
-{AlphaS,{
-     Description -> "Alpha Strong",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     Value -> 0.119,
-     LesHouches -> {SMINPUTS, 3},
-     LaTeX -> "\\alpha_S",
-     OutputName -> aS}},
-
-{beta2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 24},
-     LaTeX -> "\\beta_2",
-     OutputName -> BETA2}},
-
-{betaL,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 10},
-     LaTeX -> "{\\beta}_L",
-     OutputName -> betl}},
-
-{betaR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 14},
-     LaTeX -> "{\\beta}_R",
-     OutputName -> betr}},
-
-{e,{
-     Description -> "electric charge",
-     Dependence -> None,
-     DependenceNum -> 2*Sqrt[aEWinv^(-1)]*Sqrt[Pi],
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LaTeX -> "e",
-     OutputName -> el}},
-
-{eRR1,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 24},
-     LaTeX -> "eRR1",
-     OutputName -> err1}},
-
-{eRR2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 18},
-     LaTeX -> "eRR2",
-     OutputName -> err2}},
-
-{etaLL,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 17},
-     LaTeX -> "{{\\eta}_L}_L",
-     OutputName -> etall}},
-
-{etaLR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 16},
-     LaTeX -> "{{\\eta}_L}_R",
-     OutputName -> etalr}},
-
-{etaRL,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 20},
-     LaTeX -> "{{\\eta}_R}_L",
-     OutputName -> etarl}},
-
-{etaRR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 22},
-     LaTeX -> "{{\\eta}_R}_R",
-     OutputName -> etarr}},
-
-{g2,{
-     Description -> "Left-Coupling",
-     Dependence -> None,
-     DependenceNum -> e*Csc[ThetaW],
-     DependenceOptional -> e*Csc[ThetaW],
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {gauge, 2},
-     LaTeX -> "g_2",
-     OutputName -> g2}},
-
-{g3,{
-     Description -> "Strong-Coupling",
-     Dependence -> None,
-     DependenceNum -> 2*Sqrt[AlphaS]*Sqrt[Pi],
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {gauge, 3},
-     LaTeX -> "g_3",
-     OutputName -> g3}},
-
-{gBL,{
+{gBL,{ 
      Description -> "B-L-Coupling",  (* for explicit relations, choose the following *)
      Dependence -> None,             (*  remove that line *)
      DependenceNum -> None,          (* e/(Cos[ThetaW]*Cos[ThetaBL]) *)
-     DependenceOptional -> None,     (* e/(Cos[ThetaW]*Cos[ThetaBL]) *)
-     DependenceSPheno -> None,
-     GUTnormalization -> Sqrt[3/2],
-     Real -> True,
-     LesHouches -> {gauge, 4},
-     LaTeX -> "g_{B}",
-     OutputName -> gBL}},
+     DependenceOptional -> None,     (* e/(Cos[ThetaW]*Cos[ThetaBL]) *) 
+     DependenceSPheno -> None, 
+     GUTnormalization -> Sqrt[3/2], 
+     Real -> True, 
+     LesHouches -> {gauge, 4}, 
+     LaTeX -> "g_{B}", 
+     OutputName -> gBL}},          
 
-{Gf,{
-     Description -> "Fermi's constant",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     Value -> 0.0000116639,
-     LesHouches -> {SMINPUTS, 2},
-     LaTeX -> "G_f",
-     OutputName -> Gf}},
+{g2,        { Description -> "Left-Coupling"}},
 
-{gR,{
+{gR,{ 
      Description -> "LeftR-Coupling",  (* for explicit relations, choose the following *)
      Dependence -> None,               (* remove that line *)
      DependenceNum -> None,            (* e/(Sin[ThetaBL]*Cos[ThetaW]) *)
      DependenceOptional -> None,       (* e/(Sin[ThetaBL]*Cos[ThetaW]) *)
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {GAUGE, 5},
-     LaTeX -> "g_R",
-     OutputName -> gR}},
+     DependenceSPheno -> None, 
+     Real -> True, 
+     LesHouches -> {GAUGE, 5}, 
+     LaTeX -> "g_R", 
+     OutputName -> gR}}, 
 
-{lam1,{
-     Description -> "SM Higgs Selfcouplings",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 1},
-     LaTeX -> "\\lambda",
-     OutputName -> LAM1}},
+{g3,        { Description -> "Strong-Coupling"}},    
 
-{lam3,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 4},
-     LaTeX -> "\\lambda_3",
-     OutputName -> LAM3}},
+{AlphaS,    { Description -> "Alpha Strong"}},	
 
-{lamL,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 6},
-     LaTeX -> "{lam}_L",
-     OutputName -> laml}},
+{e,         { Description -> "electric charge"}}, 
 
-{lamLR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 8},
-     LaTeX -> "{{lam}_L}_R",
-     OutputName -> lamlr}},
+{Gf,        { Description -> "Fermi's constant"}},
 
-{lamR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 12},
-     LaTeX -> "{lam}_R",
-     OutputName -> lamr}},
+{aEWinv,    { Description -> "inverse weak coupling constant at mZ"}},
 
-{mu12,{
-     Description -> "SM Mu Parameter",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {MUPARS, 1},
-     LaTeX -> "\\mu",
-     OutputName -> MU12}},
+(*{Yu,        { Description -> "Up-Yukawa-Coupling",
+			 DependenceNum ->  Sqrt[2]/v* {{Mass[Fu,1],0,0},
+             									{0, Mass[Fu,2],0},
+             									{0, 0, Mass[Fu,3]}}}}, 
+             									
+{Yd,        { Description -> "Down-Yukawa-Coupling",
+			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fd,1],0,0},
+             									{0, Mass[Fd,2],0},
+             									{0, 0, Mass[Fd,3]}}}},
+             									
+{Ye,        { Description -> "Lepton-Yukawa-Coupling",
+			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fe,1],0,0},
+             									{0, Mass[Fe,2],0},
 
-{mudL2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {MUPARS, 2},
-     LaTeX -> "m^2_{{ud}_L}",
-     OutputName -> mudl2}},
+             									{0, 0, Mass[Fe,3]}}}}, 
+  *)
 
-{mudR2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {MUPARS, 4},
-     LaTeX -> "m^2_{{ud}_R}",
-     OutputName -> mudr2}},
+  
+(*
 
-{muL2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {MUPARS, 6},
-     LaTeX -> "m^2_{{u}_L}",
-     OutputName -> mul2}},
+{YL1,       { Description -> "Lepton-Yukawa-Coupling",
+             LaTeX -> "Y_{L1}",
+             OutputName -> YL1,
+	         LesHouches ->  YL1      }},
 
-{muR2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {MUPARS, 8},
-     LaTeX -> "m^2_{{u}_R}",
-     OutputName -> mur2}},
-
-{PhiW,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> ArcCos[Sqrt[Abs[ZW[1, 1]]^2 + Abs[ZW[1, 2]]^2]],
-     Real -> True,
-     LesHouches -> PhiW,
-     LaTeX -> "\\phi_W",
-     OutputName -> PhiW}},
-
-{PMNS,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UVMIX,
-     LaTeX -> "U^V",
-     OutputName -> UV}},
-
-{rho1,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 7},
-     LaTeX -> "\\rho_1",
-     OutputName -> RHO1}},
-
-{rho2,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {LRINPUT, 9},
-     LaTeX -> "\\rho_2",
-     OutputName -> RHO2}},
-
-{rho3,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 4},
-     LaTeX -> "{\\rho}_{3}",
-     OutputName -> rh3}},
-
-{ThetaW,{
-     Description -> "Weinberg-Angle",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> ArcSin[Abs[ZZ[2, 1]]],
-     Real -> True,
-     LesHouches -> ThetaW,
-     LaTeX -> "\\Theta_W",
-     OutputName -> TW}},
-
-{ThetaBL,{
-     Description -> "BL-R mixing angle",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> ArcCos[Abs[ZZ[1, 1]/Cos[ArcSin[Abs[ZZ[2, 1]]]]]],
-     Real -> True,
-     LesHouches -> ThetaBL,
-     LaTeX -> "\\Theta_{BL}",
-     OutputName -> TBL}},
-
-{ThetaZZp,{
-     Description -> "Z-Z' mixing angle",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> ArcCos[Abs[ZZ[2, 2]/Cos[ArcSin[Abs[ZZ[2, 1]]]]]],
-     Real -> True,
-     LesHouches -> ThetaZZp,
-     LaTeX -> "\\Theta_{ZZ'}",
-     OutputName -> TZZp}},
+{YL2,       { LaTeX -> "Y_{L2}",
+             OutputName -> YL2,
+             LesHouches ->  YL2      }},
 
 
-{UC,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> CHMIX,
-     LaTeX -> "Z^+",
-     OutputName -> UC}},
+{YQ1,       { Description -> "Down-Yukawa-Coupling",
+              LaTeX -> "Y_{Q1}",
+              OutputName -> YQ1,
+             LesHouches ->  YQ1      }},
 
-{UCC,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> CHCHMIX,
-     LaTeX -> "Z^{++}",
-     OutputName -> UCC}},
+{YQ2,       { Description -> "Up-Yukawa-Coupling",
+              LaTeX -> "Y_{Q2}",
+              OutputName -> YQ2,
+             LesHouches ->  YQ2      }},
+             
+*)             
 
-{Ud,{
-     Description -> "Right-Down-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UDRMIX,
-     LaTeX -> "U^d_R",
-     OutputName -> ZDR}},
 
-{Ue,{
-     Description -> "Right-Lepton-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UERMIX,
-     LaTeX -> "U^e_R",
-     OutputName -> ZER}},
+{YL1,       { Description -> "Lepton-Doublet Yukawa One",
+             LaTeX -> "Y_{L1}",
+             OutputName -> YL1,
+	         LesHouches ->  YL1      }},
 
-{UP,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> AMIX,
-     LaTeX -> "Z^{Ah}",
-     OutputName -> UP}},
+{YL2,       { Description -> "Lepton-Doublet Yukawa Two",
+             LaTeX -> "Y_{L2}",
+             OutputName -> YL2,
+             LesHouches ->  YL2      }},
 
-{Uu,{
-     Description -> "Right-Up-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UURMIX,
-     LaTeX -> "U^u_R",
-     OutputName -> ZUR}},
 
-{UT, {OutputName -> UT,
-      LaTeX -> "U^{0}_T",
-      LesHouches -> UTMIX}},      
+{YQ1,       { Description -> "Quark-Doublet Yukawa One",
+              LaTeX -> "Y_{Q1}",
+              OutputName -> YQ1,
+             LesHouches ->  YQ1      }},
+
+{YQ2,       { Description -> "Quark-Doublet Yukawa Two",
+              LaTeX -> "Y_{Q2}",
+              OutputName -> YQ2,
+             LesHouches ->  YQ2      }},
+
+
+{YDR,       { Description -> "DeltaR-lRs",
+              LaTeX -> "Y_{DR}",
+              OutputName -> YDR,
+             LesHouches ->  YDR      }},
+
+{YDL,       { Description -> "DeltaL-lLs",
+              LaTeX -> "Y_{DL}",
+              OutputName -> YDL,
+             LesHouches ->  YDL      }},
+ 
+{CKMR,      { Description -> "right-handed CKM matrix",
+              Real -> False,
+              Dependence ->  None, 
+              (*Dependence -> {{1-1/2*lWolfR^2,lWolfR,aWolfR*lWolfR^3*(rWolfR-I*nWolfR)},
+                               {-lWolfR,1-1/2*lWolfR^2, aWolfR*lWolfR^2},
+                               {aWolfR*lWolfR^3*(1-rWolfR-I*nWolfR),-aWolfR*lWolfR^2,1}},*)
+              OutputName -> CKMR,
+              LesHouches -> CKMR }},
+
+{nWolfR,    {Description->"R-Wolfenstein Parameter eta", 
+             (*Value -> 0.341,*)
+             Real -> True,
+             OutputName-> nWolfR,
+             LesHouches -> {WOLFENSTEINR,4} 	            }},
+             
+{aWolfR,    {Description->"R-Wolfenstein Parameter A", 
+             (*Value -> 0.8080,*)
+             Real -> True,
+             OutputName-> aWolfR,
+             LesHouches -> {WOLFENSTEINR,2}           }},
+             
+{lWolfR,    {Description->"R-Wolfenstein Parameter lambda", 
+             (*Value -> 0.22253,*)
+             Real -> True,
+             OutputName-> lWolfR,
+             LesHouches -> {WOLFENSTEINR,1}          }},
+             
+{rWolfR,    {Description->"R-Wolfenstein Parameter rho", 
+             (*Value -> 0.132,*)
+             Real -> True,
+             OutputName-> rWolfR,
+             LesHouches -> {WOLFENSTEINR,3}            }},              
+              
+              
+{mu12,    { Description -> "SM Mu Parameter",
+           Real -> True,
+           OutputName -> MU12,
+           LesHouches -> {LRINPUT,100}
+           }},   
+           
+
+{M1,   { LaTeX -> "M_1",
+		Real -> True,
+               OutputName -> M1,
+               LesHouches -> {LRINPUT,200} }},              
+               
+{M23,   { LaTeX -> "M_{23}",
+		Real -> True,
+               OutputName -> M23,
+               LesHouches -> {LRINPUT,201} }},    
+               
+{lamT1,   { LaTeX -> "\\lambda^T_{1}",
+               OutputName -> LAMT1,
+               Real -> True,
+               LesHouches -> {LRINPUT,202} }},  
+               
+{lamT2,   { LaTeX -> "\\lambda^T_{2}",
+               OutputName -> LAMT2,
+               Real -> True,
+               LesHouches -> {LRINPUT,203} }},                 
+               
+{mu32,   { LaTeX -> "\\mu_{3}^2",
+		Real -> True,
+               OutputName -> mu32,
+               LesHouches -> {LRINPUT,103} }},
+               
+{mu3b2,   { LaTeX -> "\\mu_{3b}^2",
+		Real -> True,	
+               OutputName -> mu3b2,
+               LesHouches -> {LRINPUT,104} }},   
+               
+{mu22,   { LaTeX -> "\\mu_{2}^2",
+           Real -> True,       
+           OutputName -> MU22,
+           LesHouches -> {LRINPUT,98} }},        
+               
+{mu2b2,   { LaTeX -> "\\mu_{2b}^2",
+           Real -> True,       
+           OutputName -> MU2b2,
+           LesHouches -> {LRINPUT,99} }},        
+  
+  
+{lam1,{ Description -> "SM Higgs Selfcouplings",
+              Real -> True,
+              OutputName -> LAM1,
+              LesHouches ->  {LRINPUT,1}}},                                                                           
+                                                                           
+{lam2,   { LaTeX -> "\\lambda_2",
+             OutputName -> LAM2,
+             Real -> True,
+             LesHouches ->  {LRINPUT,2}}},
+             
+{lam2b,   { LaTeX -> "\\lambda_2b",
+             OutputName -> LAM2b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,3}}},             
+
+               
+             
+{lam3,   { LaTeX -> "\\lambda_3",
+             OutputName -> LAM3,
+             Real -> True,
+             LesHouches ->  {LRINPUT,4}}},
+
+{lam4,   { LaTeX -> "\\lambda_4",
+             OutputName -> LAM4,
+             Real -> True,
+             LesHouches ->  {LRINPUT,5}}},
+             
+{lam4b,   { LaTeX -> "\\lambda_4b",
+             OutputName -> LAM4b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,6}}},             
+
+{rho1,   { LaTeX -> "\\rho_1",
+             OutputName -> RHO1,
+             Real -> True,
+             LesHouches ->  {LRINPUT,7}}},
+
+{rho1b,   { LaTeX -> "\\rho_1b",
+             OutputName -> RHO1b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,8}}},             
+             
+{rho2,   { LaTeX -> "\\rho_2",
+             OutputName -> RHO2,
+             Real -> True,
+             LesHouches ->  {LRINPUT,9}}},
+             
+{rho2b,   { LaTeX -> "\\rho_2b",
+             OutputName -> RHO2b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,10}}},
+             
+{rho3,   { LaTeX -> "\\rho_3",
+             OutputName -> RHO3,
+             Real -> True,
+             LesHouches ->  {LRINPUT,11}}},
+
+{rho4,   { LaTeX -> "\\rho_4",
+             OutputName -> RHO4,
+             Real -> True,
+             LesHouches ->  {LRINPUT,12}}},
+             
+{rho4b,   { LaTeX -> "\\rho_4b",
+             OutputName -> RHO4b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,13}}},
+             
+{alp1,   { LaTeX -> "\\alpha_1",
+             OutputName -> ALP1,
+             Real -> True,
+             LesHouches ->  {LRINPUT,14}}},
+             
+{alp1b,   { LaTeX -> "\\alpha_1b",
+             OutputName -> ALP1b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,15}}},
+             
+{alp2,   { LaTeX -> "\\alpha_2",
+             OutputName -> ALP2,
+             Real -> True,
+             LesHouches ->  {LRINPUT,16}}},
+             
+{alp2b,   { LaTeX -> "\\alpha_2b",
+             OutputName -> ALP2b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,17}}},
+             
+{alp2c,   { LaTeX -> "\\alpha_2c",
+             OutputName -> ALP2c,
+             Real -> True,
+             LesHouches ->  {LRINPUT,18}}},
+             
+{alp2d,   { LaTeX -> "\\alpha_2d",
+             OutputName -> ALP2d,
+             Real -> True,
+             LesHouches ->  {LRINPUT,19}}},   
+             
+{alp3,   { LaTeX -> "\\alpha_3",
+             OutputName -> ALP3,
+             Real -> True,
+             LesHouches ->  {LRINPUT,20}}},   
+             
+{alp3b,   { LaTeX -> "\\alpha_3b",
+             OutputName -> ALP3b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,21}}},
+             
+{beta1,   { LaTeX -> "\\beta_1",
+             OutputName -> BETA1,
+             Real -> True,
+             LesHouches ->  {LRINPUT,22}}},
+
+{beta2,   { LaTeX -> "\\beta_2",
+             OutputName -> BETA2,
+             Real -> True,
+             LesHouches ->  {LRINPUT,24}}},
+
+{beta3,   { LaTeX -> "\\beta_3",
+             OutputName -> BETA3,
+             Real -> True,
+             LesHouches ->  {LRINPUT,26}}},
+
+{beta1b,   { LaTeX -> "\\beta_1b",
+             OutputName -> BETA1b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,23}}},
+
+{beta2b,   { LaTeX -> "\\beta_2b",
+             OutputName -> BETA2b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,25}}},
+
+{beta3b,   { LaTeX -> "\\beta_3b",
+             OutputName -> BETA3b,
+             Real -> True,
+             LesHouches ->  {LRINPUT,27}}},
+             
+{v1,        { Description -> "Down-VEV", 
+              LaTeX -> "v_1",
+              DependenceNum ->  None,  (* Cos[\[Beta]]*v *)
+              LesHouches -> {VEV,1}}}, 
+
+{v2,        { Description -> "Up-VEV", 
+              LaTeX -> "v_2",
+              DependenceNum ->  None,
+              LesHouches -> {VEV,2}}},       
+
+              
+{PhaseT,{ 
+     Real -> False, 
+     LesHouches -> PHASET, 
+     LaTeX -> "PhaseT",
+     OutputName -> phaT}},               
+              
+              
+(* v depends on v_1 v_2 *)
+
+{v,         { Description -> "EW-VEV",
+              LesHouches -> {VEV,3}}},
+
+{\[Beta],   { Description -> "Pseudo Scalar mixing angle",
+              DependenceSPheno -> ArcTan[TanBeta],
+              DependenceNum -> ArcTan[TanBeta]}},       
+              
+{TanBeta,   { Description -> "Tan Beta" }},              
     
+{vR,       {  (*Description -> "EW-VEV",*)
+	     LaTeX -> "vR",
+             Dependence ->  None, 
+             Real -> True,
+             DependenceNum -> None, 
+             DependenceSPheno -> None,
+             Value -> None, 
+             LesHouches -> {VEV,4},
+             OutputName-> vR      }},
 
-{v1,{ Description -> "Down-VEV",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {VEV, 1},
-     LaTeX -> "v_1",
-     OutputName -> v1}},
+             (*
+{vL,       {  (*Description -> "EW-VEV",*)
+	     LaTeX -> "vL",
+             Dependence ->  None, 
+             Real -> True,
+             DependenceNum -> None, 
+             DependenceSPheno -> None,
+             Value -> None, 
+             LesHouches -> {VEV,4},
+             OutputName-> vL      }}, *)
 
-{v2,{ Description -> "Up-VEV",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {VEV, 2},
-     LaTeX -> "v_2",
-     OutputName -> v2}},
+{mH2,        { Description -> "SM Higgs Mass Parameter"}},
 
-{Vd,{
-     Description -> "Left-Down-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UDLMIX,
-     LaTeX -> "U^d_L",
-     OutputName -> ZDL}},
+{ThetaW,{ 
+     Description -> "Weinberg-Angle", 
+     Dependence -> None, 
+     DependenceNum -> None, 
+     DependenceOptional -> None, 
+     DependenceSPheno -> ArcSin[Abs[ZZ[2, 1]]], 
+     Real -> True, 
+     LesHouches -> ThetaW, 
+     LaTeX -> "\\Theta_W", 
+     OutputName -> TW}}, 
+     
+{ThetaBL,{ 
+     Description -> "BL-R mixing angle", 
+     Dependence -> None, 
+     DependenceNum -> None, 
+     DependenceOptional -> None, 
+     DependenceSPheno -> ArcCos[Abs[ZZ[1, 1]/Cos[ArcSin[Abs[ZZ[2, 1]]]]]], 
+     Real -> True, 
+     LesHouches -> ThetaBL, 
+     LaTeX -> "\\Theta_{BL}", 
+     OutputName -> TBL}},      
 
-{Ve,{
-     Description -> "Left-Lepton-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UELMIX,
-     LaTeX -> "U^e_L",
-     OutputName -> ZEL}},
+{ThetaZZp,{ 
+     Description -> "Z-Z' mixing angle", 
+     Dependence -> None, 
+     DependenceNum -> None, 
+     DependenceOptional -> None, 
+     DependenceSPheno -> ArcCos[Abs[ZZ[2, 2]/Cos[ArcSin[Abs[ZZ[2, 1]]]]]], 
+     Real -> True, 
+     LesHouches -> ThetaZZp, 
+     LaTeX -> "\\Theta_{ZZ'}", 
+     OutputName -> TZZp}},      
 
-{vHL,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 30},
-     LaTeX -> "{v_{H}}_L",
-     OutputName -> vhl}},
 
-{vHR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 32},
-     LaTeX -> "{v_{H}}_R",
-     OutputName -> vhr}},
-
-{vtL,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 26},
-     LaTeX -> "{v_{t}}_L",
-     OutputName -> vtl}},
-
-{vtR,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> {DARKLR, 28},
-     LaTeX -> "{v_{t}}_R",
-     OutputName -> vtr}},
-
-{Vu,{
-     Description -> "Left-Up-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> UULMIX,
-     LaTeX -> "U^u_L",
-     OutputName -> ZUL}},
-
-{YDL,{
-     Description -> "DeltaL-lLs",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> YDL,
-     LaTeX -> "Y_{DL}",
-     OutputName -> YDL}},
-
-{YDR,{
-     Description -> "DeltaR-lRs",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> YDR,
-     LaTeX -> "Y_{DR}",
-     OutputName -> YDR}},
-
-{YL1,{
-     Description -> "Lepton-Doublet Yukawa One",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> YL1,
-     LaTeX -> "Y_{L1}",
-     OutputName -> YL1}},
-
-{YQ1,{
-     Description -> "Quark-Doublet Yukawa One",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> YQ1,
-     LaTeX -> "Y_{Q1}",
-     OutputName -> YQ1}},
-
-{YQ2,{
-     Description -> "Quark-Doublet Yukawa Two",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> YQ2,
-     LaTeX -> "Y_{Q2}",
-     OutputName -> YQ2}},
-
-{YQ3,{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> YQ3,
-     LaTeX -> "YQ3",
-     OutputName -> yq3}},
-
-{ZH,{
-     Description -> "Scalar-Mixing-Matrix",
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> True,
-     LesHouches -> SCALARMIX,
-     LaTeX -> "Z^H",
-     OutputName -> ZH}},
-
-{ZW,{
-     Description -> "W Mixing Matrix",
-     Dependence -> {{Cos[PhiW]/Sqrt[2], Cos[PhiW]/Sqrt[2], -(Sin[PhiW]/Sqrt[2]), -(Sin[PhiW]/Sqrt[2])}, {((-I)*Cos[PhiW])/Sqrt[2], (I*Cos[PhiW])/Sqrt[2], (I*Sin[PhiW])/Sqrt[2], ((-I)*Sin[PhiW])/Sqrt[2]}, {Sin[PhiW]/Sqrt[2], Sin[PhiW]/Sqrt[2], Cos[PhiW]/Sqrt[2], Cos[PhiW]/Sqrt[2]}, {((-I)*Sin[PhiW])/Sqrt[2], (I*Sin[PhiW])/Sqrt[2], ((-I)*Cos[PhiW])/Sqrt[2], (I*Cos[PhiW])/Sqrt[2]}},
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> ZWMIX,
-     LaTeX -> "Z^{W}",
-     OutputName -> ZW}},
-
-{ZZ,{
+{ZZ,{ 
      Description -> "Photon-Z-Z' Mixing Matrix",                                (* for explicit relations, choose the following *)
      Dependence -> (* {{Cos[ThetaBL] Cos[ThetaW], -Sin[ThetaBL] Sin[ThetaZZp] - (* use this explicit mixing matrix *)
-   Cos[ThetaBL] Cos[ThetaZZp] Sin[ThetaW], -Cos[ThetaZZp] Sin[ThetaBL] +
-   Cos[ThetaBL] Sin[ThetaZZp] Sin[ThetaW]}, {Sin[ThetaW],
+   Cos[ThetaBL] Cos[ThetaZZp] Sin[ThetaW], -Cos[ThetaZZp] Sin[ThetaBL] + 
+   Cos[ThetaBL] Sin[ThetaZZp] Sin[ThetaW]}, {Sin[ThetaW], 
   Cos[ThetaZZp] Cos[ThetaW], -Cos[ThetaW] Sin[ThetaZZp]}, {Cos[ThetaW] Sin[
-    ThetaBL],
-  Cos[ThetaBL] Sin[ThetaZZp] - Cos[ThetaZZp] Sin[ThetaBL] Sin[ThetaW],
-  Cos[ThetaBL] Cos[ThetaZZp] + Sin[ThetaBL] Sin[ThetaZZp] Sin[ThetaW]}},
+    ThetaBL], 
+  Cos[ThetaBL] Sin[ThetaZZp] - Cos[ThetaZZp] Sin[ThetaBL] Sin[ThetaW], 
+  Cos[ThetaBL] Cos[ThetaZZp] + Sin[ThetaBL] Sin[ThetaZZp] Sin[ThetaW]}}, 
   *)None,
      DependenceNum -> None,                                                      (* remove that line *)
      DependenceSPheno -> None,                                                   (* remove that line *)
-     Real -> True,
-     LesHouches -> ZZMIX,
-     LaTeX -> "Z^Z",
-     OutputName -> ZZ}},
+     Real -> True, 
+     LesHouches -> ZZMIX, 
+     LaTeX -> "Z^Z", 
+     OutputName -> ZZ}}, 
+	    
+	    
+	    
+(*	    
+{ZW, {LesHouches -> ZWMIX,
+      OutputName -> ZW  }}, *)
+      
+{ZW,      {   Description -> "W Mixing Matrix",
+              Dependence -> 1/Sqrt[2] {{Cos[PhiW], Cos[PhiW], -Sin[PhiW], -Sin[PhiW]}, 
+              {-\[ImaginaryI] Cos[PhiW], \[ImaginaryI] Cos[PhiW], \[ImaginaryI] Sin[PhiW], -\[ImaginaryI] Sin[PhiW]}, 
+              {Sin[PhiW], Sin[PhiW], Cos[PhiW], Cos[PhiW]}, 
+              {-\[ImaginaryI] Sin[PhiW], \[ImaginaryI] Sin[PhiW], -\[ImaginaryI] Cos[PhiW], \[ImaginaryI] Cos[PhiW]}},
+              (*Dependence -> 1/Sqrt[2] {{1, 1, 0, 0},
+                  {-\[ImaginaryI],\[ImaginaryI], 0, 0},
+                  {0, 0, 1, 1},
+                  {0, 0, -\[ImaginaryI],\[ImaginaryI]}}*)
+              LesHouches -> ZWMIX,
+              OutputName -> ZW }},                
+      
+ 
+{PhiW,     {Real ->True,
+              DependenceNum -> None,
+              DependenceSPheno -> ArcCos[Sqrt[Abs[ZW[1,1]]^2+Abs[ZW[1,2]]^2]],
+              LaTeX -> "\\phi_W",
+              OutputName -> PhiW,
+              LesHouches -> PhiW}},       
+ 
+      
+{ZWR, {Dependence ->   1/Sqrt[2] {{1, 1, 0, 0},
+	{I,-I, 0, 0},
+        {0, 0, 1, 1},
+        {0, 0, I,-I}},
+      LesHouches -> ZWRMIX,
+      OutputName -> ZWR  }},
 
-{Mass[VWLm],{
-     Dependence -> None,
-     DependenceNum -> None,
-     DependenceOptional -> None,
-     DependenceSPheno -> None,
-     Real -> False,
-     LesHouches -> {DARKLR, 34},
-     LaTeX -> "M_{VWLm}",
-    OutputName -> Mvwlm}},
+{PMNS, {LaTeX -> "U^V",
+        Dependence ->  None, 
+        Value -> None, 
+        LesHouches -> UVMIX,
+        OutputName-> UV ,
+        LesHouches -> PMNS}},
+        
+{ZH,  { Description->"Scalar-Mixing-Matrix", 
+	LaTeX -> "Z^H",
+	Real -> True, 
+	DependenceOptional -> None,(*  {{-Sin[\[Alpha]],Cos[\[Alpha]]},
+        {Cos[\[Alpha]],Sin[\[Alpha]]}}, *)
+        Value -> None, 
+        LesHouches -> SCALARMIX,
+        OutputName-> ZH}},
+        
+{UP, {OutputName -> UP,
+      LaTeX -> "Z^{Ah}",
+      LesHouches -> AMIX,
+      Real -> True}},             
 
-{M23,   { LaTeX -> "M_{23}",
-	Real -> True,
-        OutputName -> M23,
-        LesHouches -> {LRINPUT,201} }}
-    
-}
+{UC, {OutputName -> UC,
+      LaTeX -> "Z^+",
+      LesHouches -> CHMIX,
+      Real -> True}},
+
+{UCC, {OutputName -> UCC,
+      LaTeX -> "Z^{++}",
+      LesHouches -> CHCHMIX,
+      Real -> True}},
+      
+{UT, {OutputName -> UT,
+      LaTeX -> "U^{0}_T",
+      LesHouches -> UTMIX}},      
+      
+{UTe, {OutputName -> UTE,
+      LaTeX -> "U^{-}_T",
+      LesHouches -> UTEMIX}},  
+      
+{VTe, {OutputName -> VTE,
+      LaTeX -> "V^{-}_T",
+      LesHouches -> VTEMIX}},        
+
+{Vu,        {Description ->"Left-Up-Mixing-Matrix"}},
+
+{Vd,        {Description ->"Left-Down-Mixing-Matrix"}},
+
+{Uu,        {Description ->"Right-Up-Mixing-Matrix"}},
+
+{Ud,        {Description ->"Right-Down-Mixing-Matrix"}}, 
+
+{Ve,        {Description ->"Left-Lepton-Mixing-Matrix"}},
+
+{Ue,        {Description ->"Right-Lepton-Mixing-Matrix"}}
+
+ }; 
+ 
+thetaWexp  = (g2 Sqrt[gBL^2 + gR^2])/Sqrt[gBL^2 g2^2 + gBL^2 gR^2 + g2^2 gR^2]; 
+

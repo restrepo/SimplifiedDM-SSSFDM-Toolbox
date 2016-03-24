@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 15:43 on 9.3.2016   
+! File created at 20:18 on 23.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -24,19 +24,19 @@ Real(dp),Parameter::id3R(3,3)=&
 Contains 
 
 
-Subroutine GToParameters91(g,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12)
+Subroutine GToParameters107(g,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,             & 
+& LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12)
 
 Implicit None 
-Real(dp), Intent(in) :: g(91) 
-Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
+Real(dp), Intent(in) :: g(107) 
+Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,MU12
 
-Complex(dp),Intent(out) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(out) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'GToParameters91' 
+NameOfUnit(Iname) = 'GToParameters107' 
  
 gBL= g(1) 
 g2= g(2) 
@@ -44,11 +44,12 @@ gR= g(3)
 g3= g(4) 
 RHO2= g(5) 
 RHO1= g(6) 
-rh3= Cmplx(g(7),g(8),dp) 
+ALP1= g(7) 
+LAM1= g(8) 
 ALP3= g(9) 
-ALP1= g(10) 
-LAM1= g(11) 
-BETA2= g(12) 
+ALP2= g(10) 
+LAM4= g(11) 
+LAM2= g(12) 
 LAM3= g(13) 
 Do i1 = 1,3
 Do i2 = 1,3
@@ -70,7 +71,7 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-YDL(i1,i2) = Cmplx( g(SumI+50), g(SumI+51), dp) 
+YQ1(i1,i2) = Cmplx( g(SumI+50), g(SumI+51), dp) 
 End Do 
  End Do 
  
@@ -78,15 +79,23 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-YQ1(i1,i2) = Cmplx( g(SumI+68), g(SumI+69), dp) 
+YL2(i1,i2) = Cmplx( g(SumI+68), g(SumI+69), dp) 
 End Do 
  End Do 
  
-M23= g(86) 
-mudl2= Cmplx(g(87),g(88),dp) 
-mudr2= Cmplx(g(89),g(90),dp) 
-MU12= g(91) 
-Do i1=1,91 
+Do i1 = 1,3
+Do i2 = 1,3
+SumI = (i2-1) + (i1-1)*3
+SumI = SumI*2 
+YQ2(i1,i2) = Cmplx( g(SumI+86), g(SumI+87), dp) 
+End Do 
+ End Do 
+ 
+M23= g(104) 
+mu32= g(105) 
+MU22= g(106) 
+MU12= g(107) 
+Do i1=1,107 
 If (g(i1).ne.g(i1)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Write(*,*) "At position ", i1 
@@ -95,21 +104,21 @@ End if
 End do 
 Iname = Iname - 1 
  
-End Subroutine GToParameters91
+End Subroutine GToParameters107
 
-Subroutine ParametersToG91(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
-& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,g)
+Subroutine ParametersToG107(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,               & 
+& LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,g)
 
 Implicit None 
-Real(dp), Intent(out) :: g(91) 
-Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12
+Real(dp), Intent(out) :: g(107) 
+Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,MU12
 
-Complex(dp), Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp), Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'ParametersToG91' 
+NameOfUnit(Iname) = 'ParametersToG107' 
  
 g(1) = gBL  
 g(2) = g2  
@@ -117,12 +126,12 @@ g(3) = gR
 g(4) = g3  
 g(5) = RHO2  
 g(6) = RHO1  
-g(7) = Real(rh3,dp)  
-g(8) = Aimag(rh3)  
+g(7) = ALP1  
+g(8) = LAM1  
 g(9) = ALP3  
-g(10) = ALP1  
-g(11) = LAM1  
-g(12) = BETA2  
+g(10) = ALP2  
+g(11) = LAM4  
+g(12) = LAM2  
 g(13) = LAM3  
 Do i1 = 1,3
 Do i2 = 1,3
@@ -146,8 +155,8 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-g(SumI+50) = Real(YDL(i1,i2), dp) 
-g(SumI+51) = Aimag(YDL(i1,i2)) 
+g(SumI+50) = Real(YQ1(i1,i2), dp) 
+g(SumI+51) = Aimag(YQ1(i1,i2)) 
 End Do 
 End Do 
 
@@ -155,22 +164,29 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-g(SumI+68) = Real(YQ1(i1,i2), dp) 
-g(SumI+69) = Aimag(YQ1(i1,i2)) 
+g(SumI+68) = Real(YL2(i1,i2), dp) 
+g(SumI+69) = Aimag(YL2(i1,i2)) 
 End Do 
 End Do 
 
-g(86) = M23  
-g(87) = Real(mudl2,dp)  
-g(88) = Aimag(mudl2)  
-g(89) = Real(mudr2,dp)  
-g(90) = Aimag(mudr2)  
-g(91) = MU12  
+Do i1 = 1,3
+Do i2 = 1,3
+SumI = (i2-1) + (i1-1)*3
+SumI = SumI*2 
+g(SumI+86) = Real(YQ2(i1,i2), dp) 
+g(SumI+87) = Aimag(YQ2(i1,i2)) 
+End Do 
+End Do 
+
+g(104) = M23  
+g(105) = mu32  
+g(106) = MU22  
+g(107) = MU12  
 Iname = Iname - 1 
  
-End Subroutine ParametersToG91
+End Subroutine ParametersToG107
 
-Subroutine rge91(len, T, GY, F) 
+Subroutine rge107(len, T, GY, F) 
 Implicit None 
 Integer, Intent(in) :: len 
 Real(dp), Intent(in) :: T, GY(len) 
@@ -180,28 +196,29 @@ Integer :: j1,j2,j3,j4,j5,j6,j7
 Real(dp) :: q 
 Real(dp) :: gBL,betagBL1,betagBL2,DgBL,g2,betag21,betag22,Dg2,gR,betagR1,             & 
 & betagR2,DgR,g3,betag31,betag32,Dg3,RHO2,betaRHO21,betaRHO22,DRHO2,RHO1,betaRHO11,      & 
-& betaRHO12,DRHO1,ALP3,betaALP31,betaALP32,DALP3,ALP1,betaALP11,betaALP12,               & 
-& DALP1,LAM1,betaLAM11,betaLAM12,DLAM1,BETA2,betaBETA21,betaBETA22,DBETA2,               & 
-& LAM3,betaLAM31,betaLAM32,DLAM3,M23,betaM231,betaM232,DM23,MU12,betaMU121,              & 
-& betaMU122,DMU12
-Complex(dp) :: rh3,betarh31,betarh32,Drh3,YDR(3,3),betaYDR1(3,3),betaYDR2(3,3)        & 
-& ,DYDR(3,3),adjYDR(3,3),YL1(3,3),betaYL11(3,3),betaYL12(3,3),DYL1(3,3),adjYL1(3,3)      & 
-& ,YDL(3,3),betaYDL1(3,3),betaYDL2(3,3),DYDL(3,3),adjYDL(3,3),YQ1(3,3),betaYQ11(3,3)     & 
-& ,betaYQ12(3,3),DYQ1(3,3),adjYQ1(3,3),mudl2,betamudl21,betamudl22,Dmudl2,               & 
-& mudr2,betamudr21,betamudr22,Dmudr2
+& betaRHO12,DRHO1,ALP1,betaALP11,betaALP12,DALP1,LAM1,betaLAM11,betaLAM12,               & 
+& DLAM1,ALP3,betaALP31,betaALP32,DALP3,ALP2,betaALP21,betaALP22,DALP2,LAM4,              & 
+& betaLAM41,betaLAM42,DLAM4,LAM2,betaLAM21,betaLAM22,DLAM2,LAM3,betaLAM31,               & 
+& betaLAM32,DLAM3,M23,betaM231,betaM232,DM23,mu32,betamu321,betamu322,Dmu32,             & 
+& MU22,betaMU221,betaMU222,DMU22,MU12,betaMU121,betaMU122,DMU12
+Complex(dp) :: YDR(3,3),betaYDR1(3,3),betaYDR2(3,3),DYDR(3,3),adjYDR(3,3)             & 
+& ,YL1(3,3),betaYL11(3,3),betaYL12(3,3),DYL1(3,3),adjYL1(3,3),YQ1(3,3),betaYQ11(3,3)     & 
+& ,betaYQ12(3,3),DYQ1(3,3),adjYQ1(3,3),YL2(3,3),betaYL21(3,3),betaYL22(3,3)              & 
+& ,DYL2(3,3),adjYL2(3,3),YQ2(3,3),betaYQ21(3,3),betaYQ22(3,3),DYQ2(3,3),adjYQ2(3,3)
 Iname = Iname +1 
-NameOfUnit(Iname) = 'rge91' 
+NameOfUnit(Iname) = 'rge107' 
  
 OnlyDiagonal = .Not.GenerationMixing 
 q = t 
  
-Call GToParameters91(gy,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
-& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12)
+Call GToParameters107(gy,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
+& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12)
 
 Call Adjungate(YDR,adjYDR)
 Call Adjungate(YL1,adjYL1)
-Call Adjungate(YDL,adjYDL)
 Call Adjungate(YQ1,adjYQ1)
+Call Adjungate(YL2,adjYL2)
+Call Adjungate(YQ2,adjYQ2)
 
 
 If (TwoLoopRGE) Then 
@@ -329,48 +346,6 @@ End If
  
  
 !-------------------- 
-! rh3 
-!-------------------- 
- 
-betarh31  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betarh32 = 0
-
- 
-Drh3 = oo16pi2*( betarh31 + oo16pi2 * betarh32 ) 
-
- 
-Else 
-Drh3 = oo16pi2* betarh31 
-End If 
- 
- 
-Call Chop(Drh3) 
-
-!-------------------- 
-! ALP3 
-!-------------------- 
- 
-betaALP31  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betaALP32 = 0
-
- 
-DALP3 = oo16pi2*( betaALP31 + oo16pi2 * betaALP32 ) 
-
- 
-Else 
-DALP3 = oo16pi2* betaALP31 
-End If 
- 
- 
-!-------------------- 
 ! ALP1 
 !-------------------- 
  
@@ -411,22 +386,82 @@ End If
  
  
 !-------------------- 
-! BETA2 
+! ALP3 
 !-------------------- 
  
-betaBETA21  = 0
+betaALP31  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betaBETA22 = 0
+betaALP32 = 0
 
  
-DBETA2 = oo16pi2*( betaBETA21 + oo16pi2 * betaBETA22 ) 
+DALP3 = oo16pi2*( betaALP31 + oo16pi2 * betaALP32 ) 
 
  
 Else 
-DBETA2 = oo16pi2* betaBETA21 
+DALP3 = oo16pi2* betaALP31 
+End If 
+ 
+ 
+!-------------------- 
+! ALP2 
+!-------------------- 
+ 
+betaALP21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaALP22 = 0
+
+ 
+DALP2 = oo16pi2*( betaALP21 + oo16pi2 * betaALP22 ) 
+
+ 
+Else 
+DALP2 = oo16pi2* betaALP21 
+End If 
+ 
+ 
+!-------------------- 
+! LAM4 
+!-------------------- 
+ 
+betaLAM41  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaLAM42 = 0
+
+ 
+DLAM4 = oo16pi2*( betaLAM41 + oo16pi2 * betaLAM42 ) 
+
+ 
+Else 
+DLAM4 = oo16pi2* betaLAM41 
+End If 
+ 
+ 
+!-------------------- 
+! LAM2 
+!-------------------- 
+ 
+betaLAM21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaLAM22 = 0
+
+ 
+DLAM2 = oo16pi2*( betaLAM21 + oo16pi2 * betaLAM22 ) 
+
+ 
+Else 
+DLAM2 = oo16pi2* betaLAM21 
 End If 
  
  
@@ -495,28 +530,6 @@ End If
 Call Chop(DYL1) 
 
 !-------------------- 
-! YDL 
-!-------------------- 
- 
-betaYDL1  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betaYDL2 = 0
-
- 
-DYDL = oo16pi2*( betaYDL1 + oo16pi2 * betaYDL2 ) 
-
- 
-Else 
-DYDL = oo16pi2* betaYDL1 
-End If 
- 
- 
-Call Chop(DYDL) 
-
-!-------------------- 
 ! YQ1 
 !-------------------- 
  
@@ -539,6 +552,50 @@ End If
 Call Chop(DYQ1) 
 
 !-------------------- 
+! YL2 
+!-------------------- 
+ 
+betaYL21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaYL22 = 0
+
+ 
+DYL2 = oo16pi2*( betaYL21 + oo16pi2 * betaYL22 ) 
+
+ 
+Else 
+DYL2 = oo16pi2* betaYL21 
+End If 
+ 
+ 
+Call Chop(DYL2) 
+
+!-------------------- 
+! YQ2 
+!-------------------- 
+ 
+betaYQ21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaYQ22 = 0
+
+ 
+DYQ2 = oo16pi2*( betaYQ21 + oo16pi2 * betaYQ22 ) 
+
+ 
+Else 
+DYQ2 = oo16pi2* betaYQ21 
+End If 
+ 
+ 
+Call Chop(DYQ2) 
+
+!-------------------- 
 ! M23 
 !-------------------- 
  
@@ -559,49 +616,45 @@ End If
  
  
 !-------------------- 
-! mudl2 
+! mu32 
 !-------------------- 
  
-betamudl21  = 0
+betamu321  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betamudl22 = 0
+betamu322 = 0
 
  
-Dmudl2 = oo16pi2*( betamudl21 + oo16pi2 * betamudl22 ) 
+Dmu32 = oo16pi2*( betamu321 + oo16pi2 * betamu322 ) 
 
  
 Else 
-Dmudl2 = oo16pi2* betamudl21 
+Dmu32 = oo16pi2* betamu321 
 End If 
  
  
-Call Chop(Dmudl2) 
-
 !-------------------- 
-! mudr2 
+! MU22 
 !-------------------- 
  
-betamudr21  = 0
+betaMU221  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betamudr22 = 0
+betaMU222 = 0
 
  
-Dmudr2 = oo16pi2*( betamudr21 + oo16pi2 * betamudr22 ) 
+DMU22 = oo16pi2*( betaMU221 + oo16pi2 * betaMU222 ) 
 
  
 Else 
-Dmudr2 = oo16pi2* betamudr21 
+DMU22 = oo16pi2* betaMU221 
 End If 
  
  
-Call Chop(Dmudr2) 
-
 !-------------------- 
 ! MU12 
 !-------------------- 
@@ -622,26 +675,27 @@ DMU12 = oo16pi2* betaMU121
 End If 
  
  
-Call ParametersToG91(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,Drh3,DALP3,DALP1,DLAM1,             & 
-& DBETA2,DLAM3,DYDR,DYL1,DYDL,DYQ1,DM23,Dmudl2,Dmudr2,DMU12,f)
+Call ParametersToG107(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,DALP1,DLAM1,DALP3,DALP2,           & 
+& DLAM4,DLAM2,DLAM3,DYDR,DYL1,DYQ1,DYL2,DYQ2,DM23,Dmu32,DMU22,DMU12,f)
 
 Iname = Iname - 1 
  
-End Subroutine rge91  
+End Subroutine rge107  
 
-Subroutine GToParameters95(g,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,               & 
-& BETA2,LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
+Subroutine GToParameters110(g,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,             & 
+& LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR)
 
 Implicit None 
-Real(dp), Intent(in) :: g(95) 
-Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
+Real(dp), Intent(in) :: g(110) 
+Real(dp),Intent(out) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
+& MU12,vd,vu,vR
 
-Complex(dp),Intent(out) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp),Intent(out) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'GToParameters95' 
+NameOfUnit(Iname) = 'GToParameters110' 
  
 gBL= g(1) 
 g2= g(2) 
@@ -649,11 +703,12 @@ gR= g(3)
 g3= g(4) 
 RHO2= g(5) 
 RHO1= g(6) 
-rh3= Cmplx(g(7),g(8),dp) 
+ALP1= g(7) 
+LAM1= g(8) 
 ALP3= g(9) 
-ALP1= g(10) 
-LAM1= g(11) 
-BETA2= g(12) 
+ALP2= g(10) 
+LAM4= g(11) 
+LAM2= g(12) 
 LAM3= g(13) 
 Do i1 = 1,3
 Do i2 = 1,3
@@ -675,7 +730,7 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-YDL(i1,i2) = Cmplx( g(SumI+50), g(SumI+51), dp) 
+YQ1(i1,i2) = Cmplx( g(SumI+50), g(SumI+51), dp) 
 End Do 
  End Do 
  
@@ -683,19 +738,26 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-YQ1(i1,i2) = Cmplx( g(SumI+68), g(SumI+69), dp) 
+YL2(i1,i2) = Cmplx( g(SumI+68), g(SumI+69), dp) 
 End Do 
  End Do 
  
-M23= g(86) 
-mudl2= Cmplx(g(87),g(88),dp) 
-mudr2= Cmplx(g(89),g(90),dp) 
-MU12= g(91) 
-v1= g(92) 
-v2= g(93) 
-vtl= g(94) 
-vtr= g(95) 
-Do i1=1,95 
+Do i1 = 1,3
+Do i2 = 1,3
+SumI = (i2-1) + (i1-1)*3
+SumI = SumI*2 
+YQ2(i1,i2) = Cmplx( g(SumI+86), g(SumI+87), dp) 
+End Do 
+ End Do 
+ 
+M23= g(104) 
+mu32= g(105) 
+MU22= g(106) 
+MU12= g(107) 
+vd= g(108) 
+vu= g(109) 
+vR= g(110) 
+Do i1=1,110 
 If (g(i1).ne.g(i1)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Write(*,*) "At position ", i1 
@@ -704,21 +766,22 @@ End if
 End do 
 Iname = Iname - 1 
  
-End Subroutine GToParameters95
+End Subroutine GToParameters110
 
-Subroutine ParametersToG95(gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,           & 
-& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr,g)
+Subroutine ParametersToG110(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,               & 
+& LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,g)
 
 Implicit None 
-Real(dp), Intent(out) :: g(95) 
-Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP3,ALP1,LAM1,BETA2,LAM3,M23,MU12,v1,v2,vtl,vtr
+Real(dp), Intent(out) :: g(110) 
+Real(dp), Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
+& MU12,vd,vu,vR
 
-Complex(dp), Intent(in) :: rh3,YDR(3,3),YL1(3,3),YDL(3,3),YQ1(3,3),mudl2,mudr2
+Complex(dp), Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
 Integer i1, i2, i3, i4, SumI 
  
 Iname = Iname +1 
-NameOfUnit(Iname) = 'ParametersToG95' 
+NameOfUnit(Iname) = 'ParametersToG110' 
  
 g(1) = gBL  
 g(2) = g2  
@@ -726,12 +789,12 @@ g(3) = gR
 g(4) = g3  
 g(5) = RHO2  
 g(6) = RHO1  
-g(7) = Real(rh3,dp)  
-g(8) = Aimag(rh3)  
+g(7) = ALP1  
+g(8) = LAM1  
 g(9) = ALP3  
-g(10) = ALP1  
-g(11) = LAM1  
-g(12) = BETA2  
+g(10) = ALP2  
+g(11) = LAM4  
+g(12) = LAM2  
 g(13) = LAM3  
 Do i1 = 1,3
 Do i2 = 1,3
@@ -755,8 +818,8 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-g(SumI+50) = Real(YDL(i1,i2), dp) 
-g(SumI+51) = Aimag(YDL(i1,i2)) 
+g(SumI+50) = Real(YQ1(i1,i2), dp) 
+g(SumI+51) = Aimag(YQ1(i1,i2)) 
 End Do 
 End Do 
 
@@ -764,26 +827,32 @@ Do i1 = 1,3
 Do i2 = 1,3
 SumI = (i2-1) + (i1-1)*3
 SumI = SumI*2 
-g(SumI+68) = Real(YQ1(i1,i2), dp) 
-g(SumI+69) = Aimag(YQ1(i1,i2)) 
+g(SumI+68) = Real(YL2(i1,i2), dp) 
+g(SumI+69) = Aimag(YL2(i1,i2)) 
 End Do 
 End Do 
 
-g(86) = M23  
-g(87) = Real(mudl2,dp)  
-g(88) = Aimag(mudl2)  
-g(89) = Real(mudr2,dp)  
-g(90) = Aimag(mudr2)  
-g(91) = MU12  
-g(92) = v1  
-g(93) = v2  
-g(94) = vtl  
-g(95) = vtr  
+Do i1 = 1,3
+Do i2 = 1,3
+SumI = (i2-1) + (i1-1)*3
+SumI = SumI*2 
+g(SumI+86) = Real(YQ2(i1,i2), dp) 
+g(SumI+87) = Aimag(YQ2(i1,i2)) 
+End Do 
+End Do 
+
+g(104) = M23  
+g(105) = mu32  
+g(106) = MU22  
+g(107) = MU12  
+g(108) = vd  
+g(109) = vu  
+g(110) = vR  
 Iname = Iname - 1 
  
-End Subroutine ParametersToG95
+End Subroutine ParametersToG110
 
-Subroutine rge95(len, T, GY, F) 
+Subroutine rge110(len, T, GY, F) 
 Implicit None 
 Integer, Intent(in) :: len 
 Real(dp), Intent(in) :: T, GY(len) 
@@ -793,29 +862,30 @@ Integer :: j1,j2,j3,j4,j5,j6,j7
 Real(dp) :: q 
 Real(dp) :: gBL,betagBL1,betagBL2,DgBL,g2,betag21,betag22,Dg2,gR,betagR1,             & 
 & betagR2,DgR,g3,betag31,betag32,Dg3,RHO2,betaRHO21,betaRHO22,DRHO2,RHO1,betaRHO11,      & 
-& betaRHO12,DRHO1,ALP3,betaALP31,betaALP32,DALP3,ALP1,betaALP11,betaALP12,               & 
-& DALP1,LAM1,betaLAM11,betaLAM12,DLAM1,BETA2,betaBETA21,betaBETA22,DBETA2,               & 
-& LAM3,betaLAM31,betaLAM32,DLAM3,M23,betaM231,betaM232,DM23,MU12,betaMU121,              & 
-& betaMU122,DMU12,v1,betav11,betav12,Dv1,v2,betav21,betav22,Dv2,vtl,betavtl1,            & 
-& betavtl2,Dvtl,vtr,betavtr1,betavtr2,Dvtr
-Complex(dp) :: rh3,betarh31,betarh32,Drh3,YDR(3,3),betaYDR1(3,3),betaYDR2(3,3)        & 
-& ,DYDR(3,3),adjYDR(3,3),YL1(3,3),betaYL11(3,3),betaYL12(3,3),DYL1(3,3),adjYL1(3,3)      & 
-& ,YDL(3,3),betaYDL1(3,3),betaYDL2(3,3),DYDL(3,3),adjYDL(3,3),YQ1(3,3),betaYQ11(3,3)     & 
-& ,betaYQ12(3,3),DYQ1(3,3),adjYQ1(3,3),mudl2,betamudl21,betamudl22,Dmudl2,               & 
-& mudr2,betamudr21,betamudr22,Dmudr2
+& betaRHO12,DRHO1,ALP1,betaALP11,betaALP12,DALP1,LAM1,betaLAM11,betaLAM12,               & 
+& DLAM1,ALP3,betaALP31,betaALP32,DALP3,ALP2,betaALP21,betaALP22,DALP2,LAM4,              & 
+& betaLAM41,betaLAM42,DLAM4,LAM2,betaLAM21,betaLAM22,DLAM2,LAM3,betaLAM31,               & 
+& betaLAM32,DLAM3,M23,betaM231,betaM232,DM23,mu32,betamu321,betamu322,Dmu32,             & 
+& MU22,betaMU221,betaMU222,DMU22,MU12,betaMU121,betaMU122,DMU12,vd,betavd1,              & 
+& betavd2,Dvd,vu,betavu1,betavu2,Dvu,vR,betavR1,betavR2,DvR
+Complex(dp) :: YDR(3,3),betaYDR1(3,3),betaYDR2(3,3),DYDR(3,3),adjYDR(3,3)             & 
+& ,YL1(3,3),betaYL11(3,3),betaYL12(3,3),DYL1(3,3),adjYL1(3,3),YQ1(3,3),betaYQ11(3,3)     & 
+& ,betaYQ12(3,3),DYQ1(3,3),adjYQ1(3,3),YL2(3,3),betaYL21(3,3),betaYL22(3,3)              & 
+& ,DYL2(3,3),adjYL2(3,3),YQ2(3,3),betaYQ21(3,3),betaYQ22(3,3),DYQ2(3,3),adjYQ2(3,3)
 Iname = Iname +1 
-NameOfUnit(Iname) = 'rge95' 
+NameOfUnit(Iname) = 'rge110' 
  
 OnlyDiagonal = .Not.GenerationMixing 
 q = t 
  
-Call GToParameters95(gy,gBL,g2,gR,g3,RHO2,RHO1,rh3,ALP3,ALP1,LAM1,BETA2,              & 
-& LAM3,YDR,YL1,YDL,YQ1,M23,mudl2,mudr2,MU12,v1,v2,vtl,vtr)
+Call GToParameters110(gy,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
+& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR)
 
 Call Adjungate(YDR,adjYDR)
 Call Adjungate(YL1,adjYL1)
-Call Adjungate(YDL,adjYDL)
 Call Adjungate(YQ1,adjYQ1)
+Call Adjungate(YL2,adjYL2)
+Call Adjungate(YQ2,adjYQ2)
 
 
 If (TwoLoopRGE) Then 
@@ -943,48 +1013,6 @@ End If
  
  
 !-------------------- 
-! rh3 
-!-------------------- 
- 
-betarh31  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betarh32 = 0
-
- 
-Drh3 = oo16pi2*( betarh31 + oo16pi2 * betarh32 ) 
-
- 
-Else 
-Drh3 = oo16pi2* betarh31 
-End If 
- 
- 
-Call Chop(Drh3) 
-
-!-------------------- 
-! ALP3 
-!-------------------- 
- 
-betaALP31  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betaALP32 = 0
-
- 
-DALP3 = oo16pi2*( betaALP31 + oo16pi2 * betaALP32 ) 
-
- 
-Else 
-DALP3 = oo16pi2* betaALP31 
-End If 
- 
- 
-!-------------------- 
 ! ALP1 
 !-------------------- 
  
@@ -1025,22 +1053,82 @@ End If
  
  
 !-------------------- 
-! BETA2 
+! ALP3 
 !-------------------- 
  
-betaBETA21  = 0
+betaALP31  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betaBETA22 = 0
+betaALP32 = 0
 
  
-DBETA2 = oo16pi2*( betaBETA21 + oo16pi2 * betaBETA22 ) 
+DALP3 = oo16pi2*( betaALP31 + oo16pi2 * betaALP32 ) 
 
  
 Else 
-DBETA2 = oo16pi2* betaBETA21 
+DALP3 = oo16pi2* betaALP31 
+End If 
+ 
+ 
+!-------------------- 
+! ALP2 
+!-------------------- 
+ 
+betaALP21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaALP22 = 0
+
+ 
+DALP2 = oo16pi2*( betaALP21 + oo16pi2 * betaALP22 ) 
+
+ 
+Else 
+DALP2 = oo16pi2* betaALP21 
+End If 
+ 
+ 
+!-------------------- 
+! LAM4 
+!-------------------- 
+ 
+betaLAM41  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaLAM42 = 0
+
+ 
+DLAM4 = oo16pi2*( betaLAM41 + oo16pi2 * betaLAM42 ) 
+
+ 
+Else 
+DLAM4 = oo16pi2* betaLAM41 
+End If 
+ 
+ 
+!-------------------- 
+! LAM2 
+!-------------------- 
+ 
+betaLAM21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaLAM22 = 0
+
+ 
+DLAM2 = oo16pi2*( betaLAM21 + oo16pi2 * betaLAM22 ) 
+
+ 
+Else 
+DLAM2 = oo16pi2* betaLAM21 
 End If 
  
  
@@ -1109,28 +1197,6 @@ End If
 Call Chop(DYL1) 
 
 !-------------------- 
-! YDL 
-!-------------------- 
- 
-betaYDL1  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betaYDL2 = 0
-
- 
-DYDL = oo16pi2*( betaYDL1 + oo16pi2 * betaYDL2 ) 
-
- 
-Else 
-DYDL = oo16pi2* betaYDL1 
-End If 
- 
- 
-Call Chop(DYDL) 
-
-!-------------------- 
 ! YQ1 
 !-------------------- 
  
@@ -1153,6 +1219,50 @@ End If
 Call Chop(DYQ1) 
 
 !-------------------- 
+! YL2 
+!-------------------- 
+ 
+betaYL21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaYL22 = 0
+
+ 
+DYL2 = oo16pi2*( betaYL21 + oo16pi2 * betaYL22 ) 
+
+ 
+Else 
+DYL2 = oo16pi2* betaYL21 
+End If 
+ 
+ 
+Call Chop(DYL2) 
+
+!-------------------- 
+! YQ2 
+!-------------------- 
+ 
+betaYQ21  = 0
+
+ 
+ 
+If (TwoLoopRGE) Then 
+betaYQ22 = 0
+
+ 
+DYQ2 = oo16pi2*( betaYQ21 + oo16pi2 * betaYQ22 ) 
+
+ 
+Else 
+DYQ2 = oo16pi2* betaYQ21 
+End If 
+ 
+ 
+Call Chop(DYQ2) 
+
+!-------------------- 
 ! M23 
 !-------------------- 
  
@@ -1173,49 +1283,45 @@ End If
  
  
 !-------------------- 
-! mudl2 
+! mu32 
 !-------------------- 
  
-betamudl21  = 0
+betamu321  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betamudl22 = 0
+betamu322 = 0
 
  
-Dmudl2 = oo16pi2*( betamudl21 + oo16pi2 * betamudl22 ) 
+Dmu32 = oo16pi2*( betamu321 + oo16pi2 * betamu322 ) 
 
  
 Else 
-Dmudl2 = oo16pi2* betamudl21 
+Dmu32 = oo16pi2* betamu321 
 End If 
  
  
-Call Chop(Dmudl2) 
-
 !-------------------- 
-! mudr2 
+! MU22 
 !-------------------- 
  
-betamudr21  = 0
+betaMU221  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betamudr22 = 0
+betaMU222 = 0
 
  
-Dmudr2 = oo16pi2*( betamudr21 + oo16pi2 * betamudr22 ) 
+DMU22 = oo16pi2*( betaMU221 + oo16pi2 * betaMU222 ) 
 
  
 Else 
-Dmudr2 = oo16pi2* betamudr21 
+DMU22 = oo16pi2* betaMU221 
 End If 
  
  
-Call Chop(Dmudr2) 
-
 !-------------------- 
 ! MU12 
 !-------------------- 
@@ -1237,91 +1343,71 @@ End If
  
  
 !-------------------- 
-! v1 
+! vd 
 !-------------------- 
  
-betav11  = 0
+betavd1  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betav12 = 0
+betavd2 = 0
 
  
-Dv1 = oo16pi2*( betav11 + oo16pi2 * betav12 ) 
+Dvd = oo16pi2*( betavd1 + oo16pi2 * betavd2 ) 
 
  
 Else 
-Dv1 = oo16pi2* betav11 
+Dvd = oo16pi2* betavd1 
 End If 
  
  
 !-------------------- 
-! v2 
+! vu 
 !-------------------- 
  
-betav21  = 0
+betavu1  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betav22 = 0
+betavu2 = 0
 
  
-Dv2 = oo16pi2*( betav21 + oo16pi2 * betav22 ) 
+Dvu = oo16pi2*( betavu1 + oo16pi2 * betavu2 ) 
 
  
 Else 
-Dv2 = oo16pi2* betav21 
+Dvu = oo16pi2* betavu1 
 End If 
  
  
 !-------------------- 
-! vtl 
+! vR 
 !-------------------- 
  
-betavtl1  = 0
+betavR1  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betavtl2 = 0
+betavR2 = 0
 
  
-Dvtl = oo16pi2*( betavtl1 + oo16pi2 * betavtl2 ) 
-
- 
-Else 
-Dvtl = oo16pi2* betavtl1 
-End If 
- 
- 
-!-------------------- 
-! vtr 
-!-------------------- 
- 
-betavtr1  = 0
-
- 
- 
-If (TwoLoopRGE) Then 
-betavtr2 = 0
-
- 
-Dvtr = oo16pi2*( betavtr1 + oo16pi2 * betavtr2 ) 
+DvR = oo16pi2*( betavR1 + oo16pi2 * betavR2 ) 
 
  
 Else 
-Dvtr = oo16pi2* betavtr1 
+DvR = oo16pi2* betavR1 
 End If 
  
  
-Call ParametersToG95(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,Drh3,DALP3,DALP1,DLAM1,             & 
-& DBETA2,DLAM3,DYDR,DYL1,DYDL,DYQ1,DM23,Dmudl2,Dmudr2,DMU12,Dv1,Dv2,Dvtl,Dvtr,f)
+Call ParametersToG110(DgBL,Dg2,DgR,Dg3,DRHO2,DRHO1,DALP1,DLAM1,DALP3,DALP2,           & 
+& DLAM4,DLAM2,DLAM3,DYDR,DYL1,DYQ1,DYL2,DYQ2,DM23,Dmu32,DMU22,DMU12,Dvd,Dvu,DvR,f)
 
 Iname = Iname - 1 
  
-End Subroutine rge95  
+End Subroutine rge110  
 
 End Module RGEs_DMLR 
  

@@ -2,116 +2,70 @@
 
 OnlyLowEnergySPheno = True;
 
-MINPAR={{1, gRinput},
-        {2, vtRinput},
-	{3, M23INPUT},
-        (*{3, vHRinput},
-        {4, vHLinput},*)
-        {5, vtLinput},
-        {6, TanBeta},
-        {10, lam1INPUT},
-        {11, rho1INPUT},
-        {12, rho2INPUT},
-        {13, rho3INPUT},
-        {14, alp1INPUT},
-        {15, alp3INPUT},
-        {16, beta2INPUT},
-        (*{17, etaLLINPUT},
-        {18, etaLRINPUT},
-        {19, etaRLINPUT},
-        {20, etaRRINPUT},
-        {21, etaRR1INPUT},
-        {22, etaRR2INPUT},
-        {23, lamLINPUT},
-        {24, lamRINPUT},
-        {25, lamLRINPUT},
-        {26, betaLINPUT},
-        {27, betaRINPUT},*)
-        {28, alpINPUT},
-        {29, xiRINPUT},
-        {30, xiLRINPUT}
+MINPAR={{1, vRinput},
+        {2, TanBeta},
+        {3, lam1INPUT},
+        {4, lam2INPUT},
+        {5, lam3INPUT},
+        {6, lam4INPUT},
+        {7, rho1INPUT},
+        {8, rho2INPUT},
+        {9, alp1INPUT},
+        {10, alp2INPUT},
+        {11, alp3INPUT},
+        (*{12, M1INPUT},*)
+        {13, M23INPUT}(*,
+        {14, lamT1INPUT},
+        {15, lamT2INPUT}*)
         };
 
+RealParameters = {TanBeta,vRinput};
 
-ParametersToSolveTadpoles = {mu12, lam3, mudL2, mudR2(*, muL2, muR2*)};
+ParametersToSolveTadpoles = {mu12,mu22,mu32}; 
 
 
 BoundaryLowScaleInput={
  {g3, g3SM},
  {g2, g2SM},
- {gR, gRinput},
+ {gR, g2},
  {gBL, (g1SM*gR)/Sqrt[-g1SM^2 + gR^2]},
- {vtR, vtRinput},
- (*{vHR, vHRinput},*)
- {vtL, vtLinput},
- (*{vHL, vHLinput},*)
- {v2, TanBeta*Sqrt[vSM^2 (*- vHL^2*) - 2*vtL^2]/Sqrt[1 + TanBeta^2]},
- {v1, v2/TanBeta},
- {M23, M23INPUT},
+ {v1, vSM*Cos[ArcTan[TanBeta]]},   
+ {v2, vSM*Sin[ArcTan[TanBeta]]},
+ {vR, vRinput},
+ {YQ2, -(Transpose[YdSM]*v1*vSM - Transpose[YuSM]*vSM*v2)/(v2^2-v1^2)},
+ {YQ1, (-Transpose[YuSM]*vSM*v1 + Transpose[YdSM]*v2*vSM)/(v2^2-v1^2)},
  {lam1, lam1INPUT},
+ {lam2, lam2INPUT},
+ {lam3, lam3INPUT},
+ {lam4, lam4INPUT},
  {rho1, rho1INPUT},
  {rho2, rho2INPUT},
- {rho3, rho3INPUT},
  {alp1, alp1INPUT},
+ {alp2, alp2INPUT},
  {alp3, alp3INPUT},
- {beta2, beta2INPUT},
-(* {etaLL, etaLLINPUT},
- {etaLR, etaLRINPUT},
- {etaRL, etaRLINPUT},
- {etaRR, etaRRINPUT},
- {eRR1, etaRR1INPUT},
- {eRR2, etaRR2INPUT},
- {lamL, lamLINPUT},
- {lamR, lamRINPUT},
- {lamLR, lamLRINPUT},
- {betaL, betaLINPUT},
- {betaR, betaRINPUT},*)
- {alp, alpINPUT},
- {xiR, xiRINPUT},
- {xiLR, xiLRINPUT},
- {YQ1, Transpose[YuSM]*vSM/v2},
- {YL1, Transpose[YeSM]*vSM/v2}
+ (*{M1, M1INPUT},*)
+ {M23, M23INPUT}(*,
+ {lamT1, lamT1INPUT},
+ {lamT2, lamT2INPUT}*)
  };
 
 
-
-ListDecayParticles = {Fu,Fe,Fd,hh,Fv,VZ,VZR,Hppmm,Hpm,Ah,VWLm,VWRm};
+ListDecayParticles = {Fu,Fe,Fd,hh,Fv,VZ,VZR,deltaRpp,Hpm,Ah,VWLm,VWRm};
 ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"},{Fv,"Fv.f90"}};
 
-(*
-This default point works with a renormalization scale of 1 TeV,
-i.e. with the automatically generated LesHouches.in.darkLR_low.
-Note that this point merely gives a valid spectrum, it does not feature,
-e.g., correct Higgs masses.
-*)
 
-DefaultInputValues ={gRinput -> 0.5,
-        vtRinput -> 2000,
-        (*vHRinput -> 5000,
-        vHLinput -> 1.1,*)
-        vtLinput -> 2.2,
-        TanBeta -> 10,
-        M23INPUT -> 1000,
-        lam1INPUT -> 0.12,
-        rho1INPUT -> 0.2,
-        rho2INPUT -> 1,
-        rho3INPUT -> 0.1,
-        alp1INPUT -> 0.2,
-        alp3INPUT -> 0.,
-        beta2INPUT -> 0.,
-        (*etaLLINPUT -> 0.1,
-        etaLRINPUT -> 10^(-8),
-        etaRLINPUT -> 10^(-8),
-        etaRRINPUT -> 0.1,
-        etaRR1INPUT -> 10^(-8),
-        etaRR2INPUT -> 10^(-8),
-        lamLINPUT -> 1,
-        lamRINPUT -> 0.05,
-        lamLRINPUT -> 10^(-8),
-        betaLINPUT -> 0.2,
-        betaRINPUT -> 10^(-8),*)
-        alpINPUT -> 0.,
-        xiRINPUT -> 300,
-        xiLRINPUT -> 0.,
+(* this default point works with a renormalization scale of 1 TeV, i.e. with the automatically generated LesHouches.in.tripletLR_low *)
+DefaultInputValues ={vRinput -> 4000,
+                     TanBeta -> 10,
+                     alp3INPUT -> -0.005,
+                     lam1INPUT -> 0.1,
+                     lam3INPUT -> 0.3,
+                     lam4INPUT -> -0.15,
+                     (*lamT1INPUT -> 0.1,
+                     lamT2INPUT -> 0.1,
+                     M1INPUT -> 1000,*)
+                     M23INPUT -> 1000,
+                     rho1INPUT -> 0.0002,
+                     rho2INPUT -> 0.005        
                      };
-
+                     

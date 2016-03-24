@@ -1,4 +1,4 @@
-DMLR  % Created by SARAH v4.8.1 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 15:47 on 9.3.2016
+DMLR  % Created by SARAH v4.8.1 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 20:24 on 23.3.2016
 Parameters  
  Name               | Value              |> Comment          <|
 WZ                  |2.4952              | width 
@@ -17,6 +17,6 @@ sqrt2               |1.41421356237310    |
 Pi                  |3.14159265358979    |  
 Q                   |100                 |  
 alfSMZ              |0.1172              |  
-aEWinv              |137.035999679       | inverse weak coupling constant at mZ  
 aS                  |0.119               | Alpha Strong  
+aEWinv              |137.035999679       | inverse weak coupling constant at mZ  
 Gf                  |0.0000116639        | Fermi's constant  

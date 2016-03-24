@@ -55,7 +55,7 @@ RunScans = {Scan1, Scan2,...};
 (*    PARAMETER RANGES                          *)
 (*----------------------------------------------*)
 
-DEFINITION[a_][Blocks]={MODSEL,SMINPUTS,SPhenoInput,MINPAR,YDLIN,YDRIN}; 
+DEFINITION[a_][Blocks]={MODSEL,SMINPUTS,SPhenoInput,MINPAR,YDRIN,YL1IN,YL2IN}; 
  
 DEFINITION[a_][MODSEL]={ 
 {{1},{Value->0}}, 
@@ -71,21 +71,18 @@ DEFINITION[a_][SMINPUTS]={
 {{7},{Value->1.777}} 
 }; 
 DEFINITION[a_][MINPAR]={ 
-{{1},{Value->0}} (*gRinput*), 
-{{2},{Value->0}} (*vtRinput*), 
-{{3},{Value->0}} (*M23INPUT*), 
-{{5},{Value->0}} (*vtLinput*), 
-{{6},{Value->0}} (*TanBeta*), 
-{{10},{Value->0}} (*lam1INPUT*), 
-{{11},{Value->0}} (*rho1INPUT*), 
-{{12},{Value->0}} (*rho2INPUT*), 
-{{13},{Value->0}} (*rho3INPUT*), 
-{{14},{Value->0}} (*alp1INPUT*), 
-{{15},{Value->0}} (*alp3INPUT*), 
-{{16},{Value->0}} (*beta2INPUT*), 
-{{28},{Value->0}} (*alpINPUT*), 
-{{29},{Value->0}} (*xiRINPUT*), 
-{{30},{Value->0}} (*xiLRINPUT*)}; 
+{{1},{Value->0}} (*vRinput*), 
+{{2},{Value->0}} (*TanBeta*), 
+{{3},{Value->0}} (*lam1INPUT*), 
+{{4},{Value->0}} (*lam2INPUT*), 
+{{5},{Value->0}} (*lam3INPUT*), 
+{{6},{Value->0}} (*lam4INPUT*), 
+{{7},{Value->0}} (*rho1INPUT*), 
+{{8},{Value->0}} (*rho2INPUT*), 
+{{9},{Value->0}} (*alp1INPUT*), 
+{{10},{Value->0}} (*alp2INPUT*), 
+{{11},{Value->0}} (*alp3INPUT*), 
+{{13},{Value->0}} (*M23INPUT*)}; 
  
 DEFINITION[a_][SPhenoInput]={ 
 {{1},{Value->-1}}, (* error level *)
@@ -104,7 +101,7 @@ DEFINITION[a_][SPhenoInput]={
 {{86},{Value->0.}},  (* Maximal width to be counted as invisible in Higgs decays; -1: only LSP *) 
 {{530},{Value->1.}}  (* Write Blocks for Vevacious *) 
 }; 
-DEFINITION[a_][YDLIN]={ 
+DEFINITION[a_][YDRIN]={ 
 {{1,1},{Value->0}} , 
 {{1,2},{Value->0}} , 
 {{1,3},{Value->0}} , 
@@ -115,7 +112,18 @@ DEFINITION[a_][YDLIN]={
 {{3,2},{Value->0}} , 
 {{3,3},{Value->0}} }; 
  
-DEFINITION[a_][YDRIN]={ 
+DEFINITION[a_][YL1IN]={ 
+{{1,1},{Value->0}} , 
+{{1,2},{Value->0}} , 
+{{1,3},{Value->0}} , 
+{{2,1},{Value->0}} , 
+{{2,2},{Value->0}} , 
+{{2,3},{Value->0}} , 
+{{3,1},{Value->0}} , 
+{{3,2},{Value->0}} , 
+{{3,3},{Value->0}} }; 
+ 
+DEFINITION[a_][YL2IN]={ 
 {{1,1},{Value->0}} , 
 {{1,2},{Value->0}} , 
 {{1,3},{Value->0}} , 

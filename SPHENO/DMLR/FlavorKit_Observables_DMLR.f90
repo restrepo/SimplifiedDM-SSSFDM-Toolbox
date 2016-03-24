@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 15:44 on 9.3.2016   
+! File created at 20:19 on 23.3.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -21,7 +21,7 @@ Use StandardModel
 Subroutine Calculate_hLLp(OH2lSL,OH2lSR,BrhtoMuE,BrhtoTauE,BrhtoTauMu)
 
 Implicit None 
-Complex(dp) :: OH2lSL(3,3,4),OH2lSR(3,3,4)
+Complex(dp) :: OH2lSL(3,3,3),OH2lSR(3,3,3)
 
 Real(dp), Intent(out) :: BrhtoMuE 
 Real(dp), Intent(out) :: BrhtoTauE 
@@ -1399,8 +1399,8 @@ Subroutine Calculate_DeltaMBq(O4dSLL,O4dSRR,O4dSRL,O4dSLR,O4dVRR,O4dVLL,        
 Implicit None 
 Complex(dp) :: O4dSLL(3,3,3,3),O4dSRR(3,3,3,3),O4dSRL(3,3,3,3),O4dSLR(3,3,3,3),O4dVRR(3,3,3,3),      & 
 & O4dVLL(3,3,3,3),O4dVLLSM(3,3,3,3),O4dVRL(3,3,3,3),O4dVLR(3,3,3,3),O4dTLL(3,3,3,3),     & 
-& O4dTLR(3,3,3,3),O4dTRL(3,3,3,3),O4dTRR(3,3,3,3),OH2qSL(3,3,4),OH2qSR(3,3,4),           & 
-& OAh2qSL(3,3,4),OAh2qSR(3,3,4)
+& O4dTLR(3,3,3,3),O4dTRL(3,3,3,3),O4dTRR(3,3,3,3),OH2qSL(3,3,3),OH2qSR(3,3,3),           & 
+& OAh2qSL(3,3,3),OAh2qSR(3,3,3)
 
 Real(dp), Intent(out) :: DeltaMBs 
 Real(dp), Intent(out) :: ratioDeltaMBs 
@@ -1467,7 +1467,7 @@ C2SRR  = O4dTRR(3,i1,3,i1)/norm
 
 
 ! Double Higgs penguins
-Do iS =  1, 4
+Do iS =  1, 3
 HL = OH2qSL(3,i1,iS)
 HR = OH2qSR(3,i1,iS)
 mS = Mhh2(iS)
@@ -1477,7 +1477,7 @@ C1SRR = C1SRR - 0.5_dp*HR**2/(mS*norm)
 End Do
 
 
-Do iS = 3, 4
+Do iS = 3, 3
 AL = OAh2qSL(3,i1,iS)
 AR = OAh2qSR(3,i1,iS)
 mS = MAh2(iS)
