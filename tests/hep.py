@@ -107,7 +107,7 @@ class hep(model):
     Configure and run specific HEP tools. See self.config for details
     '''
     config={}
-    config['SPHENO_PATH']='/home/restrepo/prog/toolbox/toolbox/SPHENO/bin'
+    config['SPHENO_PATH']='../SPHENO/bin'
     config['SPHENO_COMMAND']='' #Empty string for default SARAH-Toolbox SPHENO commnand
     config['SPHENO_LHA_INPUT']='' #Empty string for default SARAH-Toolbox SPHENO LHA input
     convert={'USAGE': "(N [A])*1=(N [A])*convert[B/A] -> (N [B])"}
@@ -115,6 +115,7 @@ class hep(model):
     convert['s/(1/GeV)']=6.58211899E-25 # s/GeV^{-1}
     convert['m^2/pb']=1E-40 #m^2/pb       m^2/b*(1E-12b/pb) 
     convert['pb/(1/GeV^2)']=(convert['m/(1/GeV)']**2)/convert['m^2/pb'] # $1m^2/(GeV^{-2})/(m^2/pb)=pb/GeV^{-2}
+    #print "Using: config['SPHENO_PATH']='../SPHENO/bin'"
     def __init__(self, *args, **kwargs):
         "See: http://stackoverflow.com/questions/23027846/def-init-self-args-kwargs-initialization-of-class-in-python"
         super(hep, self).__init__(*args, **kwargs) 
