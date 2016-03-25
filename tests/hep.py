@@ -167,7 +167,7 @@ class hep(model):
         return SPCdecays.keys()
     
     def run_micromegas(self,func,param={},path='../micromegas',
-                  var_min=60,var_max=1000,npoints=1,scale='log',CI=True):
+                  var_min=60,var_max=1000,npoints=1,scale='log',CI=False):
         '''Run micromegas with output in MODEL.csv
          func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
          path='../micromegas';var_min=60;
