@@ -1,4 +1,4 @@
-OnlyLowEnergySPheno = True;
+OnlyLowEnergySPheno = False;
 
 MINPAR={{1,LambdaIN}};
 

@@ -3,10 +3,10 @@
 # cases NAG's nagfor, gfortran, g95, Lahey's lf95 and Intels ifort
 # Please uncomment the corresponding line
 # F90 = nagfor
-F90 = gfortran
+# F90 = gfortran
 # F90 = g95
 # F90 = lf95
-# F90 = ifort
+F90 = ifort
 Model = src
 version = 330.00
 bin/SPheno:
