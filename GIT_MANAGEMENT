@@ -17,7 +17,7 @@ directory.
 
 To update to a new version X.X.X of some of tarballs, simply cd to the root dir where the tool is located
 
-  $ tar -zxvf tarball.X.X.X.tar.gz -C tool_DIR --skip-components=1
+  $ tar -zxvf tarball.X.X.X.tar.gz -C tool_DIR --strip-components=1
 
 Recompile the tool accordingly.
 

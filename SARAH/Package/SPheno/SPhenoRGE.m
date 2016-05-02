@@ -99,6 +99,16 @@ listAllParameters =Join[listAllParameters ,Transpose[BetaMuij][[1]]];
 listBeta1Loop  = Join[listBeta1Loop ,Transpose[BetaMuij][[2]]];
 listBeta2Loop  = Join[listBeta2Loop ,Transpose[BetaMuij][[3]]];
 ];
+If[Length[BetaMFij]!= 0,
+listAllParameters =Join[listAllParameters ,Transpose[BetaMFij][[1]]];
+listBeta1Loop  = Join[listBeta1Loop ,Transpose[BetaMFij][[2]]];
+listBeta2Loop  = Join[listBeta2Loop ,Transpose[BetaMFij][[3]]];
+];
+If[Length[BetaRijk]!= 0,
+listAllParameters =Join[listAllParameters ,Transpose[BetaRijk][[1]]];
+listBeta1Loop  = Join[listBeta1Loop ,Transpose[BetaRijk][[2]]];
+listBeta2Loop  = Join[listBeta2Loop ,Transpose[BetaRijk][[3]]];
+];
 If[Length[BetaBij]!= 0,
 listAllParameters =Join[listAllParameters ,Transpose[BetaBij][[1]]];
 listBeta1Loop  = Join[listBeta1Loop ,Transpose[BetaBij][[2]]];
@@ -877,7 +887,10 @@ i++;];
 
 For[i=1,i<=Length[listTr[[1]]],
 If[FreeQ[realVar,listTr[[1,i,1]]],
-WriteString[sphenoRGE," "<>ToString[listTr[[1,i,2]]]<> " = Real(cTrace(" <>ToString[listTr[[1,i,1]]]  <>"),dp) \n"];,
+If[listTr[[1,i,3]]===False,
+WriteString[sphenoRGE," "<>ToString[listTr[[1,i,2]]]<> " = cTrace(" <>ToString[listTr[[1,i,1]]]  <>") \n"];,
+WriteString[sphenoRGE," "<>ToString[listTr[[1,i,2]]]<> " = Real(cTrace(" <>ToString[listTr[[1,i,1]]]  <>"),dp) \n"];
+];,
 WriteString[sphenoRGE," "<>ToString[listTr[[1,i,2]]]<> " = Trace(" <>ToString[listTr[[1,i,1]]]  <>") \n"];
 ];
 i++;];
@@ -930,7 +943,10 @@ i++;];
 
 For[i=1,i<=Length[listTrace[[2]]],
 If[FreeQ[realVar,listTr[[2,i,1]]],
-WriteString[sphenoRGE," "<>ToString[listTr[[2,i,2]]]<> " = cTrace(" <>ToString[listTr[[2,i,1]]]  <>") \n"];,
+If[listTr[[2,i,3]]===False,
+WriteString[sphenoRGE," "<>ToString[listTr[[2,i,2]]]<> " = cTrace(" <>ToString[listTr[[2,i,1]]]  <>")\n"];,
+WriteString[sphenoRGE," "<>ToString[listTr[[2,i,2]]]<> " = Real(cTrace(" <>ToString[listTr[[2,i,1]]]  <>"),dp)  \n"];
+];,
 WriteString[sphenoRGE," "<>ToString[listTr[[2,i,2]]]<> " = Trace(" <>ToString[listTr[[2,i,1]]]  <>") \n"];
 ];
 i++;];
@@ -1479,7 +1495,13 @@ _,
 i++;];
 subSPhenoMatTr = Join[subSPhenoMatTr,{listTrace[[k,j]]->ToExpression[NewString]}];
 SPhenoParameters = Join[SPhenoParameters,{{ToExpression[NewString],{},{1}}}];
- listTr[[k]] = Join[listTr[[k]],{{Apply[MatMul,listTrace[[k,j]]] //. subSPhenoMatTr,ToExpression[NewString]}}];
+
+If[Reverse[Tp/@Conj/@(listTrace[[k,j]]/.conj->Conj)]===(listTrace[[k,j]]/.conj->Conj),
+hermitian=True;,
+hermitian=False;
+];
+
+ listTr[[k]] = Join[listTr[[k]],{{Apply[MatMul,listTrace[[k,j]]] //. subSPhenoMatTr,ToExpression[NewString],hermitian}}];
 j++;];
 
 

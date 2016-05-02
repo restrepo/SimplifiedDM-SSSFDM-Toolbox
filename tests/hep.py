@@ -5,6 +5,19 @@ import os
 import re
 import pandas as pd
 
+#expanda pyslha
+def _init_LHA(blocks=['NAME1','NAME2']):
+    dblocks=pyslha._dict('Blocks')
+    if type(blocks) is not list:
+        blocks=[blocks]
+         
+    for b in blocks:
+        dblocks[b]=pyslha.Block(b)
+        
+    return pyslha.Doc(dblocks)
+
+pyslha.initSLHA=_init_LHA
+
 def _readSLHAFile_with_comments(spcfile,ignorenomass=False,ignorenobr=True):
     import pyslha
     import os
