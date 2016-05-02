@@ -1,6 +1,7 @@
 Off[General::spell]
-
-Model`Name = "SM";
+(* With SPheno.m file from arXiv:1309.7223:
+   5.2.2. ’High Scale’ SPheno Version *)
+Model`Name = "SMHighScale";
 Model`NameLaTeX ="Standard Model";
 Model`Authors = "F.Staub";
 Model`Date = "2014-11-06";
