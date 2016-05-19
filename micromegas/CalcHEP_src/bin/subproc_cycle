@@ -1,5 +1,5 @@
 : 
-  CALCHEP=/home/main/notebooks/micromegas/CalcHEP_src 
+  CALCHEP=/home/restrepo/prog/toolbox/mybinders/BSM-Toolbox/micromegas/CalcHEP_src 
 #---------------
 #======================================
 bin=$CALCHEP/bin
