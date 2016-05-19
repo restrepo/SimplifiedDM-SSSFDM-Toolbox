@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* OnlyLowEnergySPheno = True; *)
+OnlyLowEnergySPheno = True; 
 
 MINPAR={{1, vRinput},
         {2, TanBeta},

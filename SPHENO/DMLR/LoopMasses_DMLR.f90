@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.8.1 
+! This file was automatically created by SARAH version 4.8.5 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 14:07 on 13.4.2016   
+! File created at 8:36 on 17.5.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -27,8 +27,7 @@ Real(dp), Private :: MHpm_1L(3), MHpm2_1L(3)
 Complex(dp), Private :: UC_1L(3,3)  
 Real(dp), Private :: MFv_1L(6), MFv2_1L(6)  
 Complex(dp), Private :: UV_1L(6,6)  
-Real(dp), Private :: MFc_1L(2), MFc2_1L(2)  
-Complex(dp), Private :: UT_1L(2,2)  
+Real(dp), Private :: MFc_1L, MFc2_1L  
 Real(dp), Private :: MFcp_1L, MFcp2_1L  
 Real(dp), Private :: MFcpp_1L, MFcpp2_1L  
 Real(dp), Private :: MdeltaRpp_1L, MdeltaRpp2_1L  
@@ -41,22 +40,20 @@ Contains
  
 Subroutine OneLoopMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,           & 
 & MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,            & 
-& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,              & 
-& ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,               & 
-& ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,kont)
+& MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,             & 
+& ZDL,ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,              & 
+& LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,kont)
 
 Implicit None 
 Real(dp),Intent(inout) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,MU12
 
 Complex(dp),Intent(inout) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Real(dp),Intent(inout) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp),Intent(inout) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp),Intent(inout) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp),Intent(inout) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp),Intent(inout) :: vd,vu,vR
 
@@ -67,38 +64,40 @@ Complex(dp) :: cplAhAhcVWLmVWLm(3,3),cplAhAhcVWRmVWRm(3,3),cplAhAhdeltaRppcdelta
 & cplAhHpmcVWRm(3,3),cplAhUhhVP(3,3),cplAhUhhVZ(3,3),cplAhUhhVZR(3,3),cplcdeltaRppcHpmcHpm(3,3),& 
 & cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcUHpmcHpm(3,3),          & 
 & cplcdeltaRppcUHpmcVWLm(3),cplcdeltaRppcUHpmcVWRm(3),cplcdeltaRppcVWLmcVWLm,            & 
-& cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),   & 
-& cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,               & 
-& cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,           & 
-& cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,       & 
-& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVPL,cplcFcppFcppVPR,cplcFcppFcppVZL,   & 
-& cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdUAhL(3,3,3),cplcFdFdUAhR(3,3,3),& 
-& cplcFdFdUhhL(3,3,3),cplcFdFdUhhR(3,3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),             & 
-& cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFeFeUAhL(3,3,3),cplcFeFeUAhR(3,3,3),           & 
-& cplcFeFeUhhL(3,3,3),cplcFeFeUhhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),             & 
-& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFeFvcUHpmL(3,6,3),cplcFeFvcUHpmR(3,6,3),       & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),       & 
-& cplcFuFdcUHpmL(3,3,3),cplcFuFdcUHpmR(3,3,3),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),   & 
-& cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFuFuUAhL(3,3,3),cplcFuFuUAhR(3,3,3),       & 
-& cplcFuFuUhhL(3,3,3),cplcFuFuUhhR(3,3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),             & 
-& cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplcgPgWLmcVWLm,cplcgPgWLmcVWRm,cplcgPgWRmcVWLm,   & 
-& cplcgPgWRmcVWRm,cplcgWLmgWLmUAh(3),cplcgWLmgWLmUhh(3),cplcgWLmgWLmVZ,cplcgWLmgWLmVZR,  & 
-& cplcgWLmgWLpcdeltaRpp,cplcgWLmgWRmUAh(3),cplcgWLmgWRmUhh(3),cplcgWLmgWRpcdeltaRpp,     & 
-& cplcgWLmgZpUHpm(3),cplcgWLmgZUHpm(3),cplcgWLpgPcVWLm,cplcgWLpgPcVWRm,cplcgWLpgWLmdeltaRpp,& 
-& cplcgWLpgWLpUAh(3),cplcgWLpgWLpUhh(3),cplcgWLpgWLpVZ,cplcgWLpgWLpVZR,cplcgWLpgWRmdeltaRpp,& 
-& cplcgWLpgWRpUAh(3),cplcgWLpgWRpUhh(3),cplcgWLpgZcUHpm(3),cplcgWLpgZcVWLm,              & 
-& cplcgWLpgZcVWRm,cplcgWLpgZpcUHpm(3),cplcgWLpgZpcVWLm,cplcgWLpgZpcVWRm,cplcgWRmgWLmUAh(3),& 
-& cplcgWRmgWLmUhh(3),cplcgWRmgWLmVZ,cplcgWRmgWLmVZR,cplcgWRmgWLpcdeltaRpp,               & 
-& cplcgWRmgWRmUAh(3),cplcgWRmgWRmUhh(3),cplcgWRmgWRmVZ,cplcgWRmgWRmVZR,cplcgWRmgWRpcdeltaRpp,& 
+& cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,cplcFcFcpVWLmL,cplcFcFcpVWLmR,           & 
+& cplcFcFcpVWRmL,cplcFcFcpVWRmR,cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,         & 
+& cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,             & 
+& cplcFcpFccVWRmR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,   & 
+& cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR, & 
+& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,               & 
+& cplcFcppFcppVPL,cplcFcppFcppVPR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,      & 
+& cplcFcppFcppVZRR,cplcFdFdUAhL(3,3,3),cplcFdFdUAhR(3,3,3),cplcFdFdUhhL(3,3,3),          & 
+& cplcFdFdUhhR(3,3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),               & 
+& cplcFdFdVZRR(3,3),cplcFeFeUAhL(3,3,3),cplcFeFeUAhR(3,3,3),cplcFeFeUhhL(3,3,3),         & 
+& cplcFeFeUhhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),               & 
+& cplcFeFeVZRR(3,3),cplcFeFvcUHpmL(3,6,3),cplcFeFvcUHpmR(3,6,3),cplcFeFvcVWLmL(3,6),     & 
+& cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),cplcFuFdcUHpmL(3,3,3),     & 
+& cplcFuFdcUHpmR(3,3,3),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),     & 
+& cplcFuFdcVWRmR(3,3),cplcFuFuUAhL(3,3,3),cplcFuFuUAhR(3,3,3),cplcFuFuUhhL(3,3,3),       & 
+& cplcFuFuUhhR(3,3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),               & 
+& cplcFuFuVZRR(3,3),cplcgPgWLmcVWLm,cplcgPgWLmcVWRm,cplcgPgWRmcVWLm,cplcgPgWRmcVWRm,     & 
+& cplcgWLmgWLmUAh(3),cplcgWLmgWLmUhh(3),cplcgWLmgWLmVZ,cplcgWLmgWLmVZR,cplcgWLmgWLpcdeltaRpp,& 
+& cplcgWLmgWRmUAh(3),cplcgWLmgWRmUhh(3),cplcgWLmgWRpcdeltaRpp,cplcgWLmgZpUHpm(3),        & 
+& cplcgWLmgZUHpm(3),cplcgWLpgPcVWLm,cplcgWLpgPcVWRm,cplcgWLpgWLmdeltaRpp,cplcgWLpgWLpUAh(3),& 
+& cplcgWLpgWLpUhh(3),cplcgWLpgWLpVZ,cplcgWLpgWLpVZR,cplcgWLpgWRmdeltaRpp,cplcgWLpgWRpUAh(3),& 
+& cplcgWLpgWRpUhh(3),cplcgWLpgZcUHpm(3),cplcgWLpgZcVWLm,cplcgWLpgZcVWRm,cplcgWLpgZpcUHpm(3),& 
+& cplcgWLpgZpcVWLm,cplcgWLpgZpcVWRm,cplcgWRmgWLmUAh(3),cplcgWRmgWLmUhh(3),               & 
+& cplcgWRmgWLmVZ,cplcgWRmgWLmVZR,cplcgWRmgWLpcdeltaRpp,cplcgWRmgWRmUAh(3),               & 
+& cplcgWRmgWRmUhh(3),cplcgWRmgWRmVZ,cplcgWRmgWRmVZR,cplcgWRmgWRpcdeltaRpp,               & 
 & cplcgWRmgZpUHpm(3),cplcgWRmgZUHpm(3),cplcgWRpgPcVWLm,cplcgWRpgPcVWRm,cplcgWRpgWLmdeltaRpp,& 
 & cplcgWRpgWLpUAh(3),cplcgWRpgWLpUhh(3),cplcgWRpgWLpVZ,cplcgWRpgWLpVZR,cplcgWRpgWRmdeltaRpp,& 
 & cplcgWRpgWRpUAh(3),cplcgWRpgWRpUhh(3),cplcgWRpgWRpVZ,cplcgWRpgWRpVZR,cplcgWRpgZcUHpm(3),& 
 & cplcgWRpgZcVWLm,cplcgWRpgZcVWRm,cplcgWRpgZpcUHpm(3),cplcgWRpgZpcVWLm,cplcgWRpgZpcVWRm, & 
-& cplcgZgWLmcUHpm(3),cplcgZgWLmcVWLm,cplcgZgWLmcVWRm,cplcgZgWLpUHpm(3),cplcgZgWRmcUHpm(3),& 
-& cplcgZgWRmcVWLm,cplcgZgWRmcVWRm,cplcgZgWRpUHpm(3),cplcgZgZpUhh(3),cplcgZgZUhh(3),      & 
-& cplcgZpgWLmcUHpm(3),cplcgZpgWLmcVWLm,cplcgZpgWLmcVWRm,cplcgZpgWLpUHpm(3)
+& cplcgZgWLmcUHpm(3),cplcgZgWLmcVWLm,cplcgZgWLmcVWRm,cplcgZgWLpUHpm(3),cplcgZgWRmcUHpm(3)
 
-Complex(dp) :: cplcgZpgWRmcUHpm(3),cplcgZpgWRmcVWLm,cplcgZpgWRmcVWRm,cplcgZpgWRpUHpm(3),              & 
+Complex(dp) :: cplcgZgWRmcVWLm,cplcgZgWRmcVWRm,cplcgZgWRpUHpm(3),cplcgZgZpUhh(3),cplcgZgZUhh(3),      & 
+& cplcgZpgWLmcUHpm(3),cplcgZpgWLmcVWLm,cplcgZpgWLmcVWRm,cplcgZpgWLpUHpm(3),              & 
+& cplcgZpgWRmcUHpm(3),cplcgZpgWRmcVWLm,cplcgZpgWRmcVWRm,cplcgZpgWRpUHpm(3),              & 
 & cplcgZpgZpUhh(3),cplcgZpgZUhh(3),cplcUFdFdAhL(3,3,3),cplcUFdFdAhR(3,3,3),              & 
 & cplcUFdFdhhL(3,3,3),cplcUFdFdhhR(3,3,3),cplcUFdFdVGL(3,3),cplcUFdFdVGR(3,3),           & 
 & cplcUFdFdVPL(3,3),cplcUFdFdVPR(3,3),cplcUFdFdVZL(3,3),cplcUFdFdVZR(3,3),               & 
@@ -128,31 +127,28 @@ Complex(dp) :: cplcgZpgWRmcUHpm(3),cplcgZpgWRmcVWLm,cplcgZpgWRmcVWRm,cplcgZpgWRp
 & cpldeltaRppcdeltaRppVZRVZR,cpldeltaRppcdeltaRppVZVZ,cpldeltaRppdeltaRppcdeltaRppcdeltaRpp,& 
 & cpldeltaRpphhcdeltaRpp(3),cpldeltaRpphhhhcdeltaRpp(3,3),cpldeltaRppHpmcdeltaRppcHpm(3,3),& 
 & cpldeltaRppUhhcdeltaRpp(3),cpldeltaRppUhhUhhcdeltaRpp(3,3),cpldeltaRppUHpmcdeltaRppcUHpm(3,3),& 
-& cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),cplFeFecdeltaRppL(3,3),& 
-& cplFeFecdeltaRppR(3,3),cplFvFvUAhL(6,6,3),cplFvFvUAhR(6,6,3),cplFvFvUhhL(6,6,3),       & 
-& cplFvFvUhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),  & 
-& cplhhcUHpmVWLm(3,3),cplhhcUHpmVWRm(3,3),cplhhcVWLmVWLm(3),cplhhcVWLmVWRm(3),           & 
-& cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),cplhhhhcVWLmVWLm(3,3),cplhhhhcVWRmVWRm(3,3),       & 
-& cplhhhhUHpmcUHpm(3,3,3,3),cplhhhhVZRVZR(3,3),cplhhhhVZVZ(3,3),cplhhHpmcUHpm(3,3,3),    & 
-& cplhhHpmcVWLm(3,3),cplhhHpmcVWRm(3,3),cplhhVPVZ(3),cplhhVPVZR(3),cplhhVZRVZR(3)
+& cplFeFecdeltaRppL(3,3),cplFeFecdeltaRppR(3,3),cplFvFvUAhL(6,6,3),cplFvFvUAhR(6,6,3),   & 
+& cplFvFvUhhL(6,6,3),cplFvFvUhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),& 
+& cplFvFvVZRR(6,6),cplhhcUHpmVWLm(3,3),cplhhcUHpmVWRm(3,3),cplhhcVWLmVWLm(3),            & 
+& cplhhcVWLmVWRm(3),cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),cplhhhhcVWLmVWLm(3,3),           & 
+& cplhhhhcVWRmVWRm(3,3),cplhhhhUHpmcUHpm(3,3,3,3),cplhhhhVZRVZR(3,3),cplhhhhVZVZ(3,3)
 
-Complex(dp) :: cplhhVZVZ(3),cplhhVZVZR(3),cplHpmcHpmcVWLmVWLm(3,3),cplHpmcHpmcVWRmVWRm(3,3),          & 
-& cplHpmcHpmVZ(3,3),cplHpmcHpmVZR(3,3),cplHpmcHpmVZRVZR(3,3),cplHpmcHpmVZVZ(3,3),        & 
-& cplHpmcUHpmVP(3,3),cplHpmcUHpmVZ(3,3),cplHpmcUHpmVZR(3,3),cplHpmcVWLmVP(3),            & 
-& cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplHpmcVWRmVP(3),cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),& 
-& cplUAhAhhh(3,3,3),cplUAhcVWRmVWLm(3),cplUAhhhVP(3,3),cplUAhhhVZ(3,3),cplUAhhhVZR(3,3), & 
-& cplUAhHpmcHpm(3,3,3),cplUAhHpmcVWLm(3,3),cplUAhHpmcVWRm(3,3),cplUAhUAhAhAh(3,3,3,3),   & 
-& cplUAhUAhcVWLmVWLm(3,3),cplUAhUAhcVWRmVWRm(3,3),cplUAhUAhdeltaRppcdeltaRpp(3,3),       & 
+Complex(dp) :: cplhhHpmcUHpm(3,3,3),cplhhHpmcVWLm(3,3),cplhhHpmcVWRm(3,3),cplhhVPVZ(3),               & 
+& cplhhVPVZR(3),cplhhVZRVZR(3),cplhhVZVZ(3),cplhhVZVZR(3),cplHpmcHpmcVWLmVWLm(3,3),      & 
+& cplHpmcHpmcVWRmVWRm(3,3),cplHpmcHpmVZ(3,3),cplHpmcHpmVZR(3,3),cplHpmcHpmVZRVZR(3,3),   & 
+& cplHpmcHpmVZVZ(3,3),cplHpmcUHpmVP(3,3),cplHpmcUHpmVZ(3,3),cplHpmcUHpmVZR(3,3),         & 
+& cplHpmcVWLmVP(3),cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplHpmcVWRmVP(3),cplHpmcVWRmVZ(3), & 
+& cplHpmcVWRmVZR(3),cplUAhAhhh(3,3,3),cplUAhcVWRmVWLm(3),cplUAhhhVP(3,3),cplUAhhhVZ(3,3),& 
+& cplUAhhhVZR(3,3),cplUAhHpmcHpm(3,3,3),cplUAhHpmcVWLm(3,3),cplUAhHpmcVWRm(3,3),         & 
+& cplUAhUAhAhAh(3,3,3,3),cplUAhUAhcVWLmVWLm(3,3),cplUAhUAhcVWRmVWRm(3,3),cplUAhUAhdeltaRppcdeltaRpp(3,3),& 
 & cplUAhUAhhhhh(3,3,3,3),cplUAhUAhHpmcHpm(3,3,3,3),cplUAhUAhVPVP(3,3),cplUAhUAhVZRVZR(3,3),& 
-& cplUAhUAhVZVZ(3,3),cplUFcFcpVWLmL(2),cplUFcFcpVWLmR(2),cplUFcFcpVWRmL(2),              & 
-& cplUFcFcpVWRmR(2),cplUFcFcVPL(2,2),cplUFcFcVPR(2,2),cplUFcFcVZL(2,2),cplUFcFcVZR(2,2), & 
-& cplUFcFcVZRL(2,2),cplUFcFcVZRR(2,2),cplUFvFeHpmL(6,3,3),cplUFvFeHpmR(6,3,3),           & 
-& cplUFvFeVWLmL(6,3),cplUFvFeVWLmR(6,3),cplUFvFeVWRmL(6,3),cplUFvFeVWRmR(6,3),           & 
-& cplUFvFvAhL(6,6,3),cplUFvFvAhR(6,6,3),cplUFvFvhhL(6,6,3),cplUFvFvhhR(6,6,3),           & 
-& cplUFvFvVPL(6,6),cplUFvFvVPR(6,6),cplUFvFvVZL(6,6),cplUFvFvVZR(6,6),cplUFvFvVZRL(6,6), & 
-& cplUFvFvVZRR(6,6),cplUhhcVWLmVWLm(3),cplUhhcVWRmVWLm(3),cplUhhcVWRmVWRm(3),            & 
-& cplUhhhhhh(3,3,3),cplUhhHpmcHpm(3,3,3),cplUhhHpmcVWLm(3,3),cplUhhHpmcVWRm(3,3),        & 
-& cplUhhUhhcVWLmVWLm(3,3),cplUhhUhhcVWRmVWRm(3,3),cplUhhUhhhhhh(3,3,3,3),cplUhhUhhHpmcHpm(3,3,3,3),& 
+& cplUAhUAhVZVZ(3,3),cplUFvFeHpmL(6,3,3),cplUFvFeHpmR(6,3,3),cplUFvFeVWLmL(6,3),         & 
+& cplUFvFeVWLmR(6,3),cplUFvFeVWRmL(6,3),cplUFvFeVWRmR(6,3),cplUFvFvAhL(6,6,3),           & 
+& cplUFvFvAhR(6,6,3),cplUFvFvhhL(6,6,3),cplUFvFvhhR(6,6,3),cplUFvFvVPL(6,6),             & 
+& cplUFvFvVPR(6,6),cplUFvFvVZL(6,6),cplUFvFvVZR(6,6),cplUFvFvVZRL(6,6),cplUFvFvVZRR(6,6),& 
+& cplUhhcVWLmVWLm(3),cplUhhcVWRmVWLm(3),cplUhhcVWRmVWRm(3),cplUhhhhhh(3,3,3),            & 
+& cplUhhHpmcHpm(3,3,3),cplUhhHpmcVWLm(3,3),cplUhhHpmcVWRm(3,3),cplUhhUhhcVWLmVWLm(3,3),  & 
+& cplUhhUhhcVWRmVWRm(3,3),cplUhhUhhhhhh(3,3,3,3),cplUhhUhhHpmcHpm(3,3,3,3),              & 
 & cplUhhUhhVPVP(3,3),cplUhhUhhVZRVZR(3,3),cplUhhUhhVZVZ(3,3),cplUhhVPVZ(3),              & 
 & cplUhhVPVZR(3),cplUhhVZRVZR(3),cplUhhVZVZ(3),cplUhhVZVZR(3),cplUHpmcUHpmcVWLmVWLm(3,3),& 
 & cplUHpmcUHpmcVWRmVWRm(3,3),cplUHpmcUHpmVPVP(3,3),cplUHpmcUHpmVZRVZR(3,3),              & 
@@ -178,9 +174,9 @@ RXiZR = RXi
 tanbQ=vu/vd
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
 
 MU12Tree  = MU12
 MU22Tree  = MU22
@@ -189,17 +185,17 @@ mu32Tree  = mu32
  
  If (CalculateOneLoopMasses) Then 
  
-Call CouplingsForVectorBosons(gR,UT,PhiW,gBL,ZZ,phaT,UC,vR,g2,ZH,UP,UV,               & 
-& vd,vu,ZDL,ZDR,ZUL,ZUR,ZEL,ZER,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFcpVZL,           & 
-& cplcFcpFcpVZR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,   & 
-& cplcFcppFcppVZL,cplcFcppFcppVZR,cpldeltaRppcdeltaRppVZ,cplcdeltaRppcHpmcVWLm,          & 
-& cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,cpldeltaRppcdeltaRppcVWLmVWLm,           & 
-& cpldeltaRppcdeltaRppVZVZ,cplAhhhVZ,cplFcFcVZL,cplFcFcVZR,cplcFdFdVZL,cplcFdFdVZR,      & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,  & 
-& cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
-& cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,               & 
-& cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,   & 
-& cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
+Call CouplingsForVectorBosons(gBL,gR,ZZ,PhiW,phaT,UC,vR,g2,ZH,UP,UV,vd,               & 
+& vu,ZDL,ZDR,ZUL,ZUR,ZEL,ZER,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,      & 
+& cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcppVWLmL,          & 
+& cplcFcpFcppVWLmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcppVZL,cplcFcppFcppVZR,  & 
+& cpldeltaRppcdeltaRppVZ,cplcdeltaRppcHpmcVWLm,cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,& 
+& cpldeltaRppcdeltaRppcVWLmVWLm,cpldeltaRppcdeltaRppVZVZ,cplAhhhVZ,cplcFdFdVZL,          & 
+& cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,     & 
+& cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,            & 
+& cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,              & 
+& cplHpmcVWRmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,cplhhhhVZVZ,    & 
+& cplHpmcHpmVZVZ,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,& 
 & cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplHpmcVWLmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,    & 
 & cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,cplAhHpmcVWLm,             & 
 & cplAhcVWLmVWRm,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,            & 
@@ -217,13 +213,13 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,GenerationMixing,kont)
 
 Call CouplingsForLoopMasses(RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,               & 
 & vu,vR,UP,gBL,g2,gR,ZZ,RHO2,YQ1,YQ2,ZDL,ZDR,YL1,YL2,ZEL,ZER,ZUL,ZUR,YDR,UV,             & 
-& PhiW,ZH,UC,g3,UT,phaT,cplAhAhUhh,cplAhUhhVP,cplAhUhhVZ,cplAhUhhVZR,cpldeltaRppUhhcdeltaRpp,& 
+& PhiW,ZH,UC,g3,phaT,cplAhAhUhh,cplAhUhhVP,cplAhUhhVZ,cplAhUhhVZR,cpldeltaRppUhhcdeltaRpp,& 
 & cplcFdFdUhhL,cplcFdFdUhhR,cplcFeFeUhhL,cplcFeFeUhhR,cplcFuFuUhhL,cplcFuFuUhhR,         & 
 & cplFvFvUhhL,cplFvFvUhhR,cplcgWLmgWLmUhh,cplcgWRmgWLmUhh,cplcgWLmgWRmUhh,               & 
 & cplcgWLpgWLpUhh,cplcgWRpgWLpUhh,cplcgWLpgWRpUhh,cplcgWRmgWRmUhh,cplcgWRpgWRpUhh,       & 
@@ -259,9 +255,9 @@ Call CouplingsForLoopMasses(RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,         
 & cplcUFeFvcHpmR,cplcUFeFvcVWLmL,cplcUFeFvcVWLmR,cplcUFeFvcVWRmL,cplcUFeFvcVWRmR,        & 
 & cplUFvFvAhL,cplUFvFvAhR,cplUFvFeHpmL,cplUFvFeHpmR,cplUFvFeVWLmL,cplUFvFeVWLmR,         & 
 & cplUFvFeVWRmL,cplUFvFeVWRmR,cplUFvFvhhL,cplUFvFvhhR,cplUFvFvVPL,cplUFvFvVPR,           & 
-& cplUFvFvVZL,cplUFvFvVZR,cplUFvFvVZRL,cplUFvFvVZRR,cplUFcFcVPL,cplUFcFcVPR,             & 
-& cplUFcFcVZL,cplUFcFcVZR,cplUFcFcVZRL,cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,       & 
-& cplUFcFcpVWRmL,cplUFcFcpVWRmR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,         & 
+& cplUFvFvVZL,cplUFvFvVZR,cplUFvFvVZRL,cplUFvFvVZRR,cplcFcFcVPL,cplcFcFcVPR,             & 
+& cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,       & 
+& cplcFcFcpVWRmL,cplcFcFcpVWRmR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,         & 
 & cplcFcpFccVWRmR,cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,               & 
 & cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,      & 
 & cplcFcpFcppVWRmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,& 
@@ -274,18 +270,18 @@ Call CouplingsForLoopMasses(RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,vd,         
 & cplcdeltaRppcVWRmcVWRm,cplAhAhdeltaRppcdeltaRpp,cpldeltaRppdeltaRppcdeltaRppcdeltaRpp, & 
 & cpldeltaRpphhhhcdeltaRpp,cpldeltaRppHpmcdeltaRppcHpm,cpldeltaRppcdeltaRppVPVP,         & 
 & cpldeltaRppcdeltaRppcVWLmVWLm,cpldeltaRppcdeltaRppcVWRmVWRm,cpldeltaRppcdeltaRppVZVZ,  & 
-& cpldeltaRppcdeltaRppVZRVZR,cplAhhhVZ,cplFcFcVZL,cplFcFcVZR,cplcFdFdVZL,cplcFdFdVZR,    & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,  & 
+& cpldeltaRppcdeltaRppVZRVZR,cplAhhhVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,              & 
+& cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,              & 
 & cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,            & 
 & cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,               & 
 & cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,   & 
 & cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
-& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplAhhhVZR,cplFcFcVZRL,cplFcFcVZRR,cplcFdFdVZRL,   & 
-& cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVZRL,          & 
-& cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,           & 
-& cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZRVZR,cplHpmcHpmVZR,cplHpmcVWLmVZR,   & 
-& cplHpmcVWRmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR,          & 
-& cplhhhhVZRVZR,cplHpmcHpmVZRVZR,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,& 
+& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplAhhhVZR,cplcFdFdVZRL,cplcFdFdVZRR,              & 
+& cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,           & 
+& cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,       & 
+& cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZRVZR,cplHpmcHpmVZR,cplHpmcVWLmVZR,cplHpmcVWRmVZR,    & 
+& cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR,cplhhhhVZRVZR,           & 
+& cplHpmcHpmVZRVZR,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,          & 
 & cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,cplAhHpmcVWLm,             & 
 & cplAhcVWLmVWRm,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,            & 
 & cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,      & 
@@ -320,7 +316,7 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 MU121L = MU12
 MU221L = MU22
 mu321L = mu32
-Call OneLoophh(mu322L,MU222L,MU122L,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,               & 
+Call OneLoophh(mu321L,MU221L,MU121L,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,               & 
 & LAM3,vd,vu,vR,MAh,MAh2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2,MFd,MFd2,              & 
 & MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,              & 
 & cplAhAhUhh,cplAhUhhVP,cplAhUhhVZ,cplAhUhhVZR,cpldeltaRppUhhcdeltaRpp,cplcFdFdUhhL,     & 
@@ -366,9 +362,9 @@ Call OneLoopFv(YDR,YL1,YL2,vd,vu,vR,MFv,MFv2,MAh,MAh2,MHpm,MHpm2,MFe,MFe2,      
 & cplUFvFvVZRL,cplUFvFvVZRR,0.1_dp*delta_mass,MFv_1L,MFv2_1L,UV_1L,kont)
 
 Call OneLoopFc(M23,MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,              & 
-& MVWRm,MVWRm2,cplUFcFcVPL,cplUFcFcVPR,cplUFcFcVZL,cplUFcFcVZR,cplUFcFcVZRL,             & 
-& cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,cplUFcFcpVWRmL,cplUFcFcpVWRmR,              & 
-& 0.1_dp*delta_mass,MFc_1L,MFc2_1L,UT_1L,kont)
+& MVWRm,MVWRm2,cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,             & 
+& cplcFcFcVZRR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,              & 
+& 0.1_dp*delta_mass,MFc_1L,MFc2_1L,kont)
 
 Call OneLoopFcp(M23,MVWLm,MVWLm2,MFc,MFc2,MVWRm,MVWRm2,MFcp,MFcp2,MVZ,MVZ2,           & 
 & MVZR,MVZR2,MFcpp,MFcpp2,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,               & 
@@ -407,7 +403,6 @@ MFv2 = MFv2_1L
 UV = UV_1L 
 MFc = MFc_1L 
 MFc2 = MFc2_1L 
-UT = UT_1L 
 MFcp = MFcp_1L 
 MFcp2 = MFcp2_1L 
 MFcpp = MFcpp_1L 
@@ -418,8 +413,8 @@ End If
  
 Call SortGoldstones(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,          & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,kont)
 
 ! Set pole masses 
 MVWLm = mW 
@@ -5015,377 +5010,182 @@ SigS = oo16pi2*SigS
 End Subroutine Sigma1LoopFv 
  
 Subroutine OneLoopFc(M23,MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,              & 
-& MFcp2,MVWRm,MVWRm2,cplUFcFcVPL,cplUFcFcVPR,cplUFcFcVZL,cplUFcFcVZR,cplUFcFcVZRL,       & 
-& cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,cplUFcFcpVWRmL,cplUFcFcpVWRmR,              & 
-& delta,MFc_1L,MFc2_1L,UT_1L,ierr)
+& MFcp2,MVWRm,MVWRm2,cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,       & 
+& cplcFcFcVZRR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,              & 
+& delta,mass,mass2,kont)
 
-Implicit None 
-Real(dp), Intent(in) :: MFc(2),MFc2(2),MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,MVWRm,MVWRm2
+Real(dp), Intent(in) :: MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,MVWRm,MVWRm2
 
 Real(dp), Intent(in) :: M23
 
-Complex(dp), Intent(in) :: cplUFcFcVPL(2,2),cplUFcFcVPR(2,2),cplUFcFcVZL(2,2),cplUFcFcVZR(2,2),cplUFcFcVZRL(2,2),& 
-& cplUFcFcVZRR(2,2),cplUFcFcpVWLmL(2),cplUFcFcpVWLmR(2),cplUFcFcpVWRmL(2),               & 
-& cplUFcFcpVWRmR(2)
+Complex(dp), Intent(in) :: cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,            & 
+& cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR
 
-Complex(dp) :: mat1a(2,2), mat1(2,2), mat2(2,2) 
-Integer , Intent(inout):: ierr 
-Integer :: i1,i2,i3,i4,j1, j2,j3,j4,il,i_count 
+Integer , Intent(inout):: kont 
+Integer :: i1,i2,i3,i4,j1,j2,j3,j4,il,i_count, ierr 
 Real(dp), Intent(in) :: delta 
-Real(dp) :: mi2(2), test_m2(2),p2 
-Real(dp), Intent(out) :: MFc_1L(2),MFc2_1L(2) 
-Complex(dp), Intent(out) ::  UT_1L(2,2) 
-Real(dp) :: MFc_t(2),MFc2_t(2) 
-Complex(dp) ::  UT_t(2,2) 
-Complex(dp) ::  phaseM, E2(2), sigL(2,2), sigR(2,2), sigS(2,2) 
-Real(dp) :: UTa(2,2), test(2), eig(2) 
-
+Real(dp) :: mi, mi2, p2, test_m2 
+Complex(dp) :: PiSf, sig 
+Real(dp), Intent(out) :: mass, mass2 
 Iname = Iname + 1 
-NameOfUnit(Iname) = 'OneLoopMFc'
+NameOfUnit(Iname) = 'OneLoopFc'
  
-mat1a(1,1) = 0._dp 
-mat1a(1,2) = 0._dp 
-mat1a(1,2) = mat1a(1,2)+M23
-mat1a(2,1) = 0._dp 
-mat1a(2,1) = mat1a(2,1)+M23
-mat1a(2,2) = 0._dp 
+mi = MFc 
 
  
- Do il=2,1,-1
-sigL=0._dp 
-sigR=0._dp 
-sigS=0._dp 
-p2 = MFc2(il)
+p2 = MFc2
+sig = ZeroC 
 Call Sigma1LoopFc(p2,MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,            & 
-& MVWRm,MVWRm2,cplUFcFcVPL,cplUFcFcVPR,cplUFcFcVZL,cplUFcFcVZR,cplUFcFcVZRL,             & 
-& cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,cplUFcFcpVWRmL,cplUFcFcpVWRmR,              & 
-& sigL,sigR,sigS)
+& MVWRm,MVWRm2,cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,             & 
+& cplcFcFcVZRR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,sig)
 
-mat1 = mat1a - 0.5_dp*(SigS + Transpose(SigS) + & 
-      & MatMul(Transpose(SigL),mat1a) + MatMul(SigR,mat1a) + & 
-      & MatMul(mat1a,Transpose(SigR)) + MatMul(mat1a,SigL)) 
- 
-If (ForceRealMatrices) mat1 = Real(mat1,dp) 
-If (Maxval(Abs(Aimag(mat1))).Eq.0._dp) Then 
-Call EigenSystem(Real(mat1,dp),Eig,UTa,ierr,test) 
- 
-   Do i1=1,2
-   If (Eig(i1).Lt.0._dp) Then 
-    MFc_t(i1) = - Eig(i1) 
-    UT_1L(i1,:) = (0._dp,1._dp)*UTa(i1,:) 
-   Else 
-    MFc_t(i1) = Eig(i1) 
-    UT_1L(i1,:) = UTa(i1,:)
-    End If 
-   End Do 
- 
-Do i1=1,1
-  Do i2=i1+1,2
-    If (Abs(MFc_t(i1)).Gt.Abs(MFc_t(i2))) Then 
-      Eig(1) = MFc_t(i1) 
-      MFc_t(i1) = MFc_t(i2) 
-      MFc_t(i2) = Eig(1) 
-      E2 = UT_1L(i1,:) 
-      UT_1L(i1,:) = UT_1L(i2,:) 
-      UT_1L(i2,:) = E2
-    End If 
-   End Do 
-End Do 
- 
-MFc_1L(iL) = MFc_t(iL) 
-MFc2_1L(iL) = MFc_t(iL)**2 
-Else 
- 
-mat2 = Matmul( Transpose(Conjg( mat1) ), mat1 ) 
-Call Eigensystem(mat2, Eig, UT_1L, ierr, test) 
-mat2 = Matmul( Conjg(UT_1L), Matmul( mat1, Transpose( Conjg(UT_1L)))) 
-Do i1=1,2
-If (Abs(mat2(i1,i1)).gt.0._dp) Then 
-  phaseM = Sqrt( mat2(i1,i1) / Abs(mat2(i1,i1))) 
-  UT_1L(i1,:)= phaseM * UT_1L(i1,:) 
-End if 
-  If (Eig(i1).Le.0._dp) Then 
-    If (ErrorLevel.Ge.0) Then 
-      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-      Write(10,*) 'a mass squarred is negative: ',i1,Eig(i1) 
-      Write(*,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-      Write(*,*) 'a mass squarred is negative: ',i1,Eig(i1) 
-      Call TerminateProgram 
-    End If 
-     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
-     Write(ErrCan,*) 'in the calculation of the masses' 
-     Write(ErrCan,*) 'occurred a negative mass squared!' 
-     Write(ErrCan,*) i1,Eig(i1) 
-  Eig(i1) = 1._dp 
-   SignOfMassChanged = .True. 
- End if 
-End Do 
-MFc_1L = Sqrt( Eig ) 
- 
-MFc2_1L = Eig 
- 
-End If 
- 
-If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
-  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  Write(*,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  If (ErrorLevel.Eq.2) Call TerminateProgram 
-  ierr = 0 
-End If 
- 
-!---------------------------------------- 
-! Redoing Calculation using redefined p2 
-!----------------------------------------- 
- 
+mass = mi - sig 
+mass2= mass**2 
 i_count = 0 
-p2_loop: Do  
+Do  
 i_count = i_count + 1 
-sigL=0._dp 
-sigR=0._dp 
-sigS=0._dp 
-p2 = MFc2_1L(iL)
+test_m2 = mass2 
+p2 =  mass2 
+sig = ZeroC 
 Call Sigma1LoopFc(p2,MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,            & 
-& MVWRm,MVWRm2,cplUFcFcVPL,cplUFcFcVPR,cplUFcFcVZL,cplUFcFcVZR,cplUFcFcVZRL,             & 
-& cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,cplUFcFcpVWRmL,cplUFcFcpVWRmR,              & 
-& sigL,sigR,sigS)
+& MVWRm,MVWRm2,cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,             & 
+& cplcFcFcVZRR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,sig)
 
-mat1 = mat1a - 0.5_dp*(SigS + Transpose(SigS) + & 
-      & MatMul(Transpose(SigL),mat1a) + MatMul(SigR,mat1a) + & 
-      & MatMul(mat1a,Transpose(SigR)) + MatMul(mat1a,SigL)) 
- 
-If (ForceRealMatrices) mat1 = Real(mat1,dp) 
-If (Maxval(Abs(Aimag(mat1))).Eq.0._dp) Then 
-Call EigenSystem(Real(mat1,dp),Eig,UTa,ierr,test) 
- 
-   Do i1=1,2
-   If (Eig(i1).Lt.0._dp) Then 
-    MFc_t(i1) = - Eig(i1) 
-    UT_1L(i1,:) = (0._dp,1._dp)*UTa(i1,:) 
-   Else 
-    MFc_t(i1) = Eig(i1) 
-    UT_1L(i1,:) = UTa(i1,:)
-    End If 
-   End Do 
- 
-Do i1=1,1
-  Do i2=i1+1,2
-    If (Abs(MFc_t(i1)).Gt.Abs(MFc_t(i2))) Then 
-      Eig(1) = MFc_t(i1) 
-      MFc_t(i1) = MFc_t(i2) 
-      MFc_t(i2) = Eig(1) 
-      E2 = UT_1L(i1,:) 
-      UT_1L(i1,:) = UT_1L(i2,:) 
-      UT_1L(i2,:) = E2
-    End If 
-   End Do 
-End Do 
- 
-MFc_1L(iL) = MFc_t(iL) 
-MFc2_1L(iL) = MFc_t(iL)**2 
-Else 
- 
-mat2 = Matmul( Transpose(Conjg( mat1) ), mat1 ) 
-Call Eigensystem(mat2, Eig, UT_1L, ierr, test) 
-mat2 = Matmul( Conjg(UT_1L), Matmul( mat1, Transpose( Conjg(UT_1L)))) 
-Do i1=1,2
-If (Abs(mat2(i1,i1)).gt.0._dp) Then 
-  phaseM = Sqrt( mat2(i1,i1) / Abs(mat2(i1,i1))) 
-  UT_1L(i1,:)= phaseM * UT_1L(i1,:) 
-End if 
-  If (Eig(i1).Le.0._dp) Then 
-    If (ErrorLevel.Ge.0) Then 
-      Write(10,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-      Write(10,*) 'a mass squarred is negative: ',i1,Eig(i1) 
-      Write(*,*) 'Warning from Subroutine '//NameOfUnit(Iname) 
-      Write(*,*) 'a mass squarred is negative: ',i1,Eig(i1) 
-      Call TerminateProgram 
-    End If 
-     Write(ErrCan,*) 'Warning from routine '//NameOfUnit(Iname) 
+mass = mi - sig 
+mass2= mass**2 
+ If (test_m2.Ne.0._dp) Then 
+    test_m2 = Abs(test_m2 - mass2) / test_m2 
+ Else 
+    test_m2 = Abs(mass2) 
+ End If 
+ If (mass2.Ge.0._dp) Then 
+   If (RotateNegativeFermionMasses) Then 
+    mass = sqrt(mass2) 
+   End if 
+  Else 
+ If (Abs(mass2).lt.1.0E-30_dp) test_m2 = 0._dp 
+     Write(ErrCan,*) 'Warning from routine'//NameOfUnit(Iname) 
      Write(ErrCan,*) 'in the calculation of the masses' 
      Write(ErrCan,*) 'occurred a negative mass squared!' 
-     Write(ErrCan,*) i1,Eig(i1) 
-  Eig(i1) = 1._dp 
    SignOfMassChanged = .True. 
- End if 
+   mass = 0._dp 
+  End If 
+If (test_m2.LT.0.1_dp*delta) Exit 
+If (i_count.Gt.30) Then 
+  Write(*,*) "Problem in "//NameOfUnit(Iname), test_m2, mass2 
+  kont = -510 
+  Call AddError(510) 
+ Exit 
+End If 
 End Do 
-MFc_1L = Sqrt( Eig ) 
  
-MFc2_1L = Eig 
- 
-End If 
- 
-If ((ierr.Eq.-8).Or.(ierr.Eq.-9)) Then 
-  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  Write(*,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  If (ErrorLevel.Eq.2) Call TerminateProgram 
-  ierr = 0 
-End If 
- 
-If (p2.Ne.0._dp) Then 
-  test(1) = Abs(MFc2_1L(il)-p2)/p2
-Else 
-  test(2) = Abs(MFc2_1L(il))
-End If 
-If (Abs(MFc2_1L(il)).lt.1.0E-30_dp) Exit p2_loop 
-If (test(1).lt.0.1_dp*delta) Exit p2_loop 
-If(i_count.gt.30) then 
-  Write(ErrCan,*) "Possible numerical problem in "//NameOfUnit(Iname) 
-  Exit p2_loop 
-End if
-End Do p2_loop 
-End Do 
  
 Iname = Iname -1 
 End Subroutine OneLoopFc
  
  
 Subroutine Sigma1LoopFc(p2,MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,            & 
-& MFcp2,MVWRm,MVWRm2,cplUFcFcVPL,cplUFcFcVPR,cplUFcFcVZL,cplUFcFcVZR,cplUFcFcVZRL,       & 
-& cplUFcFcVZRR,cplUFcFcpVWLmL,cplUFcFcpVWLmR,cplUFcFcpVWRmL,cplUFcFcpVWRmR,              & 
-& sigL,sigR,sigS)
+& MFcp2,MVWRm,MVWRm2,cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,       & 
+& cplcFcFcVZRR,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,sig)
 
 Implicit None 
-Real(dp), Intent(in) :: MFc(2),MFc2(2),MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,MVWRm,MVWRm2
+Real(dp), Intent(in) :: MFc,MFc2,MVZ,MVZ2,MVZR,MVZR2,MVWLm,MVWLm2,MFcp,MFcp2,MVWRm,MVWRm2
 
-Complex(dp), Intent(in) :: cplUFcFcVPL(2,2),cplUFcFcVPR(2,2),cplUFcFcVZL(2,2),cplUFcFcVZR(2,2),cplUFcFcVZRL(2,2),& 
-& cplUFcFcVZRR(2,2),cplUFcFcpVWLmL(2),cplUFcFcpVWLmR(2),cplUFcFcpVWRmL(2),               & 
-& cplUFcFcpVWRmR(2)
+Complex(dp), Intent(in) :: cplcFcFcVPL,cplcFcFcVPR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,            & 
+& cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR
 
-Complex(dp), Intent(out) :: SigL(2,2),SigR(2,2), SigS(2,2) 
-Complex(dp) :: coupL1, coupR1, coupL2,coupR2, coup1,coup2,temp, sumL(2,2), sumR(2,2), sumS(2,2) 
+Complex(dp), Intent(out) :: Sig 
+Complex(dp) :: coupL1, coupR1, coupL2,coupR2, coup1,coup2,temp, sumL, sumR, sumS 
 Real(dp) :: B0m2, F0m2, G0m2,B1m2, m1, m2 
 Real(dp), Intent(in) :: p2 
 Complex(dp) :: A0m2 
 Integer :: i1,i2,i3,i4, gO1, gO2, ierr 
  
  
-SigL = Cmplx(0._dp,0._dp,dp) 
-SigR = Cmplx(0._dp,0._dp,dp) 
-SigS = Cmplx(0._dp,0._dp,dp) 
- 
+Sig = Cmplx(0._dp,0._dp,dp) 
 !------------------------ 
 ! VP, Fc 
 !------------------------ 
-      Do i2 = 1, 2
- SumS = 0._dp 
+SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-Do gO1 = 1, 2
-  Do gO2 = 1, 2
-B1m2 = -2._dp*(B1(p2,MFc2(i2),0._dp) + 0.5_dp*rMS) 
-B0m2 = -8._dp*MFc(i2)*(B0(p2,MFc2(i2),0._dp) - 0.5_dp*rMS) 
-coupL1 = cplUFcFcVPL(gO1,i2)
-coupR1 = cplUFcFcVPR(gO1,i2)
-coupL2 =  Conjg(cplUFcFcVPL(gO2,i2))
-coupR2 =  Conjg(cplUFcFcVPR(gO2,i2))
-SumS(gO1,gO2) = coupL1*coupR2*B0m2 
-sumR(gO1,gO2) = coupL1*coupL2*B1m2 
-sumL(gO1,gO2) = coupR1*coupR2*B1m2 
-   End Do 
-End Do 
-SigL = SigL +1._dp/2._dp* sumL
-SigR = SigR +1._dp/2._dp* sumR 
-SigS = SigS +1._dp/2._dp* sumS 
-    End Do 
- !------------------------ 
+B1m2 = - Real(B1(p2,MFc2,0._dp)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFc*Real(B0(p2,MFc2,0._dp)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcFcVPL
+coupR1 = cplcFcFcVPR
+coupL2 =  Conjg(cplcFcFcVPL)
+coupR2 =  Conjg(cplcFcFcVPR)
+SumS = coupL1*coupR2*B0m2 
+sumR = coupL1*coupL2*B1m2 
+sumL = coupR1*coupR2*B1m2 
+Sig = Sig +1._dp*(sumS + MFc*(sumL+sumR))
+!------------------------ 
 ! VZ, Fc 
 !------------------------ 
-      Do i2 = 1, 2
- SumS = 0._dp 
+SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-Do gO1 = 1, 2
-  Do gO2 = 1, 2
-B1m2 = -2._dp*(B1(p2,MFc2(i2),MVZ2) + 0.5_dp*rMS) 
-B0m2 = -8._dp*MFc(i2)*(B0(p2,MFc2(i2),MVZ2) - 0.5_dp*rMS) 
-coupL1 = cplUFcFcVZL(gO1,i2)
-coupR1 = cplUFcFcVZR(gO1,i2)
-coupL2 =  Conjg(cplUFcFcVZL(gO2,i2))
-coupR2 =  Conjg(cplUFcFcVZR(gO2,i2))
-SumS(gO1,gO2) = coupL1*coupR2*B0m2 
-sumR(gO1,gO2) = coupL1*coupL2*B1m2 
-sumL(gO1,gO2) = coupR1*coupR2*B1m2 
-   End Do 
-End Do 
-SigL = SigL +1._dp/2._dp* sumL
-SigR = SigR +1._dp/2._dp* sumR 
-SigS = SigS +1._dp/2._dp* sumS 
-    End Do 
- !------------------------ 
+B1m2 = - Real(B1(p2,MFc2,MVZ2)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFc*Real(B0(p2,MFc2,MVZ2)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcFcVZL
+coupR1 = cplcFcFcVZR
+coupL2 =  Conjg(cplcFcFcVZL)
+coupR2 =  Conjg(cplcFcFcVZR)
+SumS = coupL1*coupR2*B0m2 
+sumR = coupL1*coupL2*B1m2 
+sumL = coupR1*coupR2*B1m2 
+Sig = Sig +1._dp*(sumS + MFc*(sumL+sumR))
+!------------------------ 
 ! VZR, Fc 
 !------------------------ 
-      Do i2 = 1, 2
- SumS = 0._dp 
+SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-Do gO1 = 1, 2
-  Do gO2 = 1, 2
-B1m2 = -2._dp*(B1(p2,MFc2(i2),MVZR2) + 0.5_dp*rMS) 
-B0m2 = -8._dp*MFc(i2)*(B0(p2,MFc2(i2),MVZR2) - 0.5_dp*rMS) 
-coupL1 = cplUFcFcVZRL(gO1,i2)
-coupR1 = cplUFcFcVZRR(gO1,i2)
-coupL2 =  Conjg(cplUFcFcVZRL(gO2,i2))
-coupR2 =  Conjg(cplUFcFcVZRR(gO2,i2))
-SumS(gO1,gO2) = coupL1*coupR2*B0m2 
-sumR(gO1,gO2) = coupL1*coupL2*B1m2 
-sumL(gO1,gO2) = coupR1*coupR2*B1m2 
-   End Do 
-End Do 
-SigL = SigL +1._dp/2._dp* sumL
-SigR = SigR +1._dp/2._dp* sumR 
-SigS = SigS +1._dp/2._dp* sumS 
-    End Do 
- !------------------------ 
+B1m2 = - Real(B1(p2,MFc2,MVZR2)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFc*Real(B0(p2,MFc2,MVZR2)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcFcVZRL
+coupR1 = cplcFcFcVZRR
+coupL2 =  Conjg(cplcFcFcVZRL)
+coupR2 =  Conjg(cplcFcFcVZRR)
+SumS = coupL1*coupR2*B0m2 
+sumR = coupL1*coupL2*B1m2 
+sumL = coupR1*coupR2*B1m2 
+Sig = Sig +1._dp*(sumS + MFc*(sumL+sumR))
+!------------------------ 
 ! VWLm, Fcp 
 !------------------------ 
 SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-Do gO1 = 1, 2
-  Do gO2 = 1, 2
-B1m2 = -2._dp*(B1(p2,MFcp2,MVWLm2) + 0.5_dp*rMS) 
-B0m2 = -8._dp*MFcp*(B0(p2,MFcp2,MVWLm2) - 0.5_dp*rMS) 
-coupL1 = cplUFcFcpVWLmL(gO1)
-coupR1 = cplUFcFcpVWLmR(gO1)
-coupL2 =  Conjg(cplUFcFcpVWLmL(gO2))
-coupR2 =  Conjg(cplUFcFcpVWLmR(gO2))
-SumS(gO1,gO2) = coupL1*coupR2*B0m2 
-sumR(gO1,gO2) = coupL1*coupL2*B1m2 
-sumL(gO1,gO2) = coupR1*coupR2*B1m2 
-   End Do 
-End Do 
-SigL = SigL +1._dp* sumL
-SigR = SigR +1._dp* sumR 
-SigS = SigS +1._dp* sumS 
+B1m2 = - Real(B1(p2,MFcp2,MVWLm2)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFcp*Real(B0(p2,MFcp2,MVWLm2)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcFcpVWLmL
+coupR1 = cplcFcFcpVWLmR
+coupL2 =  Conjg(cplcFcFcpVWLmL)
+coupR2 =  Conjg(cplcFcFcpVWLmR)
+SumS = coupL1*coupR2*B0m2 
+sumR = coupL1*coupL2*B1m2 
+sumL = coupR1*coupR2*B1m2 
+Sig = Sig +1._dp*(sumS + MFc*(sumL+sumR))
 !------------------------ 
 ! VWRm, Fcp 
 !------------------------ 
 SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-Do gO1 = 1, 2
-  Do gO2 = 1, 2
-B1m2 = -2._dp*(B1(p2,MFcp2,MVWRm2) + 0.5_dp*rMS) 
-B0m2 = -8._dp*MFcp*(B0(p2,MFcp2,MVWRm2) - 0.5_dp*rMS) 
-coupL1 = cplUFcFcpVWRmL(gO1)
-coupR1 = cplUFcFcpVWRmR(gO1)
-coupL2 =  Conjg(cplUFcFcpVWRmL(gO2))
-coupR2 =  Conjg(cplUFcFcpVWRmR(gO2))
-SumS(gO1,gO2) = coupL1*coupR2*B0m2 
-sumR(gO1,gO2) = coupL1*coupL2*B1m2 
-sumL(gO1,gO2) = coupR1*coupR2*B1m2 
-   End Do 
-End Do 
-SigL = SigL +1._dp* sumL
-SigR = SigR +1._dp* sumR 
-SigS = SigS +1._dp* sumS 
+B1m2 = - Real(B1(p2,MFcp2,MVWRm2)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFcp*Real(B0(p2,MFcp2,MVWRm2)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcFcpVWRmL
+coupR1 = cplcFcFcpVWRmR
+coupL2 =  Conjg(cplcFcFcpVWRmL)
+coupR2 =  Conjg(cplcFcFcpVWRmR)
+SumS = coupL1*coupR2*B0m2 
+sumR = coupL1*coupL2*B1m2 
+sumL = coupR1*coupR2*B1m2 
+Sig = Sig +1._dp*(sumS + MFc*(sumL+sumR))
 
 
-SigL = oo16pi2*SigL 
- 
-SigR = oo16pi2*SigR 
- 
-SigS = oo16pi2*SigS 
+Sig = oo16pi2*Sig 
  
 End Subroutine Sigma1LoopFc 
  
@@ -5395,13 +5195,12 @@ Subroutine OneLoopFcp(M23,MVWLm,MVWLm2,MFc,MFc2,MVWRm,MVWRm2,MFcp,MFcp2,        
 & cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,      & 
 & cplcFcpFcppVWRmR,delta,mass,mass2,kont)
 
-Real(dp), Intent(in) :: MVWLm,MVWLm2,MFc(2),MFc2(2),MVWRm,MVWRm2,MFcp,MFcp2,MVZ,MVZ2,MVZR,MVZR2,              & 
-& MFcpp,MFcpp2
+Real(dp), Intent(in) :: MVWLm,MVWLm2,MFc,MFc2,MVWRm,MVWRm2,MFcp,MFcp2,MVZ,MVZ2,MVZR,MVZR2,MFcpp,MFcpp2
 
 Real(dp), Intent(in) :: M23
 
-Complex(dp), Intent(in) :: cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),          & 
-& cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR, & 
+Complex(dp), Intent(in) :: cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVPL,        & 
+& cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,               & 
 & cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR
 
 Integer , Intent(inout):: kont 
@@ -5478,11 +5277,10 @@ Subroutine Sigma1LoopFcp(p2,MVWLm,MVWLm2,MFc,MFc2,MVWRm,MVWRm2,MFcp,MFcp2,      
 & cplcFcpFcppVWRmR,sig)
 
 Implicit None 
-Real(dp), Intent(in) :: MVWLm,MVWLm2,MFc(2),MFc2(2),MVWRm,MVWRm2,MFcp,MFcp2,MVZ,MVZ2,MVZR,MVZR2,              & 
-& MFcpp,MFcpp2
+Real(dp), Intent(in) :: MVWLm,MVWLm2,MFc,MFc2,MVWRm,MVWRm2,MFcp,MFcp2,MVZ,MVZ2,MVZR,MVZR2,MFcpp,MFcpp2
 
-Complex(dp), Intent(in) :: cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),          & 
-& cplcFcpFcpVPL,cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR, & 
+Complex(dp), Intent(in) :: cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVPL,        & 
+& cplcFcpFcpVPR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,               & 
 & cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR
 
 Complex(dp), Intent(out) :: Sig 
@@ -5497,40 +5295,36 @@ Sig = Cmplx(0._dp,0._dp,dp)
 !------------------------ 
 ! conj[VWLm], Fc 
 !------------------------ 
-      Do i2 = 1, 2
- SumS = 0._dp 
+SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-B1m2 = - Real(B1(p2,MFc2(i2),MVWLm2)+ 0.5_dp*rMS,dp) 
-B0m2 = -4._dp*MFc(i2)*Real(B0(p2,MFc2(i2),MVWLm2)-0.5_dp*rMS,dp) 
-coupL1 = cplcFcpFccVWLmL(i2)
-coupR1 = cplcFcpFccVWLmR(i2)
-coupL2 =  Conjg(cplcFcpFccVWLmL(i2))
-coupR2 =  Conjg(cplcFcpFccVWLmR(i2))
+B1m2 = - Real(B1(p2,MFc2,MVWLm2)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFc*Real(B0(p2,MFc2,MVWLm2)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcpFccVWLmL
+coupR1 = cplcFcpFccVWLmR
+coupL2 =  Conjg(cplcFcpFccVWLmL)
+coupR2 =  Conjg(cplcFcpFccVWLmR)
 SumS = coupL1*coupR2*B0m2 
 sumR = coupL1*coupL2*B1m2 
 sumL = coupR1*coupR2*B1m2 
 Sig = Sig +1._dp*(sumS + MFcp*(sumL+sumR))
-    End Do 
- !------------------------ 
+!------------------------ 
 ! conj[VWRm], Fc 
 !------------------------ 
-      Do i2 = 1, 2
- SumS = 0._dp 
+SumS = 0._dp 
 sumR = 0._dp 
 sumL = 0._dp 
-B1m2 = - Real(B1(p2,MFc2(i2),MVWRm2)+ 0.5_dp*rMS,dp) 
-B0m2 = -4._dp*MFc(i2)*Real(B0(p2,MFc2(i2),MVWRm2)-0.5_dp*rMS,dp) 
-coupL1 = cplcFcpFccVWRmL(i2)
-coupR1 = cplcFcpFccVWRmR(i2)
-coupL2 =  Conjg(cplcFcpFccVWRmL(i2))
-coupR2 =  Conjg(cplcFcpFccVWRmR(i2))
+B1m2 = - Real(B1(p2,MFc2,MVWRm2)+ 0.5_dp*rMS,dp) 
+B0m2 = -4._dp*MFc*Real(B0(p2,MFc2,MVWRm2)-0.5_dp*rMS,dp) 
+coupL1 = cplcFcpFccVWRmL
+coupR1 = cplcFcpFccVWRmR
+coupL2 =  Conjg(cplcFcpFccVWRmL)
+coupR2 =  Conjg(cplcFcpFccVWRmR)
 SumS = coupL1*coupR2*B0m2 
 sumR = coupL1*coupL2*B1m2 
 sumL = coupR1*coupR2*B1m2 
 Sig = Sig +1._dp*(sumS + MFcp*(sumL+sumR))
-    End Do 
- !------------------------ 
+!------------------------ 
 ! VP, Fcp 
 !------------------------ 
 SumS = 0._dp 
@@ -6205,7 +5999,7 @@ End Subroutine Pi1LoopdeltaRpp
 Subroutine OneLoopVZ(gBL,g2,gR,vd,vu,vR,ZZ,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,               & 
 & MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,            & 
 & MFv2,MVZ,MVZ2,MVZR,MVZR2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZ,               & 
-& cpldeltaRppcdeltaRppVZ,cplFcFcVZL,cplFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,              & 
+& cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,            & 
 & cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,       & 
 & cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,           & 
 & cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,       & 
@@ -6214,15 +6008,15 @@ Subroutine OneLoopVZ(gBL,g2,gR,vd,vu,vR,ZZ,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,         
 & cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,               & 
 & cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,delta,mass,mass2,kont)
 
-Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,               & 
-& MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),        & 
+Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,               & 
+& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
 & MVZ,MVZ2,MVZR,MVZR2,MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2
 
 Real(dp), Intent(in) :: gBL,g2,gR,vd,vu,vR
 
 Complex(dp), Intent(in) :: ZZ(3,3)
 
-Complex(dp), Intent(in) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplcFcpFcpVZL,  & 
+Complex(dp), Intent(in) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,          & 
 & cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),       & 
 & cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),   & 
 & cplFvFvVZR(6,6),cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,           & 
@@ -6248,14 +6042,15 @@ p2 = MVZ2
 PiSf = ZeroC 
 Call Pi1LoopVZ(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,               & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,MVZR2,            & 
-& MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplFcFcVZL,      & 
-& cplFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL,    & 
-& cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,     & 
-& cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,            & 
-& cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,              & 
-& cplHpmcVWRmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,cpldeltaRppcdeltaRppVZVZ,& 
-& cplhhhhVZVZ,cplHpmcHpmVZVZ,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,      & 
-& cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,kont,PiSf)
+& MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,     & 
+& cplcFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,               & 
+& cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,               & 
+& cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,     & 
+& cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,             & 
+& cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,              & 
+& cplAhAhVZVZ,cpldeltaRppcdeltaRppVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,cplcVWLmVWLmVZVZ1,     & 
+& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,               & 
+& cplcVWRmVWRmVZVZ3,kont,PiSf)
 
 mass2 = mi2 + Real(PiSf,dp) 
 mass = sqrt(mass2) 
@@ -6267,14 +6062,15 @@ p2 =  mass2
 PiSf = ZeroC 
 Call Pi1LoopVZ(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,               & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,MVZR2,            & 
-& MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplFcFcVZL,      & 
-& cplFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL,    & 
-& cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,     & 
-& cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,cplcgWRmgWRmVZ,            & 
-& cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,              & 
-& cplHpmcVWRmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,cplAhAhVZVZ,cpldeltaRppcdeltaRppVZVZ,& 
-& cplhhhhVZVZ,cplHpmcHpmVZVZ,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,      & 
-& cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,kont,PiSf)
+& MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,     & 
+& cplcFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,               & 
+& cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,               & 
+& cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,     & 
+& cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,             & 
+& cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,              & 
+& cplAhAhVZVZ,cpldeltaRppcdeltaRppVZVZ,cplhhhhVZVZ,cplHpmcHpmVZVZ,cplcVWLmVWLmVZVZ1,     & 
+& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,               & 
+& cplcVWRmVWRmVZVZ3,kont,PiSf)
 
 mass2 = mi2 + Real(PiSf,dp) 
 mass = sqrt(mass2) 
@@ -6312,7 +6108,7 @@ End Subroutine OneLoopVZ
 Subroutine Pi1LoopVZ(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,              & 
 & MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,             & 
 & MVZR2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,           & 
-& cplFcFcVZL,cplFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,     & 
+& cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,   & 
 & cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,               & 
 & cplFvFvVZL,cplFvFvVZR,cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,     & 
 & cplcgWRmgWRmVZ,cplcgWRpgWRpVZ,cplhhVPVZ,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,             & 
@@ -6322,11 +6118,11 @@ Subroutine Pi1LoopVZ(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,        
 & cplcVWRmVWRmVZVZ3,kont,res)
 
 Implicit None 
-Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,               & 
-& MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),        & 
+Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,               & 
+& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
 & MVZ,MVZ2,MVZR,MVZR2,MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2
 
-Complex(dp), Intent(in) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplcFcpFcpVZL,  & 
+Complex(dp), Intent(in) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,          & 
 & cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),       & 
 & cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),   & 
 & cplFvFvVZR(6,6),cplcgWLmgWLmVZ,cplcgWRmgWLmVZ,cplcgWLpgWLpVZ,cplcgWRpgWLpVZ,           & 
@@ -6370,22 +6166,18 @@ coup1 = cpldeltaRppcdeltaRppVZ
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
 !------------------------ 
-! Fc, Fc 
+! bar[Fc], Fc 
 !------------------------ 
 sumI = 0._dp 
  
-    Do i1 = 1, 2
-       Do i2 = 1, 2
- H0m2 = Hloop(p2,MFc2(i1),MFc2(i2)) 
-B0m2 = 4._dp*MFc(i1)*MFc(i2)*B0(p2,MFc2(i1),MFc2(i2)) 
-coupL1 = cplFcFcVZL(i1,i2)
-coupR1 = cplFcFcVZR(i1,i2)
+H0m2 = Hloop(p2,MFc2,MFc2) 
+B0m2 = 4._dp*MFc*MFc*B0(p2,MFc2,MFc2) 
+coupL1 = cplcFcFcVZL
+coupR1 = cplcFcFcVZR
     SumI = (Abs(coupL1)**2+Abs(coupR1)**2)*H0m2 & 
                 & + (Real(Conjg(coupL1)*coupR1,dp))*B0m2 
-res = res +0.5_dp* SumI  
-      End Do 
-     End Do 
- !------------------------ 
+res = res +1._dp* SumI  
+!------------------------ 
 ! bar[Fcp], Fcp 
 !------------------------ 
 sumI = 0._dp 
@@ -6699,7 +6491,7 @@ End Subroutine Pi1LoopVZ
 Subroutine OneLoopVZR(gBL,g2,gR,vd,vu,vR,ZZ,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,              & 
 & MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,            & 
 & MFv2,MVZ,MVZ2,MVZR,MVZR2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZR,              & 
-& cpldeltaRppcdeltaRppVZR,cplFcFcVZRL,cplFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,         & 
+& cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,       & 
 & cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,              & 
 & cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,        & 
 & cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,       & 
@@ -6708,21 +6500,21 @@ Subroutine OneLoopVZR(gBL,g2,gR,vd,vu,vR,ZZ,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,        
 & cplhhhhVZRVZR,cplHpmcHpmVZRVZR,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,& 
 & cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,delta,mass,mass2,kont)
 
-Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,               & 
-& MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),        & 
+Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,               & 
+& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
 & MVZ,MVZ2,MVZR,MVZR2,MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2
 
 Real(dp), Intent(in) :: gBL,g2,gR,vd,vu,vR
 
 Complex(dp), Intent(in) :: ZZ(3,3)
 
-Complex(dp), Intent(in) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),            & 
-& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),     & 
-& cplcFdFdVZRR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),               & 
-& cplcFuFuVZRR(3,3),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,   & 
-& cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR(3),         & 
-& cplhhVZVZR(3),cplhhVZRVZR(3),cplHpmcHpmVZR(3,3),cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),   & 
-& cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR(3,3),cpldeltaRppcdeltaRppVZRVZR,& 
+Complex(dp), Intent(in) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,     & 
+& cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),  & 
+& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),               & 
+& cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,     & 
+& cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR(3),cplhhVZVZR(3),           & 
+& cplhhVZRVZR(3),cplHpmcHpmVZR(3,3),cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),cplcVWLmVWLmVZR, & 
+& cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR(3,3),cpldeltaRppcdeltaRppVZRVZR,         & 
 & cplhhhhVZRVZR(3,3),cplHpmcHpmVZRVZR(3,3),cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,      & 
 & cplcVWLmVWLmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3
 
@@ -6743,9 +6535,9 @@ PiSf = ZeroC
 Call Pi1LoopVZR(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,              & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,MVZR2,            & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZR,cpldeltaRppcdeltaRppVZR,               & 
-& cplFcFcVZRL,cplFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,& 
-& cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,         & 
-& cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,               & 
+& cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,              & 
+& cplcFcppFcppVZRR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,     & 
+& cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,  & 
 & cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZVZR,cplhhVZRVZR,     & 
 & cplHpmcHpmVZR,cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,           & 
 & cplcVWRmVWRmVZR,cplAhAhVZRVZR,cpldeltaRppcdeltaRppVZRVZR,cplhhhhVZRVZR,cplHpmcHpmVZRVZR,& 
@@ -6763,9 +6555,9 @@ PiSf = ZeroC
 Call Pi1LoopVZR(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,              & 
 & MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,MVZR2,            & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZR,cpldeltaRppcdeltaRppVZR,               & 
-& cplFcFcVZRL,cplFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,& 
-& cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,         & 
-& cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,               & 
+& cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,              & 
+& cplcFcppFcppVZRR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,     & 
+& cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,  & 
 & cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZVZR,cplhhVZRVZR,     & 
 & cplHpmcHpmVZR,cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,           & 
 & cplcVWRmVWRmVZR,cplAhAhVZRVZR,cpldeltaRppcdeltaRppVZRVZR,cplhhhhVZRVZR,cplHpmcHpmVZRVZR,& 
@@ -6808,9 +6600,9 @@ End Subroutine OneLoopVZR
 Subroutine Pi1LoopVZR(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,             & 
 & MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVZ,MVZ2,MVZR,             & 
 & MVZR2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,cplAhhhVZR,cpldeltaRppcdeltaRppVZR,         & 
-& cplFcFcVZRL,cplFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,& 
-& cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,         & 
-& cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,               & 
+& cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,              & 
+& cplcFcppFcppVZRR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,     & 
+& cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,  & 
 & cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR,cplhhVZVZR,cplhhVZRVZR,     & 
 & cplHpmcHpmVZR,cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,           & 
 & cplcVWRmVWRmVZR,cplAhAhVZRVZR,cpldeltaRppcdeltaRppVZRVZR,cplhhhhVZRVZR,cplHpmcHpmVZRVZR,& 
@@ -6818,17 +6610,17 @@ Subroutine Pi1LoopVZR(p2,Mhh,Mhh2,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,       
 & cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,kont,res)
 
 Implicit None 
-Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,               & 
-& MFcp2,MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),        & 
+Real(dp), Intent(in) :: Mhh(3),Mhh2(3),MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,               & 
+& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
 & MVZ,MVZ2,MVZR,MVZR2,MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2
 
-Complex(dp), Intent(in) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),            & 
-& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),     & 
-& cplcFdFdVZRR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),               & 
-& cplcFuFuVZRR(3,3),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,   & 
-& cplcgWLpgWLpVZR,cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR(3),         & 
-& cplhhVZVZR(3),cplhhVZRVZR(3),cplHpmcHpmVZR(3,3),cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),   & 
-& cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR(3,3),cpldeltaRppcdeltaRppVZRVZR,& 
+Complex(dp), Intent(in) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,     & 
+& cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),  & 
+& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),               & 
+& cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplcgWLmgWLmVZR,cplcgWRmgWLmVZR,cplcgWLpgWLpVZR,     & 
+& cplcgWRpgWLpVZR,cplcgWRmgWRmVZR,cplcgWRpgWRpVZR,cplhhVPVZR(3),cplhhVZVZR(3),           & 
+& cplhhVZRVZR(3),cplHpmcHpmVZR(3,3),cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),cplcVWLmVWLmVZR, & 
+& cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,cplAhAhVZRVZR(3,3),cpldeltaRppcdeltaRppVZRVZR,         & 
 & cplhhhhVZRVZR(3,3),cplHpmcHpmVZRVZR(3,3),cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,      & 
 & cplcVWLmVWLmVZRVZR3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3
 
@@ -6866,22 +6658,18 @@ coup1 = cpldeltaRppcdeltaRppVZR
     SumI = Abs(coup1)**2*B22m2 
 res = res +1._dp* SumI  
 !------------------------ 
-! Fc, Fc 
+! bar[Fc], Fc 
 !------------------------ 
 sumI = 0._dp 
  
-    Do i1 = 1, 2
-       Do i2 = 1, 2
- H0m2 = Hloop(p2,MFc2(i1),MFc2(i2)) 
-B0m2 = 4._dp*MFc(i1)*MFc(i2)*B0(p2,MFc2(i1),MFc2(i2)) 
-coupL1 = cplFcFcVZRL(i1,i2)
-coupR1 = cplFcFcVZRR(i1,i2)
+H0m2 = Hloop(p2,MFc2,MFc2) 
+B0m2 = 4._dp*MFc*MFc*B0(p2,MFc2,MFc2) 
+coupL1 = cplcFcFcVZRL
+coupR1 = cplcFcFcVZRR
     SumI = (Abs(coupL1)**2+Abs(coupR1)**2)*H0m2 & 
                 & + (Real(Conjg(coupL1)*coupR1,dp))*B0m2 
-res = res +0.5_dp* SumI  
-      End Do 
-     End Do 
- !------------------------ 
+res = res +1._dp* SumI  
+!------------------------ 
 ! bar[Fcp], Fcp 
 !------------------------ 
 sumI = 0._dp 
@@ -7209,26 +6997,25 @@ Subroutine OneLoopVWLm(g2,gR,vd,vu,vR,PhiW,MHpm,MHpm2,MAh,MAh2,MVWRm,MVWRm2,    
 & cplcVWLmVWLmVZVZ3,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,         & 
 & delta,mass,mass2,kont)
 
-Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWRm,MVWRm2,MFcp,MFcp2,MFc(2),MFc2(2),               & 
-& MFcpp,MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MVWLm,MVWLm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
+Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWRm,MVWRm2,MFcp,MFcp2,MFc,MFc2,MFcpp,               & 
+& MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MVWLm,MVWLm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
 
 Real(dp), Intent(in) :: g2,gR,vd,vu,vR,PhiW
 
-Complex(dp), Intent(in) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),           & 
-& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),           & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,               & 
-& cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,      & 
-& cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,    & 
-& cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),cplhhcVWLmVWRm(3),cplHpmcVWLmVP(3),               & 
-& cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWLmVZ,       & 
-& cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm(3),               & 
-& cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,cplAhAhcVWLmVWLm(3,3),cpldeltaRppcdeltaRppcVWLmVWLm,& 
-& cplhhhhcVWLmVWLm(3,3),cplHpmcHpmcVWLmVWLm(3,3),cplcVWLmVPVPVWLm3,cplcVWLmVPVPVWLm1,    & 
-& cplcVWLmVPVPVWLm2,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWLmVWLmVWLm1,& 
-& cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmVWLmVZVZ1,& 
-& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,           & 
-& cplcVWLmVWLmVZRVZR3
+Complex(dp), Intent(in) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,& 
+& cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFeFvcVWLmL(3,6),         & 
+& cplcFeFvcVWLmR(3,6),cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,   & 
+& cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,     & 
+& cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),& 
+& cplhhcVWLmVWRm(3),cplHpmcVWLmVP(3),cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVPVWLm,  & 
+& cplcVWLmVPVWRm,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,          & 
+& cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,cplAhAhcVWLmVWLm(3,3),& 
+& cpldeltaRppcdeltaRppcVWLmVWLm,cplhhhhcVWLmVWLm(3,3),cplHpmcHpmcVWLmVWLm(3,3),          & 
+& cplcVWLmVPVPVWLm3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmcVWLmVWLmVWLm2,          & 
+& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,& 
+& cplcVWLmcVWRmVWLmVWRm1,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,          & 
+& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3
 
 Integer , Intent(inout):: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,j4,il,i_count, ierr 
@@ -7334,24 +7121,23 @@ Subroutine Pi1LoopVWLm(p2,MHpm,MHpm2,MAh,MAh2,MVWRm,MVWRm2,MFcp,MFcp2,MFc,      
 & cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3,kont,res)
 
 Implicit None 
-Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWRm,MVWRm2,MFcp,MFcp2,MFc(2),MFc2(2),               & 
-& MFcpp,MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MVWLm,MVWLm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
+Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWRm,MVWRm2,MFcp,MFcp2,MFc,MFc2,MFcpp,               & 
+& MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MVWLm,MVWLm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
 
-Complex(dp), Intent(in) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),           & 
-& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),           & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,               & 
-& cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,      & 
-& cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,    & 
-& cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),cplhhcVWLmVWRm(3),cplHpmcVWLmVP(3),               & 
-& cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVPVWLm,cplcVWLmVPVWRm,cplcVWLmVWLmVZ,       & 
-& cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm(3),               & 
-& cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,cplAhAhcVWLmVWLm(3,3),cpldeltaRppcdeltaRppcVWLmVWLm,& 
-& cplhhhhcVWLmVWLm(3,3),cplHpmcHpmcVWLmVWLm(3,3),cplcVWLmVPVPVWLm3,cplcVWLmVPVPVWLm1,    & 
-& cplcVWLmVPVPVWLm2,cplcVWLmcVWLmVWLmVWLm2,cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWLmVWLmVWLm1,& 
-& cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWLmVWLmVZVZ1,& 
-& cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,           & 
-& cplcVWLmVWLmVZRVZR3
+Complex(dp), Intent(in) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,& 
+& cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFeFvcVWLmL(3,6),         & 
+& cplcFeFvcVWLmR(3,6),cplcgWLpgPcVWLm,cplcgWRpgPcVWLm,cplcgPgWLmcVWLm,cplcgZgWLmcVWLm,   & 
+& cplcgZpgWLmcVWLm,cplcgPgWRmcVWLm,cplcgZgWRmcVWLm,cplcgZpgWRmcVWLm,cplcgWLpgZcVWLm,     & 
+& cplcgWRpgZcVWLm,cplcgWLpgZpcVWLm,cplcgWRpgZpcVWLm,cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),& 
+& cplhhcVWLmVWRm(3),cplHpmcVWLmVP(3),cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVPVWLm,  & 
+& cplcVWLmVPVWRm,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,          & 
+& cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,cplAhAhcVWLmVWLm(3,3),& 
+& cpldeltaRppcdeltaRppcVWLmVWLm,cplhhhhcVWLmVWLm(3,3),cplHpmcHpmcVWLmVWLm(3,3),          & 
+& cplcVWLmVPVPVWLm3,cplcVWLmVPVPVWLm1,cplcVWLmVPVPVWLm2,cplcVWLmcVWLmVWLmVWLm2,          & 
+& cplcVWLmcVWLmVWLmVWLm3,cplcVWLmcVWLmVWLmVWLm1,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,& 
+& cplcVWLmcVWRmVWLmVWRm1,cplcVWLmVWLmVZVZ1,cplcVWLmVWLmVZVZ2,cplcVWLmVWLmVZVZ3,          & 
+& cplcVWLmVWLmVZRVZR1,cplcVWLmVWLmVZRVZR2,cplcVWLmVWLmVZRVZR3
 
 Integer, Intent(inout) :: kont 
 Real(dp) :: B0m2, F0m2, G0m2, B1m2, H0m2, B22m2, m1, m2 
@@ -7393,16 +7179,14 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-      Do i2 = 1, 2
- H0m2 = Hloop(p2,MFcp2,MFc2(i2)) 
-B0m2 = 4._dp*MFcp*MFc(i2)*B0(p2,MFcp2,MFc2(i2)) 
-coupL1 = cplcFcpFccVWLmL(i2)
-coupR1 = cplcFcpFccVWLmR(i2)
+H0m2 = Hloop(p2,MFcp2,MFc2) 
+B0m2 = 4._dp*MFcp*MFc*B0(p2,MFcp2,MFc2) 
+coupL1 = cplcFcpFccVWLmL
+coupR1 = cplcFcpFccVWLmR
     SumI = (Abs(coupL1)**2+Abs(coupR1)**2)*H0m2 & 
                 & + (Real(Conjg(coupL1)*coupR1,dp))*B0m2 
 res = res +1._dp* SumI  
-    End Do 
- !------------------------ 
+!------------------------ 
 ! bar[Fcpp], Fcp 
 !------------------------ 
 sumI = 0._dp 
@@ -7838,26 +7622,25 @@ Subroutine OneLoopVWRm(g2,gR,vd,vu,vR,PhiW,MHpm,MHpm2,MAh,MAh2,MVWLm,MVWLm2,    
 & cplcVWRmVWRmVZVZ3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,         & 
 & delta,mass,mass2,kont)
 
-Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWLm,MVWLm2,MFcp,MFcp2,MFc(2),MFc2(2),               & 
-& MFcpp,MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
+Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWLm,MVWLm2,MFcp,MFcp2,MFc,MFc2,MFcpp,               & 
+& MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
 
 Real(dp), Intent(in) :: g2,gR,vd,vu,vR,PhiW
 
-Complex(dp), Intent(in) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),           & 
-& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),           & 
-& cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),cplcgWLpgPcVWRm,cplcgWRpgPcVWRm,               & 
-& cplcgPgWLmcVWRm,cplcgZgWLmcVWRm,cplcgZpgWLmcVWRm,cplcgPgWRmcVWRm,cplcgZgWRmcVWRm,      & 
-& cplcgZpgWRmcVWRm,cplcgWLpgZcVWRm,cplcgWRpgZcVWRm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWRm,    & 
-& cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),cplHpmcVWRmVP(3),               & 
-& cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVPVWLm,cplcVWRmVPVWRm,cplcVWRmVWLmVZ,       & 
-& cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm(3),               & 
-& cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,cplAhAhcVWRmVWRm(3,3),cpldeltaRppcdeltaRppcVWRmVWRm,& 
-& cplhhhhcVWRmVWRm(3,3),cplHpmcHpmcVWRmVWRm(3,3),cplcVWRmVPVPVWRm3,cplcVWRmVPVPVWRm1,    & 
-& cplcVWRmVPVPVWRm2,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,& 
-& cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,cplcVWRmcVWRmVWRmVWRm1,cplcVWRmVWRmVZVZ1,& 
-& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,           & 
-& cplcVWRmVWRmVZRVZR3
+Complex(dp), Intent(in) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,& 
+& cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFeFvcVWRmL(3,6),         & 
+& cplcFeFvcVWRmR(3,6),cplcgWLpgPcVWRm,cplcgWRpgPcVWRm,cplcgPgWLmcVWRm,cplcgZgWLmcVWRm,   & 
+& cplcgZpgWLmcVWRm,cplcgPgWRmcVWRm,cplcgZgWRmcVWRm,cplcgZpgWRmcVWRm,cplcgWLpgZcVWRm,     & 
+& cplcgWRpgZcVWRm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWRm,cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),& 
+& cplhhcVWRmVWRm(3),cplHpmcVWRmVP(3),cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVPVWLm,  & 
+& cplcVWRmVPVWRm,cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,          & 
+& cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,cplAhAhcVWRmVWRm(3,3),& 
+& cpldeltaRppcdeltaRppcVWRmVWRm,cplhhhhcVWRmVWRm(3,3),cplHpmcHpmcVWRmVWRm(3,3),          & 
+& cplcVWRmVPVPVWRm3,cplcVWRmVPVPVWRm1,cplcVWRmVPVPVWRm2,cplcVWLmcVWRmVWLmVWRm2,          & 
+& cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,& 
+& cplcVWRmcVWRmVWRmVWRm1,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,          & 
+& cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3
 
 Integer , Intent(inout):: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,j4,il,i_count, ierr 
@@ -7963,24 +7746,23 @@ Subroutine Pi1LoopVWRm(p2,MHpm,MHpm2,MAh,MAh2,MVWLm,MVWLm2,MFcp,MFcp2,MFc,      
 & cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3,kont,res)
 
 Implicit None 
-Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWLm,MVWLm2,MFcp,MFcp2,MFc(2),MFc2(2),               & 
-& MFcpp,MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
+Real(dp), Intent(in) :: MHpm(3),MHpm2(3),MAh(3),MAh2(3),MVWLm,MVWLm2,MFcp,MFcp2,MFc,MFc2,MFcpp,               & 
+& MFcpp2,MFu(3),MFu2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,MdeltaRpp,MdeltaRpp2
 
-Complex(dp), Intent(in) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),           & 
-& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),           & 
-& cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),cplcgWLpgPcVWRm,cplcgWRpgPcVWRm,               & 
-& cplcgPgWLmcVWRm,cplcgZgWLmcVWRm,cplcgZpgWLmcVWRm,cplcgPgWRmcVWRm,cplcgZgWRmcVWRm,      & 
-& cplcgZpgWRmcVWRm,cplcgWLpgZcVWRm,cplcgWRpgZcVWRm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWRm,    & 
-& cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),cplHpmcVWRmVP(3),               & 
-& cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVPVWLm,cplcVWRmVPVWRm,cplcVWRmVWLmVZ,       & 
-& cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm(3),               & 
-& cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,cplAhAhcVWRmVWRm(3,3),cpldeltaRppcdeltaRppcVWRmVWRm,& 
-& cplhhhhcVWRmVWRm(3,3),cplHpmcHpmcVWRmVWRm(3,3),cplcVWRmVPVPVWRm3,cplcVWRmVPVPVWRm1,    & 
-& cplcVWRmVPVPVWRm2,cplcVWLmcVWRmVWLmVWRm2,cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,& 
-& cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,cplcVWRmcVWRmVWRmVWRm1,cplcVWRmVWRmVZVZ1,& 
-& cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,           & 
-& cplcVWRmVWRmVZRVZR3
+Complex(dp), Intent(in) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,& 
+& cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFeFvcVWRmL(3,6),         & 
+& cplcFeFvcVWRmR(3,6),cplcgWLpgPcVWRm,cplcgWRpgPcVWRm,cplcgPgWLmcVWRm,cplcgZgWLmcVWRm,   & 
+& cplcgZpgWLmcVWRm,cplcgPgWRmcVWRm,cplcgZgWRmcVWRm,cplcgZpgWRmcVWRm,cplcgWLpgZcVWRm,     & 
+& cplcgWRpgZcVWRm,cplcgWLpgZpcVWRm,cplcgWRpgZpcVWRm,cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),& 
+& cplhhcVWRmVWRm(3),cplHpmcVWRmVP(3),cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVPVWLm,  & 
+& cplcVWRmVPVWRm,cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,          & 
+& cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,cplAhAhcVWRmVWRm(3,3),& 
+& cpldeltaRppcdeltaRppcVWRmVWRm,cplhhhhcVWRmVWRm(3,3),cplHpmcHpmcVWRmVWRm(3,3),          & 
+& cplcVWRmVPVPVWRm3,cplcVWRmVPVPVWRm1,cplcVWRmVPVPVWRm2,cplcVWLmcVWRmVWLmVWRm2,          & 
+& cplcVWLmcVWRmVWLmVWRm3,cplcVWLmcVWRmVWLmVWRm1,cplcVWRmcVWRmVWRmVWRm2,cplcVWRmcVWRmVWRmVWRm3,& 
+& cplcVWRmcVWRmVWRmVWRm1,cplcVWRmVWRmVZVZ1,cplcVWRmVWRmVZVZ2,cplcVWRmVWRmVZVZ3,          & 
+& cplcVWRmVWRmVZRVZR1,cplcVWRmVWRmVZRVZR2,cplcVWRmVWRmVZRVZR3
 
 Integer, Intent(inout) :: kont 
 Real(dp) :: B0m2, F0m2, G0m2, B1m2, H0m2, B22m2, m1, m2 
@@ -8022,16 +7804,14 @@ res = res +1._dp* SumI
 !------------------------ 
 sumI = 0._dp 
  
-      Do i2 = 1, 2
- H0m2 = Hloop(p2,MFcp2,MFc2(i2)) 
-B0m2 = 4._dp*MFcp*MFc(i2)*B0(p2,MFcp2,MFc2(i2)) 
-coupL1 = cplcFcpFccVWRmL(i2)
-coupR1 = cplcFcpFccVWRmR(i2)
+H0m2 = Hloop(p2,MFcp2,MFc2) 
+B0m2 = 4._dp*MFcp*MFc*B0(p2,MFcp2,MFc2) 
+coupL1 = cplcFcpFccVWRmL
+coupR1 = cplcFcpFccVWRmR
     SumI = (Abs(coupL1)**2+Abs(coupR1)**2)*H0m2 & 
                 & + (Real(Conjg(coupL1)*coupR1,dp))*B0m2 
 res = res +1._dp* SumI  
-    End Do 
- !------------------------ 
+!------------------------ 
 ! bar[Fcpp], Fcp 
 !------------------------ 
 sumI = 0._dp 

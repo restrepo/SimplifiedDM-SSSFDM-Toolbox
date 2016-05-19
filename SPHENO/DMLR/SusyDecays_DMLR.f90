@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.8.1 
+! This file was automatically created by SARAH version 4.8.5 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 14:06 on 13.4.2016   
+! File created at 8:36 on 17.5.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -22,20 +22,20 @@ Use Mathematics, Only: Li2
 Subroutine FuTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),cplcFuFdcHpmL(3,3,3),cplcFuFdcHpmR(3,3,3),      & 
 & cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),       & 
@@ -84,7 +84,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Fu_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplcFuFuAhL,cplcFuFuAhR,cplcFuFdcHpmL,cplcFuFdcHpmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,     & 
 & cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,         & 
@@ -241,20 +241,20 @@ End Subroutine FuTwoBodyDecay
 Subroutine FeTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFecFedeltaRppL(3,3),cplcFecFedeltaRppR(3,3),& 
 & cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),               & 
@@ -303,7 +303,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Fe_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplcFeFeAhL,cplcFeFeAhR,cplcFecFedeltaRppL,cplcFecFedeltaRppR,cplcFeFehhL,             & 
 & cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFeFvcHpmL,           & 
@@ -471,20 +471,20 @@ End Subroutine FeTwoBodyDecay
 Subroutine FdTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),          & 
 & cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),& 
@@ -533,7 +533,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Fd_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,               & 
 & cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,cplcFdFuVWLmR,       & 
@@ -684,20 +684,20 @@ End Subroutine FdTwoBodyDecay
 Subroutine hhTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplHiggsPP(3),cplHiggsGG(3),cplHiggsZZvirt(3),cplHiggsWWvirt(3),cplAhAhhh(3,3,3),     & 
 & cplAhhhVZ(3,3),cplAhhhVZR(3,3),cpldeltaRpphhcdeltaRpp(3),cplcFdFdhhL(3,3,3),           & 
@@ -749,7 +749,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_hh_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplHiggsPP,cplHiggsGG,cplHiggsZZvirt,cplHiggsWWvirt,cplAhAhhh,cplAhhhVZ,               & 
 & cplAhhhVZR,cpldeltaRpphhcdeltaRpp,cplcFdFdhhL,cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,     & 
@@ -1180,20 +1180,20 @@ End Subroutine hhTwoBodyDecay
 Subroutine FvTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),cplFvFeHpmL(6,3,3),cplFvFeHpmR(6,3,3),            & 
 & cplFvFeVWLmL(6,3),cplFvFeVWLmR(6,3),cplFvFeVWRmL(6,3),cplFvFeVWRmR(6,3),               & 
@@ -1242,7 +1242,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Fv_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplFvFvAhL,cplFvFvAhR,cplFvFeHpmL,cplFvFeHpmR,cplFvFeVWLmL,cplFvFeVWLmR,               & 
 & cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvhhL,cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,     & 
@@ -1393,22 +1393,22 @@ End Subroutine FvTwoBodyDecay
 Subroutine VZTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
-Complex(dp) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplcFcpFcpVZL,  & 
+Complex(dp) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,          & 
 & cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),       & 
 & cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),   & 
 & cplFvFvVZR(6,6),cplhhVZVZ(3),cplhhVZVZR(3),cplHpmcHpmVZ(3,3),cplHpmcVWLmVZ(3),         & 
@@ -1450,9 +1450,9 @@ m_in = MVZ
 Call CouplingsFor_VZ_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
-& cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplFcFcVZL,cplFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,    & 
+& cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,  & 
 & cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,       & 
 & cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,       & 
 & cplHpmcVWLmVZ,cplHpmcVWRmVZ,cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,deltaM)
@@ -1494,24 +1494,18 @@ i_count = i_count +1
 
  
 ! ----------------------------------------------
-! Fc, Fc
+! bar[Fc], Fc
 ! ----------------------------------------------
 
  
-Do gt1= 1, 2
-  Do gt2= gt1, 2
-m1out = MFc(gt1)
-m2out = MFc(gt2)
-coupL = cplFcFcVZL(gt1,gt2)
-coupR = cplFcFcVZR(gt1,gt2)
+m1out = MFc
+m2out = MFc
+coupL = cplcFcFcVZL
+coupR = cplcFcFcVZR
 Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
-If (gt1.ne.gt2) gam = 2._dp*gam 
-gPartial(1,i_count) = 1._dp/2._dp*gam 
+gPartial(1,i_count) = 1*gam 
 gT = gT + gPartial(1,i_count) 
 i_count = i_count +1 
-  End Do 
-End Do 
- 
 
  
 ! ----------------------------------------------
@@ -1762,27 +1756,26 @@ End Subroutine VZTwoBodyDecay
 Subroutine VZRTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
-Complex(dp) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),            & 
-& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),     & 
-& cplcFdFdVZRR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),               & 
-& cplcFuFuVZRR(3,3),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplhhVZVZR(3),cplhhVZRVZR(3),      & 
-& cplHpmcHpmVZR(3,3),cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,& 
-& cplcVWRmVWRmVZR
+Complex(dp) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,     & 
+& cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),  & 
+& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),               & 
+& cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplhhVZVZR(3),cplhhVZRVZR(3),cplHpmcHpmVZR(3,3),     & 
+& cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -1820,9 +1813,9 @@ m_in = MVZR
 Call CouplingsFor_VZR_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,            & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
-& cplAhhhVZR,cpldeltaRppcdeltaRppVZR,cplFcFcVZRL,cplFcFcVZRR,cplcFcpFcpVZRL,             & 
+& cplAhhhVZR,cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,           & 
 & cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL,cplcFdFdVZRR,            & 
 & cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvVZRL,cplFvFvVZRR,           & 
 & cplhhVZVZR,cplhhVZRVZR,cplHpmcHpmVZR,cplHpmcVWLmVZR,cplHpmcVWRmVZR,cplcVWLmVWLmVZR,    & 
@@ -1865,24 +1858,18 @@ i_count = i_count +1
 
  
 ! ----------------------------------------------
-! Fc, Fc
+! bar[Fc], Fc
 ! ----------------------------------------------
 
  
-Do gt1= 1, 2
-  Do gt2= gt1, 2
-m1out = MFc(gt1)
-m2out = MFc(gt2)
-coupL = cplFcFcVZRL(gt1,gt2)
-coupR = cplFcFcVZRR(gt1,gt2)
+m1out = MFc
+m2out = MFc
+coupL = cplcFcFcVZRL
+coupR = cplcFcFcVZRR
 Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
-If (gt1.ne.gt2) gam = 2._dp*gam 
-gPartial(1,i_count) = 1._dp/2._dp*gam 
+gPartial(1,i_count) = 1*gam 
 gT = gT + gPartial(1,i_count) 
 i_count = i_count +1 
-  End Do 
-End Do 
- 
 
  
 ! ----------------------------------------------
@@ -2133,20 +2120,20 @@ End Subroutine VZRTwoBodyDecay
 Subroutine deltaRppTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,            & 
 & MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,              & 
 & Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,               & 
-& UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,           & 
+& UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,              & 
 & LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,               & 
 & vu,vR,gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cpldeltaRpphhcdeltaRpp(3),cpldeltaRppcdeltaRppVZ,cpldeltaRppcdeltaRppVZR,             & 
 & cplFeFecdeltaRppL(3,3),cplFeFecdeltaRppR(3,3),cplcdeltaRppcHpmcHpm(3,3),               & 
@@ -2189,7 +2176,7 @@ m_in = MdeltaRpp
 Call CouplingsFor_deltaRpp_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,           & 
 & MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,              & 
 & Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,               & 
-& UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,           & 
+& UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,              & 
 & LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,               & 
 & vu,vR,cpldeltaRpphhcdeltaRpp,cpldeltaRppcdeltaRppVZ,cpldeltaRppcdeltaRppVZR,           & 
 & cplFeFecdeltaRppL,cplFeFecdeltaRppR,cplcdeltaRppcHpmcHpm,cplcdeltaRppcHpmcVWLm,        & 
@@ -2369,20 +2356,20 @@ End Subroutine deltaRppTwoBodyDecay
 Subroutine HpmTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplAhHpmcHpm(3,3,3),cplAhcHpmVWLm(3,3),cplAhcHpmVWRm(3,3),cplcFuFdcHpmL(3,3,3),       & 
 & cplcFuFdcHpmR(3,3,3),cplcFeFvcHpmL(3,6,3),cplcFeFvcHpmR(3,6,3),cplhhHpmcHpm(3,3,3),    & 
@@ -2432,7 +2419,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Hpm_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,            & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplAhHpmcHpm,cplAhcHpmVWLm,cplAhcHpmVWRm,cplcFuFdcHpmL,cplcFuFdcHpmR,cplcFeFvcHpmL,    & 
 & cplcFeFvcHpmR,cplhhHpmcHpm,cplhhcHpmVWLm,cplhhcHpmVWRm,cplHpmcHpmVZ,cplHpmcHpmVZR,     & 
@@ -2736,20 +2723,20 @@ End Subroutine HpmTwoBodyDecay
 Subroutine AhTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,              & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: cplPseudoHiggsPP(3),cplPseudoHiggsGG(3),cplAhAhhh(3,3,3),cplcFdFdAhL(3,3,3),          & 
 & cplcFdFdAhR(3,3,3),cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFuFuAhL(3,3,3),           & 
@@ -2799,7 +2786,7 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Ah_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,             & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & cplPseudoHiggsPP,cplPseudoHiggsGG,cplAhAhhh,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,       & 
 & cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplFvFvAhL,cplFvFvAhR,cplAhhhVZ,cplAhhhVZR,        & 
@@ -3080,27 +3067,26 @@ End Subroutine AhTwoBodyDecay
 Subroutine VWLmTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,            & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
-Complex(dp) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),           & 
-& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),           & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),          & 
-& cplhhcVWLmVWRm(3),cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,   & 
-& cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcVWLmcVWLm,        & 
-& cplcdeltaRppcVWLmcVWRm
+Complex(dp) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,& 
+& cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFeFvcVWLmL(3,6),         & 
+& cplcFeFvcVWLmR(3,6),cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),cplhhcVWLmVWRm(3),            & 
+& cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,      & 
+& cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -3138,7 +3124,7 @@ m_in = MVWLm
 Call CouplingsFor_VWLm_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,               & 
 & MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,              & 
 & Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,               & 
-& UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,           & 
+& UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,              & 
 & LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,               & 
 & vu,vR,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,  & 
 & cplcFcppFcpcVWLmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,         & 
@@ -3189,17 +3175,14 @@ i_count = i_count +1
 ! ----------------------------------------------
 
  
-  Do gt2=1, 2
 m1out = MFcp
-m2out = MFc(gt2)
-coupL = cplcFcpFccVWLmL(gt2)
-coupR = cplcFcpFccVWLmR(gt2)
+m2out = MFc
+coupL = cplcFcpFccVWLmL
+coupR = cplcFcpFccVWLmR
 Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
 gPartial(1,i_count) = 1*gam 
 gT = gT + gPartial(1,i_count) 
 i_count = i_count +1 
-End Do 
- 
 
  
 ! ----------------------------------------------
@@ -3452,27 +3435,26 @@ End Subroutine VWLmTwoBodyDecay
 Subroutine VWRmTwoBodyDecay(i_in,deltaM,MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,            & 
 & MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,             & 
 & MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,              & 
-& UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,            & 
+& UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,               & 
 & ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,vu,vR,              & 
 & gPartial,gT,BR)
 
 Implicit None 
  
 Real(dp),Intent(in) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
-& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,           & 
-& MFcpp,MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),              & 
-& Mhh(3),Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,               & 
-& MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
+& MU12,vd,vu,vR,MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,           & 
+& MFcpp2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),             & 
+& Mhh2(3),MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,           & 
+& TW,UC(3,3),UP(3,3),ZH(3,3)
 
 Complex(dp),Intent(in) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3),phaT,UV(6,6),ZDR(3,3),ZER(3,3),          & 
-& UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
+& ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
-Complex(dp) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),           & 
-& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),           & 
-& cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),          & 
-& cplhhcVWRmVWRm(3),cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,   & 
-& cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcVWLmcVWRm,        & 
-& cplcdeltaRppcVWRmcVWRm
+Complex(dp) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,& 
+& cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFeFvcVWRmL(3,6),         & 
+& cplcFeFvcVWRmR(3,6),cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),            & 
+& cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,      & 
+& cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -3510,7 +3492,7 @@ m_in = MVWRm
 Call CouplingsFor_VWRm_decays_2B(m_in,i1,MAh,MAh2,MdeltaRpp,MdeltaRpp2,               & 
 & MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,              & 
 & Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,               & 
-& UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,           & 
+& UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,ZUL,ZH,ZW,ZZ,gBL,g2,gR,g3,RHO2,RHO1,ALP1,              & 
 & LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,vd,               & 
 & vu,vR,cplAhHpmcVWRm,cplAhcVWRmVWLm,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,  & 
 & cplcFcppFcpcVWRmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR,         & 
@@ -3561,17 +3543,14 @@ i_count = i_count +1
 ! ----------------------------------------------
 
  
-  Do gt2=1, 2
 m1out = MFcp
-m2out = MFc(gt2)
-coupL = cplcFcpFccVWRmL(gt2)
-coupR = cplcFcpFccVWRmR(gt2)
+m2out = MFc
+coupL = cplcFcpFccVWRmL
+coupR = cplcFcpFccVWRmR
 Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
 gPartial(1,i_count) = 1*gam 
 gT = gT + gPartial(1,i_count) 
 i_count = i_count +1 
-End Do 
- 
 
  
 ! ----------------------------------------------

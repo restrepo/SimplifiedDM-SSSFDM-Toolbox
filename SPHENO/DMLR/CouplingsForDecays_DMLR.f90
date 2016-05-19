@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.8.1 
+! This file was automatically created by SARAH version 4.8.5 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 14:19 on 13.4.2016   
+! File created at 8:41 on 17.5.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -27,11 +27,11 @@ Subroutine CouplingsFor_Fu_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFuFuAhL,cplcFuFuAhR,cplcFuFdcHpmL,     & 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFuFuAhL,cplcFuFuAhR,cplcFuFdcHpmL,               & 
 & cplcFuFdcHpmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,             & 
 & cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,deltaM)
 
@@ -46,15 +46,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -67,13 +67,11 @@ Complex(dp),Intent(out) :: cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),cplcFuFdcHpmL(3
 & cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -112,16 +110,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -215,11 +212,11 @@ Subroutine CouplingsFor_Fe_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFeFeAhL,cplcFeFeAhR,cplcFecFedeltaRppL,& 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFeFeAhL,cplcFeFeAhR,cplcFecFedeltaRppL,          & 
 & cplcFecFedeltaRppR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,       & 
 & cplcFeFeVZRR,cplcFeFvcHpmL,cplcFeFvcHpmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplcFeFvcVWRmL, & 
 & cplcFeFvcVWRmR,deltaM)
@@ -235,15 +232,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -256,13 +253,11 @@ Complex(dp),Intent(out) :: cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFecFedeltaR
 & cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -301,16 +296,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -415,13 +409,13 @@ Subroutine CouplingsFor_Fd_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,       & 
-& cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,            & 
-& cplcFdFuHpmR,cplcFdFuVWLmL,cplcFdFuVWLmR,cplcFdFuVWRmL,cplcFdFuVWRmR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
+& cplcFdFdVZL,cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,           & 
+& cplcFdFuVWLmL,cplcFdFuVWLmR,cplcFdFuVWRmL,cplcFdFuVWRmR,deltaM)
 
 Implicit None 
 
@@ -434,15 +428,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -455,13 +449,11 @@ Complex(dp),Intent(out) :: cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),cplcFdFdhhL(3,3
 & cplcFdFuVWRmR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -500,16 +492,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -603,15 +594,15 @@ Subroutine CouplingsFor_hh_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplHiggsPP,cplHiggsGG,cplHiggsZZvirt,      & 
-& cplHiggsWWvirt,cplAhAhhh,cplAhhhVZ,cplAhhhVZR,cpldeltaRpphhcdeltaRpp,cplcFdFdhhL,      & 
-& cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplFvFvhhL,cplFvFvhhR,     & 
-& cplhhhhhh,cplhhHpmcHpm,cplhhHpmcVWLm,cplhhHpmcVWRm,cplhhcVWLmVWLm,cplhhcVWRmVWLm,      & 
-& cplhhcVWRmVWRm,cplhhVZVZ,cplhhVZVZR,cplhhVZRVZR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplHiggsPP,cplHiggsGG,cplHiggsZZvirt,cplHiggsWWvirt, & 
+& cplAhAhhh,cplAhhhVZ,cplAhhhVZR,cpldeltaRpphhcdeltaRpp,cplcFdFdhhL,cplcFdFdhhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplFvFvhhL,cplFvFvhhR,cplhhhhhh,       & 
+& cplhhHpmcHpm,cplhhHpmcVWLm,cplhhHpmcVWRm,cplhhcVWLmVWLm,cplhhcVWRmVWLm,cplhhcVWRmVWRm, & 
+& cplhhVZVZ,cplhhVZVZR,cplhhVZRVZR,deltaM)
 
 Implicit None 
 
@@ -624,15 +615,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -647,13 +638,11 @@ Complex(dp),Intent(out) :: cplHiggsPP(3),cplHiggsGG(3),cplHiggsZZvirt(3),cplHigg
 & cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),cplhhVZVZ(3),cplhhVZVZR(3),cplhhVZRVZR(3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: ratdeltaRpp,ratFd(3),ratFe(3),ratFu(3),ratHpm(3),ratVWLm,ratVWRm
 
@@ -717,9 +706,9 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 cplAhAhhh = 0._dp 
@@ -984,7 +973,6 @@ End if
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -1171,13 +1159,13 @@ Subroutine CouplingsFor_Fv_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplFvFvAhL,cplFvFvAhR,cplFvFeHpmL,         & 
-& cplFvFeHpmR,cplFvFeVWLmL,cplFvFeVWLmR,cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvhhL,            & 
-& cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplFvFvAhL,cplFvFvAhR,cplFvFeHpmL,cplFvFeHpmR,       & 
+& cplFvFeVWLmL,cplFvFeVWLmR,cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvhhL,cplFvFvhhR,             & 
+& cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
 
 Implicit None 
 
@@ -1190,15 +1178,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -1211,13 +1199,11 @@ Complex(dp),Intent(out) :: cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),cplFvFeHpmL(6,3,3
 & cplFvFvVZRR(6,6)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1256,16 +1242,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -1359,12 +1344,12 @@ Subroutine CouplingsFor_VZ_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,          & 
-& cplFcFcVZL,cplFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,     & 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplAhhhVZ,cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,        & 
+& cplcFcFcVZR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,               & 
 & cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,               & 
 & cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplhhVZVZR,cplHpmcHpmVZ,cplHpmcVWLmVZ,cplHpmcVWRmVZ,   & 
 & cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ,deltaM)
@@ -1380,35 +1365,33 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplcFcpFcpVZL,  & 
+Complex(dp),Intent(out) :: cplAhhhVZ(3,3),cpldeltaRppcdeltaRppVZ,cplcFcFcVZL,cplcFcFcVZR,cplcFcpFcpVZL,          & 
 & cplcFcpFcpVZR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),       & 
 & cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(6,6),   & 
 & cplFvFvVZR(6,6),cplhhVZVZ(3),cplhhVZVZR(3),cplHpmcHpmVZ(3,3),cplHpmcVWLmVZ(3),         & 
 & cplHpmcVWRmVZ(3),cplcVWLmVWLmVZ,cplcVWRmVWLmVZ,cplcVWRmVWRmVZ
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1447,16 +1430,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -1526,14 +1508,10 @@ Call CouplingcVWRmVWRmVZT(g2,gR,ZZ,PhiW,cplcVWRmVWRmVZ)
 
 
 
-cplFcFcVZL = 0._dp 
-cplFcFcVZR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
+cplcFcFcVZL = 0._dp 
+cplcFcFcVZR = 0._dp 
+Call CouplingcFcFcVZT(gBL,gR,ZZ,cplcFcFcVZL,cplcFcFcVZR)
 
- End Do 
-End Do 
 
 
 cplcFcpFcpVZL = 0._dp 
@@ -1597,12 +1575,12 @@ Subroutine CouplingsFor_VZR_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput,
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplAhhhVZR,cpldeltaRppcdeltaRppVZR,        & 
-& cplFcFcVZRL,cplFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,& 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplAhhhVZR,cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,     & 
+& cplcFcFcVZRR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,          & 
 & cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFuVZRL,cplcFuFuVZRR,         & 
 & cplFvFvVZRL,cplFvFvVZRR,cplhhVZVZR,cplhhVZRVZR,cplHpmcHpmVZR,cplHpmcVWLmVZR,           & 
 & cplHpmcVWRmVZR,cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR,deltaM)
@@ -1618,36 +1596,33 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),            & 
-& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),     & 
-& cplcFdFdVZRR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),               & 
-& cplcFuFuVZRR(3,3),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplhhVZVZR(3),cplhhVZRVZR(3),      & 
-& cplHpmcHpmVZR(3,3),cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,& 
-& cplcVWRmVWRmVZR
+Complex(dp),Intent(out) :: cplAhhhVZR(3,3),cpldeltaRppcdeltaRppVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcpVZRL,     & 
+& cplcFcpFcpVZRR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),  & 
+& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),               & 
+& cplFvFvVZRL(6,6),cplFvFvVZRR(6,6),cplhhVZVZR(3),cplhhVZRVZR(3),cplHpmcHpmVZR(3,3),     & 
+& cplHpmcVWLmVZR(3),cplHpmcVWRmVZR(3),cplcVWLmVWLmVZR,cplcVWRmVWLmVZR,cplcVWRmVWRmVZR
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1686,16 +1661,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -1765,14 +1739,10 @@ Call CouplingcVWRmVWRmVZRT(g2,gR,ZZ,PhiW,cplcVWRmVWRmVZR)
 
 
 
-cplFcFcVZRL = 0._dp 
-cplFcFcVZRR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
+cplcFcFcVZRL = 0._dp 
+cplcFcFcVZRR = 0._dp 
+Call CouplingcFcFcVZRT(gBL,gR,ZZ,cplcFcFcVZRL,cplcFcFcVZRR)
 
- End Do 
-End Do 
 
 
 cplcFcpFcpVZRL = 0._dp 
@@ -1836,11 +1806,11 @@ Subroutine CouplingsFor_deltaRpp_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppi
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cpldeltaRpphhcdeltaRpp,cpldeltaRppcdeltaRppVZ,& 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cpldeltaRpphhcdeltaRpp,cpldeltaRppcdeltaRppVZ,       & 
 & cpldeltaRppcdeltaRppVZR,cplFeFecdeltaRppL,cplFeFecdeltaRppR,cplcdeltaRppcHpmcHpm,      & 
 & cplcdeltaRppcHpmcVWLm,cplcdeltaRppcHpmcVWRm,cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,& 
 & cplcdeltaRppcVWRmcVWRm,deltaM)
@@ -1856,15 +1826,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -1877,13 +1847,11 @@ Complex(dp),Intent(out) :: cpldeltaRpphhcdeltaRpp(3),cpldeltaRppcdeltaRppVZ,cpld
 & cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1922,16 +1890,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -2011,11 +1978,11 @@ Subroutine CouplingsFor_Hpm_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput,
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplAhHpmcHpm,cplAhcHpmVWLm,cplAhcHpmVWRm,  & 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplAhHpmcHpm,cplAhcHpmVWLm,cplAhcHpmVWRm,            & 
 & cplcFuFdcHpmL,cplcFuFdcHpmR,cplcFeFvcHpmL,cplcFeFvcHpmR,cplhhHpmcHpm,cplhhcHpmVWLm,    & 
 & cplhhcHpmVWRm,cplHpmcHpmVZ,cplHpmcHpmVZR,cplcHpmVWLmVZ,cplcHpmVWLmVZR,cplcHpmVWRmVZ,   & 
 & cplcHpmVWRmVZR,cplcdeltaRppcHpmcHpm,cplcdeltaRppcHpmcVWLm,cplcdeltaRppcHpmcVWRm,deltaM)
@@ -2031,15 +1998,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -2053,13 +2020,11 @@ Complex(dp),Intent(out) :: cplAhHpmcHpm(3,3,3),cplAhcHpmVWLm(3,3),cplAhcHpmVWRm(
 & cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcHpmcVWRm(3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -2098,16 +2063,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -2274,12 +2238,12 @@ Subroutine CouplingsFor_Ah_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplPseudoHiggsPP,cplPseudoHiggsGG,         & 
-& cplAhAhhh,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,     & 
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplPseudoHiggsPP,cplPseudoHiggsGG,cplAhAhhh,         & 
+& cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
 & cplFvFvAhL,cplFvFvAhR,cplAhhhVZ,cplAhhhVZR,cplAhHpmcHpm,cplAhHpmcVWLm,cplAhHpmcVWRm,   & 
 & cplAhcVWRmVWLm,deltaM)
 
@@ -2294,15 +2258,15 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
@@ -2315,13 +2279,11 @@ Complex(dp),Intent(out) :: cplPseudoHiggsPP(3),cplPseudoHiggsGG(3),cplAhAhhh(3,3
 & cplAhHpmcHpm(3,3,3),cplAhHpmcVWLm(3,3),cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Complex(dp) :: ratdeltaRpp,ratFd(3),ratFe(3),ratFu(3),ratHpm(3),ratVWLm,ratVWRm
 
@@ -2385,9 +2347,9 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 cplAhAhhh = 0._dp 
@@ -2588,7 +2550,6 @@ End if
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -2719,16 +2680,15 @@ Subroutine CouplingsFor_VWLm_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplAhHpmcVWLm,cplAhcVWLmVWRm,              & 
-& cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL,    & 
-& cplcFuFdcVWLmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplhhHpmcVWLm,cplhhcVWLmVWLm,             & 
-& cplhhcVWLmVWRm,cplHpmcVWLmVZ,cplHpmcVWLmVZR,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,            & 
-& cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm,cplcdeltaRppcVWLmcVWLm,           & 
-& cplcdeltaRppcVWLmcVWRm,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplAhHpmcVWLm,cplAhcVWLmVWRm,cplcFcpFccVWLmL,        & 
+& cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,     & 
+& cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplhhHpmcVWLm,cplhhcVWLmVWLm,cplhhcVWLmVWRm,             & 
+& cplHpmcVWLmVZ,cplHpmcVWLmVZR,cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,            & 
+& cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm,cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm,deltaM)
 
 Implicit None 
 
@@ -2741,36 +2701,33 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),           & 
-& cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),           & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),          & 
-& cplhhcVWLmVWRm(3),cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,   & 
-& cplcVWLmVWRmVZ,cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcVWLmcVWLm,        & 
-& cplcdeltaRppcVWLmcVWRm
+Complex(dp),Intent(out) :: cplAhHpmcVWLm(3,3),cplAhcVWLmVWRm(3),cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcppFcpcVWLmL,& 
+& cplcFcppFcpcVWLmR,cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFeFvcVWLmL(3,6),         & 
+& cplcFeFvcVWLmR(3,6),cplhhHpmcVWLm(3,3),cplhhcVWLmVWLm(3),cplhhcVWLmVWRm(3),            & 
+& cplHpmcVWLmVZ(3),cplHpmcVWLmVZR(3),cplcVWLmVWLmVZ,cplcVWLmVWLmVZR,cplcVWLmVWRmVZ,      & 
+& cplcVWLmVWRmVZR,cplcdeltaRppcHpmcVWLm(3),cplcdeltaRppcVWLmcVWLm,cplcdeltaRppcVWLmcVWRm
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -2809,16 +2766,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -2914,10 +2870,8 @@ Call CouplingcVWLmVWRmVZRT(g2,gR,ZZ,PhiW,cplcVWLmVWRmVZR)
 
 cplcFcpFccVWLmL = 0._dp 
 cplcFcpFccVWLmR = 0._dp 
-Do gt2 = 1, 2
-Call CouplingcFcpFccVWLmT(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+Call CouplingcFcpFccVWLmT(gR,PhiW,cplcFcpFccVWLmL,cplcFcpFccVWLmR)
 
-End Do 
 
 
 cplcFcppFcpcVWLmL = 0._dp 
@@ -2957,16 +2911,15 @@ Subroutine CouplingsFor_VWRm_decays_2B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplAhHpmcVWRm,cplAhcVWRmVWLm,              & 
-& cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFuFdcVWRmL,    & 
-& cplcFuFdcVWRmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR,cplhhHpmcVWRm,cplhhcVWRmVWLm,             & 
-& cplhhcVWRmVWRm,cplHpmcVWRmVZ,cplHpmcVWRmVZR,cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,            & 
-& cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm,cplcdeltaRppcVWLmcVWRm,           & 
-& cplcdeltaRppcVWRmcVWRm,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplAhHpmcVWRm,cplAhcVWRmVWLm,cplcFcpFccVWRmL,        & 
+& cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,     & 
+& cplcFeFvcVWRmL,cplcFeFvcVWRmR,cplhhHpmcVWRm,cplhhcVWRmVWLm,cplhhcVWRmVWRm,             & 
+& cplHpmcVWRmVZ,cplHpmcVWRmVZR,cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,            & 
+& cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm,cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm,deltaM)
 
 Implicit None 
 
@@ -2979,36 +2932,33 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),           & 
-& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),           & 
-& cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),          & 
-& cplhhcVWRmVWRm(3),cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,   & 
-& cplcVWRmVWRmVZ,cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcVWLmcVWRm,        & 
-& cplcdeltaRppcVWRmcVWRm
+Complex(dp),Intent(out) :: cplAhHpmcVWRm(3,3),cplAhcVWRmVWLm(3),cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcppFcpcVWRmL,& 
+& cplcFcppFcpcVWRmR,cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFeFvcVWRmL(3,6),         & 
+& cplcFeFvcVWRmR(3,6),cplhhHpmcVWRm(3,3),cplhhcVWRmVWLm(3),cplhhcVWRmVWRm(3),            & 
+& cplHpmcVWRmVZ(3),cplHpmcVWRmVZR(3),cplcVWRmVWLmVZ,cplcVWRmVWLmVZR,cplcVWRmVWRmVZ,      & 
+& cplcVWRmVWRmVZR,cplcdeltaRppcHpmcVWRm(3),cplcdeltaRppcVWLmcVWRm,cplcdeltaRppcVWRmcVWRm
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -3047,16 +2997,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -3152,10 +3101,8 @@ Call CouplingcVWRmVWRmVZRT(g2,gR,ZZ,PhiW,cplcVWRmVWRmVZR)
 
 cplcFcpFccVWRmL = 0._dp 
 cplcFcpFccVWRmR = 0._dp 
-Do gt2 = 1, 2
-Call CouplingcFcpFccVWRmT(gt2,gR,UT,PhiW,cplcFcpFccVWRmL(gt2),cplcFcpFccVWRmR(gt2))
+Call CouplingcFcpFccVWRmT(gR,PhiW,cplcFcpFccVWRmL,cplcFcpFccVWRmR)
 
-End Do 
 
 
 cplcFcppFcpcVWRmL = 0._dp 
@@ -3195,23 +3142,23 @@ Subroutine CouplingsFor_Fu_decays_3B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,         & 
-& cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,          & 
-& cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,      & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,               & 
-& cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,cplcFdFuVWLmR,       & 
-& cplcFdFuVWRmL,cplcFdFuVWRmR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFdcHpmL,cplcFuFdcHpmR,         & 
-& cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFuFuAhL,               & 
-& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,              & 
-& cplcFuFuVZRR,cplFcFcpVWLmL,cplFcFcpVWLmR,cplFcFcpVWRmL,cplFcFcpVWRmR,cplFcFcVZL,       & 
-& cplFcFcVZR,cplFcFcVZRL,cplFcFcVZRR,cplFvFeHpmL,cplFvFeHpmR,cplFvFeVWLmL,               & 
-& cplFvFeVWLmR,cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvAhL,cplFvFvAhR,cplFvFvhhL,               & 
-& cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,        & 
+& cplcFcFcpVWRmR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcppVWLmL,     & 
+& cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,        & 
+& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,        & 
+& cplcFcppFcppVZRR,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,          & 
+& cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,         & 
+& cplcFdFuVWLmR,cplcFdFuVWRmL,cplcFdFuVWRmR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,         & 
+& cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFuFdcHpmL,           & 
+& cplcFuFdcHpmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,             & 
+& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,               & 
+& cplcFuFuVZRL,cplcFuFuVZRR,cplFvFeHpmL,cplFvFeHpmR,cplFvFeVWLmL,cplFvFeVWLmR,           & 
+& cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvAhL,cplFvFvAhR,cplFvFvhhL,cplFvFvhhR,cplFvFvVZL,      & 
+& cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
 
 Implicit None 
 
@@ -3224,46 +3171,44 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,    & 
-& cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,           & 
-& cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),               & 
-& cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),               & 
-& cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),cplcFdFuHpmR(3,3,3),           & 
-& cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),cplcFdFuVWRmR(3,3),           & 
-& cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),           & 
-& cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFuFdcHpmL(3,3,3),& 
-& cplcFuFdcHpmR(3,3,3),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),      & 
-& cplcFuFdcVWRmR(3,3),cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),cplcFuFuhhL(3,3,3),          & 
-& cplcFuFuhhR(3,3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),& 
-& cplFcFcpVWLmL(2),cplFcFcpVWLmR(2),cplFcFcpVWRmL(2),cplFcFcpVWRmR(2),cplFcFcVZL(2,2),   & 
-& cplFcFcVZR(2,2),cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),cplFvFeHpmL(6,3,3),cplFvFeHpmR(6,3,3),& 
+Complex(dp),Intent(out) :: cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,cplcFcFcVZL,              & 
+& cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,               & 
+& cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,          & 
+& cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,      & 
+& cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),           & 
+& cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),& 
+& cplcFdFuHpmR(3,3,3),cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),          & 
+& cplcFdFuVWRmR(3,3),cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFeFehhL(3,3,3),           & 
+& cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),& 
+& cplcFuFdcHpmL(3,3,3),cplcFuFdcHpmR(3,3,3),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),     & 
+& cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),         & 
+& cplcFuFuhhL(3,3,3),cplcFuFuhhR(3,3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),               & 
+& cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFvFeHpmL(6,3,3),cplFvFeHpmR(6,3,3),             & 
 & cplFvFeVWLmL(6,3),cplFvFeVWLmR(6,3),cplFvFeVWRmL(6,3),cplFvFeVWRmR(6,3),               & 
 & cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),cplFvFvhhL(6,6,3),cplFvFvhhR(6,6,3),               & 
 & cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -3302,16 +3247,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -3458,40 +3402,28 @@ Call CouplingFvFvhhT(gt1,gt2,gt3,YDR,YL1,YL2,ZH,UV,cplFvFvhhL(gt1,gt2,gt3)      
 End Do 
 
 
-cplFcFcVZL = 0._dp 
-cplFcFcVZR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
-
- End Do 
-End Do 
+cplcFcFcVZL = 0._dp 
+cplcFcFcVZR = 0._dp 
+Call CouplingcFcFcVZT(gBL,gR,ZZ,cplcFcFcVZL,cplcFcFcVZR)
 
 
-cplFcFcVZRL = 0._dp 
-cplFcFcVZRR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
 
- End Do 
-End Do 
+cplcFcFcVZRL = 0._dp 
+cplcFcFcVZRR = 0._dp 
+Call CouplingcFcFcVZRT(gBL,gR,ZZ,cplcFcFcVZRL,cplcFcFcVZRR)
 
 
-cplFcFcpVWLmL = 0._dp 
-cplFcFcpVWLmR = 0._dp 
-Do gt1 = 1, 2
-Call CouplingFcFcpVWLmT(gt1,gR,UT,PhiW,cplFcFcpVWLmL(gt1),cplFcFcpVWLmR(gt1))
 
-End Do 
+cplcFcFcpVWLmL = 0._dp 
+cplcFcFcpVWLmR = 0._dp 
+Call CouplingcFcFcpVWLmT(gR,PhiW,cplcFcFcpVWLmL,cplcFcFcpVWLmR)
 
 
-cplFcFcpVWRmL = 0._dp 
-cplFcFcpVWRmR = 0._dp 
-Do gt1 = 1, 2
-Call CouplingFcFcpVWRmT(gt1,gR,UT,PhiW,cplFcFcpVWRmL(gt1),cplFcFcpVWRmR(gt1))
 
-End Do 
+cplcFcFcpVWRmL = 0._dp 
+cplcFcFcpVWRmR = 0._dp 
+Call CouplingcFcFcpVWRmT(gR,PhiW,cplcFcFcpVWRmL,cplcFcFcpVWRmR)
+
 
 
 cplcFcpFcpVZL = 0._dp 
@@ -3685,24 +3617,24 @@ Subroutine CouplingsFor_Fe_decays_3B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,         & 
-& cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,          & 
-& cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,      & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,               & 
-& cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,cplcFdFuVWLmR,       & 
-& cplcFdFuVWRmL,cplcFdFuVWRmR,cplcFecFedeltaRppL,cplcFecFedeltaRppR,cplcFeFeAhL,         & 
-& cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,              & 
-& cplcFeFeVZRR,cplcFeFvcHpmL,cplcFeFvcHpmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplcFeFvcVWRmL, & 
-& cplcFeFvcVWRmR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,            & 
-& cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,cplFcFcpVWLmL,cplFcFcpVWLmR,cplFcFcpVWRmL,       & 
-& cplFcFcpVWRmR,cplFcFcVZL,cplFcFcVZR,cplFcFcVZRL,cplFcFcVZRR,cplFeFecdeltaRppL,         & 
-& cplFeFecdeltaRppR,cplFvFeHpmL,cplFvFeHpmR,cplFvFeVWLmL,cplFvFeVWLmR,cplFvFeVWRmL,      & 
-& cplFvFeVWRmR,cplFvFvAhL,cplFvFvAhR,cplFvFvhhL,cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,        & 
-& cplFvFvVZRL,cplFvFvVZRR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,        & 
+& cplcFcFcpVWRmR,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcppVWLmL,     & 
+& cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,        & 
+& cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,        & 
+& cplcFcppFcppVZRR,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,          & 
+& cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,         & 
+& cplcFdFuVWLmR,cplcFdFuVWRmL,cplcFdFuVWRmR,cplcFecFedeltaRppL,cplcFecFedeltaRppR,       & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFeVZRL,cplcFeFeVZRR,cplcFeFvcHpmL,cplcFeFvcHpmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,   & 
+& cplcFeFvcVWRmL,cplcFeFvcVWRmR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,cplFeFecdeltaRppL,cplFeFecdeltaRppR, & 
+& cplFvFeHpmL,cplFvFeHpmR,cplFvFeVWLmL,cplFvFeVWLmR,cplFvFeVWRmL,cplFvFeVWRmR,           & 
+& cplFvFvAhL,cplFvFvAhR,cplFvFvhhL,cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,         & 
+& cplFvFvVZRR,deltaM)
 
 Implicit None 
 
@@ -3715,48 +3647,45 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,    & 
-& cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,           & 
-& cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),               & 
-& cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),               & 
-& cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),cplcFdFuHpmR(3,3,3),           & 
-& cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),cplcFdFuVWRmR(3,3),           & 
-& cplcFecFedeltaRppL(3,3),cplcFecFedeltaRppR(3,3),cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3), & 
-& cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),               & 
-& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFeFvcHpmL(3,6,3),cplcFeFvcHpmR(3,6,3),         & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),       & 
-& cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),cplcFuFuhhL(3,3,3),cplcFuFuhhR(3,3,3),           & 
-& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFcFcpVWLmL(2),& 
-& cplFcFcpVWLmR(2),cplFcFcpVWRmL(2),cplFcFcpVWRmR(2),cplFcFcVZL(2,2),cplFcFcVZR(2,2),    & 
-& cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),cplFeFecdeltaRppL(3,3),cplFeFecdeltaRppR(3,3),       & 
-& cplFvFeHpmL(6,3,3),cplFvFeHpmR(6,3,3),cplFvFeVWLmL(6,3),cplFvFeVWLmR(6,3),             & 
-& cplFvFeVWRmL(6,3),cplFvFeVWRmR(6,3),cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),               & 
-& cplFvFvhhL(6,6,3),cplFvFvhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),  & 
-& cplFvFvVZRR(6,6)
+Complex(dp),Intent(out) :: cplcFcFcpVWLmL,cplcFcFcpVWLmR,cplcFcFcpVWRmL,cplcFcFcpVWRmR,cplcFcFcVZL,              & 
+& cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFcppVWLmL,cplcFcpFcppVWLmR,               & 
+& cplcFcpFcppVWRmL,cplcFcpFcppVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,          & 
+& cplcFcpFcpVZRR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,      & 
+& cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),           & 
+& cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),& 
+& cplcFdFuHpmR(3,3,3),cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),          & 
+& cplcFdFuVWRmR(3,3),cplcFecFedeltaRppL(3,3),cplcFecFedeltaRppR(3,3),cplcFeFeAhL(3,3,3), & 
+& cplcFeFeAhR(3,3,3),cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),             & 
+& cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFeFvcHpmL(3,6,3),             & 
+& cplcFeFvcHpmR(3,6,3),cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),      & 
+& cplcFeFvcVWRmR(3,6),cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),cplcFuFuhhL(3,3,3),          & 
+& cplcFuFuhhR(3,3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),& 
+& cplFeFecdeltaRppL(3,3),cplFeFecdeltaRppR(3,3),cplFvFeHpmL(6,3,3),cplFvFeHpmR(6,3,3),   & 
+& cplFvFeVWLmL(6,3),cplFvFeVWLmR(6,3),cplFvFeVWRmL(6,3),cplFvFeVWRmR(6,3),               & 
+& cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),cplFvFvhhL(6,6,3),cplFvFvhhR(6,6,3),               & 
+& cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -3795,16 +3724,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -3973,40 +3901,28 @@ Call CouplingcFeFvcHpmT(gt1,gt2,gt3,YDR,YL1,YL2,UC,ZEL,ZER,UV,cplcFeFvcHpmL(gt1,
 End Do 
 
 
-cplFcFcVZL = 0._dp 
-cplFcFcVZR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
-
- End Do 
-End Do 
+cplcFcFcVZL = 0._dp 
+cplcFcFcVZR = 0._dp 
+Call CouplingcFcFcVZT(gBL,gR,ZZ,cplcFcFcVZL,cplcFcFcVZR)
 
 
-cplFcFcVZRL = 0._dp 
-cplFcFcVZRR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
 
- End Do 
-End Do 
+cplcFcFcVZRL = 0._dp 
+cplcFcFcVZRR = 0._dp 
+Call CouplingcFcFcVZRT(gBL,gR,ZZ,cplcFcFcVZRL,cplcFcFcVZRR)
 
 
-cplFcFcpVWLmL = 0._dp 
-cplFcFcpVWLmR = 0._dp 
-Do gt1 = 1, 2
-Call CouplingFcFcpVWLmT(gt1,gR,UT,PhiW,cplFcFcpVWLmL(gt1),cplFcFcpVWLmR(gt1))
 
-End Do 
+cplcFcFcpVWLmL = 0._dp 
+cplcFcFcpVWLmR = 0._dp 
+Call CouplingcFcFcpVWLmT(gR,PhiW,cplcFcFcpVWLmL,cplcFcFcpVWLmR)
 
 
-cplFcFcpVWRmL = 0._dp 
-cplFcFcpVWRmR = 0._dp 
-Do gt1 = 1, 2
-Call CouplingFcFcpVWRmT(gt1,gR,UT,PhiW,cplFcFcpVWRmL(gt1),cplFcFcpVWRmR(gt1))
 
-End Do 
+cplcFcFcpVWRmL = 0._dp 
+cplcFcFcpVWRmR = 0._dp 
+Call CouplingcFcFcpVWRmT(gR,PhiW,cplcFcFcpVWRmL,cplcFcFcpVWRmR)
+
 
 
 cplcFcpFcpVZL = 0._dp 
@@ -4200,23 +4116,23 @@ Subroutine CouplingsFor_Fd_decays_3B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFcpFccVWLmL,cplcFcpFccVWLmR,           & 
-& cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,            & 
-& cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,& 
-& cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFdVZRL,              & 
-& cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,cplcFdFuVWLmR,cplcFdFuVWRmL,      & 
-& cplcFdFuVWRmR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,             & 
-& cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFeFvcHpmL,cplcFeFvcHpmR,cplcFeFvcVWLmL,      & 
-& cplcFeFvcVWLmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR,cplcFuFdcHpmL,cplcFuFdcHpmR,              & 
-& cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFuFuAhL,               & 
-& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,              & 
-& cplcFuFuVZRR,cplFcFcVZL,cplFcFcVZR,cplFcFcVZRL,cplFcFcVZRR,cplFvFvAhL,cplFvFvAhR,      & 
-& cplFvFvhhL,cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,   & 
+& cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVZL,         & 
+& cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,       & 
+& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,  & 
+& cplcFcppFcppVZRR,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,          & 
+& cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFdFuHpmL,cplcFdFuHpmR,cplcFdFuVWLmL,         & 
+& cplcFdFuVWLmR,cplcFdFuVWRmL,cplcFdFuVWRmR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,         & 
+& cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFeFvcHpmL,           & 
+& cplcFeFvcHpmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR,             & 
+& cplcFuFdcHpmL,cplcFuFdcHpmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,              & 
+& cplcFuFdcVWRmR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,            & 
+& cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFvAhL,cplFvFvAhR,cplFvFvhhL,cplFvFvhhR,     & 
+& cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
 
 Implicit None 
 
@@ -4229,46 +4145,44 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),          & 
-& cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,           & 
-& cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVZL,cplcFcppFcppVZR, & 
-& cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),               & 
-& cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),               & 
-& cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),cplcFdFuHpmR(3,3,3),           & 
-& cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),cplcFdFuVWRmR(3,3),           & 
-& cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),           & 
-& cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFeFvcHpmL(3,6,3),& 
-& cplcFeFvcHpmR(3,6,3),cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),      & 
-& cplcFeFvcVWRmR(3,6),cplcFuFdcHpmL(3,3,3),cplcFuFdcHpmR(3,3,3),cplcFuFdcVWLmL(3,3),     & 
-& cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFuFuAhL(3,3,3),        & 
-& cplcFuFuAhR(3,3,3),cplcFuFuhhL(3,3,3),cplcFuFuhhR(3,3,3),cplcFuFuVZL(3,3),             & 
-& cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFcFcVZL(2,2),cplFcFcVZR(2,2),  & 
-& cplFcFcVZRL(2,2),cplFcFcVZRR(2,2),cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),cplFvFvhhL(6,6,3),& 
-& cplFvFvhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6)
+Complex(dp),Intent(out) :: cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,    & 
+& cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,            & 
+& cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,& 
+& cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL(3,3,3),  & 
+& cplcFdFdAhR(3,3,3),cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),cplcFdFdVZL(3,3),             & 
+& cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFdFuHpmL(3,3,3),              & 
+& cplcFdFuHpmR(3,3,3),cplcFdFuVWLmL(3,3),cplcFdFuVWLmR(3,3),cplcFdFuVWRmL(3,3),          & 
+& cplcFdFuVWRmR(3,3),cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),cplcFeFehhL(3,3,3),           & 
+& cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),& 
+& cplcFeFvcHpmL(3,6,3),cplcFeFvcHpmR(3,6,3),cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),     & 
+& cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),cplcFuFdcHpmL(3,3,3),cplcFuFdcHpmR(3,3,3),     & 
+& cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),       & 
+& cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),cplcFuFuhhL(3,3,3),cplcFuFuhhR(3,3,3),           & 
+& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFvFvAhL(6,6,3),& 
+& cplFvFvAhR(6,6,3),cplFvFvhhL(6,6,3),cplFvFvhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6), & 
+& cplFvFvVZRL(6,6),cplFvFvVZRR(6,6)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -4307,16 +4221,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -4463,40 +4376,28 @@ Call CouplingcFeFvcHpmT(gt1,gt2,gt3,YDR,YL1,YL2,UC,ZEL,ZER,UV,cplcFeFvcHpmL(gt1,
 End Do 
 
 
-cplFcFcVZL = 0._dp 
-cplFcFcVZR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
-
- End Do 
-End Do 
+cplcFcFcVZL = 0._dp 
+cplcFcFcVZR = 0._dp 
+Call CouplingcFcFcVZT(gBL,gR,ZZ,cplcFcFcVZL,cplcFcFcVZR)
 
 
-cplFcFcVZRL = 0._dp 
-cplFcFcVZRR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
 
- End Do 
-End Do 
+cplcFcFcVZRL = 0._dp 
+cplcFcFcVZRR = 0._dp 
+Call CouplingcFcFcVZRT(gBL,gR,ZZ,cplcFcFcVZRL,cplcFcFcVZRR)
+
 
 
 cplcFcpFccVWLmL = 0._dp 
 cplcFcpFccVWLmR = 0._dp 
-Do gt2 = 1, 2
-Call CouplingcFcpFccVWLmT(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+Call CouplingcFcpFccVWLmT(gR,PhiW,cplcFcpFccVWLmL,cplcFcpFccVWLmR)
 
-End Do 
 
 
 cplcFcpFccVWRmL = 0._dp 
 cplcFcpFccVWRmR = 0._dp 
-Do gt2 = 1, 2
-Call CouplingcFcpFccVWRmT(gt2,gR,UT,PhiW,cplcFcpFccVWRmL(gt2),cplcFcpFccVWRmR(gt2))
+Call CouplingcFcpFccVWRmT(gR,PhiW,cplcFcpFccVWRmL,cplcFcpFccVWRmR)
 
-End Do 
 
 
 cplcFcpFcpVZL = 0._dp 
@@ -4690,23 +4591,23 @@ Subroutine CouplingsFor_Fv_decays_3B(m_in,i1,MAhinput,MAh2input,MdeltaRppinput, 
 & MFdinput,MFd2input,MFeinput,MFe2input,MFuinput,MFu2input,MFvinput,MFv2input,           & 
 & Mhhinput,Mhh2input,MHpminput,MHpm2input,MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,phaTinput,PhiWinput,               & 
-& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,UTinput,ZURinput,ZDLinput,           & 
-& ZELinput,ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,            & 
-& RHO2input,RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,       & 
-& LAM3input,YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,             & 
-& MU22input,MU12input,vdinput,vuinput,vRinput,cplcFcpFccVWLmL,cplcFcpFccVWLmR,           & 
-& cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,            & 
-& cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,& 
-& cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFdVZRL,              & 
-& cplcFdFdVZRR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,              & 
-& cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFeFvcHpmL,cplcFeFvcHpmR,cplcFeFvcVWLmL,      & 
-& cplcFeFvcVWLmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR,cplcFuFdcHpmL,cplcFuFdcHpmR,              & 
-& cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,cplcFuFdcVWRmR,cplcFuFuAhL,               & 
-& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFuFuVZRL,              & 
-& cplcFuFuVZRR,cplFcFcVZL,cplFcFcVZR,cplFcFcVZRL,cplFcFcVZRR,cplFvFeHpmL,cplFvFeHpmR,    & 
-& cplFvFeVWLmL,cplFvFeVWLmR,cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvAhL,cplFvFvAhR,             & 
-& cplFvFvhhL,cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
+& UVinput,TWinput,UCinput,ZDRinput,ZERinput,UPinput,ZURinput,ZDLinput,ZELinput,          & 
+& ZULinput,ZHinput,ZWinput,ZZinput,gBLinput,g2input,gRinput,g3input,RHO2input,           & 
+& RHO1input,ALP1input,LAM1input,ALP3input,ALP2input,LAM4input,LAM2input,LAM3input,       & 
+& YDRinput,YL1input,YQ1input,YL2input,YQ2input,M23input,mu32input,MU22input,             & 
+& MU12input,vdinput,vuinput,vRinput,cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,   & 
+& cplcFcpFccVWLmL,cplcFcpFccVWLmR,cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVZL,         & 
+& cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,       & 
+& cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,  & 
+& cplcFcppFcppVZRR,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,          & 
+& cplcFdFdVZR,cplcFdFdVZRL,cplcFdFdVZRR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,             & 
+& cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFeVZRL,cplcFeFeVZRR,cplcFeFvcHpmL,           & 
+& cplcFeFvcHpmR,cplcFeFvcVWLmL,cplcFeFvcVWLmR,cplcFeFvcVWRmL,cplcFeFvcVWRmR,             & 
+& cplcFuFdcHpmL,cplcFuFdcHpmR,cplcFuFdcVWLmL,cplcFuFdcVWLmR,cplcFuFdcVWRmL,              & 
+& cplcFuFdcVWRmR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,            & 
+& cplcFuFuVZR,cplcFuFuVZRL,cplcFuFuVZRR,cplFvFeHpmL,cplFvFeHpmR,cplFvFeVWLmL,            & 
+& cplFvFeVWLmR,cplFvFeVWRmL,cplFvFeVWRmR,cplFvFvAhL,cplFvFvAhR,cplFvFvhhL,               & 
+& cplFvFvhhR,cplFvFvVZL,cplFvFvVZR,cplFvFvVZRL,cplFvFvVZRR,deltaM)
 
 Implicit None 
 
@@ -4719,47 +4620,44 @@ Real(dp),Intent(in) :: gBLinput,g2input,gRinput,g3input,RHO2input,RHO1input,ALP1
 
 Complex(dp),Intent(in) :: YDRinput(3,3),YL1input(3,3),YQ1input(3,3),YL2input(3,3),YQ2input(3,3)
 
-Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput(2),MFc2input(2),     & 
+Real(dp),Intent(in) :: MAhinput(3),MAh2input(3),MdeltaRppinput,MdeltaRpp2input,MFcinput,MFc2input,           & 
 & MFcpinput,MFcp2input,MFcppinput,MFcpp2input,MFdinput(3),MFd2input(3),MFeinput(3),      & 
 & MFe2input(3),MFuinput(3),MFu2input(3),MFvinput(6),MFv2input(6),Mhhinput(3),            & 
 & Mhh2input(3),MHpminput(3),MHpm2input(3),MVWLminput,MVWLm2input,MVWRminput,             & 
 & MVWRm2input,MVZinput,MVZ2input,MVZRinput,MVZR2input,PhiWinput,TWinput,UCinput(3,3),    & 
 & UPinput(3,3),ZHinput(3,3)
 
-Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),UTinput(2,2),ZURinput(3,3),        & 
-& ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
+Complex(dp),Intent(in) :: phaTinput,UVinput(6,6),ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),       & 
+& ZELinput(3,3),ZULinput(3,3),ZWinput(4,4),ZZinput(3,3)
 
 Real(dp) :: gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,LAM3,M23,mu32,MU22,              & 
 & MU12,vd,vu,vR
 
 Complex(dp) :: YDR(3,3),YL1(3,3),YQ1(3,3),YL2(3,3),YQ2(3,3)
 
-Complex(dp),Intent(out) :: cplcFcpFccVWLmL(2),cplcFcpFccVWLmR(2),cplcFcpFccVWRmL(2),cplcFcpFccVWRmR(2),          & 
-& cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,           & 
-& cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,cplcFcppFcppVZL,cplcFcppFcppVZR, & 
-& cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL(3,3,3),cplcFdFdAhR(3,3,3),               & 
-& cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),               & 
-& cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFeFeAhL(3,3,3),cplcFeFeAhR(3,3,3),             & 
-& cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),               & 
-& cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFeFvcHpmL(3,6,3),cplcFeFvcHpmR(3,6,3),         & 
-& cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),cplcFeFvcVWRmR(3,6),       & 
-& cplcFuFdcHpmL(3,3,3),cplcFuFdcHpmR(3,3,3),cplcFuFdcVWLmL(3,3),cplcFuFdcVWLmR(3,3),     & 
-& cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFuFuAhL(3,3,3),cplcFuFuAhR(3,3,3),         & 
-& cplcFuFuhhL(3,3,3),cplcFuFuhhR(3,3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),               & 
-& cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFcFcVZL(2,2),cplFcFcVZR(2,2),cplFcFcVZRL(2,2),  & 
-& cplFcFcVZRR(2,2),cplFvFeHpmL(6,3,3),cplFvFeHpmR(6,3,3),cplFvFeVWLmL(6,3),              & 
-& cplFvFeVWLmR(6,3),cplFvFeVWRmL(6,3),cplFvFeVWRmR(6,3),cplFvFvAhL(6,6,3),               & 
-& cplFvFvAhR(6,6,3),cplFvFvhhL(6,6,3),cplFvFvhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6), & 
-& cplFvFvVZRL(6,6),cplFvFvVZRR(6,6)
+Complex(dp),Intent(out) :: cplcFcFcVZL,cplcFcFcVZR,cplcFcFcVZRL,cplcFcFcVZRR,cplcFcpFccVWLmL,cplcFcpFccVWLmR,    & 
+& cplcFcpFccVWRmL,cplcFcpFccVWRmR,cplcFcpFcpVZL,cplcFcpFcpVZR,cplcFcpFcpVZRL,            & 
+& cplcFcpFcpVZRR,cplcFcppFcpcVWLmL,cplcFcppFcpcVWLmR,cplcFcppFcpcVWRmL,cplcFcppFcpcVWRmR,& 
+& cplcFcppFcppVZL,cplcFcppFcppVZR,cplcFcppFcppVZRL,cplcFcppFcppVZRR,cplcFdFdAhL(3,3,3),  & 
+& cplcFdFdAhR(3,3,3),cplcFdFdhhL(3,3,3),cplcFdFdhhR(3,3,3),cplcFdFdVZL(3,3),             & 
+& cplcFdFdVZR(3,3),cplcFdFdVZRL(3,3),cplcFdFdVZRR(3,3),cplcFeFeAhL(3,3,3),               & 
+& cplcFeFeAhR(3,3,3),cplcFeFehhL(3,3,3),cplcFeFehhR(3,3,3),cplcFeFeVZL(3,3),             & 
+& cplcFeFeVZR(3,3),cplcFeFeVZRL(3,3),cplcFeFeVZRR(3,3),cplcFeFvcHpmL(3,6,3),             & 
+& cplcFeFvcHpmR(3,6,3),cplcFeFvcVWLmL(3,6),cplcFeFvcVWLmR(3,6),cplcFeFvcVWRmL(3,6),      & 
+& cplcFeFvcVWRmR(3,6),cplcFuFdcHpmL(3,3,3),cplcFuFdcHpmR(3,3,3),cplcFuFdcVWLmL(3,3),     & 
+& cplcFuFdcVWLmR(3,3),cplcFuFdcVWRmL(3,3),cplcFuFdcVWRmR(3,3),cplcFuFuAhL(3,3,3),        & 
+& cplcFuFuAhR(3,3,3),cplcFuFuhhL(3,3,3),cplcFuFuhhR(3,3,3),cplcFuFuVZL(3,3),             & 
+& cplcFuFuVZR(3,3),cplcFuFuVZRL(3,3),cplcFuFuVZRR(3,3),cplFvFeHpmL(6,3,3),               & 
+& cplFvFeHpmR(6,3,3),cplFvFeVWLmL(6,3),cplFvFeVWLmR(6,3),cplFvFeVWRmL(6,3),              & 
+& cplFvFeVWRmR(6,3),cplFvFvAhL(6,6,3),cplFvFvAhR(6,6,3),cplFvFvhhL(6,6,3),               & 
+& cplFvFvhhR(6,6,3),cplFvFvVZL(6,6),cplFvFvVZR(6,6),cplFvFvVZRL(6,6),cplFvFvVZRR(6,6)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc(2),MFc2(2),MFcp,MFcp2,MFcpp,MFcpp2,           & 
-& MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),            & 
-& MHpm(3),MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),        & 
-& UP(3,3),ZH(3,3)
+Real(dp) :: MAh(3),MAh2(3),MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,MFcpp2,MFd(3),          & 
+& MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(6),MFv2(6),Mhh(3),Mhh2(3),MHpm(3),           & 
+& MHpm2(3),MVWLm,MVWLm2,MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,PhiW,TW,UC(3,3),UP(3,3),ZH(3,3)
 
-Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),UT(2,2),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),           & 
-& ZW(4,4),ZZ(3,3)
+Complex(dp) :: phaT,UV(6,6),ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(4,4),ZZ(3,3)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -4798,16 +4696,15 @@ Call SolveTadpoleEquations(gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,     
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
 Call TreeMasses(MAh,MAh2,MdeltaRpp,MdeltaRpp2,MFc,MFc2,MFcp,MFcp2,MFcpp,              & 
 & MFcpp2,MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHpm,MHpm2,MVWLm,MVWLm2,           & 
-& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,UT,ZUR,ZDL,             & 
-& ZEL,ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,             & 
-& LAM2,LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
+& MVWRm,MVWRm2,MVZ,MVZ2,MVZR,MVZR2,phaT,PhiW,UV,TW,UC,ZDR,ZER,UP,ZUR,ZDL,ZEL,            & 
+& ZUL,ZH,ZW,ZZ,vd,vu,vR,gBL,g2,gR,g3,RHO2,RHO1,ALP1,LAM1,ALP3,ALP2,LAM4,LAM2,            & 
+& LAM3,YDR,YL1,YQ1,YL2,YQ2,M23,mu32,MU22,MU12,.True.,kont)
 
 ZH = ZHinput 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
 UV = UVinput 
 UC = UCinput 
 UP = UPinput 
-UT = UTinput 
 ZH = ZHinput 
 ZW = ZWinput 
 ZZ = ZZinput 
@@ -4954,40 +4851,28 @@ Call CouplingcFeFvcHpmT(gt1,gt2,gt3,YDR,YL1,YL2,UC,ZEL,ZER,UV,cplcFeFvcHpmL(gt1,
 End Do 
 
 
-cplFcFcVZL = 0._dp 
-cplFcFcVZR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZL(gt1,gt2),cplFcFcVZR(gt1,gt2))
-
- End Do 
-End Do 
+cplcFcFcVZL = 0._dp 
+cplcFcFcVZR = 0._dp 
+Call CouplingcFcFcVZT(gBL,gR,ZZ,cplcFcFcVZL,cplcFcFcVZR)
 
 
-cplFcFcVZRL = 0._dp 
-cplFcFcVZRR = 0._dp 
-Do gt1 = 1, 2
- Do gt2 = 1, 2
-Call CouplingFcFcVZRT(gt1,gt2,gBL,gR,ZZ,UT,cplFcFcVZRL(gt1,gt2),cplFcFcVZRR(gt1,gt2))
 
- End Do 
-End Do 
+cplcFcFcVZRL = 0._dp 
+cplcFcFcVZRR = 0._dp 
+Call CouplingcFcFcVZRT(gBL,gR,ZZ,cplcFcFcVZRL,cplcFcFcVZRR)
+
 
 
 cplcFcpFccVWLmL = 0._dp 
 cplcFcpFccVWLmR = 0._dp 
-Do gt2 = 1, 2
-Call CouplingcFcpFccVWLmT(gt2,gR,UT,PhiW,cplcFcpFccVWLmL(gt2),cplcFcpFccVWLmR(gt2))
+Call CouplingcFcpFccVWLmT(gR,PhiW,cplcFcpFccVWLmL,cplcFcpFccVWLmR)
 
-End Do 
 
 
 cplcFcpFccVWRmL = 0._dp 
 cplcFcpFccVWRmR = 0._dp 
-Do gt2 = 1, 2
-Call CouplingcFcpFccVWRmT(gt2,gR,UT,PhiW,cplcFcpFccVWRmL(gt2),cplcFcpFccVWRmR(gt2))
+Call CouplingcFcpFccVWRmT(gR,PhiW,cplcFcpFccVWRmL,cplcFcpFccVWRmR)
 
-End Do 
 
 
 cplcFcpFcpVZL = 0._dp 
@@ -5196,6 +5081,8 @@ Real(dp), Intent(out) :: g1, g2, g3, vd, vu
 Complex(dp), Intent(out) :: Yu(3,3), Yd(3,3), Ye(3,3)
 Real(dp) :: dt, gSM(14), gSM2(2), gSM3(3), mtopMS,  sinw2, vev, tz, alphaStop 
 Integer :: kont
+
+RunningTopMZ = .false.
 
 Yd = 0._dp
 Ye = 0._dp
@@ -5441,10 +5328,11 @@ If (scale_out.gt.sqrt(mz2)) Then
 Else
 
  ! From M_Z down to scale_out
-  tz=Log(scale_out/sqrt(mz2)) 
-  dt=tz/50._dp 
-  Call odeint(gSM,14,0._dp,tz,deltaM,dt,0._dp,rge11_SMa,kont)
-
+  If (abs(scale_out - sqrt(mz2)).gt.1.0E-3_dp) Then 
+   tz=Log(scale_out/sqrt(mz2)) 
+   dt=tz/50._dp 
+   Call odeint(gSM,14,0._dp,tz,deltaM,dt,0._dp,rge11_SMa,kont)
+  End if
 End if
 
 ! Calculating Couplings 
@@ -5498,6 +5386,8 @@ Integer :: kont
 Yd = 0._dp
 Ye = 0._dp
 Yu = 0._dp
+
+RunningTopMZ = .false.
 
 If (.not.RunningTopMZ) Then
 

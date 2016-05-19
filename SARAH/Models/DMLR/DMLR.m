@@ -131,8 +131,8 @@ DEFINITION[EWSB][MatterSector]=
      {{{dL}, {conj[dR]}}, {{DL,Vd}, {DR,Ud}}},
      {{{uL}, {conj[uR]}}, {{UL,Vu}, {UR,Uu}}},
      {{{conj[eL]}, {eR}}, {{EL,Ve}, {ER,Ue}}},
-     {{conj[nuL], nuR},{Fv0,PMNS}},
-     {{(*t10,*) t20, t30},{Ft0,UT}}(*,
+     {{conj[nuL], nuR},{Fv0,PMNS}}(*,
+     {{(*t10,*) t20, t30},{Ft0,UT}}
      {{{t1p, t2p}, {t1m, t3m}}, {{TPL,VTe}, {TMR,UTe}}}*)
      };  
 
@@ -163,7 +163,7 @@ DEFINITION[EWSB][DiracSpinors]={
  Fe ->{  EL, conj[ER]},
  Fu ->{  UL, conj[UR]},
  Fv ->{Fv0, conj[Fv0]},
- Fc ->{Ft0, conj[Ft0]},
+ Fc ->{t20, conj[t30]},
  Fcpp -> {t2pp, conj[t3mm]},
  Fcp ->{ t2p, conj[t3m]}
  };
