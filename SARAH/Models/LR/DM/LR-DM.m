@@ -1,8 +1,8 @@
 (* ::Package:: *)
-
+(*use ./butler LR/DM in ToolBox *)
 Off[General::spell]
 
-Model`Name = "DMLR";
+Model`Name = "LRDM";
 Model`NameLaTeX ="Left-Right Symmetric Model with fermionic and scalar triplets";
 Model`Authors = "M.E. Krauss, C. Bonilla";
 Model`Date = "2016-01-08";
