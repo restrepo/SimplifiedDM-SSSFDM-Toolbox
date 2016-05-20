@@ -1,1 +1,2 @@
 pyslha
+bash_kernel
