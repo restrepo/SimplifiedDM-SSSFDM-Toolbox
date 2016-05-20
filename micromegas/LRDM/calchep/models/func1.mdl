@@ -1,4 +1,4 @@
-LRDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 9:45 on 20.5.2016
+LRDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 13:39 on 20.5.2016
 Constraints  
  Name          |> Expression                                                                                                                                                                                <|
 rd             |slhaRead("SPheno.spc.LRDM",0) 
