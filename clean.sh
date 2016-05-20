@@ -8,7 +8,7 @@ MODEL="$1"
 MODEL=$(echo $MODEL | sed 's/+/::/g') 
 models="darkLR
 diphotonModels
-DMLR
+LR+DM
 tripletLR
 SM+HighScale"
 Nm=$(echo "$models" | wc -l)
