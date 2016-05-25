@@ -22,8 +22,8 @@ Block MINPAR      # Input parameters
 10   0.000000E+00    # Lambda10Input
 11   0.000000E+00    # LambdahInput
 12   4.0000000E+04    # M12input
-13   0.000000E+00    # Mhinput
-14   0.000000E+00    # Muinput
+13   1.0000000E+04    # Mhinput
+14   1.0000000E+02    # Muinput
 15   5.0000000E+01    # TanBeta
 Block SPhenoInput   # SPheno specific input 
   1 -1              # error level 
