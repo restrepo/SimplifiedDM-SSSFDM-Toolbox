@@ -2,15 +2,21 @@ Run SARAH models precompiled by the butler script of SARAH Toolbox.
 
 Try directly here:
 
-[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/BSM-Toolbox)
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/Zee-Toolbox)
 
-To build a model:
-./butler MODEL
-cd micromegas/MODEL
-make clean
-mkdir work/so_generated/
-touch work/so_generated/.hidden
-commit and push changes
+To re-build a model:
+ $ cd micromegas 
+ $ make
+ $ make
+ $ cd ..
+ $ ./butler MODEL # Requires mathematica
+
+To build from official Toolbox (after ./butler)
+ $ cd micromegas/MODEL
+ $ make clean
+ $ mkdir work/so_generated/
+ $ touch work/so_generated/.hidden
+ $ commit and push changes
 
 
 
