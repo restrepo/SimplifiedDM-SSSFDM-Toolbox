@@ -10,6 +10,7 @@ models="darkLR
 diphotonModels
 LR+DM
 tripletLR
+radinert+T13A
 SM+HighScale
 Zee"
 Nm=$(echo "$models" | wc -l)
