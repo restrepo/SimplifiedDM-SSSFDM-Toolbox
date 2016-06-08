@@ -1,0 +1,247 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      9144,        238]
+NotebookOptionsPosition[      8001,        201]
+NotebookOutlinePosition[      8421,        218]
+CellTagsIndexPosition[      8378,        215]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"We", " ", "load", " ", "SARAH"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.6421393497872753`*^9, 3.642139353401601*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Get", "[", "\"\<codes/SARAH-4.5.8/SARAH.m\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.543066433311716*^9, 3.543066444646021*^9}, 
+   3.612673160960286*^9, {3.642139187375333*^9, 3.642139200640821*^9}, {
+   3.642159187821062*^9, 3.6421591886540318`*^9}, {3.6422650341114063`*^9, 
+   3.642265034239678*^9}, 3.6436190288853693`*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"We", " ", "load", " ", "the", " ", "scotogenic", " ", "model"}], 
+  " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.642139355394115*^9, 3.642139366256424*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Start", "[", "\"\<Scotogenic\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.61769587968014*^9, 3.617695885302827*^9}, {
+   3.617700031416925*^9, 3.617700043583078*^9}, {3.617700994605487*^9, 
+   3.617701002081102*^9}, {3.617703853456403*^9, 3.6177038578200903`*^9}, {
+   3.617704011996723*^9, 3.617704019516409*^9}, {3.6177729141097927`*^9, 
+   3.617772916719343*^9}, {3.617772975360723*^9, 3.617772977286265*^9}, 
+   3.641892711213243*^9, 3.642139344190316*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"Mass", " ", "matrices"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.64213936889736*^9, 3.642139373351761*^9}}],
+
+Cell[BoxData[
+ RowBox[{"MassMatrix", "[", "Fe", "]"}]], "Input",
+ CellChangeTimes->{{3.6418944585737343`*^9, 3.6418944618362913`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"MassMatrix", "[", "Chi", "]"}]], "Input",
+ CellChangeTimes->{{3.641894757416142*^9, 3.641894757714943*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"MassMatrix", "[", "Chi", "]"}], "/.", 
+  RowBox[{
+   RowBox[{"Mn", "[", 
+    RowBox[{"i_", ",", "j_"}], "]"}], "\[RuleDelayed]", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{"i", ">", "j"}], ",", 
+     RowBox[{"Mn", "[", 
+      RowBox[{"j", ",", "i"}], "]"}], ",", 
+     RowBox[{"Mn", "[", 
+      RowBox[{"i", ",", "j"}], "]"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.641895406755147*^9, 3.641895434136468*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Mass", "[", "hh", "]"}], "/.", 
+  RowBox[{"Masses", "[", "EWSB", "]"}]}]], "Input",
+ CellChangeTimes->{{3.641893857192151*^9, 3.64189385976862*^9}, {
+  3.641894277612791*^9, 3.6418942855435877`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"Tadpole", " ", "equations"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.6421393767660427`*^9, 3.642139380317548*^9}}],
+
+Cell[BoxData[
+ RowBox[{"TadpoleEquations", "[", "EWSB", "]"}]], "Input",
+ CellChangeTimes->{{3.641892918846278*^9, 3.641892924317926*^9}}],
+
+Cell[BoxData[
+ RowBox[{"TadpoleEquation", "[", "v", "]"}]], "Input",
+ CellChangeTimes->{{3.641892939357213*^9, 3.6418929503732023`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"solTadpole", "=", 
+  RowBox[{"Solve", "[", 
+   RowBox[{
+    RowBox[{"TadpoleEquation", "[", "v", "]"}], ",", "mH2"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6418932816192017`*^9, 3.641893289530778*^9}, {
+  3.6418959581884813`*^9, 3.641895960119982*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Mass", "[", "hh", "]"}], "/.", 
+   RowBox[{"Masses", "[", "EWSB", "]"}]}], "/.", "solTadpole"}]], "Input",
+ CellChangeTimes->{{3.641895966681736*^9, 3.641895969857542*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", "Vertices", " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.642139384508168*^9, 3.642139386810878*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Vertex", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"bar", "[", "Fe", "]"}], ",", "Fe", ",", "hh"}], "}"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.6418966032427073`*^9, 3.64189661309589*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Vertex", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"bar", "[", "Fe", "]"}], ",", "Fv", ",", 
+    RowBox[{"conj", "[", "VWp", "]"}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.641999275206624*^9, 3.641999283070676*^9}, {
+  3.641999427941495*^9, 3.641999439992008*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Vertex", "[", 
+  RowBox[{"{", 
+   RowBox[{"Fv", ",", "Chi", ",", "hh"}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.641896631893976*^9, 3.641896632179007*^9}, {
+  3.6418968663984213`*^9, 3.6418968675826683`*^9}, {3.6418968985978413`*^9, 
+  3.641896898863695*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Vertex", "[", 
+  RowBox[{"{", 
+   RowBox[{"Fv", ",", "Chi", ",", "etR"}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.641896874249325*^9, 3.64189688850025*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"We", " ", "create", " ", "a", " ", "SPheno", " ", "module"}], " ", 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.6421591984943047`*^9, 3.642159204623931*^9}}],
+
+Cell[BoxData[
+ RowBox[{"MakeSPheno", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.613931911833357*^9, 3.613931920588901*^9}, {
+   3.6167554365343027`*^9, 3.616755439897934*^9}, {3.6168231213917027`*^9, 
+   3.6168231371752*^9}, {3.61684007729959*^9, 3.616840081183877*^9}, {
+   3.616853246013549*^9, 3.6168532469611177`*^9}, {3.617537504856537*^9, 
+   3.617537508304668*^9}, 3.6175972471865063`*^9, {3.617697143417962*^9, 
+   3.617697146813134*^9}, {3.618052486143476*^9, 3.618052486584504*^9}, {
+   3.618381013831895*^9, 3.618381015912339*^9}, {3.618384099383676*^9, 
+   3.61838410119975*^9}, {3.618384349960568*^9, 3.618384359990724*^9}, {
+   3.6187177917303753`*^9, 3.618717793059134*^9}, {3.6188234229210577`*^9, 
+   3.6188234238916063`*^9}, {3.61978398780939*^9, 3.619783989833467*^9}, {
+   3.61980506094975*^9, 3.6198050619234877`*^9}, {3.621619305737402*^9, 
+   3.621619308978161*^9}, {3.6216730527531023`*^9, 3.6216730538153067`*^9}, {
+   3.621674593213233*^9, 3.621674594876628*^9}, {3.621677598277638*^9, 
+   3.621677599550735*^9}, {3.622630329106503*^9, 3.622630330943138*^9}, {
+   3.623064749056677*^9, 3.623064751218445*^9}, {3.62307087401628*^9, 
+   3.623070875501781*^9}, {3.6258336473923492`*^9, 3.625833664998884*^9}, {
+   3.6258412251011047`*^9, 3.625841226453388*^9}, {3.626157473988639*^9, 
+   3.6261574753543*^9}, {3.627220633033099*^9, 3.627220634267314*^9}, {
+   3.627886533873753*^9, 3.627886535778747*^9}, {3.627890646251831*^9, 
+   3.627890647430932*^9}, {3.633328961168841*^9, 3.633328963121683*^9}, {
+   3.6333297964098063`*^9, 3.633329797406958*^9}, {3.633333083709848*^9, 
+   3.633333084937089*^9}, {3.640625974200976*^9, 3.6406259762394533`*^9}, {
+   3.640626006524796*^9, 3.640626008041626*^9}, {3.641270431827936*^9, 
+   3.641270432996127*^9}, {3.64127432912197*^9, 3.641274355130992*^9}, {
+   3.6421676777786427`*^9, 3.642167680099959*^9}, {3.642169615965905*^9, 
+   3.642169617676506*^9}, {3.6422662087640123`*^9, 3.64226620981063*^9}, {
+   3.642266518638473*^9, 3.642266521006317*^9}, {3.64365135427291*^9, 
+   3.643651355232779*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"LaTeX", " ", "output"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.6422656244983263`*^9, 3.642265629327903*^9}}],
+
+Cell[BoxData[
+ RowBox[{"MakeTeX", "[", "]"}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGCQBGIQbST8QbLz0yvHx2ofZEF0WKjh/JlAmnl6OZiefvy2
+XOvXV463Hv8D00nKjdwa3145pi3ZAKZXafOetvrxyvHQVHswnfWT+wOINq52
+BdOBorbb9jG+dnRenQ6mY6fzqB8E0t9fmIHpj9cWTN/F/Nqx78QxMN1y28lj
+H5CWuFULphv4l6+6DaT/pV0F0zWCHXtA9Bm3TWB6D1dMtrXsa0ddwyVgusOw
+deoH+deOx+58AdN71iVlfwTS6z70gGmbeeWXeRReO36o2Aimdz80mMKk9Nox
+uD0UTE9zbmFnAdIRRevA9Maud8YgOm+2tAmIdpNp04sB0gvstoHpTQbCkteA
+tJOEPZieJ7bC6BGQDtp6G0xvuxHCJKT82lGArRJMv12lGwCiNSvCwHTmox2L
+tqm+dsw//g9MAwCmJ8OU
+  "]]
+},
+WindowSize->{1366, 744},
+WindowMargins->{{-9, 9}, {7, -8}},
+Magnification:>FEPrivate`If[
+  FEPrivate`Equal[FEPrivate`$VersionNumber, 6.], 1.5, 1.5 Inherited],
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (November 7, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 170, 3, 43, "Input"],
+Cell[730, 25, 354, 5, 43, "Input"],
+Cell[1087, 32, 202, 4, 43, "Input"],
+Cell[1292, 38, 484, 7, 43, "Input"],
+Cell[1779, 47, 159, 3, 43, "Input"],
+Cell[1941, 52, 134, 2, 43, "Input"],
+Cell[2078, 56, 131, 2, 43, "Input"],
+Cell[2212, 60, 457, 13, 43, "Input"],
+Cell[2672, 75, 234, 5, 43, "Input"],
+Cell[2909, 82, 166, 3, 43, "Input"],
+Cell[3078, 87, 138, 2, 43, "Input"],
+Cell[3219, 91, 136, 2, 43, "Input"],
+Cell[3358, 95, 283, 7, 43, "Input"],
+Cell[3644, 104, 219, 5, 43, "Input"],
+Cell[3866, 111, 134, 2, 43, "Input"],
+Cell[4003, 115, 221, 6, 43, "Input"],
+Cell[4227, 123, 300, 7, 43, "Input"],
+Cell[4530, 132, 290, 6, 43, "Input"],
+Cell[4823, 140, 186, 4, 43, "Input"],
+Cell[5012, 146, 201, 4, 43, "Input"],
+Cell[5216, 152, 2068, 29, 43, "Input"],
+Cell[7287, 183, 161, 3, 43, "Input"],
+Cell[7451, 188, 546, 11, 43, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
