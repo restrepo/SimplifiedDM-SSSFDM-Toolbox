@@ -2,7 +2,7 @@ Run SARAH models precompiled by the butler script of SARAH Toolbox.
 
 Try directly here:
 
-[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/Zee-Toolbox)
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/SimplifiedDM-IDM-Toolbox)
 
 To re-build a model:
  $ cd micromegas 
