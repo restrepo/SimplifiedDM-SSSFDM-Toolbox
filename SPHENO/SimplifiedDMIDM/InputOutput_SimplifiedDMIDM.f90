@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 18:05 on 8.6.2016   
+! File created at 10:57 on 10.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1113,11 +1113,11 @@ PDGAh=0
 NameParticleAh="Ah"
 PDGHp=0
 NameParticleHp="Hp"
-PDGetR=1001
+PDGetR=35
 NameParticleetR="etR"
-PDGetI=1002
+PDGetI=36
 NameParticleetI="etI"
-PDGetp=1003
+PDGetp=37
 NameParticleetp="etp"
 PDGVP=22
 NameParticleVP="VP"
@@ -1499,39 +1499,39 @@ MassLSP = 100000._dp
 Write(io_L,100) "Block MASS  # Mass spectrum"
 Write(io_L,100) "#   PDG code      mass          particle" 
  Write(io_L,102) 25,Mhh,"# hh" 
- Write(io_L,102) 1001,MetR,"# etR" 
+ Write(io_L,102) 35,MetR,"# etR" 
 If (MassLSP(1).gt.Abs(MetR)) Then 
 PDGLSP(2) = PDGLSP(1) 
-PDGLSP(1) = 1001 
+PDGLSP(1) = 35 
 MassLSP(2) = MassLSP(1) 
 MassLSP(1) = Abs(MetR)
 Else 
 If (MassLSP(2).gt.Abs(MetR)) Then 
-PDGLSP(2) = 1001 
+PDGLSP(2) = 35 
 MassLSP(2) = Abs(MetR)
 End if 
 End if 
- Write(io_L,102) 1002,MetI,"# etI" 
+ Write(io_L,102) 36,MetI,"# etI" 
 If (MassLSP(1).gt.Abs(MetI)) Then 
 PDGLSP(2) = PDGLSP(1) 
-PDGLSP(1) = 1002 
+PDGLSP(1) = 36 
 MassLSP(2) = MassLSP(1) 
 MassLSP(1) = Abs(MetI)
 Else 
 If (MassLSP(2).gt.Abs(MetI)) Then 
-PDGLSP(2) = 1002 
+PDGLSP(2) = 36 
 MassLSP(2) = Abs(MetI)
 End if 
 End if 
- Write(io_L,102) 1003,Metp,"# etp" 
+ Write(io_L,102) 37,Metp,"# etp" 
 If (MassLSP(1).gt.Abs(Metp)) Then 
 PDGLSP(2) = PDGLSP(1) 
-PDGLSP(1) = 1003 
+PDGLSP(1) = 37 
 MassLSP(2) = MassLSP(1) 
 MassLSP(1) = Abs(Metp)
 Else 
 If (MassLSP(2).gt.Abs(Metp)) Then 
-PDGLSP(2) = 1003 
+PDGLSP(2) = 37 
 MassLSP(2) = Abs(Metp)
 End if 
 End if 

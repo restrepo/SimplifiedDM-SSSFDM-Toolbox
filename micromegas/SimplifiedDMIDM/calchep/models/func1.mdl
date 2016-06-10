@@ -1,11 +1,11 @@
-SimplifiedDMIDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 18:05 on 8.6.2016
+SimplifiedDMIDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 10:57 on 10.6.2016
 Constraints  
  Name          |> Expression                                                                                                                                                                                <|
 rd             |slhaRead("SPheno.spc.SimplifiedDMIDM",0) 
-Metp           |slhaVal("MASS",Q,1,1003) 
+Metp           |slhaVal("MASS",Q,1,37) 
 Mh             |slhaVal("MASS",Q,1,25) 
-MetI           |slhaVal("MASS",Q,1,1002) 
-MetR           |slhaVal("MASS",Q,1,1001) 
+MetI           |slhaVal("MASS",Q,1,36) 
+MetR           |slhaVal("MASS",Q,1,35) 
 MZ             |slhaVal("MASS",Q,1,23) 
 Md1            |slhaVal("MASS",Q,1,1) 
 Md2            |slhaVal("MASS",Q,1,3) 
