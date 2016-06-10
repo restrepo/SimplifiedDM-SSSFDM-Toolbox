@@ -218,7 +218,7 @@ class hep(model):
         
 
     
-class THDM(model):
+class THDM(hep):
     '''
     All parameters in the several basis with functions to get the missing ones
     th=THDM()
