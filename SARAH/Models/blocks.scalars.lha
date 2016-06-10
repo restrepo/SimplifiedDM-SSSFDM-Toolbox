@@ -12,9 +12,9 @@ Block DobletScalar-particles-GaugeES
 Block DobletScalar-particles-WeylScalarAndIndermediate
 1  {Et,     {LaTeX -> "\\eta"}}
 Block DobletScalar-particles-EWSB
-1 {etR, {Description -> "CP-even eta scalar",PDG -> {1001},Mass -> LesHouches,ElectricCharge -> 0,LaTeX -> "\\eta_R",OutputName -> "etR" }}
-2 {etI, {Description -> "CP-odd eta scalar",PDG -> {1002},Mass -> LesHouches,ElectricCharge -> 0,LaTeX -> "\\eta_I",OutputName -> "etI" }}
-3 {etp, {Description -> "Charged eta scalar",PDG -> {1003},Mass -> LesHouches,ElectricCharge -> 1,LaTeX -> "\\eta^+",OutputName -> "etp" }}
+1 {etR, {Description -> "CP-even eta scalar",PDG -> {35},Mass -> LesHouches,ElectricCharge -> 0,LaTeX -> "\\eta_R",OutputName -> "etR" }}
+2 {etI, {Description -> "CP-odd eta scalar",PDG -> {36},Mass -> LesHouches,ElectricCharge -> 0,LaTeX -> "\\eta_I",OutputName -> "etI" }}
+3 {etp, {Description -> "Charged eta scalar",PDG -> {37},Mass -> LesHouches,ElectricCharge -> 1,LaTeX -> "\\eta^+",OutputName -> "etp" }}
 Block DobletScalar-parameters
 1 {mEt2, {LaTeX -> "m_\\eta^2",LesHouches -> {HDM,1},OutputName-> mEt2 }}
 2 {lambda2, {LaTeX -> "\\lambda_2",LesHouches -> {HDM,3},OutputName-> lam2 }}
