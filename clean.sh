@@ -12,7 +12,8 @@ LR+DM
 tripletLR
 radinert+T13A
 SM+HighScale
-Zee"
+Zee
+SimplifiedDM+IDM"
 Nm=$(echo "$models" | wc -l)
 models=$(echo "$models" |sed 's/+/::/g' | egrep  -v '^'"$MODEL"'$' | sed 's/::/+/g')
 Nmn=$(echo "$models" | wc -l)

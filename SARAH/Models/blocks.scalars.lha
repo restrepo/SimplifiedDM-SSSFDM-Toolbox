@@ -1,29 +1,47 @@
-Block DobletFermion #Doublet fermion
-1 FermionFields[[1]] = {rd, 1, {vd, ed},   -1/2, 2,  1,-1}; # U(1)xSU(2)xSU(3)xZ_2
-2 FermionFields[[2]] = {ru, 1, {- eu,vu},     1/2, 2,  1,-1};
-Block DobletFermion-Lagrangian
-1 -MDF rd.ru
-Block DobletFermion-Mixing
-1  {{vd, vu}, {Rv0, ZvN}}
-Block DobletFermion-Spinor
-1 Nv0 ->{ Rv0, conj[Rv0]}
-Block DobletFermion-particles-WeylFermionAndIndermediate
-1  {rd,     {LaTeX -> "R^d" }}
-2  {ru,     {LaTeX -> "R^u" }},
-3  {vd,     {LaTeX -> "R_v^d" }}
-4  {vu,     {LaTeX -> "R_v^u" }}
-5  {Rv0,    {LaTeX -> "R_\\nu^0",OutputName -> "Rv0",PDG -> 0 }}
-Block DobletFermion-particles-EWSB
-1  {Nv0,  {  LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Nv0",PDG -> {210000002,210000003} }}
-Block DobletFermion-parameters
-1  {MDF,{ LaTeX -> "M_D",OutputName -> MDF,LesHouches -> MDF}}
-Block DobletFermion-SPheno-MINPAR    
-1 {1,MDFIN}
-Block DobletFermion-SPheno-BoundaryLowScaleInput
-1 {MDF,MDFIN}
-Block DobletFermion-SPheno-ListDecayParticles
-1 Nv0
-Block DobletFermion-SPheno-ListDecayParticles3B
-1 {Nv0,"Nv0.f90"}
-Block DobletFermion-SPheno-DefaultInputValues
-1 MDFIN -> 200.
+Block DobletScalar #Doublet fermion
+1 ScalarFields[[1]] =  {H,  1, {Hp, H0},     1/2, 2,  1,  1}; #SM Higgs
+2 ScalarFields[[2]] =  {Et, 1, {etp,et0},    1/2, 2,  1, -1}; # U(1)xSU(2)xSU(3)xZ_2
+Block DobletScalar-Lagrangian
+1 + 1/2 lambda5 conj[H].Et.conj[H].Et # AddHC -> True
+2 -(+ mEt2 conj[Et].Et  + 1/2 lambda2 conj[Et].Et.conj[Et].Et + lambda3 conj[H].H.conj[Et].Et + lambda4 conj[H].Et.conj[Et].H ); # AddHC -> False
+Block DobletScalar-EWSB-VEVs
+1 {et0, {0, 0}, {etI, \[ImaginaryI]/Sqrt[2]}, {etR, 1/Sqrt[2]}}
+Block DobletScalar-particles-GaugeES
+1 {et0, {PDG -> {0},Width -> 0,Mass -> Automatic,LaTeX -> "\\eta^0",OutputName -> "et0" }}
+2 {etp, {PDG -> {0},Width -> 0,Mass -> Automatic,LaTeX -> "\\eta^+",OutputName -> "etp" }}
+Block DobletScalar-particles-WeylScalarAndIndermediate
+1  {Et,     {LaTeX -> "\\eta"}}
+Block DobletScalar-particles-EWSB
+1 {etR, {Description -> "CP-even eta scalar",PDG -> {35},Mass -> LesHouches,ElectricCharge -> 0,LaTeX -> "\\eta_R",OutputName -> "etR" }}
+2 {etI, {Description -> "CP-odd eta scalar",PDG -> {36},Mass -> LesHouches,ElectricCharge -> 0,LaTeX -> "\\eta_I",OutputName -> "etI" }}
+3 {etp, {Description -> "Charged eta scalar",PDG -> {37},Mass -> LesHouches,ElectricCharge -> 1,LaTeX -> "\\eta^+",OutputName -> "etp" }}
+Block DobletScalar-parameters
+1 {mEt2, {LaTeX -> "m_\\eta^2",LesHouches -> {HDM,1},OutputName-> mEt2 }}
+2 {lambda2, {LaTeX -> "\\lambda_2",LesHouches -> {HDM,3},OutputName-> lam2 }}
+3 {lambda3, {LaTeX -> "\\lambda_3",LesHouches -> {HDM,4},OutputName-> lam3 }}
+4 {lambda4, {LaTeX -> "\\lambda_4",LesHouches -> {HDM,5},OutputName-> lam4 }}
+5 {lambda5, {Real -> True,LaTeX -> "\\lambda_5",LesHouches -> {HDM,6},OutputName-> lam5 }}
+Block DobletScalar-SPheno-MINPAR
+1  {1,lambda2Input}
+2  {2,lambda3Input}
+3  {3,lambda4Input}
+4  {4,lambda5Input}
+5  {5,mEt2Input}
+Block DobletScalar-SPheno-BoundaryLowScaleInput
+1  {lambda2,lambda2Input}
+2  {lambda3,lambda3Input}
+3  {lambda4,lambda4Input}
+4  {lambda5,lambda5Input}
+5  {mEt2,mEt2Input}
+Block DobletScalar-SPheno-ListDecayParticles
+1 etR
+2 etI
+3 etp
+Block DobletScalar-SPheno-DefaultInputValues
+1  lambda1Input -> 0.267
+2  lambda2Input -> 0.
+3  lambda3Input -> 0.
+4  lambda4Input -> 0.
+5  lambda5Input -> -10^(-5)
+6  mEt2Input -> 100.
+
