@@ -57,6 +57,15 @@ def _readSLHAFile_with_comments(spcfile,ignorenomass=False,ignorenobr=True):
                     IF.blocks[block].entries[int(entries[0]),int(entries[1])]='%s%s#%s' %(entries[2],' '*spaces,fline[1])
     return IF
 
+def grep(pattern,multilinestring):
+    '''Grep replacement in python
+    as in: $ echo $multilinestring | grep pattern
+    dev: re.M is for multiline strings
+    '''
+    import re 
+    grp=re.finditer('(.*)%s(.*)' %pattern, multilinestring,re.M)
+    return '\n'.join([g.group(0) for g in grp])
+
 class model(object):
     pdg=__import__('pdg')
     G_F    =1.166370E-05    # G_F,Fermi constant
@@ -178,6 +187,33 @@ class hep(model):
             for j in range( len(SPCdecays[i].decays) ):
                 self.Br[i][tuple(SPCdecays[i].decays[j].ids)]=SPCdecays[i].decays[j].br
         return SPCdecays.keys()
+    
+    def micromegas_output(self,mo):
+        self.micromegas=pd.Series()
+        omgf=grep('^Xf=',mo)
+        if len(omgf.split('n') )==1:
+            omgl=omgf.split('=')
+            if len(omgl)==3:
+                if re.search('^[0-9\.eE\-\+]*$',omgl[2]):
+                    self.micromegas['Omega_h2']=eval(omgl[2])
+                else:    
+                    self.micromegas['Omega_h2']=omgl[2]
+                    
+        omgf=grep('^\s*[neuprotn]',mo)
+        if len(omgf.split('n') )>1:
+            for ddpn in omgf.split('\n')[-2:]: # CDM[antiCDM]-nucleon cross sections[pb]:
+                ddpornl=re.sub('^\s*([neuprotn])',r'\1',ddpn) #clean extra spaces ...       
+                ddpornl=re.sub('\s*\[[0-9\.eE\-\+]*]','', ddpornl )
+                ddpornl=re.sub('\s{2,}',' ',ddpornl)
+                ddporn=ddpornl.split(' ') #[ proton|neutron,SI,SI_value,SD,SD_value]
+                if len(ddporn)==5:
+                    self.micromegas[ddporn[0]]=pd.Series()
+                    for i in [1,3]:
+                        if re.search('^[0-9\.eE\-\+]*$',ddporn[i+1]):
+                            self.micromegas[ddporn[0]][ddporn[i]]=eval(ddporn[i+1])
+                        else:
+                            self.micromegas[ddporn[0]][ddporn[i]]=ddporn[i+1]
+        return self.micromegas
     
     def run_micromegas(self,func,param={},path='../micromegas',
                   var_min=60,var_max=1000,npoints=1,scale='log',CI=False):
