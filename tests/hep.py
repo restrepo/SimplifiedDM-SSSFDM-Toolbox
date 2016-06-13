@@ -4,6 +4,7 @@ import commands
 import os
 import re
 import pandas as pd
+from cmdlike import *
 
 #expanda pyslha
 def _init_LHA(blocks=['NAME1','NAME2']):
@@ -56,15 +57,6 @@ def _readSLHAFile_with_comments(spcfile,ignorenomass=False,ignorenobr=True):
                     
                     IF.blocks[block].entries[int(entries[0]),int(entries[1])]='%s%s#%s' %(entries[2],' '*spaces,fline[1])
     return IF
-
-def grep(pattern,multilinestring):
-    '''Grep replacement in python
-    as in: $ echo $multilinestring | grep pattern
-    dev: re.M is for multiline strings
-    '''
-    import re 
-    grp=re.finditer('(.*)%s(.*)' %pattern, multilinestring,re.M)
-    return '\n'.join([g.group(0) for g in grp])
 
 class model(object):
     pdg=__import__('pdg')
@@ -217,7 +209,8 @@ class hep(model):
     
     def run_micromegas(self,func,param={},path='../micromegas',
                   var_min=60,var_max=1000,npoints=1,scale='log',CI=False):
-        '''Run micromegas with output in MODEL.csv
+        '''DEPRECATED. See runmicromegas scanmicromegas Run micromegas with 
+         output in MODEL.csv
          func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
          path='../micromegas';var_min=60;
          var_max=1000;npoints=2;scale='log';CI=True'''
@@ -251,9 +244,75 @@ class hep(model):
             df=df.append(self.Series,ignore_index=True)
             df.to_csv('Scotogenic.csv')
         return df
-        
 
-    
+    def runmicromegas(self,path='../micromegas',Direct_Detection=False):
+        '''
+        Run micromegas with output in MODEL.csv
+        '''
+
+        spc=self.runSPheno()
+        mocmd='CalcOmega'
+        if Direct_Detection:
+            ddcmd='CalcOmega_with_DDetection_MOv4.2'
+            if os.path.isfile( '%s/%s/%s' %(path,self.MODEL,ddcmd) ):
+                mocmd=ddcmd
+            else:
+                sys.exit( 'ERROR: %s not found' %(ddcmd) )
+                
+            
+        oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,ddcmd,self.MODEL) )
+        mo=self.micromegas_output(oh)
+        self.to_series()
+        self.Series['Omega_h2']=mo.Omega_h2
+        if Direct_Detection:
+            self.Series['proton_SI']=mo.proton.SI
+            self.Series['neutron_SI']=mo.neutron.SI
+
+        return self.Series
+
+    def scanmicromegas(self,func,param={},path='../micromegas',
+                       var_min=60,var_max=1000,npoints=1,scale='log',CI=False,Direct_Detection=False):
+        '''Run micromegas with output in MODEL.csv
+         func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
+         path='../micromegas';var_min=60;
+         var_max=1000;npoints=2;scale='log';CI=True'''
+
+        df=pd.DataFrame()
+
+        mocmd='CalcOmega'
+        if Direct_Detection:
+            ddcmd='CalcOmega_with_DDetection_MOv4.2'
+            if os.path.isfile( '%s/%s/%s' %(path,self.MODEL,ddcmd) ):
+                mocmd=ddcmd
+            else:
+                sys.exit( 'ERROR: %s not found' %(ddcmd) )
+
+        
+        i=0
+        if scale=='log':
+            xrange=np.logspace(np.log10(var_min),np.log10(var_max),npoints)
+        elif scale=='lin':
+            xrange=np.linspace(var_min,var_max,npoints)
+        
+        for x in xrange:
+            i=i+1
+            if i%10==0: print i
+            if param:
+                self.LHA=func(x,self.LHA,param=param)
+            else:
+                self.LHA=func(x,self.LHA)
+            if CI: #see defintion of to_Yukawas in class CasasIbarra(hep) below,
+                h,U,Mnuin,phases=self.to_yukawas() #test Mnuin/0.9628#/0.968
+
+            self.to_series()
+            mo=series.runmicromegas(path,Direct_Detection=Direct_Detection)
+            self.Series['Omega_h2']=mo.Omega_h2
+            self.Series['proton_SI']=mo.proton.SI
+            self.Series['neutron_SI']=mo.neutron.SI
+            df=df.append(self.Series,ignore_index=True)
+            df.to_csv('Scotogenic.csv')
+        return df
+
 class THDM(model):
     '''
     All parameters in the several basis with functions to get the missing ones
