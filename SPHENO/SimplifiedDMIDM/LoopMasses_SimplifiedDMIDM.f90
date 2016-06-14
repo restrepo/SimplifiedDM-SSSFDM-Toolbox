@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:56 on 10.6.2016   
+! File created at 21:35 on 13.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1569,7 +1569,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopHp'
  
-mi2 = -1._dp*(mH2) + (lam1*v**2)/2._dp + (g2**2*v**2*RXiWp)/4._dp 
+mi2 = mH2 + lam1*v**2 + (g2**2*v**2*RXiWp)/4._dp 
 
  
 p2 = 0._dp 
@@ -2183,7 +2183,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopAh'
  
-mi2 = (-4._dp*(mH2) + 2*lam1*v**2 + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
+mi2 = (4*(mH2 + lam1*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
 
  
 p2 = 0._dp 
@@ -2491,7 +2491,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoophh'
  
-mi2 = -1._dp*(mH2) + (3*lam1*v**2)/2._dp 
+mi2 = mH2 + 3*lam1*v**2 
 
  
 p2 = Mhh2

@@ -1,4 +1,4 @@
-SimplifiedDMIDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 10:57 on 10.6.2016
+SimplifiedDMIDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 21:37 on 13.6.2016
 Constraints  
  Name          |> Expression                                                                                                                                                                                <|
 rd             |slhaRead("SPheno.spc.SimplifiedDMIDM",0) 
@@ -115,7 +115,7 @@ Yu23           |0
 Yu31           |0 
 Yu32           |0 
 Yu33           |(sqrt2*MtEff(Q)*one(QCDok))/v 
-v0000          |-(lam1*v) 
+v0000          |-2*lam1*v 
 v0001          |-(lam5*v) 
 v0002          |-((lam3+lam4-lam5)*v) 
 v0003          |((-lam4+lam5)*v)/2. 
@@ -124,8 +124,8 @@ v0005          |-((lam4+lam5)*v)/2.
 v0006          |-(lam3*v) 
 v0007          |-((lam3+lam4+lam5)*v) 
 v0008          |-((lam4+lam5)*v)/2. 
-v0009          |-3*lam1*v 
-v0010          |-(lam1*v) 
+v0009          |-6*lam1*v 
+v0010          |-2*lam1*v 
 v0011          |(-(g2*CTW)-g1*STW)/2. 
 v0012          |g2/2. 
 v0013          |g2/2. 
@@ -765,38 +765,38 @@ v0358          |-((g2*ZEL32)/sqrt2)
 v0359          |0 
 v0360          |-((g2*ZEL33)/sqrt2) 
 v0361          |0 
-v0362          |-3*lam1 
+v0362          |-6*lam1 
 v0363          |-lam3-lam4-lam5 
 v0364          |-lam3 
 v0365          |-lam3-lam4+lam5 
-v0366          |-lam1 
-v0367          |-lam1 
+v0366          |-2*lam1 
+v0367          |-2*lam1 
 v0368          |(-lam4-lam5)/2. 
 v0369          |-lam5 
 v0370          |(-lam4-lam5)/2. 
 v0371          |(lam4-lam5)/2. 
 v0372          |(-lam4+lam5)/2. 
-v0373          |-3*lam2 
-v0374          |-lam2 
-v0375          |-lam2 
+v0373          |-6*lam2 
+v0374          |-2*lam2 
+v0375          |-2*lam2 
 v0376          |-lam3-lam4+lam5 
 v0377          |-lam3 
 v0378          |(-lam4+lam5)/2. 
 v0379          |(lam4-lam5)/2. 
-v0380          |-2*lam2 
+v0380          |-4*lam2 
 v0381          |-2*lam5 
-v0382          |-lam2 
+v0382          |-2*lam2 
 v0383          |(-lam4-lam5)/2. 
 v0384          |-lam3 
 v0385          |-lam3-lam4 
-v0386          |-3*lam2 
+v0386          |-6*lam2 
 v0387          |-lam3-lam4-lam5 
 v0388          |-lam3 
 v0389          |(-lam4-lam5)/2. 
-v0390          |-3*lam1 
-v0391          |-lam1 
+v0390          |-6*lam1 
+v0391          |-2*lam1 
 v0392          |-2*lam5 
-v0393          |-2*lam1 
+v0393          |-4*lam1 
 v0394          |g3 
 v0395          |-(g2*STW) 
 v0396          |g2*CTW 

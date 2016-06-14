@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:57 on 10.6.2016   
+! File created at 21:37 on 13.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -35,7 +35,7 @@ logical :: broycheck
 Real(dp) :: broyx(1)
 
 If (HighScaleModel.Eq."LOW") Then 
-mH2 = (lam1*v**2)/2._dp - Tad1Loop(1)/v
+mH2 = (-(lam1*v**3) + Tad1Loop(1))/v
 
  ! ----------- Check solutions for consistency  -------- 
 
@@ -51,7 +51,7 @@ If (Real(mH2,dp).ne.Real(mH2,dp)) Then
   SignOfMuChanged= .True. 
 End If 
  Else 
-mH2 = (lam1*v**2)/2._dp - Tad1Loop(1)/v
+mH2 = (-(lam1*v**3) + Tad1Loop(1))/v
 
  ! ----------- Check solutions for consistency  -------- 
 
@@ -80,7 +80,7 @@ Complex(dp), Intent(in) :: Tad1Loop(1)
 
 Real(dp), Intent(out) :: TadpoleValues(1)
 
-TadpoleValues(1) = Real(-(mH2*v) + (lam1*v**3)/2._dp - Tad1Loop(1),dp) 
+TadpoleValues(1) = Real(v*(mH2 + lam1*v**2) - Tad1Loop(1),dp) 
 End Subroutine CalculateTadpoles 
 
 End Module Tadpoles_SimplifiedDMIDM 

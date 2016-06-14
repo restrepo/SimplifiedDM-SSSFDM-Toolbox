@@ -4,6 +4,7 @@ import commands
 import os
 import re
 import pandas as pd
+import sys
 from cmdlike import *
 
 #expanda pyslha

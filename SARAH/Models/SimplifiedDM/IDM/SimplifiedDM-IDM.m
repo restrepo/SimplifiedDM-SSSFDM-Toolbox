@@ -8,6 +8,7 @@ Model`Date      = "2015-04-28";
 (* "28-04-2015 (first implementation)" *)
 (* "25-05-2015 (removed mixings in scalar sector)" *)
 (* "10-06-2015 (fixed conventions)" *)
+(* Following the conventions of hep-ph/0603188 *)
 
 
 (*------------Particle Content---------------*)
@@ -46,8 +47,8 @@ DEFINITION[GaugeES][LagrangianInput]=
 };
 
 LagFer   = Yd conj[H].d.q + Ye conj[H].e.l + Yu H.u.q;
-LagH     = -(- mH2 conj[H].H     + 1/2 lambda1 conj[H].H.conj[H].H );
-LagEt    = -(+ mEt2 conj[Et].Et  + 1/2 lambda2 conj[Et].Et.conj[Et].Et );
+LagH     = -(+ mH2 conj[H].H     +  lambda1 conj[H].H.conj[H].H );
+LagEt    = -(+ mEt2 conj[Et].Et  +  lambda2 conj[Et].Et.conj[Et].Et );
 LagHEt   = -(+ lambda3 conj[H].H.conj[Et].Et + lambda4 conj[H].Et.conj[Et].H );
 LagHEtHC = -(+ 1/2 lambda5 conj[H].Et.conj[H].Et );
 

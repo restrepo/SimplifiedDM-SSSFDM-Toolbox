@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:55 on 10.6.2016   
+! File created at 21:35 on 13.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1444,7 +1444,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhh' 
  
 res = 0._dp 
-res = res-(lam1*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1697,7 +1697,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhh' 
  
 res = 0._dp 
-res = res-3*lam1*v
+res = res-6*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1724,7 +1724,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhHpcHp' 
  
 res = 0._dp 
-res = res-(lam1*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1749,7 +1749,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhAhAh' 
  
 res = 0._dp 
-res = res-3._dp*(lam1)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1857,7 +1857,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhhhh' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1882,7 +1882,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2048,7 +2048,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetIetI' 
  
 res = 0._dp 
-res = res-3._dp*(lam2)
+res = res-6._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2073,7 +2073,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetpcetp' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2098,7 +2098,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetRetR' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2237,7 +2237,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplingetpetpcetpcetp' 
  
 res = 0._dp 
-res = res-2._dp*(lam2)
+res = res-4._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2287,7 +2287,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetpetRetRcetp' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2391,7 +2391,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetRetRetRetR' 
  
 res = 0._dp 
-res = res-3._dp*(lam2)
+res = res-6._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2498,7 +2498,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhhhh' 
  
 res = 0._dp 
-res = res-3._dp*(lam1)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2523,7 +2523,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhhhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2573,7 +2573,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingHpHpcHpcHp' 
  
 res = 0._dp 
-res = res-2._dp*(lam1)
+res = res-4._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6323,7 +6323,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhAhAh' 
  
 res = 0._dp 
-res = res-3._dp*(lam1)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6431,7 +6431,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhhhh' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6456,7 +6456,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6481,7 +6481,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetIetI' 
  
 res = 0._dp 
-res = res-3._dp*(lam2)
+res = res-6._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6506,7 +6506,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetpcetp' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6531,7 +6531,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetRetR' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6610,7 +6610,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplingetpetpcetpcetp' 
  
 res = 0._dp 
-res = res-2._dp*(lam2)
+res = res-4._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6660,7 +6660,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetpetRetRcetp' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6736,7 +6736,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetRetRetRetR' 
  
 res = 0._dp 
-res = res-3._dp*(lam2)
+res = res-6._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6815,7 +6815,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhhhh' 
  
 res = 0._dp 
-res = res-3._dp*(lam1)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6840,7 +6840,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhhhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6890,7 +6890,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingHpHpcHpcHp' 
  
 res = 0._dp 
-res = res-2._dp*(lam1)
+res = res-4._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -6917,7 +6917,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhh' 
  
 res = 0._dp 
-res = res-(lam1*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -7170,7 +7170,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhh' 
  
 res = 0._dp 
-res = res-3*lam1*v
+res = res-6*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -7197,7 +7197,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhHpcHp' 
  
 res = 0._dp 
-res = res-(lam1*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10036,7 +10036,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhHpcHp' 
  
 res = 0._dp 
-res = res-(lam1*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10188,7 +10188,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10289,7 +10289,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhhhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10314,7 +10314,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingHpHpcHpcHp' 
  
 res = 0._dp 
-res = res-2._dp*(lam1)
+res = res-4._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10632,7 +10632,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetpcetp' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10657,7 +10657,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplingetpetpcetpcetp' 
  
 res = 0._dp 
-res = res-2._dp*(lam2)
+res = res-4._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10682,7 +10682,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetpetRetRcetp' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -10813,7 +10813,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhh' 
  
 res = 0._dp 
-res = res-(lam1*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -11140,7 +11140,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhAhAh' 
  
 res = 0._dp 
-res = res-3._dp*(lam1)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -11223,7 +11223,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhhhh' 
  
 res = 0._dp 
-res = res-1._dp*(lam1)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -11593,7 +11593,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhh' 
  
 res = 0._dp 
-res = res-3*lam1*v
+res = res-6*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -11753,7 +11753,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhhhh' 
  
 res = 0._dp 
-res = res-3._dp*(lam1)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -11885,7 +11885,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetIetI' 
  
 res = 0._dp 
-res = res-3._dp*(lam2)
+res = res-6._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -11910,7 +11910,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetIetIetRetR' 
  
 res = 0._dp 
-res = res-1._dp*(lam2)
+res = res-2._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -12012,7 +12012,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingetRetRetRetR' 
  
 res = 0._dp 
-res = res-3._dp*(lam2)
+res = res-6._dp*(lam2)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 

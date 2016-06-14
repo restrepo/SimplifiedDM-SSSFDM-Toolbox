@@ -33,7 +33,7 @@ ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"}};
 (*ConditionGUTscale = g1 == g2;*)
 
 DefaultInputValues ={
-  lambda1Input -> 0.267,
+  lambda1Input -> 0.534,
   lambda2Input -> 0.,
   lambda3Input -> 0.,
   lambda4Input -> 0.,

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:55 on 10.6.2016   
+! File created at 21:35 on 13.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -48,7 +48,7 @@ Call CalculateVPVZ(g1,g2,v,ZZ,MVZ,MVZ2,TW,kont)
 
 Call CalculateVWp(g2,v,ZW,MVWp,MVWp2,kont)
 
-MHp2 = -1._dp*(mH2) + (lam1*v**2)/2._dp + (g2**2*v**2*RXiWp)/4._dp 
+MHp2 = mH2 + lam1*v**2 + (g2**2*v**2*RXiWp)/4._dp 
   If (MHp2.ne.MHp2) Then 
       Write(*,*) 'NaN appearing in MHp2' 
       Call TerminateProgram 
@@ -102,8 +102,7 @@ Metp = sqrt(Metp2)
 
 
 ! ------------------------------- 
-MAh2 = (-4._dp*(mH2) + 2*lam1*v**2 + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))              & 
-& **2)/4._dp 
+MAh2 = (4*(mH2 + lam1*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
   If (MAh2.ne.MAh2) Then 
       Write(*,*) 'NaN appearing in MAh2' 
       Call TerminateProgram 
@@ -130,7 +129,7 @@ MAh = sqrt(MAh2)
 
 
 ! ------------------------------- 
-Mhh2 = -1._dp*(mH2) + (3*lam1*v**2)/2._dp 
+Mhh2 = mH2 + 3*lam1*v**2 
   If (Mhh2.ne.Mhh2) Then 
       Write(*,*) 'NaN appearing in Mhh2' 
       Call TerminateProgram 
@@ -284,7 +283,7 @@ Call CalculateVPVZEffPot(g1,g2,v,ZZ,MVZ,MVZ2,TW,kont)
 
 Call CalculateVWpEffPot(g2,v,ZW,MVWp,MVWp2,kont)
 
-MHp2 = -1._dp*(mH2) + (lam1*v**2)/2._dp + (g2**2*v**2*RXiWp)/4._dp 
+MHp2 = mH2 + lam1*v**2 + (g2**2*v**2*RXiWp)/4._dp 
   If (MHp2.ne.MHp2) Then 
       Write(*,*) 'NaN appearing in MHp2' 
       Call TerminateProgram 
@@ -308,8 +307,7 @@ Metp = sqrt(Metp2)
 
 
 ! ------------------------------- 
-MAh2 = (-4._dp*(mH2) + 2*lam1*v**2 + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))              & 
-& **2)/4._dp 
+MAh2 = (4*(mH2 + lam1*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
   If (MAh2.ne.MAh2) Then 
       Write(*,*) 'NaN appearing in MAh2' 
       Call TerminateProgram 
@@ -321,7 +319,7 @@ MAh = sqrt(MAh2)
 
 
 ! ------------------------------- 
-Mhh2 = -1._dp*(mH2) + (3*lam1*v**2)/2._dp 
+Mhh2 = mH2 + 3*lam1*v**2 
   If (Mhh2.ne.Mhh2) Then 
       Write(*,*) 'NaN appearing in Mhh2' 
       Call TerminateProgram 
