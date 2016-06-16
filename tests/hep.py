@@ -4,6 +4,8 @@ import commands
 import os
 import re
 import pandas as pd
+import sys
+from cmdlike import *
 
 #expanda pyslha
 def _init_LHA(blocks=['NAME1','NAME2']):
@@ -179,9 +181,37 @@ class hep(model):
                 self.Br[i][tuple(SPCdecays[i].decays[j].ids)]=SPCdecays[i].decays[j].br
         return SPCdecays.keys()
     
+    def micromegas_output(self,mo):
+        self.micromegas=pd.Series()
+        omgf=grep('^Xf=',mo)
+        if len(omgf.split('n') )==1:
+            omgl=omgf.split('=')
+            if len(omgl)==3:
+                if re.search('^[0-9\.eE\-\+]*$',omgl[2]):
+                    self.micromegas['Omega_h2']=eval(omgl[2])
+                else:    
+                    self.micromegas['Omega_h2']=omgl[2]
+                    
+        omgf=grep('^\s*[neuprotn]',mo)
+        if len(omgf.split('n') )>1:
+            for ddpn in omgf.split('\n')[-2:]: # CDM[antiCDM]-nucleon cross sections[pb]:
+                ddpornl=re.sub('^\s*([neuprotn])',r'\1',ddpn) #clean extra spaces ...       
+                ddpornl=re.sub('\s*\[[0-9\.eE\-\+]*]','', ddpornl )
+                ddpornl=re.sub('\s{2,}',' ',ddpornl)
+                ddporn=ddpornl.split(' ') #[ proton|neutron,SI,SI_value,SD,SD_value]
+                if len(ddporn)==5:
+                    self.micromegas[ddporn[0]]=pd.Series()
+                    for i in [1,3]:
+                        if re.search('^[0-9\.eE\-\+]*$',ddporn[i+1]):
+                            self.micromegas[ddporn[0]][ddporn[i]]=eval(ddporn[i+1])
+                        else:
+                            self.micromegas[ddporn[0]][ddporn[i]]=ddporn[i+1]
+        return self.micromegas
+    
     def run_micromegas(self,func,param={},path='../micromegas',
                   var_min=60,var_max=1000,npoints=1,scale='log',CI=False):
-        '''Run micromegas with output in MODEL.csv
+        '''DEPRECATED. See runmicromegas scanmicromegas Run micromegas with 
+         output in MODEL.csv
          func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
          path='../micromegas';var_min=60;
          var_max=1000;npoints=2;scale='log';CI=True'''
@@ -215,9 +245,75 @@ class hep(model):
             df=df.append(self.Series,ignore_index=True)
             df.to_csv('Scotogenic.csv')
         return df
-        
 
-    
+    def runmicromegas(self,path='../micromegas',Direct_Detection=False):
+        '''
+        Run micromegas with output in MODEL.csv
+        '''
+
+        spc=self.runSPheno()
+        mocmd='CalcOmega'
+        if Direct_Detection:
+            ddcmd='CalcOmega_with_DDetection_MOv4.2'
+            if os.path.isfile( '%s/%s/%s' %(path,self.MODEL,ddcmd) ):
+                mocmd=ddcmd
+            else:
+                sys.exit( 'ERROR: %s not found' %(ddcmd) )
+                
+            
+        oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,ddcmd,self.MODEL) )
+        mo=self.micromegas_output(oh)
+        self.to_series()
+        self.Series['Omega_h2']=mo.Omega_h2
+        if Direct_Detection:
+            self.Series['proton_SI']=mo.proton.SI
+            self.Series['neutron_SI']=mo.neutron.SI
+
+        return self.Series
+
+    def scanmicromegas(self,func,param={},path='../micromegas',
+                       var_min=60,var_max=1000,npoints=1,scale='log',CI=False,Direct_Detection=False):
+        '''Run micromegas with output in MODEL.csv
+         func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
+         path='../micromegas';var_min=60;
+         var_max=1000;npoints=2;scale='log';CI=True'''
+
+        df=pd.DataFrame()
+
+        mocmd='CalcOmega'
+        if Direct_Detection:
+            ddcmd='CalcOmega_with_DDetection_MOv4.2'
+            if os.path.isfile( '%s/%s/%s' %(path,self.MODEL,ddcmd) ):
+                mocmd=ddcmd
+            else:
+                sys.exit( 'ERROR: %s not found' %(ddcmd) )
+
+        
+        i=0
+        if scale=='log':
+            xrange=np.logspace(np.log10(var_min),np.log10(var_max),npoints)
+        elif scale=='lin':
+            xrange=np.linspace(var_min,var_max,npoints)
+        
+        for x in xrange:
+            i=i+1
+            if i%10==0: print i
+            if param:
+                self.LHA=func(x,self.LHA,param=param)
+            else:
+                self.LHA=func(x,self.LHA)
+            if CI: #see defintion of to_Yukawas in class CasasIbarra(hep) below,
+                h,U,Mnuin,phases=self.to_yukawas() #test Mnuin/0.9628#/0.968
+
+            self.to_series()
+            mo=series.runmicromegas(path,Direct_Detection=Direct_Detection)
+            self.Series['Omega_h2']=mo.Omega_h2
+            self.Series['proton_SI']=mo.proton.SI
+            self.Series['neutron_SI']=mo.neutron.SI
+            df=df.append(self.Series,ignore_index=True)
+            df.to_csv('Scotogenic.csv')
+        return df
+
 class THDM(model):
     '''
     All parameters in the several basis with functions to get the missing ones
