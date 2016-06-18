@@ -2,28 +2,33 @@ Block DobletFermion #Doublet fermion
 1 FermionFields[[1]] = {rd, 1, {vd, ed},   -1/2, 2,  1,-1}; # U(1)xSU(2)xSU(3)xZ_2
 2 FermionFields[[2]] = {ru, 1, {- eu,vu},     1/2, 2,  1,-1};
 Block DobletFermion-Lagrangian
-1 -MDF rd.ru
+1 - MDF rd.ru # {AddHC->True}
 Block DobletFermion-Mixing
-1  {{vd, vu}, {Rv0, ZvN}}
-Block DobletFermion-Spinor
-1 Nv0 ->{ Rv0, conj[Rv0]}
+1  {{vd, vu}, {Rv0, ZvN}} #or empty if not further mixing
+Block DobletFermion-DiracSpinors
+1 Fre ->{  ed, conj[eu]}
+2 Nv0 ->{ Rv0, conj[Rv0]} # or Nv0 ->{  vd, conj[vu]} if not further mixing
 Block DobletFermion-particles-WeylFermionAndIndermediate
 1  {rd,     {LaTeX -> "R^d" }}
-2  {ru,     {LaTeX -> "R^u" }},
+2  {ru,     {LaTeX -> "R^u" }}
 3  {vd,     {LaTeX -> "R_v^d" }}
 4  {vu,     {LaTeX -> "R_v^u" }}
-5  {Rv0,    {LaTeX -> "R_\\nu^0",OutputName -> "Rv0",PDG -> 0 }}
+5  {Rv0,    {LaTeX -> "R_\\nu^0",OutputName -> "Rv0",PDG -> 0 }} #or empty if not further mixing
 Block DobletFermion-particles-EWSB
-1  {Nv0,  {  LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Nv0",PDG -> {210000002,210000003} }}
+1 {Fre,{Description ->"Vector-like charged fermions",PDG -> {210000601},PDG.IX -> {-111100601},Mass -> {LesHouches},Width -> {External},LaTeX -> "R_e",ElectricCharge -> -1,OutputName -> "Re"}}
+2 {Nv0,  {Description ->"Vector-like neutral fermions",PDG -> {210000002,210000003},LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Nv0"}} #Majorana
+3 {Nv0,{Description ->"Vector-like neutral fermions",PDG -> {210000002},PDG.IX -> {111100701},Mass -> {LesHouches},Width -> {External},LaTeX ->"\\tilde{\\chi}^0",ElectricCharge -> 0,OutputName -> "Nv0"}} #Dirac
 Block DobletFermion-parameters
-1  {MDF,{ LaTeX -> "M_D",OutputName -> MDF,LesHouches -> MDF}}
+1 {MDF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}} (* LHA block for proper MDFINPUT in SPheno.m *)   
 Block DobletFermion-SPheno-MINPAR    
-1 {1,MDFIN}
+1 {1,MDFINPUT}
 Block DobletFermion-SPheno-BoundaryLowScaleInput
-1 {MDF,MDFIN}
+1 {MDF,MDFINPUT}
 Block DobletFermion-SPheno-ListDecayParticles
-1 Nv0
+1 Fre
+2 Nv0
 Block DobletFermion-SPheno-ListDecayParticles3B
-1 {Nv0,"Nv0.f90"}
+1 {Fre,"Fre.f90"}
+2 {Nv0,"Nv0.f90"}
 Block DobletFermion-SPheno-DefaultInputValues
-1 MDFIN -> 200.
+1 MDFINPUT -> 200.

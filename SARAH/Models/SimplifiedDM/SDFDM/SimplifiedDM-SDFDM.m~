@@ -1,6 +1,6 @@
 Off[General::spell]
 
-Model`Name = "SimplifiedDMSDFDM";
+Model`Name = "SimplifiedDMT13A";
 Model`NameLaTeX ="T1-3-A";
 Model`Authors = "Diego Restrepo (based on SM model by F.Staub)";
 Model`Date = "2013-11-27";
