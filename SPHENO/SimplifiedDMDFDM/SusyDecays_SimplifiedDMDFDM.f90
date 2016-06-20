@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:58 on 18.6.2016   
+! File created at 18:12 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -19,14 +19,14 @@ Use Mathematics, Only: Li2
  Contains 
  
   
-Subroutine FuTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
+Subroutine FuTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,               & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
@@ -73,8 +73,8 @@ End If
 Do i1=i_start,i_end 
 m_in = MFu(i1) 
 If (m_in.Eq.0._dp) Cycle 
-Call CouplingsFor_Fu_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Call CouplingsFor_Fu_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFuFdVWpL,cplcFuFdVWpR,      & 
 & cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,deltaM)
 
@@ -146,14 +146,14 @@ Iname = Iname - 1
 End Subroutine FuTwoBodyDecay
  
  
-Subroutine FeTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
+Subroutine FeTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,               & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
@@ -199,8 +199,8 @@ End If
 Do i1=i_start,i_end 
 m_in = MFe(i1) 
 If (m_in.Eq.0._dp) Cycle 
-Call CouplingsFor_Fe_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Call CouplingsFor_Fe_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFeFehhL,cplcFeFehhR,        & 
 & cplcFeFeVZL,cplcFeFeVZR,deltaM)
 
@@ -252,14 +252,14 @@ Iname = Iname - 1
 End Subroutine FeTwoBodyDecay
  
  
-Subroutine FdTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
+Subroutine FdTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,               & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
@@ -306,8 +306,8 @@ End If
 Do i1=i_start,i_end 
 m_in = MFd(i1) 
 If (m_in.Eq.0._dp) Cycle 
-Call CouplingsFor_Fd_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Call CouplingsFor_Fd_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFdFdhhL,cplcFdFdhhR,        & 
 & cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,deltaM)
 
@@ -376,14 +376,14 @@ Iname = Iname - 1
 End Subroutine FdTwoBodyDecay
  
  
-Subroutine FvTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
+Subroutine FvTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,               & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
@@ -429,8 +429,8 @@ End If
 Do i1=i_start,i_end 
 m_in = 0. 
 If (m_in.Eq.0._dp) Cycle 
-Call CouplingsFor_Fv_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Call CouplingsFor_Fv_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFvFeVWpL,cplcFvFeVWpR,deltaM)
 
 i_count = 1 
@@ -464,21 +464,21 @@ Iname = Iname - 1
 End Subroutine FvTwoBodyDecay
  
  
-Subroutine VZTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
+Subroutine VZTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,               & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFreFreVZL,    & 
-& cplcFreFreVZR,cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),     & 
-& cplhhVZVZ,cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplcVWpVWpVZ
+Complex(dp) :: cplcChiChiVZL,cplcChiChiVZR,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),       & 
+& cplcFeFeVZR(3,3),cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),        & 
+& cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplhhVZVZ,cplcVWpVWpVZ
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -513,13 +513,28 @@ End If
  
 i1=1 
 m_in = MVZ 
-Call CouplingsFor_VZ_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
-& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFdFdVZL,cplcFdFdVZR,        & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL,cplcFuFuVZR,           & 
-& cplcFvFvVZL,cplcFvFvVZR,cplhhVZVZ,cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplcVWpVWpVZ,deltaM)
+Call CouplingsFor_VZ_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcChiChiVZL,cplcChiChiVZR,    & 
+& cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,           & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,cplhhVZVZ,cplcVWpVWpVZ,deltaM)
 
 i_count = 1 
+
+ 
+! ----------------------------------------------
+! bar[Chi], Chi
+! ----------------------------------------------
+
+ 
+m1out = MChi
+m2out = MChi
+coupL = cplcChiChiVZL
+coupR = cplcChiChiVZR
+Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
+gPartial(1,i_count) = 1*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
 
  
 ! ----------------------------------------------
@@ -632,21 +647,6 @@ i_count = i_count +1
 
  
 ! ----------------------------------------------
-! bar[Nv0], Nv0
-! ----------------------------------------------
-
- 
-m1out = MNv0
-m2out = MNv0
-coupL = cplcNv0Nv0VZL
-coupR = cplcNv0Nv0VZR
-Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
-gPartial(1,i_count) = 1*gam 
-gT = gT + gPartial(1,i_count) 
-i_count = i_count +1 
-
- 
-! ----------------------------------------------
 ! VWp, conj[VWp]
 ! ----------------------------------------------
 
@@ -669,20 +669,20 @@ Iname = Iname - 1
 End Subroutine VZTwoBodyDecay
  
  
-Subroutine VWpTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Subroutine VWpTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),          & 
-& cplhhcVWpVWp,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplcVWpVWpVZ
+Complex(dp) :: cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),& 
+& cplcFeFvcVWpR(3,3),cplhhcVWpVWp,cplcVWpVWpVZ
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -717,13 +717,27 @@ End If
  
 i1=1 
 m_in = MVWp 
-Call CouplingsFor_VWp_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,              & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
-& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFdFucVWpL,cplcFdFucVWpR,    & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplhhcVWpVWp,cplcFreNv0cVWpL,cplcFreNv0cVWpR,              & 
-& cplcVWpVWpVZ,deltaM)
+Call CouplingsFor_VWp_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,             & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFreChicVWpL,cplcFreChicVWpR,& 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplhhcVWpVWp,cplcVWpVWpVZ,deltaM)
 
 i_count = 1 
+
+ 
+! ----------------------------------------------
+! bar[Fre], Chi
+! ----------------------------------------------
+
+ 
+m1out = MFre
+m2out = MChi
+coupL = cplcFreChicVWpL
+coupR = cplcFreChicVWpR
+Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
+gPartial(1,i_count) = 1*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
 
  
 ! ----------------------------------------------
@@ -781,21 +795,6 @@ i_count = i_count +1
 
  
 ! ----------------------------------------------
-! bar[Fre], Nv0
-! ----------------------------------------------
-
- 
-m1out = MFre
-m2out = MNv0
-coupL = cplcFreNv0cVWpL
-coupR = cplcFreNv0cVWpR
-Call VectorBosonToTwoFermions(m_in,m1out,m2out,1,coupL,coupR,gam) 
-gPartial(1,i_count) = 1*gam 
-gT = gT + gPartial(1,i_count) 
-i_count = i_count +1 
-
- 
-! ----------------------------------------------
 ! VWp, VZ
 ! ----------------------------------------------
 
@@ -818,14 +817,14 @@ Iname = Iname - 1
 End Subroutine VWpTwoBodyDecay
  
  
-Subroutine hhTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
+Subroutine hhTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,               & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
@@ -868,8 +867,8 @@ End If
  
 i1=1 
 m_in = Mhh 
-Call CouplingsFor_hh_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Call CouplingsFor_hh_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplHiggsPP,cplHiggsGG,          & 
 & cplHiggsZZvirt,cplHiggsWWvirt,cplcFdFdhhL,cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,         & 
 & cplcFuFuhhL,cplcFuFuhhR,cplhhhhhh,cplhhcVWpVWp,cplhhVZVZ,deltaM)
@@ -1090,19 +1089,19 @@ Contains
 End Subroutine hhTwoBodyDecay
  
  
-Subroutine Nv0TwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Subroutine ChiTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcNv0FreVWpL,cplcNv0FreVWpR,cplcNv0Nv0VZL,cplcNv0Nv0VZR
+Complex(dp) :: cplcChiChiVZL,cplcChiChiVZR,cplcChiFreVWpL,cplcChiFreVWpR
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -1113,7 +1112,7 @@ Real(dp) :: gam, m_in, m1out, m2out, coupReal
 Complex(dp) :: coupC, coupR, coupL, coup 
  
 Iname = Iname + 1 
-NameOfUnit(Iname) = 'Nv0TwoBodyDecay'
+NameOfUnit(Iname) = 'ChiTwoBodyDecay'
  
 If (i_in.Lt.0) Then 
   i_start = 1 
@@ -1136,13 +1135,28 @@ Else
 End If 
  
 i1=1 
-m_in = MNv0 
-Call CouplingsFor_Nv0_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,              & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
-& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcNv0FreVWpL,cplcNv0FreVWpR,  & 
-& cplcNv0Nv0VZL,cplcNv0Nv0VZR,deltaM)
+m_in = MChi 
+Call CouplingsFor_Chi_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,             & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcChiChiVZL,cplcChiChiVZR,    & 
+& cplcChiFreVWpL,cplcChiFreVWpR,deltaM)
 
 i_count = 1 
+
+ 
+! ----------------------------------------------
+! Chi, VZ
+! ----------------------------------------------
+
+ 
+m1out = MChi
+m2out = MVZ
+coupL = cplcChiChiVZL
+coupR = cplcChiChiVZR
+Call FermionToFermionVectorBoson(m_in,m1out,m2out,coupL,coupR,gam) 
+gPartial(1,i_count) = 1*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
 
  
 ! ----------------------------------------------
@@ -1152,23 +1166,8 @@ i_count = 1
  
 m1out = MFre
 m2out = MVWp
-coupL = cplcNv0FreVWpL
-coupR = cplcNv0FreVWpR
-Call FermionToFermionVectorBoson(m_in,m1out,m2out,coupL,coupR,gam) 
-gPartial(1,i_count) = 1*gam 
-gT = gT + gPartial(1,i_count) 
-i_count = i_count +1 
-
- 
-! ----------------------------------------------
-! Nv0, VZ
-! ----------------------------------------------
-
- 
-m1out = MNv0
-m2out = MVZ
-coupL = cplcNv0Nv0VZL
-coupR = cplcNv0Nv0VZR
+coupL = cplcChiFreVWpL
+coupR = cplcChiFreVWpR
 Call FermionToFermionVectorBoson(m_in,m1out,m2out,coupL,coupR,gam) 
 gPartial(1,i_count) = 1*gam 
 gT = gT + gPartial(1,i_count) 
@@ -1181,22 +1180,22 @@ End if
  
 Iname = Iname - 1 
  
-End Subroutine Nv0TwoBodyDecay
+End Subroutine ChiTwoBodyDecay
  
  
-Subroutine FreTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
+Subroutine FreTwoBodyDecay(i_in,deltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,              & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gPartial,gT,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),              & 
-& MFu2(3),Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: g1,g2,g3,MDF,v,MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,          & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),        & 
 & ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR
+Complex(dp) :: cplcFreChicVWpL,cplcFreChicVWpR,cplcFreFreVZL,cplcFreFreVZR
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -1231,12 +1230,27 @@ End If
  
 i1=1 
 m_in = MFre 
-Call CouplingsFor_Fre_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,              & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
-& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFreFreVZL,cplcFreFreVZR,    & 
-& cplcFreNv0cVWpL,cplcFreNv0cVWpR,deltaM)
+Call CouplingsFor_Fre_decays_2B(m_in,i1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,             & 
+& MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,             & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFreChicVWpL,cplcFreChicVWpR,& 
+& cplcFreFreVZL,cplcFreFreVZR,deltaM)
 
 i_count = 1 
+
+ 
+! ----------------------------------------------
+! Chi, conj[VWp]
+! ----------------------------------------------
+
+ 
+m1out = MChi
+m2out = MVWp
+coupL = cplcFreChicVWpL
+coupR = cplcFreChicVWpR
+Call FermionToFermionVectorBoson(m_in,m1out,m2out,coupL,coupR,gam) 
+gPartial(1,i_count) = 1*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
 
  
 ! ----------------------------------------------
@@ -1248,21 +1262,6 @@ m1out = MFre
 m2out = MVZ
 coupL = cplcFreFreVZL
 coupR = cplcFreFreVZR
-Call FermionToFermionVectorBoson(m_in,m1out,m2out,coupL,coupR,gam) 
-gPartial(1,i_count) = 1*gam 
-gT = gT + gPartial(1,i_count) 
-i_count = i_count +1 
-
- 
-! ----------------------------------------------
-! Nv0, conj[VWp]
-! ----------------------------------------------
-
- 
-m1out = MNv0
-m2out = MVWp
-coupL = cplcFreNv0cVWpL
-coupR = cplcFreNv0cVWpR
 Call FermionToFermionVectorBoson(m_in,m1out,m2out,coupL,coupR,gam) 
 gPartial(1,i_count) = 1*gam 
 gT = gT + gPartial(1,i_count) 

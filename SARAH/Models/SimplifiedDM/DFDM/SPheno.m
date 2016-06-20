@@ -19,8 +19,8 @@ BoundaryLowScaleInput={
   {MDF,MDFINPUT}
 };
 
-ListDecayParticles = {Fu,Fe,Fd,Fv,VZ,VWp,hh,Nv0,Fre};
-ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"},{Nv0,"Nv0.f90"},{Fre,"Fre.f90"}};
+ListDecayParticles = {Fu,Fe,Fd,Fv,VZ,VWp,hh,Chi,Fre};
+ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"},{Chi,"Chi.f90"},{Fre,"Fre.f90"}};
 
 (*ConditionGUTscale = g1 == g2;*)
 

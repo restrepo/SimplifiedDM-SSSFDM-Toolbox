@@ -3,11 +3,11 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:58 on 18.6.2016   
+! File created at 18:12 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
-Module Nv03Decays_SimplifiedDMDFDM 
+Module Chi3Decays_SimplifiedDMDFDM 
  
 Use Control 
 Use CouplingsForDecays_SimplifiedDMDFDM 
@@ -15,30 +15,30 @@ Use ThreeBodyPhaseSpace
  
 Contains 
  
-Subroutine Nv0ThreeBodyDecay(n_in,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,              & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
-& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gTVWp,gNv0FrecFdFu,gNv0FrecFeFv,    & 
+Subroutine ChiThreeBodyDecay(n_in,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,              & 
+& MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
+& ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gTVWp,gChiFrecFdFu,gChiFrecFeFv,    & 
 & epsI,deltaM,CheckRealStates,gT,gPartial,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),          & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),          & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR
+Complex(dp) :: cplcChiFreVWpL,cplcChiFreVWpR,cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),& 
+& cplcFeFvcVWpR(3,3)
 
 Real(dp),Intent(in) :: g1,g2,g3,MDF,v
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2
 
-Real(dp),Intent(inout) :: gNv0FrecFdFu(1,1,3,3),gNv0FrecFeFv(1,1,3,3)
+Real(dp),Intent(inout) :: gChiFrecFdFu(1,1,3,3),gChiFrecFeFv(1,1,3,3)
 
 Real(dp),Intent(in) :: gTVWp
 
-Real(dp) :: gNv0FrecFdFui(1,3,3),gNv0FrecFeFvi(1,3,3)
+Real(dp) :: gChiFrecFdFui(1,3,3),gChiFrecFeFvi(1,3,3)
 
 Real(dp) :: gTVWptemp
 Integer :: NVs,NVst,NSs,NVVst,NVVss,NVSss,NVSst,NSSss,NSSst
@@ -53,7 +53,7 @@ Logical, Intent(in) ::  CheckRealStates
 Integer :: i_start, i_end, i_run, n_out, n_length, gt1, gt2, gt3, i1 
 Logical :: check 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'Nv0ThreeBodyDecay' 
+NameOfUnit(Iname) = 'ChiThreeBodyDecay' 
  
 Allocate( IntegralVs(25000,9) ) 
 Allocate( IntegralVst(25000,12) ) 
@@ -96,10 +96,10 @@ End If
  
 i_run = 1 
  
-Call CouplingsFor_Nv0_decays_3B(MNv0,i_run,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,           & 
-& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,            & 
-& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFdFucVWpL,cplcFdFucVWpR,    & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcNv0FreVWpL,cplcNv0FreVWpR,deltaM)
+Call CouplingsFor_Chi_decays_3B(MChi,i_run,MAh,MAh2,MChi,MChi2,MFd,MFd2,              & 
+& MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,             & 
+& ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcChiFreVWpL,             & 
+& cplcChiFreVWpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFvcVWpL,cplcFeFvcVWpR,deltaM)
 
 IntegralVs = 0._dp 
 NVs = 0  
@@ -121,21 +121,21 @@ IntegralSSst = 0._dp
 NSSst = 0  
 
  
-gNv0FrecFdFui = 0._dp 
-Call Nv0ToFrecFdFu(i_run,MFre,MFd,MFu,MVWp,MNv0,cplcFdFucVWpL,cplcFdFucVWpR,          & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,             & 
-& deltaM,epsI,check,gNv0FrecFdFui)
+gChiFrecFdFui = 0._dp 
+Call ChiToFrecFdFu(i_run,MFre,MFd,MFu,MVWp,MChi,cplcChiFreVWpL,cplcChiFreVWpR,        & 
+& cplcFdFucVWpL,cplcFdFucVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,               & 
+& deltaM,epsI,check,gChiFrecFdFui)
 
-gNv0FrecFdFu(i_run,:,:,:) = gNv0FrecFdFui 
-gT = gT + Sum(gNv0FrecFdFui) 
+gChiFrecFdFu(i_run,:,:,:) = gChiFrecFdFui 
+gT = gT + Sum(gChiFrecFdFui) 
  
-gNv0FrecFeFvi = 0._dp 
-Call Nv0ToFrecFeFv(i_run,MFre,MFe,MVWp,MNv0,cplcFeFvcVWpL,cplcFeFvcVWpR,              & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,             & 
-& deltaM,epsI,check,gNv0FrecFeFvi)
+gChiFrecFeFvi = 0._dp 
+Call ChiToFrecFeFv(i_run,MFre,MFe,MVWp,MChi,cplcChiFreVWpL,cplcChiFreVWpR,            & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,               & 
+& deltaM,epsI,check,gChiFrecFeFvi)
 
-gNv0FrecFeFv(i_run,:,:,:) = gNv0FrecFeFvi 
-gT = gT + Sum(gNv0FrecFeFvi) 
+gChiFrecFeFv(i_run,:,:,:) = gChiFrecFeFvi 
+gT = gT + Sum(gChiFrecFeFvi) 
  
 If (Present(gPartial)) Then
 Do i1 = i_start, i_end 
@@ -144,7 +144,7 @@ n_length=1
 Do gt1=1,1
   Do gt2=1,3
     Do gt3=1,3
-gPartial(i1,n_length)= gNv0FrecFdFu(i1,gt1,gt2,gt3)
+gPartial(i1,n_length)= gChiFrecFdFu(i1,gt1,gt2,gt3)
 n_length=n_length+1
      End Do 
   End Do 
@@ -152,7 +152,7 @@ End Do
 Do gt1=1,1
   Do gt2=1,3
     Do gt3=1,3
-gPartial(i1,n_length)= gNv0FrecFeFv(i1,gt1,gt2,gt3)
+gPartial(i1,n_length)= gChiFrecFeFv(i1,gt1,gt2,gt3)
 n_length=n_length+1
      End Do 
   End Do 
@@ -176,18 +176,18 @@ Deallocate( IntegralSSss )
 Deallocate( IntegralSSst ) 
 Iname = Iname - 1 
  
-End Subroutine Nv0ThreeBodyDecay
+End Subroutine ChiThreeBodyDecay
  
  
-Subroutine Nv0ToFrecFdFu(iIN,MFre,MFd,MFu,MVWp,MNv0,cplcFdFucVWpL,cplcFdFucVWpR,      & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,          & 
+Subroutine ChiToFrecFdFu(iIN,MFre,MFd,MFu,MVWp,MChi,cplcChiFreVWpL,cplcChiFreVWpR,    & 
+& cplcFdFucVWpL,cplcFdFucVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,            & 
 & epsI,check,g,WriteContributions)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MFre,MFd(3),MFu(3),MVWp,MNv0
+Real(dp),Intent(in) :: MFre,MFd(3),MFu(3),MVWp,MChi
 
-Complex(dp),Intent(in) :: cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcNv0FreVWpL,cplcNv0FreVWpR
+Complex(dp),Intent(in) :: cplcChiFreVWpL,cplcChiFreVWpR,cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3)
 
 Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
 
@@ -206,7 +206,7 @@ Real(dp), Allocatable :: gSum(:,:,:,:)
 Character(len=20), Allocatable :: Contribution(:,:,:,:) 
 Real(dp) :: Boson2(2), mass(4),  Boson4(4) 
 Complex(dp) :: coup(4), coup2(8),coupT 
-mass(1) = MNv0 
+mass(1) = MChi 
  
 Isum = 1 
 Allocate( gSum(1,3,3, Isum) ) 
@@ -220,7 +220,7 @@ Isum = 0
         Do gt3=1,3
 Isum = 0 
  
-If(Abs(MNv0).gt.(Abs(MFu(gt3))+Abs(MFd(gt2))+Abs(MFre))) Then 
+If(Abs(MChi).gt.(Abs(MFu(gt3))+Abs(MFd(gt2))+Abs(MFre))) Then 
 !-------------- 
 !  VWp 
 !-------------- 
@@ -240,8 +240,8 @@ mass(2) = MFre
 mass(3) = -MFd(gt2) 
 mass(4) = MFu(gt3) 
  
-coup(2) = Conjg(cplcNv0FreVWpL) 
-coup(1) = Conjg(cplcNv0FreVWpR) 
+coup(2) = Conjg(cplcChiFreVWpL) 
+coup(1) = Conjg(cplcChiFreVWpR) 
 coup(4) = Conjg(cplcFdFucVWpL(gt2,gt3)) 
 coup(3) = Conjg(cplcFdFucVWpR(gt2,gt3))
 Call IntegrateGaugeSS(Boson2,mass,coup,deltaM,epsI,IntegralVs,NVs,resR, check) 
@@ -251,7 +251,7 @@ resS = resS + resR
  resD = resD + resS 
 If (resD.ne.resD) Then 
 Write(*,*) "NaN appearing in the following diagrams: " 
-Write(*,*) "Nv0->Fre cFd Fu Propagator: VWp" 
+Write(*,*) "Chi->Fre cFd Fu Propagator: VWp" 
 Write(*,*)  "M_in: ",m_in 
 Write(*,*)  "mass: ",mass 
 Write(*,*)  "coup: ",coup 
@@ -281,19 +281,19 @@ If (g(1,gt2,gt3).Lt.0._dp) Then
 End If
        End Do 
      End Do 
-  g = oo512pi3 / Abs(MNv0)**3*g
-End Subroutine Nv0ToFrecFdFu 
+  g = oo512pi3 / Abs(MChi)**3*g
+End Subroutine ChiToFrecFdFu 
  
  
-Subroutine Nv0ToFrecFeFv(iIN,MFre,MFe,MVWp,MNv0,cplcFeFvcVWpL,cplcFeFvcVWpR,          & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,          & 
+Subroutine ChiToFrecFeFv(iIN,MFre,MFe,MVWp,MChi,cplcChiFreVWpL,cplcChiFreVWpR,        & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,            & 
 & epsI,check,g,WriteContributions)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MFre,MFe(3),MVWp,MNv0
+Real(dp),Intent(in) :: MFre,MFe(3),MVWp,MChi
 
-Complex(dp),Intent(in) :: cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcNv0FreVWpL,cplcNv0FreVWpR
+Complex(dp),Intent(in) :: cplcChiFreVWpL,cplcChiFreVWpR,cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3)
 
 Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
 
@@ -312,7 +312,7 @@ Real(dp), Allocatable :: gSum(:,:,:,:)
 Character(len=20), Allocatable :: Contribution(:,:,:,:) 
 Real(dp) :: Boson2(2), mass(4),  Boson4(4) 
 Complex(dp) :: coup(4), coup2(8),coupT 
-mass(1) = MNv0 
+mass(1) = MChi 
  
 Isum = 1 
 Allocate( gSum(1,3,3, Isum) ) 
@@ -326,7 +326,7 @@ Isum = 0
         Do gt3=1,3
 Isum = 0 
  
-If(Abs(MNv0).gt.(Abs(0.)+Abs(MFe(gt2))+Abs(MFre))) Then 
+If(Abs(MChi).gt.(Abs(0.)+Abs(MFe(gt2))+Abs(MFre))) Then 
 !-------------- 
 !  VWp 
 !-------------- 
@@ -346,8 +346,8 @@ mass(2) = MFre
 mass(3) = -MFe(gt2) 
 mass(4) = 0. 
  
-coup(2) = Conjg(cplcNv0FreVWpL) 
-coup(1) = Conjg(cplcNv0FreVWpR) 
+coup(2) = Conjg(cplcChiFreVWpL) 
+coup(1) = Conjg(cplcChiFreVWpR) 
 coup(4) = Conjg(cplcFeFvcVWpL(gt2,gt3)) 
 coup(3) = Conjg(cplcFeFvcVWpR(gt2,gt3))
 Call IntegrateGaugeSS(Boson2,mass,coup,deltaM,epsI,IntegralVs,NVs,resR, check) 
@@ -357,7 +357,7 @@ resS = resS + resR
  resD = resD + resS 
 If (resD.ne.resD) Then 
 Write(*,*) "NaN appearing in the following diagrams: " 
-Write(*,*) "Nv0->Fre cFe Fv Propagator: VWp" 
+Write(*,*) "Chi->Fre cFe Fv Propagator: VWp" 
 Write(*,*)  "M_in: ",m_in 
 Write(*,*)  "mass: ",mass 
 Write(*,*)  "coup: ",coup 
@@ -387,9 +387,9 @@ If (g(1,gt2,gt3).Lt.0._dp) Then
 End If
        End Do 
      End Do 
-  g = oo512pi3 / Abs(MNv0)**3*g
-End Subroutine Nv0ToFrecFeFv 
+  g = oo512pi3 / Abs(MChi)**3*g
+End Subroutine ChiToFrecFeFv 
  
  
-End Module Nv03Decays_SimplifiedDMDFDM 
+End Module Chi3Decays_SimplifiedDMDFDM 
  

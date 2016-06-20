@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:58 on 18.6.2016   
+! File created at 18:12 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -26,13 +26,13 @@ Contains
 & cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplcFdFdhhL,cplcFdFdhhR,               & 
 & cplcFuFdHpL,cplcFuFdHpR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,               & 
 & cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,           & 
-& cplcFdFdVGL,cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,             & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcNv0FreVWpL,cplcNv0FreVWpR,     & 
-& cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,           & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFvVZL,cplcFvFvVZR,           & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplcFreNv0cVWpL,               & 
-& cplcFreNv0cVWpR,cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,& 
+& cplcChiChiVZL,cplcChiChiVZR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFdVGL,               & 
+& cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,             & 
+& cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,             & 
+& cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcChiFreVWpL,cplcChiFreVWpR,cplcFreFreVZL,   & 
+& cplcFreFreVZR,cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,             & 
+& cplcFuFuVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcFeFvcVWpL,         & 
+& cplcFeFvcVWpR,cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,  & 
 & cplcVWpVPVPVWp3,cplcVWpVPVWpVZ1,cplcVWpVPVWpVZ2,cplcVWpVPVWpVZ3,cplcVWpcVWpVWpVWp1,    & 
 & cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3, & 
 & cplcgGgGVG,cplcgWpgAVWp,cplcgWCgAcVWp,cplcgWpgWpVP,cplcgWpgWpVZ,cplcgAgWpcVWp,         & 
@@ -56,15 +56,15 @@ Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhAhAhAh,cplAhAhhh
 & cplcFeFeAhR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),  & 
 & cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3),  & 
 & cplcFvFeHpR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),& 
-& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),& 
-& cplcFdFdVPR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),& 
-& cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFeFeVZL(3,3),& 
-& cplcFeFeVZR(3,3),cplcFreFreVPL,cplcFreFreVPR,cplcNv0FreVWpL,cplcNv0FreVWpR,            & 
-& cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),        & 
-& cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),& 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcChiChiVZL,cplcChiChiVZR,cplcFreChicVWpL,       & 
+& cplcFreChicVWpR,cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),   & 
+& cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVPL(3,3),& 
+& cplcFeFeVPR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),& 
+& cplcFreFreVPL,cplcFreFreVPR,cplcChiFreVWpL,cplcChiFreVWpR,cplcFreFreVZL,               & 
+& cplcFreFreVZR,cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),     & 
+& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),               & 
 & cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),               & 
-& cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplVGVGVGVG1,              & 
-& cplVGVGVGVG2,cplVGVGVGVG3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,             & 
+& cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,& 
 & cplcVWpVPVWpVZ1,cplcVWpVPVWpVZ2,cplcVWpVPVWpVZ3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2, & 
 & cplcVWpcVWpVWpVWp3,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplcgGgGVG,         & 
 & cplcgWpgAVWp,cplcgWCgAcVWp,cplcgWpgWpVP,cplcgWpgWpVZ,cplcgAgWpcVWp,cplcgZgWpcVWp,      & 
@@ -384,6 +384,18 @@ Call CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2
 End Do 
 
 
+cplcChiChiVZL = 0._dp 
+cplcChiChiVZR = 0._dp 
+Call CouplingcChiChiVZT(g1,g2,TW,cplcChiChiVZL,cplcChiChiVZR)
+
+
+
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
+Call CouplingcFreChicVWpT(g2,cplcFreChicVWpL,cplcFreChicVWpR)
+
+
+
 cplcFdFdVGL = 0._dp 
 cplcFdFdVGR = 0._dp 
 Do gt1 = 1, 3
@@ -460,9 +472,9 @@ Call CouplingcFreFreVPT(g1,g2,TW,cplcFreFreVPL,cplcFreFreVPR)
 
 
 
-cplcNv0FreVWpL = 0._dp 
-cplcNv0FreVWpR = 0._dp 
-Call CouplingcNv0FreVWpT(g2,cplcNv0FreVWpL,cplcNv0FreVWpR)
+cplcChiFreVWpL = 0._dp 
+cplcChiFreVWpR = 0._dp 
+Call CouplingcChiFreVWpT(g2,cplcChiFreVWpL,cplcChiFreVWpR)
 
 
 
@@ -530,18 +542,6 @@ Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,
 
  End Do 
 End Do 
-
-
-cplcNv0Nv0VZL = 0._dp 
-cplcNv0Nv0VZR = 0._dp 
-Call CouplingcNv0Nv0VZT(g1,g2,TW,cplcNv0Nv0VZL,cplcNv0Nv0VZR)
-
-
-
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Call CouplingcFreNv0cVWpT(g2,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
-
 
 
 cplVGVGVGVG1 = 0._dp 
@@ -714,13 +714,13 @@ Subroutine AllCouplings(lam1,v,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,        
 & cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplcFdFdhhL,               & 
 & cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,               & 
 & cplcFvFeHpR,cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,            & 
-& cplcFeFvcHpR,cplcFdFdVGL,cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,             & 
-& cplcFuFdVWpR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,             & 
-& cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcNv0FreVWpL,       & 
-& cplcNv0FreVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,        & 
-& cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFvVZL,           & 
-& cplcFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplcFreNv0cVWpL,   & 
-& cplcFreNv0cVWpR)
+& cplcFeFvcHpR,cplcChiChiVZL,cplcChiChiVZR,cplcFreChicVWpL,cplcFreChicVWpR,              & 
+& cplcFdFdVGL,cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,             & 
+& cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcChiFreVWpL,cplcChiFreVWpR,     & 
+& cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,           & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFvVZL,cplcFvFvVZR,           & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR)
 
 Implicit None 
 Real(dp), Intent(in) :: v,g1,g2,TW,g3
@@ -734,14 +734,14 @@ Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFeFehhL(3,3),  & 
 & cplcFeFehhR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),  & 
 & cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),               & 
-& cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFuFdVWpL(3,3), & 
-& cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3), & 
-& cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFreFreVPL,   & 
-& cplcFreFreVPR,cplcNv0FreVWpL,cplcNv0FreVWpR,cplcFreFreVZL,cplcFreFreVZR,               & 
-& cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFvFvVZL(3,3),               & 
-& cplcFvFvVZR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcNv0Nv0VZL,cplcNv0Nv0VZR,    & 
-& cplcFreNv0cVWpL,cplcFreNv0cVWpR
+& cplcChiChiVZL,cplcChiChiVZR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFdVGL(3,3),          & 
+& cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),& 
+& cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFvFeVWpL(3,3), & 
+& cplcFvFeVWpR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFreFreVPL,cplcFreFreVPR,       & 
+& cplcChiFreVWpL,cplcChiFreVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL(3,3),            & 
+& cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),  & 
+& cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),               & 
+& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3)
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -945,6 +945,18 @@ Call CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2
 End Do 
 
 
+cplcChiChiVZL = 0._dp 
+cplcChiChiVZR = 0._dp 
+Call CouplingcChiChiVZT(g1,g2,TW,cplcChiChiVZL,cplcChiChiVZR)
+
+
+
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
+Call CouplingcFreChicVWpT(g2,cplcFreChicVWpL,cplcFreChicVWpR)
+
+
+
 cplcFdFdVGL = 0._dp 
 cplcFdFdVGR = 0._dp 
 Do gt1 = 1, 3
@@ -1021,9 +1033,9 @@ Call CouplingcFreFreVPT(g1,g2,TW,cplcFreFreVPL,cplcFreFreVPR)
 
 
 
-cplcNv0FreVWpL = 0._dp 
-cplcNv0FreVWpR = 0._dp 
-Call CouplingcNv0FreVWpT(g2,cplcNv0FreVWpL,cplcNv0FreVWpR)
+cplcChiFreVWpL = 0._dp 
+cplcChiFreVWpR = 0._dp 
+Call CouplingcChiFreVWpT(g2,cplcChiFreVWpL,cplcChiFreVWpR)
 
 
 
@@ -1091,18 +1103,6 @@ Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,
 
  End Do 
 End Do 
-
-
-cplcNv0Nv0VZL = 0._dp 
-cplcNv0Nv0VZR = 0._dp 
-Call CouplingcNv0Nv0VZT(g1,g2,TW,cplcNv0Nv0VZL,cplcNv0Nv0VZR)
-
-
-
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Call CouplingcFreNv0cVWpT(g2,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
-
 
 
 Iname = Iname - 1 
@@ -2688,6 +2688,62 @@ Iname = Iname - 1
 End Subroutine CouplingcFeFvcHpT  
  
  
+Subroutine CouplingcChiChiVZT(g1,g2,TW,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: g1,g2,TW
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcChiChiVZ' 
+ 
+resL = 0._dp 
+resL = resL-(g2*Cos(TW))/2._dp
+resL = resL-(g1*Sin(TW))/2._dp
+resR = 0._dp 
+resR = resR-(g2*Cos(TW))/2._dp
+resR = resR-(g1*Sin(TW))/2._dp
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcChiChiVZT  
+ 
+ 
+Subroutine CouplingcFreChicVWpT(g2,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: g2
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFreChicVWp' 
+ 
+resL = 0._dp 
+resL = resL-(g2/sqrt(2._dp))
+resR = 0._dp 
+resR = resR-(g2/sqrt(2._dp))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFreChicVWpT  
+ 
+ 
 Subroutine CouplingcFdFdVGT(gt1,gt2,g3,resL,resR)
 
 Implicit None 
@@ -3063,7 +3119,7 @@ Iname = Iname - 1
 End Subroutine CouplingcFreFreVPT  
  
  
-Subroutine CouplingcNv0FreVWpT(g2,resL,resR)
+Subroutine CouplingcChiFreVWpT(g2,resL,resR)
 
 Implicit None 
 
@@ -3073,7 +3129,7 @@ Complex(dp), Intent(out) :: resL, resR
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcNv0FreVWp' 
+NameOfUnit(Iname) = 'CouplingcChiFreVWp' 
  
 resL = 0._dp 
 resL = resL-(g2/sqrt(2._dp))
@@ -3087,7 +3143,7 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingcNv0FreVWpT  
+End Subroutine CouplingcChiFreVWpT  
  
  
 Subroutine CouplingcFreFreVZT(g1,g2,TW,resL,resR)
@@ -3409,62 +3465,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingcFeFvcVWpT  
- 
- 
-Subroutine CouplingcNv0Nv0VZT(g1,g2,TW,resL,resR)
-
-Implicit None 
-
-Real(dp), Intent(in) :: g1,g2,TW
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcNv0Nv0VZ' 
- 
-resL = 0._dp 
-resL = resL-(g2*Cos(TW))/2._dp
-resL = resL-(g1*Sin(TW))/2._dp
-resR = 0._dp 
-resR = resR-(g2*Cos(TW))/2._dp
-resR = resR-(g1*Sin(TW))/2._dp
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcNv0Nv0VZT  
- 
- 
-Subroutine CouplingcFreNv0cVWpT(g2,resL,resR)
-
-Implicit None 
-
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cVWp' 
- 
-resL = 0._dp 
-resL = resL-(g2/sqrt(2._dp))
-resR = 0._dp 
-resR = resR-(g2/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcFreNv0cVWpT  
  
  
 Subroutine CouplingVGVGVGVGT(g3,res1,res2,res3)
@@ -5345,9 +5345,9 @@ Subroutine CouplingsForLoopMasses(Yd,ZDL,ZDR,g3,g1,g2,TW,Yu,ZUL,ZUR,Ye,         
 & cplcUFuFdHpR,cplcUFuFdVWpL,cplcUFuFdVWpR,cplcUFuFuhhL,cplcUFuFuhhR,cplcUFuFuVGL,       & 
 & cplcUFuFuVGR,cplcUFuFuVPL,cplcUFuFuVPR,cplcUFuFuVZL,cplcUFuFuVZR,cplcUFeFeAhL,         & 
 & cplcUFeFeAhR,cplcUFeFehhL,cplcUFeFehhR,cplcUFeFeVPL,cplcUFeFeVPR,cplcUFeFeVZL,         & 
-& cplcUFeFeVZR,cplcUFeFvcHpL,cplcUFeFvcHpR,cplcUFeFvcVWpL,cplcUFeFvcVWpR,cplcFreFreVPL,  & 
-& cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,             & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplAhcHpVWp,cplcFdFucHpL,    & 
+& cplcUFeFeVZR,cplcUFeFvcHpL,cplcUFeFvcHpR,cplcUFeFvcVWpL,cplcUFeFvcVWpR,cplcFreChicVWpL,& 
+& cplcFreChicVWpR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,               & 
+& cplcChiChiVZL,cplcChiChiVZR,cplcChiFreVWpL,cplcChiFreVWpR,cplAhcHpVWp,cplcFdFucHpL,    & 
 & cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,          & 
 & cplcgZgWCHp,cplhhHpcHp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,      & 
 & cplAhAhHpcHp,cplhhhhHpcHp,cplHpHpcHpcHp,cplHpcHpVPVP,cplHpcHpcVWpVWp,cplHpcHpVZVZ,     & 
@@ -5378,8 +5378,8 @@ Complex(dp), Intent(out) :: cplcUFdFdAhL(3,3),cplcUFdFdAhR(3,3),cplcUFdFdhhL(3,3
 & cplcUFeFeAhL(3,3),cplcUFeFeAhR(3,3),cplcUFeFehhL(3,3),cplcUFeFehhR(3,3),               & 
 & cplcUFeFeVPL(3,3),cplcUFeFeVPR(3,3),cplcUFeFeVZL(3,3),cplcUFeFeVZR(3,3),               & 
 & cplcUFeFvcHpL(3,3),cplcUFeFvcHpR(3,3),cplcUFeFvcVWpL(3,3),cplcUFeFvcVWpR(3,3),         & 
-& cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cVWpL,               & 
-& cplcFreNv0cVWpR,cplcNv0FreVWpL,cplcNv0FreVWpR,cplcNv0Nv0VZL,cplcNv0Nv0VZR,             & 
+& cplcFreChicVWpL,cplcFreChicVWpR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,             & 
+& cplcFreFreVZR,cplcChiChiVZL,cplcChiChiVZR,cplcChiFreVWpL,cplcChiFreVWpR,               & 
 & cplAhcHpVWp,cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),   & 
 & cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,cplcgZgWCHp,cplhhHpcHp,cplhhcHpVWp,              & 
 & cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplAhAhHpcHp,cplhhhhHpcHp,               & 
@@ -5602,6 +5602,12 @@ Call CouplingcUFeFvcVWpL(gt1,gt2,g2,cplcUFeFvcVWpL(gt1,gt2),cplcUFeFvcVWpR(gt1,g
 End Do 
 
 
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
+Call CouplingcFreChicVWpL(g2,cplcFreChicVWpL,cplcFreChicVWpR)
+
+
+
 cplcFreFreVPL = 0._dp 
 cplcFreFreVPR = 0._dp 
 Call CouplingcFreFreVPL(g1,g2,TW,cplcFreFreVPL,cplcFreFreVPR)
@@ -5614,21 +5620,15 @@ Call CouplingcFreFreVZL(g1,g2,TW,cplcFreFreVZL,cplcFreFreVZR)
 
 
 
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Call CouplingcFreNv0cVWpL(g2,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
+cplcChiChiVZL = 0._dp 
+cplcChiChiVZR = 0._dp 
+Call CouplingcChiChiVZL(g1,g2,TW,cplcChiChiVZL,cplcChiChiVZR)
 
 
 
-cplcNv0FreVWpL = 0._dp 
-cplcNv0FreVWpR = 0._dp 
-Call CouplingcNv0FreVWpL(g2,cplcNv0FreVWpL,cplcNv0FreVWpR)
-
-
-
-cplcNv0Nv0VZL = 0._dp 
-cplcNv0Nv0VZR = 0._dp 
-Call CouplingcNv0Nv0VZL(g1,g2,TW,cplcNv0Nv0VZL,cplcNv0Nv0VZR)
+cplcChiFreVWpL = 0._dp 
+cplcChiFreVWpR = 0._dp 
+Call CouplingcChiFreVWpL(g2,cplcChiFreVWpL,cplcChiFreVWpR)
 
 
 
@@ -7057,6 +7057,33 @@ Iname = Iname - 1
 End Subroutine CouplingcUFeFvcVWpL  
  
  
+Subroutine CouplingcFreChicVWpL(g2,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: g2
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFreChicVWp' 
+ 
+resL = 0._dp 
+resL = resL-(g2/sqrt(2._dp))
+resR = 0._dp 
+resR = resR-(g2/sqrt(2._dp))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFreChicVWpL  
+ 
+ 
 Subroutine CouplingcFreFreVPL(g1,g2,TW,resL,resR)
 
 Implicit None 
@@ -7115,61 +7142,7 @@ Iname = Iname - 1
 End Subroutine CouplingcFreFreVZL  
  
  
-Subroutine CouplingcFreNv0cVWpL(g2,resL,resR)
-
-Implicit None 
-
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cVWp' 
- 
-resL = 0._dp 
-resL = resL-(g2/sqrt(2._dp))
-resR = 0._dp 
-resR = resR-(g2/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcFreNv0cVWpL  
- 
- 
-Subroutine CouplingcNv0FreVWpL(g2,resL,resR)
-
-Implicit None 
-
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcNv0FreVWp' 
- 
-resL = 0._dp 
-resL = resL-(g2/sqrt(2._dp))
-resR = 0._dp 
-resR = resR-(g2/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcNv0FreVWpL  
- 
- 
-Subroutine CouplingcNv0Nv0VZL(g1,g2,TW,resL,resR)
+Subroutine CouplingcChiChiVZL(g1,g2,TW,resL,resR)
 
 Implicit None 
 
@@ -7179,7 +7152,7 @@ Complex(dp), Intent(out) :: resL, resR
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcNv0Nv0VZ' 
+NameOfUnit(Iname) = 'CouplingcChiChiVZ' 
  
 resL = 0._dp 
 resL = resL-(g2*Cos(TW))/2._dp
@@ -7195,7 +7168,34 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingcNv0Nv0VZL  
+End Subroutine CouplingcChiChiVZL  
+ 
+ 
+Subroutine CouplingcChiFreVWpL(g2,resL,resR)
+
+Implicit None 
+
+Real(dp), Intent(in) :: g2
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcChiFreVWp' 
+ 
+resL = 0._dp 
+resL = resL-(g2/sqrt(2._dp))
+resR = 0._dp 
+resR = resR-(g2/sqrt(2._dp))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcChiFreVWpL  
  
  
 Subroutine CouplingAhcHpVWpL(g2,res)
@@ -9186,9 +9186,9 @@ Iname = Iname - 1
 End Subroutine CouplingcVWpcVWpVWpVWpL  
  
  
-Subroutine CouplingsForVectorBosons(g1,g2,TW,v,ZDL,ZUL,ZEL,cplcFreFreVZL,             & 
-& cplcFreFreVZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplcNv0FreVWpL,cplcNv0FreVWpR,           & 
-& cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,cplcHpVPVWp,            & 
+Subroutine CouplingsForVectorBosons(g2,g1,TW,v,ZDL,ZUL,ZEL,cplcFreChicVWpL,           & 
+& cplcFreChicVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcChiChiVZL,cplcChiChiVZR,               & 
+& cplcChiFreVWpL,cplcChiFreVWpR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,cplcHpVPVWp,          & 
 & cplcHpVWpVZ,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhhhVZ,cplAhHpcVWp,cplAhAhcVWpVWp,         & 
 & cplAhAhVZVZ,cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,             & 
 & cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,               & 
@@ -9199,12 +9199,12 @@ Subroutine CouplingsForVectorBosons(g1,g2,TW,v,ZDL,ZUL,ZEL,cplcFreFreVZL,       
 & cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3)
 
 Implicit None 
-Real(dp), Intent(in) :: g1,g2,TW,v
+Real(dp), Intent(in) :: g2,g1,TW,v
 
 Complex(dp), Intent(in) :: ZDL(3,3),ZUL(3,3),ZEL(3,3)
 
-Complex(dp), Intent(out) :: cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplcNv0FreVWpL,           & 
-& cplcNv0FreVWpR,cplcNv0Nv0VZL,cplcNv0Nv0VZR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,         & 
+Complex(dp), Intent(out) :: cplcFreChicVWpL,cplcFreChicVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcChiChiVZL,            & 
+& cplcChiChiVZR,cplcChiFreVWpL,cplcChiFreVWpR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,        & 
 & cplcHpVPVWp,cplcHpVWpVZ,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhhhVZ,cplAhHpcVWp,            & 
 & cplAhAhcVWpVWp,cplAhAhVZVZ,cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhcVWpVWp,          & 
 & cplhhhhVZVZ,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),       & 
@@ -9220,27 +9220,27 @@ Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'CouplingsForVectorBosons'
  
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
+Call CouplingcFreChicVWpL(g2,cplcFreChicVWpL,cplcFreChicVWpR)
+
+
+
 cplcFreFreVZL = 0._dp 
 cplcFreFreVZR = 0._dp 
 Call CouplingcFreFreVZL(g1,g2,TW,cplcFreFreVZL,cplcFreFreVZR)
 
 
 
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Call CouplingcFreNv0cVWpL(g2,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
+cplcChiChiVZL = 0._dp 
+cplcChiChiVZR = 0._dp 
+Call CouplingcChiChiVZL(g1,g2,TW,cplcChiChiVZL,cplcChiChiVZR)
 
 
 
-cplcNv0FreVWpL = 0._dp 
-cplcNv0FreVWpR = 0._dp 
-Call CouplingcNv0FreVWpL(g2,cplcNv0FreVWpL,cplcNv0FreVWpR)
-
-
-
-cplcNv0Nv0VZL = 0._dp 
-cplcNv0Nv0VZR = 0._dp 
-Call CouplingcNv0Nv0VZL(g1,g2,TW,cplcNv0Nv0VZL,cplcNv0Nv0VZR)
+cplcChiFreVWpL = 0._dp 
+cplcChiFreVWpR = 0._dp 
+Call CouplingcChiFreVWpL(g2,cplcChiFreVWpL,cplcChiFreVWpR)
 
 
 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:58 on 18.6.2016   
+! File created at 18:12 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -198,8 +198,8 @@ Real(dp) :: g1GUT,g2GUT,g3GUT,MDFGUT
 
 Complex(dp) :: lam1GUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),mH2GUT
 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),          & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
 
@@ -211,8 +211,8 @@ Real(dp) :: vFix
 
 Real(dp) :: gPFu(3,153),gTFu(3),BRFu(3,153),gPFe(3,150),gTFe(3),BRFe(3,150),gPFd(3,153),          & 
 & gTFd(3),BRFd(3,153),gPFv(3,3),gTFv(3),BRFv(3,3),gPVZ(1,40),gTVZ,BRVZ(1,40),            & 
-& gPVWp(1,21),gTVWp,BRVWp(1,21),gPhh(1,34),gThh,BRhh(1,34),gPNv0(1,20),gTNv0,            & 
-& BRNv0(1,20),gPFre(1,20),gTFre,BRFre(1,20)
+& gPVWp(1,21),gTVWp,BRVWp(1,21),gPhh(1,34),gThh,BRhh(1,34),gPChi(1,20),gTChi,            & 
+& BRChi(1,20),gPFre(1,20),gTFre,BRFre(1,20)
 
 Real(dp) :: ratioFd(1,3),ratioFe(1,3),ratioFu(1,3),ratioHp,ratioVWp
 
@@ -908,6 +908,8 @@ mH2MZ = 0._dp
 vIN = 0._dp 
 MAh = 0._dp 
 MAh2 = 0._dp 
+MChi = 0._dp 
+MChi2 = 0._dp 
 MFd = 0._dp 
 MFd2 = 0._dp 
 MFe = 0._dp 
@@ -920,8 +922,6 @@ Mhh = 0._dp
 Mhh2 = 0._dp 
 MHp = 0._dp 
 MHp2 = 0._dp 
-MNv0 = 0._dp 
-MNv02 = 0._dp 
 MVWp = 0._dp 
 MVWp2 = 0._dp 
 MVZ = 0._dp 
@@ -957,9 +957,9 @@ BRVWp = 0._dp
 gPhh = 0._dp 
 gThh = 0._dp 
 BRhh = 0._dp 
-gPNv0 = 0._dp 
-gTNv0 = 0._dp 
-BRNv0 = 0._dp 
+gPChi = 0._dp 
+gTChi = 0._dp 
+BRChi = 0._dp 
 gPFre = 0._dp 
 gTFre = 0._dp 
 BRFre = 0._dp 

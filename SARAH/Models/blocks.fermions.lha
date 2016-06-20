@@ -4,20 +4,20 @@ Block DobletFermion #Doublet fermion
 Block DobletFermion-Lagrangian
 1 - MDF rd.ru # {AddHC->True}
 Block DobletFermion-Mixing
-1  {{vd, vu}, {Rv0, ZvN}} #or empty if not further mixing
+1  {{vd, vu}, {X0, ZX}} #or empty if not further mixing
 Block DobletFermion-DiracSpinors
 1 Fre ->{  ed, conj[eu]}
-2 Nv0 ->{ Rv0, conj[Rv0]} # or Nv0 ->{  vd, conj[vu]} if not further mixing
+2 Chi ->{ X0, conj[X0]} # or Chi ->{  vd, conj[vu]} if not further mixing
 Block DobletFermion-particles-WeylFermionAndIndermediate
 1  {rd,     {LaTeX -> "R^d" }}
 2  {ru,     {LaTeX -> "R^u" }}
 3  {vd,     {LaTeX -> "R_v^d" }}
 4  {vu,     {LaTeX -> "R_v^u" }}
-5  {Rv0,    {LaTeX -> "R_\\nu^0",OutputName -> "Rv0",PDG -> 0 }} #or empty if not further mixing
+5  {X0,     {LaTeX -> "X^0" }} #or empty if not further mixing
 Block DobletFermion-particles-EWSB
 1 {Fre,{Description ->"Vector-like charged fermions",PDG -> {210000601},PDG.IX -> {-111100601},Mass -> {LesHouches},Width -> {External},LaTeX -> "R_e",ElectricCharge -> -1,OutputName -> "Re"}}
-2 {Nv0,  {Description ->"Vector-like neutral fermions",PDG -> {210000002,210000003},LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Nv0"}} #Majorana
-3 {Nv0,{Description ->"Vector-like neutral fermions",PDG -> {210000002},PDG.IX -> {111100701},Mass -> {LesHouches},Width -> {External},LaTeX ->"\\tilde{\\chi}^0",ElectricCharge -> 0,OutputName -> "Nv0"}} #Dirac
+2 {Chi,  {Description ->"Vector-like neutral fermions",PDG -> {1012,2012},LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Chi"}} #Majorana
+3 {Chi,{Description ->"Vector-like neutral fermions",PDG -> {1012},PDG.IX -> {111100701},Mass -> {LesHouches},Width -> {External},LaTeX ->"\\tilde{\\chi}^0",ElectricCharge -> 0,OutputName -> "Chi"}} #Dirac
 Block DobletFermion-parameters
 1 {MDF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}} (* LHA block for proper MDFINPUT in SPheno.m *)   
 Block DobletFermion-SPheno-MINPAR    
@@ -26,9 +26,37 @@ Block DobletFermion-SPheno-BoundaryLowScaleInput
 1 {MDF,MDFINPUT}
 Block DobletFermion-SPheno-ListDecayParticles
 1 Fre
-2 Nv0
+2 Chi
 Block DobletFermion-SPheno-ListDecayParticles3B
 1 {Fre,"Fre.f90"}
-2 {Nv0,"Nv0.f90"}
+2 {Chi,"Chi.f90"}
 Block DobletFermion-SPheno-DefaultInputValues
 1 MDFINPUT -> 200.
+#Singlet start here
+Block SingletFermion #Singlet fermion
+1 FermionFields[[1]] = {n , 1, conj[nR],       0, 1,  1,-1}; # U(1)xSU(2)xSU(3)xZ_2
+Block SingletFermion-Lagrangian
+1 - Mn/2 n.n # {AddHC->True}
+Block SingletFermion-Mixing
+1  {{conj[nR]},{X0, ZX}} # Only for more than one generation
+Block SingletFermion-DiracSpinors
+1 Fre ->{  ed, conj[eu]}
+2 Chi ->{ X0, conj[X0]} 
+Block SingletFermion-particles-WeylFermionAndIndermediate
+1  {n,      {LaTeX -> "N" }}
+2  {nR,     {LaTeX -> "\\nu_R" }}
+5  {X0,     {LaTeX -> "X^0" }} 
+Block SingletFermion-particles-EWSB
+2 {Chi,  {Description ->"Vector-like neutral fermions",PDG -> {1012},LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Chi"}} #Majorana
+Block SingletFermion-parameters
+1 {Mn,{ LaTeX -> "M_N",Real -> True,OutputName -> Mn,LesHouches -> {FDM,3}}} (* LHA block for proper MnINPUT in SPheno.m *)   
+Block SingletFermion-SPheno-MINPAR    
+1 {1,MnINPUT}
+Block SingletFermion-SPheno-BoundaryLowScaleInput
+1 {Mn,MnINPUT}
+Block SingletFermion-SPheno-ListDecayParticles
+1 Chi
+Block SingletFermion-SPheno-ListDecayParticles3B
+1 {Chi,"Chi.f90"}
+Block SingletFermion-SPheno-DefaultInputValues
+1 MnINPUT -> 200.

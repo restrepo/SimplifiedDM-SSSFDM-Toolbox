@@ -17,7 +17,7 @@ for p in $@; do
     
     if [ $i -eq 1 ];then
 	if [ -d micromegas/$p/work/models ];then
-	    echo cd micromegs/$p/work/models
+	    cd micromegas/$p/work/models
 	    
 	else
 	    echo $p

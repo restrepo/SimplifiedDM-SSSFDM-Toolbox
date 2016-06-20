@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:58 on 18.6.2016   
+! File created at 18:12 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -20,8 +20,8 @@ Logical :: SignOfMassChanged =.False.
 Logical :: SignOfMuChanged =.False.  
 Contains 
  
-Subroutine TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,             & 
-& Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,               & 
+Subroutine TreeMasses(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,               & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
 & ZW,ZZ,v,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,GenerationMixing,kont)
 
 Implicit None 
@@ -30,8 +30,8 @@ Real(dp),Intent(in) :: g1,g2,g3,MDF
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2
 
-Real(dp),Intent(out) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(out) :: MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),          & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
 
@@ -41,7 +41,7 @@ Logical, Intent(in) :: GenerationMixing
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,kontSave 
 Complex(dp) :: MFreC 
-Complex(dp) :: MNv0C 
+Complex(dp) :: MChiC 
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'TreeMassesSimplifiedDM/DFDM'
  
@@ -62,14 +62,14 @@ MFre2 = MFre**2
 End if
 ! ------------------------------- 
 ! ------------------------------- 
-! Mass of Nv0 
-MNv0C = -1._dp*(MDF) 
+! Mass of Chi 
+MChiC = -1._dp*(MDF) 
 If (RotateNegativeFermionMasses) Then 
-MNv0 = Abs(MNv0C) 
-MNv02 = MNv0**2 
+MChi = Abs(MChiC) 
+MChi2 = MChi**2 
 Else 
-MNv0 = Real(MNv0C,dp) 
-MNv02 = MNv0**2 
+MChi = Real(MChiC,dp) 
+MChi2 = MChi**2 
 End if
 ! ------------------------------- 
 MHp2 = mH2 + lam1*v**2 + (g2**2*v**2*RXiWp)/4._dp 
@@ -164,9 +164,8 @@ Call CalculateMFe(Ye,v,ZEL,ZER,MFe,kont)
 MFe2 = MFe**2 
 
  
- Call SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,               & 
-& Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,               & 
-& ZW,ZZ,kont)
+ Call SortGoldstones(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,             & 
+& MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,kont)
 
 If (SignOfMassChanged) Then  
  If (.Not.IgnoreNegativeMasses) Then 
@@ -197,9 +196,9 @@ Iname = Iname - 1
 End Subroutine  TreeMasses 
  
  
-Subroutine TreeMassesEffPot(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,           & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,ZW,ZZ,v,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,GenerationMixing,kont)
+Subroutine TreeMassesEffPot(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,               & 
+& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,               & 
+& ZEL,ZUL,ZW,ZZ,v,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,GenerationMixing,kont)
 
 Implicit None 
  
@@ -207,8 +206,8 @@ Real(dp),Intent(in) :: g1,g2,g3,MDF
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2
 
-Real(dp),Intent(out) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(out) :: MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),          & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
 
@@ -218,7 +217,7 @@ Logical, Intent(in) :: GenerationMixing
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4,j1,j2,j3,kontSave 
 Complex(dp) :: MFreC 
-Complex(dp) :: MNv0C 
+Complex(dp) :: MChiC 
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'TreeMassesSimplifiedDM/DFDM'
  
@@ -239,14 +238,14 @@ MFre2 = MFre**2
 End if
 ! ------------------------------- 
 ! ------------------------------- 
-! Mass of Nv0 
-MNv0C = -1._dp*(MDF) 
+! Mass of Chi 
+MChiC = -1._dp*(MDF) 
 If (RotateNegativeFermionMasses) Then 
-MNv0 = Abs(MNv0C) 
-MNv02 = MNv0**2 
+MChi = Abs(MChiC) 
+MChi2 = MChi**2 
 Else 
-MNv0 = Real(MNv0C,dp) 
-MNv02 = MNv0**2 
+MChi = Real(MChiC,dp) 
+MChi2 = MChi**2 
 End if
 ! ------------------------------- 
 MHp2 = mH2 + lam1*v**2 + (g2**2*v**2*RXiWp)/4._dp 
@@ -1489,12 +1488,12 @@ Iname = Iname - 1
 End Subroutine  TreeMassesSM 
  
  
-Subroutine SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,             & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,ZW,ZZ,kont)
+Subroutine SortGoldstones(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,           & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& ZW,ZZ,kont)
 
-Real(dp),Intent(inout) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(inout) :: MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),          & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(inout) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
 
