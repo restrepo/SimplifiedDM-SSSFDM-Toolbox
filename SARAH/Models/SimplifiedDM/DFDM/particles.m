@@ -91,14 +91,8 @@ ParticleDefinitions[GaugeES] = {
       {Fu,   { Description -> "Up-Quarks"}},
       {Fe,   { Description -> "Leptons" }},
       {Fv,   { Description -> "Neutrinos" }},
-      {Chi,  { Description -> "Singlet Fermions",
-	       PDG -> {1012,1014,1016},
-	       Mass -> LesHouches,
-	       ElectricCharge -> 0,
-	       LaTeX -> "N",
-	       OutputName -> "N" }},
       {Fre,  {Description ->"Vector-like charged fermions",PDG -> {210000601},PDG.IX -> {-111100601},Mass -> {LesHouches},Width -> {External},LaTeX -> "R_e",           ElectricCharge -> -1,OutputName -> "Re"}},
-      {Nv0,  {Description ->"Vector-like neutral fermions",PDG -> {210000002},PDG.IX -> {111100701},Mass -> {LesHouches},Width -> {External},LaTeX ->"\\tilde{\\chi}^0",ElectricCharge -> 0,OutputName -> "Nv0"}}
+      {Chi,  {Description ->"Vector-like neutral fermions",PDG -> {1012},PDG.IX -> {111100701},Mass -> {LesHouches},Width -> {External},LaTeX ->"\\tilde{\\chi}^0",ElectricCharge -> 0,OutputName -> "Chi"}}
 };
 
 WeylFermionAndIndermediate =

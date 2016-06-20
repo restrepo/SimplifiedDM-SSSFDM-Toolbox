@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:58 on 18.6.2016   
+! File created at 18:12 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -15,37 +15,37 @@ Use ThreeBodyPhaseSpace
  
 Contains 
  
-Subroutine FdThreeBodyDecay(n_in,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,               & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
+Subroutine FdThreeBodyDecay(n_in,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,               & 
+& MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,              & 
 & ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,gThh,gTVWp,gTVZ,gFdFdcFdFd,         & 
-& gFdFdcFeFe,gFdFdcFuFu,gFdFdcFreFre,gFdFdcFvFv,gFdFdcNv0Nv0,gFdFucFvFe,gFdFucNv0Fre,    & 
+& gFdFdcFeFe,gFdFdcFuFu,gFdFdcChiChi,gFdFdcFreFre,gFdFdcFvFv,gFdFucFvFe,gFdFucChiFre,    & 
 & epsI,deltaM,CheckRealStates,gT,gPartial,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: MAh,MAh2,MChi,MChi2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),          & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
 Complex(dp),Intent(in) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFucVWpL(3,3),& 
-& cplcFdFucVWpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),& 
-& cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuhhL(3,3),      & 
-& cplcFuFuhhR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
-& cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplcNv0FreVWpL,cplcNv0FreVWpR,cplcNv0Nv0VZL,         & 
-& cplcNv0Nv0VZR
+Complex(dp) :: cplcChiChiVZL,cplcChiChiVZR,cplcChiFreVWpL,cplcChiFreVWpR,cplcFdFdhhL(3,3),           & 
+& cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),& 
+& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFreFreVZL,     & 
+& cplcFreFreVZR,cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),   & 
+& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFvFvVZL(3,3),& 
+& cplcFvFvVZR(3,3)
 
 Real(dp),Intent(in) :: g1,g2,g3,MDF,v
 
 Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),mH2
 
-Real(dp),Intent(inout) :: gFdFdcFdFd(3,3,3,3),gFdFdcFeFe(3,3,3,3),gFdFdcFuFu(3,3,3,3),gFdFdcFreFre(3,3,1,1),    & 
-& gFdFdcFvFv(3,3,3,3),gFdFdcNv0Nv0(3,3,1,1),gFdFucFvFe(3,3,3,3),gFdFucNv0Fre(3,3,1,1)
+Real(dp),Intent(inout) :: gFdFdcFdFd(3,3,3,3),gFdFdcFeFe(3,3,3,3),gFdFdcFuFu(3,3,3,3),gFdFdcChiChi(3,3,1,1),    & 
+& gFdFdcFreFre(3,3,1,1),gFdFdcFvFv(3,3,3,3),gFdFucFvFe(3,3,3,3),gFdFucChiFre(3,3,1,1)
 
 Real(dp),Intent(in) :: gThh,gTVWp,gTVZ
 
-Real(dp) :: gFdFdcFdFdi(3,3,3),gFdFdcFeFei(3,3,3),gFdFdcFuFui(3,3,3),gFdFdcFreFrei(3,1,1),        & 
-& gFdFdcFvFvi(3,3,3),gFdFdcNv0Nv0i(3,1,1),gFdFucFvFei(3,3,3),gFdFucNv0Frei(3,1,1)
+Real(dp) :: gFdFdcFdFdi(3,3,3),gFdFdcFeFei(3,3,3),gFdFdcFuFui(3,3,3),gFdFdcChiChii(3,1,1),        & 
+& gFdFdcFreFrei(3,1,1),gFdFdcFvFvi(3,3,3),gFdFucFvFei(3,3,3),gFdFucChiFrei(3,1,1)
 
 Real(dp) :: gThhtemp,gTVWptemp,gTVZtemp
 Integer :: NVs,NVst,NSs,NVVst,NVVss,NVSss,NVSst,NSSss,NSSst
@@ -107,14 +107,14 @@ End If
  
 Do i_run = i_start, i_end 
  
-Call CouplingsFor_Fd_decays_3B(MFd(i_run),i_run,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,               & 
-& ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcFdFdhhL,            & 
-& cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFehhL,           & 
-& cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,          & 
-& cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeVWpL,             & 
-& cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcNv0FreVWpL,cplcNv0FreVWpR,cplcNv0Nv0VZL,      & 
-& cplcNv0Nv0VZR,deltaM)
+Call CouplingsFor_Fd_decays_3B(MFd(i_run),i_run,MAh,MAh2,MChi,MChi2,MFd,              & 
+& MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,               & 
+& TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,cplcChiChiVZL,       & 
+& cplcChiChiVZR,cplcChiFreVWpL,cplcChiFreVWpR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,       & 
+& cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,           & 
+& cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,         & 
+& cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,             & 
+& cplcFvFvVZR,deltaM)
 
 IntegralVs = 0._dp 
 NVs = 0  
@@ -164,6 +164,14 @@ Call FdToFdcFuFu(i_run,MFd,MFu,MVZ,MVWp,Mhh,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,
 gFdFdcFuFu(i_run,:,:,:) = gFdFdcFuFui 
 gT(i_run) = gT(i_run) + Sum(gFdFdcFuFui) 
  
+gFdFdcChiChii = 0._dp 
+Call FdToFdcChiChi(i_run,MFd,MChi,MVZ,cplcChiChiVZL,cplcChiChiVZR,cplcFdFdVZL,        & 
+& cplcFdFdVZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZtemp,deltaM,epsI,check,              & 
+& gFdFdcChiChii)
+
+gFdFdcChiChi(i_run,:,:,:) = gFdFdcChiChii 
+gT(i_run) = gT(i_run) + Sum(gFdFdcChiChii) 
+ 
 gFdFdcFreFrei = 0._dp 
 Call FdToFdcFreFre(i_run,MFd,MFre,MVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFreFreVZL,          & 
 & cplcFreFreVZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZtemp,deltaM,epsI,check,            & 
@@ -179,14 +187,6 @@ Call FdToFdcFvFv(i_run,MFd,MVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFvFvVZL,cplcFvFvVZR, 
 gFdFdcFvFv(i_run,:,:,:) = gFdFdcFvFvi 
 gT(i_run) = gT(i_run) + Sum(gFdFdcFvFvi) 
  
-gFdFdcNv0Nv0i = 0._dp 
-Call FdToFdcNv0Nv0(i_run,MFd,MNv0,MVZ,cplcFdFdVZL,cplcFdFdVZR,cplcNv0Nv0VZL,          & 
-& cplcNv0Nv0VZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZtemp,deltaM,epsI,check,            & 
-& gFdFdcNv0Nv0i)
-
-gFdFdcNv0Nv0(i_run,:,:,:) = gFdFdcNv0Nv0i 
-gT(i_run) = gT(i_run) + Sum(gFdFdcNv0Nv0i) 
- 
 gFdFucFvFei = 0._dp 
 Call FdToFucFvFe(i_run,MFu,MFe,MVWp,MFd,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFeVWpL,     & 
 & cplcFvFeVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,deltaM,epsI,check,            & 
@@ -195,13 +195,13 @@ Call FdToFucFvFe(i_run,MFu,MFe,MVWp,MFd,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFeVWpL
 gFdFucFvFe(i_run,:,:,:) = gFdFucFvFei 
 gT(i_run) = gT(i_run) + Sum(gFdFucFvFei) 
  
-gFdFucNv0Frei = 0._dp 
-Call FdToFucNv0Fre(i_run,MFu,MNv0,MFre,MVWp,MFd,cplcFdFucVWpL,cplcFdFucVWpR,          & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,             & 
-& deltaM,epsI,check,gFdFucNv0Frei)
+gFdFucChiFrei = 0._dp 
+Call FdToFucChiFre(i_run,MFu,MChi,MFre,MVWp,MFd,cplcChiFreVWpL,cplcChiFreVWpR,        & 
+& cplcFdFucVWpL,cplcFdFucVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,               & 
+& deltaM,epsI,check,gFdFucChiFrei)
 
-gFdFucNv0Fre(i_run,:,:,:) = gFdFucNv0Frei 
-gT(i_run) = gT(i_run) + Sum(gFdFucNv0Frei) 
+gFdFucChiFre(i_run,:,:,:) = gFdFucChiFrei 
+gT(i_run) = gT(i_run) + Sum(gFdFucChiFrei) 
  
 End Do 
  
@@ -237,6 +237,14 @@ End Do
 Do gt1=1,3
   Do gt2=1,1
     Do gt3=1,1
+gPartial(i1,n_length)= gFdFdcChiChi(i1,gt1,gt2,gt3)
+n_length=n_length+1
+     End Do 
+  End Do 
+End Do 
+Do gt1=1,3
+  Do gt2=1,1
+    Do gt3=1,1
 gPartial(i1,n_length)= gFdFdcFreFre(i1,gt1,gt2,gt3)
 n_length=n_length+1
      End Do 
@@ -246,14 +254,6 @@ Do gt1=1,3
   Do gt2=1,3
     Do gt3=1,3
 gPartial(i1,n_length)= gFdFdcFvFv(i1,gt1,gt2,gt3)
-n_length=n_length+1
-     End Do 
-  End Do 
-End Do 
-Do gt1=1,3
-  Do gt2=1,1
-    Do gt3=1,1
-gPartial(i1,n_length)= gFdFdcNv0Nv0(i1,gt1,gt2,gt3)
 n_length=n_length+1
      End Do 
   End Do 
@@ -269,7 +269,7 @@ End Do
 Do gt1=1,3
   Do gt2=1,1
     Do gt3=1,1
-gPartial(i1,n_length)= gFdFucNv0Fre(i1,gt1,gt2,gt3)
+gPartial(i1,n_length)= gFdFucChiFre(i1,gt1,gt2,gt3)
 n_length=n_length+1
      End Do 
   End Do 
@@ -1162,6 +1162,107 @@ End If
 End Subroutine FdToFdcFuFu 
  
  
+Subroutine FdToFdcChiChi(iIN,MFd,MChi,MVZ,cplcChiChiVZL,cplcChiChiVZR,cplcFdFdVZL,    & 
+& cplcFdFdVZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZ,deltaM,epsI,check,g,WriteContributions)
+
+Implicit None 
+ 
+Real(dp),Intent(in) :: MFd(3),MChi,MVZ
+
+Complex(dp),Intent(in) :: cplcChiChiVZL,cplcChiChiVZR,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3)
+
+Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
+
+Real(dp),Intent(inout) :: gTVZ
+
+Integer, Intent(inout) :: NVs,NVVss
+Real(dp),Intent(inout)::g(:,:,:) 
+Logical, Intent(in) :: check 
+Integer, Intent(in) :: iIN 
+Real(dp), Intent(in) :: epsI, deltaM 
+Logical, Optional :: WriteContributions 
+Integer :: i1,i2,gt1,gt2,gt3, Isum 
+Real(dp) :: resR,  res1, res2, resD, m_in 
+Complex(dp) :: resC, resS 
+Real(dp), Allocatable :: gSum(:,:,:,:) 
+Character(len=20), Allocatable :: Contribution(:,:,:,:) 
+Real(dp) :: Boson2(2), mass(4),  Boson4(4) 
+Complex(dp) :: coup(4), coup2(8),coupT 
+mass(1) = MFd(iIN) 
+ 
+Isum = 1 
+Allocate( gSum(3,1,1, Isum) ) 
+Allocate( Contribution(3,1,1, Isum) ) 
+gSum = 0._dp  
+Contribution = ' ' 
+ 
+Isum = 0 
+ 
+    Do gt1=1, iIN-1
+Isum = 0 
+ 
+If(Abs(MFd(iIN)).gt.(Abs(MChi)+Abs(MChi)+Abs(MFd(gt1)))) Then 
+!-------------- 
+!  VZ 
+!-------------- 
+Isum = Isum + 1 
+Boson2(1) = MVZ 
+Boson2(2) =gTVZ 
+ 
+Boson4(1) = MVZ 
+Boson4(2) =gTVZ 
+Boson4(3) = MVZ 
+Boson4(4) =gTVZ 
+ 
+resS=0._dp 
+resD=0._dp 
+ 
+mass(2) = MFd(gt1) 
+mass(3) = -MChi 
+mass(4) = MChi 
+ 
+coup(2) = Conjg(cplcFdFdVZL(iIN,gt1)) 
+coup(1) = Conjg(cplcFdFdVZR(iIN,gt1)) 
+coup(4) = Conjg(cplcChiChiVZL) 
+coup(3) = Conjg(cplcChiChiVZR)
+Call IntegrateGaugeSS(Boson2,mass,coup,deltaM,epsI,IntegralVs,NVs,resR, check) 
+resR= 1*resR ! color factor 
+resS = resS + resR 
+ 
+ resD = resD + resS 
+If (resD.ne.resD) Then 
+Write(*,*) "NaN appearing in the following diagrams: " 
+Write(*,*) "Fd->Fd cChi Chi Propagator: VZ" 
+Write(*,*)  "M_in: ",m_in 
+Write(*,*)  "mass: ",mass 
+Write(*,*)  "coup: ",coup 
+gSum(gt1,1,1,Isum)= 0._dp
+Else 
+gSum(gt1,1,1,Isum)=resD
+End If 
+Contribution(gt1,1,1,Isum)='VZ'
+
+
+
+Else 
+gSum(gt1,1,1,:)= 0._dp  
+End If 
+   End Do 
+!---------- 
+!Summing 
+!---------- 
+g=0._dp 
+    Do gt1=1, iIN-1
+g(gt1,1,1)=Sum(gSum(gt1,1,1,1:1))
+If (g(gt1,1,1).Lt.0._dp) Then
+  Write (ErrCan,*)'Error in Subroutine'//NameOfUnit(Iname)
+  g(gt1,1,1)=0._dp
+End If
+   End Do 
+  g = oo512pi3 / Abs(MFd(iIN))**3*g
+End Subroutine FdToFdcChiChi 
+ 
+ 
 Subroutine FdToFdcFreFre(iIN,MFd,MFre,MVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFreFreVZL,      & 
 & cplcFreFreVZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZ,deltaM,epsI,check,g,              & 
 & WriteContributions)
@@ -1373,108 +1474,6 @@ End If
 End Subroutine FdToFdcFvFv 
  
  
-Subroutine FdToFdcNv0Nv0(iIN,MFd,MNv0,MVZ,cplcFdFdVZL,cplcFdFdVZR,cplcNv0Nv0VZL,      & 
-& cplcNv0Nv0VZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZ,deltaM,epsI,check,g,              & 
-& WriteContributions)
-
-Implicit None 
- 
-Real(dp),Intent(in) :: MFd(3),MNv0,MVZ
-
-Complex(dp),Intent(in) :: cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcNv0Nv0VZL,cplcNv0Nv0VZR
-
-Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
-
-Real(dp),Intent(inout) :: gTVZ
-
-Integer, Intent(inout) :: NVs,NVVss
-Real(dp),Intent(inout)::g(:,:,:) 
-Logical, Intent(in) :: check 
-Integer, Intent(in) :: iIN 
-Real(dp), Intent(in) :: epsI, deltaM 
-Logical, Optional :: WriteContributions 
-Integer :: i1,i2,gt1,gt2,gt3, Isum 
-Real(dp) :: resR,  res1, res2, resD, m_in 
-Complex(dp) :: resC, resS 
-Real(dp), Allocatable :: gSum(:,:,:,:) 
-Character(len=20), Allocatable :: Contribution(:,:,:,:) 
-Real(dp) :: Boson2(2), mass(4),  Boson4(4) 
-Complex(dp) :: coup(4), coup2(8),coupT 
-mass(1) = MFd(iIN) 
- 
-Isum = 1 
-Allocate( gSum(3,1,1, Isum) ) 
-Allocate( Contribution(3,1,1, Isum) ) 
-gSum = 0._dp  
-Contribution = ' ' 
- 
-Isum = 0 
- 
-    Do gt1=1, iIN-1
-Isum = 0 
- 
-If(Abs(MFd(iIN)).gt.(Abs(MNv0)+Abs(MNv0)+Abs(MFd(gt1)))) Then 
-!-------------- 
-!  VZ 
-!-------------- 
-Isum = Isum + 1 
-Boson2(1) = MVZ 
-Boson2(2) =gTVZ 
- 
-Boson4(1) = MVZ 
-Boson4(2) =gTVZ 
-Boson4(3) = MVZ 
-Boson4(4) =gTVZ 
- 
-resS=0._dp 
-resD=0._dp 
- 
-mass(2) = MFd(gt1) 
-mass(3) = -MNv0 
-mass(4) = MNv0 
- 
-coup(2) = Conjg(cplcFdFdVZL(iIN,gt1)) 
-coup(1) = Conjg(cplcFdFdVZR(iIN,gt1)) 
-coup(4) = Conjg(cplcNv0Nv0VZL) 
-coup(3) = Conjg(cplcNv0Nv0VZR)
-Call IntegrateGaugeSS(Boson2,mass,coup,deltaM,epsI,IntegralVs,NVs,resR, check) 
-resR= 1*resR ! color factor 
-resS = resS + resR 
- 
- resD = resD + resS 
-If (resD.ne.resD) Then 
-Write(*,*) "NaN appearing in the following diagrams: " 
-Write(*,*) "Fd->Fd cNv0 Nv0 Propagator: VZ" 
-Write(*,*)  "M_in: ",m_in 
-Write(*,*)  "mass: ",mass 
-Write(*,*)  "coup: ",coup 
-gSum(gt1,1,1,Isum)= 0._dp
-Else 
-gSum(gt1,1,1,Isum)=resD
-End If 
-Contribution(gt1,1,1,Isum)='VZ'
-
-
-
-Else 
-gSum(gt1,1,1,:)= 0._dp  
-End If 
-   End Do 
-!---------- 
-!Summing 
-!---------- 
-g=0._dp 
-    Do gt1=1, iIN-1
-g(gt1,1,1)=Sum(gSum(gt1,1,1,1:1))
-If (g(gt1,1,1).Lt.0._dp) Then
-  Write (ErrCan,*)'Error in Subroutine'//NameOfUnit(Iname)
-  g(gt1,1,1)=0._dp
-End If
-   End Do 
-  g = oo512pi3 / Abs(MFd(iIN))**3*g
-End Subroutine FdToFdcNv0Nv0 
- 
- 
 Subroutine FdToFucFvFe(iIN,MFu,MFe,MVWp,MFd,cplcFdFucVWpL,cplcFdFucVWpR,              & 
 & cplcFvFeVWpL,cplcFvFeVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,              & 
 & epsI,check,g,WriteContributions)
@@ -1585,15 +1584,15 @@ End If
 End Subroutine FdToFucFvFe 
  
  
-Subroutine FdToFucNv0Fre(iIN,MFu,MNv0,MFre,MVWp,MFd,cplcFdFucVWpL,cplcFdFucVWpR,      & 
-& cplcNv0FreVWpL,cplcNv0FreVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,          & 
+Subroutine FdToFucChiFre(iIN,MFu,MChi,MFre,MVWp,MFd,cplcChiFreVWpL,cplcChiFreVWpR,    & 
+& cplcFdFucVWpL,cplcFdFucVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,            & 
 & epsI,check,g,WriteContributions)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MFu(3),MNv0,MFre,MVWp,MFd(3)
+Real(dp),Intent(in) :: MFu(3),MChi,MFre,MVWp,MFd(3)
 
-Complex(dp),Intent(in) :: cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcNv0FreVWpL,cplcNv0FreVWpR
+Complex(dp),Intent(in) :: cplcChiFreVWpL,cplcChiFreVWpR,cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3)
 
 Real(dp),Intent(inout) :: IntegralVs(25000,9),IntegralVVss(500000,12)
 
@@ -1625,7 +1624,7 @@ Isum = 0
     Do gt1=1,3
 Isum = 0 
  
-If(Abs(MFd(iIN)).gt.(Abs(MFre)+Abs(MNv0)+Abs(MFu(gt1)))) Then 
+If(Abs(MFd(iIN)).gt.(Abs(MFre)+Abs(MChi)+Abs(MFu(gt1)))) Then 
 !-------------- 
 !  conj[VWp] 
 !-------------- 
@@ -1642,13 +1641,13 @@ resS=0._dp
 resD=0._dp 
  
 mass(2) = MFu(gt1) 
-mass(3) = -MNv0 
+mass(3) = -MChi 
 mass(4) = MFre 
  
 coup(2) = Conjg(cplcFdFucVWpL(iIN,gt1)) 
 coup(1) = Conjg(cplcFdFucVWpR(iIN,gt1)) 
-coup(4) = Conjg(cplcNv0FreVWpL) 
-coup(3) = Conjg(cplcNv0FreVWpR)
+coup(4) = Conjg(cplcChiFreVWpL) 
+coup(3) = Conjg(cplcChiFreVWpR)
 Call IntegrateGaugeSS(Boson2,mass,coup,deltaM,epsI,IntegralVs,NVs,resR, check) 
 resR= 1*resR ! color factor 
 resS = resS + resR 
@@ -1656,7 +1655,7 @@ resS = resS + resR
  resD = resD + resS 
 If (resD.ne.resD) Then 
 Write(*,*) "NaN appearing in the following diagrams: " 
-Write(*,*) "Fd->Fu cNv0 Fre Propagator: conj[VWp]" 
+Write(*,*) "Fd->Fu cChi Fre Propagator: conj[VWp]" 
 Write(*,*)  "M_in: ",m_in 
 Write(*,*)  "mass: ",mass 
 Write(*,*)  "coup: ",coup 
@@ -1684,7 +1683,7 @@ If (g(gt1,1,1).Lt.0._dp) Then
 End If
    End Do 
   g = oo512pi3 / Abs(MFd(iIN))**3*g
-End Subroutine FdToFucNv0Fre 
+End Subroutine FdToFucChiFre 
  
  
 End Module Fd3Decays_SimplifiedDMDFDM 

@@ -82,7 +82,7 @@ DEFINITION[EWSB][DiracSpinors]=
   Fu  -> {  UL, conj[UR]},
   Fv  -> {  vL, 0},
   Fre ->{  ed, conj[eu]}, 
-  Nv0 ->{  vd, conj[vu]}  
+  Chi ->{  vd, conj[vu]}  
 };
 
 DEFINITION[EWSB][GaugeES]=
