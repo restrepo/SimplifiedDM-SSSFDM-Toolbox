@@ -4,16 +4,16 @@ Block DobletFermion #Doublet fermion
 Block DobletFermion-Lagrangian
 1 - MDF rd.ru # {AddHC->True}
 Block DobletFermion-Mixing
-1  {{vd, vu}, {Rv0, ZvN}} #or empty if not further mixing
+1  {{vd, vu}, {X0, ZX}} #or empty if not further mixing
 Block DobletFermion-DiracSpinors
 1 Fre ->{  ed, conj[eu]}
-2 Chi ->{ Rv0, conj[Rv0]} # or Chi ->{  vd, conj[vu]} if not further mixing
+2 Chi ->{ X0, conj[X0]} # or Chi ->{  vd, conj[vu]} if not further mixing
 Block DobletFermion-particles-WeylFermionAndIndermediate
 1  {rd,     {LaTeX -> "R^d" }}
 2  {ru,     {LaTeX -> "R^u" }}
 3  {vd,     {LaTeX -> "R_v^d" }}
 4  {vu,     {LaTeX -> "R_v^u" }}
-5  {Rv0,    {LaTeX -> "R_\\nu^0",OutputName -> "Rv0",PDG -> 0 }} #or empty if not further mixing
+5  {X0,     {LaTeX -> "X^0" }} #or empty if not further mixing
 Block DobletFermion-particles-EWSB
 1 {Fre,{Description ->"Vector-like charged fermions",PDG -> {210000601},PDG.IX -> {-111100601},Mass -> {LesHouches},Width -> {External},LaTeX -> "R_e",ElectricCharge -> -1,OutputName -> "Re"}}
 2 {Chi,  {Description ->"Vector-like neutral fermions",PDG -> {1012,2012},LaTeX ->"\\tilde{\\chi}^0",OutputName -> "Chi"}} #Majorana
