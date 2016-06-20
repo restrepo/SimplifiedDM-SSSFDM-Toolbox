@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:11 on 17.6.2016   
+! File created at 10:58 on 18.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -271,7 +271,7 @@ Real(dp), save :: RXiWp = 1._dp
 Real(dp), save :: RXiZ = 1._dp 
 Complex(dp) :: temporaryValue 
 Complex(dp) :: lambda1INPUT
-Complex(dp) :: MDFNPUT
+Complex(dp) :: MDFINPUT
 Real(dp) :: vMZ 
 Real(dp) :: vSUSY 
 ! For HiggsBounds 
@@ -978,7 +978,7 @@ ratioPVWp =  0._dp
 ratioPGG =  0._dp  
 ratioPPP =  0._dp  
 lambda1INPUT=(0._dp,0._dp) 
-MDFNPUT=(0._dp,0._dp) 
+MDFINPUT=(0._dp,0._dp) 
 End Subroutine Set_All_Parameters_0 
  
 End Module Model_Data_SimplifiedDMDFDM

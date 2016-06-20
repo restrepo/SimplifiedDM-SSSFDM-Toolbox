@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:12 on 17.6.2016   
+! File created at 10:59 on 18.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -183,7 +183,7 @@ g1 = g1SM
 g2 = g2SM
 g3 = g3SM
 lam1 = lambda1INPUT
-MDF = MDFNPUT
+MDF = MDFINPUT
 
  
  ! Setting VEVs used for low energy constraints 
@@ -213,7 +213,7 @@ g1 = g1SM
 g2 = g2SM
 g3 = g3SM
 lam1 = lambda1INPUT
-MDF = MDFNPUT
+MDF = MDFINPUT
 Call SolveTadpoleEquations(g1,g2,g3,lam1,Yu,Yd,Ye,MDF,mH2,v,(/ ZeroC /))
 
 Call OneLoopMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,           & 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:12 on 17.6.2016   
+! File created at 10:59 on 18.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -234,8 +234,8 @@ If (i_par.Eq.1) Then
 If (i_c.Eq.0) lambda1INPUT= Cmplx(wert,Aimag(lambda1INPUT),dp) 
 If (i_c.Eq.1) lambda1INPUT= Cmplx(Real(lambda1INPUT,dp),wert,dp) 
 Else If (i_par.Eq.2) Then 
-If (i_c.Eq.0) MDFNPUT= Cmplx(wert,Aimag(MDFNPUT),dp) 
-If (i_c.Eq.1) MDFNPUT= Cmplx(Real(MDFNPUT,dp),wert,dp) 
+If (i_c.Eq.0) MDFINPUT= Cmplx(wert,Aimag(MDFINPUT),dp) 
+If (i_c.Eq.1) MDFINPUT= Cmplx(Real(MDFINPUT,dp),wert,dp) 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
 If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block MINPAR ",i_par
@@ -1207,17 +1207,17 @@ If (GenerationMixing) Write(io_L,110) &
 &     6,1, " switching on flavour violation" 
 Write(io_L,100) "Block MINPAR  # Input parameters"
 Write(io_L,101) 1, Real(lambda1INPUT,dp) ,"# lambda1INPUT"
-Write(io_L,101) 2, Real(MDFNPUT,dp) ,"# MDFNPUT"
+Write(io_L,101) 2, Real(MDFINPUT,dp) ,"# MDFINPUT"
 WriteNextBlock = .False. 
 If (Abs(Aimag(lambda1INPUT)).gt.0._dp) WriteNextBlock = .True. 
-If (Abs(Aimag(MDFNPUT)).gt.0._dp) WriteNextBlock = .True. 
+If (Abs(Aimag(MDFINPUT)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,100) "Block IMMINPAR  # Input parameters"
 If (Abs(Aimag(lambda1INPUT)).gt.0._dp) Then 
 Write(io_L,101) 1, Aimag(lambda1INPUT) ,"# lambda1INPUT"
 End if 
-If (Abs(Aimag(MDFNPUT)).gt.0._dp) Then 
-Write(io_L,101) 2, Aimag(MDFNPUT) ,"# MDFNPUT"
+If (Abs(Aimag(MDFINPUT)).gt.0._dp) Then 
+Write(io_L,101) 2, Aimag(MDFINPUT) ,"# MDFINPUT"
 End if 
 End if 
 Write(io_L,106) "Block gaugeGUT Q=",m_GUT,"# (GUT scale)" 
