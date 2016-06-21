@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+USAGE="USAGE:
+ $0 MODEL prt1 prt2 [...]
+MODEL: model name 
+prt1 prt2 [...]: list of Z2-odd particles in right order"
 
-if [ ! $2 ];then
-    echo USAGE:
-    echo $0 MODEL prt1 prt2 [...]
-    echo Model name and list of Z2-odd particles in right order
+if [ ! $3 ];then
+    echo "$USAGE"
     exit
 fi
 #General configuration
@@ -13,15 +15,13 @@ tmpfile=$(mktemp /tmp/prtcls1.XXX)
 tmplist=$(mktemp /tmp/list.XXX)
 i=1
 for p in $@; do
-    echo $i
-    
     if [ $i -eq 1 ];then
 	if [ -d micromegas/$p/work/models ];then
 	    cd micromegas/$p/work/models
 	    
 	else
-	    echo $p
-	    echo MODEL DOES NOT EXISTS
+	    echo "MODEL DOES NOT EXISTS: $p"
+	    echo "$USAGE"
 	    exit
 	fi    
     fi
