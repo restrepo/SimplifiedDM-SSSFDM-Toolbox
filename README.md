@@ -11,6 +11,8 @@ The rules to implement the fermion/scalars multiplets are in the files:
 - `SARAH/Models/blocks.fermions.lha`
 - `SARAH/Models/blocks.scalars.lha`
 
+implemented as LHA blocks.
+
 The `master` branch only contains the standard SARAH-Toolbox distribution plus
 the new generic files.
 
@@ -18,7 +20,7 @@ Each new model MODEL is build inside a CATEGORY under the branch:
 
  `CATEGORY+MODEL`
 
-based in the predefined blocks in the fermion/scalars multiplets files.
+based in the predefined blocks in the fermion/scalars multiplets files. __Explore the branchs__!
 
 Implemened CATEGORY's:
 
