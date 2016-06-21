@@ -27,6 +27,7 @@ with: Model\`Name = "CATEGORYMODEL" inside `CATEGORY-MODEL.m`
 * Rebuild micromegas binaries
 
 ```bash
+  cd micromegas/CATEGORYMODEL
   make main=CalcOmega.cpp
   make main=CalcOmega_with_DDetection_MOv....cpp
 ``` 

@@ -18,7 +18,7 @@ Go to http://mybinder.org and creates your virtual machine with `requirements.tx
 For updates from USER/BSM-Toolbox:
 
 ```bash
-git checkout USER/BSM-Toolbox
+git checkout CATEGORY+MODEL
 ```
 and follow after step `#2` before
 
