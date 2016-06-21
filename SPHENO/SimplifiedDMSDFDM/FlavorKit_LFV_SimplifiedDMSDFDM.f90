@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:17 on 17.6.2016   
+! File created at 22:35 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -19,18 +19,18 @@ Use StandardModel
  Contains 
  
 Subroutine CalculateBox2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFe,             & 
-& MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,    & 
+& MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,             & 
 & cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BOllddSLL,BOllddSRR,BOllddSRL,BOllddSLR,BOllddVRR,BOllddVLL,               & 
-& BOllddVRL,BOllddVLR,BOllddTLL,BOllddTLR,BOllddTRL,BOllddTRR)
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& BOllddSLL,BOllddSRR,BOllddSRL,BOllddSLR,BOllddVRR,BOllddVLL,BOllddVRL,BOllddVLR,       & 
+& BOllddTLL,BOllddTLR,BOllddTRL,BOllddTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -40,8 +40,8 @@ Subroutine CalculateBox2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFe,       
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -51,10 +51,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -115,7 +115,6 @@ BOllddTRR=0._dp
 ! Fe,Ah,Fd,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -154,13 +153,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fd,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -199,13 +196,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fd,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -249,13 +244,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fd,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -299,13 +292,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fd,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -344,13 +335,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fd,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -389,13 +378,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fd,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -439,13 +426,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fd,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -489,27 +474,25 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,Fu,Hp
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
 coup3L = cplcFuFdHpL(i3,gt3)
 coup3R = cplcFuFdHpR(i3,gt3)
 coup4L = cplcFdFucHpL(gt4,i3)
 coup4R = cplcFdFucHpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 mF2 = MFu(i3)
@@ -534,27 +517,25 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,Fu,Hp
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
 coup3L = cplcFuFdVWpL(i3,gt3)
 coup3R = cplcFuFdVWpR(i3,gt3)
 coup4L = cplcFdFucHpL(gt4,i3)
 coup4R = cplcFdFucHpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 mF2 = MFu(i3)
@@ -584,13 +565,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fd,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -634,13 +613,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fd,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -684,13 +661,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fd,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -732,13 +707,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fd,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -780,27 +753,25 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,Fu,VWp
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
 coup3L = cplcFuFdHpL(i3,gt3)
 coup3R = cplcFuFdHpR(i3,gt3)
 coup4L = cplcFdFucVWpL(gt4,i3)
 coup4R = cplcFdFucVWpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 mF2 = MFu(i3)
@@ -830,27 +801,25 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,Fu,VWp
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
 coup3L = cplcFuFdVWpL(i3,gt3)
 coup3R = cplcFuFdVWpR(i3,gt3)
 coup4L = cplcFdFucVWpL(gt4,i3)
 coup4R = cplcFdFucVWpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 mF2 = MFu(i3)
@@ -878,13 +847,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fd,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -928,13 +895,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fd,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -978,13 +943,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fd,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -1026,13 +989,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fd,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -1074,13 +1035,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fd],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -1119,13 +1078,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fd],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -1164,13 +1121,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fd],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -1209,13 +1164,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fd],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -1254,13 +1207,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fd],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -1299,13 +1250,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fd],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -1344,13 +1293,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fd],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -1389,13 +1336,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fd],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -1434,13 +1379,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fd],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -1479,13 +1422,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fd],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -1524,13 +1465,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fd],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -1569,13 +1508,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fd],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -1614,13 +1551,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fd],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -1659,13 +1594,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fd],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -1704,13 +1637,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fd],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -1749,13 +1680,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fd],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -1794,7 +1723,6 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  BOllddSLL=oo16pi2*BOllddSLL 
@@ -1814,18 +1742,18 @@ Iname=Iname-1
 End Subroutine CalculateBox2L2d 
 
 Subroutine CalculatePengS2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,PSOllddSLL,PSOllddSRR,PSOllddSRL,PSOllddSLR,PSOllddVRR,        & 
-& PSOllddVLL,PSOllddVRL,PSOllddVLR,PSOllddTLL,PSOllddTLR,PSOllddTRL,PSOllddTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PSOllddSLL,PSOllddSRR,PSOllddSRL,PSOllddSLR,PSOllddVRR,PSOllddVLL,PSOllddVRL,          & 
+& PSOllddVLR,PSOllddTLL,PSOllddTLR,PSOllddTRL,PSOllddTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -1835,8 +1763,8 @@ Subroutine CalculatePengS2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -1846,10 +1774,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -1911,7 +1839,6 @@ PSOllddTRR=0._dp
 ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -1968,139 +1895,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFdFdAhL(gt4,gt3)
-coup4R = cplcFdFdAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOllddSLL=PSOllddSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFdFdAhL(gt4,gt3)
-coup4R = cplcFdFdAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOllddSLL=PSOllddSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -2157,13 +1956,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -2220,13 +2017,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -2283,139 +2078,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFdFdAhL(gt4,gt3)
-coup4R = cplcFdFdAhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOllddSLL=PSOllddSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFdFdAhL(gt4,gt3)
-coup4R = cplcFdFdAhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOllddSLL=PSOllddSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -2472,13 +2139,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -2535,13 +2200,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -2598,13 +2261,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -2661,13 +2322,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Hp,Fu, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -2724,13 +2383,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VWp,Fu, Internal fermion: bar[Fd]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -2787,13 +2444,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -2850,13 +2505,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fd,Ah, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -2913,13 +2566,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fd,hh, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -2976,13 +2627,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fu,Hp, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
@@ -3039,13 +2688,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fu,VWp, Internal fermion: Fd
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
@@ -3102,13 +2749,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fd,VZ, Internal fermion: Fd
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -3165,14 +2810,12 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -3229,139 +2872,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOllddSLL=PSOllddSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOllddSLL=PSOllddSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -3418,13 +2933,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -3481,13 +2994,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -3544,139 +3055,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOllddSLL=PSOllddSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOllddSLL=PSOllddSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddSRR=PSOllddSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddSRL=PSOllddSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddSLR=PSOllddSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -3733,13 +3116,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -3796,13 +3177,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -3859,13 +3238,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -3922,13 +3299,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Hp,Fu, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -3985,13 +3360,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VWp,Fu, Internal fermion: bar[Fd]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -4048,13 +3421,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -4111,13 +3482,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fd,Ah, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -4174,13 +3543,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fd,hh, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -4237,13 +3604,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fu,Hp, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
@@ -4300,13 +3665,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fu,VWp, Internal fermion: Fd
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
@@ -4363,13 +3726,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fd,VZ, Internal fermion: Fd
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -4426,7 +3787,6 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -4436,7 +3796,6 @@ End if
 ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -4484,115 +3843,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFdFdAhL(gt4,gt3)
-coup4R = cplcFdFdAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSOllddSLL=PSOllddSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddSRR=PSOllddSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddSRL=PSOllddSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddSLR=PSOllddSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFdFdAhL(gt4,gt3)
-coup4R = cplcFdFdAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSOllddSLL=PSOllddSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddSRR=PSOllddSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddSRL=PSOllddSRL - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddSLR=PSOllddSLR - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -4640,13 +3895,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -4694,13 +3947,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -4740,13 +3991,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -4786,13 +4035,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -4837,13 +4084,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -4888,13 +4133,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -4942,13 +4185,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -4996,13 +4237,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Hp,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -5050,13 +4289,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VWp,Fu,Fu
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -5104,13 +4341,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fd,Fd
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -5158,13 +4393,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5204,13 +4437,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5250,13 +4481,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5301,13 +4530,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5352,13 +4579,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fu],conj[VWp],conj[Hp]
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -5403,13 +4628,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fu],conj[Hp],conj[VWp]
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -5454,14 +4677,12 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -5509,207 +4730,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mS12)
-  PSOllddSLL=PSOllddSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSOllddSRR=PSOllddSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSOllddSRL=PSOllddSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSOllddSLR=PSOllddSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSOllddSLL=PSOllddSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddSRR=PSOllddSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddSRL=PSOllddSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddSLR=PSOllddSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSOllddSLL=PSOllddSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddSRR=PSOllddSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddSRL=PSOllddSRL - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddSLR=PSOllddSLR - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFdFdhhL(gt4,gt3)
-coup4R = cplcFdFdhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mV12)
-  PSOllddSLL=PSOllddSLL+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSOllddSRR=PSOllddSRR+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSOllddSRL=PSOllddSRL+4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSOllddSLR=PSOllddSLR+4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSOllddVRR=PSOllddVRR+0.
-  PSOllddVLL=PSOllddVLL+0.
-  PSOllddVRL=PSOllddVRL+0.
-  PSOllddVLR=PSOllddVLR+0.
-  PSOllddTLL=PSOllddTLL+0.
-  PSOllddTLR=PSOllddTLR+0.
-  PSOllddTRL=PSOllddTRL+0.
-  PSOllddTRR=PSOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -5757,13 +4782,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -5811,13 +4834,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5857,13 +4878,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5908,13 +4927,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -5954,13 +4971,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6005,13 +5020,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6051,13 +5064,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -6105,13 +5116,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -6159,13 +5168,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Hp,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -6213,13 +5220,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VWp,Fu,Fu
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -6267,13 +5272,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fd,Fd
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -6321,13 +5324,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6367,13 +5368,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6418,13 +5417,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6464,13 +5461,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6515,13 +5510,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6561,13 +5554,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],conj[Hp],conj[Hp]
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6607,13 +5598,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],conj[VWp],conj[Hp]
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6658,13 +5647,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],conj[Hp],conj[VWp]
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6709,13 +5696,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],conj[VWp],conj[VWp]
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -6755,7 +5740,6 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  PSOllddSLL=oo16pi2*PSOllddSLL 
@@ -6775,18 +5759,18 @@ Iname=Iname-1
 End Subroutine CalculatePengS2L2d 
 
 Subroutine CalculatePengV2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,PVOllddSLL,PVOllddSRR,PVOllddSRL,PVOllddSLR,PVOllddVRR,        & 
-& PVOllddVLL,PVOllddVRL,PVOllddVLR,PVOllddTLL,PVOllddTLR,PVOllddTRL,PVOllddTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PVOllddSLL,PVOllddSRR,PVOllddSRL,PVOllddSLR,PVOllddVRR,PVOllddVLL,PVOllddVRL,          & 
+& PVOllddVLR,PVOllddTLL,PVOllddTLR,PVOllddTRL,PVOllddTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -6796,8 +5780,8 @@ Subroutine CalculatePengV2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -6807,10 +5791,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -6872,7 +5856,6 @@ PVOllddTRR=0._dp
 ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -6929,139 +5912,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOllddVLL=PVOllddVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOllddVRL=PVOllddVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOllddVLR=PVOllddVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOllddVLL=PVOllddVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOllddVRL=PVOllddVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOllddVLR=PVOllddVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -7118,13 +5973,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -7181,13 +6034,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -7244,139 +6095,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOllddVLL=PVOllddVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOllddVRL=PVOllddVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOllddVLR=PVOllddVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOllddVLL=PVOllddVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOllddVRL=PVOllddVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOllddVLR=PVOllddVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -7433,13 +6156,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -7496,13 +6217,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -7559,13 +6278,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -7622,13 +6339,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Hp,Fu, Internal fermion: bar[Fd]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -7685,13 +6400,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VWp,Fu, Internal fermion: bar[Fd]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -7748,13 +6461,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fd, Internal fermion: bar[Fd]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -7811,13 +6522,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fd,Ah, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -7874,13 +6583,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fd,hh, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -7937,13 +6644,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fu,Hp, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
@@ -8000,13 +6705,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fu,VWp, Internal fermion: Fd
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
@@ -8063,13 +6766,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fd,VZ, Internal fermion: Fd
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loopFd).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -8126,7 +6827,6 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -8136,7 +6836,6 @@ End if
 ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -8185,203 +6884,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS22, mS12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVOllddVLL=PVOllddVLL+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVOllddVRL=PVOllddVRL+2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVOllddVLR=PVOllddVLR+2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mV12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVOllddVLL=PVOllddVLL+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVOllddVRL=PVOllddVRL+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVOllddVLR=PVOllddVLR+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mS12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVOllddVLL=PVOllddVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVOllddVRL=PVOllddVRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVOllddVLR=PVOllddVLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV22, mV12)
-  int3=C0check(mF12, mV22, mV12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOllddVLL=PVOllddVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOllddVRL=PVOllddVRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOllddVLR=PVOllddVLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -8430,123 +6937,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt1)
-coup1R = cplFvFeHpR(i2,gt1)
-coup2L = cplcFeFvcHpL(gt2,i3)
-coup2R = cplcFeFvcHpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -        & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVOllddVLL=PVOllddVLL+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -        & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVOllddVRL=PVOllddVRL+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -        & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVOllddVLR=PVOllddVLR+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -        & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt1)
-coup1R = cplFvFeVWpR(i2,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i3)
-coup2R = cplcFeFvcVWpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFdFdVZL(gt4,gt3)
-coup4R = cplcFdFdVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVOllddSLL=PVOllddSLL+0.
-  PVOllddSRR=PVOllddSRR+0.
-  PVOllddSRL=PVOllddSRL+0.
-  PVOllddSLR=PVOllddSLR+0.
-  PVOllddVRR=PVOllddVRR - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVOllddVLL=PVOllddVLL - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVOllddVRL=PVOllddVRL - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVOllddVLR=PVOllddVLR - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVOllddTLL=PVOllddTLL+0.
-  PVOllddTLR=PVOllddTLR+0.
-  PVOllddTRL=PVOllddTRL+0.
-  PVOllddTRR=PVOllddTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -8595,13 +6990,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -8641,13 +7034,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -8687,13 +7078,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -8733,13 +7122,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -8779,13 +7166,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -8834,13 +7219,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -8889,13 +7272,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Hp,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -8944,13 +7325,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VWp,Fu,Fu
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -8999,13 +7378,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fd,Fd
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -9054,13 +7431,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -9100,13 +7475,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -9146,13 +7519,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -9192,13 +7563,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -9238,13 +7607,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],conj[Hp],conj[Hp]
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -9284,13 +7651,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],conj[VWp],conj[Hp]
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -9330,13 +7695,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],conj[Hp],conj[VWp]
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -9376,13 +7739,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],conj[VWp],conj[VWp]
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -9428,7 +7789,6 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  PVOllddSLL=oo16pi2*PVOllddSLL
@@ -9448,18 +7808,18 @@ Iname=Iname-1
 End Subroutine CalculatePengV2L2d 
 
 Subroutine CalculateTreeS2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,TSOllddSLL,TSOllddSRR,TSOllddSRL,TSOllddSLR,TSOllddVRR,        & 
-& TSOllddVLL,TSOllddVRL,TSOllddVLR,TSOllddTLL,TSOllddTLR,TSOllddTRL,TSOllddTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TSOllddSLL,TSOllddSRR,TSOllddSRL,TSOllddSLR,TSOllddVRR,TSOllddVLL,TSOllddVRL,          & 
+& TSOllddVLR,TSOllddTLL,TSOllddTLR,TSOllddTRL,TSOllddTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -9469,8 +7829,8 @@ Subroutine CalculateTreeS2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -9480,10 +7840,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -9606,18 +7966,18 @@ IMP2 = 1._dp/MP2
 End Subroutine CalculateTreeS2L2d 
 
 Subroutine CalculateTreeV2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,TVOllddSLL,TVOllddSRR,TVOllddSRL,TVOllddSLR,TVOllddVRR,        & 
-& TVOllddVLL,TVOllddVRL,TVOllddVLR,TVOllddTLL,TVOllddTLR,TVOllddTRL,TVOllddTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TVOllddSLL,TVOllddSRR,TVOllddSRL,TVOllddSLR,TVOllddVRR,TVOllddVLL,TVOllddVRL,          & 
+& TVOllddVLR,TVOllddTLL,TVOllddTLR,TVOllddTRL,TVOllddTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -9627,8 +7987,8 @@ Subroutine CalculateTreeV2L2d(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -9638,10 +7998,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -9734,18 +8094,18 @@ IMP2 = 1._dp/MP2
 End Subroutine CalculateTreeV2L2d 
 
 Subroutine CalculateBox2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFe,             & 
-& MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,    & 
+& MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,             & 
 & cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BOlluuSLL,BOlluuSRR,BOlluuSRL,BOlluuSLR,BOlluuVRR,BOlluuVLL,               & 
-& BOlluuVRL,BOlluuVLR,BOlluuTLL,BOlluuTLR,BOlluuTRL,BOlluuTRR)
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& BOlluuSLL,BOlluuSRR,BOlluuSRL,BOlluuSLR,BOlluuVRR,BOlluuVLL,BOlluuVRL,BOlluuVLR,       & 
+& BOlluuTLL,BOlluuTLR,BOlluuTRL,BOlluuTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -9755,8 +8115,8 @@ Subroutine CalculateBox2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,MFe,       
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -9766,10 +8126,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -9830,7 +8190,6 @@ BOlluuTRR=0._dp
 ! Fe,Ah,Fu,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -9869,13 +8228,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fu,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -9914,13 +8271,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fu,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -9964,13 +8319,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fu,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -10014,13 +8367,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fu,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10059,13 +8410,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fu,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10104,13 +8453,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fu,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10154,13 +8501,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fu,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10204,13 +8549,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fu,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -10254,13 +8597,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fu,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -10304,13 +8645,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fu,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -10352,13 +8691,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fu,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -10400,13 +8737,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fu,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -10450,13 +8785,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fu,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -10500,13 +8833,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fu,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -10548,13 +8879,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fu,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -10596,13 +8925,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fu],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -10641,13 +8968,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fu],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -10686,13 +9011,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fu],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -10731,13 +9054,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fu],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -10776,13 +9097,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fu],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10821,13 +9140,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fu],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10866,13 +9183,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fu],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10911,13 +9226,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fu],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -10956,27 +9269,25 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,bar[Fd],Hp
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
 coup3L = cplcFuFdHpL(gt4,i3)
 coup3R = cplcFuFdHpR(gt4,i3)
 coup4L = cplcFdFucHpL(i3,gt3)
 coup4R = cplcFdFucHpR(i3,gt3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 mF2 = MFd(i3)
@@ -11001,27 +9312,25 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,bar[Fd],Hp
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
 coup3L = cplcFuFdVWpL(gt4,i3)
 coup3R = cplcFuFdVWpR(gt4,i3)
 coup4L = cplcFdFucHpL(i3,gt3)
 coup4R = cplcFdFucHpR(i3,gt3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 mF2 = MFd(i3)
@@ -11046,13 +9355,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fu],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -11091,13 +9398,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fu],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -11136,13 +9441,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fu],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -11181,13 +9484,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fu],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -11226,27 +9527,25 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,bar[Fd],VWp
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
 coup3L = cplcFuFdHpL(gt4,i3)
 coup3R = cplcFuFdHpR(gt4,i3)
 coup4L = cplcFdFucVWpL(i3,gt3)
 coup4R = cplcFdFucVWpR(i3,gt3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 mF2 = MFd(i3)
@@ -11271,27 +9570,25 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,bar[Fd],VWp
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
 coup3L = cplcFuFdVWpL(gt4,i3)
 coup3R = cplcFuFdVWpR(gt4,i3)
 coup4L = cplcFdFucVWpL(i3,gt3)
 coup4R = cplcFdFucVWpR(i3,gt3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 mF2 = MFd(i3)
@@ -11316,13 +9613,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fu],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -11361,13 +9656,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fu],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -11406,13 +9699,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fu],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -11451,13 +9742,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fu],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -11496,7 +9785,6 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  BOlluuSLL=oo16pi2*BOlluuSLL 
@@ -11516,18 +9804,18 @@ Iname=Iname-1
 End Subroutine CalculateBox2L2u 
 
 Subroutine CalculatePengS2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,PSOlluuSLL,PSOlluuSRR,PSOlluuSRL,PSOlluuSLR,PSOlluuVRR,        & 
-& PSOlluuVLL,PSOlluuVRL,PSOlluuVLR,PSOlluuTLL,PSOlluuTLR,PSOlluuTRL,PSOlluuTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PSOlluuSLL,PSOlluuSRR,PSOlluuSRL,PSOlluuSLR,PSOlluuVRR,PSOlluuVLL,PSOlluuVRL,          & 
+& PSOlluuVLR,PSOlluuTLL,PSOlluuTLR,PSOlluuTRL,PSOlluuTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -11537,8 +9825,8 @@ Subroutine CalculatePengS2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -11548,10 +9836,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -11613,7 +9901,6 @@ PSOlluuTRR=0._dp
 ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -11670,139 +9957,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFuFuAhL(gt4,gt3)
-coup4R = cplcFuFuAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOlluuSLL=PSOlluuSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFuFuAhL(gt4,gt3)
-coup4R = cplcFuFuAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOlluuSLL=PSOlluuSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -11859,13 +10018,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -11922,13 +10079,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -11985,139 +10140,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFuFuAhL(gt4,gt3)
-coup4R = cplcFuFuAhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOlluuSLL=PSOlluuSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFuFuAhL(gt4,gt3)
-coup4R = cplcFuFuAhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOlluuSLL=PSOlluuSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -12174,13 +10201,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -12237,13 +10262,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -12300,13 +10323,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -12363,13 +10384,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -12426,13 +10445,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],Hp, Internal fermion: bar[Fu]
 ! Generic diagram: FSF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
@@ -12489,13 +10506,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],VWp, Internal fermion: bar[Fu]
 ! Generic diagram: FVF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
@@ -12552,13 +10567,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fu,Ah, Internal fermion: Fu
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -12615,13 +10628,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fu,hh, Internal fermion: Fu
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -12678,13 +10689,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fu,VZ, Internal fermion: Fu
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -12741,13 +10750,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Hp,bar[Fd], Internal fermion: Fu
 ! Generic diagram: SFF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -12804,13 +10811,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VWp,bar[Fd], Internal fermion: Fu
 ! Generic diagram: VFF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -12867,14 +10872,12 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -12931,139 +10934,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOlluuSLL=PSOlluuSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOlluuSLL=PSOlluuSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -13120,13 +10995,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -13183,13 +11056,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -13246,139 +11117,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSOlluuSLL=PSOlluuSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSOlluuSLL=PSOlluuSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuSRR=PSOlluuSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuSRL=PSOlluuSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(-       & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuSLR=PSOlluuSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(-       & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -13435,13 +11178,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -13498,13 +11239,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -13561,13 +11300,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -13624,13 +11361,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -13687,13 +11422,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],Hp, Internal fermion: bar[Fu]
 ! Generic diagram: FSF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
@@ -13750,13 +11483,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],VWp, Internal fermion: bar[Fu]
 ! Generic diagram: FVF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
@@ -13813,13 +11544,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fu,Ah, Internal fermion: Fu
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -13876,13 +11605,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fu,hh, Internal fermion: Fu
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -13939,13 +11666,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fu,VZ, Internal fermion: Fu
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -14002,13 +11727,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Hp,bar[Fd], Internal fermion: Fu
 ! Generic diagram: SFF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -14065,13 +11788,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VWp,bar[Fd], Internal fermion: Fu
 ! Generic diagram: VFF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -14128,7 +11849,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -14138,7 +11858,6 @@ End if
 ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -14186,115 +11905,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFuFuAhL(gt4,gt3)
-coup4R = cplcFuFuAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSOlluuSLL=PSOlluuSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuSRR=PSOlluuSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuSRL=PSOlluuSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuSLR=PSOlluuSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFuFuAhL(gt4,gt3)
-coup4R = cplcFuFuAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSOlluuSLL=PSOlluuSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuSRR=PSOlluuSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuSRL=PSOlluuSRL - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuSLR=PSOlluuSLR - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -14342,13 +11957,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -14396,13 +12009,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14442,13 +12053,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14488,13 +12097,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14539,13 +12146,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14590,13 +12195,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -14644,13 +12247,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -14698,13 +12299,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fu,Fu
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -14752,13 +12351,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],VWp,Hp
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -14803,13 +12400,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fd],Hp,VWp
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -14854,13 +12449,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fu],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14900,13 +12493,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fu],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14946,13 +12537,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fu],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -14997,13 +12586,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fu],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15048,13 +12635,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: conj[Hp],Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -15102,13 +12687,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: conj[VWp],Fd,Fd
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -15156,14 +12739,12 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -15211,207 +12792,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mS12)
-  PSOlluuSLL=PSOlluuSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSOlluuSRR=PSOlluuSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSOlluuSRL=PSOlluuSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSOlluuSLR=PSOlluuSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSOlluuSLL=PSOlluuSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuSRR=PSOlluuSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuSRL=PSOlluuSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuSLR=PSOlluuSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +          & 
-&  int2*mF12)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSOlluuSLL=PSOlluuSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuSRR=PSOlluuSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuSRL=PSOlluuSRL - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuSLR=PSOlluuSLR - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +     & 
-&  int2*mF12)
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFuFuhhL(gt4,gt3)
-coup4R = cplcFuFuhhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mV12)
-  PSOlluuSLL=PSOlluuSLL+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSOlluuSRR=PSOlluuSRR+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSOlluuSRL=PSOlluuSRL+4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSOlluuSLR=PSOlluuSLR+4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSOlluuVRR=PSOlluuVRR+0.
-  PSOlluuVLL=PSOlluuVLL+0.
-  PSOlluuVRL=PSOlluuVRL+0.
-  PSOlluuVLR=PSOlluuVLR+0.
-  PSOlluuTLL=PSOlluuTLL+0.
-  PSOlluuTLR=PSOlluuTLR+0.
-  PSOlluuTRL=PSOlluuTRL+0.
-  PSOlluuTRR=PSOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -15459,13 +12844,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -15513,13 +12896,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15559,13 +12940,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15610,13 +12989,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15656,13 +13033,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15707,13 +13082,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15753,13 +13126,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -15807,13 +13178,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -15861,13 +13230,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fu,Fu
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -15915,13 +13282,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],Hp,Hp
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -15961,13 +13326,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],VWp,Hp
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16012,13 +13375,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],Hp,VWp
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16063,13 +13424,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fd],VWp,VWp
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16109,13 +13468,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16155,13 +13512,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16206,13 +13561,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16252,13 +13605,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16303,13 +13654,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fu],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -16349,13 +13698,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: conj[Hp],Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -16403,13 +13750,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: conj[VWp],Fd,Fd
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -16457,7 +13802,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  PSOlluuSLL=oo16pi2*PSOlluuSLL 
@@ -16477,18 +13821,18 @@ Iname=Iname-1
 End Subroutine CalculatePengS2L2u 
 
 Subroutine CalculatePengV2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,PVOlluuSLL,PVOlluuSRR,PVOlluuSRL,PVOlluuSLR,PVOlluuVRR,        & 
-& PVOlluuVLL,PVOlluuVRL,PVOlluuVLR,PVOlluuTLL,PVOlluuTLR,PVOlluuTRL,PVOlluuTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PVOlluuSLL,PVOlluuSRR,PVOlluuSRL,PVOlluuSLR,PVOlluuVRR,PVOlluuVLL,PVOlluuVRL,          & 
+& PVOlluuVLR,PVOlluuTLL,PVOlluuTLR,PVOlluuTRL,PVOlluuTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -16498,8 +13842,8 @@ Subroutine CalculatePengV2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -16509,10 +13853,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -16574,7 +13918,6 @@ PVOlluuTRR=0._dp
 ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -16631,139 +13974,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOlluuVLL=PVOlluuVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOlluuVRL=PVOlluuVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOlluuVLR=PVOlluuVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOlluuVLL=PVOlluuVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOlluuVRL=PVOlluuVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOlluuVLR=PVOlluuVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -16820,13 +14035,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -16883,13 +14096,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -16946,139 +14157,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOlluuVLL=PVOlluuVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOlluuVRL=PVOlluuVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOlluuVLR=PVOlluuVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOlluuVLL=PVOlluuVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOlluuVRL=PVOlluuVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOlluuVLR=PVOlluuVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -17135,13 +14218,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -17198,13 +14279,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -17261,13 +14340,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -17324,13 +14401,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fu, Internal fermion: bar[Fu]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3))) Then
@@ -17387,13 +14462,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],Hp, Internal fermion: bar[Fu]
 ! Generic diagram: FSF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
@@ -17450,13 +14523,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],VWp, Internal fermion: bar[Fu]
 ! Generic diagram: FVF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
@@ -17513,13 +14584,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fu,Ah, Internal fermion: Fu
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -17576,13 +14645,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fu,hh, Internal fermion: Fu
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -17639,13 +14706,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fu,VZ, Internal fermion: Fu
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loopFu).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -17702,13 +14767,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Hp,bar[Fd], Internal fermion: Fu
 ! Generic diagram: SFF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -17765,13 +14828,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VWp,bar[Fd], Internal fermion: Fu
 ! Generic diagram: VFF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopFu).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3))) Then
@@ -17828,7 +14889,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -17838,7 +14898,6 @@ End if
 ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -17887,203 +14946,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS22, mS12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVOlluuVLL=PVOlluuVLL+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVOlluuVRL=PVOlluuVRL+2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVOlluuVLR=PVOlluuVLR+2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mV12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVOlluuVLL=PVOlluuVLL+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVOlluuVRL=PVOlluuVRL+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVOlluuVLR=PVOlluuVLR+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mS12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVOlluuVLL=PVOlluuVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVOlluuVRL=PVOlluuVRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVOlluuVLR=PVOlluuVLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV22, mV12)
-  int3=C0check(mF12, mV22, mV12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOlluuVLL=PVOlluuVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOlluuVRL=PVOlluuVRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOlluuVLR=PVOlluuVLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-               & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -18132,123 +14999,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt1)
-coup1R = cplFvFeHpR(i2,gt1)
-coup2L = cplcFeFvcHpL(gt2,i3)
-coup2R = cplcFeFvcHpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -        & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVOlluuVLL=PVOlluuVLL+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -        & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVOlluuVRL=PVOlluuVRL+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -        & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVOlluuVLR=PVOlluuVLR+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -        & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt1)
-coup1R = cplFvFeVWpR(i2,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i3)
-coup2R = cplcFeFvcVWpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFuFuVZL(gt4,gt3)
-coup4R = cplcFuFuVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVOlluuSLL=PVOlluuSLL+0.
-  PVOlluuSRR=PVOlluuSRR+0.
-  PVOlluuSRL=PVOlluuSRL+0.
-  PVOlluuSLR=PVOlluuSLR+0.
-  PVOlluuVRR=PVOlluuVRR - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVOlluuVLL=PVOlluuVLL - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVOlluuVRL=PVOlluuVRL - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVOlluuVLR=PVOlluuVLR - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite - & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVOlluuTLL=PVOlluuTLL+0.
-  PVOlluuTLR=PVOlluuTLR+0.
-  PVOlluuTRL=PVOlluuTRL+0.
-  PVOlluuTRR=PVOlluuTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -18297,13 +15052,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18343,13 +15096,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18389,13 +15140,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18435,13 +15184,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18481,13 +15228,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -18536,13 +15281,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fu,Fu
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -18591,13 +15334,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fu,Fu
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFu).and.(Include_in_loopFu).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFu2(i2).gt.mf_l2(3)).Or.(MFu2(i3).gt.mf_l2(3))) Then
@@ -18646,13 +15387,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],Hp,Hp
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -18692,13 +15431,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],VWp,Hp
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -18738,13 +15475,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],Hp,VWp
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -18784,13 +15519,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fd],VWp,VWp
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFd).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFd2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -18836,13 +15569,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18882,13 +15613,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18928,13 +15657,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -18974,13 +15701,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fu],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFu).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFu2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -19020,13 +15745,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: conj[Hp],Fd,Fd
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MHp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -19075,13 +15798,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: conj[VWp],Fd,Fd
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFd).and.(Include_in_loopFd).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVWp2.gt.mf_l2(3)).Or.(MFd2(i2).gt.mf_l2(3)).Or.(MFd2(i3).gt.mf_l2(3))) Then
@@ -19130,7 +15851,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  PVOlluuSLL=oo16pi2*PVOlluuSLL
@@ -19150,18 +15870,18 @@ Iname=Iname-1
 End Subroutine CalculatePengV2L2u 
 
 Subroutine CalculateTreeS2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,TSOlluuSLL,TSOlluuSRR,TSOlluuSRL,TSOlluuSLR,TSOlluuVRR,        & 
-& TSOlluuVLL,TSOlluuVRL,TSOlluuVLR,TSOlluuTLL,TSOlluuTLR,TSOlluuTRL,TSOlluuTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TSOlluuSLL,TSOlluuSRR,TSOlluuSRL,TSOlluuSLR,TSOlluuVRR,TSOlluuVLL,TSOlluuVRL,          & 
+& TSOlluuVLR,TSOlluuTLL,TSOlluuTLR,TSOlluuTRL,TSOlluuTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -19171,8 +15891,8 @@ Subroutine CalculateTreeS2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -19182,10 +15902,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -19308,18 +16028,18 @@ IMP2 = 1._dp/MP2
 End Subroutine CalculateTreeS2L2u 
 
 Subroutine CalculateTreeV2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,               & 
-& MFe,MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,            & 
-& cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,               & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,       & 
-& cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,         & 
-& cplHpcVWpVP,cplHpcVWpVZ,TVOlluuSLL,TVOlluuSRR,TVOlluuSRL,TVOlluuSLR,TVOlluuVRR,        & 
-& TVOlluuVLL,TVOlluuVRL,TVOlluuVLR,TVOlluuTLL,TVOlluuTLR,TVOlluuTRL,TVOlluuTRR)
+& MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
+& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
+& cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
+& cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TVOlluuSLL,TVOlluuSRR,TVOlluuSRL,TVOlluuSLR,TVOlluuVRR,TVOlluuVLL,TVOlluuVRL,          & 
+& TVOlluuVLR,TVOlluuTLL,TVOlluuTLR,TVOlluuTRL,TVOlluuTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -19329,8 +16049,8 @@ Subroutine CalculateTreeV2L2u(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFd,MFd2,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,              & 
+& MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),        & 
 & cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFdFdVZL(3,3),  & 
@@ -19340,10 +16060,10 @@ Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFdFdAh
 & cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdHpL(3,3),              & 
 & cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),& 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),  & 
-& cplcFuFuVZR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),    & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+& cplcFuFuVZR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,            & 
+& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
+& cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -19435,15 +16155,12 @@ IMP2 = 1._dp/MP2
 
 End Subroutine CalculateTreeV2L2u 
 
-Subroutine CalculateBox4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,               & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BO4lSLL,BO4lSRR,BO4lSRL,BO4lSLR,BO4lVRR,BO4lVLL,BO4lVRL,BO4lVLR,           & 
-& BO4lTLL,BO4lTLR,BO4lTRL,BO4lTRR)
+Subroutine CalculateBox4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,               & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,BO4lSLL,BO4lSRR,BO4lSRL,BO4lSLR,         & 
+& BO4lVRR,BO4lVLL,BO4lVRL,BO4lVLR,BO4lTLL,BO4lTLR,BO4lTRL,BO4lTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -19453,15 +16170,12 @@ Subroutine CalculateBox4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,         
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -19522,7 +16236,6 @@ BO4lTRR=0._dp
 ! Fe,Ah,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -19561,13 +16274,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -19606,13 +16317,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -19652,13 +16361,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -19698,13 +16405,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -19743,13 +16448,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -19788,13 +16491,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -19834,13 +16535,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -19880,31 +16579,29 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,Fv,Hp
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
-coup3L = cplFvFeHpL(i3,gt3)
-coup3R = cplFvFeHpR(i3,gt3)
+coup3L = cplcFvFeHpL(i3,gt3)
+coup3R = cplcFvFeHpR(i3,gt3)
 coup4L = cplcFeFvcHpL(gt4,i3)
 coup4R = cplcFeFvcHpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mS2 = MHp
 mS22 = MHp2
   int1=D00check(mF12, mF22, mS22, mS12)
@@ -19925,31 +16622,29 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,Fv,Hp
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3L = cplFvFeVWpL(i3,gt3)
-coup3R = cplFvFeVWpR(i3,gt3)
+coup3L = cplcFvFeVWpL(i3,gt3)
+coup3R = cplcFvFeVWpR(i3,gt3)
 coup4L = cplcFeFvcHpL(gt4,i3)
 coup4R = cplcFeFvcHpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mV2 = MVWp
 mV22 = MVWp2
   int1=C0D0check(mF22, mV22, mS12, mF12)
@@ -19971,13 +16666,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20017,13 +16710,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20063,13 +16754,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20111,13 +16800,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20159,31 +16846,29 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,Fv,VWp
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
-coup3L = cplFvFeHpL(i3,gt3)
-coup3R = cplFvFeHpR(i3,gt3)
+coup3L = cplcFvFeHpL(i3,gt3)
+coup3R = cplcFvFeHpR(i3,gt3)
 coup4L = cplcFeFvcVWpL(gt4,i3)
 coup4R = cplcFeFvcVWpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mS2 = MHp
 mS22 = MHp2
   int1=C0D0check(mF22, mS22, mV12, mF12)
@@ -20205,31 +16890,29 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,Fv,VWp
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3L = cplFvFeVWpL(i3,gt3)
-coup3R = cplFvFeVWpR(i3,gt3)
+coup3L = cplcFvFeVWpL(i3,gt3)
+coup3R = cplcFvFeVWpR(i3,gt3)
 coup4L = cplcFeFvcVWpL(gt4,i3)
 coup4R = cplcFeFvcVWpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mV2 = MVWp
 mV22 = MVWp2
   int1=C0D0check(mF22, mV22, mV12, mF12)
@@ -20253,13 +16936,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -20299,13 +16980,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -20345,13 +17024,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -20393,13 +17070,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -20441,13 +17116,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -20486,13 +17159,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -20531,13 +17202,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -20576,13 +17245,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -20621,13 +17288,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -20666,13 +17331,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -20711,13 +17374,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -20756,13 +17417,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -20801,13 +17460,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20846,13 +17503,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20891,13 +17546,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20936,13 +17589,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -20981,13 +17632,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -21026,13 +17675,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -21071,13 +17718,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -21116,13 +17761,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -21161,196 +17804,6 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Fv,conj[Hp],Fv,Hp
-chargefactor = 1 
-! Generic diagram: FSSF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFeHpL(i1,gt3)
-coup3R = cplFvFeHpR(i1,gt3)
-coup4L = cplcFeFvcHpL(gt2,i3)
-coup4R = cplcFeFvcHpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mS2 = MHp
-mS22 = MHp2
-  int1=D00check(mF12, mF22, mS22, mS12)
-  int2=MMD0(mF1, mF2, mF12, mF22, mS22, mS12)
-  BO4lSLL=BO4lSLL+0.5*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lSRR=BO4lSRR+0.5*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  BO4lSRL=BO4lSRL - 2.*chargefactor*coup1R*coup2L*coup3L*coup4R*int1
-  BO4lSLR=BO4lSLR - 2.*chargefactor*coup1L*coup2R*coup3R*coup4L*int1
-  BO4lVRR=BO4lVRR - 0.5*chargefactor*coup1R*coup2L*coup3R*coup4L*int2
-  BO4lVLL=BO4lVLL - 0.5*chargefactor*coup1L*coup2R*coup3L*coup4R*int2
-  BO4lVRL=BO4lVRL - 1.*chargefactor*coup1R*coup2R*coup3L*coup4L*int1
-  BO4lVLR=BO4lVLR - 1.*chargefactor*coup1L*coup2L*coup3R*coup4R*int1
-  BO4lTLL=BO4lTLL+0.125*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lTLR=BO4lTLR+0.
-  BO4lTRL=BO4lTRL+0.
-  BO4lTRR=BO4lTRR+0.125*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Fv,conj[VWp],Fv,Hp
-chargefactor = 1 
-! Generic diagram: FSVF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFeVWpL(i1,gt3)
-coup3R = cplFvFeVWpR(i1,gt3)
-coup4L = cplcFeFvcVWpL(gt2,i3)
-coup4R = cplcFeFvcVWpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mV2 = MVWp
-mV22 = MVWp2
-  int1=C0D0check(mF22, mV22, mS12, mF12)
-  int2=D00check(mF12, mF22, mV22, mS12)
-  int3=MMD0(mF1, mF2, mF12, mF22, mV22, mS12)
-  BO4lSLL=BO4lSLL - 1.*chargefactor*coup1L*coup2L*coup3L*coup4R*(int1 -               & 
-&  8.*int2)
-  BO4lSRR=BO4lSRR - 1.*chargefactor*coup1R*coup2R*coup3R*coup4L*(int1 -               & 
-&  8.*int2)
-  BO4lSRL=BO4lSRL+2.*chargefactor*coup1R*coup2L*coup3L*coup4L*int3
-  BO4lSLR=BO4lSLR+2.*chargefactor*coup1L*coup2R*coup3R*coup4R*int3
-  BO4lVRR=BO4lVRR+chargefactor*coup1R*coup2L*coup3R*coup4R*(int1 - 2.*int2)
-  BO4lVLL=BO4lVLL+chargefactor*coup1L*coup2R*coup3L*coup4L*(int1 - 2.*int2)
-  BO4lVRL=BO4lVRL+chargefactor*coup1R*coup2R*coup3L*coup4R*int3
-  BO4lVLR=BO4lVLR+chargefactor*coup1L*coup2L*coup3R*coup4L*int3
-  BO4lTLL=BO4lTLL - 0.25*chargefactor*coup1L*coup2L*coup3L*coup4R*int1
-  BO4lTLR=BO4lTLR+0.
-  BO4lTRL=BO4lTRL+0.
-  BO4lTRR=BO4lTRR - 0.25*chargefactor*coup1R*coup2R*coup3R*coup4L*int1
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Fv,conj[Hp],Fv,VWp
-chargefactor = 1 
-! Generic diagram: FVSF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFeHpL(i1,gt3)
-coup3R = cplFvFeHpR(i1,gt3)
-coup4L = cplcFeFvcHpL(gt2,i3)
-coup4R = cplcFeFvcHpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mS2 = MHp
-mS22 = MHp2
-  int1=C0D0check(mF22, mS22, mV12, mF12)
-  int2=D00check(mF12, mF22, mS22, mV12)
-  int3=MMD0(mF1, mF2, mF12, mF22, mS22, mV12)
-  BO4lSLL=BO4lSLL - 1.*chargefactor*coup1L*coup2R*coup3L*coup4L*(int1 -               & 
-&  8.*int2)
-  BO4lSRR=BO4lSRR - 1.*chargefactor*coup1R*coup2L*coup3R*coup4R*(int1 -               & 
-&  8.*int2)
-  BO4lSRL=BO4lSRL+2.*chargefactor*coup1R*coup2R*coup3L*coup4R*int3
-  BO4lSLR=BO4lSLR+2.*chargefactor*coup1L*coup2L*coup3R*coup4L*int3
-  BO4lVRR=BO4lVRR+chargefactor*coup1R*coup2R*coup3R*coup4L*(int1 - 2.*int2)
-  BO4lVLL=BO4lVLL+chargefactor*coup1L*coup2L*coup3L*coup4R*(int1 - 2.*int2)
-  BO4lVRL=BO4lVRL+chargefactor*coup1R*coup2L*coup3L*coup4L*int3
-  BO4lVLR=BO4lVLR+chargefactor*coup1L*coup2R*coup3R*coup4R*int3
-  BO4lTLL=BO4lTLL - 0.25*chargefactor*coup1L*coup2R*coup3L*coup4L*int1
-  BO4lTLR=BO4lTLR+0.
-  BO4lTRL=BO4lTRL+0.
-  BO4lTRR=BO4lTRR - 0.25*chargefactor*coup1R*coup2L*coup3R*coup4R*int1
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Fv,conj[VWp],Fv,VWp
-chargefactor = 1 
-! Generic diagram: FVVF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFeVWpL(i1,gt3)
-coup3R = cplFvFeVWpR(i1,gt3)
-coup4L = cplcFeFvcVWpL(gt2,i3)
-coup4R = cplcFeFvcVWpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mV2 = MVWp
-mV22 = MVWp2
-  int1=C0D0check(mF22, mV22, mV12, mF12)
-  int2=D00check(mF12, mF22, mV22, mV12)
-  int3=MMD0(mF1, mF2, mF12, mF22, mV22, mV12)
-  BO4lSLL=BO4lSLL - 4.*chargefactor*coup1L*coup2R*coup3L*coup4R*int3
-  BO4lSRR=BO4lSRR - 4.*chargefactor*coup1R*coup2L*coup3R*coup4L*int3
-  BO4lSRL=BO4lSRL - 8.*chargefactor*coup1R*coup2R*coup3L*coup4L*(int1 -               & 
-&  3.*int2)
-  BO4lSLR=BO4lSLR - 8.*chargefactor*coup1L*coup2L*coup3R*coup4R*(int1 -               & 
-&  3.*int2)
-  BO4lVRR=BO4lVRR - 2.*chargefactor*coup1R*coup2R*coup3R*coup4R*int3
-  BO4lVLL=BO4lVLL - 2.*chargefactor*coup1L*coup2L*coup3L*coup4L*int3
-  BO4lVRL=BO4lVRL - 4.*chargefactor*coup1R*coup2L*coup3L*coup4R*int1
-  BO4lVLR=BO4lVLR - 4.*chargefactor*coup1L*coup2R*coup3R*coup4L*int1
-  BO4lTLL=BO4lTLL+chargefactor*coup1L*coup2R*coup3L*coup4R*int3
-  BO4lTLR=BO4lTLR+0.
-  BO4lTRL=BO4lTRL+0.
-  BO4lTRR=BO4lTRR+chargefactor*coup1R*coup2L*coup3R*coup4L*int3
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  BO4lSLL=oo16pi2*BO4lSLL 
@@ -21369,15 +17822,12 @@ Iname=Iname-1
 
 End Subroutine CalculateBox4L 
 
-Subroutine CalculatePengS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSO4lSLL,PSO4lSRR,PSO4lSRL,PSO4lSLR,PSO4lVRR,PSO4lVLL,PSO4lVRL,            & 
-& PSO4lVLR,PSO4lTLL,PSO4lTLR,PSO4lTRL,PSO4lTRR)
+Subroutine CalculatePengS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PSO4lSLL,PSO4lSRR,PSO4lSRL,              & 
+& PSO4lSLR,PSO4lVRR,PSO4lVLL,PSO4lVRL,PSO4lVLR,PSO4lTLL,PSO4lTLR,PSO4lTRL,PSO4lTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -21387,15 +17837,12 @@ Subroutine CalculatePengS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,       
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -21457,7 +17904,6 @@ PSO4lTRR=0._dp
 ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -21514,139 +17960,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -21703,13 +18021,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -21766,13 +18082,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -21829,139 +18143,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -22018,13 +18204,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -22081,13 +18265,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -22144,139 +18326,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt4,i3)
-coup3R = cplcFeFeAhR(gt4,i3)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt4,i3)
-coup3R = cplcFeFeAhR(gt4,i3)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -22333,13 +18387,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -22396,13 +18448,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -22459,139 +18509,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt3)
-coup3R = cplcFeFeAhR(i3,gt3)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt3)
-coup3R = cplcFeFeAhR(i3,gt3)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx4*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx4*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -22648,13 +18570,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -22711,14 +18631,12 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -22775,139 +18693,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -22964,13 +18754,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -23027,13 +18815,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -23090,139 +18876,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -23279,13 +18937,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -23342,13 +18998,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -23405,139 +19059,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt4,i3)
-coup3R = cplcFeFehhR(gt4,i3)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt4,i3)
-coup3R = cplcFeFehhR(gt4,i3)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -23594,13 +19120,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -23657,13 +19181,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -23720,139 +19242,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt3)
-coup3R = cplcFeFehhR(i3,gt3)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLL=PSO4lSLL+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt3)
-coup3R = cplcFeFehhR(i3,gt3)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLL=PSO4lSLL+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRR=PSO4lSRR+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRL=PSO4lSRL+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx4*(-           & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSLR=PSO4lSLR+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx4*(-           & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -23909,13 +19303,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -23972,7 +19364,6 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -23982,7 +19373,6 @@ End if
 ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24030,115 +19420,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSO4lSLL=PSO4lSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSO4lSLL=PSO4lSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24186,13 +19472,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24240,13 +19524,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24286,13 +19568,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24332,13 +19612,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24383,13 +19661,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24434,13 +19710,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24488,115 +19762,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mV12, mS22)
-  PSO4lSLL=PSO4lSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mS12, mV22)
-  PSO4lSLL=PSO4lSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24644,13 +19814,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24698,13 +19866,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24744,13 +19910,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24790,13 +19954,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24841,13 +20003,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -24892,14 +20052,12 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -24947,207 +20105,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mS12)
-  PSO4lSLL=PSO4lSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRR=PSO4lSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRL=PSO4lSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSLR=PSO4lSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSO4lSLL=PSO4lSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSO4lSLL=PSO4lSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mV12)
-  PSO4lSLL=PSO4lSLL+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRR=PSO4lSRR+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRL=PSO4lSRL+4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSLR=PSO4lSLR+4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -25195,13 +20157,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -25249,13 +20209,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25295,13 +20253,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25346,13 +20302,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25392,13 +20346,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25443,13 +20395,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25489,13 +20439,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -25543,207 +20491,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS12, mS22)
-  PSO4lSLL=PSO4lSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRR=PSO4lSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRL=PSO4lSRL+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSLR=PSO4lSLR+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mV12, mS22)
-  PSO4lSLL=PSO4lSLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +              & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mS12, mV22)
-  PSO4lSLL=PSO4lSLL - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRR=PSO4lSRR - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSRL=PSO4lSRL - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lSLR=PSO4lSLR - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +         & 
-&  int2*mF12)
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV12, mV22)
-  PSO4lSLL=PSO4lSLL+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRR=PSO4lSRR+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRL=PSO4lSRL+4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSLR=PSO4lSLR+4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lVRR=PSO4lVRR+0.
-  PSO4lVLL=PSO4lVLL+0.
-  PSO4lVRL=PSO4lVRL+0.
-  PSO4lVLR=PSO4lVLR+0.
-  PSO4lTLL=PSO4lTLL+0.
-  PSO4lTLR=PSO4lTLR+0.
-  PSO4lTRL=PSO4lTRL+0.
-  PSO4lTRR=PSO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -25791,13 +20543,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -25845,13 +20595,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25891,13 +20639,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25942,13 +20688,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -25988,13 +20732,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -26039,13 +20781,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -26085,7 +20825,6 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  PSO4lSLL=oo16pi2*PSO4lSLL 
@@ -26104,15 +20843,12 @@ Iname=Iname-1
 
 End Subroutine CalculatePengS4L 
 
-Subroutine CalculatePengV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVO4lSLL,PVO4lSRR,PVO4lSRL,PVO4lSLR,PVO4lVRR,PVO4lVLL,PVO4lVRL,            & 
-& PVO4lVLR,PVO4lTLL,PVO4lTLR,PVO4lTRL,PVO4lTRR)
+Subroutine CalculatePengV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PVO4lSLL,PVO4lSRR,PVO4lSRL,              & 
+& PVO4lSLR,PVO4lVRR,PVO4lVLL,PVO4lVRL,PVO4lVLR,PVO4lTLL,PVO4lTLR,PVO4lTRL,PVO4lTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -26122,15 +20858,12 @@ Subroutine CalculatePengV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,       
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -26192,7 +20925,6 @@ PVO4lTRR=0._dp
 ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -26249,139 +20981,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -   & 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -   & 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx12 -   & 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx12 -   & 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -26438,13 +21042,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -26501,13 +21103,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -26564,139 +21164,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -   & 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -   & 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*coup2R*int2*MassEx22 -   & 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*coup2L*int2*MassEx22 -   & 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx2*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx2*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx2*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx2*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -26753,13 +21225,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -26816,13 +21286,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -26879,139 +21347,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt4,i3)
-coup3R = cplcFeFeVZR(gt4,i3)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx32 -   & 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx32 -   & 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx32 -   & 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx32 -   & 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt4,i3)
-coup3R = cplcFeFeVZR(gt4,i3)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -27068,13 +21408,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -27131,13 +21469,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -27194,139 +21530,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt3)
-coup3R = cplcFeFeVZR(i3,gt3)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx42 -   & 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx42 -   & 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3L*coup4R*IMP2*(coup1R*coup2L*int2*MassEx42 -   & 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3R*coup4L*IMP2*(coup1L*coup2R*int2*MassEx42 -   & 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt3)
-coup3R = cplcFeFeVZR(i3,gt3)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx4*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVLL=PVO4lVLL+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx4*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVRL=PVO4lVRL+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx4*(-               & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVLR=PVO4lVLR+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx4*(-               & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -27383,13 +21591,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -27446,7 +21652,6 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -27456,7 +21661,6 @@ End if
 ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -27505,203 +21709,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS22, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVO4lVLL=PVO4lVLL+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVO4lVRL=PVO4lVRL+2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVO4lVLR=PVO4lVLR+2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV22, mV12)
-  int3=C0check(mF12, mV22, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -27750,123 +21762,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt1)
-coup1R = cplFvFeHpR(i2,gt1)
-coup2L = cplcFeFvcHpL(gt2,i3)
-coup2R = cplcFeFvcHpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -            & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -            & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -            & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -            & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt1)
-coup1R = cplFvFeVWpR(i2,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i3)
-coup2R = cplcFeFvcVWpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLL=PVO4lVLL - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRL=PVO4lVRL - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLR=PVO4lVLR - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -27915,13 +21815,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -27961,13 +21859,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28007,13 +21903,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28053,13 +21947,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28099,13 +21991,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -28154,203 +22044,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS12, mS22)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVO4lVLL=PVO4lVLL+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVO4lVRL=PVO4lVRL+2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVO4lVLR=PVO4lVLR+2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV12, mS22)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS12, mV22)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV12, mV22)
-  int3=C0check(mF12, mV12, mV22)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-1.*Finite +        & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -28399,123 +22097,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt3)
-coup1R = cplFvFeHpR(i2,gt3)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -            & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLL=PVO4lVLL+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -            & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVRL=PVO4lVRL+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -            & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVLR=PVO4lVLR+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -            & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt3)
-coup1R = cplFvFeVWpR(i2,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVO4lSLL=PVO4lSLL+0.
-  PVO4lSRR=PVO4lSRR+0.
-  PVO4lSRL=PVO4lSRL+0.
-  PVO4lSLR=PVO4lSLR+0.
-  PVO4lVRR=PVO4lVRR - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLL=PVO4lVLL - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRL=PVO4lVRL - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVLR=PVO4lVLR - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -     & 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lTLL=PVO4lTLL+0.
-  PVO4lTLR=PVO4lTLR+0.
-  PVO4lTRL=PVO4lTRL+0.
-  PVO4lTRR=PVO4lTRR+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -28564,13 +22150,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28610,13 +22194,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28656,13 +22238,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28702,13 +22282,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -28748,7 +22326,6 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  PVO4lSLL=oo16pi2*PVO4lSLL
@@ -28767,15 +22344,12 @@ Iname=Iname-1
 
 End Subroutine CalculatePengV4L 
 
-Subroutine CalculateTreeS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSO4lSLL,TSO4lSRR,TSO4lSRL,TSO4lSLR,TSO4lVRR,TSO4lVLL,TSO4lVRL,            & 
-& TSO4lVLR,TSO4lTLL,TSO4lTLR,TSO4lTRL,TSO4lTRR)
+Subroutine CalculateTreeS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TSO4lSLL,TSO4lSRR,TSO4lSRL,              & 
+& TSO4lSLR,TSO4lVRR,TSO4lVLL,TSO4lVRL,TSO4lVLR,TSO4lTLL,TSO4lTLR,TSO4lTRL,TSO4lTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -28785,15 +22359,12 @@ Subroutine CalculateTreeS4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,       
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -28915,15 +22486,12 @@ IMP2 = 1._dp/MP2
 
 End Subroutine CalculateTreeS4L 
 
-Subroutine CalculateTreeV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVO4lSLL,TVO4lSRR,TVO4lSRL,TVO4lSLR,TVO4lVRR,TVO4lVLL,TVO4lVRL,            & 
-& TVO4lVLR,TVO4lTLL,TVO4lTLR,TVO4lTRL,TVO4lTRR)
+Subroutine CalculateTreeV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TVO4lSLL,TVO4lSRR,TVO4lSRL,              & 
+& TVO4lSLR,TVO4lVRR,TVO4lVLL,TVO4lVRL,TVO4lVLR,TVO4lTLL,TVO4lTLR,TVO4lTRL,TVO4lTRR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -28933,15 +22501,12 @@ Subroutine CalculateTreeV4L(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,MFv,       
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -29034,15 +22599,12 @@ IMP2 = 1._dp/MP2
 End Subroutine CalculateTreeV4L 
 
 Subroutine CalculateBox4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,              & 
-& MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BO4lSLLcross,BO4lSRRcross,BO4lSRLcross,BO4lSLRcross,BO4lVRRcross,          & 
-& BO4lVLLcross,BO4lVRLcross,BO4lVLRcross,BO4lTLLcross,BO4lTLRcross,BO4lTRLcross,         & 
-& BO4lTRRcross)
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,BO4lSLLcross,BO4lSRRcross,               & 
+& BO4lSRLcross,BO4lSLRcross,BO4lVRRcross,BO4lVLLcross,BO4lVRLcross,BO4lVLRcross,         & 
+& BO4lTLLcross,BO4lTLRcross,BO4lTRLcross,BO4lTRRcross)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -29052,15 +22614,12 @@ Subroutine CalculateBox4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,        
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -29121,7 +22680,6 @@ BO4lTRRcross=0._dp
 ! Fe,Ah,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -29160,13 +22718,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -29205,13 +22761,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -29255,13 +22809,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -29305,214 +22857,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! conj[Hp],Fv,conj[Hp],Fv
-chargefactor = 1 
-! Generic diagram: SFFS,  InsertionOrder: 1
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i4,gt1)
-coup1R = cplFvFeHpR(i4,gt1)
-coup2L = cplcFeFvcHpL(gt2,i2)
-coup2R = cplcFeFvcHpR(gt2,i2)
-coup3L = cplFvFeHpL(i2,gt3)
-coup3R = cplFvFeHpR(i2,gt3)
-coup4L = cplcFeFvcHpL(gt4,i4)
-coup4R = cplcFeFvcHpR(gt4,i4)
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mS2 = MHp
-mS22 = MHp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=D00check(mF22, mF12, mS12, mS22)
-  int2=MMD0(mF1, mF2, mF22, mF12, mS12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.5*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lSRRcross=BO4lSRRcross+0.5*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  BO4lSRLcross=BO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4L*int1
-  BO4lSLRcross=BO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4R*int1
-  BO4lVRRcross=BO4lVRRcross - 1.*chargefactor*coup1R*coup2L*coup3R*coup4L*int1
-  BO4lVLLcross=BO4lVLLcross - 1.*chargefactor*coup1L*coup2R*coup3L*coup4R*int1
-  BO4lVRLcross=BO4lVRLcross+0.5*chargefactor*coup1R*coup2L*coup3L*coup4R*int2
-  BO4lVLRcross=BO4lVLRcross+0.5*chargefactor*coup1L*coup2R*coup3R*coup4L*int2
-  BO4lTLLcross=BO4lTLLcross - 0.125*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross - 0.125*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
-
-
- ! conj[Hp],Fv,conj[VWp],Fv
-chargefactor = 1 
-! Generic diagram: SFFV,  InsertionOrder: 1
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i4,gt1)
-coup1R = cplFvFeHpR(i4,gt1)
-coup2L = cplcFeFvcHpL(gt2,i2)
-coup2R = cplcFeFvcHpR(gt2,i2)
-coup3L = cplFvFeVWpL(i2,gt3)
-coup3R = cplFvFeVWpR(i2,gt3)
-coup4L = cplcFeFvcVWpL(gt4,i4)
-coup4R = cplcFeFvcVWpR(gt4,i4)
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mV2 = MVWp
-mV22 = MVWp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=C0D0check(mF22, mF12, mV22, mS12)
-  int2=D00check(mF22, mF12, mS12, mV22)
-  int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
-&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
-&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
-&  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
-  BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
-&  coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1L*coup2L*coup3R*coup4L*int3)
-  BO4lVRRcross=BO4lVRRcross+chargefactor*coup1R*coup2L*coup3R*coup4R*int3
-  BO4lVLLcross=BO4lVLLcross+chargefactor*coup1L*coup2R*coup3L*coup4L*int3
-  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2L*coup3L*coup4L*(int1 -     & 
-&  2.*int2)
-  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2R*coup3R*coup4R*(int1 -     & 
-&  2.*int2)
-  BO4lTLLcross=BO4lTLLcross+0.0625*chargefactor*(coup1L*coup2L*coup3L*coup4R*(4.*int1 -& 
-&  21.*int2) + 5.*coup1R*coup2R*coup3R*coup4L*int2)
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.0625*chargefactor*(coup1R*coup2R*coup3R*coup4L*(4.*int1 -& 
-&  21.*int2) + 5.*coup1L*coup2L*coup3L*coup4R*int2)
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
-
-
- ! conj[VWp],Fv,conj[Hp],Fv
-chargefactor = 1 
-! Generic diagram: VFFS,  InsertionOrder: 1
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i4,gt1)
-coup1R = cplFvFeVWpR(i4,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i2)
-coup2R = cplcFeFvcVWpR(gt2,i2)
-coup3L = cplFvFeHpL(i2,gt3)
-coup3R = cplFvFeHpR(i2,gt3)
-coup4L = cplcFeFvcHpL(gt4,i4)
-coup4R = cplcFeFvcHpR(gt4,i4)
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mS2 = MHp
-mS22 = MHp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=C0D0check(mF22, mF12, mS22, mV12)
-  int2=D00check(mF22, mF12, mV12, mS22)
-  int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
-&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
-  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
-&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
-  BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
-&  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
-  BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
-&  1.*coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1L*coup2R*coup3R*coup4R*int3)
-  BO4lVRRcross=BO4lVRRcross+chargefactor*coup1R*coup2R*coup3R*coup4L*int3
-  BO4lVLLcross=BO4lVLLcross+chargefactor*coup1L*coup2L*coup3L*coup4R*int3
-  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup3L*coup4R*(int1 -     & 
-&  2.*int2)
-  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup3R*coup4L*(int1 -     & 
-&  2.*int2)
-  BO4lTLLcross=BO4lTLLcross+0.0625*chargefactor*(coup1L*coup2R*coup3L*coup4L*(4.*int1 -& 
-&  21.*int2) + 5.*coup1R*coup2L*coup3R*coup4R*int2)
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.0625*chargefactor*(coup1R*coup2L*coup3R*coup4R*(4.*int1 -& 
-&  21.*int2) + 5.*coup1L*coup2R*coup3L*coup4L*int2)
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
-
-
- ! conj[VWp],Fv,conj[VWp],Fv
-chargefactor = 1 
-! Generic diagram: VFFV,  InsertionOrder: 1
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i4,gt1)
-coup1R = cplFvFeVWpR(i4,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i2)
-coup2R = cplcFeFvcVWpR(gt2,i2)
-coup3L = cplFvFeVWpL(i2,gt3)
-coup3R = cplFvFeVWpR(i2,gt3)
-coup4L = cplcFeFvcVWpL(gt4,i4)
-coup4R = cplcFeFvcVWpR(gt4,i4)
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mV2 = MVWp
-mV22 = MVWp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=C0D0check(mF22, mF12, mV22, mV12)
-  int2=D00check(mF22, mF12, mV12, mV22)
-  int3=MMD0(mF1, mF2, mF22, mF12, mV12, mV22)
-  BO4lSLLcross=BO4lSLLcross+8.*chargefactor*coup1L*coup2R*coup3L*coup4R*int3
-  BO4lSRRcross=BO4lSRRcross+8.*chargefactor*coup1R*coup2L*coup3R*coup4L*int3
-  BO4lSRLcross=BO4lSRLcross+8.*chargefactor*coup1R*coup2L*coup3L*coup4R*int1
-  BO4lSLRcross=BO4lSLRcross+8.*chargefactor*coup1L*coup2R*coup3R*coup4L*int1
-  BO4lVRRcross=BO4lVRRcross - 4.*chargefactor*coup1R*coup2R*coup3R*coup4R*(int1 -     & 
-&  3.*int2)
-  BO4lVLLcross=BO4lVLLcross - 4.*chargefactor*coup1L*coup2L*coup3L*coup4L*(int1 -     & 
-&  3.*int2)
-  BO4lVRLcross=BO4lVRLcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4L*int3
-  BO4lVLRcross=BO4lVLRcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4R*int3
-  BO4lTLLcross=BO4lTLLcross+0.
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
 
 
  ! Fe,Ah,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -29551,13 +22900,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -29596,13 +22943,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -29646,13 +22991,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -29696,31 +23039,29 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,Fv,Hp
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
-coup3L = cplFvFeHpL(i3,gt3)
-coup3R = cplFvFeHpR(i3,gt3)
+coup3L = cplcFvFeHpL(i3,gt3)
+coup3R = cplcFvFeHpR(i3,gt3)
 coup4L = cplcFeFvcHpL(gt4,i3)
 coup4R = cplcFeFvcHpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mS2 = MHp
 mS22 = MHp2
   int1=D00check(mF12, mF22, mS22, mS12)
@@ -29741,31 +23082,29 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,Fv,Hp
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3L = cplFvFeVWpL(i3,gt3)
-coup3R = cplFvFeVWpR(i3,gt3)
+coup3L = cplcFvFeVWpL(i3,gt3)
+coup3R = cplcFvFeVWpR(i3,gt3)
 coup4L = cplcFeFvcHpL(gt4,i3)
 coup4R = cplcFeFvcHpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mV2 = MVWp
 mV22 = MVWp2
   int1=C0D0check(mF22, mV22, mS12, mF12)
@@ -29791,13 +23130,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -29841,13 +23178,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -29891,13 +23226,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -29939,13 +23272,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -29987,31 +23318,29 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,Hp,Fv,VWp
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcHpL(gt2,i1)
 coup2R = cplcFeFvcHpR(gt2,i1)
-coup3L = cplFvFeHpL(i3,gt3)
-coup3R = cplFvFeHpR(i3,gt3)
+coup3L = cplcFvFeHpL(i3,gt3)
+coup3R = cplcFvFeHpR(i3,gt3)
 coup4L = cplcFeFvcVWpL(gt4,i3)
 coup4R = cplcFeFvcVWpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mS2 = MHp
 mS22 = MHp2
   int1=C0D0check(mF22, mS22, mV12, mF12)
@@ -30037,31 +23366,29 @@ mS22 = MHp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fv,VWp,Fv,VWp
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i1)
 coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3L = cplFvFeVWpL(i3,gt3)
-coup3R = cplFvFeVWpR(i3,gt3)
+coup3L = cplcFvFeVWpL(i3,gt3)
+coup3R = cplcFvFeVWpR(i3,gt3)
 coup4L = cplcFeFvcVWpL(gt4,i3)
 coup4R = cplcFeFvcVWpR(gt4,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF2 = 0.
+mF22 = 0._dp
 mV2 = MVWp
 mV22 = MVWp2
   int1=C0D0check(mF22, mV22, mV12, mF12)
@@ -30085,13 +23412,11 @@ mV22 = MVWp2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -30135,13 +23460,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -30185,13 +23508,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -30233,13 +23554,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,Fe,VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 1
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -30281,13 +23600,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Ah,bar[Fe],Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 1
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30326,13 +23643,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! Ah,bar[Fe],hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 1
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30371,13 +23686,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! Ah,bar[Fe],VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 1
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30425,13 +23738,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! Ah,bar[Fe],VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 1
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30479,13 +23790,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,bar[Fe],Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 1
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30524,13 +23833,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,bar[Fe],hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 1
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30569,13 +23876,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,bar[Fe],VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 1
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30623,13 +23928,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,bar[Fe],VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 1
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30677,13 +23980,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,bar[Fe],Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 1
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30731,13 +24032,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,bar[Fe],hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 1
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30785,13 +24084,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,bar[Fe],VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 1
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30833,13 +24130,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,bar[Fe],VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 1
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30881,13 +24176,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,bar[Fe],Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 1
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30935,13 +24228,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,bar[Fe],hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 1
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -30989,13 +24280,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,bar[Fe],VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 1
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -31037,13 +24326,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,bar[Fe],VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 1
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -31085,13 +24372,204 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
+
+
+ ! conj[Hp],bar[Fv],conj[Hp],bar[Fv]
+chargefactor = 1 
+! Generic diagram: SFFS,  InsertionOrder: 1
+  Do i2=1,3
+      Do i4=1,3
+If ((MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i4,gt1)
+coup1R = cplcFvFeHpR(i4,gt1)
+coup2L = cplcFeFvcHpL(gt2,i2)
+coup2R = cplcFeFvcHpR(gt2,i2)
+coup3L = cplcFvFeHpL(i2,gt3)
+coup3R = cplcFvFeHpR(i2,gt3)
+coup4L = cplcFeFvcHpL(gt4,i4)
+coup4R = cplcFeFvcHpR(gt4,i4)
+mS1 = MHp
+mS12 = MHp2
+mF1 = 0.
+mF12 = 0._dp
+mS2 = MHp
+mS22 = MHp2
+mF2 = 0.
+mF22 = 0._dp
+  int1=D00check(mF22, mF12, mS12, mS22)
+  int2=MMD0(mF1, mF2, mF22, mF12, mS12, mS22)
+  BO4lSLLcross=BO4lSLLcross+0.5*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
+  BO4lSRRcross=BO4lSRRcross+0.5*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
+  BO4lSRLcross=BO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4L*int1
+  BO4lSLRcross=BO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4R*int1
+  BO4lVRRcross=BO4lVRRcross - 1.*chargefactor*coup1R*coup2L*coup3R*coup4L*int1
+  BO4lVLLcross=BO4lVLLcross - 1.*chargefactor*coup1L*coup2R*coup3L*coup4R*int1
+  BO4lVRLcross=BO4lVRLcross+0.5*chargefactor*coup1R*coup2L*coup3L*coup4R*int2
+  BO4lVLRcross=BO4lVLRcross+0.5*chargefactor*coup1L*coup2R*coup3R*coup4L*int2
+  BO4lTLLcross=BO4lTLLcross - 0.125*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
+  BO4lTLRcross=BO4lTLRcross+0.
+  BO4lTRLcross=BO4lTRLcross+0.
+  BO4lTRRcross=BO4lTRRcross - 0.125*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
+  End if 
 End if 
+   End Do 
+End Do 
+
+
+ ! conj[Hp],bar[Fv],conj[VWp],bar[Fv]
+chargefactor = 1 
+! Generic diagram: SFFV,  InsertionOrder: 1
+  Do i2=1,3
+      Do i4=1,3
+If ((MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i4,gt1)
+coup1R = cplcFvFeHpR(i4,gt1)
+coup2L = cplcFeFvcHpL(gt2,i2)
+coup2R = cplcFeFvcHpR(gt2,i2)
+coup3L = cplcFvFeVWpL(i2,gt3)
+coup3R = cplcFvFeVWpR(i2,gt3)
+coup4L = cplcFeFvcVWpL(gt4,i4)
+coup4R = cplcFeFvcVWpR(gt4,i4)
+mS1 = MHp
+mS12 = MHp2
+mF1 = 0.
+mF12 = 0._dp
+mV2 = MVWp
+mV22 = MVWp2
+mF2 = 0.
+mF22 = 0._dp
+  int1=C0D0check(mF22, mF12, mV22, mS12)
+  int2=D00check(mF22, mF12, mS12, mV22)
+  int3=MMD0(mF1, mF2, mF22, mF12, mS12, mV22)
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2R*coup3R*coup4L*int2 -    & 
+&  0.25*coup1L*coup2L*coup3L*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2L*coup3L*coup4R*int2 -    & 
+&  0.25*coup1R*coup2R*coup3R*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(coup1R*coup2R*coup3R*coup4L -         & 
+&  1.*coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1R*coup2R*coup3L*coup4R*int3)
+  BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(-1.*coup1R*coup2R*coup3R*coup4L +     & 
+&  coup1L*coup2L*coup3L*coup4R)*int2 - 2.*coup1L*coup2L*coup3R*coup4L*int3)
+  BO4lVRRcross=BO4lVRRcross+chargefactor*coup1R*coup2L*coup3R*coup4R*int3
+  BO4lVLLcross=BO4lVLLcross+chargefactor*coup1L*coup2R*coup3L*coup4L*int3
+  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2L*coup3L*coup4L*(int1 -     & 
+&  2.*int2)
+  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2R*coup3R*coup4R*(int1 -     & 
+&  2.*int2)
+  BO4lTLLcross=BO4lTLLcross+0.0625*chargefactor*(coup1L*coup2L*coup3L*coup4R*(4.*int1 -& 
+&  21.*int2) + 5.*coup1R*coup2R*coup3R*coup4L*int2)
+  BO4lTLRcross=BO4lTLRcross+0.
+  BO4lTRLcross=BO4lTRLcross+0.
+  BO4lTRRcross=BO4lTRRcross+0.0625*chargefactor*(coup1R*coup2R*coup3R*coup4L*(4.*int1 -& 
+&  21.*int2) + 5.*coup1L*coup2L*coup3L*coup4R*int2)
+  End if 
+End if 
+   End Do 
+End Do 
+
+
+ ! conj[VWp],bar[Fv],conj[Hp],bar[Fv]
+chargefactor = 1 
+! Generic diagram: VFFS,  InsertionOrder: 1
+  Do i2=1,3
+      Do i4=1,3
+If ((MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i4,gt1)
+coup1R = cplcFvFeVWpR(i4,gt1)
+coup2L = cplcFeFvcVWpL(gt2,i2)
+coup2R = cplcFeFvcVWpR(gt2,i2)
+coup3L = cplcFvFeHpL(i2,gt3)
+coup3R = cplcFvFeHpR(i2,gt3)
+coup4L = cplcFeFvcHpL(gt4,i4)
+coup4R = cplcFeFvcHpR(gt4,i4)
+mV1 = MVWp
+mV12 = MVWp2
+mF1 = 0.
+mF12 = 0._dp
+mS2 = MHp
+mS22 = MHp2
+mF2 = 0.
+mF22 = 0._dp
+  int1=C0D0check(mF22, mF12, mS22, mV12)
+  int2=D00check(mF22, mF12, mV12, mS22)
+  int3=MMD0(mF1, mF2, mF22, mF12, mV12, mS22)
+  BO4lSLLcross=BO4lSLLcross+chargefactor*(-0.75*coup1R*coup2L*coup3R*coup4R*int2 -    & 
+&  0.25*coup1L*coup2R*coup3L*coup4L*(4.*int1 + 13.*int2))
+  BO4lSRRcross=BO4lSRRcross+chargefactor*(-0.75*coup1L*coup2R*coup3L*coup4L*int2 -    & 
+&  0.25*coup1R*coup2L*coup3R*coup4R*(4.*int1 + 13.*int2))
+  BO4lSRLcross=BO4lSRLcross+chargefactor*(0.75*(-1.*coup1L*coup2R*coup3L*coup4L +     & 
+&  coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1R*coup2L*coup3L*coup4L*int3)
+  BO4lSLRcross=BO4lSLRcross+chargefactor*(0.75*(coup1L*coup2R*coup3L*coup4L -         & 
+&  1.*coup1R*coup2L*coup3R*coup4R)*int2 - 2.*coup1L*coup2R*coup3R*coup4R*int3)
+  BO4lVRRcross=BO4lVRRcross+chargefactor*coup1R*coup2R*coup3R*coup4L*int3
+  BO4lVLLcross=BO4lVLLcross+chargefactor*coup1L*coup2L*coup3L*coup4R*int3
+  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup3L*coup4R*(int1 -     & 
+&  2.*int2)
+  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup3R*coup4L*(int1 -     & 
+&  2.*int2)
+  BO4lTLLcross=BO4lTLLcross+0.0625*chargefactor*(coup1L*coup2R*coup3L*coup4L*(4.*int1 -& 
+&  21.*int2) + 5.*coup1R*coup2L*coup3R*coup4R*int2)
+  BO4lTLRcross=BO4lTLRcross+0.
+  BO4lTRLcross=BO4lTRLcross+0.
+  BO4lTRRcross=BO4lTRRcross+0.0625*chargefactor*(coup1R*coup2L*coup3R*coup4R*(4.*int1 -& 
+&  21.*int2) + 5.*coup1L*coup2R*coup3L*coup4L*int2)
+  End if 
+End if 
+   End Do 
+End Do 
+
+
+ ! conj[VWp],bar[Fv],conj[VWp],bar[Fv]
+chargefactor = 1 
+! Generic diagram: VFFV,  InsertionOrder: 1
+  Do i2=1,3
+      Do i4=1,3
+If ((MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i4,gt1)
+coup1R = cplcFvFeVWpR(i4,gt1)
+coup2L = cplcFeFvcVWpL(gt2,i2)
+coup2R = cplcFeFvcVWpR(gt2,i2)
+coup3L = cplcFvFeVWpL(i2,gt3)
+coup3R = cplcFvFeVWpR(i2,gt3)
+coup4L = cplcFeFvcVWpL(gt4,i4)
+coup4R = cplcFeFvcVWpR(gt4,i4)
+mV1 = MVWp
+mV12 = MVWp2
+mF1 = 0.
+mF12 = 0._dp
+mV2 = MVWp
+mV22 = MVWp2
+mF2 = 0.
+mF22 = 0._dp
+  int1=C0D0check(mF22, mF12, mV22, mV12)
+  int2=D00check(mF22, mF12, mV12, mV22)
+  int3=MMD0(mF1, mF2, mF22, mF12, mV12, mV22)
+  BO4lSLLcross=BO4lSLLcross+8.*chargefactor*coup1L*coup2R*coup3L*coup4R*int3
+  BO4lSRRcross=BO4lSRRcross+8.*chargefactor*coup1R*coup2L*coup3R*coup4L*int3
+  BO4lSRLcross=BO4lSRLcross+8.*chargefactor*coup1R*coup2L*coup3L*coup4R*int1
+  BO4lSLRcross=BO4lSLRcross+8.*chargefactor*coup1L*coup2R*coup3R*coup4L*int1
+  BO4lVRRcross=BO4lVRRcross - 4.*chargefactor*coup1R*coup2R*coup3R*coup4R*(int1 -     & 
+&  3.*int2)
+  BO4lVLLcross=BO4lVLLcross - 4.*chargefactor*coup1L*coup2L*coup3L*coup4L*(int1 -     & 
+&  3.*int2)
+  BO4lVRLcross=BO4lVRLcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4L*int3
+  BO4lVLRcross=BO4lVLRcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4R*int3
+  BO4lTLLcross=BO4lTLLcross+0.
+  BO4lTLRcross=BO4lTLRcross+0.
+  BO4lTRLcross=BO4lTRLcross+0.
+  BO4lTRRcross=BO4lTRRcross+0.
+  End if 
+End if 
+   End Do 
+End Do 
 
 
  ! Fe,Ah,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -31130,13 +24608,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -31175,13 +24651,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -31220,13 +24694,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],Ah
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopAh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -31265,193 +24737,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! conj[Hp],Fv,Hp,Fv
-chargefactor = 1 
-! Generic diagram: SFFS,  InsertionOrder: 2
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i4,gt1)
-coup1R = cplFvFeHpR(i4,gt1)
-coup2L = cplcFeFvcHpL(gt2,i2)
-coup2R = cplcFeFvcHpR(gt2,i2)
-coup3L = cplcFeFvcHpL(gt4,i2)
-coup3R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplFvFeHpL(i4,gt3)
-coup4R = cplFvFeHpR(i4,gt3)
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mS2 = MHp
-mS22 = MHp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=D00check(mF12, mF22, mS12, mS22)
-  int2=MMD0(mF1, mF2, mF12, mF22, mS12, mS22)
-  BO4lSLLcross=BO4lSLLcross+0.5*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lSRRcross=BO4lSRRcross+0.5*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  BO4lSRLcross=BO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4L*int1
-  BO4lSLRcross=BO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4R*int1
-  BO4lVRRcross=BO4lVRRcross - 0.5*chargefactor*coup1R*coup2L*coup3L*coup4R*int2
-  BO4lVLLcross=BO4lVLLcross - 0.5*chargefactor*coup1L*coup2R*coup3R*coup4L*int2
-  BO4lVRLcross=BO4lVRLcross+chargefactor*coup1R*coup2L*coup3R*coup4L*int1
-  BO4lVLRcross=BO4lVLRcross+chargefactor*coup1L*coup2R*coup3L*coup4R*int1
-  BO4lTLLcross=BO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
-
-
- ! conj[Hp],Fv,VWp,Fv
-chargefactor = 1 
-! Generic diagram: SFFV,  InsertionOrder: 2
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i4,gt1)
-coup1R = cplFvFeHpR(i4,gt1)
-coup2L = cplcFeFvcHpL(gt2,i2)
-coup2R = cplcFeFvcHpR(gt2,i2)
-coup3L = cplcFeFvcVWpL(gt4,i2)
-coup3R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplFvFeVWpL(i4,gt3)
-coup4R = cplFvFeVWpR(i4,gt3)
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mV2 = MVWp
-mV22 = MVWp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=D00check(mF12, mF22, mS12, mV22)
-  int2=MMD0(mF1, mF2, mF12, mF22, mS12, mV22)
-  BO4lSLLcross=BO4lSLLcross - 8.*chargefactor*coup1L*coup2L*coup3R*coup4L*int1
-  BO4lSRRcross=BO4lSRRcross - 8.*chargefactor*coup1R*coup2R*coup3L*coup4R*int1
-  BO4lSRLcross=BO4lSRLcross - 2.*chargefactor*coup1R*coup2R*coup3R*coup4L*int2
-  BO4lSLRcross=BO4lSLRcross - 2.*chargefactor*coup1L*coup2L*coup3L*coup4R*int2
-  BO4lVRRcross=BO4lVRRcross+2.*chargefactor*coup1R*coup2L*coup3R*coup4R*int1
-  BO4lVLLcross=BO4lVLLcross+2.*chargefactor*coup1L*coup2R*coup3L*coup4L*int1
-  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2L*coup3L*coup4L*int2
-  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2R*coup3R*coup4R*int2
-  BO4lTLLcross=BO4lTLLcross+0.
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
-
-
- ! conj[VWp],Fv,Hp,Fv
-chargefactor = 1 
-! Generic diagram: VFFS,  InsertionOrder: 2
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i4,gt1)
-coup1R = cplFvFeVWpR(i4,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i2)
-coup2R = cplcFeFvcVWpR(gt2,i2)
-coup3L = cplcFeFvcHpL(gt4,i2)
-coup3R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplFvFeHpL(i4,gt3)
-coup4R = cplFvFeHpR(i4,gt3)
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mS2 = MHp
-mS22 = MHp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=D00check(mF12, mF22, mV12, mS22)
-  int2=MMD0(mF1, mF2, mF12, mF22, mV12, mS22)
-  BO4lSLLcross=BO4lSLLcross - 8.*chargefactor*coup1L*coup2R*coup3L*coup4L*int1
-  BO4lSRRcross=BO4lSRRcross - 8.*chargefactor*coup1R*coup2L*coup3R*coup4R*int1
-  BO4lSRLcross=BO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup3L*coup4L*int2
-  BO4lSLRcross=BO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup3R*coup4R*int2
-  BO4lVRRcross=BO4lVRRcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4R*int1
-  BO4lVLLcross=BO4lVLLcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4L*int1
-  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup3R*coup4L*int2
-  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup3L*coup4R*int2
-  BO4lTLLcross=BO4lTLLcross+0.
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
-
-
- ! conj[VWp],Fv,VWp,Fv
-chargefactor = 1 
-! Generic diagram: VFFV,  InsertionOrder: 2
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.IncludeBoxes) Then 
-  Do i2=1,3
-      Do i4=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i4).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i4.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i4,gt1)
-coup1R = cplFvFeVWpR(i4,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i2)
-coup2R = cplcFeFvcVWpR(gt2,i2)
-coup3L = cplcFeFvcVWpL(gt4,i2)
-coup3R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplFvFeVWpL(i4,gt3)
-coup4R = cplFvFeVWpR(i4,gt3)
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i4)
-mF12 = MFv2(i4)
-mV2 = MVWp
-mV22 = MVWp2
-mF2 = MFv(i2)
-mF22 = MFv2(i2)
-  int1=D00check(mF12, mF22, mV12, mV22)
-  int2=MMD0(mF1, mF2, mF12, mF22, mV12, mV22)
-  BO4lSLLcross=BO4lSLLcross+8.*chargefactor*coup1L*coup2R*coup3R*coup4L*int2
-  BO4lSRRcross=BO4lSRRcross+8.*chargefactor*coup1R*coup2L*coup3L*coup4R*int2
-  BO4lSRLcross=BO4lSRLcross+32.*chargefactor*coup1R*coup2L*coup3R*coup4L*int1
-  BO4lSLRcross=BO4lSLRcross+32.*chargefactor*coup1L*coup2R*coup3L*coup4R*int1
-  BO4lVRRcross=BO4lVRRcross - 2.*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  BO4lVLLcross=BO4lVLLcross - 2.*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lVRLcross=BO4lVRLcross+4.*chargefactor*coup1R*coup2R*coup3L*coup4L*int1
-  BO4lVLRcross=BO4lVLRcross+4.*chargefactor*coup1L*coup2L*coup3R*coup4R*int1
-  BO4lTLLcross=BO4lTLLcross+0.
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -31490,13 +24780,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -31535,13 +24823,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -31580,13 +24866,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],hh
 chargefactor = 1 
 ! Generic diagram: FSVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loophh).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -31625,13 +24909,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -31670,13 +24952,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -31715,13 +24995,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -31760,13 +25038,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],VP
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVP).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -31805,13 +25081,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,Ah,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -31850,13 +25124,11 @@ mS22 = MAh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,hh,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVSF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -31895,13 +25167,11 @@ mS22 = Mhh2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VP,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -31940,13 +25210,11 @@ mV22 = 0._dp
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Fe,VZ,bar[Fe],VZ
 chargefactor = 1 
 ! Generic diagram: FVVF,  InsertionOrder: 2
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.IncludeBoxes) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -31985,206 +25253,11 @@ mV22 = MVZ2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Fv,conj[Hp],Fv,Hp
-chargefactor = 1 
-! Generic diagram: FSSF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFeHpL(i1,gt3)
-coup3R = cplFvFeHpR(i1,gt3)
-coup4L = cplcFeFvcHpL(gt2,i3)
-coup4R = cplcFeFvcHpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mS2 = MHp
-mS22 = MHp2
-  int1=D00check(mF12, mF22, mS22, mS12)
-  int2=MMD0(mF1, mF2, mF12, mF22, mS22, mS12)
-  BO4lSLLcross=BO4lSLLcross+0.5*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lSRRcross=BO4lSRRcross+0.5*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  BO4lSRLcross=BO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup3L*coup4R*int1
-  BO4lSLRcross=BO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup3R*coup4L*int1
-  BO4lVRRcross=BO4lVRRcross - 0.5*chargefactor*coup1R*coup2L*coup3R*coup4L*int2
-  BO4lVLLcross=BO4lVLLcross - 0.5*chargefactor*coup1L*coup2R*coup3L*coup4R*int2
-  BO4lVRLcross=BO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup3L*coup4L*int1
-  BO4lVLRcross=BO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup3R*coup4R*int1
-  BO4lTLLcross=BO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3L*coup4L*int2
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3R*coup4R*int2
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Fv,conj[VWp],Fv,Hp
-chargefactor = 1 
-! Generic diagram: FSVF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopHp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFeVWpL(i1,gt3)
-coup3R = cplFvFeVWpR(i1,gt3)
-coup4L = cplcFeFvcVWpL(gt2,i3)
-coup4R = cplcFeFvcVWpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mV2 = MVWp
-mV22 = MVWp2
-  int1=C0D0check(mF22, mV22, mS12, mF12)
-  int2=D00check(mF12, mF22, mV22, mS12)
-  int3=MMD0(mF1, mF2, mF12, mF22, mV22, mS12)
-  BO4lSLLcross=BO4lSLLcross - 1.*chargefactor*coup1L*coup2L*coup3L*coup4R*(int1 -     & 
-&  8.*int2)
-  BO4lSRRcross=BO4lSRRcross - 1.*chargefactor*coup1R*coup2R*coup3R*coup4L*(int1 -     & 
-&  8.*int2)
-  BO4lSRLcross=BO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup3L*coup4L*int3
-  BO4lSLRcross=BO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup3R*coup4R*int3
-  BO4lVRRcross=BO4lVRRcross+chargefactor*coup1R*coup2L*coup3R*coup4R*(int1 -          & 
-&  2.*int2)
-  BO4lVLLcross=BO4lVLLcross+chargefactor*coup1L*coup2R*coup3L*coup4L*(int1 -          & 
-&  2.*int2)
-  BO4lVRLcross=BO4lVRLcross+chargefactor*coup1R*coup2R*coup3L*coup4R*int3
-  BO4lVLRcross=BO4lVLRcross+chargefactor*coup1L*coup2L*coup3R*coup4L*int3
-  BO4lTLLcross=BO4lTLLcross - 0.25*chargefactor*coup1L*coup2L*coup3L*coup4R*int1
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross - 0.25*chargefactor*coup1R*coup2R*coup3R*coup4L*int1
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Fv,conj[Hp],Fv,VWp
-chargefactor = 1 
-! Generic diagram: FVSF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFeHpL(i1,gt3)
-coup3R = cplFvFeHpR(i1,gt3)
-coup4L = cplcFeFvcHpL(gt2,i3)
-coup4R = cplcFeFvcHpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mS2 = MHp
-mS22 = MHp2
-  int1=C0D0check(mF22, mS22, mV12, mF12)
-  int2=D00check(mF12, mF22, mS22, mV12)
-  int3=MMD0(mF1, mF2, mF12, mF22, mS22, mV12)
-  BO4lSLLcross=BO4lSLLcross - 1.*chargefactor*coup1L*coup2R*coup3L*coup4L*(int1 -     & 
-&  8.*int2)
-  BO4lSRRcross=BO4lSRRcross - 1.*chargefactor*coup1R*coup2L*coup3R*coup4R*(int1 -     & 
-&  8.*int2)
-  BO4lSRLcross=BO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup3L*coup4R*int3
-  BO4lSLRcross=BO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup3R*coup4L*int3
-  BO4lVRRcross=BO4lVRRcross+chargefactor*coup1R*coup2R*coup3R*coup4L*(int1 -          & 
-&  2.*int2)
-  BO4lVLLcross=BO4lVLLcross+chargefactor*coup1L*coup2L*coup3L*coup4R*(int1 -          & 
-&  2.*int2)
-  BO4lVRLcross=BO4lVRLcross+chargefactor*coup1R*coup2L*coup3L*coup4L*int3
-  BO4lVLRcross=BO4lVLRcross+chargefactor*coup1L*coup2R*coup3R*coup4R*int3
-  BO4lTLLcross=BO4lTLLcross - 0.25*chargefactor*coup1L*coup2R*coup3L*coup4L*int1
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross - 0.25*chargefactor*coup1R*coup2L*coup3R*coup4R*int1
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Fv,conj[VWp],Fv,VWp
-chargefactor = 1 
-! Generic diagram: FVVF,  InsertionOrder: 3
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopVWp).and.IncludeBoxes) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFeVWpL(i1,gt3)
-coup3R = cplFvFeVWpR(i1,gt3)
-coup4L = cplcFeFvcVWpL(gt2,i3)
-coup4R = cplcFeFvcVWpR(gt2,i3)
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-mV2 = MVWp
-mV22 = MVWp2
-  int1=C0D0check(mF22, mV22, mV12, mF12)
-  int2=D00check(mF12, mF22, mV22, mV12)
-  int3=MMD0(mF1, mF2, mF12, mF22, mV22, mV12)
-  BO4lSLLcross=BO4lSLLcross - 4.*chargefactor*coup1L*coup2R*coup3L*coup4R*int3
-  BO4lSRRcross=BO4lSRRcross - 4.*chargefactor*coup1R*coup2L*coup3R*coup4L*int3
-  BO4lSRLcross=BO4lSRLcross - 8.*chargefactor*coup1R*coup2R*coup3L*coup4L*(int1 -     & 
-&  3.*int2)
-  BO4lSLRcross=BO4lSLRcross - 8.*chargefactor*coup1L*coup2L*coup3R*coup4R*(int1 -     & 
-&  3.*int2)
-  BO4lVRRcross=BO4lVRRcross - 2.*chargefactor*coup1R*coup2R*coup3R*coup4R*int3
-  BO4lVLLcross=BO4lVLLcross - 2.*chargefactor*coup1L*coup2L*coup3L*coup4L*int3
-  BO4lVRLcross=BO4lVRLcross - 4.*chargefactor*coup1R*coup2L*coup3L*coup4R*int1
-  BO4lVLRcross=BO4lVLRcross - 4.*chargefactor*coup1L*coup2R*coup3R*coup4L*int1
-  BO4lTLLcross=BO4lTLLcross+chargefactor*coup1L*coup2R*coup3L*coup4R*int3
-  BO4lTLRcross=BO4lTLRcross+0.
-  BO4lTRLcross=BO4lTRLcross+0.
-  BO4lTRRcross=BO4lTRRcross+chargefactor*coup1R*coup2L*coup3R*coup4L*int3
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Ah,Fe,Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 3
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32223,13 +25296,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! Ah,Fe,hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 3
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32268,13 +25339,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! Ah,Fe,VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 3
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32319,13 +25388,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! Ah,Fe,VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 3
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32370,13 +25437,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,Fe,Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 3
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32415,13 +25480,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,Fe,hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFS,  InsertionOrder: 3
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32460,13 +25523,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,Fe,VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 3
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32511,13 +25572,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! hh,Fe,VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: SFFV,  InsertionOrder: 3
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32562,13 +25621,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,Fe,Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 3
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32613,13 +25670,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,Fe,hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 3
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32664,13 +25719,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,Fe,VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 3
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32709,13 +25762,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VP,Fe,VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 3
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32754,13 +25805,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,Fe,Ah,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 3
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32805,13 +25854,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,Fe,hh,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFS,  InsertionOrder: 3
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32856,13 +25903,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,Fe,VP,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 3
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32901,13 +25946,11 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  ! VZ,Fe,VZ,bar[Fe]
 chargefactor = 1 
 ! Generic diagram: VFFV,  InsertionOrder: 3
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeBoxes) Then 
   Do i2=1,3
       Do i4=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MFe2(i4).gt.mf_l2(3))) Then
@@ -32946,7 +25989,6 @@ mF22 = MFe2(i2)
 End if 
    End Do 
 End Do 
-End if 
 
 
  BO4lSLLcross=oo16pi2*BO4lSLLcross 
@@ -32966,15 +26008,12 @@ Iname=Iname-1
 End Subroutine CalculateBox4Lcross 
 
 Subroutine CalculatePengS4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,            & 
-& MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSO4lSLLcross,PSO4lSRRcross,PSO4lSRLcross,PSO4lSLRcross,PSO4lVRRcross,     & 
-& PSO4lVLLcross,PSO4lVRLcross,PSO4lVLRcross,PSO4lTLLcross,PSO4lTLRcross,PSO4lTRLcross,   & 
-& PSO4lTRRcross)
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PSO4lSLLcross,PSO4lSRRcross,             & 
+& PSO4lSRLcross,PSO4lSLRcross,PSO4lVRRcross,PSO4lVLLcross,PSO4lVRLcross,PSO4lVLRcross,   & 
+& PSO4lTLLcross,PSO4lTLRcross,PSO4lTRLcross,PSO4lTRRcross)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -32984,15 +26023,12 @@ Subroutine CalculatePengS4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -33054,7 +26090,6 @@ PSO4lTRRcross=0._dp
 ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -33111,139 +26146,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -33300,13 +26207,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -33363,13 +26268,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -33426,139 +26329,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -33615,13 +26390,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -33678,13 +26451,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -33745,147 +26516,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 5
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt4,i3)
-coup3R = cplcFeFeAhR(gt4,i3)
-coup4L = cplcFeFeAhL(gt2,gt3)
-coup4R = cplcFeFeAhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx12 + coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx12 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx12 + coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 5
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt4,i3)
-coup3R = cplcFeFeAhR(gt4,i3)
-coup4L = cplcFeFeAhL(gt2,gt3)
-coup4R = cplcFeFeAhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -33946,13 +26581,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -34013,13 +26646,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -34080,147 +26711,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFeAhL(gt2,gt3)
-coup4R = cplcFeFeAhR(gt2,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx42 + coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx42 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx42 + coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx42 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt1)
-coup3R = cplcFeFeAhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFeAhL(gt2,gt3)
-coup4R = cplcFeFeAhR(gt2,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -34281,13 +26776,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -34348,13 +26841,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -34411,139 +26902,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeAhL(gt4,i3)
-coup3R = cplcFeFeAhR(gt4,i3)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeAhL(gt4,i3)
-coup3R = cplcFeFeAhR(gt4,i3)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -34600,13 +26963,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -34663,13 +27024,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -34726,139 +27085,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt3)
-coup3R = cplcFeFeAhR(i3,gt3)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(i3,gt3)
-coup3R = cplcFeFeAhR(i3,gt3)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -34915,13 +27146,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -34978,13 +27207,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,bar[Fe], Internal fermion: Fe
 ! Generic diagram: SFF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -35045,13 +27272,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -35112,13 +27337,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -35179,147 +27402,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,Hp, Internal fermion: Fe
-! Generic diagram: FSF,  InsertionOrder: 11
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = cplFvFeHpL(i1,i3)
-coup2R = cplFvFeHpR(i1,i3)
-coup3L = cplcFeFeAhL(i3,gt3)
-coup3R = cplcFeFeAhR(i3,gt3)
-coup4L = cplcFeFeAhL(gt4,gt1)
-coup4R = cplcFeFeAhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx22 + coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx22 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx22 + coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,VWp, Internal fermion: Fe
-! Generic diagram: FVF,  InsertionOrder: 11
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,i3))
-coup2R = Conjg(-cplFvFeVWpL(i1,i3))
-coup3L = cplcFeFeAhL(i3,gt3)
-coup3R = cplcFeFeAhR(i3,gt3)
-coup4L = cplcFeFeAhL(gt4,gt1)
-coup4R = cplcFeFeAhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah, Internal fermion: bar[Fe]
 ! Generic diagram: FSF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -35380,13 +27467,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -35447,13 +27532,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -35514,148 +27597,12 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Hp,Fv, Internal fermion: bar[Fe]
-! Generic diagram: SFF,  InsertionOrder: 12
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup2L = cplcFeFvcHpL(i3,i2)
-coup2R = cplcFeFvcHpR(i3,i2)
-coup1L = cplFvFeHpL(i2,gt3)
-coup1R = cplFvFeHpR(i2,gt3)
-coup4L = cplcFeFeAhL(gt4,gt1)
-coup4R = cplcFeFeAhR(gt4,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx32 + coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx32 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx32 + coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx32 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: VWp,Fv, Internal fermion: bar[Fe]
-! Generic diagram: VFF,  InsertionOrder: 12
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeAhL(gt2,i3)
-coup3R = cplcFeFeAhR(gt2,i3)
-coup2L = Conjg(-cplcFeFvcVWpR(i3,i2))
-coup2R = Conjg(-cplcFeFvcVWpL(i3,i2))
-coup1L = Conjg(-cplFvFeVWpR(i2,gt3))
-coup1R = Conjg(-cplFvFeVWpL(i2,gt3))
-coup4L = cplcFeFeAhL(gt4,gt1)
-coup4R = cplcFeFeAhR(gt4,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -35712,139 +27659,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -35901,13 +27720,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -35964,13 +27781,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -36027,139 +27842,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -36216,13 +27903,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -36279,13 +27964,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -36346,147 +28029,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 5
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt4,i3)
-coup3R = cplcFeFehhR(gt4,i3)
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx12 + coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx12 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx12 + coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 5
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt4,i3)
-coup3R = cplcFeFehhR(gt4,i3)
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -36547,13 +28094,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -36614,13 +28159,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -36681,147 +28224,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx42 + coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx42 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx42 + coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx42 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -36882,13 +28289,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -36949,13 +28354,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -37012,139 +28415,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt4,i3)
-coup3R = cplcFeFehhR(gt4,i3)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt4,i3)
-coup3R = cplcFeFehhR(gt4,i3)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -37201,13 +28476,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -37264,13 +28537,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -37327,139 +28598,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt3)
-coup3R = cplcFeFehhR(i3,gt3)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(chargefactor*coup3L*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(chargefactor*coup3R*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(i3,gt3)
-coup3R = cplcFeFehhR(i3,gt3)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(-1.*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(-1.*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+(-1.*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lSLRcross=PSO4lSLRcross+(-1.*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -37516,13 +28659,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -37579,13 +28720,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,bar[Fe], Internal fermion: Fe
 ! Generic diagram: SFF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -37646,13 +28785,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -37713,13 +28850,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -37780,147 +28915,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,Hp, Internal fermion: Fe
-! Generic diagram: FSF,  InsertionOrder: 11
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = cplFvFeHpL(i1,i3)
-coup2R = cplFvFeHpR(i1,i3)
-coup3L = cplcFeFehhL(i3,gt3)
-coup3R = cplcFeFehhR(i3,gt3)
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx22 + coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx22 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx22 + coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,VWp, Internal fermion: Fe
-! Generic diagram: FVF,  InsertionOrder: 11
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,i3))
-coup2R = Conjg(-cplFvFeVWpL(i1,i3))
-coup3L = cplcFeFehhL(i3,gt3)
-coup3R = cplcFeFehhR(i3,gt3)
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1L*MassEx2*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1R*MassEx2*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah, Internal fermion: bar[Fe]
 ! Generic diagram: FSF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -37981,13 +28980,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -38048,13 +29045,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -38115,141 +29110,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Hp,Fv, Internal fermion: bar[Fe]
-! Generic diagram: SFF,  InsertionOrder: 12
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup2L = cplcFeFvcHpL(i3,i2)
-coup2R = cplcFeFvcHpR(i3,i2)
-coup1L = cplFvFeHpL(i2,gt3)
-coup1R = cplFvFeHpR(i2,gt3)
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(0.125*chargefactor*coup3L*coup4L*IMP2*(-               & 
-& 1.*coup1L*coup2R*int2*MassEx32 + coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin +& 
-&  coup1L*coup2L*int1*mF1*MFin))/(MassEx32 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(0.125*chargefactor*coup3R*coup4R*IMP2*(-               & 
-& 1.*coup1R*coup2L*int2*MassEx32 + coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin +& 
-&  coup1R*coup2R*int1*mF1*MFin))/(MassEx32 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: VWp,Fv, Internal fermion: bar[Fe]
-! Generic diagram: VFF,  InsertionOrder: 12
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-coup2L = Conjg(-cplcFeFvcVWpR(i3,i2))
-coup2R = Conjg(-cplcFeFvcVWpL(i3,i2))
-coup1L = Conjg(-cplFvFeVWpR(i2,gt3))
-coup1R = Conjg(-cplFvFeVWpL(i2,gt3))
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+(0.5*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRRcross=PSO4lSRRcross+(0.5*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+(0.5*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lVLRcross=PSO4lVLRcross+(0.5*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lTLLcross=PSO4lTLLcross+(-0.125*chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-& 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+(-0.125*chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-& 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -38259,7 +29119,6 @@ End if
 ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -38307,115 +29166,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFeFeAhL(gt4,gt3)
-coup4R = cplcFeFeAhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -38463,13 +29218,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -38517,13 +29270,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -38563,13 +29314,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -38609,13 +29358,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -38660,13 +29407,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -38711,13 +29456,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -38767,119 +29510,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFeFeAhL(gt2,gt3)
-coup4R = cplcFeFeAhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFeFeAhL(gt2,gt3)
-coup4R = cplcFeFeAhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross - 0.125*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross - 0.125*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -38929,13 +29564,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -38985,13 +29618,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39031,13 +29662,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39077,13 +29706,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39130,13 +29757,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39183,13 +29808,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -39237,115 +29860,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = -cplAhHpcVWp
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mV12, mS22)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFeFeAhL(gt2,gt1)
-coup4R = cplcFeFeAhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mS12, mV22)
-  PSO4lSLLcross=PSO4lSLLcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -39393,13 +29912,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -39447,13 +29964,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39493,13 +30008,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39539,13 +30052,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39590,13 +30101,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39641,13 +30150,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Ah,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -39697,13 +30204,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39743,13 +30248,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39789,13 +30292,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39842,13 +30343,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: Fe,hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -39895,119 +30394,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,VWp,Hp
-! Generic diagram: FVS,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = cplFvFeHpL(i1,gt3)
-coup2R = cplFvFeHpR(i1,gt3)
-coup3 = -cplAhcHpVWp
-coup4L = cplcFeFeAhL(gt4,gt1)
-coup4R = cplcFeFeAhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mV12, mS22)
-  PSO4lSLLcross=PSO4lSLLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross - 0.125*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross - 0.125*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: Ah, Loop particles: Fv,Hp,VWp
-! Generic diagram: FSV,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = Conjg(-cplFvFeVWpR(i1,gt3))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt3))
-coup3 = -cplAhHpcVWp
-coup4L = cplcFeFeAhL(gt4,gt1)
-coup4R = cplcFeFeAhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MAh
-MP2 = MAh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mS12, mV22)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: hh,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -40057,13 +30448,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: Ah, Loop particles: VZ,bar[Fe],bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -40113,14 +30502,12 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! -- hh - Penguins            
 ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -40168,207 +30555,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFeFehhL(gt4,gt3)
-coup4R = cplcFeFehhR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSLRcross=PSO4lSLRcross+4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -40416,13 +30607,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -40470,13 +30659,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -40516,13 +30703,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -40567,13 +30752,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -40613,13 +30796,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -40664,13 +30845,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -40710,13 +30889,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -40766,211 +30943,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mS22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mV22, mS12)
-  PSO4lSLLcross=PSO4lSLLcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross - 0.125*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross - 0.125*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFeFehhL(gt2,gt3)
-coup4R = cplcFeFehhR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mV12)
-  PSO4lSLLcross=PSO4lSLLcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lVLRcross=PSO4lVLRcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lTLLcross=PSO4lTLLcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -41020,13 +30997,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -41076,13 +31051,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41122,13 +31095,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41175,13 +31146,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41221,13 +31190,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41274,13 +31241,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41320,13 +31285,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -41374,207 +31337,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplhhHpcHp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS12, mS22)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = -cplhhHpcVWp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mV12, mS22)
-  PSO4lSLLcross=PSO4lSLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +    & 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mS12, mV22)
-  PSO4lSLLcross=PSO4lSLLcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross - 1.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSLRcross=PSO4lSLRcross - 1.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplhhcVWpVWp
-coup4L = cplcFeFehhL(gt2,gt1)
-coup4R = cplcFeFehhR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV12, mV22)
-  PSO4lSLLcross=PSO4lSLLcross+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSLRcross=PSO4lSLRcross+4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.
-  PSO4lVLRcross=PSO4lVLRcross+0.
-  PSO4lTLLcross=PSO4lTLLcross+0.
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -41622,13 +31389,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -41676,13 +31441,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41722,13 +31485,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41773,13 +31534,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41819,13 +31578,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41870,13 +31627,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -41916,13 +31671,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Ah,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -41972,13 +31725,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -42018,13 +31769,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -42071,13 +31820,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -42117,13 +31864,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -42170,13 +31915,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: Fe,VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -42216,211 +31959,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,Hp,Hp
-! Generic diagram: FSS,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = cplFvFeHpL(i1,gt3)
-coup2R = cplFvFeHpR(i1,gt3)
-coup3 = cplhhHpcHp
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS12, mS22)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,VWp,Hp
-! Generic diagram: FVS,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = cplFvFeHpL(i1,gt3)
-coup2R = cplFvFeHpR(i1,gt3)
-coup3 = -cplhhcHpVWp
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS22, mV12)
-  int2=C0check(mF12, mV12, mS22)
-  PSO4lSLLcross=PSO4lSLLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross - 0.125*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross - 0.125*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,Hp,VWp
-! Generic diagram: FSV,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = Conjg(-cplFvFeVWpR(i1,gt3))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt3))
-coup3 = -cplhhHpcVWp
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mS12, mV22)
-  int2=C0check(mF12, mS12, mV22)
-  PSO4lSLLcross=PSO4lSLLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRRcross=PSO4lSRRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 0.5*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lVLRcross=PSO4lVLRcross - 0.5*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLLcross=PSO4lTLLcross+0.125*chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(int1 +& 
-&  int2*mF12)
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.125*chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(int1 +& 
-&  int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: hh, Loop particles: Fv,VWp,VWp
-! Generic diagram: FVV,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (.not.OnlySM) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,gt3))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt3))
-coup3 = cplhhcVWpVWp
-coup4L = cplcFeFehhL(gt4,gt1)
-coup4R = cplcFeFehhR(gt4,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = Mhh
-MP2 = Mhh2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV12, mV22)
-  PSO4lSLLcross=PSO4lSLLcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lSRRcross=PSO4lSRRcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PSO4lSRLcross=PSO4lSRLcross+0.
-  PSO4lSLRcross=PSO4lSLRcross+0.
-  PSO4lVRRcross=PSO4lVRRcross+0.
-  PSO4lVLLcross=PSO4lVLLcross+0.
-  PSO4lVRLcross=PSO4lVRLcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PSO4lVLRcross=PSO4lVLRcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PSO4lTLLcross=PSO4lTLLcross+0.5*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PSO4lTLRcross=PSO4lTLRcross+0.
-  PSO4lTRLcross=PSO4lTRLcross+0.
-  PSO4lTRRcross=PSO4lTRRcross+0.5*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: hh,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -42470,13 +32013,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: hh, Loop particles: VZ,bar[Fe],bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -42526,7 +32067,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  PSO4lSLLcross=oo16pi2*PSO4lSLLcross 
@@ -42546,15 +32086,12 @@ Iname=Iname-1
 End Subroutine CalculatePengS4Lcross 
 
 Subroutine CalculatePengV4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,            & 
-& MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVO4lSLLcross,PVO4lSRRcross,PVO4lSRLcross,PVO4lSLRcross,PVO4lVRRcross,     & 
-& PVO4lVLLcross,PVO4lVRLcross,PVO4lVLRcross,PVO4lTLLcross,PVO4lTLRcross,PVO4lTRLcross,   & 
-& PVO4lTRRcross)
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PVO4lSLLcross,PVO4lSRRcross,             & 
+& PVO4lSRLcross,PVO4lSLRcross,PVO4lVRRcross,PVO4lVLLcross,PVO4lVRLcross,PVO4lVLRcross,   & 
+& PVO4lTLLcross,PVO4lTLRcross,PVO4lTRLcross,PVO4lTRRcross)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -42564,15 +32101,12 @@ Subroutine CalculatePengV4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -42634,7 +32168,6 @@ PVO4lTRRcross=0._dp
 ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -42691,139 +32224,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -42880,13 +32285,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -42943,13 +32346,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -43006,139 +32407,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3R*coup4L*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3L*coup4R*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx2*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx2*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx2*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx2*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -43195,13 +32468,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -43258,13 +32529,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -43321,139 +32590,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 5
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt4,i3)
-coup3R = cplcFeFeVZR(gt4,i3)
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(2.*chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx12 +& 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(2.*chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx12 +& 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx12 -& 
-&  1.*coup1L*coup2L*int1*MassEx1*mF1 + coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx12 -& 
-&  1.*coup1R*coup2R*int1*MassEx1*mF1 + coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 5
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt4,i3)
-coup3R = cplcFeFeVZR(gt4,i3)
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(-2.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx1*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(-2.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx1*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx1*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx1*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -43510,13 +32651,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 5
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -43573,13 +32712,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -43636,139 +32773,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(2.*chargefactor*coup3R*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx42 +& 
-&  coup1R*coup2R*int1*MassEx4*mF1 - 1.*coup1R*coup2L*int2*MassEx4*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(2.*chargefactor*coup3L*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx42 +& 
-&  coup1L*coup2L*int1*MassEx4*mF1 - 1.*coup1L*coup2R*int2*MassEx4*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(-2.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx4*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(-2.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx4*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx4*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx4*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -43825,13 +32834,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -43888,13 +32895,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -43951,139 +32956,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt4,i3)
-coup3R = cplcFeFeVZR(gt4,i3)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3L*coup4R*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3R*coup4L*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 7
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt4,i3)
-coup3R = cplcFeFeVZR(gt4,i3)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -44140,13 +33017,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 7
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -44203,13 +33078,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -44266,139 +33139,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt3)
-coup3R = cplcFeFeVZR(i3,gt3)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt4,i2)
-coup1R = cplcFeFvcHpR(gt4,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3L*coup4R*IMP2*(coup1R*coup2L*int2*MassEx42 -& 
-&  1.*coup1L*coup2L*int1*MassEx4*mF1 + coup1L*coup2R*int2*MassEx4*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3R*coup4L*IMP2*(coup1L*coup2R*int2*MassEx42 -& 
-&  1.*coup1R*coup2R*int1*MassEx4*mF1 + coup1R*coup2L*int2*MassEx4*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx42 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 8
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt3)
-coup3R = cplcFeFeVZR(i3,gt3)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt4,i2)
-coup1R = cplcFeFvcVWpR(gt4,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt4)
-MFin2 = MFe2(i3)-MFe2(gt4)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx4*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx4*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+(chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx4*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lVLRcross=PVO4lVLRcross+(chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx4*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx42 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx42 - 1.*MFin2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -44455,13 +33200,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 8
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -44518,13 +33261,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,bar[Fe], Internal fermion: Fe
 ! Generic diagram: SFF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -44581,13 +33322,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -44644,13 +33383,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 11
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -44707,139 +33444,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,Hp, Internal fermion: Fe
-! Generic diagram: FSF,  InsertionOrder: 11
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = cplFvFeHpL(i1,i3)
-coup2R = cplFvFeHpR(i1,i3)
-coup3L = cplcFeFeVZL(i3,gt3)
-coup3R = cplcFeFeVZR(i3,gt3)
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(2.*chargefactor*coup3L*coup4R*IMP2*(-1.*coup1R*coup2L*int2*MassEx22 +& 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(2.*chargefactor*coup3R*coup4L*IMP2*(-1.*coup1L*coup2R*int2*MassEx22 +& 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*coup2R*int2*MassEx22 -& 
-&  1.*coup1R*coup2R*int1*MassEx2*mF1 + coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*coup2L*int2*MassEx22 -& 
-&  1.*coup1L*coup2L*int1*MassEx2*mF1 + coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,VWp, Internal fermion: Fe
-! Generic diagram: FVF,  InsertionOrder: 11
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,i3))
-coup2R = Conjg(-cplFvFeVWpL(i1,i3))
-coup3L = cplcFeFeVZL(i3,gt3)
-coup3R = cplcFeFeVZR(i3,gt3)
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(-2.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx2*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(-2.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx2*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx2*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx2*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah, Internal fermion: bar[Fe]
 ! Generic diagram: FSF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -44896,13 +33505,11 @@ IMP2 = 1._dp/MP2
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -44959,13 +33566,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 12
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -45022,133 +33627,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv, Internal fermion: bar[Fe]
-! Generic diagram: SFF,  InsertionOrder: 12
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup2L = cplcFeFvcHpL(i3,i2)
-coup2R = cplcFeFvcHpR(i3,i2)
-coup1L = cplFvFeHpL(i2,gt3)
-coup1R = cplFvFeHpR(i2,gt3)
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mS12)
-  int2=B1(0._dp, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(2.*chargefactor*coup3L*coup4R*IMP2*(-1.*coup1L*coup2R*int2*MassEx32 +& 
-&  coup1R*coup2R*int1*MassEx3*mF1 - 1.*coup1R*coup2L*int2*MassEx3*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(2.*chargefactor*coup3R*coup4L*IMP2*(-1.*coup1R*coup2L*int2*MassEx32 +& 
-&  coup1L*coup2L*int1*MassEx3*mF1 - 1.*coup1L*coup2R*int2*MassEx3*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1R*coup2L*int2*MassEx32 -& 
-&  1.*coup1L*coup2L*int1*MassEx3*mF1 + coup1L*coup2R*int2*MassEx3*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1L*coup2R*int2*MassEx32 -& 
-&  1.*coup1R*coup2R*int1*MassEx3*mF1 + coup1R*coup2L*int2*MassEx3*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx32 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv, Internal fermion: bar[Fe]
-! Generic diagram: VFF,  InsertionOrder: 12
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-coup2L = Conjg(-cplcFeFvcVWpR(i3,i2))
-coup2R = Conjg(-cplcFeFvcVWpL(i3,i2))
-coup1L = Conjg(-cplFvFeVWpR(i2,gt3))
-coup1R = Conjg(-cplFvFeVWpL(i2,gt3))
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt3)
-MFin2 = MFe2(i3)-MFe2(gt3)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mF12, mV12)
-  int2=B1(0._dp, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+(-2.*chargefactor*coup3L*coup4R*IMP2*(coup1R*MassEx3*(- & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lSLRcross=PVO4lSLRcross+(-2.*chargefactor*coup3R*coup4L*IMP2*(coup1L*MassEx3*(- & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVRRcross=PVO4lVRRcross+(chargefactor*coup3R*coup4R*IMP2*(coup1L*MassEx3*(-     & 
-& 2.*coup2R*(Finite - 2.*int1)*mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVLLcross=PVO4lVLLcross+(chargefactor*coup3L*coup4L*IMP2*(coup1R*MassEx3*(-     & 
-& 2.*coup2L*(Finite - 2.*int1)*mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)& 
-& *MassEx32 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx32 - 1.*MFin2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -45158,7 +33636,6 @@ End if
 ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -45207,203 +33684,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS22, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVO4lVLLcross=PVO4lVLLcross+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVO4lVRLcross=PVO4lVRLcross+2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVO4lVLRcross=PVO4lVLRcross+2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV22, mV12)
-  int3=C0check(mF12, mV22, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -45452,123 +33737,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt1)
-coup1R = cplFvFeHpR(i2,gt1)
-coup2L = cplcFeFvcHpL(gt2,i3)
-coup2R = cplcFeFvcHpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt1)
-coup1R = cplFvFeVWpR(i2,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i3)
-coup2R = cplcFeFvcVWpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt4,gt3)
-coup4R = cplcFeFeVZR(gt4,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -45617,13 +33790,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -45663,13 +33834,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -45709,13 +33878,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -45755,13 +33922,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -45801,13 +33966,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -45856,203 +34019,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS22, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 4.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVO4lSLRcross=PVO4lSLRcross - 4.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVO4lVRRcross=PVO4lVRRcross+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVO4lVLLcross=PVO4lVLLcross+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS22, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV22, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV22, mV12)
-  int3=C0check(mF12, mV22, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(Finite -& 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(Finite -& 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -46101,123 +34072,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt1)
-coup1R = cplFvFeHpR(i2,gt1)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4L*IMP2*(-            & 
-& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4R*IMP2*(-            & 
-& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 3
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt1)
-coup1R = cplFvFeVWpR(i2,gt1)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt2,gt3)
-coup4R = cplcFeFeVZR(gt2,gt3)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -46266,13 +34125,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -46312,13 +34169,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -46358,13 +34213,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -46404,13 +34257,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 3
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -46450,13 +34301,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -46505,203 +34354,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplHpcHpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS12, mS22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVO4lVLLcross=PVO4lVLLcross+2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVO4lVRLcross=PVO4lVRLcross+2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVO4lVLRcross=PVO4lVLRcross+2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcHpL(gt4,i1)
-coup2R = cplcFeFvcHpR(gt4,i1)
-coup3 = cplHpcVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV12, mS22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt3)
-coup1R = cplFvFeHpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplcHpVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS12, mV22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt3)
-coup1R = cplFvFeVWpR(i1,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i1)
-coup2R = cplcFeFvcVWpR(gt4,i1)
-coup3 = cplcVWpVWpVZ
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV12, mV22)
-  int3=C0check(mF12, mV12, mV22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-         & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -46750,123 +34407,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Hp,Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt3)
-coup1R = cplFvFeHpR(i2,gt3)
-coup2L = cplcFeFvcHpL(gt4,i3)
-coup2R = cplcFeFvcHpR(gt4,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mS12)
-  int2=C00_3m(mF22, mF12, mS12)
-  int3=C0check(mF22, mF12, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2L*coup4R*IMP2*(coup3L*(int1 -  & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2R*coup4L*IMP2*(coup3R*(int1 -  & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3R*(int1 -  & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVLRcross=PVO4lVLRcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3L*(int1 -  & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: VWp,Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 4
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt3)
-coup1R = cplFvFeVWpR(i2,gt3)
-coup2L = cplcFeFvcVWpL(gt4,i3)
-coup2R = cplcFeFvcVWpR(gt4,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = cplcFeFeVZL(gt2,gt1)
-coup4R = cplcFeFeVZR(gt2,gt1)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF22, mF12, mV12)
-  int2=C00_3m(mF22, mF12, mV12)
-  int3=C0check(mF22, mF12, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+0.
-  PVO4lSLRcross=PVO4lSLRcross+0.
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross - 1.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVLRcross=PVO4lVLRcross - 1.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -46915,13 +34460,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -46961,13 +34504,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47007,13 +34548,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47053,13 +34592,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 4
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47099,13 +34636,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Ah,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -47154,13 +34689,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47200,13 +34733,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47246,13 +34777,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47292,13 +34821,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: Fe,hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -47338,203 +34865,11 @@ IMP2 = 1._dp/MP2
   End if 
 End if 
     End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,Hp,Hp
-! Generic diagram: FSS,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = cplFvFeHpL(i1,gt3)
-coup2R = cplFvFeHpR(i1,gt3)
-coup3 = -cplHpcHpVZ
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C00_3m(mF12, mS12, mS22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+4.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1
-  PVO4lSLRcross=PVO4lSLRcross+4.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1
-  PVO4lVRRcross=PVO4lVRRcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1
-  PVO4lVLLcross=PVO4lVLLcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,VWp,Hp
-! Generic diagram: FVS,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = cplFvFeHpL(i1,gt3)
-coup2R = cplFvFeHpR(i1,gt3)
-coup3 = cplcHpVWpVZ
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mV12, mS22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,Hp,VWp
-! Generic diagram: FSV,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplcFeFvcHpL(gt2,i1)
-coup1R = cplcFeFvcHpR(gt2,i1)
-coup2L = Conjg(-cplFvFeVWpR(i1,gt3))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt3))
-coup3 = cplHpcVWpVZ
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=C0check(mF12, mS12, mV22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross - 2.*chargefactor*coup1R*coup2L*coup3*coup4R*IMP2*int1*mF1
-  PVO4lSLRcross=PVO4lSLRcross - 2.*chargefactor*coup1L*coup2R*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup3*coup4R*IMP2*int1*mF1
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup3*coup4L*IMP2*int1*mF1
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: Fv,VWp,VWp
-! Generic diagram: FVV,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i1))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,gt3))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt3))
-coup3 = -cplcVWpVWpVZ
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0(0._dp, mV12, mV22)
-  int2=C00_3m(mF12, mV12, mV22)
-  int3=C0check(mF12, mV12, mV22)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1L*coup2L*coup3*coup4R*IMP2*(-      & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1R*coup2R*coup3*coup4L*IMP2*(-      & 
-& 1.*Finite + 2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1R*coup2R*coup3*coup4R*IMP2*(Finite -  & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1L*coup2L*coup3*coup4L*IMP2*(Finite -  & 
-&  2.*(int1 + 2.*int2 + int3*mF12))
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: hh,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -47583,13 +34918,11 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Propagator: VZ, Loop particles: VZ,bar[Fe],bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 6
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -47638,117 +34971,6 @@ IMP2 = 1._dp/MP2
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[Hp],Fv,Fv
-! Generic diagram: SFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-coup2L = cplFvFeHpL(i3,gt3)
-coup2R = cplFvFeHpR(i3,gt3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF12, mF22, mS12)
-  int2=C00_3m(mF12, mF22, mS12)
-  int3=C0check(mF12, mF22, mS12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1R*coup2L*coup4R*IMP2*(-            & 
-& 1.*coup3R*int1 + 2.*coup3R*int2 + coup3L*int3*mF1*mF2)
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1L*coup2R*coup4L*IMP2*(-            & 
-& 1.*coup3L*int1 + 2.*coup3L*int2 + coup3R*int3*mF1*mF2)
-  PVO4lVRRcross=PVO4lVRRcross+chargefactor*coup1L*coup2R*coup4R*IMP2*(coup3L*(int1 -  & 
-&  2.*int2) - 1.*coup3R*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross+chargefactor*coup1R*coup2L*coup4L*IMP2*(coup3R*(int1 -  & 
-&  2.*int2) - 1.*coup3L*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Propagator: VZ, Loop particles: conj[VWp],Fv,Fv
-! Generic diagram: VFF,  InsertionOrder: 6
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = Conjg(-cplcFeFvcVWpR(gt2,i2))
-coup1R = Conjg(-cplcFeFvcVWpL(gt2,i2))
-coup2L = Conjg(-cplFvFeVWpR(i3,gt3))
-coup2R = Conjg(-cplFvFeVWpL(i3,gt3))
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
-coup4L = Conjg(-cplcFeFeVZR(gt4,gt1))
-coup4R = Conjg(-cplcFeFeVZL(gt4,gt1))
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
-! Propagator and inverse propagator mass 
-MP = MVZ
-MP2 = MVZ2
-IMP = 1._dp/MP  
-IMP2 = 1._dp/MP2 
-! Amplitude 
-  int1=B0C0check(mF12, mF22, mV12)
-  int2=C00_3m(mF12, mF22, mV12)
-  int3=C0check(mF12, mF22, mV12)
-  PVO4lSLLcross=PVO4lSLLcross+0.
-  PVO4lSRRcross=PVO4lSRRcross+0.
-  PVO4lSRLcross=PVO4lSRLcross+2.*chargefactor*coup1L*coup2L*coup4R*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lSLRcross=PVO4lSLRcross+2.*chargefactor*coup1R*coup2R*coup4L*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVRRcross=PVO4lVRRcross - 1.*chargefactor*coup1R*coup2R*coup4R*IMP2*(coup3R*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3L*int3*mF1*mF2)
-  PVO4lVLLcross=PVO4lVLLcross - 1.*chargefactor*coup1L*coup2L*coup4L*IMP2*(coup3L*(Finite -& 
-&  2.*int1 + 4.*int2) + 2.*coup3R*int3*mF1*mF2)
-  PVO4lVRLcross=PVO4lVRLcross+0.
-  PVO4lVLRcross=PVO4lVLRcross+0.
-  PVO4lTLLcross=PVO4lTLLcross+0.
-  PVO4lTLRcross=PVO4lTLRcross+0.
-  PVO4lTRLcross=PVO4lTRLcross+0.
-  PVO4lTRRcross=PVO4lTRRcross+0.
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  PVO4lSLLcross=oo16pi2*PVO4lSLLcross
@@ -47768,15 +34990,12 @@ Iname=Iname-1
 End Subroutine CalculatePengV4Lcross 
 
 Subroutine CalculateTreeS4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,            & 
-& MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSO4lSLLcross,TSO4lSRRcross,TSO4lSRLcross,TSO4lSLRcross,TSO4lVRRcross,     & 
-& TSO4lVLLcross,TSO4lVRLcross,TSO4lVLRcross,TSO4lTLLcross,TSO4lTLRcross,TSO4lTRLcross,   & 
-& TSO4lTRRcross)
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TSO4lSLLcross,TSO4lSRRcross,             & 
+& TSO4lSRLcross,TSO4lSLRcross,TSO4lVRRcross,TSO4lVLLcross,TSO4lVRLcross,TSO4lVLRcross,   & 
+& TSO4lTLLcross,TSO4lTLRcross,TSO4lTRLcross,TSO4lTRRcross)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -47786,15 +35005,12 @@ Subroutine CalculateTreeS4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -47975,15 +35191,12 @@ IMP2 = 1._dp/MP2
 End Subroutine CalculateTreeS4Lcross 
 
 Subroutine CalculateTreeV4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,            & 
-& MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVO4lSLLcross,TVO4lSRRcross,TVO4lSRLcross,TVO4lSLRcross,TVO4lVRRcross,     & 
-& TVO4lVLLcross,TVO4lVRLcross,TVO4lVLRcross,TVO4lTLLcross,TVO4lTLRcross,TVO4lTRLcross,   & 
-& TVO4lTRRcross)
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TVO4lSLLcross,TVO4lSRRcross,             & 
+& TVO4lSRLcross,TVO4lSLRcross,TVO4lVRRcross,TVO4lVLLcross,TVO4lVRLcross,TVO4lVLRcross,   & 
+& TVO4lTLLcross,TVO4lTLRcross,TVO4lTRLcross,TVO4lTRRcross)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -47993,15 +35206,12 @@ Subroutine CalculateTreeV4Lcross(gt1,gt2,gt3,gt4,OnlySM,MAh,MAh2,MFe,MFe2,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
-Complex(dp),Intent(in) :: cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
-& cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),  & 
-& cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),               & 
-& cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL(3,3),  & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),     & 
-& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,        & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ
+Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
+& cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhhhhh,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3,gt4 
 Logical, Intent(in) :: OnlySM 
@@ -48122,12 +35332,11 @@ IMP2 = 1._dp/MP2
 
 End Subroutine CalculateTreeV4Lcross 
 
-Subroutine CalculateGamma2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,MFv,MFv2,            & 
-& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,             & 
-& cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,              & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcHpVPVWp,cplcVWpVPVWp,cplFvFeHpL,          & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplHpcHpVP,cplHpcVWpVP,OA2lSL,OA2lSR,               & 
-& OA1L,OA1R)
+Subroutine CalculateGamma2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,            & 
+& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,          & 
+& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,         & 
+& cplcHpVPVWp,cplcVWpVPVWp,cplHpcHpVP,cplHpcVWpVP,OA2lSL,OA2lSR,OA1L,OA1R)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -48137,12 +35346,13 @@ Subroutine CalculateGamma2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,MFv,MFv2,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3), & 
 & cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),& 
-& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcHpVPVWp,cplcVWpVPVWp,cplFvFeHpL(3,3),        & 
-& cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplHpcHpVP,cplHpcVWpVP
+& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),               & 
+& cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcHpVPVWp,cplcVWpVPVWp,cplHpcHpVP,               & 
+& cplHpcVWpVP
 
 Integer,Intent(in) :: gt1, gt2,gt3 
 Integer :: gt4 
@@ -48200,7 +35410,6 @@ coup1R = cplcFeFeVPR(gt1,gt2)
 ! Loop particles: Ah,bar[Fe], Internal fermion: Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -48232,13 +35441,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -48270,13 +35477,11 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fe,VP, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -48308,13 +35513,11 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -48346,26 +35549,24 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fv,Hp, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
 coup1L = cplcFeFvcHpL(gt1,i1)
 coup1R = cplcFeFvcHpR(gt1,i1)
-coup2L = cplFvFeHpL(i1,i3)
-coup2R = cplFvFeHpR(i1,i3)
+coup2L = cplcFvFeHpL(i1,i3)
+coup2R = cplcFvFeHpR(i1,i3)
 coup3L = Conjg(-cplcFeFeVPR(i3,gt2))
 coup3R = Conjg(-cplcFeFeVPL(i3,gt2))
 ! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 ! Mass of internal fermion 
@@ -48384,26 +35585,24 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fv,VWp, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
 coup1L = Conjg(-cplcFeFvcVWpR(gt1,i1))
 coup1R = Conjg(-cplcFeFvcVWpL(gt1,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,i3))
-coup2R = Conjg(-cplFvFeVWpL(i1,i3))
+coup2L = Conjg(-cplcFvFeVWpR(i1,i3))
+coup2R = Conjg(-cplcFvFeVWpL(i1,i3))
 coup3L = Conjg(-cplcFeFeVPR(i3,gt2))
 coup3R = Conjg(-cplcFeFeVPL(i3,gt2))
 ! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 ! Mass of internal fermion 
@@ -48422,13 +35621,11 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],Ah, Internal fermion: bar[Fe]
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -48460,13 +35657,11 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  ! Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -48498,13 +35693,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VP,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -48536,13 +35729,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -48574,28 +35765,26 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Hp,Fv, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
+If ((MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
 If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
 coup3L = Conjg(-cplcFeFeVPR(gt1,i3))
 coup3R = Conjg(-cplcFeFeVPL(gt1,i3))
 coup2L = cplcFeFvcHpL(i3,i2)
 coup2R = cplcFeFvcHpR(i3,i2)
-coup1L = cplFvFeHpL(i2,gt2)
-coup1R = cplFvFeHpR(i2,gt2)
+coup1L = cplcFvFeHpL(i2,gt2)
+coup1R = cplcFvFeHpR(i2,gt2)
 ! Masses in loop
 mS1 = MHp
 mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
+mF1 = 0.
+mF12 = 0._dp
 ! Mass of internal fermion 
 MFin = MFe(i3)-MFe(gt2)
 MFin2 = MFe2(i3)-MFe2(gt2)
@@ -48612,28 +35801,26 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VWp,Fv, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
+If ((MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
 If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
 coup3L = Conjg(-cplcFeFeVPR(gt1,i3))
 coup3R = Conjg(-cplcFeFeVPL(gt1,i3))
 coup2L = Conjg(-cplcFeFvcVWpR(i3,i2))
 coup2R = Conjg(-cplcFeFvcVWpL(i3,i2))
-coup1L = Conjg(-cplFvFeVWpR(i2,gt2))
-coup1R = Conjg(-cplFvFeVWpL(i2,gt2))
+coup1L = Conjg(-cplcFvFeVWpR(i2,gt2))
+coup1R = Conjg(-cplcFvFeVWpL(i2,gt2))
 ! Masses in loop
 mV1 = MVWp
 mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
+mF1 = 0.
+mF12 = 0._dp
 ! Mass of internal fermion 
 MFin = MFe(i3)-MFe(gt2)
 MFin2 = MFe2(i3)-MFe2(gt2)
@@ -48650,7 +35837,6 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -48659,7 +35845,6 @@ End if
 ! Loop particles: Ah,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -48692,24 +35877,22 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fv,Hp,Hp
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
 coup1L = cplcFeFvcHpL(gt1,i1)
 coup1R = cplcFeFvcHpR(gt1,i1)
-coup2L = cplFvFeHpL(i1,gt2)
-coup2R = cplFvFeHpR(i1,gt2)
+coup2L = cplcFvFeHpL(i1,gt2)
+coup2R = cplcFvFeHpR(i1,gt2)
 coup3 = -cplHpcHpVP
 ! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 mS2 = MHp
@@ -48727,24 +35910,22 @@ mS22 = MHp2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: Fv,VWp,Hp
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
 coup1L = Conjg(-cplcFeFvcVWpR(gt1,i1))
 coup1R = Conjg(-cplcFeFvcVWpL(gt1,i1))
-coup2L = cplFvFeHpL(i1,gt2)
-coup2R = cplFvFeHpR(i1,gt2)
+coup2L = cplcFvFeHpL(i1,gt2)
+coup2R = cplcFvFeHpR(i1,gt2)
 coup3 = cplcHpVPVWp
 ! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 mS2 = MHp
@@ -48758,24 +35939,22 @@ mS22 = MHp2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: Fv,Hp,VWp
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
 coup1L = cplcFeFvcHpL(gt1,i1)
 coup1R = cplcFeFvcHpR(gt1,i1)
-coup2L = Conjg(-cplFvFeVWpR(i1,gt2))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt2))
+coup2L = Conjg(-cplcFvFeVWpR(i1,gt2))
+coup2R = Conjg(-cplcFvFeVWpL(i1,gt2))
 coup3 = cplHpcVWpVP
 ! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mS1 = MHp
 mS12 = MHp2
 mV2 = MVWp
@@ -48789,24 +35968,22 @@ mV22 = MVWp2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: Fv,VWp,VWp
 ! Generic diagram: FVV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
 coup1L = Conjg(-cplcFeFvcVWpR(gt1,i1))
 coup1R = Conjg(-cplcFeFvcVWpL(gt1,i1))
-coup2L = Conjg(-cplFvFeVWpR(i1,gt2))
-coup2R = Conjg(-cplFvFeVWpL(i1,gt2))
+coup2L = Conjg(-cplcFvFeVWpR(i1,gt2))
+coup2R = Conjg(-cplcFvFeVWpL(i1,gt2))
 coup3 = cplcVWpVPVWp
 ! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
+mF1 = 0.
+mF12 = 0._dp
 mV1 = MVWp
 mV12 = MVWp2
 mV2 = MVWp
@@ -48824,13 +36001,11 @@ mV22 = MVWp2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: hh,bar[Fe],bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -48863,13 +36038,11 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VZ,bar[Fe],bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -48901,7 +36074,6 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  OA2lSL=oo16pi2*OA2lSL 
@@ -48912,12 +36084,12 @@ Iname=Iname-1
 
 End Subroutine CalculateGamma2l 
 
-Subroutine CalculateH2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,            & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
-& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
-& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplFvFeHpL,cplFvFeHpR,           & 
-& cplFvFeVWpL,cplFvFeVWpR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,     & 
-& cplhhVZVZ,OH2lSL,OH2lSR)
+Subroutine CalculateH2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,            & 
+& MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,      & 
+& cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,              & 
+& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,         & 
+& cplcFvFeVWpR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,      & 
+& OH2lSL,OH2lSR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -48927,12 +36099,12 @@ Subroutine CalculateH2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),               & 
 & cplcFeFehhR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
 & cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),             & 
-& cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplhhcHpVWp,         & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplhhcHpVWp,     & 
 & cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3 
@@ -48985,7 +36157,6 @@ coup1R = cplcFeFehhR(gt2,gt1)
 ! Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -49021,97 +36192,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx12, mF12, mS12)
-  int2=B1(MassEx12, mF12, mS12)
-  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1L*coup2R*int2*MassEx12 - 1.*coup1R*coup2R*int1*MassEx1*mF1 +& 
-&  coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))/(MassEx12 -        & 
-&  1.*MFin2)
-  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1R*coup2L*int2*MassEx12 - 1.*coup1L*coup2L*int1*MassEx1*mF1 +& 
-&  coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))/(MassEx12 -        & 
-&  1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFehhL(gt2,i3)
-coup3R = cplcFeFehhR(gt2,i3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx12, mF12, mV12)
-  int2=B1(MassEx12, mF12, mV12)
-  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1R*MassEx1*(-2.*coup2L*(Finite - 2.*int1)   & 
-& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1L*MassEx1*(-2.*coup2R*(Finite - 2.*int1)   & 
-& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -49147,13 +36232,51 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
+
+
+ ! Loop particles: Hp,Fv, Internal fermion: bar[Fe]
+! Generic diagram: SFF,  InsertionOrder: 1
+chargefactor = 1 
+  Do i2=1,3
+    Do i3=1,3
+If ((MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i2,gt1)
+coup1R = cplcFvFeHpR(i2,gt1)
+coup2L = cplcFeFvcHpL(i3,i2)
+coup2R = cplcFeFvcHpR(i3,i2)
+coup3L = cplcFeFehhL(gt2,i3)
+coup3R = cplcFeFehhR(gt2,i3)
+! Masses in loop
+mS1 = MHp
+mS12 = MHp2
+mF1 = 0.
+mF12 = 0._dp
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt1)
+MFin2 = MFe2(i3)-MFe2(gt1)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx12, mF12, mS12)
+  int2=B1(MassEx12, mF12, mS12)
+  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1L*coup2R*int2*MassEx12 - 1.*coup1R*coup2R*int1*MassEx1*mF1 +& 
+&  coup1R*coup2L*int2*MassEx1*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))/(MassEx12 -        & 
+&  1.*MFin2)
+  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1R*coup2L*int2*MassEx12 - 1.*coup1L*coup2L*int1*MassEx1*mF1 +& 
+&  coup1L*coup2R*int2*MassEx1*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))/(MassEx12 -        & 
+&  1.*MFin2)
+     End if 
+  End if 
 End if 
+   End Do 
+  End Do 
 
 
  ! Loop particles: VP,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -49189,13 +36312,51 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
+
+
+ ! Loop particles: VWp,Fv, Internal fermion: bar[Fe]
+! Generic diagram: VFF,  InsertionOrder: 1
+chargefactor = 1 
+  Do i2=1,3
+    Do i3=1,3
+If ((MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i2,gt1)
+coup1R = cplcFvFeVWpR(i2,gt1)
+coup2L = cplcFeFvcVWpL(i3,i2)
+coup2R = cplcFeFvcVWpR(i3,i2)
+coup3L = cplcFeFehhL(gt2,i3)
+coup3R = cplcFeFehhR(gt2,i3)
+! Masses in loop
+mV1 = MVWp
+mV12 = MVWp2
+mF1 = 0.
+mF12 = 0._dp
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt1)
+MFin2 = MFe2(i3)-MFe2(gt1)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx12, mF12, mV12)
+  int2=B1(MassEx12, mF12, mV12)
+  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1R*MassEx1*(-2.*coup2L*(Finite - 2.*int1)   & 
+& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
+& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
+  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1L*MassEx1*(-2.*coup2R*(Finite - 2.*int1)   & 
+& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
+& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
+     End if 
+  End if 
 End if 
+   End Do 
+  End Do 
 
 
  ! Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -49231,13 +36392,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -49273,97 +36432,11 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx22, mF12, mS12)
-  int2=B1(MassEx22, mF12, mS12)
-  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1L*coup2R*int2*MassEx22 - 1.*coup1R*coup2R*int1*MassEx2*mF1 +& 
-&  coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))/(MassEx22 -        & 
-&  1.*MFin2)
-  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1R*coup2L*int2*MassEx22 - 1.*coup1L*coup2L*int1*MassEx2*mF1 +& 
-&  coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))/(MassEx22 -        & 
-&  1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFehhL(i3,gt1)
-coup3R = cplcFeFehhR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx22, mF12, mV12)
-  int2=B1(MassEx22, mF12, mV12)
-  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1L*MassEx2*(-2.*coup2R*(Finite - 2.*int1)   & 
-& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1R*MassEx2*(-2.*coup2L*(Finite - 2.*int1)   & 
-& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -49399,13 +36472,51 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
+
+
+ ! Loop particles: Fv,Hp, Internal fermion: Fe
+! Generic diagram: FSF,  InsertionOrder: 2
+chargefactor = 1 
+Do i1=1,3
+    Do i3=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup3L = cplcFeFehhL(i3,gt1)
+coup3R = cplcFeFehhR(i3,gt1)
+coup2L = cplcFvFeHpL(i1,i3)
+coup2R = cplcFvFeHpR(i1,i3)
+coup1L = cplcFeFvcHpL(gt2,i1)
+coup1R = cplcFeFvcHpR(gt2,i1)
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mS1 = MHp
+mS12 = MHp2
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt2)
+MFin2 = MFe2(i3)-MFe2(gt2)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx22, mF12, mS12)
+  int2=B1(MassEx22, mF12, mS12)
+  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1L*coup2R*int2*MassEx22 - 1.*coup1R*coup2R*int1*MassEx2*mF1 +& 
+&  coup1R*coup2L*int2*MassEx2*MFin - 1.*coup1L*coup2L*int1*mF1*MFin))/(MassEx22 -        & 
+&  1.*MFin2)
+  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1R*coup2L*int2*MassEx22 - 1.*coup1L*coup2L*int1*MassEx2*mF1 +& 
+&  coup1L*coup2R*int2*MassEx2*MFin - 1.*coup1R*coup2R*int1*mF1*MFin))/(MassEx22 -        & 
+&  1.*MFin2)
+     End if 
+  End if 
 End if 
+    End Do 
+  End Do 
 
 
  ! Loop particles: Fe,VP, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -49441,13 +36552,51 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
+
+
+ ! Loop particles: Fv,VWp, Internal fermion: Fe
+! Generic diagram: FVF,  InsertionOrder: 2
+chargefactor = 1 
+Do i1=1,3
+    Do i3=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup3L = cplcFeFehhL(i3,gt1)
+coup3R = cplcFeFehhR(i3,gt1)
+coup2L = cplcFvFeVWpL(i1,i3)
+coup2R = cplcFvFeVWpR(i1,i3)
+coup1L = cplcFeFvcVWpL(gt2,i1)
+coup1R = cplcFeFvcVWpR(gt2,i1)
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mV1 = MVWp
+mV12 = MVWp2
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt2)
+MFin2 = MFe2(i3)-MFe2(gt2)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx22, mF12, mV12)
+  int2=B1(MassEx22, mF12, mV12)
+  OH2lSL=OH2lSL+(chargefactor*coup3L*(coup1L*MassEx2*(-2.*coup2R*(Finite - 2.*int1)   & 
+& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
+& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
+  OH2lSR=OH2lSR+(chargefactor*coup3R*(coup1R*MassEx2*(-2.*coup2L*(Finite - 2.*int1)   & 
+& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
+& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
+     End if 
+  End if 
 End if 
+    End Do 
+  End Do 
 
 
  ! Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -49483,7 +36632,6 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -49492,7 +36640,6 @@ End if
 ! Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -49521,131 +36668,11 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplhhHpcHp
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Amplitude 
-  int1=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
-  OH2lSL=OH2lSL - 1.*chargefactor*coup1L*coup2L*coup3*int1*mF1
-  OH2lSR=OH2lSR - 1.*chargefactor*coup1R*coup2R*coup3*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = -cplhhHpcVWp
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Amplitude 
-  int1=B0(MassEx32, mS22, mV12)
-  int2=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mV12)
-  OH2lSL=OH2lSL - 1.*chargefactor*coup1L*coup2L*coup3*(int1 + int2*mF12)
-  OH2lSR=OH2lSR - 1.*chargefactor*coup1R*coup2R*coup3*(int1 + int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = -cplhhcHpVWp
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Amplitude 
-  int1=B0(MassEx32, mS12, mV22)
-  int2=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mS12)
-  OH2lSL=OH2lSL+chargefactor*coup1L*coup2R*coup3*(int1 + int2*mF12)
-  OH2lSR=OH2lSR+chargefactor*coup1R*coup2L*coup3*(int1 + int2*mF12)
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplhhcVWpVWp
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Amplitude 
-  int1=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
-  OH2lSL=OH2lSL - 4.*chargefactor*coup1L*coup2R*coup3*int1*mF1
-  OH2lSR=OH2lSR - 4.*chargefactor*coup1R*coup2L*coup3*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -49674,13 +36701,11 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -49709,13 +36734,11 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],Ah,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -49738,13 +36761,11 @@ mS22 = MAh2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],VZ,Ah
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -49768,13 +36789,11 @@ mS22 = MAh2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],hh,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -49797,13 +36816,11 @@ mS22 = Mhh2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],Ah,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -49827,13 +36844,11 @@ mV22 = MVZ2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],VZ,VZ
 ! Generic diagram: FVV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (((i1.lt.4)).or.(.not.OnlySM)) Then 
@@ -49856,7 +36871,116 @@ mV22 = MVZ2
   End if 
 End if 
     End Do 
+
+
+ ! Loop particles: bar[Fv],conj[Hp],conj[Hp]
+! Generic diagram: FSS,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
+coup2L = cplcFeFvcHpL(gt2,i1)
+coup2R = cplcFeFvcHpR(gt2,i1)
+coup3 = cplhhHpcHp
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mS1 = MHp
+mS12 = MHp2
+mS2 = MHp
+mS22 = MHp2
+! Amplitude 
+  int1=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
+  OH2lSL=OH2lSL - 1.*chargefactor*coup1L*coup2L*coup3*int1*mF1
+  OH2lSR=OH2lSR - 1.*chargefactor*coup1R*coup2R*coup3*int1*mF1
+  End if 
 End if 
+    End Do 
+
+
+ ! Loop particles: bar[Fv],conj[VWp],conj[Hp]
+! Generic diagram: FVS,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
+coup2L = cplcFeFvcHpL(gt2,i1)
+coup2R = cplcFeFvcHpR(gt2,i1)
+coup3 = -cplhhHpcVWp
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mV1 = MVWp
+mV12 = MVWp2
+mS2 = MHp
+mS22 = MHp2
+! Amplitude 
+  int1=B0(MassEx32, mS22, mV12)
+  int2=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mV12)
+  OH2lSL=OH2lSL - 1.*chargefactor*coup1L*coup2L*coup3*(int1 + int2*mF12)
+  OH2lSR=OH2lSR - 1.*chargefactor*coup1R*coup2R*coup3*(int1 + int2*mF12)
+  End if 
+End if 
+    End Do 
+
+
+ ! Loop particles: bar[Fv],conj[Hp],conj[VWp]
+! Generic diagram: FSV,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
+coup2L = cplcFeFvcVWpL(gt2,i1)
+coup2R = cplcFeFvcVWpR(gt2,i1)
+coup3 = -cplhhcHpVWp
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mS1 = MHp
+mS12 = MHp2
+mV2 = MVWp
+mV22 = MVWp2
+! Amplitude 
+  int1=B0(MassEx32, mS12, mV22)
+  int2=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mS12)
+  OH2lSL=OH2lSL+chargefactor*coup1L*coup2R*coup3*(int1 + int2*mF12)
+  OH2lSR=OH2lSR+chargefactor*coup1R*coup2L*coup3*(int1 + int2*mF12)
+  End if 
+End if 
+    End Do 
+
+
+ ! Loop particles: bar[Fv],conj[VWp],conj[VWp]
+! Generic diagram: FVV,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
+coup2L = cplcFeFvcVWpL(gt2,i1)
+coup2R = cplcFeFvcVWpR(gt2,i1)
+coup3 = cplhhcVWpVWp
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mV1 = MVWp
+mV12 = MVWp2
+mV2 = MVWp
+mV22 = MVWp2
+! Amplitude 
+  int1=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
+  OH2lSL=OH2lSL - 4.*chargefactor*coup1L*coup2R*coup3*int1*mF1
+  OH2lSR=OH2lSR - 4.*chargefactor*coup1R*coup2L*coup3*int1*mF1
+  End if 
+End if 
+    End Do 
 
 
  OH2lSL=oo16pi2*OH2lSL 
@@ -49865,12 +36989,12 @@ Iname=Iname-1
 
 End Subroutine CalculateH2l 
 
-Subroutine CalculateZ2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,            & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,       & 
-& cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,              & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,          & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,OZ2lSL,OZ2lSR,OZ2lVL,OZ2lVR)
+Subroutine CalculateZ2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,            & 
+& MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,    & 
+& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,         & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& OZ2lSL,OZ2lSR,OZ2lVL,OZ2lVR)
 
 ! ---------------------------------------------------------------- 
 ! Code based on automatically generated SARAH extensions by 'PreSARAH' 
@@ -49880,13 +37004,13 @@ Subroutine CalculateZ2l(gt1,gt2,gt3,OnlySM,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,      
 ! ---------------------------------------------------------------- 
  
 Implicit None 
-Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in) :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in) :: cplAhhhVZ,cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),        & 
 & cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3), & 
-& cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcHpVWpVZ,cplcVWpVWpVZ,      & 
-& cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplFvFvVZL(3,3),     & 
-& cplFvFvVZR(3,3),cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ
+& cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFvFeHpL(3,3),              & 
+& cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),& 
+& cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ
 
 Integer,Intent(in) :: gt1, gt2,gt3 
 Integer :: gt4 
@@ -49944,7 +37068,6 @@ coup1R = cplcFeFeVZR(gt2,gt1)
 ! Loop particles: Ah,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -49982,101 +37105,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[Hp], Internal fermion: bar[Fe]
-! Generic diagram: FSF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(i3,i1)
-coup2R = cplcFeFvcHpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx12, mF12, mS12)
-  int2=B1(MassEx12, mF12, mS12)
-  OZ2lSL=OZ2lSL+0.
-  OZ2lSR=OZ2lSR+0.
-  OZ2lVL=OZ2lVL+(chargefactor*coup3L*(-1.*coup1L*coup2R*int2*MassEx12 +               & 
-&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-  OZ2lVR=OZ2lVR+(chargefactor*coup3R*(-1.*coup1R*coup2L*int2*MassEx12 +               & 
-&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[VWp], Internal fermion: bar[Fe]
-! Generic diagram: FVF,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopFe).and.IncludeWave) Then 
-Do i1=1,3
-    Do i3=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(i3,i1)
-coup2R = cplcFeFvcVWpR(i3,i1)
-coup3L = cplcFeFeVZL(gt2,i3)
-coup3R = cplcFeFeVZR(gt2,i3)
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt1)
-MFin2 = MFe2(i3)-MFe2(gt1)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx12, mF12, mV12)
-  int2=B1(MassEx12, mF12, mV12)
-  OZ2lSL=OZ2lSL+0.
-  OZ2lSR=OZ2lSR+0.
-  OZ2lVL=OZ2lVL+(-1.*chargefactor*coup3L*(coup1R*MassEx1*(-2.*coup2L*(Finite - 2.*int1)& 
-& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
-& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-  OZ2lVR=OZ2lVR+(-1.*chargefactor*coup3R*(coup1L*MassEx1*(-2.*coup2R*(Finite - 2.*int1)& 
-& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
-& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-    End Do 
-  End Do 
-End if 
 
 
  ! Loop particles: hh,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -50114,13 +37147,53 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
+
+
+ ! Loop particles: Hp,Fv, Internal fermion: bar[Fe]
+! Generic diagram: SFF,  InsertionOrder: 1
+chargefactor = 1 
+  Do i2=1,3
+    Do i3=1,3
+If ((MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i2,gt1)
+coup1R = cplcFvFeHpR(i2,gt1)
+coup2L = cplcFeFvcHpL(i3,i2)
+coup2R = cplcFeFvcHpR(i3,i2)
+coup3L = cplcFeFeVZL(gt2,i3)
+coup3R = cplcFeFeVZR(gt2,i3)
+! Masses in loop
+mS1 = MHp
+mS12 = MHp2
+mF1 = 0.
+mF12 = 0._dp
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt1)
+MFin2 = MFe2(i3)-MFe2(gt1)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx12, mF12, mS12)
+  int2=B1(MassEx12, mF12, mS12)
+  OZ2lSL=OZ2lSL+0.
+  OZ2lSR=OZ2lSR+0.
+  OZ2lVL=OZ2lVL+(chargefactor*coup3L*(-1.*coup1L*coup2R*int2*MassEx12 +               & 
+&  coup1R*coup2R*int1*MassEx1*mF1 - 1.*coup1R*coup2L*int2*MassEx1*MFin + coup1L*coup2L*int1*mF1*MFin))& 
+& /(MassEx12 - 1.*MFin2)
+  OZ2lVR=OZ2lVR+(chargefactor*coup3R*(-1.*coup1R*coup2L*int2*MassEx12 +               & 
+&  coup1L*coup2L*int1*MassEx1*mF1 - 1.*coup1L*coup2R*int2*MassEx1*MFin + coup1R*coup2R*int1*mF1*MFin))& 
+& /(MassEx12 - 1.*MFin2)
+     End if 
+  End if 
 End if 
+   End Do 
+  End Do 
 
 
  ! Loop particles: VP,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((0._dp.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -50158,13 +37231,53 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
+
+
+ ! Loop particles: VWp,Fv, Internal fermion: bar[Fe]
+! Generic diagram: VFF,  InsertionOrder: 1
+chargefactor = 1 
+  Do i2=1,3
+    Do i3=1,3
+If ((MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
+If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i2,gt1)
+coup1R = cplcFvFeVWpR(i2,gt1)
+coup2L = cplcFeFvcVWpL(i3,i2)
+coup2R = cplcFeFvcVWpR(i3,i2)
+coup3L = cplcFeFeVZL(gt2,i3)
+coup3R = cplcFeFeVZR(gt2,i3)
+! Masses in loop
+mV1 = MVWp
+mV12 = MVWp2
+mF1 = 0.
+mF12 = 0._dp
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt1)
+MFin2 = MFe2(i3)-MFe2(gt1)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx12, mF12, mV12)
+  int2=B1(MassEx12, mF12, mV12)
+  OZ2lSL=OZ2lSL+0.
+  OZ2lSR=OZ2lSR+0.
+  OZ2lVL=OZ2lVL+(-1.*chargefactor*coup3L*(coup1R*MassEx1*(-2.*coup2L*(Finite - 2.*int1)& 
+& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
+& *MassEx12 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
+  OZ2lVR=OZ2lVR+(-1.*chargefactor*coup3R*(coup1L*MassEx1*(-2.*coup2R*(Finite - 2.*int1)& 
+& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
+& *MassEx12 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx12 - 1.*MFin2)
+     End if 
+  End if 
 End if 
+   End Do 
+  End Do 
 
 
  ! Loop particles: VZ,Fe, Internal fermion: bar[Fe]
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludeWave) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3))) Then
@@ -50202,13 +37315,11 @@ MFin2 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Fe,Ah, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
@@ -50246,101 +37357,11 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
-
-
- ! Loop particles: conj[Hp],Fv, Internal fermion: Fe
-! Generic diagram: SFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeHpL(i2,i3)
-coup2R = cplFvFeHpR(i2,i3)
-coup1L = cplcFeFvcHpL(gt2,i2)
-coup1R = cplcFeFvcHpR(gt2,i2)
-! Masses in loop
-mS1 = MHp
-mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx22, mF12, mS12)
-  int2=B1(MassEx22, mF12, mS12)
-  OZ2lSL=OZ2lSL+0.
-  OZ2lSR=OZ2lSR+0.
-  OZ2lVL=OZ2lVL+(chargefactor*coup3L*(-1.*coup1R*coup2L*int2*MassEx22 +               & 
-&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-  OZ2lVR=OZ2lVR+(chargefactor*coup3R*(-1.*coup1L*coup2R*int2*MassEx22 +               & 
-&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
-& /(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
-
-
- ! Loop particles: conj[VWp],Fv, Internal fermion: Fe
-! Generic diagram: VFF,  InsertionOrder: 2
-chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFe).and.IncludeWave) Then 
-  Do i2=1,3
-    Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3))) Then
-If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup3L = cplcFeFeVZL(i3,gt1)
-coup3R = cplcFeFeVZR(i3,gt1)
-coup2L = cplFvFeVWpL(i2,i3)
-coup2R = cplFvFeVWpR(i2,i3)
-coup1L = cplcFeFvcVWpL(gt2,i2)
-coup1R = cplcFeFvcVWpR(gt2,i2)
-! Masses in loop
-mV1 = MVWp
-mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-! Mass of internal fermion 
-MFin = MFe(i3)-MFe(gt2)
-MFin2 = MFe2(i3)-MFe2(gt2)
-If (Abs(MFin).gt.10E-10_dp) Then 
-MFin = MFe(i3)
-MFin2 = MFe2(i3)
-! Amplitude 
-  int1=B0(MassEx22, mF12, mV12)
-  int2=B1(MassEx22, mF12, mV12)
-  OZ2lSL=OZ2lSL+0.
-  OZ2lSR=OZ2lSR+0.
-  OZ2lVL=OZ2lVL+(-1.*chargefactor*coup3L*(coup1R*MassEx2*(-2.*coup2L*(Finite - 2.*int1)& 
-& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
-& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-  OZ2lVR=OZ2lVR+(-1.*chargefactor*coup3R*(coup1L*MassEx2*(-2.*coup2R*(Finite - 2.*int1)& 
-& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
-& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
-     End if 
-  End if 
-End if 
-   End Do 
-  End Do 
-End if 
 
 
  ! Loop particles: Fe,hh, Internal fermion: Fe
 ! Generic diagram: FSF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
@@ -50378,13 +37399,53 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
+
+
+ ! Loop particles: Fv,Hp, Internal fermion: Fe
+! Generic diagram: FSF,  InsertionOrder: 2
+chargefactor = 1 
+Do i1=1,3
+    Do i3=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup3L = cplcFeFeVZL(i3,gt1)
+coup3R = cplcFeFeVZR(i3,gt1)
+coup2L = cplcFvFeHpL(i1,i3)
+coup2R = cplcFvFeHpR(i1,i3)
+coup1L = cplcFeFvcHpL(gt2,i1)
+coup1R = cplcFeFvcHpR(gt2,i1)
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mS1 = MHp
+mS12 = MHp2
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt2)
+MFin2 = MFe2(i3)-MFe2(gt2)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx22, mF12, mS12)
+  int2=B1(MassEx22, mF12, mS12)
+  OZ2lSL=OZ2lSL+0.
+  OZ2lSR=OZ2lSR+0.
+  OZ2lVL=OZ2lVL+(chargefactor*coup3L*(-1.*coup1R*coup2L*int2*MassEx22 +               & 
+&  coup1L*coup2L*int1*MassEx2*mF1 - 1.*coup1L*coup2R*int2*MassEx2*MFin + coup1R*coup2R*int1*mF1*MFin))& 
+& /(MassEx22 - 1.*MFin2)
+  OZ2lVR=OZ2lVR+(chargefactor*coup3R*(-1.*coup1L*coup2R*int2*MassEx22 +               & 
+&  coup1R*coup2R*int1*MassEx2*mF1 - 1.*coup1R*coup2L*int2*MassEx2*MFin + coup1L*coup2L*int1*mF1*MFin))& 
+& /(MassEx22 - 1.*MFin2)
+     End if 
+  End if 
 End if 
+    End Do 
+  End Do 
 
 
  ! Loop particles: Fe,VP, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVP).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
@@ -50422,13 +37483,53 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
+
+
+ ! Loop particles: Fv,VWp, Internal fermion: Fe
+! Generic diagram: FVF,  InsertionOrder: 2
+chargefactor = 1 
+Do i1=1,3
+    Do i3=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If (((i1.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
+coup3L = cplcFeFeVZL(i3,gt1)
+coup3R = cplcFeFeVZR(i3,gt1)
+coup2L = cplcFvFeVWpL(i1,i3)
+coup2R = cplcFvFeVWpR(i1,i3)
+coup1L = cplcFeFvcVWpL(gt2,i1)
+coup1R = cplcFeFvcVWpR(gt2,i1)
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mV1 = MVWp
+mV12 = MVWp2
+! Mass of internal fermion 
+MFin = MFe(i3)-MFe(gt2)
+MFin2 = MFe2(i3)-MFe2(gt2)
+If (Abs(MFin).gt.10E-10_dp) Then 
+MFin = MFe(i3)
+MFin2 = MFe2(i3)
+! Amplitude 
+  int1=B0(MassEx22, mF12, mV12)
+  int2=B1(MassEx22, mF12, mV12)
+  OZ2lSL=OZ2lSL+0.
+  OZ2lSR=OZ2lSR+0.
+  OZ2lVL=OZ2lVL+(-1.*chargefactor*coup3L*(coup1R*MassEx2*(-2.*coup2L*(Finite - 2.*int1)& 
+& *mF1 + coup2R*(Finite + 2.*int2)*MFin) + coup1L*(coup2L*(Finite + 2.*int2)             & 
+& *MassEx22 - 2.*coup2R*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
+  OZ2lVR=OZ2lVR+(-1.*chargefactor*coup3R*(coup1L*MassEx2*(-2.*coup2R*(Finite - 2.*int1)& 
+& *mF1 + coup2L*(Finite + 2.*int2)*MFin) + coup1R*(coup2R*(Finite + 2.*int2)             & 
+& *MassEx22 - 2.*coup2L*(Finite - 2.*int1)*mF1*MFin)))/(MassEx22 - 1.*MFin2)
+     End if 
+  End if 
 End if 
+    End Do 
+  End Do 
 
 
  ! Loop particles: Fe,VZ, Internal fermion: Fe
 ! Generic diagram: FVF,  InsertionOrder: 2
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loopFe).and.IncludeWave) Then 
 Do i1=1,3
     Do i3=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
@@ -50466,7 +37567,6 @@ MFin2 = MFe2(i3)
 End if 
     End Do 
   End Do 
-End if 
 
 
  !---------------------------------------- 
@@ -50475,7 +37575,6 @@ End if
 ! Loop particles: Ah,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MAh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -50511,148 +37610,11 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[Hp],conj[Hp]
-! Generic diagram: FSS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcHpVZ
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mS2 = MHp
-mS22 = MHp2
-! Amplitude 
-  int1=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
-  int2=Cget("C00 ",0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
-  int3=Cget("C1  ",0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
-  int4=Cget("C2  ",0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
-  OZ2lSL=OZ2lSL - 2.*chargefactor*coup1L*coup2L*coup3*(int1 + int3 + int4)*mF1
-  OZ2lSR=OZ2lSR - 2.*chargefactor*coup1R*coup2R*coup3*(int1 + int3 + int4)*mF1
-  OZ2lVL=OZ2lVL - 2.*chargefactor*coup1L*coup2R*coup3*int2
-  OZ2lVR=OZ2lVR - 2.*chargefactor*coup1R*coup2L*coup3*int2
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[VWp],conj[Hp]
-! Generic diagram: FVS,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopHp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcHpL(gt2,i1)
-coup2R = cplcFeFvcHpR(gt2,i1)
-coup3 = cplHpcVWpVZ
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mS2 = MHp
-mS22 = MHp2
-! Amplitude 
-  int1=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mV12)
-  int2=Cget("C2  ",0._dp, MassEx32, 0._dp, mF12, mS22, mV12)
-  OZ2lSL=OZ2lSL - 2.*chargefactor*coup1L*coup2L*coup3*int2
-  OZ2lSR=OZ2lSR - 2.*chargefactor*coup1R*coup2R*coup3*int2
-  OZ2lVL=OZ2lVL - 1.*chargefactor*coup1L*coup2R*coup3*int1*mF1
-  OZ2lVR=OZ2lVR - 1.*chargefactor*coup1R*coup2L*coup3*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[Hp],conj[VWp]
-! Generic diagram: FSV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i1,gt1)
-coup1R = cplFvFeHpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcHpVWpVZ
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mS1 = MHp
-mS12 = MHp2
-mV2 = MVWp
-mV22 = MVWp2
-! Amplitude 
-  int1=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mS12)
-  int2=Cget("C1  ",0._dp, MassEx32, 0._dp, mF12, mV22, mS12)
-  OZ2lSL=OZ2lSL - 2.*chargefactor*coup1L*coup2R*coup3*int2
-  OZ2lSR=OZ2lSR - 2.*chargefactor*coup1R*coup2L*coup3*int2
-  OZ2lVL=OZ2lVL - 1.*chargefactor*coup1L*coup2L*coup3*int1*mF1
-  OZ2lVR=OZ2lVR - 1.*chargefactor*coup1R*coup2R*coup3*int1*mF1
-  End if 
-End if 
-    End Do 
-End if 
-
-
- ! Loop particles: Fv,conj[VWp],conj[VWp]
-! Generic diagram: FVV,  InsertionOrder: 1
-chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
-Do i1=1,3
-If ((MFv2(i1).gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
-If (((i1.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i1,gt1)
-coup1R = cplFvFeVWpR(i1,gt1)
-coup2L = cplcFeFvcVWpL(gt2,i1)
-coup2R = cplcFeFvcVWpR(gt2,i1)
-coup3 = cplcVWpVWpVZ
-! Masses in loop
-mF1 = MFv(i1)
-mF12 = MFv2(i1)
-mV1 = MVWp
-mV12 = MVWp2
-mV2 = MVWp
-mV22 = MVWp2
-! Amplitude 
-  int1=B0(MassEx32, mV12, mV22)
-  int2=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
-  int3=Cget("C00 ",0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
-  int4=Cget("C1  ",0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
-  int5=Cget("C2  ",0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
-  OZ2lSL=OZ2lSL+6.*chargefactor*coup1L*coup2R*coup3*(int4 + int5)*mF1
-  OZ2lSR=OZ2lSR+6.*chargefactor*coup1R*coup2L*coup3*(int4 + int5)*mF1
-  OZ2lVL=OZ2lVL+chargefactor*coup1L*coup2L*coup3*(Finite - 2.*(int1 + 2.*int3 +       & 
-&  int2*mF12))
-  OZ2lVR=OZ2lVR+chargefactor*coup1R*coup2R*coup3*(Finite - 2.*(int1 + 2.*int3 +       & 
-&  int2*mF12))
-  End if 
-End if 
-    End Do 
-End if 
 
 
  ! Loop particles: hh,Fe,Fe
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((Mhh2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -50688,30 +37650,28 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: Hp,Fv,Fv
 ! Generic diagram: SFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopHp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
-If ((MHp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
+If ((MHp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
 If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeHpL(i2,gt1)
-coup1R = cplFvFeHpR(i2,gt1)
+coup1L = cplcFvFeHpL(i2,gt1)
+coup1R = cplcFvFeHpR(i2,gt1)
 coup2L = cplcFeFvcHpL(gt2,i3)
 coup2R = cplcFeFvcHpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
+coup3L = cplcFvFvVZL(i3,i2)
+coup3R = cplcFvFvVZR(i3,i2)
 ! Masses in loop
 mS1 = MHp
 mS12 = MHp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF1 = 0.
+mF12 = 0._dp
+mF2 = 0.
+mF22 = 0._dp
 ! Amplitude 
   int1=B0(MassEx32, mF12, mF22)
   int2=C0(MassEx32, 0._dp, 0._dp, mF22, mF12, mS12)
@@ -50730,30 +37690,28 @@ mF22 = MFv2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VWp,Fv,Fv
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVWp).and.(Include_in_loopFv).and.(Include_in_loopFv).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
-If ((MVWp2.gt.mf_l2(3)).Or.(MFv2(i2).gt.mf_l2(3)).Or.(MFv2(i3).gt.mf_l2(3))) Then
+If ((MVWp2.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3)).Or.(0._dp.gt.mf_l2(3))) Then
 If (((i2.lt.4).and.(i3.lt.4)).or.(.not.OnlySM)) Then 
-coup1L = cplFvFeVWpL(i2,gt1)
-coup1R = cplFvFeVWpR(i2,gt1)
+coup1L = cplcFvFeVWpL(i2,gt1)
+coup1R = cplcFvFeVWpR(i2,gt1)
 coup2L = cplcFeFvcVWpL(gt2,i3)
 coup2R = cplcFeFvcVWpR(gt2,i3)
-coup3L = cplFvFvVZL(i3,i2)
-coup3R = cplFvFvVZR(i3,i2)
+coup3L = cplcFvFvVZL(i3,i2)
+coup3R = cplcFvFvVZR(i3,i2)
 ! Masses in loop
 mV1 = MVWp
 mV12 = MVWp2
-mF1 = MFv(i2)
-mF12 = MFv2(i2)
-mF2 = MFv(i3)
-mF22 = MFv2(i3)
+mF1 = 0.
+mF12 = 0._dp
+mF2 = 0.
+mF22 = 0._dp
 ! Amplitude 
   int1=B0(MassEx32, mF12, mF22)
   int2=C0(MassEx32, 0._dp, 0._dp, mF22, mF12, mV12)
@@ -50769,13 +37727,11 @@ mF22 = MFv2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: VZ,Fe,Fe
 ! Generic diagram: VFF,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2=1,3
     Do i3=1,3
 If ((MVZ2.gt.mf_l2(3)).Or.(MFe2(i2).gt.mf_l2(3)).Or.(MFe2(i3).gt.mf_l2(3))) Then
@@ -50808,13 +37764,11 @@ mF22 = MFe2(i3)
 End if 
    End Do 
   End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],hh,Ah
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopAh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -50842,13 +37796,11 @@ mS22 = MAh2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],Ah,hh
 ! Generic diagram: FSS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopAh).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MAh2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -50876,13 +37828,11 @@ mS22 = Mhh2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],VZ,hh
 ! Generic diagram: FVS,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loopVZ).and.(Include_in_loophh).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -50908,13 +37858,11 @@ mS22 = Mhh2
   End if 
 End if 
     End Do 
-End if 
 
 
  ! Loop particles: bar[Fe],hh,VZ
 ! Generic diagram: FSV,  InsertionOrder: 1
 chargefactor = 1 
-If ((Include_in_loopFe).and.(Include_in_loophh).and.(Include_in_loopVZ).and.IncludePenguins) Then 
 Do i1=1,3
 If ((MFe2(i1).gt.mf_l2(3)).Or.(Mhh2.gt.mf_l2(3)).Or.(MVZ2.gt.mf_l2(3))) Then
 If (.not.OnlySM) Then 
@@ -50940,7 +37888,133 @@ mV22 = MVZ2
   End if 
 End if 
     End Do 
+
+
+ ! Loop particles: bar[Fv],conj[Hp],conj[Hp]
+! Generic diagram: FSS,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
+coup2L = cplcFeFvcHpL(gt2,i1)
+coup2R = cplcFeFvcHpR(gt2,i1)
+coup3 = cplHpcHpVZ
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mS1 = MHp
+mS12 = MHp2
+mS2 = MHp
+mS22 = MHp2
+! Amplitude 
+  int1=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
+  int2=Cget("C00 ",0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
+  int3=Cget("C1  ",0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
+  int4=Cget("C2  ",0._dp, MassEx32, 0._dp, mF12, mS22, mS12)
+  OZ2lSL=OZ2lSL - 2.*chargefactor*coup1L*coup2L*coup3*(int1 + int3 + int4)*mF1
+  OZ2lSR=OZ2lSR - 2.*chargefactor*coup1R*coup2R*coup3*(int1 + int3 + int4)*mF1
+  OZ2lVL=OZ2lVL - 2.*chargefactor*coup1L*coup2R*coup3*int2
+  OZ2lVR=OZ2lVR - 2.*chargefactor*coup1R*coup2L*coup3*int2
+  End if 
 End if 
+    End Do 
+
+
+ ! Loop particles: bar[Fv],conj[VWp],conj[Hp]
+! Generic diagram: FVS,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
+coup2L = cplcFeFvcHpL(gt2,i1)
+coup2R = cplcFeFvcHpR(gt2,i1)
+coup3 = cplHpcVWpVZ
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mV1 = MVWp
+mV12 = MVWp2
+mS2 = MHp
+mS22 = MHp2
+! Amplitude 
+  int1=C0(0._dp, MassEx32, 0._dp, mF12, mS22, mV12)
+  int2=Cget("C2  ",0._dp, MassEx32, 0._dp, mF12, mS22, mV12)
+  OZ2lSL=OZ2lSL - 2.*chargefactor*coup1L*coup2L*coup3*int2
+  OZ2lSR=OZ2lSR - 2.*chargefactor*coup1R*coup2R*coup3*int2
+  OZ2lVL=OZ2lVL - 1.*chargefactor*coup1L*coup2R*coup3*int1*mF1
+  OZ2lVR=OZ2lVR - 1.*chargefactor*coup1R*coup2L*coup3*int1*mF1
+  End if 
+End if 
+    End Do 
+
+
+ ! Loop particles: bar[Fv],conj[Hp],conj[VWp]
+! Generic diagram: FSV,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MHp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeHpL(i1,gt1)
+coup1R = cplcFvFeHpR(i1,gt1)
+coup2L = cplcFeFvcVWpL(gt2,i1)
+coup2R = cplcFeFvcVWpR(gt2,i1)
+coup3 = cplcHpVWpVZ
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mS1 = MHp
+mS12 = MHp2
+mV2 = MVWp
+mV22 = MVWp2
+! Amplitude 
+  int1=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mS12)
+  int2=Cget("C1  ",0._dp, MassEx32, 0._dp, mF12, mV22, mS12)
+  OZ2lSL=OZ2lSL - 2.*chargefactor*coup1L*coup2R*coup3*int2
+  OZ2lSR=OZ2lSR - 2.*chargefactor*coup1R*coup2L*coup3*int2
+  OZ2lVL=OZ2lVL - 1.*chargefactor*coup1L*coup2L*coup3*int1*mF1
+  OZ2lVR=OZ2lVR - 1.*chargefactor*coup1R*coup2R*coup3*int1*mF1
+  End if 
+End if 
+    End Do 
+
+
+ ! Loop particles: bar[Fv],conj[VWp],conj[VWp]
+! Generic diagram: FVV,  InsertionOrder: 1
+chargefactor = 1 
+Do i1=1,3
+If ((0._dp.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3)).Or.(MVWp2.gt.mf_l2(3))) Then
+If (((i1.lt.4)).or.(.not.OnlySM)) Then 
+coup1L = cplcFvFeVWpL(i1,gt1)
+coup1R = cplcFvFeVWpR(i1,gt1)
+coup2L = cplcFeFvcVWpL(gt2,i1)
+coup2R = cplcFeFvcVWpR(gt2,i1)
+coup3 = cplcVWpVWpVZ
+! Masses in loop
+mF1 = 0.
+mF12 = 0._dp
+mV1 = MVWp
+mV12 = MVWp2
+mV2 = MVWp
+mV22 = MVWp2
+! Amplitude 
+  int1=B0(MassEx32, mV12, mV22)
+  int2=C0(0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
+  int3=Cget("C00 ",0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
+  int4=Cget("C1  ",0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
+  int5=Cget("C2  ",0._dp, MassEx32, 0._dp, mF12, mV22, mV12)
+  OZ2lSL=OZ2lSL+6.*chargefactor*coup1L*coup2R*coup3*(int4 + int5)*mF1
+  OZ2lSR=OZ2lSR+6.*chargefactor*coup1R*coup2L*coup3*(int4 + int5)*mF1
+  OZ2lVL=OZ2lVL+chargefactor*coup1L*coup2L*coup3*(Finite - 2.*(int1 + 2.*int3 +       & 
+&  int2*mF12))
+  OZ2lVR=OZ2lVR+chargefactor*coup1R*coup2R*coup3*(Finite - 2.*(int1 + 2.*int3 +       & 
+&  int2*mF12))
+  End if 
+End if 
+    End Do 
 
 
  OZ2lSL=oo16pi2*OZ2lSL 

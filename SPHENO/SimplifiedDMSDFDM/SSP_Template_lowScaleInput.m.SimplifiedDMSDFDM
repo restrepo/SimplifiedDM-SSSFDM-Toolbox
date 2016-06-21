@@ -55,7 +55,7 @@ RunScans = {Scan1, Scan2,...};
 (*    PARAMETER RANGES                          *)
 (*----------------------------------------------*)
 
-DEFINITION[a_][Blocks]={MODSEL,SMINPUTS,SPhenoInput,MINPAR,MDFIN,MNIN,YR3IN,YR4IN}; 
+DEFINITION[a_][Blocks]={MODSEL,SMINPUTS,SPhenoInput,MINPAR}; 
  
 DEFINITION[a_][MODSEL]={ 
 {{1},{Value->0}}, 
@@ -71,7 +71,11 @@ DEFINITION[a_][SMINPUTS]={
 {{7},{Value->1.777}} 
 }; 
 DEFINITION[a_][MINPAR]={ 
-{{1},{Value->0}} (*Lambda1IN*)}; 
+{{1},{Value->0}} (*lambda1INPUT*), 
+{{2},{Value->0}} (*MDFINPUT*), 
+{{3},{Value->0}} (*MnINPUT*), 
+{{4},{Value->0}} (*lamuINPUT*), 
+{{5},{Value->0}} (*lamdINPUT*)}; 
  
 DEFINITION[a_][SPhenoInput]={ 
 {{1},{Value->-1}}, (* error level *)
@@ -90,18 +94,6 @@ DEFINITION[a_][SPhenoInput]={
 {{86},{Value->0.}},  (* Maximal width to be counted as invisible in Higgs decays; -1: only LSP *) 
 {{530},{Value->1.}}  (* Write Blocks for Vevacious *) 
 }; 
-DEFINITION[a_][MDFIN]={ 
-{{1},{Value->0}}  (*MDF*) }; 
- 
-DEFINITION[a_][MNIN]={ 
-{{1},{Value->0}}  (*Mn*) }; 
- 
-DEFINITION[a_][YR3IN]={ 
-{{1},{Value->0}}  (*YR3*) }; 
- 
-DEFINITION[a_][YR4IN]={ 
-{{1},{Value->0}}  (*YR4*) }; 
- 
 (*----------------------------------------------*)
 (*    PLOTS                                     *)
 (*----------------------------------------------*) 

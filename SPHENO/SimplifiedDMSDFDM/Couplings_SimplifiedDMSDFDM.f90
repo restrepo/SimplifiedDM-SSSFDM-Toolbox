@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:17 on 17.6.2016   
+! File created at 22:35 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -15,25 +15,25 @@ Use Mathematics, Only: CompareMatrices, Adjungate
  
 Contains 
  
- Subroutine AllCouplingsReallyAll(Lam,v,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,             & 
-& Yu,ZUL,ZUR,YR3,YR4,ZvN,Vv,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhAhAhAh,cplAhAhhhhh,      & 
+ Subroutine AllCouplingsReallyAll(lam1,v,g1,g2,TW,g3,lamd,lamu,ZX,Yd,ZDL,              & 
+& ZDR,Ye,ZEL,ZER,Yu,ZUL,ZUR,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhAhAhAh,cplAhAhhhhh,      & 
 & cplAhAhHpcHp,cplhhhhhhhh,cplhhhhHpcHp,cplHpHpcHpcHp,cplAhhhVZ,cplAhHpcVWp,             & 
 & cplAhcHpVWp,cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,      & 
 & cplHpcVWpVP,cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplAhAhcVWpVWp,cplAhAhVZVZ,            & 
 & cplAhHpcVWpVP,cplAhHpcVWpVZ,cplAhcHpVPVWp,cplAhcHpVWpVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,    & 
 & cplhhHpcVWpVP,cplhhHpcVWpVZ,cplhhcHpVPVWp,cplhhcHpVWpVZ,cplHpcHpVPVP,cplHpcHpVPVZ,     & 
-& cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,cplcFdFdAhL,          & 
-& cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplNv0Nv0AhL,              & 
-& cplNv0Nv0AhR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,cplFvFeHpL,               & 
-& cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplNv0FreHpL,cplNv0FreHpR,cplcFuFuhhL,              & 
-& cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplNv0Nv0hhL,          & 
-& cplNv0Nv0hhR,cplcFreNv0cHpL,cplcFreNv0cHpR,cplcFdFdVGL,cplcFdFdVGR,cplcFdFdVPL,        & 
-& cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,cplcFdFdVZR,cplFvFeVWpL,             & 
-& cplFvFeVWpR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplNv0FreVWpL,             & 
-& cplNv0FreVWpR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,     & 
-& cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,             & 
-& cplcFdFucVWpR,cplFvFvVZL,cplFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplNv0Nv0VZL,          & 
-& cplNv0Nv0VZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,   & 
+& cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,cplChiChiAhL,         & 
+& cplChiChiAhR,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,              & 
+& cplcFuFuAhR,cplChiChihhL,cplChiChihhR,cplChiFreHpL,cplChiFreHpR,cplcFreChicHpL,        & 
+& cplcFreChicHpR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,cplcFeFehhL,            & 
+& cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,              & 
+& cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplChiChiVZL,cplChiChiVZR,cplChiFreVWpL,        & 
+& cplChiFreVWpR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFdVGL,cplcFdFdVGR,cplcFdFdVPL,     & 
+& cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVPL,           & 
+& cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,         & 
+& cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFvFvVZL,           & 
+& cplcFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,        & 
 & cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpVPVWpVZ1,cplcVWpVPVWpVZ2,       & 
 & cplcVWpVPVWpVZ3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,              & 
 & cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplcgGgGVG,cplcgWpgAVWp,               & 
@@ -43,10 +43,10 @@ Contains
 & cplcgWCgWChh,cplcgZgWCHp,cplcgZgZhh,cplcgWpgZHp,cplcgWCgZcHp)
 
 Implicit None 
-Real(dp), Intent(in) :: v,g1,g2,TW,g3,YR3,YR4
+Real(dp), Intent(in) :: v,g1,g2,TW,g3,lamd,lamu
 
-Complex(dp), Intent(in) :: Lam,Yd(3,3),ZDL(3,3),ZDR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Yu(3,3),ZUL(3,3),             & 
-& ZUR(3,3),ZvN(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: lam1,ZX(3,3),Yd(3,3),ZDL(3,3),ZDR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Yu(3,3),             & 
+& ZUL(3,3),ZUR(3,3)
 
 Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,cplhhhhhhhh,      & 
 & cplhhhhHpcHp,cplHpHpcHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,cplhhHpcVWp,              & 
@@ -54,27 +54,27 @@ Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhAhAhAh,cplAhAhhh
 & cplcHpVPVWp,cplcHpVWpVZ,cplAhAhcVWpVWp,cplAhAhVZVZ,cplAhHpcVWpVP,cplAhHpcVWpVZ,        & 
 & cplAhcHpVPVWp,cplAhcHpVWpVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,cplhhHpcVWpVP,cplhhHpcVWpVZ,    & 
 & cplhhcHpVPVWp,cplhhcHpVWpVZ,cplHpcHpVPVP,cplHpcHpVPVZ,cplHpcHpcVWpVWp,cplHpcHpVZVZ,    & 
-& cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),& 
-& cplcFeFeAhR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplNv0Nv0AhL(3,3),cplNv0Nv0AhR(3,3),& 
-& cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplFvFeHpL(3,3),   & 
-& cplFvFeHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplNv0FreHpL(3),cplNv0FreHpR(3),     & 
+& cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,cplChiChiAhL(3,3),cplChiChiAhR(3,3),               & 
+& cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFuFuAhL(3,3),  & 
+& cplcFuFuAhR(3,3),cplChiChihhL(3,3),cplChiChihhR(3,3),cplChiFreHpL(3),cplChiFreHpR(3),  & 
+& cplcFreChicHpL(3),cplcFreChicHpR(3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFuFdHpL(3,3),& 
+& cplcFuFdHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),  & 
 & cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),& 
-& cplcFeFvcHpR(3,3),cplNv0Nv0hhL(3,3),cplNv0Nv0hhR(3,3),cplcFreNv0cHpL(3),               & 
-& cplcFreNv0cHpR(3),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3), & 
-& cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplFvFeVWpL(3,3),& 
-& cplFvFeVWpR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),  & 
-& cplNv0FreVWpL(3),cplNv0FreVWpR(3),cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,           & 
+& cplcFeFvcHpR(3,3),cplChiChiVZL(3,3),cplChiChiVZR(3,3),cplChiFreVWpL(3),cplChiFreVWpR(3),& 
+& cplcFreChicVWpL(3),cplcFreChicVWpR(3),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),               & 
+& cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),& 
+& cplcFdFdVZR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
+& cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,           & 
 & cplcFreFreVZR,cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),     & 
 & cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),               & 
-& cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplNv0Nv0VZL(3,3),& 
-& cplNv0Nv0VZR(3,3),cplcFreNv0cVWpL(3),cplcFreNv0cVWpR(3),cplVGVGVGVG1,cplVGVGVGVG2,     & 
-& cplVGVGVGVG3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpVPVWpVZ1,          & 
-& cplcVWpVPVWpVZ2,cplcVWpVPVWpVZ3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,& 
-& cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplcgGgGVG,cplcgWpgAVWp,               & 
-& cplcgWCgAcVWp,cplcgWpgWpVP,cplcgWpgWpVZ,cplcgAgWpcVWp,cplcgZgWpcVWp,cplcgWCgWCVP,      & 
-& cplcgAgWCVWp,cplcgZgWCVWp,cplcgWCgWCVZ,cplcgWpgZVWp,cplcgWCgZcVWp,cplcgWpgWpAh,        & 
-& cplcgWCgWCAh,cplcgZgAhh,cplcgWpgAHp,cplcgWCgAcHp,cplcgWpgWphh,cplcgZgWpcHp,            & 
-& cplcgWCgWChh,cplcgZgWCHp,cplcgZgZhh,cplcgWpgZHp,cplcgWCgZcHp
+& cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),               & 
+& cplVGVGVGVG1,cplVGVGVGVG2,cplVGVGVGVG3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,& 
+& cplcVWpVPVWpVZ1,cplcVWpVPVWpVZ2,cplcVWpVPVWpVZ3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2, & 
+& cplcVWpcVWpVWpVWp3,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplcgGgGVG,         & 
+& cplcgWpgAVWp,cplcgWCgAcVWp,cplcgWpgWpVP,cplcgWpgWpVZ,cplcgAgWpcVWp,cplcgZgWpcVWp,      & 
+& cplcgWCgWCVP,cplcgAgWCVWp,cplcgZgWCVWp,cplcgWCgWCVZ,cplcgWpgZVWp,cplcgWCgZcVWp,        & 
+& cplcgWpgWpAh,cplcgWCgWCAh,cplcgZgAhh,cplcgWpgAHp,cplcgWCgAcHp,cplcgWpgWphh,            & 
+& cplcgZgWpcHp,cplcgWCgWChh,cplcgZgWCHp,cplcgZgZhh,cplcgWpgZHp,cplcgWCgZcHp
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -82,47 +82,47 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'AllCouplingsReallyAll'
  
 cplAhAhhh = 0._dp 
-Call CouplingAhAhhhT(Lam,v,cplAhAhhh)
+Call CouplingAhAhhhT(lam1,v,cplAhAhhh)
 
 
 
 cplhhhhhh = 0._dp 
-Call CouplinghhhhhhT(Lam,v,cplhhhhhh)
+Call CouplinghhhhhhT(lam1,v,cplhhhhhh)
 
 
 
 cplhhHpcHp = 0._dp 
-Call CouplinghhHpcHpT(Lam,v,cplhhHpcHp)
+Call CouplinghhHpcHpT(lam1,v,cplhhHpcHp)
 
 
 
 cplAhAhAhAh = 0._dp 
-Call CouplingAhAhAhAhT(Lam,cplAhAhAhAh)
+Call CouplingAhAhAhAhT(lam1,cplAhAhAhAh)
 
 
 
 cplAhAhhhhh = 0._dp 
-Call CouplingAhAhhhhhT(Lam,cplAhAhhhhh)
+Call CouplingAhAhhhhhT(lam1,cplAhAhhhhh)
 
 
 
 cplAhAhHpcHp = 0._dp 
-Call CouplingAhAhHpcHpT(Lam,cplAhAhHpcHp)
+Call CouplingAhAhHpcHpT(lam1,cplAhAhHpcHp)
 
 
 
 cplhhhhhhhh = 0._dp 
-Call CouplinghhhhhhhhT(Lam,cplhhhhhhhh)
+Call CouplinghhhhhhhhT(lam1,cplhhhhhhhh)
 
 
 
 cplhhhhHpcHp = 0._dp 
-Call CouplinghhhhHpcHpT(Lam,cplhhhhHpcHp)
+Call CouplinghhhhHpcHpT(lam1,cplhhhhHpcHp)
 
 
 
 cplHpHpcHpcHp = 0._dp 
-Call CouplingHpHpcHpcHpT(Lam,cplHpHpcHpcHp)
+Call CouplingHpHpcHpcHpT(lam1,cplHpHpcHpcHp)
 
 
 
@@ -286,6 +286,16 @@ Call CouplingcVWpVWpVZT(g2,TW,cplcVWpVWpVZ)
 
 
 
+cplChiChiAhL = 0._dp 
+cplChiChiAhR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChiAhT(gt1,gt2,lamd,lamu,ZX,cplChiChiAhL(gt1,gt2),cplChiChiAhR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
 cplcFdFdAhL = 0._dp 
 cplcFdFdAhR = 0._dp 
 Do gt1 = 1, 3
@@ -316,13 +326,29 @@ Call CouplingcFuFuAhT(gt1,gt2,Yu,ZUL,ZUR,cplcFuFuAhL(gt1,gt2),cplcFuFuAhR(gt1,gt
 End Do 
 
 
-cplNv0Nv0AhL = 0._dp 
-cplNv0Nv0AhR = 0._dp 
+cplChiChihhL = 0._dp 
+cplChiChihhR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingNv0Nv0AhT(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0AhL(gt1,gt2),cplNv0Nv0AhR(gt1,gt2))
+Call CouplingChiChihhT(gt1,gt2,lamd,lamu,ZX,cplChiChihhL(gt1,gt2),cplChiChihhR(gt1,gt2))
 
  End Do 
+End Do 
+
+
+cplChiFreHpL = 0._dp 
+cplChiFreHpR = 0._dp 
+Do gt1 = 1, 3
+Call CouplingChiFreHpT(gt1,lamd,lamu,ZX,cplChiFreHpL(gt1),cplChiFreHpR(gt1))
+
+End Do 
+
+
+cplcFreChicHpL = 0._dp 
+cplcFreChicHpR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreChicHpT(gt2,lamd,lamu,ZX,cplcFreChicHpL(gt2),cplcFreChicHpR(gt2))
+
 End Do 
 
 
@@ -347,16 +373,6 @@ Call CouplingcFuFdHpT(gt1,gt2,Yu,Yd,ZDL,ZDR,ZUL,ZUR,cplcFuFdHpL(gt1,gt2)        
 End Do 
 
 
-cplFvFeHpL = 0._dp 
-cplFvFeHpR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingFvFeHpT(gt1,gt2,Ye,ZER,Vv,cplFvFeHpL(gt1,gt2),cplFvFeHpR(gt1,gt2))
-
- End Do 
-End Do 
-
-
 cplcFeFehhL = 0._dp 
 cplcFeFehhR = 0._dp 
 Do gt1 = 1, 3
@@ -367,11 +383,13 @@ Call CouplingcFeFehhT(gt1,gt2,Ye,ZEL,ZER,cplcFeFehhL(gt1,gt2),cplcFeFehhR(gt1,gt
 End Do 
 
 
-cplNv0FreHpL = 0._dp 
-cplNv0FreHpR = 0._dp 
+cplcFvFeHpL = 0._dp 
+cplcFvFeHpR = 0._dp 
 Do gt1 = 1, 3
-Call CouplingNv0FreHpT(gt1,YR3,YR4,ZvN,cplNv0FreHpL(gt1),cplNv0FreHpR(gt1))
+ Do gt2 = 1, 3
+Call CouplingcFvFeHpT(gt1,gt2,Ye,ZER,cplcFvFeHpL(gt1,gt2),cplcFvFeHpR(gt1,gt2))
 
+ End Do 
 End Do 
 
 
@@ -400,26 +418,34 @@ cplcFeFvcHpL = 0._dp
 cplcFeFvcHpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,Vv,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
+Call CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplNv0Nv0hhL = 0._dp 
-cplNv0Nv0hhR = 0._dp 
+cplChiChiVZL = 0._dp 
+cplChiChiVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingNv0Nv0hhT(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0hhL(gt1,gt2),cplNv0Nv0hhR(gt1,gt2))
+Call CouplingChiChiVZT(gt1,gt2,g1,g2,ZX,TW,cplChiChiVZL(gt1,gt2),cplChiChiVZR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplcFreNv0cHpL = 0._dp 
-cplcFreNv0cHpR = 0._dp 
+cplChiFreVWpL = 0._dp 
+cplChiFreVWpR = 0._dp 
+Do gt1 = 1, 3
+Call CouplingChiFreVWpT(gt1,g2,ZX,cplChiFreVWpL(gt1),cplChiFreVWpR(gt1))
+
+End Do 
+
+
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
 Do gt2 = 1, 3
-Call CouplingcFreNv0cHpT(gt2,YR3,YR4,ZvN,cplcFreNv0cHpL(gt2),cplcFreNv0cHpR(gt2))
+Call CouplingcFreChicVWpT(gt2,g2,ZX,cplcFreChicVWpL(gt2),cplcFreChicVWpR(gt2))
 
 End Do 
 
@@ -464,21 +490,21 @@ Call CouplingcFdFdVZT(gt1,gt2,g1,g2,TW,cplcFdFdVZL(gt1,gt2),cplcFdFdVZR(gt1,gt2)
 End Do 
 
 
-cplFvFeVWpL = 0._dp 
-cplFvFeVWpR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingFvFeVWpT(gt1,gt2,g2,ZEL,Vv,cplFvFeVWpL(gt1,gt2),cplFvFeVWpR(gt1,gt2))
-
- End Do 
-End Do 
-
-
 cplcFeFeVPL = 0._dp 
 cplcFeFeVPR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
 Call CouplingcFeFeVPT(gt1,gt2,g1,g2,TW,cplcFeFeVPL(gt1,gt2),cplcFeFeVPR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplcFvFeVWpL = 0._dp 
+cplcFvFeVWpR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingcFvFeVWpT(gt1,gt2,g2,ZEL,cplcFvFeVWpL(gt1,gt2),cplcFvFeVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -491,14 +517,6 @@ Do gt1 = 1, 3
 Call CouplingcFeFeVZT(gt1,gt2,g1,g2,TW,cplcFeFeVZL(gt1,gt2),cplcFeFeVZR(gt1,gt2))
 
  End Do 
-End Do 
-
-
-cplNv0FreVWpL = 0._dp 
-cplNv0FreVWpR = 0._dp 
-Do gt1 = 1, 3
-Call CouplingNv0FreVWpT(gt1,g2,ZvN,cplNv0FreVWpL(gt1),cplNv0FreVWpR(gt1))
-
 End Do 
 
 
@@ -554,11 +572,11 @@ Call CouplingcFdFucVWpT(gt1,gt2,g2,ZDL,ZUL,cplcFdFucVWpL(gt1,gt2),cplcFdFucVWpR(
 End Do 
 
 
-cplFvFvVZL = 0._dp 
-cplFvFvVZR = 0._dp 
+cplcFvFvVZL = 0._dp 
+cplcFvFvVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingFvFvVZT(gt1,gt2,g1,g2,TW,cplFvFvVZL(gt1,gt2),cplFvFvVZR(gt1,gt2))
+Call CouplingcFvFvVZT(gt1,gt2,g1,g2,TW,cplcFvFvVZL(gt1,gt2),cplcFvFvVZR(gt1,gt2))
 
  End Do 
 End Do 
@@ -568,27 +586,9 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,Vv,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
-End Do 
-
-
-cplNv0Nv0VZL = 0._dp 
-cplNv0Nv0VZR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0VZT(gt1,gt2,g1,g2,ZvN,TW,cplNv0Nv0VZL(gt1,gt2),cplNv0Nv0VZR(gt1,gt2))
-
- End Do 
-End Do 
-
-
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreNv0cVWpT(gt2,g2,ZvN,cplcFreNv0cVWpL(gt2),cplcFreNv0cVWpR(gt2))
-
 End Do 
 
 
@@ -755,44 +755,45 @@ Call CouplingcgWCgZcHpT(g1,g2,v,TW,cplcgWCgZcHp)
 Iname = Iname - 1 
 End Subroutine AllCouplingsReallyAll
 
-Subroutine AllCouplings(Lam,v,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,               & 
-& ZUR,YR3,YR4,ZvN,Vv,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,               & 
-& cplAhcHpVWp,cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,      & 
-& cplHpcVWpVP,cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,   & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
-& cplNv0Nv0AhL,cplNv0Nv0AhR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,             & 
-& cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplNv0FreHpL,cplNv0FreHpR,               & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,           & 
-& cplNv0Nv0hhL,cplNv0Nv0hhR,cplcFreNv0cHpL,cplcFreNv0cHpR,cplcFdFdVGL,cplcFdFdVGR,       & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,cplcFdFdVZR,             & 
-& cplFvFeVWpL,cplFvFeVWpR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
-& cplNv0FreVWpL,cplNv0FreVWpR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,   & 
-& cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplFvFvVZL,cplFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplNv0Nv0VZL,cplNv0Nv0VZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
+Subroutine AllCouplings(lam1,v,g1,g2,TW,g3,lamd,lamu,ZX,Yd,ZDL,ZDR,Ye,ZEL,            & 
+& ZER,Yu,ZUL,ZUR,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,       & 
+& cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,cplHpcVWpVP,      & 
+& cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,               & 
+& cplChiChiAhL,cplChiChiAhR,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,             & 
+& cplcFuFuAhL,cplcFuFuAhR,cplChiChihhL,cplChiChihhR,cplChiFreHpL,cplChiFreHpR,           & 
+& cplcFreChicHpL,cplcFreChicHpR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFuFuhhL,cplcFuFuhhR,               & 
+& cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplChiChiVZL,cplChiChiVZR,         & 
+& cplChiFreVWpL,cplChiFreVWpR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFdVGL,               & 
+& cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,             & 
+& cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,             & 
+& cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,       & 
+& cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,             & 
+& cplcFdFucVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR)
 
 Implicit None 
-Real(dp), Intent(in) :: v,g1,g2,TW,g3,YR3,YR4
+Real(dp), Intent(in) :: v,g1,g2,TW,g3,lamd,lamu
 
-Complex(dp), Intent(in) :: Lam,Yd(3,3),ZDL(3,3),ZDR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Yu(3,3),ZUL(3,3),             & 
-& ZUR(3,3),ZvN(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: lam1,ZX(3,3),Yd(3,3),ZDL(3,3),ZDR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Yu(3,3),             & 
+& ZUL(3,3),ZUR(3,3)
 
 Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,cplhhHpcVWp,         & 
 & cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,cplHpcVWpVP,cplHpcVWpVZ,      & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,cplcFdFdAhL(3,3),          & 
-& cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),  & 
-& cplNv0Nv0AhL(3,3),cplNv0Nv0AhR(3,3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFuFdHpL(3,3),& 
-& cplcFuFdHpR(3,3),cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),    & 
-& cplNv0FreHpL(3),cplNv0FreHpR(3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFdFucHpL(3,3),   & 
-& cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplNv0Nv0hhL(3,3),               & 
-& cplNv0Nv0hhR(3,3),cplcFreNv0cHpL(3),cplcFreNv0cHpR(3),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),& 
-& cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),& 
-& cplcFdFdVZR(3,3),cplFvFeVWpL(3,3),cplFvFeVWpR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),  & 
-& cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplNv0FreVWpL(3),cplNv0FreVWpR(3),cplcFreFreVPL,     & 
+& cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,cplChiChiAhL(3,3),         & 
+& cplChiChiAhR(3,3),cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3), & 
+& cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplChiChihhL(3,3),cplChiChihhR(3,3),cplChiFreHpL(3), & 
+& cplChiFreHpR(3),cplcFreChicHpL(3),cplcFreChicHpR(3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3), & 
+& cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3),  & 
+& cplcFvFeHpR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),& 
+& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplChiChiVZL(3,3),cplChiChiVZR(3,3),               & 
+& cplChiFreVWpL(3),cplChiFreVWpR(3),cplcFreChicVWpL(3),cplcFreChicVWpR(3),               & 
+& cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFdFdVPL(3,3),cplcFdFdVPR(3,3),cplcFuFdVWpL(3,3), & 
+& cplcFuFdVWpR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3), & 
+& cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFreFreVPL,   & 
 & cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),           & 
 & cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFdFucVWpL(3,3),& 
-& cplcFdFucVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),& 
-& cplNv0Nv0VZL(3,3),cplNv0Nv0VZR(3,3),cplcFreNv0cVWpL(3),cplcFreNv0cVWpR(3)
+& cplcFdFucVWpR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplcFeFvcVWpL(3,3),               & 
+& cplcFeFvcVWpR(3,3)
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -800,17 +801,17 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'AllCouplings'
  
 cplAhAhhh = 0._dp 
-Call CouplingAhAhhhT(Lam,v,cplAhAhhh)
+Call CouplingAhAhhhT(lam1,v,cplAhAhhh)
 
 
 
 cplhhhhhh = 0._dp 
-Call CouplinghhhhhhT(Lam,v,cplhhhhhh)
+Call CouplinghhhhhhT(lam1,v,cplhhhhhh)
 
 
 
 cplhhHpcHp = 0._dp 
-Call CouplinghhHpcHpT(Lam,v,cplhhHpcHp)
+Call CouplinghhHpcHpT(lam1,v,cplhhHpcHp)
 
 
 
@@ -894,6 +895,16 @@ Call CouplingcVWpVWpVZT(g2,TW,cplcVWpVWpVZ)
 
 
 
+cplChiChiAhL = 0._dp 
+cplChiChiAhR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChiAhT(gt1,gt2,lamd,lamu,ZX,cplChiChiAhL(gt1,gt2),cplChiChiAhR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
 cplcFdFdAhL = 0._dp 
 cplcFdFdAhR = 0._dp 
 Do gt1 = 1, 3
@@ -924,13 +935,29 @@ Call CouplingcFuFuAhT(gt1,gt2,Yu,ZUL,ZUR,cplcFuFuAhL(gt1,gt2),cplcFuFuAhR(gt1,gt
 End Do 
 
 
-cplNv0Nv0AhL = 0._dp 
-cplNv0Nv0AhR = 0._dp 
+cplChiChihhL = 0._dp 
+cplChiChihhR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingNv0Nv0AhT(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0AhL(gt1,gt2),cplNv0Nv0AhR(gt1,gt2))
+Call CouplingChiChihhT(gt1,gt2,lamd,lamu,ZX,cplChiChihhL(gt1,gt2),cplChiChihhR(gt1,gt2))
 
  End Do 
+End Do 
+
+
+cplChiFreHpL = 0._dp 
+cplChiFreHpR = 0._dp 
+Do gt1 = 1, 3
+Call CouplingChiFreHpT(gt1,lamd,lamu,ZX,cplChiFreHpL(gt1),cplChiFreHpR(gt1))
+
+End Do 
+
+
+cplcFreChicHpL = 0._dp 
+cplcFreChicHpR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreChicHpT(gt2,lamd,lamu,ZX,cplcFreChicHpL(gt2),cplcFreChicHpR(gt2))
+
 End Do 
 
 
@@ -955,16 +982,6 @@ Call CouplingcFuFdHpT(gt1,gt2,Yu,Yd,ZDL,ZDR,ZUL,ZUR,cplcFuFdHpL(gt1,gt2)        
 End Do 
 
 
-cplFvFeHpL = 0._dp 
-cplFvFeHpR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingFvFeHpT(gt1,gt2,Ye,ZER,Vv,cplFvFeHpL(gt1,gt2),cplFvFeHpR(gt1,gt2))
-
- End Do 
-End Do 
-
-
 cplcFeFehhL = 0._dp 
 cplcFeFehhR = 0._dp 
 Do gt1 = 1, 3
@@ -975,11 +992,13 @@ Call CouplingcFeFehhT(gt1,gt2,Ye,ZEL,ZER,cplcFeFehhL(gt1,gt2),cplcFeFehhR(gt1,gt
 End Do 
 
 
-cplNv0FreHpL = 0._dp 
-cplNv0FreHpR = 0._dp 
+cplcFvFeHpL = 0._dp 
+cplcFvFeHpR = 0._dp 
 Do gt1 = 1, 3
-Call CouplingNv0FreHpT(gt1,YR3,YR4,ZvN,cplNv0FreHpL(gt1),cplNv0FreHpR(gt1))
+ Do gt2 = 1, 3
+Call CouplingcFvFeHpT(gt1,gt2,Ye,ZER,cplcFvFeHpL(gt1,gt2),cplcFvFeHpR(gt1,gt2))
 
+ End Do 
 End Do 
 
 
@@ -1008,26 +1027,34 @@ cplcFeFvcHpL = 0._dp
 cplcFeFvcHpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,Vv,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
+Call CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplNv0Nv0hhL = 0._dp 
-cplNv0Nv0hhR = 0._dp 
+cplChiChiVZL = 0._dp 
+cplChiChiVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingNv0Nv0hhT(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0hhL(gt1,gt2),cplNv0Nv0hhR(gt1,gt2))
+Call CouplingChiChiVZT(gt1,gt2,g1,g2,ZX,TW,cplChiChiVZL(gt1,gt2),cplChiChiVZR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplcFreNv0cHpL = 0._dp 
-cplcFreNv0cHpR = 0._dp 
+cplChiFreVWpL = 0._dp 
+cplChiFreVWpR = 0._dp 
+Do gt1 = 1, 3
+Call CouplingChiFreVWpT(gt1,g2,ZX,cplChiFreVWpL(gt1),cplChiFreVWpR(gt1))
+
+End Do 
+
+
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
 Do gt2 = 1, 3
-Call CouplingcFreNv0cHpT(gt2,YR3,YR4,ZvN,cplcFreNv0cHpL(gt2),cplcFreNv0cHpR(gt2))
+Call CouplingcFreChicVWpT(gt2,g2,ZX,cplcFreChicVWpL(gt2),cplcFreChicVWpR(gt2))
 
 End Do 
 
@@ -1072,21 +1099,21 @@ Call CouplingcFdFdVZT(gt1,gt2,g1,g2,TW,cplcFdFdVZL(gt1,gt2),cplcFdFdVZR(gt1,gt2)
 End Do 
 
 
-cplFvFeVWpL = 0._dp 
-cplFvFeVWpR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingFvFeVWpT(gt1,gt2,g2,ZEL,Vv,cplFvFeVWpL(gt1,gt2),cplFvFeVWpR(gt1,gt2))
-
- End Do 
-End Do 
-
-
 cplcFeFeVPL = 0._dp 
 cplcFeFeVPR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
 Call CouplingcFeFeVPT(gt1,gt2,g1,g2,TW,cplcFeFeVPL(gt1,gt2),cplcFeFeVPR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
+cplcFvFeVWpL = 0._dp 
+cplcFvFeVWpR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingcFvFeVWpT(gt1,gt2,g2,ZEL,cplcFvFeVWpL(gt1,gt2),cplcFvFeVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -1099,14 +1126,6 @@ Do gt1 = 1, 3
 Call CouplingcFeFeVZT(gt1,gt2,g1,g2,TW,cplcFeFeVZL(gt1,gt2),cplcFeFeVZR(gt1,gt2))
 
  End Do 
-End Do 
-
-
-cplNv0FreVWpL = 0._dp 
-cplNv0FreVWpR = 0._dp 
-Do gt1 = 1, 3
-Call CouplingNv0FreVWpT(gt1,g2,ZvN,cplNv0FreVWpL(gt1),cplNv0FreVWpR(gt1))
-
 End Do 
 
 
@@ -1162,11 +1181,11 @@ Call CouplingcFdFucVWpT(gt1,gt2,g2,ZDL,ZUL,cplcFdFucVWpL(gt1,gt2),cplcFdFucVWpR(
 End Do 
 
 
-cplFvFvVZL = 0._dp 
-cplFvFvVZR = 0._dp 
+cplcFvFvVZL = 0._dp 
+cplcFvFvVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingFvFvVZT(gt1,gt2,g1,g2,TW,cplFvFvVZL(gt1,gt2),cplFvFvVZR(gt1,gt2))
+Call CouplingcFvFvVZT(gt1,gt2,g1,g2,TW,cplcFvFvVZL(gt1,gt2),cplcFvFvVZR(gt1,gt2))
 
  End Do 
 End Do 
@@ -1176,40 +1195,22 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,Vv,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
-End Do 
-
-
-cplNv0Nv0VZL = 0._dp 
-cplNv0Nv0VZR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0VZT(gt1,gt2,g1,g2,ZvN,TW,cplNv0Nv0VZL(gt1,gt2),cplNv0Nv0VZR(gt1,gt2))
-
- End Do 
-End Do 
-
-
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreNv0cVWpT(gt2,g2,ZvN,cplcFreNv0cVWpL(gt2),cplcFreNv0cVWpR(gt2))
-
 End Do 
 
 
 Iname = Iname - 1 
 End Subroutine AllCouplings
 
-Subroutine CouplingAhAhhhT(Lam,v,res)
+Subroutine CouplingAhAhhhT(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1218,7 +1219,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhh' 
  
 res = 0._dp 
-res = res-(Lam*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1230,13 +1231,13 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhhhT  
  
  
-Subroutine CouplinghhhhhhT(Lam,v,res)
+Subroutine CouplinghhhhhhT(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1245,7 +1246,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhh' 
  
 res = 0._dp 
-res = res-3*Lam*v
+res = res-6*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1257,13 +1258,13 @@ Iname = Iname - 1
 End Subroutine CouplinghhhhhhT  
  
  
-Subroutine CouplinghhHpcHpT(Lam,v,res)
+Subroutine CouplinghhHpcHpT(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1272,7 +1273,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhHpcHp' 
  
 res = 0._dp 
-res = res-(Lam*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1284,11 +1285,11 @@ Iname = Iname - 1
 End Subroutine CouplinghhHpcHpT  
  
  
-Subroutine CouplingAhAhAhAhT(Lam,res)
+Subroutine CouplingAhAhAhAhT(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1297,7 +1298,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhAhAh' 
  
 res = 0._dp 
-res = res-3._dp*(Lam)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1309,11 +1310,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhAhAhT  
  
  
-Subroutine CouplingAhAhhhhhT(Lam,res)
+Subroutine CouplingAhAhhhhhT(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1322,7 +1323,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhhhh' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1334,11 +1335,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhhhhhT  
  
  
-Subroutine CouplingAhAhHpcHpT(Lam,res)
+Subroutine CouplingAhAhHpcHpT(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1347,7 +1348,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1359,11 +1360,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhHpcHpT  
  
  
-Subroutine CouplinghhhhhhhhT(Lam,res)
+Subroutine CouplinghhhhhhhhT(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1372,7 +1373,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhhhh' 
  
 res = 0._dp 
-res = res-3._dp*(Lam)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1384,11 +1385,11 @@ Iname = Iname - 1
 End Subroutine CouplinghhhhhhhhT  
  
  
-Subroutine CouplinghhhhHpcHpT(Lam,res)
+Subroutine CouplinghhhhHpcHpT(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1397,7 +1398,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhhhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -1409,11 +1410,11 @@ Iname = Iname - 1
 End Subroutine CouplinghhhhHpcHpT  
  
  
-Subroutine CouplingHpHpcHpcHpT(Lam,res)
+Subroutine CouplingHpHpcHpcHpT(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -1422,7 +1423,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingHpHpcHpcHp' 
  
 res = 0._dp 
-res = res-2._dp*(Lam)
+res = res-4._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2265,6 +2266,62 @@ Iname = Iname - 1
 End Subroutine CouplingcVWpVWpVZT  
  
  
+Subroutine CouplingChiChiAhT(gt1,gt2,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiChiAh' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resR = 0._dp 
+resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
+resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
+resL = -(0.,1.)*resL 
+ 
+resR = -(0.,1.)*resR 
+ 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiChiAhT  
+ 
+ 
 Subroutine CouplingcFdFdAhT(gt1,gt2,Yd,ZDL,ZDR,resL,resR)
 
 Implicit None 
@@ -2433,20 +2490,20 @@ Iname = Iname - 1
 End Subroutine CouplingcFuFuAhT  
  
  
-Subroutine CouplingNv0Nv0AhT(gt1,gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingChiChihhT(gt1,gt2,lamd,lamu,ZX,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
+Real(dp), Intent(in) :: lamd,lamu
 
-Complex(dp), Intent(in) :: ZvN(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0Ah' 
+NameOfUnit(Iname) = 'CouplingChiChihh' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -2465,19 +2522,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-((YR3*Conjg(ZvN(gt1,2))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL-((YR4*Conjg(ZvN(gt1,3))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL-((YR3*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,2)))/sqrt(2._dp))
-resL = resL-((YR4*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
+resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
 resR = 0._dp 
-resR = resR+(YR3*ZvN(gt1,2)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR+(YR4*ZvN(gt1,3)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR+(YR3*ZvN(gt1,1)*ZvN(gt2,2))/sqrt(2._dp)
-resR = resR+(YR4*ZvN(gt1,1)*ZvN(gt2,3))/sqrt(2._dp)
-resL = -(0.,1.)*resL 
- 
-resR = -(0.,1.)*resR 
- 
+resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2486,7 +2539,83 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingNv0Nv0AhT  
+End Subroutine CouplingChiChihhT  
+ 
+ 
+Subroutine CouplingChiFreHpT(gt1,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiFreHp' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL+lamd*Conjg(ZX(gt1,1))
+resR = 0._dp 
+resR = resR-(lamu*ZX(gt1,1))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiFreHpT  
+ 
+ 
+Subroutine CouplingcFreChicHpT(gt2,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFreChicHp' 
+ 
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(lamu*Conjg(ZX(gt2,1)))
+resR = 0._dp 
+resR = resR+lamd*ZX(gt2,1)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFreChicHpT  
  
  
 Subroutine CouplingcFdFdhhT(gt1,gt2,Yd,ZDL,ZDR,resL,resR)
@@ -2593,53 +2722,6 @@ Iname = Iname - 1
 End Subroutine CouplingcFuFdHpT  
  
  
-Subroutine CouplingFvFeHpT(gt1,gt2,Ye,ZER,Vv,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3),Vv(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingFvFeHp' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resR = 0._dp 
-Do j2 = 1,3
-Do j1 = 1,3
-resR = resR+Conjg(Ye(j1,j2))*ZER(gt2,j1)*Vv(gt1,j2)
-End Do 
-End Do 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingFvFeHpT  
- 
- 
 Subroutine CouplingcFeFehhT(gt1,gt2,Ye,ZEL,ZER,resL,resR)
 
 Implicit None 
@@ -2692,20 +2774,18 @@ Iname = Iname - 1
 End Subroutine CouplingcFeFehhT  
  
  
-Subroutine CouplingNv0FreHpT(gt1,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingcFvFeHpT(gt1,gt2,Ye,ZER,resL,resR)
 
 Implicit None 
 
-Integer, Intent(in) :: gt1
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
+Integer, Intent(in) :: gt1,gt2
+Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0FreHp' 
+NameOfUnit(Iname) = 'CouplingcFvFeHp' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -2715,10 +2795,19 @@ If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then
   Call TerminateProgram 
 End If 
 
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
 resL = 0._dp 
-resL = resL-(YR3*Conjg(ZvN(gt1,1)))
 resR = 0._dp 
-resR = resR+YR4*ZvN(gt1,1)
+Do j1 = 1,3
+resR = resR+Conjg(Ye(j1,gt1))*ZER(gt2,j1)
+End Do 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2727,7 +2816,7 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingNv0FreHpT  
+End Subroutine CouplingcFvFeHpT  
  
  
 Subroutine CouplingcFuFuhhT(gt1,gt2,Yu,ZUL,ZUR,resL,resR)
@@ -2834,12 +2923,12 @@ Iname = Iname - 1
 End Subroutine CouplingcFdFucHpT  
  
  
-Subroutine CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,Vv,resL,resR)
+Subroutine CouplingcFeFvcHpT(gt1,gt2,Ye,ZER,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -2864,10 +2953,8 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-Do j2 = 1,3
 Do j1 = 1,3
-resL = resL+Conjg(ZER(gt1,j1))*Conjg(Vv(gt2,j2))*Ye(j1,j2)
-End Do 
+resL = resL+Conjg(ZER(gt1,j1))*Ye(j1,gt2)
 End Do 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
@@ -2881,20 +2968,20 @@ Iname = Iname - 1
 End Subroutine CouplingcFeFvcHpT  
  
  
-Subroutine CouplingNv0Nv0hhT(gt1,gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingChiChiVZT(gt1,gt2,g1,g2,ZX,TW,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
+Real(dp), Intent(in) :: g1,g2,TW
 
-Complex(dp), Intent(in) :: ZvN(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0hh' 
+NameOfUnit(Iname) = 'CouplingChiChiVZ' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -2913,15 +3000,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+(YR3*Conjg(ZvN(gt1,2))*Conjg(ZvN(gt2,1)))/sqrt(2._dp)
-resL = resL-((YR4*Conjg(ZvN(gt1,3))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL+(YR3*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,2)))/sqrt(2._dp)
-resL = resL-((YR4*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
+resL = resL-(g2*Conjg(ZX(gt2,2))*Cos(TW)*ZX(gt1,2))/2._dp
+resL = resL-(g1*Conjg(ZX(gt2,2))*Sin(TW)*ZX(gt1,2))/2._dp
+resL = resL+(g2*Conjg(ZX(gt2,3))*Cos(TW)*ZX(gt1,3))/2._dp
+resL = resL+(g1*Conjg(ZX(gt2,3))*Sin(TW)*ZX(gt1,3))/2._dp
 resR = 0._dp 
-resR = resR+(YR3*ZvN(gt1,2)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR-((YR4*ZvN(gt1,3)*ZvN(gt2,1))/sqrt(2._dp))
-resR = resR+(YR3*ZvN(gt1,1)*ZvN(gt2,2))/sqrt(2._dp)
-resR = resR-((YR4*ZvN(gt1,1)*ZvN(gt2,3))/sqrt(2._dp))
+resR = resR+(g2*Conjg(ZX(gt1,2))*Cos(TW)*ZX(gt2,2))/2._dp
+resR = resR+(g1*Conjg(ZX(gt1,2))*Sin(TW)*ZX(gt2,2))/2._dp
+resR = resR-(g2*Conjg(ZX(gt1,3))*Cos(TW)*ZX(gt2,3))/2._dp
+resR = resR-(g1*Conjg(ZX(gt1,3))*Sin(TW)*ZX(gt2,3))/2._dp
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2930,23 +3017,61 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingNv0Nv0hhT  
+End Subroutine CouplingChiChiVZT  
  
  
-Subroutine CouplingcFreNv0cHpT(gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingChiFreVWpT(gt1,g2,ZX,resL,resR)
 
 Implicit None 
 
-Integer, Intent(in) :: gt2
-Real(dp), Intent(in) :: YR3,YR4
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: g2
 
-Complex(dp), Intent(in) :: ZvN(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cHp' 
+NameOfUnit(Iname) = 'CouplingChiFreVWp' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-((g2*ZX(gt1,2))/sqrt(2._dp))
+resR = 0._dp 
+resR = resR-((g2*Conjg(ZX(gt1,3)))/sqrt(2._dp))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiFreVWpT  
+ 
+ 
+Subroutine CouplingcFreChicVWpT(gt2,g2,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: g2
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFreChicVWp' 
  
 If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -2957,9 +3082,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+YR4*Conjg(ZvN(gt2,1))
+resL = resL-((g2*Conjg(ZX(gt2,2)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-(YR3*ZvN(gt2,1))
+resR = resR-((g2*ZX(gt2,3))/sqrt(2._dp))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2968,7 +3093,7 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingcFreNv0cHpT  
+End Subroutine CouplingcFreChicVWpT  
  
  
 Subroutine CouplingcFdFdVGT(gt1,gt2,g3,resL,resR)
@@ -3168,53 +3293,6 @@ Iname = Iname - 1
 End Subroutine CouplingcFdFdVZT  
  
  
-Subroutine CouplingFvFeVWpT(gt1,gt2,g2,ZEL,Vv,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(in) :: ZEL(3,3),Vv(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingFvFeVWp' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-Do j1 = 1,3
-resL = resL-((g2*Conjg(ZEL(gt2,j1))*Vv(gt1,j1))/sqrt(2._dp))
-End Do 
-resR = 0._dp 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingFvFeVWpT  
- 
- 
 Subroutine CouplingcFeFeVPT(gt1,gt2,g1,g2,TW,resL,resR)
 
 Implicit None 
@@ -3266,6 +3344,53 @@ Iname = Iname - 1
 End Subroutine CouplingcFeFeVPT  
  
  
+Subroutine CouplingcFvFeVWpT(gt1,gt2,g2,ZEL,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: g2
+
+Complex(dp), Intent(in) :: ZEL(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFvFeVWp' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((gt1.le.3).And.(gt1.ge.1)) Then 
+resL = resL-((g2*Conjg(ZEL(gt2,gt1)))/sqrt(2._dp))
+End If 
+resR = 0._dp 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFvFeVWpT  
+ 
+ 
 Subroutine CouplingcFeFeVZT(gt1,gt2,g1,g2,TW,resL,resR)
 
 Implicit None 
@@ -3315,44 +3440,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingcFeFeVZT  
- 
- 
-Subroutine CouplingNv0FreVWpT(gt1,g2,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0FreVWp' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL-((g2*ZvN(gt1,2))/sqrt(2._dp))
-resR = 0._dp 
-resR = resR-((g2*Conjg(ZvN(gt1,3)))/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingNv0FreVWpT  
  
  
 Subroutine CouplingcFreFreVPT(g1,g2,TW,resL,resR)
@@ -3610,7 +3697,7 @@ Iname = Iname - 1
 End Subroutine CouplingcFdFucVWpT  
  
  
-Subroutine CouplingFvFvVZT(gt1,gt2,g1,g2,TW,resL,resR)
+Subroutine CouplingcFvFvVZT(gt1,gt2,g1,g2,TW,resL,resR)
 
 Implicit None 
 
@@ -3621,7 +3708,7 @@ Complex(dp), Intent(out) :: resL, resR
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingFvFvVZ' 
+NameOfUnit(Iname) = 'CouplingcFvFvVZ' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -3647,12 +3734,6 @@ If ((gt1.eq.gt2)) Then
 resL = resL-(g1*Sin(TW))/2._dp
 End If 
 resR = 0._dp 
-If ((gt1.eq.gt2)) Then 
-resR = resR+(g2*Cos(TW))/2._dp
-End If 
-If ((gt1.eq.gt2)) Then 
-resR = resR+(g1*Sin(TW))/2._dp
-End If 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -3661,17 +3742,17 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingFvFvVZT  
+End Subroutine CouplingcFvFvVZT  
  
  
-Subroutine CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,Vv,resL,resR)
+Subroutine CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
 Real(dp), Intent(in) :: g2
 
-Complex(dp), Intent(in) :: ZEL(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: ZEL(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -3696,9 +3777,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-Do j1 = 1,3
-resL = resL-((g2*Conjg(Vv(gt2,j1))*ZEL(gt1,j1))/sqrt(2._dp))
-End Do 
+If ((gt2.le.3).And.(gt2.ge.1)) Then 
+resL = resL-((g2*ZEL(gt1,gt2))/sqrt(2._dp))
+End If 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -3709,96 +3790,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingcFeFvcVWpT  
- 
- 
-Subroutine CouplingNv0Nv0VZT(gt1,gt2,g1,g2,ZvN,TW,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: g1,g2,TW
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0VZ' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL-(g2*Conjg(ZvN(gt2,2))*Cos(TW)*ZvN(gt1,2))/2._dp
-resL = resL-(g1*Conjg(ZvN(gt2,2))*Sin(TW)*ZvN(gt1,2))/2._dp
-resL = resL+(g2*Conjg(ZvN(gt2,3))*Cos(TW)*ZvN(gt1,3))/2._dp
-resL = resL+(g1*Conjg(ZvN(gt2,3))*Sin(TW)*ZvN(gt1,3))/2._dp
-resR = 0._dp 
-resR = resR+(g2*Conjg(ZvN(gt1,2))*Cos(TW)*ZvN(gt2,2))/2._dp
-resR = resR+(g1*Conjg(ZvN(gt1,2))*Sin(TW)*ZvN(gt2,2))/2._dp
-resR = resR-(g2*Conjg(ZvN(gt1,3))*Cos(TW)*ZvN(gt2,3))/2._dp
-resR = resR-(g1*Conjg(ZvN(gt1,3))*Sin(TW)*ZvN(gt2,3))/2._dp
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingNv0Nv0VZT  
- 
- 
-Subroutine CouplingcFreNv0cVWpT(gt2,g2,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt2
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cVWp' 
- 
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL-((g2*Conjg(ZvN(gt2,2)))/sqrt(2._dp))
-resR = 0._dp 
-resR = resR-((g2*ZvN(gt2,3))/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcFreNv0cVWpT  
  
  
 Subroutine CouplingVGVGVGVGT(g3,res1,res2,res3)
@@ -4585,11 +4576,11 @@ Iname = Iname - 1
 End Subroutine CouplingcgWCgZcHpT  
  
  
-Subroutine CouplingsForEffPot4(Lam,cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,              & 
+Subroutine CouplingsForEffPot4(lam1,cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,             & 
 & cplhhhhhhhh,cplhhhhHpcHp,cplHpHpcHpcHp)
 
 Implicit None 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,cplhhhhhhhh,cplhhhhHpcHp,cplHpHpcHpcHp
 
@@ -4599,60 +4590,59 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CouplingsForEffPot4'
  
 cplAhAhAhAh = 0._dp 
-Call CouplingAhAhAhAh2L(Lam,cplAhAhAhAh)
+Call CouplingAhAhAhAh2L(lam1,cplAhAhAhAh)
 
 
 
 cplAhAhhhhh = 0._dp 
-Call CouplingAhAhhhhh2L(Lam,cplAhAhhhhh)
+Call CouplingAhAhhhhh2L(lam1,cplAhAhhhhh)
 
 
 
 cplAhAhHpcHp = 0._dp 
-Call CouplingAhAhHpcHp2L(Lam,cplAhAhHpcHp)
+Call CouplingAhAhHpcHp2L(lam1,cplAhAhHpcHp)
 
 
 
 cplhhhhhhhh = 0._dp 
-Call Couplinghhhhhhhh2L(Lam,cplhhhhhhhh)
+Call Couplinghhhhhhhh2L(lam1,cplhhhhhhhh)
 
 
 
 cplhhhhHpcHp = 0._dp 
-Call CouplinghhhhHpcHp2L(Lam,cplhhhhHpcHp)
+Call CouplinghhhhHpcHp2L(lam1,cplhhhhHpcHp)
 
 
 
 cplHpHpcHpcHp = 0._dp 
-Call CouplingHpHpcHpcHp2L(Lam,cplHpHpcHpcHp)
+Call CouplingHpHpcHpcHp2L(lam1,cplHpHpcHpcHp)
 
 
 
 Iname = Iname - 1 
 End Subroutine CouplingsForEffPot4
 
-Subroutine CouplingsForEffPot3(Lam,v,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,ZUR,             & 
-& YR3,YR4,ZvN,Vv,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplVGVGVG,cplcFdFdAhL,cplcFdFdAhR,       & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplNv0Nv0AhL,cplNv0Nv0AhR,             & 
-& cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,     & 
-& cplcFeFehhR,cplNv0FreHpL,cplNv0FreHpR,cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,            & 
-& cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplNv0Nv0hhL,cplNv0Nv0hhR,cplcFreNv0cHpL,       & 
-& cplcFreNv0cHpR,cplcFdFdVGL,cplcFdFdVGR,cplcFuFuVGL,cplcFuFuVGR)
+Subroutine CouplingsForEffPot3(lam1,v,g3,lamd,lamu,ZX,Yd,ZDL,ZDR,Ye,ZEL,              & 
+& ZER,Yu,ZUL,ZUR,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplVGVGVG,cplChiChiAhL,cplChiChiAhR,     & 
+& cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
+& cplChiChihhL,cplChiChihhR,cplChiFreHpL,cplChiFreHpR,cplcFreChicHpL,cplcFreChicHpR,     & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,cplcFeFehhL,cplcFeFehhR,               & 
+& cplcFvFeHpL,cplcFvFeHpR,cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFdFdVGL,cplcFdFdVGR,cplcFuFuVGL,cplcFuFuVGR)
 
 Implicit None 
-Real(dp), Intent(in) :: v,g3,YR3,YR4
+Real(dp), Intent(in) :: v,g3,lamd,lamu
 
-Complex(dp), Intent(in) :: Lam,Yd(3,3),ZDL(3,3),ZDR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Yu(3,3),ZUL(3,3),             & 
-& ZUR(3,3),ZvN(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: lam1,ZX(3,3),Yd(3,3),ZDL(3,3),ZDR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Yu(3,3),             & 
+& ZUL(3,3),ZUR(3,3)
 
-Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplVGVGVG,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),           & 
-& cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplNv0Nv0AhL(3,3), & 
-& cplNv0Nv0AhR(3,3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFuFdHpL(3,3),cplcFuFdHpR(3,3), & 
-& cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplNv0FreHpL(3),     & 
-& cplNv0FreHpR(3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFdFucHpL(3,3),cplcFdFucHpR(3,3), & 
-& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplNv0Nv0hhL(3,3),cplNv0Nv0hhR(3,3),               & 
-& cplcFreNv0cHpL(3),cplcFreNv0cHpR(3),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFuFuVGL(3,3),& 
-& cplcFuFuVGR(3,3)
+Complex(dp), Intent(out) :: cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplVGVGVG,cplChiChiAhL(3,3),cplChiChiAhR(3,3),         & 
+& cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFuFuAhL(3,3),  & 
+& cplcFuFuAhR(3,3),cplChiChihhL(3,3),cplChiChihhR(3,3),cplChiFreHpL(3),cplChiFreHpR(3),  & 
+& cplcFreChicHpL(3),cplcFreChicHpR(3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFuFdHpL(3,3),& 
+& cplcFuFdHpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),  & 
+& cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),& 
+& cplcFeFvcHpR(3,3),cplcFdFdVGL(3,3),cplcFdFdVGR(3,3),cplcFuFuVGL(3,3),cplcFuFuVGR(3,3)
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -4660,23 +4650,33 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CouplingsForEffPot3'
  
 cplAhAhhh = 0._dp 
-Call CouplingAhAhhh2L(Lam,v,cplAhAhhh)
+Call CouplingAhAhhh2L(lam1,v,cplAhAhhh)
 
 
 
 cplhhhhhh = 0._dp 
-Call Couplinghhhhhh2L(Lam,v,cplhhhhhh)
+Call Couplinghhhhhh2L(lam1,v,cplhhhhhh)
 
 
 
 cplhhHpcHp = 0._dp 
-Call CouplinghhHpcHp2L(Lam,v,cplhhHpcHp)
+Call CouplinghhHpcHp2L(lam1,v,cplhhHpcHp)
 
 
 
 cplVGVGVG = 0._dp 
 Call CouplingVGVGVG2L(g3,cplVGVGVG)
 
+
+
+cplChiChiAhL = 0._dp 
+cplChiChiAhR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChiAh2L(gt1,gt2,lamd,lamu,ZX,cplChiChiAhL(gt1,gt2),cplChiChiAhR(gt1,gt2))
+
+ End Do 
+End Do 
 
 
 cplcFdFdAhL = 0._dp 
@@ -4709,13 +4709,29 @@ Call CouplingcFuFuAh2L(gt1,gt2,Yu,ZUL,ZUR,cplcFuFuAhL(gt1,gt2),cplcFuFuAhR(gt1,g
 End Do 
 
 
-cplNv0Nv0AhL = 0._dp 
-cplNv0Nv0AhR = 0._dp 
+cplChiChihhL = 0._dp 
+cplChiChihhR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingNv0Nv0Ah2L(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0AhL(gt1,gt2),cplNv0Nv0AhR(gt1,gt2))
+Call CouplingChiChihh2L(gt1,gt2,lamd,lamu,ZX,cplChiChihhL(gt1,gt2),cplChiChihhR(gt1,gt2))
 
  End Do 
+End Do 
+
+
+cplChiFreHpL = 0._dp 
+cplChiFreHpR = 0._dp 
+Do gt1 = 1, 3
+Call CouplingChiFreHp2L(gt1,lamd,lamu,ZX,cplChiFreHpL(gt1),cplChiFreHpR(gt1))
+
+End Do 
+
+
+cplcFreChicHpL = 0._dp 
+cplcFreChicHpR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreChicHp2L(gt2,lamd,lamu,ZX,cplcFreChicHpL(gt2),cplcFreChicHpR(gt2))
+
 End Do 
 
 
@@ -4740,16 +4756,6 @@ Call CouplingcFuFdHp2L(gt1,gt2,Yu,Yd,ZDL,ZDR,ZUL,ZUR,cplcFuFdHpL(gt1,gt2)       
 End Do 
 
 
-cplFvFeHpL = 0._dp 
-cplFvFeHpR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingFvFeHp2L(gt1,gt2,Ye,ZER,Vv,cplFvFeHpL(gt1,gt2),cplFvFeHpR(gt1,gt2))
-
- End Do 
-End Do 
-
-
 cplcFeFehhL = 0._dp 
 cplcFeFehhR = 0._dp 
 Do gt1 = 1, 3
@@ -4760,11 +4766,13 @@ Call CouplingcFeFehh2L(gt1,gt2,Ye,ZEL,ZER,cplcFeFehhL(gt1,gt2),cplcFeFehhR(gt1,g
 End Do 
 
 
-cplNv0FreHpL = 0._dp 
-cplNv0FreHpR = 0._dp 
+cplcFvFeHpL = 0._dp 
+cplcFvFeHpR = 0._dp 
 Do gt1 = 1, 3
-Call CouplingNv0FreHp2L(gt1,YR3,YR4,ZvN,cplNv0FreHpL(gt1),cplNv0FreHpR(gt1))
+ Do gt2 = 1, 3
+Call CouplingcFvFeHp2L(gt1,gt2,Ye,ZER,cplcFvFeHpL(gt1,gt2),cplcFvFeHpR(gt1,gt2))
 
+ End Do 
 End Do 
 
 
@@ -4793,27 +4801,9 @@ cplcFeFvcHpL = 0._dp
 cplcFeFvcHpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcHp2L(gt1,gt2,Ye,ZER,Vv,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
+Call CouplingcFeFvcHp2L(gt1,gt2,Ye,ZER,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
 
  End Do 
-End Do 
-
-
-cplNv0Nv0hhL = 0._dp 
-cplNv0Nv0hhR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0hh2L(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0hhL(gt1,gt2),cplNv0Nv0hhR(gt1,gt2))
-
- End Do 
-End Do 
-
-
-cplcFreNv0cHpL = 0._dp 
-cplcFreNv0cHpR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreNv0cHp2L(gt2,YR3,YR4,ZvN,cplcFreNv0cHpL(gt2),cplcFreNv0cHpR(gt2))
-
 End Do 
 
 
@@ -4840,11 +4830,11 @@ End Do
 Iname = Iname - 1 
 End Subroutine CouplingsForEffPot3
 
-Subroutine CouplingAhAhAhAh2L(Lam,res)
+Subroutine CouplingAhAhAhAh2L(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -4853,7 +4843,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhAhAh' 
  
 res = 0._dp 
-res = res-3._dp*(Lam)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -4865,11 +4855,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhAhAh2L  
  
  
-Subroutine CouplingAhAhhhhh2L(Lam,res)
+Subroutine CouplingAhAhhhhh2L(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -4878,7 +4868,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhhhh' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -4890,11 +4880,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhhhhh2L  
  
  
-Subroutine CouplingAhAhHpcHp2L(Lam,res)
+Subroutine CouplingAhAhHpcHp2L(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -4903,7 +4893,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -4915,11 +4905,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhHpcHp2L  
  
  
-Subroutine Couplinghhhhhhhh2L(Lam,res)
+Subroutine Couplinghhhhhhhh2L(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -4928,7 +4918,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhhhh' 
  
 res = 0._dp 
-res = res-3._dp*(Lam)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -4940,11 +4930,11 @@ Iname = Iname - 1
 End Subroutine Couplinghhhhhhhh2L  
  
  
-Subroutine CouplinghhhhHpcHp2L(Lam,res)
+Subroutine CouplinghhhhHpcHp2L(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -4953,7 +4943,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhhhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -4965,11 +4955,11 @@ Iname = Iname - 1
 End Subroutine CouplinghhhhHpcHp2L  
  
  
-Subroutine CouplingHpHpcHpcHp2L(Lam,res)
+Subroutine CouplingHpHpcHpcHp2L(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -4978,7 +4968,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingHpHpcHpcHp' 
  
 res = 0._dp 
-res = res-2._dp*(Lam)
+res = res-4._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -4990,13 +4980,13 @@ Iname = Iname - 1
 End Subroutine CouplingHpHpcHpcHp2L  
  
  
-Subroutine CouplingAhAhhh2L(Lam,v,res)
+Subroutine CouplingAhAhhh2L(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -5005,7 +4995,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhh' 
  
 res = 0._dp 
-res = res-(Lam*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5017,13 +5007,13 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhhh2L  
  
  
-Subroutine Couplinghhhhhh2L(Lam,v,res)
+Subroutine Couplinghhhhhh2L(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -5032,7 +5022,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhh' 
  
 res = 0._dp 
-res = res-3*Lam*v
+res = res-6*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5044,13 +5034,13 @@ Iname = Iname - 1
 End Subroutine Couplinghhhhhh2L  
  
  
-Subroutine CouplinghhHpcHp2L(Lam,v,res)
+Subroutine CouplinghhHpcHp2L(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -5059,7 +5049,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhHpcHp' 
  
 res = 0._dp 
-res = res-(Lam*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5096,6 +5086,62 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingVGVGVG2L  
+ 
+ 
+Subroutine CouplingChiChiAh2L(gt1,gt2,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiChiAh' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resR = 0._dp 
+resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
+resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
+resL = -(0.,1.)*resL 
+ 
+resR = -(0.,1.)*resR 
+ 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiChiAh2L  
  
  
 Subroutine CouplingcFdFdAh2L(gt1,gt2,Yd,ZDL,ZDR,resL,resR)
@@ -5266,20 +5312,20 @@ Iname = Iname - 1
 End Subroutine CouplingcFuFuAh2L  
  
  
-Subroutine CouplingNv0Nv0Ah2L(gt1,gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingChiChihh2L(gt1,gt2,lamd,lamu,ZX,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
+Real(dp), Intent(in) :: lamd,lamu
 
-Complex(dp), Intent(in) :: ZvN(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0Ah' 
+NameOfUnit(Iname) = 'CouplingChiChihh' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -5298,19 +5344,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-((YR3*Conjg(ZvN(gt1,2))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL-((YR4*Conjg(ZvN(gt1,3))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL-((YR3*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,2)))/sqrt(2._dp))
-resL = resL-((YR4*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
+resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
 resR = 0._dp 
-resR = resR+(YR3*ZvN(gt1,2)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR+(YR4*ZvN(gt1,3)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR+(YR3*ZvN(gt1,1)*ZvN(gt2,2))/sqrt(2._dp)
-resR = resR+(YR4*ZvN(gt1,1)*ZvN(gt2,3))/sqrt(2._dp)
-resL = -(0.,1.)*resL 
- 
-resR = -(0.,1.)*resR 
- 
+resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5319,7 +5361,83 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingNv0Nv0Ah2L  
+End Subroutine CouplingChiChihh2L  
+ 
+ 
+Subroutine CouplingChiFreHp2L(gt1,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiFreHp' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL+lamd*Conjg(ZX(gt1,1))
+resR = 0._dp 
+resR = resR-(lamu*ZX(gt1,1))
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiFreHp2L  
+ 
+ 
+Subroutine CouplingcFreChicHp2L(gt2,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingcFreChicHp' 
+ 
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(lamu*Conjg(ZX(gt2,1)))
+resR = 0._dp 
+resR = resR+lamd*ZX(gt2,1)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingcFreChicHp2L  
  
  
 Subroutine CouplingcFdFdhh2L(gt1,gt2,Yd,ZDL,ZDR,resL,resR)
@@ -5426,53 +5544,6 @@ Iname = Iname - 1
 End Subroutine CouplingcFuFdHp2L  
  
  
-Subroutine CouplingFvFeHp2L(gt1,gt2,Ye,ZER,Vv,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3),Vv(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingFvFeHp' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resR = 0._dp 
-Do j2 = 1,3
-Do j1 = 1,3
-resR = resR+Conjg(Ye(j1,j2))*ZER(gt2,j1)*Vv(gt1,j2)
-End Do 
-End Do 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingFvFeHp2L  
- 
- 
 Subroutine CouplingcFeFehh2L(gt1,gt2,Ye,ZEL,ZER,resL,resR)
 
 Implicit None 
@@ -5525,20 +5596,18 @@ Iname = Iname - 1
 End Subroutine CouplingcFeFehh2L  
  
  
-Subroutine CouplingNv0FreHp2L(gt1,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingcFvFeHp2L(gt1,gt2,Ye,ZER,resL,resR)
 
 Implicit None 
 
-Integer, Intent(in) :: gt1
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
+Integer, Intent(in) :: gt1,gt2
+Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0FreHp' 
+NameOfUnit(Iname) = 'CouplingcFvFeHp' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -5548,10 +5617,19 @@ If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then
   Call TerminateProgram 
 End If 
 
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
 resL = 0._dp 
-resL = resL-(YR3*Conjg(ZvN(gt1,1)))
 resR = 0._dp 
-resR = resR+YR4*ZvN(gt1,1)
+Do j1 = 1,3
+resR = resR+Conjg(Ye(j1,gt1))*ZER(gt2,j1)
+End Do 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5560,7 +5638,7 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingNv0FreHp2L  
+End Subroutine CouplingcFvFeHp2L  
  
  
 Subroutine CouplingcFuFuhh2L(gt1,gt2,Yu,ZUL,ZUR,resL,resR)
@@ -5667,12 +5745,12 @@ Iname = Iname - 1
 End Subroutine CouplingcFdFucHp2L  
  
  
-Subroutine CouplingcFeFvcHp2L(gt1,gt2,Ye,ZER,Vv,resL,resR)
+Subroutine CouplingcFeFvcHp2L(gt1,gt2,Ye,ZER,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -5697,10 +5775,8 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-Do j2 = 1,3
 Do j1 = 1,3
-resL = resL+Conjg(ZER(gt1,j1))*Conjg(Vv(gt2,j2))*Ye(j1,j2)
-End Do 
+resL = resL+Conjg(ZER(gt1,j1))*Ye(j1,gt2)
 End Do 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
@@ -5712,96 +5788,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingcFeFvcHp2L  
- 
- 
-Subroutine CouplingNv0Nv0hh2L(gt1,gt2,YR3,YR4,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0hh' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL+(YR3*Conjg(ZvN(gt1,2))*Conjg(ZvN(gt2,1)))/sqrt(2._dp)
-resL = resL-((YR4*Conjg(ZvN(gt1,3))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL+(YR3*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,2)))/sqrt(2._dp)
-resL = resL-((YR4*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
-resR = 0._dp 
-resR = resR+(YR3*ZvN(gt1,2)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR-((YR4*ZvN(gt1,3)*ZvN(gt2,1))/sqrt(2._dp))
-resR = resR+(YR3*ZvN(gt1,1)*ZvN(gt2,2))/sqrt(2._dp)
-resR = resR-((YR4*ZvN(gt1,1)*ZvN(gt2,3))/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingNv0Nv0hh2L  
- 
- 
-Subroutine CouplingcFreNv0cHp2L(gt2,YR3,YR4,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt2
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cHp' 
- 
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL+YR4*Conjg(ZvN(gt2,1))
-resR = 0._dp 
-resR = resR-(YR3*ZvN(gt2,1))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcFreNv0cHp2L  
  
  
 Subroutine CouplingcFdFdVG2L(gt1,gt2,g3,resL,resR)
@@ -5901,39 +5887,38 @@ End Subroutine CouplingcFuFuVG2L
  
  
 Subroutine CouplingsForLoopMasses(Yd,ZDL,ZDR,g3,g1,g2,TW,Yu,ZUL,ZUR,Ye,               & 
-& ZEL,ZER,Vv,YR3,YR4,ZvN,v,Lam,cplcUFdFdAhL,cplcUFdFdAhR,cplcUFdFdhhL,cplcUFdFdhhR,      & 
+& ZEL,ZER,lamd,lamu,ZX,v,lam1,cplcUFdFdAhL,cplcUFdFdAhR,cplcUFdFdhhL,cplcUFdFdhhR,       & 
 & cplcUFdFdVGL,cplcUFdFdVGR,cplcUFdFdVPL,cplcUFdFdVPR,cplcUFdFdVZL,cplcUFdFdVZR,         & 
 & cplcUFdFucHpL,cplcUFdFucHpR,cplcUFdFucVWpL,cplcUFdFucVWpR,cplcUFuFuAhL,cplcUFuFuAhR,   & 
 & cplcUFuFdHpL,cplcUFuFdHpR,cplcUFuFdVWpL,cplcUFuFdVWpR,cplcUFuFuhhL,cplcUFuFuhhR,       & 
 & cplcUFuFuVGL,cplcUFuFuVGR,cplcUFuFuVPL,cplcUFuFuVPR,cplcUFuFuVZL,cplcUFuFuVZR,         & 
 & cplcUFeFeAhL,cplcUFeFeAhR,cplcUFeFehhL,cplcUFeFehhR,cplcUFeFeVPL,cplcUFeFeVPR,         & 
 & cplcUFeFeVZL,cplcUFeFeVZR,cplcUFeFvcHpL,cplcUFeFvcHpR,cplcUFeFvcVWpL,cplcUFeFvcVWpR,   & 
-& cplUNv0Nv0AhL,cplUNv0Nv0AhR,cplUNv0FreHpL,cplUNv0FreHpR,cplUNv0FreVWpL,cplUNv0FreVWpR, & 
-& cplUNv0Nv0hhL,cplUNv0Nv0hhR,cplUNv0Nv0VZL,cplUNv0Nv0VZR,cplUFvFeHpL,cplUFvFeHpR,       & 
-& cplUFvFeVWpL,cplUFvFeVWpR,cplUFvFvVZL,cplUFvFvVZR,cplcFreFreVPL,cplcFreFreVPR,         & 
-& cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cHpL,cplcFreNv0cHpR,cplcFreNv0cVWpL,             & 
-& cplcFreNv0cVWpR,cplAhcHpVWp,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,       & 
-& cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,cplcgZgWCHp,cplhhHpcHp,cplhhcHpVWp,              & 
-& cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplAhAhHpcHp,cplhhhhHpcHp,               & 
-& cplHpHpcHpcHp,cplHpcHpVPVP,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhAhhh,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplcgWpgWpAh,              & 
-& cplcgWCgWCAh,cplAhhhVZ,cplAhHpcVWp,cplNv0Nv0AhL,cplNv0Nv0AhR,cplAhAhAhAh,              & 
-& cplAhAhhhhh,cplAhAhcVWpVWp,cplAhAhVZVZ,cplcFdFdhhL,cplcFdFdhhR,cplcFeFehhL,            & 
-& cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,              & 
-& cplhhhhhh,cplhhHpcVWp,cplNv0Nv0hhL,cplNv0Nv0hhR,cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,    & 
-& cplhhhhcVWpVWp,cplhhhhVZVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,            & 
-& cplcFuFuVZL,cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWpgWpVZ,cplcgWCgWCVZ,               & 
-& cplHpcVWpVZ,cplNv0Nv0VZL,cplNv0Nv0VZR,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,    & 
+& cplUChiChiAhL,cplUChiChiAhR,cplUChiChihhL,cplUChiChihhR,cplUChiChiVZL,cplUChiChiVZR,   & 
+& cplUChiFreHpL,cplUChiFreHpR,cplUChiFreVWpL,cplUChiFreVWpR,cplcFreChicHpL,              & 
+& cplcFreChicHpR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFreFreVPL,cplcFreFreVPR,            & 
+& cplcFreFreVZL,cplcFreFreVZR,cplAhcHpVWp,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,        & 
+& cplcFeFvcHpR,cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,cplcgZgWCHp,cplhhHpcHp,             & 
+& cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplAhAhHpcHp,cplhhhhHpcHp,   & 
+& cplHpHpcHpcHp,cplHpcHpVPVP,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhAhhh,cplChiChiAhL,        & 
+& cplChiChiAhR,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,              & 
+& cplcFuFuAhR,cplcgWpgWpAh,cplcgWCgWCAh,cplAhhhVZ,cplAhHpcVWp,cplAhAhAhAh,               & 
+& cplAhAhhhhh,cplAhAhcVWpVWp,cplAhAhVZVZ,cplChiChihhL,cplChiChihhR,cplcFdFdhhL,          & 
+& cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,              & 
+& cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,      & 
+& cplhhhhcVWpVWp,cplhhhhVZVZ,cplChiChiVZL,cplChiChiVZR,cplcFdFdVZL,cplcFdFdVZR,          & 
+& cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,               & 
+& cplcgWpgWpVZ,cplcgWCgWCVZ,cplHpcVWpVZ,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,    & 
 & cplcVWpVWpVZVZ3,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFvcVWpL,cplcFeFvcVWpR,               & 
 & cplcgWCgAcVWp,cplcgAgWpcVWp,cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,      & 
 & cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2, & 
 & cplcVWpcVWpVWpVWp3)
 
 Implicit None 
-Real(dp), Intent(in) :: g3,g1,g2,TW,YR3,YR4,v
+Real(dp), Intent(in) :: g3,g1,g2,TW,lamd,lamu,v
 
 Complex(dp), Intent(in) :: Yd(3,3),ZDL(3,3),ZDR(3,3),Yu(3,3),ZUL(3,3),ZUR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),        & 
-& Vv(3,3),ZvN(3,3),Lam
+& ZX(3,3),lam1
 
 Complex(dp), Intent(out) :: cplcUFdFdAhL(3,3),cplcUFdFdAhR(3,3),cplcUFdFdhhL(3,3),cplcUFdFdhhR(3,3),              & 
 & cplcUFdFdVGL(3,3),cplcUFdFdVGR(3,3),cplcUFdFdVPL(3,3),cplcUFdFdVPR(3,3),               & 
@@ -5945,28 +5930,27 @@ Complex(dp), Intent(out) :: cplcUFdFdAhL(3,3),cplcUFdFdAhR(3,3),cplcUFdFdhhL(3,3
 & cplcUFeFeAhL(3,3),cplcUFeFeAhR(3,3),cplcUFeFehhL(3,3),cplcUFeFehhR(3,3),               & 
 & cplcUFeFeVPL(3,3),cplcUFeFeVPR(3,3),cplcUFeFeVZL(3,3),cplcUFeFeVZR(3,3),               & 
 & cplcUFeFvcHpL(3,3),cplcUFeFvcHpR(3,3),cplcUFeFvcVWpL(3,3),cplcUFeFvcVWpR(3,3),         & 
-& cplUNv0Nv0AhL(3,3),cplUNv0Nv0AhR(3,3),cplUNv0FreHpL(3),cplUNv0FreHpR(3),               & 
-& cplUNv0FreVWpL(3),cplUNv0FreVWpR(3),cplUNv0Nv0hhL(3,3),cplUNv0Nv0hhR(3,3),             & 
-& cplUNv0Nv0VZL(3,3),cplUNv0Nv0VZR(3,3),cplUFvFeHpL(3,3),cplUFvFeHpR(3,3),               & 
-& cplUFvFeVWpL(3,3),cplUFvFeVWpR(3,3),cplUFvFvVZL(3,3),cplUFvFvVZR(3,3),cplcFreFreVPL,   & 
-& cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cHpL(3),cplcFreNv0cHpR(3),         & 
-& cplcFreNv0cVWpL(3),cplcFreNv0cVWpR(3),cplAhcHpVWp,cplcFdFucHpL(3,3),cplcFdFucHpR(3,3), & 
-& cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,             & 
-& cplcgZgWCHp,cplhhHpcHp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,      & 
-& cplAhAhHpcHp,cplhhhhHpcHp,cplHpHpcHpcHp,cplHpcHpVPVP,cplHpcHpcVWpVWp,cplHpcHpVZVZ,     & 
-& cplAhAhhh,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),         & 
+& cplUChiChiAhL(3,3),cplUChiChiAhR(3,3),cplUChiChihhL(3,3),cplUChiChihhR(3,3),           & 
+& cplUChiChiVZL(3,3),cplUChiChiVZR(3,3),cplUChiFreHpL(3),cplUChiFreHpR(3),               & 
+& cplUChiFreVWpL(3),cplUChiFreVWpR(3),cplcFreChicHpL(3),cplcFreChicHpR(3),               & 
+& cplcFreChicVWpL(3),cplcFreChicVWpR(3),cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,       & 
+& cplcFreFreVZR,cplAhcHpVWp,cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),       & 
+& cplcFeFvcHpR(3,3),cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,cplcgZgWCHp,cplhhHpcHp,        & 
+& cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplAhAhHpcHp,cplhhhhHpcHp,   & 
+& cplHpHpcHpcHp,cplHpcHpVPVP,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhAhhh,cplChiChiAhL(3,3),   & 
+& cplChiChiAhR(3,3),cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3), & 
 & cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcgWpgWpAh,cplcgWCgWCAh,cplAhhhVZ,cplAhHpcVWp,     & 
-& cplNv0Nv0AhL(3,3),cplNv0Nv0AhR(3,3),cplAhAhAhAh,cplAhAhhhhh,cplAhAhcVWpVWp,            & 
-& cplAhAhVZVZ,cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),       & 
-& cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,      & 
-& cplhhHpcVWp,cplNv0Nv0hhL(3,3),cplNv0Nv0hhR(3,3),cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,    & 
-& cplhhhhcVWpVWp,cplhhhhVZVZ,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),         & 
-& cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),    & 
-& cplcgWpgWpVZ,cplcgWCgWCVZ,cplHpcVWpVZ,cplNv0Nv0VZL(3,3),cplNv0Nv0VZR(3,3),             & 
-& cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplcFdFucVWpL(3,3),       & 
-& cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcgWCgAcVWp,cplcgAgWpcVWp,  & 
-& cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,  & 
-& cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3
+& cplAhAhAhAh,cplAhAhhhhh,cplAhAhcVWpVWp,cplAhAhVZVZ,cplChiChihhL(3,3),cplChiChihhR(3,3),& 
+& cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFuFuhhL(3,3),  & 
+& cplcFuFuhhR(3,3),cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,cplhhHpcVWp,           & 
+& cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,cplhhhhcVWpVWp,cplhhhhVZVZ,cplChiChiVZL(3,3),       & 
+& cplChiChiVZR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3), & 
+& cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplcgWpgWpVZ,      & 
+& cplcgWCgWCVZ,cplHpcVWpVZ,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3, & 
+& cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),           & 
+& cplcgWCgAcVWp,cplcgAgWpcVWp,cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,      & 
+& cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2, & 
+& cplcVWpcVWpVWpVWp3
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -6157,7 +6141,7 @@ cplcUFeFvcHpL = 0._dp
 cplcUFeFvcHpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcUFeFvcHpL(gt1,gt2,Ye,Vv,cplcUFeFvcHpL(gt1,gt2),cplcUFeFvcHpR(gt1,gt2))
+Call CouplingcUFeFvcHpL(gt1,gt2,Ye,cplcUFeFvcHpL(gt1,gt2),cplcUFeFvcHpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -6167,85 +6151,71 @@ cplcUFeFvcVWpL = 0._dp
 cplcUFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcUFeFvcVWpL(gt1,gt2,g2,Vv,cplcUFeFvcVWpL(gt1,gt2),cplcUFeFvcVWpR(gt1,gt2))
+Call CouplingcUFeFvcVWpL(gt1,gt2,g2,cplcUFeFvcVWpL(gt1,gt2),cplcUFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplUNv0Nv0AhL = 0._dp 
-cplUNv0Nv0AhR = 0._dp 
+cplUChiChiAhL = 0._dp 
+cplUChiChiAhR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingUNv0Nv0AhL(gt1,gt2,YR3,YR4,ZvN,cplUNv0Nv0AhL(gt1,gt2),cplUNv0Nv0AhR(gt1,gt2))
+Call CouplingUChiChiAhL(gt1,gt2,lamd,lamu,ZX,cplUChiChiAhL(gt1,gt2),cplUChiChiAhR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplUNv0FreHpL = 0._dp 
-cplUNv0FreHpR = 0._dp 
-Do gt1 = 1, 3
-Call CouplingUNv0FreHpL(gt1,YR3,YR4,cplUNv0FreHpL(gt1),cplUNv0FreHpR(gt1))
-
-End Do 
-
-
-cplUNv0FreVWpL = 0._dp 
-cplUNv0FreVWpR = 0._dp 
-Do gt1 = 1, 3
-Call CouplingUNv0FreVWpL(gt1,g2,cplUNv0FreVWpL(gt1),cplUNv0FreVWpR(gt1))
-
-End Do 
-
-
-cplUNv0Nv0hhL = 0._dp 
-cplUNv0Nv0hhR = 0._dp 
+cplUChiChihhL = 0._dp 
+cplUChiChihhR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingUNv0Nv0hhL(gt1,gt2,YR3,YR4,ZvN,cplUNv0Nv0hhL(gt1,gt2),cplUNv0Nv0hhR(gt1,gt2))
+Call CouplingUChiChihhL(gt1,gt2,lamd,lamu,ZX,cplUChiChihhL(gt1,gt2),cplUChiChihhR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplUNv0Nv0VZL = 0._dp 
-cplUNv0Nv0VZR = 0._dp 
+cplUChiChiVZL = 0._dp 
+cplUChiChiVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingUNv0Nv0VZL(gt1,gt2,g1,g2,ZvN,TW,cplUNv0Nv0VZL(gt1,gt2),cplUNv0Nv0VZR(gt1,gt2))
+Call CouplingUChiChiVZL(gt1,gt2,g1,g2,ZX,TW,cplUChiChiVZL(gt1,gt2),cplUChiChiVZR(gt1,gt2))
 
  End Do 
 End Do 
 
 
-cplUFvFeHpL = 0._dp 
-cplUFvFeHpR = 0._dp 
+cplUChiFreHpL = 0._dp 
+cplUChiFreHpR = 0._dp 
 Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingUFvFeHpL(gt1,gt2,Ye,ZER,cplUFvFeHpL(gt1,gt2),cplUFvFeHpR(gt1,gt2))
+Call CouplingUChiFreHpL(gt1,lamd,lamu,cplUChiFreHpL(gt1),cplUChiFreHpR(gt1))
 
- End Do 
 End Do 
 
 
-cplUFvFeVWpL = 0._dp 
-cplUFvFeVWpR = 0._dp 
+cplUChiFreVWpL = 0._dp 
+cplUChiFreVWpR = 0._dp 
 Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingUFvFeVWpL(gt1,gt2,g2,ZEL,cplUFvFeVWpL(gt1,gt2),cplUFvFeVWpR(gt1,gt2))
+Call CouplingUChiFreVWpL(gt1,g2,cplUChiFreVWpL(gt1),cplUChiFreVWpR(gt1))
 
- End Do 
 End Do 
 
 
-cplUFvFvVZL = 0._dp 
-cplUFvFvVZR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingUFvFvVZL(gt1,gt2,g1,g2,Vv,TW,cplUFvFvVZL(gt1,gt2),cplUFvFvVZR(gt1,gt2))
+cplcFreChicHpL = 0._dp 
+cplcFreChicHpR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreChicHpL(gt2,lamd,lamu,ZX,cplcFreChicHpL(gt2),cplcFreChicHpR(gt2))
 
- End Do 
+End Do 
+
+
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreChicVWpL(gt2,g2,ZX,cplcFreChicVWpL(gt2),cplcFreChicVWpR(gt2))
+
 End Do 
 
 
@@ -6259,22 +6229,6 @@ cplcFreFreVZL = 0._dp
 cplcFreFreVZR = 0._dp 
 Call CouplingcFreFreVZL(g1,g2,TW,cplcFreFreVZL,cplcFreFreVZR)
 
-
-
-cplcFreNv0cHpL = 0._dp 
-cplcFreNv0cHpR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreNv0cHpL(gt2,YR3,YR4,ZvN,cplcFreNv0cHpL(gt2),cplcFreNv0cHpR(gt2))
-
-End Do 
-
-
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreNv0cVWpL(gt2,g2,ZvN,cplcFreNv0cVWpL(gt2),cplcFreNv0cVWpR(gt2))
-
-End Do 
 
 
 cplAhcHpVWp = 0._dp 
@@ -6297,7 +6251,7 @@ cplcFeFvcHpL = 0._dp
 cplcFeFvcHpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcHpL(gt1,gt2,Ye,ZER,Vv,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
+Call CouplingcFeFvcHpL(gt1,gt2,Ye,ZER,cplcFeFvcHpL(gt1,gt2),cplcFeFvcHpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -6324,7 +6278,7 @@ Call CouplingcgZgWCHpL(g1,g2,v,TW,cplcgZgWCHp)
 
 
 cplhhHpcHp = 0._dp 
-Call CouplinghhHpcHpL(Lam,v,cplhhHpcHp)
+Call CouplinghhHpcHpL(lam1,v,cplhhHpcHp)
 
 
 
@@ -6354,17 +6308,17 @@ Call CouplingcHpVWpVZL(g1,g2,v,TW,cplcHpVWpVZ)
 
 
 cplAhAhHpcHp = 0._dp 
-Call CouplingAhAhHpcHpL(Lam,cplAhAhHpcHp)
+Call CouplingAhAhHpcHpL(lam1,cplAhAhHpcHp)
 
 
 
 cplhhhhHpcHp = 0._dp 
-Call CouplinghhhhHpcHpL(Lam,cplhhhhHpcHp)
+Call CouplinghhhhHpcHpL(lam1,cplhhhhHpcHp)
 
 
 
 cplHpHpcHpcHp = 0._dp 
-Call CouplingHpHpcHpcHpL(Lam,cplHpHpcHpcHp)
+Call CouplingHpHpcHpcHpL(lam1,cplHpHpcHpcHp)
 
 
 
@@ -6384,8 +6338,18 @@ Call CouplingHpcHpVZVZL(g1,g2,TW,cplHpcHpVZVZ)
 
 
 cplAhAhhh = 0._dp 
-Call CouplingAhAhhhL(Lam,v,cplAhAhhh)
+Call CouplingAhAhhhL(lam1,v,cplAhAhhh)
 
+
+
+cplChiChiAhL = 0._dp 
+cplChiChiAhR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChiAhL(gt1,gt2,lamd,lamu,ZX,cplChiChiAhL(gt1,gt2),cplChiChiAhR(gt1,gt2))
+
+ End Do 
+End Do 
 
 
 cplcFdFdAhL = 0._dp 
@@ -6438,23 +6402,13 @@ Call CouplingAhHpcVWpL(g2,cplAhHpcVWp)
 
 
 
-cplNv0Nv0AhL = 0._dp 
-cplNv0Nv0AhR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0AhL(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0AhL(gt1,gt2),cplNv0Nv0AhR(gt1,gt2))
-
- End Do 
-End Do 
-
-
 cplAhAhAhAh = 0._dp 
-Call CouplingAhAhAhAhL(Lam,cplAhAhAhAh)
+Call CouplingAhAhAhAhL(lam1,cplAhAhAhAh)
 
 
 
 cplAhAhhhhh = 0._dp 
-Call CouplingAhAhhhhhL(Lam,cplAhAhhhhh)
+Call CouplingAhAhhhhhL(lam1,cplAhAhhhhh)
 
 
 
@@ -6466,6 +6420,16 @@ Call CouplingAhAhcVWpVWpL(g2,cplAhAhcVWpVWp)
 cplAhAhVZVZ = 0._dp 
 Call CouplingAhAhVZVZL(g1,g2,TW,cplAhAhVZVZ)
 
+
+
+cplChiChihhL = 0._dp 
+cplChiChihhR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChihhL(gt1,gt2,lamd,lamu,ZX,cplChiChihhL(gt1,gt2),cplChiChihhR(gt1,gt2))
+
+ End Do 
+End Do 
 
 
 cplcFdFdhhL = 0._dp 
@@ -6514,23 +6478,13 @@ Call CouplingcgZgZhhL(g1,g2,v,TW,cplcgZgZhh)
 
 
 cplhhhhhh = 0._dp 
-Call CouplinghhhhhhL(Lam,v,cplhhhhhh)
+Call CouplinghhhhhhL(lam1,v,cplhhhhhh)
 
 
 
 cplhhHpcVWp = 0._dp 
 Call CouplinghhHpcVWpL(g2,cplhhHpcVWp)
 
-
-
-cplNv0Nv0hhL = 0._dp 
-cplNv0Nv0hhR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0hhL(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0hhL(gt1,gt2),cplNv0Nv0hhR(gt1,gt2))
-
- End Do 
-End Do 
 
 
 cplhhcVWpVWp = 0._dp 
@@ -6544,7 +6498,7 @@ Call CouplinghhVZVZL(g1,g2,v,TW,cplhhVZVZ)
 
 
 cplhhhhhhhh = 0._dp 
-Call CouplinghhhhhhhhL(Lam,cplhhhhhhhh)
+Call CouplinghhhhhhhhL(lam1,cplhhhhhhhh)
 
 
 
@@ -6556,6 +6510,16 @@ Call CouplinghhhhcVWpVWpL(g2,cplhhhhcVWpVWp)
 cplhhhhVZVZ = 0._dp 
 Call CouplinghhhhVZVZL(g1,g2,TW,cplhhhhVZVZ)
 
+
+
+cplChiChiVZL = 0._dp 
+cplChiChiVZR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChiVZL(gt1,gt2,g1,g2,ZX,TW,cplChiChiVZL(gt1,gt2),cplChiChiVZR(gt1,gt2))
+
+ End Do 
+End Do 
 
 
 cplcFdFdVZL = 0._dp 
@@ -6588,11 +6552,11 @@ Call CouplingcFuFuVZL(gt1,gt2,g1,g2,TW,cplcFuFuVZL(gt1,gt2),cplcFuFuVZR(gt1,gt2)
 End Do 
 
 
-cplFvFvVZL = 0._dp 
-cplFvFvVZR = 0._dp 
+cplcFvFvVZL = 0._dp 
+cplcFvFvVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingFvFvVZL(gt1,gt2,g1,g2,TW,cplFvFvVZL(gt1,gt2),cplFvFvVZR(gt1,gt2))
+Call CouplingcFvFvVZL(gt1,gt2,g1,g2,TW,cplcFvFvVZL(gt1,gt2),cplcFvFvVZR(gt1,gt2))
 
  End Do 
 End Do 
@@ -6611,16 +6575,6 @@ Call CouplingcgWCgWCVZL(g2,TW,cplcgWCgWCVZ)
 cplHpcVWpVZ = 0._dp 
 Call CouplingHpcVWpVZL(g1,g2,v,TW,cplHpcVWpVZ)
 
-
-
-cplNv0Nv0VZL = 0._dp 
-cplNv0Nv0VZR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0VZL(gt1,gt2,g1,g2,ZvN,TW,cplNv0Nv0VZL(gt1,gt2),cplNv0Nv0VZR(gt1,gt2))
-
- End Do 
-End Do 
 
 
 cplcVWpVWpVZ = 0._dp 
@@ -6649,7 +6603,7 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpL(gt1,gt2,g2,ZEL,Vv,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpL(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -7642,12 +7596,12 @@ Iname = Iname - 1
 End Subroutine CouplingcUFeFeVZL  
  
  
-Subroutine CouplingcUFeFvcHpL(gt1,gt2,Ye,Vv,resL,resR)
+Subroutine CouplingcUFeFvcHpL(gt1,gt2,Ye,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: Ye(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -7673,9 +7627,7 @@ End If
 
 resL = 0._dp 
 If ((gt1.le.3).And.(gt1.ge.1)) Then 
-Do j2 = 1,3
-resL = resL+Conjg(Vv(gt2,j2))*Ye(gt1,j2)
-End Do 
+resL = resL+Ye(gt1,gt2)
 End If 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
@@ -7689,14 +7641,12 @@ Iname = Iname - 1
 End Subroutine CouplingcUFeFvcHpL  
  
  
-Subroutine CouplingcUFeFvcVWpL(gt1,gt2,g2,Vv,resL,resR)
+Subroutine CouplingcUFeFvcVWpL(gt1,gt2,g2,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
 Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(in) :: Vv(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -7721,8 +7671,8 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-resL = resL-((g2*Conjg(Vv(gt2,gt1)))/sqrt(2._dp))
+If ((gt1.eq.gt2).And.(gt2.le.3).And.(gt2.ge.1)) Then 
+resL = resL-(g2/sqrt(2._dp))
 End If 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
@@ -7736,20 +7686,20 @@ Iname = Iname - 1
 End Subroutine CouplingcUFeFvcVWpL  
  
  
-Subroutine CouplingUNv0Nv0AhL(gt1,gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingUChiChiAhL(gt1,gt2,lamd,lamu,ZX,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
+Real(dp), Intent(in) :: lamd,lamu
 
-Complex(dp), Intent(in) :: ZvN(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUNv0Nv0Ah' 
+NameOfUnit(Iname) = 'CouplingUChiChiAh' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -7769,29 +7719,29 @@ End If
 
 resL = 0._dp 
 If ((1.eq.gt1)) Then 
-resL = resL-((YR3*Conjg(ZvN(gt2,2)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt2,2)))/sqrt(2._dp)
 End If 
 If ((1.eq.gt1)) Then 
-resL = resL-((YR4*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt2,3)))/sqrt(2._dp)
 End If 
 If ((2.eq.gt1)) Then 
-resL = resL-((YR3*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt2,1)))/sqrt(2._dp)
 End If 
 If ((3.eq.gt1)) Then 
-resL = resL-((YR4*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt2,1)))/sqrt(2._dp)
 End If 
 resR = 0._dp 
 If ((2.eq.gt1)) Then 
-resR = resR+(YR3*ZvN(gt2,1))/sqrt(2._dp)
+resR = resR-((lamd*ZX(gt2,1))/sqrt(2._dp))
 End If 
 If ((3.eq.gt1)) Then 
-resR = resR+(YR4*ZvN(gt2,1))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt2,1))/sqrt(2._dp))
 End If 
 If ((1.eq.gt1)) Then 
-resR = resR+(YR3*ZvN(gt2,2))/sqrt(2._dp)
+resR = resR-((lamd*ZX(gt2,2))/sqrt(2._dp))
 End If 
 If ((1.eq.gt1)) Then 
-resR = resR+(YR4*ZvN(gt2,3))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt2,3))/sqrt(2._dp))
 End If 
 resL = -(0.,1.)*resL 
  
@@ -7805,21 +7755,157 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingUNv0Nv0AhL  
+End Subroutine CouplingUChiChiAhL  
  
  
-Subroutine CouplingUNv0FreHpL(gt1,YR3,YR4,resL,resR)
+Subroutine CouplingUChiChihhL(gt1,gt2,lamd,lamu,ZX,resL,resR)
 
 Implicit None 
 
-Integer, Intent(in) :: gt1
-Real(dp), Intent(in) :: YR3,YR4
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUNv0FreHp' 
+NameOfUnit(Iname) = 'CouplingUChiChihh' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((1.eq.gt1)) Then 
+resL = resL-((lamd*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+End If 
+If ((1.eq.gt1)) Then 
+resL = resL+(lamu*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL-((lamd*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+End If 
+If ((3.eq.gt1)) Then 
+resL = resL+(lamu*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+End If 
+resR = 0._dp 
+If ((2.eq.gt1)) Then 
+resR = resR-((lamd*ZX(gt2,1))/sqrt(2._dp))
+End If 
+If ((3.eq.gt1)) Then 
+resR = resR+(lamu*ZX(gt2,1))/sqrt(2._dp)
+End If 
+If ((1.eq.gt1)) Then 
+resR = resR-((lamd*ZX(gt2,2))/sqrt(2._dp))
+End If 
+If ((1.eq.gt1)) Then 
+resR = resR+(lamu*ZX(gt2,3))/sqrt(2._dp)
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUChiChihhL  
+ 
+ 
+Subroutine CouplingUChiChiVZL(gt1,gt2,g1,g2,ZX,TW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: g1,g2,TW
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUChiChiVZ' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+If ((2.eq.gt1)) Then 
+resL = resL-(g2*Conjg(ZX(gt2,2))*Cos(TW))/2._dp
+End If 
+If ((3.eq.gt1)) Then 
+resL = resL+(g2*Conjg(ZX(gt2,3))*Cos(TW))/2._dp
+End If 
+If ((2.eq.gt1)) Then 
+resL = resL-(g1*Conjg(ZX(gt2,2))*Sin(TW))/2._dp
+End If 
+If ((3.eq.gt1)) Then 
+resL = resL+(g1*Conjg(ZX(gt2,3))*Sin(TW))/2._dp
+End If 
+resR = 0._dp 
+If ((2.eq.gt1)) Then 
+resR = resR+(g2*Cos(TW)*ZX(gt2,2))/2._dp
+End If 
+If ((2.eq.gt1)) Then 
+resR = resR+(g1*Sin(TW)*ZX(gt2,2))/2._dp
+End If 
+If ((3.eq.gt1)) Then 
+resR = resR-(g2*Cos(TW)*ZX(gt2,3))/2._dp
+End If 
+If ((3.eq.gt1)) Then 
+resR = resR-(g1*Sin(TW)*ZX(gt2,3))/2._dp
+End If 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingUChiChiVZL  
+ 
+ 
+Subroutine CouplingUChiFreHpL(gt1,lamd,lamu,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingUChiFreHp' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -7831,11 +7917,11 @@ End If
 
 resL = 0._dp 
 If ((1.eq.gt1)) Then 
-resL = resL-1._dp*(YR3)
+resL = resL+lamd
 End If 
 resR = 0._dp 
 If ((1.eq.gt1)) Then 
-resR = resR+YR4
+resR = resR-1._dp*(lamu)
 End If 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -7845,10 +7931,10 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingUNv0FreHpL  
+End Subroutine CouplingUChiFreHpL  
  
  
-Subroutine CouplingUNv0FreVWpL(gt1,g2,resL,resR)
+Subroutine CouplingUChiFreVWpL(gt1,g2,resL,resR)
 
 Implicit None 
 
@@ -7859,7 +7945,7 @@ Complex(dp), Intent(out) :: resL, resR
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUNv0FreVWp' 
+NameOfUnit(Iname) = 'CouplingUChiFreVWp' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -7885,32 +7971,24 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingUNv0FreVWpL  
+End Subroutine CouplingUChiFreVWpL  
  
  
-Subroutine CouplingUNv0Nv0hhL(gt1,gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingcFreChicHpL(gt2,lamd,lamu,ZX,resL,resR)
 
 Implicit None 
 
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
+Integer, Intent(in) :: gt2
+Real(dp), Intent(in) :: lamd,lamu
 
-Complex(dp), Intent(in) :: ZvN(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUNv0Nv0hh' 
+NameOfUnit(Iname) = 'CouplingcFreChicHp' 
  
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
 If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
   Write (ErrCan,*) 'index gt2 out of range', gt2 
@@ -7920,31 +7998,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-If ((1.eq.gt1)) Then 
-resL = resL+(YR3*Conjg(ZvN(gt2,2)))/sqrt(2._dp)
-End If 
-If ((1.eq.gt1)) Then 
-resL = resL-((YR4*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
-End If 
-If ((2.eq.gt1)) Then 
-resL = resL+(YR3*Conjg(ZvN(gt2,1)))/sqrt(2._dp)
-End If 
-If ((3.eq.gt1)) Then 
-resL = resL-((YR4*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-End If 
+resL = resL-(lamu*Conjg(ZX(gt2,1)))
 resR = 0._dp 
-If ((2.eq.gt1)) Then 
-resR = resR+(YR3*ZvN(gt2,1))/sqrt(2._dp)
-End If 
-If ((3.eq.gt1)) Then 
-resR = resR-((YR4*ZvN(gt2,1))/sqrt(2._dp))
-End If 
-If ((1.eq.gt1)) Then 
-resR = resR+(YR3*ZvN(gt2,2))/sqrt(2._dp)
-End If 
-If ((1.eq.gt1)) Then 
-resR = resR-((YR4*ZvN(gt2,3))/sqrt(2._dp))
-End If 
+resR = resR+lamd*ZX(gt2,1)
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -7953,147 +8009,24 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingUNv0Nv0hhL  
+End Subroutine CouplingcFreChicHpL  
  
  
-Subroutine CouplingUNv0Nv0VZL(gt1,gt2,g1,g2,ZvN,TW,resL,resR)
+Subroutine CouplingcFreChicVWpL(gt2,g2,ZX,resL,resR)
 
 Implicit None 
 
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: g1,g2,TW
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUNv0Nv0VZ' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-If ((2.eq.gt1)) Then 
-resL = resL-(g2*Conjg(ZvN(gt2,2))*Cos(TW))/2._dp
-End If 
-If ((3.eq.gt1)) Then 
-resL = resL+(g2*Conjg(ZvN(gt2,3))*Cos(TW))/2._dp
-End If 
-If ((2.eq.gt1)) Then 
-resL = resL-(g1*Conjg(ZvN(gt2,2))*Sin(TW))/2._dp
-End If 
-If ((3.eq.gt1)) Then 
-resL = resL+(g1*Conjg(ZvN(gt2,3))*Sin(TW))/2._dp
-End If 
-resR = 0._dp 
-If ((2.eq.gt1)) Then 
-resR = resR+(g2*Cos(TW)*ZvN(gt2,2))/2._dp
-End If 
-If ((2.eq.gt1)) Then 
-resR = resR+(g1*Sin(TW)*ZvN(gt2,2))/2._dp
-End If 
-If ((3.eq.gt1)) Then 
-resR = resR-(g2*Cos(TW)*ZvN(gt2,3))/2._dp
-End If 
-If ((3.eq.gt1)) Then 
-resR = resR-(g1*Sin(TW)*ZvN(gt2,3))/2._dp
-End If 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingUNv0Nv0VZL  
- 
- 
-Subroutine CouplingUFvFeHpL(gt1,gt2,Ye,ZER,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUFvFeHp' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resR = 0._dp 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-Do j1 = 1,3
-resR = resR+Conjg(Ye(j1,gt1))*ZER(gt2,j1)
-End Do 
-End If 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingUFvFeHpL  
- 
- 
-Subroutine CouplingUFvFeVWpL(gt1,gt2,g2,ZEL,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
+Integer, Intent(in) :: gt2
 Real(dp), Intent(in) :: g2
 
-Complex(dp), Intent(in) :: ZEL(3,3)
+Complex(dp), Intent(in) :: ZX(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUFvFeVWp' 
+NameOfUnit(Iname) = 'CouplingcFreChicVWp' 
  
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
 If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
   Write (ErrCan,*) 'index gt2 out of range', gt2 
@@ -8103,10 +8036,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-resL = resL-((g2*Conjg(ZEL(gt2,gt1)))/sqrt(2._dp))
-End If 
+resL = resL-((g2*Conjg(ZX(gt2,2)))/sqrt(2._dp))
 resR = 0._dp 
+resR = resR-((g2*ZX(gt2,3))/sqrt(2._dp))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8115,63 +8047,7 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingUFvFeVWpL  
- 
- 
-Subroutine CouplingUFvFvVZL(gt1,gt2,g1,g2,Vv,TW,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: g1,g2,TW
-
-Complex(dp), Intent(in) :: Vv(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingUFvFvVZ' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-resL = resL-(g2*Conjg(Vv(gt2,gt1))*Cos(TW))/2._dp
-End If 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-resL = resL-(g1*Conjg(Vv(gt2,gt1))*Sin(TW))/2._dp
-End If 
-resR = 0._dp 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-resR = resR+(g2*Cos(TW)*Vv(gt2,gt1))/2._dp
-End If 
-If ((gt1.le.3).And.(gt1.ge.1)) Then 
-resR = resR+(g1*Sin(TW)*Vv(gt2,gt1))/2._dp
-End If 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingUFvFvVZL  
+End Subroutine CouplingcFreChicVWpL  
  
  
 Subroutine CouplingcFreFreVPL(g1,g2,TW,resL,resR)
@@ -8230,82 +8106,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingcFreFreVZL  
- 
- 
-Subroutine CouplingcFreNv0cHpL(gt2,YR3,YR4,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt2
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cHp' 
- 
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL+YR4*Conjg(ZvN(gt2,1))
-resR = 0._dp 
-resR = resR-(YR3*ZvN(gt2,1))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcFreNv0cHpL  
- 
- 
-Subroutine CouplingcFreNv0cVWpL(gt2,g2,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt2
-Real(dp), Intent(in) :: g2
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingcFreNv0cVWp' 
- 
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL-((g2*Conjg(ZvN(gt2,2)))/sqrt(2._dp))
-resR = 0._dp 
-resR = resR-((g2*ZvN(gt2,3))/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingcFreNv0cVWpL  
  
  
 Subroutine CouplingAhcHpVWpL(g2,res)
@@ -8387,12 +8187,12 @@ Iname = Iname - 1
 End Subroutine CouplingcFdFucHpL  
  
  
-Subroutine CouplingcFeFvcHpL(gt1,gt2,Ye,ZER,Vv,resL,resR)
+Subroutine CouplingcFeFvcHpL(gt1,gt2,Ye,ZER,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
-Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: Ye(3,3),ZER(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -8417,10 +8217,8 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-Do j2 = 1,3
 Do j1 = 1,3
-resL = resL+Conjg(ZER(gt1,j1))*Conjg(Vv(gt2,j2))*Ye(j1,j2)
-End Do 
+resL = resL+Conjg(ZER(gt1,j1))*Ye(j1,gt2)
 End Do 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
@@ -8538,13 +8336,13 @@ Iname = Iname - 1
 End Subroutine CouplingcgZgWCHpL  
  
  
-Subroutine CouplinghhHpcHpL(Lam,v,res)
+Subroutine CouplinghhHpcHpL(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -8553,7 +8351,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhHpcHp' 
  
 res = 0._dp 
-res = res-(Lam*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8692,11 +8490,11 @@ Iname = Iname - 1
 End Subroutine CouplingcHpVWpVZL  
  
  
-Subroutine CouplingAhAhHpcHpL(Lam,res)
+Subroutine CouplingAhAhHpcHpL(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -8705,7 +8503,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8717,11 +8515,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhHpcHpL  
  
  
-Subroutine CouplinghhhhHpcHpL(Lam,res)
+Subroutine CouplinghhhhHpcHpL(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -8730,7 +8528,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplinghhhhHpcHp' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8742,11 +8540,11 @@ Iname = Iname - 1
 End Subroutine CouplinghhhhHpcHpL  
  
  
-Subroutine CouplingHpHpcHpcHpL(Lam,res)
+Subroutine CouplingHpHpcHpcHpL(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -8755,7 +8553,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingHpHpcHpcHp' 
  
 res = 0._dp 
-res = res-2._dp*(Lam)
+res = res-4._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8846,13 +8644,13 @@ Iname = Iname - 1
 End Subroutine CouplingHpcHpVZVZL  
  
  
-Subroutine CouplingAhAhhhL(Lam,v,res)
+Subroutine CouplingAhAhhhL(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -8861,7 +8659,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhh' 
  
 res = 0._dp 
-res = res-(Lam*v)
+res = res-2*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8871,6 +8669,62 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingAhAhhhL  
+ 
+ 
+Subroutine CouplingChiChiAhL(gt1,gt2,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiChiAh' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resR = 0._dp 
+resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
+resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
+resL = -(0.,1.)*resL 
+ 
+resR = -(0.,1.)*resR 
+ 
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiChiAhL  
  
  
 Subroutine CouplingcFdFdAhL(gt1,gt2,Yd,ZDL,ZDR,resL,resR)
@@ -9150,67 +9004,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhHpcVWpL  
  
  
-Subroutine CouplingNv0Nv0AhL(gt1,gt2,YR3,YR4,ZvN,resL,resR)
+Subroutine CouplingAhAhAhAhL(lam1,res)
 
 Implicit None 
 
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0Ah' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL-((YR3*Conjg(ZvN(gt1,2))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL-((YR4*Conjg(ZvN(gt1,3))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL-((YR3*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,2)))/sqrt(2._dp))
-resL = resL-((YR4*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
-resR = 0._dp 
-resR = resR+(YR3*ZvN(gt1,2)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR+(YR4*ZvN(gt1,3)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR+(YR3*ZvN(gt1,1)*ZvN(gt2,2))/sqrt(2._dp)
-resR = resR+(YR4*ZvN(gt1,1)*ZvN(gt2,3))/sqrt(2._dp)
-resL = -(0.,1.)*resL 
- 
-resR = -(0.,1.)*resR 
- 
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingNv0Nv0AhL  
- 
- 
-Subroutine CouplingAhAhAhAhL(Lam,res)
-
-Implicit None 
-
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -9219,7 +9017,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhAhAh' 
  
 res = 0._dp 
-res = res-3._dp*(Lam)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -9231,11 +9029,11 @@ Iname = Iname - 1
 End Subroutine CouplingAhAhAhAhL  
  
  
-Subroutine CouplingAhAhhhhhL(Lam,res)
+Subroutine CouplingAhAhhhhhL(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -9244,7 +9042,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'CouplingAhAhhhhh' 
  
 res = 0._dp 
-res = res-1._dp*(Lam)
+res = res-2._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -9306,6 +9104,58 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingAhAhVZVZL  
+ 
+ 
+Subroutine CouplingChiChihhL(gt1,gt2,lamd,lamu,ZX,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: lamd,lamu
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiChihh' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resR = 0._dp 
+resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiChihhL  
  
  
 Subroutine CouplingcFdFdhhL(gt1,gt2,Yd,ZDL,ZDR,resL,resR)
@@ -9541,13 +9391,13 @@ Iname = Iname - 1
 End Subroutine CouplingcgZgZhhL  
  
  
-Subroutine CouplinghhhhhhL(Lam,v,res)
+Subroutine CouplinghhhhhhL(lam1,v,res)
 
 Implicit None 
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -9556,7 +9406,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhh' 
  
 res = 0._dp 
-res = res-3*Lam*v
+res = res-6*lam1*v
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -9591,58 +9441,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplinghhHpcVWpL  
- 
- 
-Subroutine CouplingNv0Nv0hhL(gt1,gt2,YR3,YR4,ZvN,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: YR3,YR4
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0hh' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL+(YR3*Conjg(ZvN(gt1,2))*Conjg(ZvN(gt2,1)))/sqrt(2._dp)
-resL = resL-((YR4*Conjg(ZvN(gt1,3))*Conjg(ZvN(gt2,1)))/sqrt(2._dp))
-resL = resL+(YR3*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,2)))/sqrt(2._dp)
-resL = resL-((YR4*Conjg(ZvN(gt1,1))*Conjg(ZvN(gt2,3)))/sqrt(2._dp))
-resR = 0._dp 
-resR = resR+(YR3*ZvN(gt1,2)*ZvN(gt2,1))/sqrt(2._dp)
-resR = resR-((YR4*ZvN(gt1,3)*ZvN(gt2,1))/sqrt(2._dp))
-resR = resR+(YR3*ZvN(gt1,1)*ZvN(gt2,2))/sqrt(2._dp)
-resR = resR-((YR4*ZvN(gt1,1)*ZvN(gt2,3))/sqrt(2._dp))
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingNv0Nv0hhL  
  
  
 Subroutine CouplinghhcVWpVWpL(g2,v,res)
@@ -9697,11 +9495,11 @@ Iname = Iname - 1
 End Subroutine CouplinghhVZVZL  
  
  
-Subroutine CouplinghhhhhhhhL(Lam,res)
+Subroutine CouplinghhhhhhhhL(lam1,res)
 
 Implicit None 
 
-Complex(dp), Intent(in) :: Lam
+Complex(dp), Intent(in) :: lam1
 
 Complex(dp), Intent(out) :: res 
  
@@ -9710,7 +9508,7 @@ Iname = Iname +1
 NameOfUnit(Iname) = 'Couplinghhhhhhhh' 
  
 res = 0._dp 
-res = res-3._dp*(Lam)
+res = res-6._dp*(lam1)
 If (Real(res,dp).ne.Real(res,dp)) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -9772,6 +9570,58 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplinghhhhVZVZL  
+ 
+ 
+Subroutine CouplingChiChiVZL(gt1,gt2,g1,g2,ZX,TW,resL,resR)
+
+Implicit None 
+
+Integer, Intent(in) :: gt1,gt2
+Real(dp), Intent(in) :: g1,g2,TW
+
+Complex(dp), Intent(in) :: ZX(3,3)
+
+Complex(dp), Intent(out) :: resL, resR 
+ 
+Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
+Iname = Iname +1 
+NameOfUnit(Iname) = 'CouplingChiChiVZ' 
+ 
+If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt1 out of range', gt1 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt1 out of range', gt1 
+  Call TerminateProgram 
+End If 
+
+If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
+  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (ErrCan,*) 'index gt2 out of range', gt2 
+  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
+  Write (*,*) 'index gt2 out of range', gt2 
+  Call TerminateProgram 
+End If 
+
+resL = 0._dp 
+resL = resL-(g2*Conjg(ZX(gt2,2))*Cos(TW)*ZX(gt1,2))/2._dp
+resL = resL-(g1*Conjg(ZX(gt2,2))*Sin(TW)*ZX(gt1,2))/2._dp
+resL = resL+(g2*Conjg(ZX(gt2,3))*Cos(TW)*ZX(gt1,3))/2._dp
+resL = resL+(g1*Conjg(ZX(gt2,3))*Sin(TW)*ZX(gt1,3))/2._dp
+resR = 0._dp 
+resR = resR+(g2*Conjg(ZX(gt1,2))*Cos(TW)*ZX(gt2,2))/2._dp
+resR = resR+(g1*Conjg(ZX(gt1,2))*Sin(TW)*ZX(gt2,2))/2._dp
+resR = resR-(g2*Conjg(ZX(gt1,3))*Cos(TW)*ZX(gt2,3))/2._dp
+resR = resR-(g1*Conjg(ZX(gt1,3))*Sin(TW)*ZX(gt2,3))/2._dp
+If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
+ Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
+ Call TerminateProgram 
+End If 
+
+
+Iname = Iname - 1 
+ 
+End Subroutine CouplingChiChiVZL  
  
  
 Subroutine CouplingcFdFdVZL(gt1,gt2,g1,g2,TW,resL,resR)
@@ -9927,7 +9777,7 @@ Iname = Iname - 1
 End Subroutine CouplingcFuFuVZL  
  
  
-Subroutine CouplingFvFvVZL(gt1,gt2,g1,g2,TW,resL,resR)
+Subroutine CouplingcFvFvVZL(gt1,gt2,g1,g2,TW,resL,resR)
 
 Implicit None 
 
@@ -9938,7 +9788,7 @@ Complex(dp), Intent(out) :: resL, resR
  
 Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
 Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingFvFvVZ' 
+NameOfUnit(Iname) = 'CouplingcFvFvVZ' 
  
 If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
   Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
@@ -9964,12 +9814,6 @@ If ((gt1.eq.gt2)) Then
 resL = resL-(g1*Sin(TW))/2._dp
 End If 
 resR = 0._dp 
-If ((gt1.eq.gt2)) Then 
-resR = resR+(g2*Cos(TW))/2._dp
-End If 
-If ((gt1.eq.gt2)) Then 
-resR = resR+(g1*Sin(TW))/2._dp
-End If 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -9978,7 +9822,7 @@ End If
 
 Iname = Iname - 1 
  
-End Subroutine CouplingFvFvVZL  
+End Subroutine CouplingcFvFvVZL  
  
  
 Subroutine CouplingcgWpgWpVZL(g2,TW,res)
@@ -10054,58 +9898,6 @@ End If
 Iname = Iname - 1 
  
 End Subroutine CouplingHpcVWpVZL  
- 
- 
-Subroutine CouplingNv0Nv0VZL(gt1,gt2,g1,g2,ZvN,TW,resL,resR)
-
-Implicit None 
-
-Integer, Intent(in) :: gt1,gt2
-Real(dp), Intent(in) :: g1,g2,TW
-
-Complex(dp), Intent(in) :: ZvN(3,3)
-
-Complex(dp), Intent(out) :: resL, resR 
- 
-Integer :: j1,j2,j3,j4,j5,j6, j7, j8, j9, j10, j11, j12 
-Iname = Iname +1 
-NameOfUnit(Iname) = 'CouplingNv0Nv0VZ' 
- 
-If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt1 out of range', gt1 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt1 out of range', gt1 
-  Call TerminateProgram 
-End If 
-
-If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then 
-  Write (ErrCan,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (ErrCan,*) 'index gt2 out of range', gt2 
-  Write (*,*) 'Problem in Subroutine ',NameOfUnit(Iname) 
-  Write (*,*) 'index gt2 out of range', gt2 
-  Call TerminateProgram 
-End If 
-
-resL = 0._dp 
-resL = resL-(g2*Conjg(ZvN(gt2,2))*Cos(TW)*ZvN(gt1,2))/2._dp
-resL = resL-(g1*Conjg(ZvN(gt2,2))*Sin(TW)*ZvN(gt1,2))/2._dp
-resL = resL+(g2*Conjg(ZvN(gt2,3))*Cos(TW)*ZvN(gt1,3))/2._dp
-resL = resL+(g1*Conjg(ZvN(gt2,3))*Sin(TW)*ZvN(gt1,3))/2._dp
-resR = 0._dp 
-resR = resR+(g2*Conjg(ZvN(gt1,2))*Cos(TW)*ZvN(gt2,2))/2._dp
-resR = resR+(g1*Conjg(ZvN(gt1,2))*Sin(TW)*ZvN(gt2,2))/2._dp
-resR = resR-(g2*Conjg(ZvN(gt1,3))*Cos(TW)*ZvN(gt2,3))/2._dp
-resR = resR-(g1*Conjg(ZvN(gt1,3))*Sin(TW)*ZvN(gt2,3))/2._dp
-If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
- Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
- Call TerminateProgram 
-End If 
-
-
-Iname = Iname - 1 
- 
-End Subroutine CouplingNv0Nv0VZL  
  
  
 Subroutine CouplingcVWpVWpVZL(g2,TW,res)
@@ -10209,14 +10001,14 @@ Iname = Iname - 1
 End Subroutine CouplingcFdFucVWpL  
  
  
-Subroutine CouplingcFeFvcVWpL(gt1,gt2,g2,ZEL,Vv,resL,resR)
+Subroutine CouplingcFeFvcVWpL(gt1,gt2,g2,ZEL,resL,resR)
 
 Implicit None 
 
 Integer, Intent(in) :: gt1,gt2
 Real(dp), Intent(in) :: g2
 
-Complex(dp), Intent(in) :: ZEL(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: ZEL(3,3)
 
 Complex(dp), Intent(out) :: resL, resR 
  
@@ -10241,9 +10033,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-Do j1 = 1,3
-resL = resL-((g2*Conjg(Vv(gt2,j1))*ZEL(gt1,j1))/sqrt(2._dp))
-End Do 
+If ((gt2.le.3).And.(gt2.ge.1)) Then 
+resL = resL-((g2*ZEL(gt1,gt2))/sqrt(2._dp))
+End If 
 resR = 0._dp 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -10464,50 +10256,51 @@ Iname = Iname - 1
 End Subroutine CouplingcVWpcVWpVWpVWpL  
  
  
-Subroutine CouplingsForVectorBosons(g1,g2,TW,ZvN,v,ZDL,ZUL,ZEL,Vv,cplcFreFreVZL,      & 
-& cplcFreFreVZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,      & 
+Subroutine CouplingsForVectorBosons(g2,ZX,g1,TW,v,ZDL,ZUL,ZEL,cplcFreChicVWpL,        & 
+& cplcFreChicVWpR,cplcFreFreVZL,cplcFreFreVZR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,        & 
 & cplcHpVPVWp,cplcHpVWpVZ,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhhhVZ,cplAhHpcVWp,            & 
 & cplAhAhcVWpVWp,cplAhAhVZVZ,cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhcVWpVWp,          & 
-& cplhhhhVZVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWpgWpVZ,cplcgWCgWCVZ,cplHpcVWpVZ,               & 
-& cplNv0Nv0VZL,cplNv0Nv0VZR,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,& 
+& cplhhhhVZVZ,cplChiChiVZL,cplChiChiVZR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,             & 
+& cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,cplcgWpgWpVZ,              & 
+& cplcgWCgWCVZ,cplHpcVWpVZ,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3, & 
 & cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcgWCgAcVWp,cplcgAgWpcVWp,   & 
 & cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,  & 
 & cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3)
 
 Implicit None 
-Real(dp), Intent(in) :: g1,g2,TW,v
+Real(dp), Intent(in) :: g2,g1,TW,v
 
-Complex(dp), Intent(in) :: ZvN(3,3),ZDL(3,3),ZUL(3,3),ZEL(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: ZX(3,3),ZDL(3,3),ZUL(3,3),ZEL(3,3)
 
-Complex(dp), Intent(out) :: cplcFreFreVZL,cplcFreFreVZR,cplcFreNv0cVWpL(3),cplcFreNv0cVWpR(3),cplAhcHpVWp,        & 
+Complex(dp), Intent(out) :: cplcFreChicVWpL(3),cplcFreChicVWpR(3),cplcFreFreVZL,cplcFreFreVZR,cplAhcHpVWp,        & 
 & cplhhcHpVWp,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplHpcHpcVWpVWp,cplHpcHpVZVZ,           & 
 & cplAhhhVZ,cplAhHpcVWp,cplAhAhcVWpVWp,cplAhAhVZVZ,cplhhHpcVWp,cplhhcVWpVWp,             & 
-& cplhhVZVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),& 
-& cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),    & 
-& cplcgWpgWpVZ,cplcgWCgWCVZ,cplHpcVWpVZ,cplNv0Nv0VZL(3,3),cplNv0Nv0VZR(3,3),             & 
-& cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplcFdFucVWpL(3,3),       & 
-& cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcgWCgAcVWp,cplcgAgWpcVWp,  & 
-& cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,  & 
-& cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3
+& cplhhVZVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,cplChiChiVZL(3,3),cplChiChiVZR(3,3),              & 
+& cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFuFuVZL(3,3),  & 
+& cplcFuFuVZR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3),cplcgWpgWpVZ,cplcgWCgWCVZ,          & 
+& cplHpcVWpVZ,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,              & 
+& cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),           & 
+& cplcgWCgAcVWp,cplcgAgWpcVWp,cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,      & 
+& cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2, & 
+& cplcVWpcVWpVWpVWp3
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'CouplingsForVectorBosons'
  
+cplcFreChicVWpL = 0._dp 
+cplcFreChicVWpR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreChicVWpL(gt2,g2,ZX,cplcFreChicVWpL(gt2),cplcFreChicVWpR(gt2))
+
+End Do 
+
+
 cplcFreFreVZL = 0._dp 
 cplcFreFreVZR = 0._dp 
 Call CouplingcFreFreVZL(g1,g2,TW,cplcFreFreVZL,cplcFreFreVZR)
 
-
-
-cplcFreNv0cVWpL = 0._dp 
-cplcFreNv0cVWpR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreNv0cVWpL(gt2,g2,ZvN,cplcFreNv0cVWpL(gt2),cplcFreNv0cVWpR(gt2))
-
-End Do 
 
 
 cplAhcHpVWp = 0._dp 
@@ -10590,6 +10383,16 @@ Call CouplinghhhhVZVZL(g1,g2,TW,cplhhhhVZVZ)
 
 
 
+cplChiChiVZL = 0._dp 
+cplChiChiVZR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChiVZL(gt1,gt2,g1,g2,ZX,TW,cplChiChiVZL(gt1,gt2),cplChiChiVZR(gt1,gt2))
+
+ End Do 
+End Do 
+
+
 cplcFdFdVZL = 0._dp 
 cplcFdFdVZR = 0._dp 
 Do gt1 = 1, 3
@@ -10620,11 +10423,11 @@ Call CouplingcFuFuVZL(gt1,gt2,g1,g2,TW,cplcFuFuVZL(gt1,gt2),cplcFuFuVZR(gt1,gt2)
 End Do 
 
 
-cplFvFvVZL = 0._dp 
-cplFvFvVZR = 0._dp 
+cplcFvFvVZL = 0._dp 
+cplcFvFvVZR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingFvFvVZL(gt1,gt2,g1,g2,TW,cplFvFvVZL(gt1,gt2),cplFvFvVZR(gt1,gt2))
+Call CouplingcFvFvVZL(gt1,gt2,g1,g2,TW,cplcFvFvVZL(gt1,gt2),cplcFvFvVZR(gt1,gt2))
 
  End Do 
 End Do 
@@ -10643,16 +10446,6 @@ Call CouplingcgWCgWCVZL(g2,TW,cplcgWCgWCVZ)
 cplHpcVWpVZ = 0._dp 
 Call CouplingHpcVWpVZL(g1,g2,v,TW,cplHpcVWpVZ)
 
-
-
-cplNv0Nv0VZL = 0._dp 
-cplNv0Nv0VZR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0VZL(gt1,gt2,g1,g2,ZvN,TW,cplNv0Nv0VZL(gt1,gt2),cplNv0Nv0VZR(gt1,gt2))
-
- End Do 
-End Do 
 
 
 cplcVWpVWpVZ = 0._dp 
@@ -10681,7 +10474,7 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpL(gt1,gt2,g2,ZEL,Vv,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpL(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -10735,7 +10528,7 @@ Iname = Iname - 1
 End Subroutine CouplingsForVectorBosons
 
 Subroutine CouplingsForSMfermions(Yd,ZDL,ZDR,g3,g1,g2,TW,Yu,ZUL,ZUR,Ye,               & 
-& ZEL,ZER,Vv,cplcUFdFdAhL,cplcUFdFdAhR,cplcUFdFdhhL,cplcUFdFdhhR,cplcUFdFdVGL,           & 
+& ZEL,ZER,cplcUFdFdAhL,cplcUFdFdAhR,cplcUFdFdhhL,cplcUFdFdhhR,cplcUFdFdVGL,              & 
 & cplcUFdFdVGR,cplcUFdFdVPL,cplcUFdFdVPR,cplcUFdFdVZL,cplcUFdFdVZR,cplcUFdFucHpL,        & 
 & cplcUFdFucHpR,cplcUFdFucVWpL,cplcUFdFucVWpR,cplcUFuFuAhL,cplcUFuFuAhR,cplcUFuFdHpL,    & 
 & cplcUFuFdHpR,cplcUFuFdVWpL,cplcUFuFdVWpR,cplcUFuFuhhL,cplcUFuFuhhR,cplcUFuFuVGL,       & 
@@ -10746,7 +10539,7 @@ Subroutine CouplingsForSMfermions(Yd,ZDL,ZDR,g3,g1,g2,TW,Yu,ZUL,ZUR,Ye,         
 Implicit None 
 Real(dp), Intent(in) :: g3,g1,g2,TW
 
-Complex(dp), Intent(in) :: Yd(3,3),ZDL(3,3),ZDR(3,3),Yu(3,3),ZUL(3,3),ZUR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),Vv(3,3)
+Complex(dp), Intent(in) :: Yd(3,3),ZDL(3,3),ZDR(3,3),Yu(3,3),ZUL(3,3),ZUR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3)
 
 Complex(dp), Intent(out) :: cplcUFdFdAhL(3,3),cplcUFdFdAhR(3,3),cplcUFdFdhhL(3,3),cplcUFdFdhhR(3,3),              & 
 & cplcUFdFdVGL(3,3),cplcUFdFdVGR(3,3),cplcUFdFdVPL(3,3),cplcUFdFdVPR(3,3),               & 
@@ -10948,7 +10741,7 @@ cplcUFeFvcHpL = 0._dp
 cplcUFeFvcHpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcUFeFvcHpL(gt1,gt2,Ye,Vv,cplcUFeFvcHpL(gt1,gt2),cplcUFeFvcHpR(gt1,gt2))
+Call CouplingcUFeFvcHpL(gt1,gt2,Ye,cplcUFeFvcHpL(gt1,gt2),cplcUFeFvcHpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -10958,7 +10751,7 @@ cplcUFeFvcVWpL = 0._dp
 cplcUFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcUFeFvcVWpL(gt1,gt2,g2,Vv,cplcUFeFvcVWpL(gt1,gt2),cplcUFeFvcVWpR(gt1,gt2))
+Call CouplingcUFeFvcVWpL(gt1,gt2,g2,cplcUFeFvcVWpL(gt1,gt2),cplcUFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -10967,26 +10760,26 @@ End Do
 Iname = Iname - 1 
 End Subroutine CouplingsForSMfermions
 
-Subroutine CouplingsForTadpoles(Yd,ZDL,ZDR,Yu,ZUL,ZUR,Ye,ZEL,ZER,YR3,YR4,             & 
-& ZvN,Lam,v,g2,g1,TW,cplcUFdFdhhL,cplcUFdFdhhR,cplcUFuFuhhL,cplcUFuFuhhR,cplcUFeFehhL,   & 
-& cplcUFeFehhR,cplUNv0Nv0hhL,cplUNv0Nv0hhR,cplhhHpcHp,cplhhcHpVWp,cplhhhhHpcHp,          & 
-& cplAhAhhh,cplAhhhVZ,cplAhAhhhhh,cplcFdFdhhL,cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,       & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,cplhhHpcVWp,    & 
-& cplNv0Nv0hhL,cplNv0Nv0hhR,cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,cplhhhhcVWpVWp,           & 
+Subroutine CouplingsForTadpoles(Yd,ZDL,ZDR,Yu,ZUL,ZUR,Ye,ZEL,ZER,lamd,lamu,           & 
+& ZX,lam1,v,g2,g1,TW,cplcUFdFdhhL,cplcUFdFdhhR,cplcUFuFuhhL,cplcUFuFuhhR,cplcUFeFehhL,   & 
+& cplcUFeFehhR,cplUChiChihhL,cplUChiChihhR,cplhhHpcHp,cplhhcHpVWp,cplhhhhHpcHp,          & 
+& cplAhAhhh,cplAhhhVZ,cplAhAhhhhh,cplChiChihhL,cplChiChihhR,cplcFdFdhhL,cplcFdFdhhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,cplcgWCgWChh,             & 
+& cplcgZgZhh,cplhhhhhh,cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,cplhhhhcVWpVWp,    & 
 & cplhhhhVZVZ)
 
 Implicit None 
-Real(dp), Intent(in) :: YR3,YR4,v,g2,g1,TW
+Real(dp), Intent(in) :: lamd,lamu,v,g2,g1,TW
 
 Complex(dp), Intent(in) :: Yd(3,3),ZDL(3,3),ZDR(3,3),Yu(3,3),ZUL(3,3),ZUR(3,3),Ye(3,3),ZEL(3,3),ZER(3,3),        & 
-& ZvN(3,3),Lam
+& ZX(3,3),lam1
 
 Complex(dp), Intent(out) :: cplcUFdFdhhL(3,3),cplcUFdFdhhR(3,3),cplcUFuFuhhL(3,3),cplcUFuFuhhR(3,3),              & 
-& cplcUFeFehhL(3,3),cplcUFeFehhR(3,3),cplUNv0Nv0hhL(3,3),cplUNv0Nv0hhR(3,3),             & 
-& cplhhHpcHp,cplhhcHpVWp,cplhhhhHpcHp,cplAhAhhh,cplAhhhVZ,cplAhAhhhhh,cplcFdFdhhL(3,3),  & 
-& cplcFdFdhhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),  & 
-& cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,cplhhHpcVWp,cplNv0Nv0hhL(3,3),          & 
-& cplNv0Nv0hhR(3,3),cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,cplhhhhcVWpVWp,cplhhhhVZVZ
+& cplcUFeFehhL(3,3),cplcUFeFehhR(3,3),cplUChiChihhL(3,3),cplUChiChihhR(3,3),             & 
+& cplhhHpcHp,cplhhcHpVWp,cplhhhhHpcHp,cplAhAhhh,cplAhhhVZ,cplAhAhhhhh,cplChiChihhL(3,3), & 
+& cplChiChihhR(3,3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3), & 
+& cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,      & 
+& cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhhhhh,cplhhhhcVWpVWp,cplhhhhVZVZ
 
 Integer :: gt1, gt2, gt3, gt4, ct1, ct2, ct3, ct4
 
@@ -11023,18 +10816,18 @@ Call CouplingcUFeFehhL(gt1,gt2,Ye,ZEL,ZER,cplcUFeFehhL(gt1,gt2),cplcUFeFehhR(gt1
 End Do 
 
 
-cplUNv0Nv0hhL = 0._dp 
-cplUNv0Nv0hhR = 0._dp 
+cplUChiChihhL = 0._dp 
+cplUChiChihhR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingUNv0Nv0hhL(gt1,gt2,YR3,YR4,ZvN,cplUNv0Nv0hhL(gt1,gt2),cplUNv0Nv0hhR(gt1,gt2))
+Call CouplingUChiChihhL(gt1,gt2,lamd,lamu,ZX,cplUChiChihhL(gt1,gt2),cplUChiChihhR(gt1,gt2))
 
  End Do 
 End Do 
 
 
 cplhhHpcHp = 0._dp 
-Call CouplinghhHpcHpL(Lam,v,cplhhHpcHp)
+Call CouplinghhHpcHpL(lam1,v,cplhhHpcHp)
 
 
 
@@ -11044,12 +10837,12 @@ Call CouplinghhcHpVWpL(g2,cplhhcHpVWp)
 
 
 cplhhhhHpcHp = 0._dp 
-Call CouplinghhhhHpcHpL(Lam,cplhhhhHpcHp)
+Call CouplinghhhhHpcHpL(lam1,cplhhhhHpcHp)
 
 
 
 cplAhAhhh = 0._dp 
-Call CouplingAhAhhhL(Lam,v,cplAhAhhh)
+Call CouplingAhAhhhL(lam1,v,cplAhAhhh)
 
 
 
@@ -11059,8 +10852,18 @@ Call CouplingAhhhVZL(g1,g2,TW,cplAhhhVZ)
 
 
 cplAhAhhhhh = 0._dp 
-Call CouplingAhAhhhhhL(Lam,cplAhAhhhhh)
+Call CouplingAhAhhhhhL(lam1,cplAhAhhhhh)
 
+
+
+cplChiChihhL = 0._dp 
+cplChiChihhR = 0._dp 
+Do gt1 = 1, 3
+ Do gt2 = 1, 3
+Call CouplingChiChihhL(gt1,gt2,lamd,lamu,ZX,cplChiChihhL(gt1,gt2),cplChiChihhR(gt1,gt2))
+
+ End Do 
+End Do 
 
 
 cplcFdFdhhL = 0._dp 
@@ -11109,23 +10912,13 @@ Call CouplingcgZgZhhL(g1,g2,v,TW,cplcgZgZhh)
 
 
 cplhhhhhh = 0._dp 
-Call CouplinghhhhhhL(Lam,v,cplhhhhhh)
+Call CouplinghhhhhhL(lam1,v,cplhhhhhh)
 
 
 
 cplhhHpcVWp = 0._dp 
 Call CouplinghhHpcVWpL(g2,cplhhHpcVWp)
 
-
-
-cplNv0Nv0hhL = 0._dp 
-cplNv0Nv0hhR = 0._dp 
-Do gt1 = 1, 3
- Do gt2 = 1, 3
-Call CouplingNv0Nv0hhL(gt1,gt2,YR3,YR4,ZvN,cplNv0Nv0hhL(gt1,gt2),cplNv0Nv0hhR(gt1,gt2))
-
- End Do 
-End Do 
 
 
 cplhhcVWpVWp = 0._dp 
@@ -11139,7 +10932,7 @@ Call CouplinghhVZVZL(g1,g2,v,TW,cplhhVZVZ)
 
 
 cplhhhhhhhh = 0._dp 
-Call CouplinghhhhhhhhL(Lam,cplhhhhhhhh)
+Call CouplinghhhhhhhhL(lam1,cplhhhhhhhh)
 
 
 
