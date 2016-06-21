@@ -32,7 +32,7 @@ Each implemented model have a notebook in tests dir:
 
 with examples to run and scan the parameter space.
 
-The module `hep` (in `tests/hep.py`) used ther, have the objects to _automatically_ run the model in a similar way to the SSP SARAH-toolbox package.
+The module `hep` (in `tests/hep.py`) used there, have the objects to _automatically_ run the model in a similar way to the SSP SARAH-toolbox package.
 
 See README_mybinder.md to help with build new models. __Send the new models as a pull request__.
 
