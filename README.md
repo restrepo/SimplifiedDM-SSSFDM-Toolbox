@@ -4,24 +4,43 @@ Try directly here:
 
 [![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/restrepo/SimplifiedDM-SDFDM-Toolbox)
 
-To re-build a model:
- $ cd micromegas 
- $ make
- $ make
- $ cd ..
- $ ./butler MODEL # Requires mathematica
+Design
+-----------------------------------------------------------------------------
+The rules to implement the fermion/scalars multiplets are in the files:
 
-To build from official Toolbox (after ./butler)
- $ cd micromegas/MODEL
- $ make clean
- $ mkdir work/so_generated/
- $ touch work/so_generated/.hidden
- $ commit and push changes
+- `SARAH/Models/blocks.fermions.lha`
+- `SARAH/Models/blocks.scalars.lha`
 
+The `master` branch only contains the standard SARAH-Toolbox distribution plus
+the new generic files.
+
+Each new model MODEL is build inside a CATEGORY under the branch:
+
+ `CATEGORY+MODEL`
+
+based in the predefined blocks in the fermion/scalars multiplets files.
+
+Implemened CATEGORY's:
+
+- SM: Explore SARAH feautures
+- SimplifiedDM: Simplified Dark Matter Models
+- radinert:  Models with radiative neutrino masses and dark matter candidates with SM + Z2-odd particles
+
+Each implemented model have a notebook in tests dir:
+
+ `tests/CATEGORY-MODEL.ipynb`
+
+with examples to run and scan the parameter space.
+
+The module `hep` (in `tests/hep.py`) used ther, have the objects to _automatically_ run the model in a similar way to the SSP SARAH-toolbox package.
+
+See README_mybinder.md to help with build new models. __Send the new models as a pull request__.
+
+See README_deploy_mybinder.md: To deploy a mybinder virtual machine:
 
 
 Official README stars here
-
+-------------------------------------------------------------------------------
 This README file describes the contents and usage of the SUSY toolbox package.
 
 1) Content
