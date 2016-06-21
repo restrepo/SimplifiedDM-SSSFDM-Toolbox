@@ -60,3 +60,20 @@ Block SingletFermion-SPheno-ListDecayParticles3B
 1 {Chi,"Chi.f90"}
 Block SingletFermion-SPheno-DefaultInputValues
 1 MnINPUT -> 200.
+#mixings
+Block SingletDoubletFermionMixings
+1 + lamd H.n.rd
+2 + lamu conj[H].n.ru
+Block SingletDoubletFermionMixings-parameters
+1 {lamd, { LaTeX -> "\\lambda_d",Real->True,LesHouches -> {FDM,4},OutputName-> "lamd" }} 
+2 {lamu, { LaTeX -> "\\lambda_u",Real->True,LesHouches -> {FDM,5},OutputName-> "lamu" }}, 
+Block SingletDoubletFermionMixings-SPheno-MINPAR
+1 {1,lamuINPUT}
+2 {2,lambdINPUT}
+Block SingletDoubletFermionMixings-SPheno-BoundaryLowScaleInput
+1 {lamu,lamuINPUT}
+
+2 {lamd,lamdINPUT}
+Block SingletDoubletFermionMixings-SPheno-DefaultInputValues
+1 lamuINPUT -> 0.1
+1 lamdINPUT -> 0.1
