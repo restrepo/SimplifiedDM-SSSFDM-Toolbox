@@ -20,14 +20,16 @@ with: Model\`Name = "CATEGORYMODEL" inside `CATEGORY-MODEL.m`
   cd ../../
   git add SPHENO/CATEGORYMODEL
   git add micromegas/CATEGORYMODEL
-  #Be sure to include so generated dir
+  #Be sure to include so_generated dir
   git add micromegas/SimplifiedDMSDFDM/work/so_generated/
 ``` 
 
 * Rebuild micromegas binaries
+
+```bash
   make main=CalcOmega.cpp
   make main=CalcOmega_with_DDetection_MOv....cpp
-
+``` 
 
 * The jupyter notebook files `index_bash.ipynb` (`tests/CATEGORY-MODEL.ipynb`) must be updated (created).
 * Update README.md mybinder button
