@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:17 on 17.6.2016   
+! File created at 22:35 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -177,31 +177,31 @@ Logical :: KineticMixingSave = .True.
 Logical :: WriteTreeLevelTadpoleSolutions = .False. 
 Logical :: WriteHiggsDiphotonLoopContributions = .False. 
 Logical :: WriteEffHiggsCouplingRatios = .True. 
-Complex(dp) :: mu2Tree 
-Complex(dp) :: mu21L 
-Complex(dp) :: mu22L 
+Complex(dp) :: mH2Tree 
+Complex(dp) :: mH21L 
+Complex(dp) :: mH22L 
 Integer :: SolutionTadpoleNr = 1 
 Character(len=15)::HighScaleModel
-Real(dp) :: g1,g2,g3,YR3,YR4
+Real(dp) :: g1,g2,g3,lamd,lamu,MDF
 
-Complex(dp) :: Lam,Yu(3,3),Yd(3,3),Ye(3,3),Mn,MDF,mu2
+Complex(dp) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),Mn,mH2
 
-Real(dp) :: g1IN,g2IN,g3IN,YR3IN,YR4IN
+Real(dp) :: g1IN,g2IN,g3IN,lamdIN,lamuIN,MDFIN
 
-Complex(dp) :: LamIN,YuIN(3,3),YdIN(3,3),YeIN(3,3),MnIN,MDFIN,mu2IN
+Complex(dp) :: lam1IN,YuIN(3,3),YdIN(3,3),YeIN(3,3),MnIN,mH2IN
 
-Real(dp) :: g1MZ,g2MZ,g3MZ,YR3MZ,YR4MZ
+Real(dp) :: g1MZ,g2MZ,g3MZ,lamdMZ,lamuMZ,MDFMZ
 
-Complex(dp) :: LamMZ,YuMZ(3,3),YdMZ(3,3),YeMZ(3,3),MnMZ,MDFMZ,mu2MZ
+Complex(dp) :: lam1MZ,YuMZ(3,3),YdMZ(3,3),YeMZ(3,3),MnMZ,mH2MZ
 
-Real(dp) :: g1GUT,g2GUT,g3GUT,YR3GUT,YR4GUT
+Real(dp) :: g1GUT,g2GUT,g3GUT,lamdGUT,lamuGUT,MDFGUT
 
-Complex(dp) :: LamGUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),MnGUT,MDFGUT,mu2GUT
+Complex(dp) :: lam1GUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),MnGUT,mH2GUT
 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
-& MFv2(3),Mhh,Mhh2,MHp,MHp2,MNv0(3),MNv02(3),MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MChi(3),MChi2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),            & 
+& MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZvN(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2),ZX(3,3)
 
 Real(dp) :: v
 
@@ -209,8 +209,10 @@ Real(dp) :: vIN
 
 Real(dp) :: vFix
 
-Real(dp) :: gPFu(3,183),gTFu(3),BRFu(3,183),gPhh(1,40),gThh,BRhh(1,40),gPNv0(3,163),              & 
-& gTNv0(3),BRNv0(3,163),gPFre(1,58),gTFre,BRFre(1,58)
+Real(dp) :: gPFu(3,183),gTFu(3),BRFu(3,183),gPFe(3,180),gTFe(3),BRFe(3,180),gPFd(3,183),          & 
+& gTFd(3),BRFd(3,183),gPFv(3,3),gTFv(3),BRFv(3,3),gPVZ(1,45),gTVZ,BRVZ(1,45),            & 
+& gPVWp(1,23),gTVWp,BRVWp(1,23),gPhh(1,40),gThh,BRhh(1,40),gPChi(3,163),gTChi(3),        & 
+& BRChi(3,163),gPFre(1,58),gTFre,BRFre(1,58)
 
 Real(dp) :: ratioFd(1,3),ratioFe(1,3),ratioFu(1,3),ratioHp,ratioVWp
 
@@ -220,7 +222,7 @@ Real(dp) :: ratioPFd(1,3),ratioPFe(1,3),ratioPFu(1,3),ratioPHp,ratioPVWp
 
 Complex(dp) :: ratioPGG,ratioPPP
 
-Real(dp) :: gForTadpoles(68)
+Real(dp) :: gForTadpoles(67)
 Complex(dp) :: tForTadpoles(1)
 Real(dp) :: g1_saveEP 
 Real(dp) :: g2_saveEP 
@@ -242,28 +244,6 @@ Real (dp) :: FineTuningResults(0)
 Real (dp) :: FineTuningResultsAllVEVs(0) 
 Logical, Save :: OneLoopFT = .False. 
 Logical, Save :: CalcFT = .True. 
-Logical :: Include_in_loopFre = .true. 
-Logical :: Include_in_loopFd = .true. 
-Logical :: Include_in_loopFu = .true. 
-Logical :: Include_in_loopFe = .true. 
-Logical :: Include_in_loopNv0 = .true. 
-Logical :: Include_in_loopFv = .true. 
-Logical :: Include_in_loopHp = .true. 
-Logical :: Include_in_loopAh = .true. 
-Logical :: Include_in_loophh = .true. 
-Logical :: Include_in_loopVG = .true. 
-Logical :: Include_in_loopVP = .true. 
-Logical :: Include_in_loopVZ = .true. 
-Logical :: Include_in_loopVWp = .true. 
-Logical :: Include_in_loopgG = .true. 
-Logical :: Include_in_loopgA = .true. 
-Logical :: Include_in_loopgZ = .true. 
-Logical :: Include_in_loopgWp = .true. 
-Logical :: Include_in_loopgWC = .true. 
-Logical :: IncludeBoxes = .true. 
-Logical :: IncludePenguins = .true. 
-Logical :: IncludeWave = .true. 
-Logical :: IncludeTriangle = .true. 
 Integer,save::YukawaScheme=1
 Logical, save :: CheckSugraDetails(10) =.False. & 
                         &, SugraErrors(10) =.False. &
@@ -275,15 +255,15 @@ Real(dp) :: g3running
 Logical, save :: InputValueforg1 =.False. 
 Logical, save :: InputValueforg2 =.False. 
 Logical, save :: InputValueforg3 =.False. 
-Logical, save :: InputValueforLam =.False. 
+Logical, save :: InputValueforlam1 =.False. 
 Logical, save :: InputValueforYu =.False. 
 Logical, save :: InputValueforYd =.False. 
 Logical, save :: InputValueforYe =.False. 
-Logical, save :: InputValueforYR3 =.False. 
-Logical, save :: InputValueforYR4 =.False. 
+Logical, save :: InputValueforlamd =.False. 
+Logical, save :: InputValueforlamu =.False. 
 Logical, save :: InputValueforMn =.False. 
 Logical, save :: InputValueforMDF =.False. 
-Logical, save :: InputValueformu2 =.False. 
+Logical, save :: InputValueformH2 =.False. 
 Complex(dp) :: CKMcomplex(3,3) 
 Real(dp) :: Xi = 1._dp 
 Real(dp) :: RXi = 1._dp 
@@ -292,10 +272,12 @@ Real(dp), save :: RXiG = 1._dp
 Real(dp), save :: RXiP = 1._dp 
 Real(dp), save :: RXiWp = 1._dp 
 Real(dp), save :: RXiZ = 1._dp 
-Real(dp) :: nuMasses(3) 
-Complex(dp) :: nuMixing(3,3) 
 Complex(dp) :: temporaryValue 
-Complex(dp) :: Lambda1IN
+Complex(dp) :: lambda1INPUT
+Complex(dp) :: MDFINPUT
+Complex(dp) :: MnINPUT
+Complex(dp) :: lamuINPUT
+Complex(dp) :: lamdINPUT
 Real(dp) :: vMZ 
 Real(dp) :: vSUSY 
 ! For HiggsBounds 
@@ -311,7 +293,7 @@ Real(dp) :: rHB_P_VP(1),rHB_S_VP(1)
 Real(dp) :: rHB_P_VZ(1),rHB_S_VZ(1)
 Real(dp) :: rHB_P_VG(1),rHB_S_VG(1)
 Real(dp) :: rHB_P_VWp(1),rHB_S_VWp(1)
-Real(dp) :: rHB_P_P_Fv(1,3),rHB_P_S_Fv(1,3),rHB_S_S_Fv(1,3),rHB_S_P_Fv(1,3)
+Real(dp) :: rHB_P_P_Fv(1),rHB_P_S_Fv(1),rHB_S_S_Fv(1),rHB_S_P_Fv(1)
 Complex(dp) :: CPL_A_H_Z 
  Complex(dp) :: CPL_H_H_Z(1,1) 
  Complex(dp) :: CoupHPP, CoupHGG 
@@ -905,42 +887,44 @@ HPPloopFe = 0._dp
 g1IN = 0._dp 
 g2IN = 0._dp 
 g3IN = 0._dp 
-LamIN = 0._dp 
+lam1IN = 0._dp 
 YuIN = 0._dp 
 YdIN = 0._dp 
 YeIN = 0._dp 
-YR3IN = 0._dp 
-YR4IN = 0._dp 
+lamdIN = 0._dp 
+lamuIN = 0._dp 
 MnIN = 0._dp 
 MDFIN = 0._dp 
-mu2IN = 0._dp 
+mH2IN = 0._dp 
 g1 = 0._dp 
 g1MZ = 0._dp 
 g2 = 0._dp 
 g2MZ = 0._dp 
 g3 = 0._dp 
 g3MZ = 0._dp 
-Lam = 0._dp 
-LamMZ = 0._dp 
+lam1 = 0._dp 
+lam1MZ = 0._dp 
 Yu = 0._dp 
 YuMZ = 0._dp 
 Yd = 0._dp 
 YdMZ = 0._dp 
 Ye = 0._dp 
 YeMZ = 0._dp 
-YR3 = 0._dp 
-YR3MZ = 0._dp 
-YR4 = 0._dp 
-YR4MZ = 0._dp 
+lamd = 0._dp 
+lamdMZ = 0._dp 
+lamu = 0._dp 
+lamuMZ = 0._dp 
 Mn = 0._dp 
 MnMZ = 0._dp 
 MDF = 0._dp 
 MDFMZ = 0._dp 
-mu2 = 0._dp 
-mu2MZ = 0._dp 
+mH2 = 0._dp 
+mH2MZ = 0._dp 
 vIN = 0._dp 
 MAh = 0._dp 
 MAh2 = 0._dp 
+MChi = 0._dp 
+MChi2 = 0._dp 
 MFd = 0._dp 
 MFd2 = 0._dp 
 MFe = 0._dp 
@@ -949,14 +933,10 @@ MFre = 0._dp
 MFre2 = 0._dp 
 MFu = 0._dp 
 MFu2 = 0._dp 
-MFv = 0._dp 
-MFv2 = 0._dp 
 Mhh = 0._dp 
 Mhh2 = 0._dp 
 MHp = 0._dp 
 MHp2 = 0._dp 
-MNv0 = 0._dp 
-MNv02 = 0._dp 
 MVWp = 0._dp 
 MVWp2 = 0._dp 
 MVZ = 0._dp 
@@ -968,20 +948,34 @@ ZUR = 0._dp
 ZDL = 0._dp 
 ZEL = 0._dp 
 ZUL = 0._dp 
-Vv = 0._dp 
-ZvN = 0._dp 
 ZW = 0._dp 
+ZX = 0._dp 
 ZZ = 0._dp 
 v = 0._dp 
 gPFu = 0._dp 
 gTFu = 0._dp 
 BRFu = 0._dp 
+gPFe = 0._dp 
+gTFe = 0._dp 
+BRFe = 0._dp 
+gPFd = 0._dp 
+gTFd = 0._dp 
+BRFd = 0._dp 
+gPFv = 0._dp 
+gTFv = 0._dp 
+BRFv = 0._dp 
+gPVZ = 0._dp 
+gTVZ = 0._dp 
+BRVZ = 0._dp 
+gPVWp = 0._dp 
+gTVWp = 0._dp 
+BRVWp = 0._dp 
 gPhh = 0._dp 
 gThh = 0._dp 
 BRhh = 0._dp 
-gPNv0 = 0._dp 
-gTNv0 = 0._dp 
-BRNv0 = 0._dp 
+gPChi = 0._dp 
+gTChi = 0._dp 
+BRChi = 0._dp 
 gPFre = 0._dp 
 gTFre = 0._dp 
 BRFre = 0._dp 
@@ -999,7 +993,11 @@ ratioPHp =  0._dp
 ratioPVWp =  0._dp  
 ratioPGG =  0._dp  
 ratioPPP =  0._dp  
-Lambda1IN=(0._dp,0._dp) 
+lambda1INPUT=(0._dp,0._dp) 
+MDFINPUT=(0._dp,0._dp) 
+MnINPUT=(0._dp,0._dp) 
+lamuINPUT=(0._dp,0._dp) 
+lamdINPUT=(0._dp,0._dp) 
 End Subroutine Set_All_Parameters_0 
  
 End Module Model_Data_SimplifiedDMSDFDM

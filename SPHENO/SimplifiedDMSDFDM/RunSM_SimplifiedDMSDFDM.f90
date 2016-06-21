@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:19 on 17.6.2016   
+! File created at 22:36 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -19,18 +19,18 @@ Use Model_Data_SimplifiedDMSDFDM
 Logical,Private,Save::OnlyDiagonal 
 Contains 
  
- Subroutine RunSM_and_SUSY_RGEs(Qout,g1input,g2input,g3input,Laminput,Yuinput,         & 
-& Ydinput,Yeinput,YR3input,YR4input,Mninput,MDFinput,mu2input,vinput,g1,g2,              & 
-& g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,CKMout,sinW2_out,Alpha_out,AlphaS_out,realCKM)
+ Subroutine RunSM_and_SUSY_RGEs(Qout,g1input,g2input,g3input,lam1input,Yuinput,        & 
+& Ydinput,Yeinput,lamdinput,lamuinput,Mninput,MDFinput,mH2input,vinput,g1,               & 
+& g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,CKMout,sinW2_out,Alpha_out,AlphaS_out,realCKM)
 
 Implicit None 
-Real(dp),Intent(in) :: g1input,g2input,g3input,YR3input,YR4input,vinput
+Real(dp),Intent(in) :: g1input,g2input,g3input,lamdinput,lamuinput,MDFinput,vinput
 
-Complex(dp),Intent(in) :: Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),Mninput,MDFinput,mu2input
+Complex(dp),Intent(in) :: lam1input,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),Mninput,mH2input
 
-Real(dp),Intent(out) :: g1,g2,g3,YR3,YR4,v
+Real(dp),Intent(out) :: g1,g2,g3,lamd,lamu,MDF,v
 
-Complex(dp),Intent(out) :: Lam,Yu(3,3),Yd(3,3),Ye(3,3),Mn,MDF,mu2
+Complex(dp),Intent(out) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),Mn,mH2
 
 Real(dp), Intent(in) :: Qout 
 Complex(dp), Intent(out) :: CKMout(3,3) 
@@ -42,16 +42,16 @@ Integer :: kont
 Logical :: OnlyDiagonal 
 Logical :: realCKM 
 Real(dp) :: deltaM = 0.000001_dp, test(3)  
-Real(dp) :: scale_save, Qin, tz, dt, g1D(68), g62_SM(62) 
+Real(dp) :: scale_save, Qin, tz, dt, g1D(67), g62_SM(62) 
  
  
 ! Run SUSY RGEs from M_SUSY to Qin 
 Qin=sqrt(getRenormalizationScale()) 
 scale_save = Qin 
-Call ParametersToG68(g1input,g2input,g3input,Laminput,Yuinput,Ydinput,Yeinput,        & 
-& YR3input,YR4input,Mninput,MDFinput,mu2input,vinput,g1D)
+Call ParametersToG67(g1input,g2input,g3input,lam1input,Yuinput,Ydinput,               & 
+& Yeinput,lamdinput,lamuinput,Mninput,MDFinput,mH2input,vinput,g1D)
 
-Call GToParameters68(g1D,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v)
+Call GToParameters67(g1D,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v)
 
 g1 = Sqrt(3._dp/5._dp)*g1 
 

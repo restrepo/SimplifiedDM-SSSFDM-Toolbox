@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:19 on 17.6.2016   
+! File created at 22:36 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -169,23 +169,27 @@ Call ReadingData(kont)
  g1 = g1IN 
  g2 = g2IN 
  g3 = g3IN 
- Lam = LamIN 
+ lam1 = lam1IN 
  Yu = YuIN 
  Yd = YdIN 
  Ye = YeIN 
- YR3 = YR3IN 
- YR4 = YR4IN 
+ lamd = lamdIN 
+ lamu = lamuIN 
  Mn = MnIN 
  MDF = MDFIN 
- mu2 = mu2IN 
- Lam = Lambda1IN
-v = vSM
+ mH2 = mH2IN 
+ v = vSM
 Ye = YeSM
 Yd = YdSM
 Yu = YuSM
 g1 = g1SM
 g2 = g2SM
 g3 = g3SM
+lam1 = lambda1INPUT
+MDF = MDFINPUT
+Mn = MnINPUT
+lamu = lamuINPUT
+lamd = lamdINPUT
 
  
  ! Setting VEVs used for low energy constraints 
@@ -207,19 +211,24 @@ Else
 End if 
 
  ! Setting Boundary conditions 
- Lam = Lambda1IN
-v = vSM
+ v = vSM
 Ye = YeSM
 Yd = YdSM
 Yu = YuSM
 g1 = g1SM
 g2 = g2SM
 g3 = g3SM
-Call SolveTadpoleEquations(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,(/ ZeroC /))
+lam1 = lambda1INPUT
+MDF = MDFINPUT
+Mn = MnINPUT
+lamu = lamuINPUT
+lamd = lamdINPUT
+Call SolveTadpoleEquations(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,               & 
+& v,(/ ZeroC /))
 
-Call OneLoopMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,           & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,kont)
+Call OneLoopMasses(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,              & 
+& MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,              & 
+& ZX,ZZ,v,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,kont)
 
 
  If (SignOfMassChanged) Then  
@@ -249,17 +258,17 @@ MAh2L = MAhL**2
  
 TW = ACos(Abs(ZZ(1,1)))
 If ((L_BR).And.(kont.Eq.0)) Then 
- Call CalculateBR(CalcTBD,ratioWoM,epsI,deltaM,kont,MAh,MAh2,MFd,MFd2,MFe,             & 
-& MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,             & 
-& MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,              & 
-& YR3,YR4,Mn,MDF,mu2,gPFu,gTFu,BRFu,gPhh,gThh,BRhh,gPNv0,gTNv0,BRNv0,gPFre,              & 
-& gTFre,BRFre)
+ Call CalculateBR(CalcTBD,ratioWoM,epsI,deltaM,kont,MAh,MAh2,MChi,MChi2,               & 
+& MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,           & 
+& TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZX,ZZ,v,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,             & 
+& MDF,mH2,gPFu,gTFu,BRFu,gPFe,gTFe,BRFe,gPFd,gTFd,BRFd,gPFv,gTFv,BRFv,gPVZ,              & 
+& gTVZ,BRVZ,gPVWp,gTVWp,BRVWp,gPhh,gThh,BRhh,gPChi,gTChi,BRChi,gPFre,gTFre,BRFre)
 
 End If 
  
  If (CalculateLowEnergy) then 
-Call CalculateLowEnergyConstraints(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,              & 
-& mu2,v,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,               & 
+Call CalculateLowEnergyConstraints(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,               & 
+& MDF,mH2,v,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,           & 
 & ratioDmunu,BrDsmunu,ratioDsmunu,BrDstaunu,ratioDstaunu,BrBmunu,ratioBmunu,             & 
 & BrBtaunu,ratioBtaunu,BrKmunu,ratioKmunu,RK,RKSM,muEgamma,tauEgamma,tauMuGamma,         & 
 & CRmuEAl,CRmuETi,CRmuESr,CRmuESb,CRmuEAu,CRmuEPb,BRmuTo3e,BRtauTo3e,BRtauTo3mu,         & 
@@ -277,14 +286,12 @@ MVZ2 = mz2
 MVWp = mW 
 MVWp2 = mW2 
 If (WriteParametersAtQ) Then 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,GenerationMixing,kont)
+Call TreeMasses(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,            & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZX,ZZ,             & 
+& v,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,GenerationMixing,kont)
 
 End If 
  
-MFv = nuMasses  
-Vv = nuMixing  
 End if 
  
 If ((FoundIterativeSolution).or.(WriteOutputForNonConvergence)) Then 
@@ -325,8 +332,8 @@ End If
 End Subroutine ReadingData
 
  
-Subroutine CalculateLowEnergyConstraints(g1input,g2input,g3input,Laminput,            & 
-& Yuinput,Ydinput,Yeinput,YR3input,YR4input,Mninput,MDFinput,mu2input,vinput,            & 
+Subroutine CalculateLowEnergyConstraints(g1input,g2input,g3input,lam1input,           & 
+& Yuinput,Ydinput,Yeinput,lamdinput,lamuinput,Mninput,MDFinput,mH2input,vinput,          & 
 & ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,ratioDmunu,          & 
 & BrDsmunu,ratioDsmunu,BrDstaunu,ratioDstaunu,BrBmunu,ratioBmunu,BrBtaunu,               & 
 & ratioBtaunu,BrKmunu,ratioKmunu,RK,RKSM,muEgamma,tauEgamma,tauMuGamma,CRmuEAl,          & 
@@ -340,18 +347,18 @@ Subroutine CalculateLowEnergyConstraints(g1input,g2input,g3input,Laminput,      
 & BrBtoDnunu,ratioBtoDnunu,BrKptoPipnunu,ratioKptoPipnunu,BrKltoPinunu,ratioKltoPinunu,  & 
 & DelMK,ratioDelMK,epsK,ratioepsK)
 
-Real(dp),Intent(inout) :: g1input,g2input,g3input,YR3input,YR4input,vinput
+Real(dp),Intent(inout) :: g1input,g2input,g3input,lamdinput,lamuinput,MDFinput,vinput
 
-Complex(dp),Intent(inout) :: Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),Mninput,MDFinput,mu2input
+Complex(dp),Intent(inout) :: lam1input,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),Mninput,mH2input
 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
-& MFv2(3),Mhh,Mhh2,MHp,MHp2,MNv0(3),MNv02(3),MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MChi(3),MChi2(3),MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),            & 
+& MFu2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZvN(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2),ZX(3,3)
 
-Real(dp) :: g1,g2,g3,YR3,YR4,v
+Real(dp) :: g1,g2,g3,lamd,lamu,MDF,v
 
-Complex(dp) :: Lam,Yu(3,3),Yd(3,3),Ye(3,3),Mn,MDF,mu2
+Complex(dp) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),Mn,mH2
 
 Complex(dp) :: cplAhAhcVWpVWp,cplAhAhhh,cplAhAhVZVZ,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,               & 
 & cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVGL(3,3),  & 
@@ -359,20 +366,21 @@ Complex(dp) :: cplAhAhcVWpVWp,cplAhAhhh,cplAhAhVZVZ,cplAhcHpVWp,cplAhhhVZ,cplAhH
 & cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),             & 
 & cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVPL(3,3),  & 
 & cplcFeFeVPR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),& 
-& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,       & 
-& cplcFreFreVZR,cplcFreNv0cHpL(3),cplcFreNv0cHpR(3),cplcFreNv0cVWpL(3),cplcFreNv0cVWpR(3),& 
-& cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuAhL(3,3),& 
-& cplcFuFuAhR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVGL(3,3),cplcFuFuVGR(3,3),  & 
-& cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcgAgWpcVWp,     & 
-& cplcgWCgAcVWp,cplcgWCgWCVZ,cplcgWCgZcVWp,cplcgWpgWpVZ,cplcgZgWpcVWp,cplcHpVPVWp,       & 
-& cplcHpVWpVZ,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,cplcVWpVPVPVWp1,  & 
-& cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpVPVWp,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,             & 
-& cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplFvFeHpL(3,3),cplFvFeHpR(3,3),cplFvFeVWpL(3,3),      & 
-& cplFvFeVWpR(3,3),cplFvFvVZL(3,3),cplFvFvVZR(3,3),cplhhcHpVWp,cplhhcVWpVWp,             & 
-& cplhhhhcVWpVWp,cplhhhhhh,cplhhhhVZVZ,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpcVWpVWp, & 
-& cplHpcHpVP,cplHpcHpVZ,cplHpcHpVZVZ,cplHpcVWpVP,cplHpcVWpVZ,cplNv0FreHpL(3),            & 
-& cplNv0FreHpR(3),cplNv0FreVWpL(3),cplNv0FreVWpR(3),cplNv0Nv0AhL(3,3),cplNv0Nv0AhR(3,3), & 
-& cplNv0Nv0hhL(3,3),cplNv0Nv0hhR(3,3),cplNv0Nv0VZL(3,3),cplNv0Nv0VZR(3,3),cplVGVGVG
+& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFreChicHpL(3),cplcFreChicHpR(3),             & 
+& cplcFreChicVWpL(3),cplcFreChicVWpR(3),cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,       & 
+& cplcFreFreVZR,cplcFuFdHpL(3,3),cplcFuFdHpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),   & 
+& cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcFuFuVGL(3,3),  & 
+& cplcFuFuVGR(3,3),cplcFuFuVPL(3,3),cplcFuFuVPR(3,3),cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),  & 
+& cplcFvFeHpL(3,3),cplcFvFeHpR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFvFvVZL(3,3),& 
+& cplcFvFvVZR(3,3),cplcgAgWpcVWp,cplcgWCgAcVWp,cplcgWCgWCVZ,cplcgWCgZcVWp,               & 
+& cplcgWpgWpVZ,cplcgZgWpcVWp,cplChiChiAhL(3,3),cplChiChiAhR(3,3),cplChiChihhL(3,3),      & 
+& cplChiChihhR(3,3),cplChiChiVZL(3,3),cplChiChiVZR(3,3),cplChiFreHpL(3),cplChiFreHpR(3), & 
+& cplChiFreVWpL(3),cplChiFreVWpR(3),cplcHpVPVWp,cplcHpVWpVZ,cplcVWpcVWpVWpVWp1,          & 
+& cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3, & 
+& cplcVWpVPVWp,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,             & 
+& cplhhcHpVWp,cplhhcVWpVWp,cplhhhhcVWpVWp,cplhhhhhh,cplhhhhVZVZ,cplhhHpcHp,              & 
+& cplhhHpcVWp,cplhhVZVZ,cplHpcHpcVWpVWp,cplHpcHpVP,cplHpcHpVZ,cplHpcHpVZVZ,              & 
+& cplHpcVWpVP,cplHpcVWpVZ,cplVGVGVG
 
 Real(dp),Intent(out) :: ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,ratioDmunu,         & 
 & BrDsmunu,ratioDsmunu,BrDstaunu,ratioDstaunu,BrBmunu,ratioBmunu,BrBtaunu,               & 
@@ -696,18 +704,19 @@ Write(*,*) "Calculating low energy constraints"
 
 Qin=sqrt(getRenormalizationScale()) 
 scale_save = Qin 
-Call RunSM_and_SUSY_RGEs(160._dp,g1input,g2input,g3input,Laminput,Yuinput,            & 
-& Ydinput,Yeinput,YR3input,YR4input,Mninput,MDFinput,mu2input,vinput,g1,g2,              & 
-& g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,CKM_160,sinW2_160,Alpha_160,AlphaS_160,.false.)
+Call RunSM_and_SUSY_RGEs(160._dp,g1input,g2input,g3input,lam1input,Yuinput,           & 
+& Ydinput,Yeinput,lamdinput,lamuinput,Mninput,MDFinput,mH2input,vinput,g1,               & 
+& g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,CKM_160,sinW2_160,Alpha_160,AlphaS_160,.false.)
 
 
 ! ## All contributions ## 
 
-Call SolveTadpoleEquations(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,               & 
+& v,(/ ZeroC /))
 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,GenerationMixing,kont)
+Call TreeMasses(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,            & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZX,ZZ,             & 
+& v,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,GenerationMixing,kont)
 
  mf_d_160 = MFd(1:3) 
  mf_d2_160 = MFd(1:3)**2 
@@ -720,15 +729,15 @@ If (WriteParametersAtQ) Then
 g1input = g1
 g2input = g2
 g3input = g3
-Laminput = Lam
+lam1input = lam1
 Yuinput = Yu
 Ydinput = Yd
 Yeinput = Ye
-YR3input = YR3
-YR4input = YR4
+lamdinput = lamd
+lamuinput = lamu
 Mninput = Mn
 MDFinput = MDF
-mu2input = mu2
+mH2input = mH2
 vinput = v
 End If 
  
@@ -740,21 +749,21 @@ MAh=MVZ
 MAh2=MVZ2
 MHp=MVWp
 MHp2=MVWp2
-Call AllCouplings(Lam,v,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,ZUR,YR3,             & 
-& YR4,ZvN,Vv,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,           & 
+Call AllCouplings(lam1,v,g1,g2,TW,g3,lamd,lamu,ZX,Yd,ZDL,ZDR,Ye,ZEL,ZER,              & 
+& Yu,ZUL,ZUR,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,           & 
 & cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,cplHpcVWpVP,      & 
 & cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,               & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
-& cplNv0Nv0AhL,cplNv0Nv0AhR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,             & 
-& cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplNv0FreHpL,cplNv0FreHpR,               & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,           & 
-& cplNv0Nv0hhL,cplNv0Nv0hhR,cplcFreNv0cHpL,cplcFreNv0cHpR,cplcFdFdVGL,cplcFdFdVGR,       & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,cplcFdFdVZR,             & 
-& cplFvFeVWpL,cplFvFeVWpR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
-& cplNv0FreVWpL,cplNv0FreVWpR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,   & 
-& cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplFvFvVZL,cplFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplNv0Nv0VZL,cplNv0Nv0VZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
+& cplChiChiAhL,cplChiChiAhR,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,             & 
+& cplcFuFuAhL,cplcFuFuAhR,cplChiChihhL,cplChiChihhR,cplChiFreHpL,cplChiFreHpR,           & 
+& cplcFreChicHpL,cplcFreChicHpR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFuFuhhL,cplcFuFuhhR,               & 
+& cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplChiChiVZL,cplChiChiVZR,         & 
+& cplChiFreVWpL,cplChiFreVWpR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFdVGL,               & 
+& cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,             & 
+& cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,             & 
+& cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,       & 
+& cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,             & 
+& cplcFdFucVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR)
 
 iQFinal = 1 
 If (MakeQtest) iQFinal=10 
@@ -777,17 +786,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateBox2d2L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,             & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BOddllSLL(gt1,gt2,gt3,gt4),BOddllSRR(gt1,gt2,gt3,gt4),BOddllSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& BOddllSLL(gt1,gt2,gt3,gt4),BOddllSRR(gt1,gt2,gt3,gt4),BOddllSRL(gt1,gt2,gt3,gt4)       & 
 & ,BOddllSLR(gt1,gt2,gt3,gt4),BOddllVRR(gt1,gt2,gt3,gt4),BOddllVLL(gt1,gt2,gt3,gt4)      & 
 & ,BOddllVRL(gt1,gt2,gt3,gt4),BOddllVLR(gt1,gt2,gt3,gt4),BOddllTLL(gt1,gt2,gt3,gt4)      & 
 & ,BOddllTLR(gt1,gt2,gt3,gt4),BOddllTRL(gt1,gt2,gt3,gt4),BOddllTRR(gt1,gt2,gt3,gt4))
@@ -810,17 +819,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengS2d2L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSOddllSLL(gt1,gt2,gt3,gt4),PSOddllSRR(gt1,gt2,gt3,gt4),PSOddllSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PSOddllSLL(gt1,gt2,gt3,gt4),PSOddllSRR(gt1,gt2,gt3,gt4),PSOddllSRL(gt1,gt2,gt3,gt4)    & 
 & ,PSOddllSLR(gt1,gt2,gt3,gt4),PSOddllVRR(gt1,gt2,gt3,gt4),PSOddllVLL(gt1,gt2,gt3,gt4)   & 
 & ,PSOddllVRL(gt1,gt2,gt3,gt4),PSOddllVLR(gt1,gt2,gt3,gt4),PSOddllTLL(gt1,gt2,gt3,gt4)   & 
 & ,PSOddllTLR(gt1,gt2,gt3,gt4),PSOddllTRL(gt1,gt2,gt3,gt4),PSOddllTRR(gt1,gt2,gt3,gt4))
@@ -843,17 +852,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengV2d2L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVOddllSLL(gt1,gt2,gt3,gt4),PVOddllSRR(gt1,gt2,gt3,gt4),PVOddllSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PVOddllSLL(gt1,gt2,gt3,gt4),PVOddllSRR(gt1,gt2,gt3,gt4),PVOddllSRL(gt1,gt2,gt3,gt4)    & 
 & ,PVOddllSLR(gt1,gt2,gt3,gt4),PVOddllVRR(gt1,gt2,gt3,gt4),PVOddllVLL(gt1,gt2,gt3,gt4)   & 
 & ,PVOddllVRL(gt1,gt2,gt3,gt4),PVOddllVLR(gt1,gt2,gt3,gt4),PVOddllTLL(gt1,gt2,gt3,gt4)   & 
 & ,PVOddllTLR(gt1,gt2,gt3,gt4),PVOddllTRL(gt1,gt2,gt3,gt4),PVOddllTRR(gt1,gt2,gt3,gt4))
@@ -876,17 +885,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeS2d2L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSOddllSLL(gt1,gt2,gt3,gt4),TSOddllSRR(gt1,gt2,gt3,gt4),TSOddllSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TSOddllSLL(gt1,gt2,gt3,gt4),TSOddllSRR(gt1,gt2,gt3,gt4),TSOddllSRL(gt1,gt2,gt3,gt4)    & 
 & ,TSOddllSLR(gt1,gt2,gt3,gt4),TSOddllVRR(gt1,gt2,gt3,gt4),TSOddllVLL(gt1,gt2,gt3,gt4)   & 
 & ,TSOddllVRL(gt1,gt2,gt3,gt4),TSOddllVLR(gt1,gt2,gt3,gt4),TSOddllTLL(gt1,gt2,gt3,gt4)   & 
 & ,TSOddllTLR(gt1,gt2,gt3,gt4),TSOddllTRL(gt1,gt2,gt3,gt4),TSOddllTRR(gt1,gt2,gt3,gt4))
@@ -909,17 +918,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeV2d2L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVOddllSLL(gt1,gt2,gt3,gt4),TVOddllSRR(gt1,gt2,gt3,gt4),TVOddllSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TVOddllSLL(gt1,gt2,gt3,gt4),TVOddllSRR(gt1,gt2,gt3,gt4),TVOddllSRL(gt1,gt2,gt3,gt4)    & 
 & ,TVOddllSLR(gt1,gt2,gt3,gt4),TVOddllVRR(gt1,gt2,gt3,gt4),TVOddllVLL(gt1,gt2,gt3,gt4)   & 
 & ,TVOddllVRL(gt1,gt2,gt3,gt4),TVOddllVLR(gt1,gt2,gt3,gt4),TVOddllTLL(gt1,gt2,gt3,gt4)   & 
 & ,TVOddllTLR(gt1,gt2,gt3,gt4),TVOddllTRL(gt1,gt2,gt3,gt4),TVOddllTRR(gt1,gt2,gt3,gt4))
@@ -963,13 +972,13 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateBox2d2nu(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
-& cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,BOddvvVRR(gt1,gt2,gt3,gt4),BOddvvVLL(gt1,gt2,gt3,gt4),BOddvvVRL(gt1,gt2,gt3,gt4)& 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& BOddvvVRR(gt1,gt2,gt3,gt4),BOddvvVLL(gt1,gt2,gt3,gt4),BOddvvVRL(gt1,gt2,gt3,gt4)       & 
 & ,BOddvvVLR(gt1,gt2,gt3,gt4))
 
 End do 
@@ -1011,14 +1020,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengS2d2nu(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,               & 
-& MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,    & 
+& MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,             & 
 & cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
 & cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
 & cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,PSOddvvVRR(gt1,gt2,gt3,gt4),PSOddvvVLL(gt1,gt2,gt3,gt4),PSOddvvVRL(gt1,gt2,gt3,gt4)& 
-& ,PSOddvvVLR(gt1,gt2,gt3,gt4))
+& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,             & 
+& cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,               & 
+& cplHpcHpVZ,cplHpcVWpVZ,PSOddvvVRR(gt1,gt2,gt3,gt4),PSOddvvVLL(gt1,gt2,gt3,gt4)         & 
+& ,PSOddvvVRL(gt1,gt2,gt3,gt4),PSOddvvVLR(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1059,14 +1068,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengV2d2nu(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,               & 
-& MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,    & 
+& MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,             & 
 & cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
 & cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
 & cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,PVOddvvVRR(gt1,gt2,gt3,gt4),PVOddvvVLL(gt1,gt2,gt3,gt4),PVOddvvVRL(gt1,gt2,gt3,gt4)& 
-& ,PVOddvvVLR(gt1,gt2,gt3,gt4))
+& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,             & 
+& cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,               & 
+& cplHpcHpVZ,cplHpcVWpVZ,PVOddvvVRR(gt1,gt2,gt3,gt4),PVOddvvVLL(gt1,gt2,gt3,gt4)         & 
+& ,PVOddvvVRL(gt1,gt2,gt3,gt4),PVOddvvVLR(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1107,14 +1116,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeS2d2nu(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,               & 
-& MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,    & 
+& MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,             & 
 & cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
 & cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
 & cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,TSOddvvVRR(gt1,gt2,gt3,gt4),TSOddvvVLL(gt1,gt2,gt3,gt4),TSOddvvVRL(gt1,gt2,gt3,gt4)& 
-& ,TSOddvvVLR(gt1,gt2,gt3,gt4))
+& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,             & 
+& cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,               & 
+& cplHpcHpVZ,cplHpcVWpVZ,TSOddvvVRR(gt1,gt2,gt3,gt4),TSOddvvVLL(gt1,gt2,gt3,gt4)         & 
+& ,TSOddvvVRL(gt1,gt2,gt3,gt4),TSOddvvVLR(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1155,14 +1164,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeV2d2nu(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,               & 
-& MFe2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,    & 
+& MFe2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,             & 
 & cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
 & cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
 & cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,TVOddvvVRR(gt1,gt2,gt3,gt4),TVOddvvVLL(gt1,gt2,gt3,gt4),TVOddvvVRL(gt1,gt2,gt3,gt4)& 
-& ,TVOddvvVLR(gt1,gt2,gt3,gt4))
+& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,             & 
+& cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,               & 
+& cplHpcHpVZ,cplHpcVWpVZ,TVOddvvVRR(gt1,gt2,gt3,gt4),TVOddvvVLL(gt1,gt2,gt3,gt4)         & 
+& ,TVOddvvVRL(gt1,gt2,gt3,gt4),TVOddvvVLR(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1327,18 +1336,19 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeSdulv(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,       & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,               & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,         & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,             & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,    & 
-& cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,      & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TSOdulvSLL(gt1,gt2,gt3,gt4),TSOdulvSRR(gt1,gt2,gt3,gt4)& 
-& ,TSOdulvSRL(gt1,gt2,gt3,gt4),TSOdulvSLR(gt1,gt2,gt3,gt4),TSOdulvVRR(gt1,gt2,gt3,gt4)   & 
-& ,TSOdulvVLL(gt1,gt2,gt3,gt4),TSOdulvVRL(gt1,gt2,gt3,gt4),TSOdulvVLR(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL,    & 
+& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,               & 
+& cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,         & 
+& cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,               & 
+& cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,         & 
+& cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,             & 
+& cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,               & 
+& cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,              & 
+& cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TSOdulvSLL(gt1,gt2,gt3,gt4)              & 
+& ,TSOdulvSRR(gt1,gt2,gt3,gt4),TSOdulvSRL(gt1,gt2,gt3,gt4),TSOdulvSLR(gt1,gt2,gt3,gt4)   & 
+& ,TSOdulvVRR(gt1,gt2,gt3,gt4),TSOdulvVLL(gt1,gt2,gt3,gt4),TSOdulvVRL(gt1,gt2,gt3,gt4)   & 
+& ,TSOdulvVLR(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1397,18 +1407,19 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeVdulv(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,       & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,               & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,         & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,             & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,    & 
-& cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,      & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TVOdulvSLL(gt1,gt2,gt3,gt4),TVOdulvSRR(gt1,gt2,gt3,gt4)& 
-& ,TVOdulvSRL(gt1,gt2,gt3,gt4),TVOdulvSLR(gt1,gt2,gt3,gt4),TVOdulvVRR(gt1,gt2,gt3,gt4)   & 
-& ,TVOdulvVLL(gt1,gt2,gt3,gt4),TVOdulvVRL(gt1,gt2,gt3,gt4),TVOdulvVLR(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL,    & 
+& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,               & 
+& cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,         & 
+& cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,               & 
+& cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,         & 
+& cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,             & 
+& cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,               & 
+& cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,              & 
+& cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TVOdulvSLL(gt1,gt2,gt3,gt4)              & 
+& ,TVOdulvSRR(gt1,gt2,gt3,gt4),TVOdulvSRL(gt1,gt2,gt3,gt4),TVOdulvSLR(gt1,gt2,gt3,gt4)   & 
+& ,TVOdulvVRR(gt1,gt2,gt3,gt4),TVOdulvVLL(gt1,gt2,gt3,gt4),TVOdulvVRL(gt1,gt2,gt3,gt4)   & 
+& ,TVOdulvVLR(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1920,17 +1931,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateBox2d2L(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,              & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BOddllSLLSM(gt1,gt2,gt3,gt4),BOddllSRRSM(gt1,gt2,gt3,gt4),BOddllSRLSM(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& BOddllSLLSM(gt1,gt2,gt3,gt4),BOddllSRRSM(gt1,gt2,gt3,gt4),BOddllSRLSM(gt1,gt2,gt3,gt4) & 
 & ,BOddllSLRSM(gt1,gt2,gt3,gt4),BOddllVRRSM(gt1,gt2,gt3,gt4),BOddllVLLSM(gt1,gt2,gt3,gt4)& 
 & ,BOddllVRLSM(gt1,gt2,gt3,gt4),BOddllVLRSM(gt1,gt2,gt3,gt4),BOddllTLLSM(gt1,gt2,gt3,gt4)& 
 & ,BOddllTLRSM(gt1,gt2,gt3,gt4),BOddllTRLSM(gt1,gt2,gt3,gt4),BOddllTRRSM(gt1,gt2,gt3,gt4))
@@ -1953,21 +1964,20 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengS2d2L(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSOddllSLLSM(gt1,gt2,gt3,gt4),PSOddllSRRSM(gt1,gt2,gt3,gt4),               & 
-& PSOddllSRLSM(gt1,gt2,gt3,gt4),PSOddllSLRSM(gt1,gt2,gt3,gt4),PSOddllVRRSM(gt1,gt2,gt3,gt4)& 
-& ,PSOddllVLLSM(gt1,gt2,gt3,gt4),PSOddllVRLSM(gt1,gt2,gt3,gt4),PSOddllVLRSM(gt1,gt2,gt3,gt4)& 
-& ,PSOddllTLLSM(gt1,gt2,gt3,gt4),PSOddllTLRSM(gt1,gt2,gt3,gt4),PSOddllTRLSM(gt1,gt2,gt3,gt4)& 
-& ,PSOddllTRRSM(gt1,gt2,gt3,gt4))
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PSOddllSLLSM(gt1,gt2,gt3,gt4),PSOddllSRRSM(gt1,gt2,gt3,gt4),PSOddllSRLSM(gt1,gt2,gt3,gt4)& 
+& ,PSOddllSLRSM(gt1,gt2,gt3,gt4),PSOddllVRRSM(gt1,gt2,gt3,gt4),PSOddllVLLSM(gt1,gt2,gt3,gt4)& 
+& ,PSOddllVRLSM(gt1,gt2,gt3,gt4),PSOddllVLRSM(gt1,gt2,gt3,gt4),PSOddllTLLSM(gt1,gt2,gt3,gt4)& 
+& ,PSOddllTLRSM(gt1,gt2,gt3,gt4),PSOddllTRLSM(gt1,gt2,gt3,gt4),PSOddllTRRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -1987,21 +1997,20 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengV2d2L(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVOddllSLLSM(gt1,gt2,gt3,gt4),PVOddllSRRSM(gt1,gt2,gt3,gt4),               & 
-& PVOddllSRLSM(gt1,gt2,gt3,gt4),PVOddllSLRSM(gt1,gt2,gt3,gt4),PVOddllVRRSM(gt1,gt2,gt3,gt4)& 
-& ,PVOddllVLLSM(gt1,gt2,gt3,gt4),PVOddllVRLSM(gt1,gt2,gt3,gt4),PVOddllVLRSM(gt1,gt2,gt3,gt4)& 
-& ,PVOddllTLLSM(gt1,gt2,gt3,gt4),PVOddllTLRSM(gt1,gt2,gt3,gt4),PVOddllTRLSM(gt1,gt2,gt3,gt4)& 
-& ,PVOddllTRRSM(gt1,gt2,gt3,gt4))
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PVOddllSLLSM(gt1,gt2,gt3,gt4),PVOddllSRRSM(gt1,gt2,gt3,gt4),PVOddllSRLSM(gt1,gt2,gt3,gt4)& 
+& ,PVOddllSLRSM(gt1,gt2,gt3,gt4),PVOddllVRRSM(gt1,gt2,gt3,gt4),PVOddllVLLSM(gt1,gt2,gt3,gt4)& 
+& ,PVOddllVRLSM(gt1,gt2,gt3,gt4),PVOddllVLRSM(gt1,gt2,gt3,gt4),PVOddllTLLSM(gt1,gt2,gt3,gt4)& 
+& ,PVOddllTLRSM(gt1,gt2,gt3,gt4),PVOddllTRLSM(gt1,gt2,gt3,gt4),PVOddllTRRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2021,21 +2030,20 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeS2d2L(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSOddllSLLSM(gt1,gt2,gt3,gt4),TSOddllSRRSM(gt1,gt2,gt3,gt4),               & 
-& TSOddllSRLSM(gt1,gt2,gt3,gt4),TSOddllSLRSM(gt1,gt2,gt3,gt4),TSOddllVRRSM(gt1,gt2,gt3,gt4)& 
-& ,TSOddllVLLSM(gt1,gt2,gt3,gt4),TSOddllVRLSM(gt1,gt2,gt3,gt4),TSOddllVLRSM(gt1,gt2,gt3,gt4)& 
-& ,TSOddllTLLSM(gt1,gt2,gt3,gt4),TSOddllTLRSM(gt1,gt2,gt3,gt4),TSOddllTRLSM(gt1,gt2,gt3,gt4)& 
-& ,TSOddllTRRSM(gt1,gt2,gt3,gt4))
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TSOddllSLLSM(gt1,gt2,gt3,gt4),TSOddllSRRSM(gt1,gt2,gt3,gt4),TSOddllSRLSM(gt1,gt2,gt3,gt4)& 
+& ,TSOddllSLRSM(gt1,gt2,gt3,gt4),TSOddllVRRSM(gt1,gt2,gt3,gt4),TSOddllVLLSM(gt1,gt2,gt3,gt4)& 
+& ,TSOddllVRLSM(gt1,gt2,gt3,gt4),TSOddllVLRSM(gt1,gt2,gt3,gt4),TSOddllTLLSM(gt1,gt2,gt3,gt4)& 
+& ,TSOddllTLRSM(gt1,gt2,gt3,gt4),TSOddllTRLSM(gt1,gt2,gt3,gt4),TSOddllTRRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2055,21 +2063,20 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeV2d2L(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVOddllSLLSM(gt1,gt2,gt3,gt4),TVOddllSRRSM(gt1,gt2,gt3,gt4),               & 
-& TVOddllSRLSM(gt1,gt2,gt3,gt4),TVOddllSLRSM(gt1,gt2,gt3,gt4),TVOddllVRRSM(gt1,gt2,gt3,gt4)& 
-& ,TVOddllVLLSM(gt1,gt2,gt3,gt4),TVOddllVRLSM(gt1,gt2,gt3,gt4),TVOddllVLRSM(gt1,gt2,gt3,gt4)& 
-& ,TVOddllTLLSM(gt1,gt2,gt3,gt4),TVOddllTLRSM(gt1,gt2,gt3,gt4),TVOddllTRLSM(gt1,gt2,gt3,gt4)& 
-& ,TVOddllTRRSM(gt1,gt2,gt3,gt4))
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TVOddllSLLSM(gt1,gt2,gt3,gt4),TVOddllSRRSM(gt1,gt2,gt3,gt4),TVOddllSRLSM(gt1,gt2,gt3,gt4)& 
+& ,TVOddllSLRSM(gt1,gt2,gt3,gt4),TVOddllVRRSM(gt1,gt2,gt3,gt4),TVOddllVLLSM(gt1,gt2,gt3,gt4)& 
+& ,TVOddllVRLSM(gt1,gt2,gt3,gt4),TVOddllVLRSM(gt1,gt2,gt3,gt4),TVOddllTLLSM(gt1,gt2,gt3,gt4)& 
+& ,TVOddllTLRSM(gt1,gt2,gt3,gt4),TVOddllTRLSM(gt1,gt2,gt3,gt4),TVOddllTRRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2110,13 +2117,13 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateBox2d2nu(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,             & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
-& cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,BOddvvVRRSM(gt1,gt2,gt3,gt4),BOddvvVLLSM(gt1,gt2,gt3,gt4),BOddvvVRLSM(gt1,gt2,gt3,gt4)& 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& BOddvvVRRSM(gt1,gt2,gt3,gt4),BOddvvVLLSM(gt1,gt2,gt3,gt4),BOddvvVRLSM(gt1,gt2,gt3,gt4) & 
 & ,BOddvvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
@@ -2158,14 +2165,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengS2d2nu(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
-& cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,PSOddvvVRRSM(gt1,gt2,gt3,gt4),PSOddvvVLLSM(gt1,gt2,gt3,gt4),               & 
-& PSOddvvVRLSM(gt1,gt2,gt3,gt4),PSOddvvVLRSM(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& PSOddvvVRRSM(gt1,gt2,gt3,gt4),PSOddvvVLLSM(gt1,gt2,gt3,gt4),PSOddvvVRLSM(gt1,gt2,gt3,gt4)& 
+& ,PSOddvvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2206,14 +2213,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengV2d2nu(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
-& cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,PVOddvvVRRSM(gt1,gt2,gt3,gt4),PVOddvvVLLSM(gt1,gt2,gt3,gt4),               & 
-& PVOddvvVRLSM(gt1,gt2,gt3,gt4),PVOddvvVLRSM(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& PVOddvvVRRSM(gt1,gt2,gt3,gt4),PVOddvvVLLSM(gt1,gt2,gt3,gt4),PVOddvvVRLSM(gt1,gt2,gt3,gt4)& 
+& ,PVOddvvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2254,14 +2261,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeS2d2nu(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
-& cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,TSOddvvVRRSM(gt1,gt2,gt3,gt4),TSOddvvVLLSM(gt1,gt2,gt3,gt4),               & 
-& TSOddvvVRLSM(gt1,gt2,gt3,gt4),TSOddvvVLRSM(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& TSOddvvVRRSM(gt1,gt2,gt3,gt4),TSOddvvVLLSM(gt1,gt2,gt3,gt4),TSOddvvVRLSM(gt1,gt2,gt3,gt4)& 
+& ,TSOddvvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2302,14 +2309,14 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeV2d2nu(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,         & 
-& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,              & 
-& cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,         & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,         & 
-& cplcFuFdVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,TVOddvvVRRSM(gt1,gt2,gt3,gt4),TVOddvvVLLSM(gt1,gt2,gt3,gt4),               & 
-& TVOddvvVRLSM(gt1,gt2,gt3,gt4),TVOddvvVLRSM(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,             & 
+& cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& TVOddvvVRRSM(gt1,gt2,gt3,gt4),TVOddvvVLLSM(gt1,gt2,gt3,gt4),TVOddvvVRLSM(gt1,gt2,gt3,gt4)& 
+& ,TVOddvvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2474,18 +2481,19 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeSdulv(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,       & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,               & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,         & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,             & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,    & 
-& cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,      & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TSOdulvSLLSM(gt1,gt2,gt3,gt4),TSOdulvSRRSM(gt1,gt2,gt3,gt4)& 
-& ,TSOdulvSRLSM(gt1,gt2,gt3,gt4),TSOdulvSLRSM(gt1,gt2,gt3,gt4),TSOdulvVRRSM(gt1,gt2,gt3,gt4)& 
-& ,TSOdulvVLLSM(gt1,gt2,gt3,gt4),TSOdulvVRLSM(gt1,gt2,gt3,gt4),TSOdulvVLRSM(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL,    & 
+& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,               & 
+& cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,         & 
+& cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,               & 
+& cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,         & 
+& cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,             & 
+& cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,               & 
+& cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,              & 
+& cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TSOdulvSLLSM(gt1,gt2,gt3,gt4)            & 
+& ,TSOdulvSRRSM(gt1,gt2,gt3,gt4),TSOdulvSRLSM(gt1,gt2,gt3,gt4),TSOdulvSLRSM(gt1,gt2,gt3,gt4)& 
+& ,TSOdulvVRRSM(gt1,gt2,gt3,gt4),TSOdulvVLLSM(gt1,gt2,gt3,gt4),TSOdulvVRLSM(gt1,gt2,gt3,gt4)& 
+& ,TSOdulvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2544,18 +2552,19 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeVdulv(gt1,gt2,gt3,gt4,.true.,MAh,MAh2,MFd,MFd2,MFe,MFe2,            & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,       & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,               & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,         & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,             & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,    & 
-& cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,cplHpcHpVP,      & 
-& cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TVOdulvSLLSM(gt1,gt2,gt3,gt4),TVOdulvSRRSM(gt1,gt2,gt3,gt4)& 
-& ,TVOdulvSRLSM(gt1,gt2,gt3,gt4),TVOdulvSLRSM(gt1,gt2,gt3,gt4),TVOdulvVRRSM(gt1,gt2,gt3,gt4)& 
-& ,TVOdulvVLLSM(gt1,gt2,gt3,gt4),TVOdulvVRLSM(gt1,gt2,gt3,gt4),TVOdulvVLRSM(gt1,gt2,gt3,gt4))
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhcHpVWp,cplAhHpcVWp,cplcFdFdAhL,    & 
+& cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,cplcFdFdVPR,cplcFdFdVZL,               & 
+& cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeAhL,         & 
+& cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,               & 
+& cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdHpL,         & 
+& cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,cplcFuFuAhR,cplcFuFuhhL,             & 
+& cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeHpL,               & 
+& cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhHpcHp,cplhhHpcVWp,              & 
+& cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,TVOdulvSLLSM(gt1,gt2,gt3,gt4)            & 
+& ,TVOdulvSRRSM(gt1,gt2,gt3,gt4),TVOdulvSRLSM(gt1,gt2,gt3,gt4),TVOdulvSLRSM(gt1,gt2,gt3,gt4)& 
+& ,TVOdulvVRRSM(gt1,gt2,gt3,gt4),TVOdulvVLLSM(gt1,gt2,gt3,gt4),TVOdulvVRLSM(gt1,gt2,gt3,gt4)& 
+& ,TVOdulvVLRSM(gt1,gt2,gt3,gt4))
 
 End do 
 
@@ -2906,15 +2915,16 @@ CKM = CKMsave
 ! running to M_Z 
 !-------------------------------------
 
-Call RunSM_and_SUSY_RGEs(mz,g1input,g2input,g3input,Laminput,Yuinput,Ydinput,         & 
-& Yeinput,YR3input,YR4input,Mninput,MDFinput,mu2input,vinput,g1,g2,g3,Lam,               & 
-& Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,CKM_MZ,sinW2_MZ,Alpha_MZ,AlphaS_MZ,.true.)
+Call RunSM_and_SUSY_RGEs(mz,g1input,g2input,g3input,lam1input,Yuinput,Ydinput,        & 
+& Yeinput,lamdinput,lamuinput,Mninput,MDFinput,mH2input,vinput,g1,g2,g3,lam1,            & 
+& Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,CKM_MZ,sinW2_MZ,Alpha_MZ,AlphaS_MZ,.true.)
 
-Call SolveTadpoleEquations(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,               & 
+& v,(/ ZeroC /))
 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,GenerationMixing,kont)
+Call TreeMasses(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,            & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZX,ZZ,             & 
+& v,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,GenerationMixing,kont)
 
 mzsave  = sqrt(mz2) 
  mf_d_mz = MFd(1:3) 
@@ -2923,21 +2933,21 @@ mzsave  = sqrt(mz2)
  mf_u2_mz = MFu(1:3)**2 
  mf_l_MZ = MFe(1:3) 
  mf_l2_MZ = MFe(1:3)**2 
-Call AllCouplings(Lam,v,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,ZUR,YR3,             & 
-& YR4,ZvN,Vv,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,           & 
+Call AllCouplings(lam1,v,g1,g2,TW,g3,lamd,lamu,ZX,Yd,ZDL,ZDR,Ye,ZEL,ZER,              & 
+& Yu,ZUL,ZUR,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,           & 
 & cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,cplHpcVWpVP,      & 
 & cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,               & 
-& cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
-& cplNv0Nv0AhL,cplNv0Nv0AhR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,             & 
-& cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplNv0FreHpL,cplNv0FreHpR,               & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,           & 
-& cplNv0Nv0hhL,cplNv0Nv0hhR,cplcFreNv0cHpL,cplcFreNv0cHpR,cplcFdFdVGL,cplcFdFdVGR,       & 
-& cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,cplcFdFdVZR,             & 
-& cplFvFeVWpL,cplFvFeVWpR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
-& cplNv0FreVWpL,cplNv0FreVWpR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,   & 
-& cplcFuFuVGL,cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,               & 
-& cplcFdFucVWpL,cplcFdFucVWpR,cplFvFvVZL,cplFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplNv0Nv0VZL,cplNv0Nv0VZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR)
+& cplChiChiAhL,cplChiChiAhR,cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,             & 
+& cplcFuFuAhL,cplcFuFuAhR,cplChiChihhL,cplChiChihhR,cplChiFreHpL,cplChiFreHpR,           & 
+& cplcFreChicHpL,cplcFreChicHpR,cplcFdFdhhL,cplcFdFdhhR,cplcFuFdHpL,cplcFuFdHpR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFuFuhhL,cplcFuFuhhR,               & 
+& cplcFdFucHpL,cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplChiChiVZL,cplChiChiVZR,         & 
+& cplChiFreVWpL,cplChiFreVWpR,cplcFreChicVWpL,cplcFreChicVWpR,cplcFdFdVGL,               & 
+& cplcFdFdVGR,cplcFdFdVPL,cplcFdFdVPR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFdFdVZL,             & 
+& cplcFdFdVZR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,             & 
+& cplcFeFeVZR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVGL,       & 
+& cplcFuFuVGR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,cplcFuFuVZR,cplcFdFucVWpL,             & 
+& cplcFdFucVWpR,cplcFvFvVZL,cplcFvFvVZR,cplcFeFvcVWpL,cplcFeFvcVWpR)
 
 Mhh_s = Mhh 
 Mhh2_s  = Mhh2   
@@ -2968,17 +2978,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateBox2L2d(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,             & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BOllddSLL(gt1,gt2,gt3,gt4),BOllddSRR(gt1,gt2,gt3,gt4),BOllddSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& BOllddSLL(gt1,gt2,gt3,gt4),BOllddSRR(gt1,gt2,gt3,gt4),BOllddSRL(gt1,gt2,gt3,gt4)       & 
 & ,BOllddSLR(gt1,gt2,gt3,gt4),BOllddVRR(gt1,gt2,gt3,gt4),BOllddVLL(gt1,gt2,gt3,gt4)      & 
 & ,BOllddVRL(gt1,gt2,gt3,gt4),BOllddVLR(gt1,gt2,gt3,gt4),BOllddTLL(gt1,gt2,gt3,gt4)      & 
 & ,BOllddTLR(gt1,gt2,gt3,gt4),BOllddTRL(gt1,gt2,gt3,gt4),BOllddTRR(gt1,gt2,gt3,gt4))
@@ -3000,17 +3010,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengS2L2d(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSOllddSLL(gt1,gt2,gt3,gt4),PSOllddSRR(gt1,gt2,gt3,gt4),PSOllddSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PSOllddSLL(gt1,gt2,gt3,gt4),PSOllddSRR(gt1,gt2,gt3,gt4),PSOllddSRL(gt1,gt2,gt3,gt4)    & 
 & ,PSOllddSLR(gt1,gt2,gt3,gt4),PSOllddVRR(gt1,gt2,gt3,gt4),PSOllddVLL(gt1,gt2,gt3,gt4)   & 
 & ,PSOllddVRL(gt1,gt2,gt3,gt4),PSOllddVLR(gt1,gt2,gt3,gt4),PSOllddTLL(gt1,gt2,gt3,gt4)   & 
 & ,PSOllddTLR(gt1,gt2,gt3,gt4),PSOllddTRL(gt1,gt2,gt3,gt4),PSOllddTRR(gt1,gt2,gt3,gt4))
@@ -3032,17 +3042,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengV2L2d(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVOllddSLL(gt1,gt2,gt3,gt4),PVOllddSRR(gt1,gt2,gt3,gt4),PVOllddSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PVOllddSLL(gt1,gt2,gt3,gt4),PVOllddSRR(gt1,gt2,gt3,gt4),PVOllddSRL(gt1,gt2,gt3,gt4)    & 
 & ,PVOllddSLR(gt1,gt2,gt3,gt4),PVOllddVRR(gt1,gt2,gt3,gt4),PVOllddVLL(gt1,gt2,gt3,gt4)   & 
 & ,PVOllddVRL(gt1,gt2,gt3,gt4),PVOllddVLR(gt1,gt2,gt3,gt4),PVOllddTLL(gt1,gt2,gt3,gt4)   & 
 & ,PVOllddTLR(gt1,gt2,gt3,gt4),PVOllddTRL(gt1,gt2,gt3,gt4),PVOllddTRR(gt1,gt2,gt3,gt4))
@@ -3064,17 +3074,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeS2L2d(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSOllddSLL(gt1,gt2,gt3,gt4),TSOllddSRR(gt1,gt2,gt3,gt4),TSOllddSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TSOllddSLL(gt1,gt2,gt3,gt4),TSOllddSRR(gt1,gt2,gt3,gt4),TSOllddSRL(gt1,gt2,gt3,gt4)    & 
 & ,TSOllddSLR(gt1,gt2,gt3,gt4),TSOllddVRR(gt1,gt2,gt3,gt4),TSOllddVLL(gt1,gt2,gt3,gt4)   & 
 & ,TSOllddVRL(gt1,gt2,gt3,gt4),TSOllddVLR(gt1,gt2,gt3,gt4),TSOllddTLL(gt1,gt2,gt3,gt4)   & 
 & ,TSOllddTLR(gt1,gt2,gt3,gt4),TSOllddTRL(gt1,gt2,gt3,gt4),TSOllddTRR(gt1,gt2,gt3,gt4))
@@ -3096,17 +3106,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeV2L2d(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVOllddSLL(gt1,gt2,gt3,gt4),TVOllddSRR(gt1,gt2,gt3,gt4),TVOllddSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TVOllddSLL(gt1,gt2,gt3,gt4),TVOllddSRR(gt1,gt2,gt3,gt4),TVOllddSRL(gt1,gt2,gt3,gt4)    & 
 & ,TVOllddSLR(gt1,gt2,gt3,gt4),TVOllddVRR(gt1,gt2,gt3,gt4),TVOllddVLL(gt1,gt2,gt3,gt4)   & 
 & ,TVOllddVRL(gt1,gt2,gt3,gt4),TVOllddVLR(gt1,gt2,gt3,gt4),TVOllddTLL(gt1,gt2,gt3,gt4)   & 
 & ,TVOllddTLR(gt1,gt2,gt3,gt4),TVOllddTRL(gt1,gt2,gt3,gt4),TVOllddTRR(gt1,gt2,gt3,gt4))
@@ -3125,17 +3135,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateBox2L2u(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,             & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BOlluuSLL(gt1,gt2,gt3,gt4),BOlluuSRR(gt1,gt2,gt3,gt4),BOlluuSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& BOlluuSLL(gt1,gt2,gt3,gt4),BOlluuSRR(gt1,gt2,gt3,gt4),BOlluuSRL(gt1,gt2,gt3,gt4)       & 
 & ,BOlluuSLR(gt1,gt2,gt3,gt4),BOlluuVRR(gt1,gt2,gt3,gt4),BOlluuVLL(gt1,gt2,gt3,gt4)      & 
 & ,BOlluuVRL(gt1,gt2,gt3,gt4),BOlluuVLR(gt1,gt2,gt3,gt4),BOlluuTLL(gt1,gt2,gt3,gt4)      & 
 & ,BOlluuTLR(gt1,gt2,gt3,gt4),BOlluuTRL(gt1,gt2,gt3,gt4),BOlluuTRR(gt1,gt2,gt3,gt4))
@@ -3154,17 +3164,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengS2L2u(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSOlluuSLL(gt1,gt2,gt3,gt4),PSOlluuSRR(gt1,gt2,gt3,gt4),PSOlluuSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PSOlluuSLL(gt1,gt2,gt3,gt4),PSOlluuSRR(gt1,gt2,gt3,gt4),PSOlluuSRL(gt1,gt2,gt3,gt4)    & 
 & ,PSOlluuSLR(gt1,gt2,gt3,gt4),PSOlluuVRR(gt1,gt2,gt3,gt4),PSOlluuVLL(gt1,gt2,gt3,gt4)   & 
 & ,PSOlluuVRL(gt1,gt2,gt3,gt4),PSOlluuVLR(gt1,gt2,gt3,gt4),PSOlluuTLL(gt1,gt2,gt3,gt4)   & 
 & ,PSOlluuTLR(gt1,gt2,gt3,gt4),PSOlluuTRL(gt1,gt2,gt3,gt4),PSOlluuTRR(gt1,gt2,gt3,gt4))
@@ -3183,17 +3193,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculatePengV2L2u(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVOlluuSLL(gt1,gt2,gt3,gt4),PVOlluuSRR(gt1,gt2,gt3,gt4),PVOlluuSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& PVOlluuSLL(gt1,gt2,gt3,gt4),PVOlluuSRR(gt1,gt2,gt3,gt4),PVOlluuSRL(gt1,gt2,gt3,gt4)    & 
 & ,PVOlluuSLR(gt1,gt2,gt3,gt4),PVOlluuVRR(gt1,gt2,gt3,gt4),PVOlluuVLL(gt1,gt2,gt3,gt4)   & 
 & ,PVOlluuVRL(gt1,gt2,gt3,gt4),PVOlluuVLR(gt1,gt2,gt3,gt4),PVOlluuTLL(gt1,gt2,gt3,gt4)   & 
 & ,PVOlluuTLR(gt1,gt2,gt3,gt4),PVOlluuTRL(gt1,gt2,gt3,gt4),PVOlluuTRR(gt1,gt2,gt3,gt4))
@@ -3212,17 +3222,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeS2L2u(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSOlluuSLL(gt1,gt2,gt3,gt4),TSOlluuSRR(gt1,gt2,gt3,gt4),TSOlluuSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TSOlluuSLL(gt1,gt2,gt3,gt4),TSOlluuSRR(gt1,gt2,gt3,gt4),TSOlluuSRL(gt1,gt2,gt3,gt4)    & 
 & ,TSOlluuSLR(gt1,gt2,gt3,gt4),TSOlluuVRR(gt1,gt2,gt3,gt4),TSOlluuVLL(gt1,gt2,gt3,gt4)   & 
 & ,TSOlluuVRL(gt1,gt2,gt3,gt4),TSOlluuVLR(gt1,gt2,gt3,gt4),TSOlluuTLL(gt1,gt2,gt3,gt4)   & 
 & ,TSOlluuTLR(gt1,gt2,gt3,gt4),TSOlluuTRL(gt1,gt2,gt3,gt4),TSOlluuTRR(gt1,gt2,gt3,gt4))
@@ -3241,17 +3251,17 @@ gt2 = IndexArray4(i1,2)
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
 Call CalculateTreeV2L2u(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,         & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,     & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,        & 
+& cplAhHpcVWp,cplcFdFdAhL,cplcFdFdAhR,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVPL,               & 
 & cplcFdFdVPR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucHpL,cplcFdFucHpR,cplcFdFucVWpL,           & 
 & cplcFdFucVWpR,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,             & 
 & cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
 & cplcFeFvcVWpR,cplcFuFdHpL,cplcFuFdHpR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuAhL,           & 
 & cplcFuFuAhR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVPL,cplcFuFuVPR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,              & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVOlluuSLL(gt1,gt2,gt3,gt4),TVOlluuSRR(gt1,gt2,gt3,gt4),TVOlluuSRL(gt1,gt2,gt3,gt4)& 
+& cplcFuFuVZR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,cplcHpVPVWp,             & 
+& cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,              & 
+& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
+& TVOlluuSLL(gt1,gt2,gt3,gt4),TVOlluuSRR(gt1,gt2,gt3,gt4),TVOlluuSRL(gt1,gt2,gt3,gt4)    & 
 & ,TVOlluuSLR(gt1,gt2,gt3,gt4),TVOlluuVRR(gt1,gt2,gt3,gt4),TVOlluuVLL(gt1,gt2,gt3,gt4)   & 
 & ,TVOlluuVRL(gt1,gt2,gt3,gt4),TVOlluuVLR(gt1,gt2,gt3,gt4),TVOlluuTLL(gt1,gt2,gt3,gt4)   & 
 & ,TVOlluuTLR(gt1,gt2,gt3,gt4),TVOlluuTRL(gt1,gt2,gt3,gt4),TVOlluuTRR(gt1,gt2,gt3,gt4))
@@ -3271,17 +3281,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculateBox4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,               & 
-& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,     & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,               & 
-& cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,      & 
-& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
-& BO4lSLL(gt1,gt2,gt3,gt4),BO4lSRR(gt1,gt2,gt3,gt4),BO4lSRL(gt1,gt2,gt3,gt4)             & 
-& ,BO4lSLR(gt1,gt2,gt3,gt4),BO4lVRR(gt1,gt2,gt3,gt4),BO4lVLL(gt1,gt2,gt3,gt4)            & 
-& ,BO4lVRL(gt1,gt2,gt3,gt4),BO4lVLR(gt1,gt2,gt3,gt4),BO4lTLL(gt1,gt2,gt3,gt4)            & 
-& ,BO4lTLR(gt1,gt2,gt3,gt4),BO4lTRL(gt1,gt2,gt3,gt4),BO4lTRR(gt1,gt2,gt3,gt4))
+Call CalculateBox4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,               & 
+& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,              & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,BO4lSLL(gt1,gt2,gt3,gt4),BO4lSRR(gt1,gt2,gt3,gt4)& 
+& ,BO4lSRL(gt1,gt2,gt3,gt4),BO4lSLR(gt1,gt2,gt3,gt4),BO4lVRR(gt1,gt2,gt3,gt4)            & 
+& ,BO4lVLL(gt1,gt2,gt3,gt4),BO4lVRL(gt1,gt2,gt3,gt4),BO4lVLR(gt1,gt2,gt3,gt4)            & 
+& ,BO4lTLL(gt1,gt2,gt3,gt4),BO4lTLR(gt1,gt2,gt3,gt4),BO4lTRL(gt1,gt2,gt3,gt4)            & 
+& ,BO4lTRR(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3298,17 +3306,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculatePengS4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,             & 
-& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,     & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,               & 
-& cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,      & 
-& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
-& PSO4lSLL(gt1,gt2,gt3,gt4),PSO4lSRR(gt1,gt2,gt3,gt4),PSO4lSRL(gt1,gt2,gt3,gt4)          & 
-& ,PSO4lSLR(gt1,gt2,gt3,gt4),PSO4lVRR(gt1,gt2,gt3,gt4),PSO4lVLL(gt1,gt2,gt3,gt4)         & 
-& ,PSO4lVRL(gt1,gt2,gt3,gt4),PSO4lVLR(gt1,gt2,gt3,gt4),PSO4lTLL(gt1,gt2,gt3,gt4)         & 
-& ,PSO4lTLR(gt1,gt2,gt3,gt4),PSO4lTRL(gt1,gt2,gt3,gt4),PSO4lTRR(gt1,gt2,gt3,gt4))
+Call CalculatePengS4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,             & 
+& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,              & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PSO4lSLL(gt1,gt2,gt3,gt4),               & 
+& PSO4lSRR(gt1,gt2,gt3,gt4),PSO4lSRL(gt1,gt2,gt3,gt4),PSO4lSLR(gt1,gt2,gt3,gt4)          & 
+& ,PSO4lVRR(gt1,gt2,gt3,gt4),PSO4lVLL(gt1,gt2,gt3,gt4),PSO4lVRL(gt1,gt2,gt3,gt4)         & 
+& ,PSO4lVLR(gt1,gt2,gt3,gt4),PSO4lTLL(gt1,gt2,gt3,gt4),PSO4lTLR(gt1,gt2,gt3,gt4)         & 
+& ,PSO4lTRL(gt1,gt2,gt3,gt4),PSO4lTRR(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3325,17 +3331,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculatePengV4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,             & 
-& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,     & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,               & 
-& cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,      & 
-& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
-& PVO4lSLL(gt1,gt2,gt3,gt4),PVO4lSRR(gt1,gt2,gt3,gt4),PVO4lSRL(gt1,gt2,gt3,gt4)          & 
-& ,PVO4lSLR(gt1,gt2,gt3,gt4),PVO4lVRR(gt1,gt2,gt3,gt4),PVO4lVLL(gt1,gt2,gt3,gt4)         & 
-& ,PVO4lVRL(gt1,gt2,gt3,gt4),PVO4lVLR(gt1,gt2,gt3,gt4),PVO4lTLL(gt1,gt2,gt3,gt4)         & 
-& ,PVO4lTLR(gt1,gt2,gt3,gt4),PVO4lTRL(gt1,gt2,gt3,gt4),PVO4lTRR(gt1,gt2,gt3,gt4))
+Call CalculatePengV4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,             & 
+& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,              & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PVO4lSLL(gt1,gt2,gt3,gt4),               & 
+& PVO4lSRR(gt1,gt2,gt3,gt4),PVO4lSRL(gt1,gt2,gt3,gt4),PVO4lSLR(gt1,gt2,gt3,gt4)          & 
+& ,PVO4lVRR(gt1,gt2,gt3,gt4),PVO4lVLL(gt1,gt2,gt3,gt4),PVO4lVRL(gt1,gt2,gt3,gt4)         & 
+& ,PVO4lVLR(gt1,gt2,gt3,gt4),PVO4lTLL(gt1,gt2,gt3,gt4),PVO4lTLR(gt1,gt2,gt3,gt4)         & 
+& ,PVO4lTRL(gt1,gt2,gt3,gt4),PVO4lTRR(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3352,17 +3356,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculateTreeS4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,             & 
-& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,     & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,               & 
-& cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,      & 
-& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
-& TSO4lSLL(gt1,gt2,gt3,gt4),TSO4lSRR(gt1,gt2,gt3,gt4),TSO4lSRL(gt1,gt2,gt3,gt4)          & 
-& ,TSO4lSLR(gt1,gt2,gt3,gt4),TSO4lVRR(gt1,gt2,gt3,gt4),TSO4lVLL(gt1,gt2,gt3,gt4)         & 
-& ,TSO4lVRL(gt1,gt2,gt3,gt4),TSO4lVLR(gt1,gt2,gt3,gt4),TSO4lTLL(gt1,gt2,gt3,gt4)         & 
-& ,TSO4lTLR(gt1,gt2,gt3,gt4),TSO4lTRL(gt1,gt2,gt3,gt4),TSO4lTRR(gt1,gt2,gt3,gt4))
+Call CalculateTreeS4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,             & 
+& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,              & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TSO4lSLL(gt1,gt2,gt3,gt4),               & 
+& TSO4lSRR(gt1,gt2,gt3,gt4),TSO4lSRL(gt1,gt2,gt3,gt4),TSO4lSLR(gt1,gt2,gt3,gt4)          & 
+& ,TSO4lVRR(gt1,gt2,gt3,gt4),TSO4lVLL(gt1,gt2,gt3,gt4),TSO4lVRL(gt1,gt2,gt3,gt4)         & 
+& ,TSO4lVLR(gt1,gt2,gt3,gt4),TSO4lTLL(gt1,gt2,gt3,gt4),TSO4lTLR(gt1,gt2,gt3,gt4)         & 
+& ,TSO4lTRL(gt1,gt2,gt3,gt4),TSO4lTRR(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3379,17 +3381,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculateTreeV4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,             & 
-& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,     & 
-& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,               & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
-& cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,cplFvFeHpR,               & 
-& cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,      & 
-& cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,cplHpcVWpVZ,        & 
-& TVO4lSLL(gt1,gt2,gt3,gt4),TVO4lSRR(gt1,gt2,gt3,gt4),TVO4lSRL(gt1,gt2,gt3,gt4)          & 
-& ,TVO4lSLR(gt1,gt2,gt3,gt4),TVO4lVRR(gt1,gt2,gt3,gt4),TVO4lVLL(gt1,gt2,gt3,gt4)         & 
-& ,TVO4lVRL(gt1,gt2,gt3,gt4),TVO4lVLR(gt1,gt2,gt3,gt4),TVO4lTLL(gt1,gt2,gt3,gt4)         & 
-& ,TVO4lTLR(gt1,gt2,gt3,gt4),TVO4lTRL(gt1,gt2,gt3,gt4),TVO4lTRR(gt1,gt2,gt3,gt4))
+Call CalculateTreeV4L(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,             & 
+& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,              & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TVO4lSLL(gt1,gt2,gt3,gt4),               & 
+& TVO4lSRR(gt1,gt2,gt3,gt4),TVO4lSRL(gt1,gt2,gt3,gt4),TVO4lSLR(gt1,gt2,gt3,gt4)          & 
+& ,TVO4lVRR(gt1,gt2,gt3,gt4),TVO4lVLL(gt1,gt2,gt3,gt4),TVO4lVRL(gt1,gt2,gt3,gt4)         & 
+& ,TVO4lVLR(gt1,gt2,gt3,gt4),TVO4lTLL(gt1,gt2,gt3,gt4),TVO4lTLR(gt1,gt2,gt3,gt4)         & 
+& ,TVO4lTRL(gt1,gt2,gt3,gt4),TVO4lTRR(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3405,18 +3405,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculateBox4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,               & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,BO4lSLLcross(gt1,gt2,gt3,gt4),BO4lSRRcross(gt1,gt2,gt3,gt4),               & 
-& BO4lSRLcross(gt1,gt2,gt3,gt4),BO4lSLRcross(gt1,gt2,gt3,gt4),BO4lVRRcross(gt1,gt2,gt3,gt4)& 
-& ,BO4lVLLcross(gt1,gt2,gt3,gt4),BO4lVRLcross(gt1,gt2,gt3,gt4),BO4lVLRcross(gt1,gt2,gt3,gt4)& 
-& ,BO4lTLLcross(gt1,gt2,gt3,gt4),BO4lTLRcross(gt1,gt2,gt3,gt4),BO4lTRLcross(gt1,gt2,gt3,gt4)& 
-& ,BO4lTRRcross(gt1,gt2,gt3,gt4))
+Call CalculateBox4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,               & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,BO4lSLLcross(gt1,gt2,gt3,gt4)            & 
+& ,BO4lSRRcross(gt1,gt2,gt3,gt4),BO4lSRLcross(gt1,gt2,gt3,gt4),BO4lSLRcross(gt1,gt2,gt3,gt4)& 
+& ,BO4lVRRcross(gt1,gt2,gt3,gt4),BO4lVLLcross(gt1,gt2,gt3,gt4),BO4lVRLcross(gt1,gt2,gt3,gt4)& 
+& ,BO4lVLRcross(gt1,gt2,gt3,gt4),BO4lTLLcross(gt1,gt2,gt3,gt4),BO4lTLRcross(gt1,gt2,gt3,gt4)& 
+& ,BO4lTRLcross(gt1,gt2,gt3,gt4),BO4lTRRcross(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3432,18 +3429,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculatePengS4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PSO4lSLLcross(gt1,gt2,gt3,gt4),PSO4lSRRcross(gt1,gt2,gt3,gt4)              & 
-& ,PSO4lSRLcross(gt1,gt2,gt3,gt4),PSO4lSLRcross(gt1,gt2,gt3,gt4),PSO4lVRRcross(gt1,gt2,gt3,gt4)& 
-& ,PSO4lVLLcross(gt1,gt2,gt3,gt4),PSO4lVRLcross(gt1,gt2,gt3,gt4),PSO4lVLRcross(gt1,gt2,gt3,gt4)& 
-& ,PSO4lTLLcross(gt1,gt2,gt3,gt4),PSO4lTLRcross(gt1,gt2,gt3,gt4),PSO4lTRLcross(gt1,gt2,gt3,gt4)& 
-& ,PSO4lTRRcross(gt1,gt2,gt3,gt4))
+Call CalculatePengS4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PSO4lSLLcross(gt1,gt2,gt3,gt4)           & 
+& ,PSO4lSRRcross(gt1,gt2,gt3,gt4),PSO4lSRLcross(gt1,gt2,gt3,gt4),PSO4lSLRcross(gt1,gt2,gt3,gt4)& 
+& ,PSO4lVRRcross(gt1,gt2,gt3,gt4),PSO4lVLLcross(gt1,gt2,gt3,gt4),PSO4lVRLcross(gt1,gt2,gt3,gt4)& 
+& ,PSO4lVLRcross(gt1,gt2,gt3,gt4),PSO4lTLLcross(gt1,gt2,gt3,gt4),PSO4lTLRcross(gt1,gt2,gt3,gt4)& 
+& ,PSO4lTRLcross(gt1,gt2,gt3,gt4),PSO4lTRRcross(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3459,18 +3453,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculatePengV4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,PVO4lSLLcross(gt1,gt2,gt3,gt4),PVO4lSRRcross(gt1,gt2,gt3,gt4)              & 
-& ,PVO4lSRLcross(gt1,gt2,gt3,gt4),PVO4lSLRcross(gt1,gt2,gt3,gt4),PVO4lVRRcross(gt1,gt2,gt3,gt4)& 
-& ,PVO4lVLLcross(gt1,gt2,gt3,gt4),PVO4lVRLcross(gt1,gt2,gt3,gt4),PVO4lVLRcross(gt1,gt2,gt3,gt4)& 
-& ,PVO4lTLLcross(gt1,gt2,gt3,gt4),PVO4lTLRcross(gt1,gt2,gt3,gt4),PVO4lTRLcross(gt1,gt2,gt3,gt4)& 
-& ,PVO4lTRRcross(gt1,gt2,gt3,gt4))
+Call CalculatePengV4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,PVO4lSLLcross(gt1,gt2,gt3,gt4)           & 
+& ,PVO4lSRRcross(gt1,gt2,gt3,gt4),PVO4lSRLcross(gt1,gt2,gt3,gt4),PVO4lSLRcross(gt1,gt2,gt3,gt4)& 
+& ,PVO4lVRRcross(gt1,gt2,gt3,gt4),PVO4lVLLcross(gt1,gt2,gt3,gt4),PVO4lVRLcross(gt1,gt2,gt3,gt4)& 
+& ,PVO4lVLRcross(gt1,gt2,gt3,gt4),PVO4lTLLcross(gt1,gt2,gt3,gt4),PVO4lTLRcross(gt1,gt2,gt3,gt4)& 
+& ,PVO4lTRLcross(gt1,gt2,gt3,gt4),PVO4lTRRcross(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3486,18 +3477,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculateTreeS4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TSO4lSLLcross(gt1,gt2,gt3,gt4),TSO4lSRRcross(gt1,gt2,gt3,gt4)              & 
-& ,TSO4lSRLcross(gt1,gt2,gt3,gt4),TSO4lSLRcross(gt1,gt2,gt3,gt4),TSO4lVRRcross(gt1,gt2,gt3,gt4)& 
-& ,TSO4lVLLcross(gt1,gt2,gt3,gt4),TSO4lVRLcross(gt1,gt2,gt3,gt4),TSO4lVLRcross(gt1,gt2,gt3,gt4)& 
-& ,TSO4lTLLcross(gt1,gt2,gt3,gt4),TSO4lTLRcross(gt1,gt2,gt3,gt4),TSO4lTRLcross(gt1,gt2,gt3,gt4)& 
-& ,TSO4lTRRcross(gt1,gt2,gt3,gt4))
+Call CalculateTreeS4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TSO4lSLLcross(gt1,gt2,gt3,gt4)           & 
+& ,TSO4lSRRcross(gt1,gt2,gt3,gt4),TSO4lSRLcross(gt1,gt2,gt3,gt4),TSO4lSLRcross(gt1,gt2,gt3,gt4)& 
+& ,TSO4lVRRcross(gt1,gt2,gt3,gt4),TSO4lVLLcross(gt1,gt2,gt3,gt4),TSO4lVRLcross(gt1,gt2,gt3,gt4)& 
+& ,TSO4lVLRcross(gt1,gt2,gt3,gt4),TSO4lTLLcross(gt1,gt2,gt3,gt4),TSO4lTLRcross(gt1,gt2,gt3,gt4)& 
+& ,TSO4lTRLcross(gt1,gt2,gt3,gt4),TSO4lTRRcross(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3513,18 +3501,15 @@ gt1 = IndexArray4(i1,1)
 gt2 = IndexArray4(i1,2) 
 gt3 = IndexArray4(i1,3) 
 gt4 = IndexArray4(i1,4) 
-Call CalculateTreeV4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,MFv,             & 
-& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhcHpVWp,cplAhhhVZ,            & 
-& cplAhHpcVWp,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,           & 
-& cplcFeFvcVWpR,cplcHpVPVWp,cplcHpVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplFvFeHpL,            & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhcHpVWp,cplhhcVWpVWp,     & 
-& cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,cplHpcHpVP,cplHpcHpVZ,cplHpcVWpVP,          & 
-& cplHpcVWpVZ,TVO4lSLLcross(gt1,gt2,gt3,gt4),TVO4lSRRcross(gt1,gt2,gt3,gt4)              & 
-& ,TVO4lSRLcross(gt1,gt2,gt3,gt4),TVO4lSLRcross(gt1,gt2,gt3,gt4),TVO4lVRRcross(gt1,gt2,gt3,gt4)& 
-& ,TVO4lVLLcross(gt1,gt2,gt3,gt4),TVO4lVRLcross(gt1,gt2,gt3,gt4),TVO4lVLRcross(gt1,gt2,gt3,gt4)& 
-& ,TVO4lTLLcross(gt1,gt2,gt3,gt4),TVO4lTLRcross(gt1,gt2,gt3,gt4),TVO4lTRLcross(gt1,gt2,gt3,gt4)& 
-& ,TVO4lTRRcross(gt1,gt2,gt3,gt4))
+Call CalculateTreeV4Lcross(gt1,gt2,gt3,gt4,.False.,MAh,MAh2,MFe,MFe2,Mhh,             & 
+& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,         & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,         & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplhhhhhh,cplhhVZVZ,TVO4lSLLcross(gt1,gt2,gt3,gt4)           & 
+& ,TVO4lSRRcross(gt1,gt2,gt3,gt4),TVO4lSRLcross(gt1,gt2,gt3,gt4),TVO4lSLRcross(gt1,gt2,gt3,gt4)& 
+& ,TVO4lVRRcross(gt1,gt2,gt3,gt4),TVO4lVLLcross(gt1,gt2,gt3,gt4),TVO4lVRLcross(gt1,gt2,gt3,gt4)& 
+& ,TVO4lVLRcross(gt1,gt2,gt3,gt4),TVO4lTLLcross(gt1,gt2,gt3,gt4),TVO4lTLRcross(gt1,gt2,gt3,gt4)& 
+& ,TVO4lTRLcross(gt1,gt2,gt3,gt4),TVO4lTRRcross(gt1,gt2,gt3,gt4))
 
 End Do 
 
@@ -3538,11 +3523,11 @@ Do i1=1,3
 gt1 = IndexArray2(i1,1) 
 gt2 = IndexArray2(i1,2) 
   gt3= 1 
-Call CalculateGamma2l(gt1,gt2,gt3,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,             & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,     & 
+Call CalculateGamma2l(gt1,gt2,gt3,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,             & 
+& MHp2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,              & 
 & cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcHpVPVWp,cplcVWpVPVWp,cplFvFeHpL,cplFvFeHpR,            & 
-& cplFvFeVWpL,cplFvFeVWpR,cplHpcHpVP,cplHpcVWpVP,OA2lSL(gt1,gt2),OA2lSR(gt1,gt2)         & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,         & 
+& cplcHpVPVWp,cplcVWpVPVWp,cplHpcHpVP,cplHpcVWpVP,OA2lSL(gt1,gt2),OA2lSR(gt1,gt2)        & 
 & ,OA1L(gt1,gt2),OA1R(gt1,gt2))
 
 End Do 
@@ -3561,12 +3546,12 @@ gt1 = IndexArray3(i1,1)
 gt2 = IndexArray3(i1,2) 
  Do i2=1,1 
   gt3=i2 
-Call CalculateH2l(gt1,gt2,gt3,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,            & 
-& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,              & 
-& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
-& cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplFvFeHpL,cplFvFeHpR,           & 
-& cplFvFeVWpL,cplFvFeVWpR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,     & 
-& cplhhVZVZ,OH2lSL(gt1,gt2,gt3),OH2lSR(gt1,gt2,gt3))
+Call CalculateH2l(gt1,gt2,gt3,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,            & 
+& MVWp,MVWp2,MVZ,MVZ2,cplAhAhhh,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,           & 
+& cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,              & 
+& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,         & 
+& cplcFvFeVWpR,cplhhcHpVWp,cplhhcVWpVWp,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhVZVZ,      & 
+& OH2lSL(gt1,gt2,gt3),OH2lSR(gt1,gt2,gt3))
 
 End Do 
  End Do 
@@ -3581,12 +3566,12 @@ Do i1=1,3
 gt1 = IndexArray2(i1,1) 
 gt2 = IndexArray2(i1,2) 
   gt3= 1 
-Call CalculateZ2l(gt1,gt2,gt3,.False.,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,            & 
-& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,            & 
-& cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,              & 
-& cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcHpVWpVZ,cplcVWpVWpVZ,cplFvFeHpL,          & 
-& cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,cplFvFvVZL,cplFvFvVZR,cplhhVZVZ,cplHpcHpVZ,         & 
-& cplHpcVWpVZ,OZ2lSL(gt1,gt2),OZ2lSR(gt1,gt2),OZ2lVL(gt1,gt2),OZ2lVR(gt1,gt2))
+Call CalculateZ2l(gt1,gt2,gt3,.False.,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,            & 
+& MVWp,MVWp2,MVZ,MVZ2,cplAhhhVZ,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,         & 
+& cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,             & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFvFeHpL,cplcFvFeHpR,cplcFvFeVWpL,cplcFvFeVWpR,         & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcHpVWpVZ,cplcVWpVWpVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,     & 
+& OZ2lSL(gt1,gt2),OZ2lSR(gt1,gt2),OZ2lVL(gt1,gt2),OZ2lVR(gt1,gt2))
 
 End Do 
 
@@ -4466,34 +4451,34 @@ MAh2 = MAh2_s
 
 ! *****  G minus 2 ***** 
 
-Call Gminus2(1,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,              & 
-& cplcFeFeAhR,cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,     & 
+Call Gminus2(1,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,cplcFeFeAhR,           & 
+& cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFeFeVPL,cplcFeFeVPR,               & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,ae)
 
-Call Gminus2(2,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,              & 
-& cplcFeFeAhR,cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,     & 
+Call Gminus2(2,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,cplcFeFeAhR,           & 
+& cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFeFeVPL,cplcFeFeVPR,               & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,amu)
 
-Call Gminus2(3,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,              & 
-& cplcFeFeAhR,cplFvFeHpL,cplFvFeHpR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,     & 
+Call Gminus2(3,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,cplcFeFeAhR,           & 
+& cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFeFeVPL,cplcFeFeVPR,               & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,atau)
 
 
 ! *****  Lepton EDM ***** 
 
-Call LeptonEDM(1,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,             & 
-& MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,        & 
-& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+Call LeptonEDM(1,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,             & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,               & 
+& cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,             & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplHpcHpVP,cplcVWpVPVWp,EDMe)
 
-Call LeptonEDM(2,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,             & 
-& MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,        & 
-& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+Call LeptonEDM(2,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,             & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,               & 
+& cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,             & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplHpcHpVP,cplcVWpVPVWp,EDMmu)
 
-Call LeptonEDM(3,MAh,MAh2,MFe,MFe2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,             & 
-& MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplFvFeHpL,cplFvFeHpR,cplFvFeVWpL,cplFvFeVWpR,        & 
-& cplcFeFehhL,cplcFeFehhR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFeVZL,cplcFeFeVZR,               & 
+Call LeptonEDM(3,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,             & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,               & 
+& cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,             & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplHpcHpVP,cplcVWpVPVWp,EDMtau)
 
 
@@ -4506,11 +4491,12 @@ g1=g2*Sqrt(sinW2/(1._dp-sinW2))
 mW2=(1._dp-sinW2)*mz2 + 0
 vev2=Sqrt(mZ2*(1._dp-sinW2)*SinW2/(pi*alpha)) +0 
 v=vev2 
-Call SolveTadpoleEquations(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,               & 
+& v,(/ ZeroC /))
 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,GenerationMixing,kont)
+Call TreeMasses(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,            & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZX,ZZ,             & 
+& v,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,GenerationMixing,kont)
 
 MVWp = mW 
 MVWp2 = mW2 
@@ -4522,50 +4508,29 @@ MFu(1:3) = mf_u
 MFu2(1:3) = mf_u**2 
 MFd(1:3) = mf_d 
 MFd2(1:3) = mf_d**2 
-Call CouplingsForVectorBosons(g1,g2,TW,ZvN,v,ZDL,ZUL,ZEL,Vv,cplcFreFreVZL,            & 
-& cplcFreFreVZR,cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,      & 
+Call CouplingsForVectorBosons(g2,ZX,g1,TW,v,ZDL,ZUL,ZEL,cplcFreChicVWpL,              & 
+& cplcFreChicVWpR,cplcFreFreVZL,cplcFreFreVZR,cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,        & 
 & cplcHpVPVWp,cplcHpVWpVZ,cplHpcHpcVWpVWp,cplHpcHpVZVZ,cplAhhhVZ,cplAhHpcVWp,            & 
 & cplAhAhcVWpVWp,cplAhAhVZVZ,cplhhHpcVWp,cplhhcVWpVWp,cplhhVZVZ,cplhhhhcVWpVWp,          & 
-& cplhhhhVZVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,cplcFeFeVZR,cplcFuFuVZL,               & 
-& cplcFuFuVZR,cplFvFvVZL,cplFvFvVZR,cplcgWpgWpVZ,cplcgWCgWCVZ,cplHpcVWpVZ,               & 
-& cplNv0Nv0VZL,cplNv0Nv0VZR,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,& 
+& cplhhhhVZVZ,cplChiChiVZL,cplChiChiVZR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,             & 
+& cplcFeFeVZR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,cplcgWpgWpVZ,              & 
+& cplcgWCgWCVZ,cplHpcVWpVZ,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3, & 
 & cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcgWCgAcVWp,cplcgAgWpcVWp,   & 
 & cplcgZgWpcVWp,cplcgWCgZcVWp,cplHpcVWpVP,cplcVWpVPVWp,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,  & 
 & cplcVWpVPVPVWp3,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3)
 
-Call DeltaRho(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,Mhh,            & 
-& Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,cplAhAhcVWpVWp,cplAhAhVZVZ,               & 
-& cplAhhhVZ,cplAhHpcVWp,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,             & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFreFreVZL,cplcFreFreVZR,       & 
-& cplcFreNv0cVWpL,cplcFreNv0cVWpR,cplcFuFuVZL,cplcFuFuVZR,cplcgAgWpcVWp,cplcgWCgAcVWp,   & 
-& cplcgWCgWCVZ,cplcgWCgZcVWp,cplcgWpgWpVZ,cplcgZgWpcVWp,cplcVWpcVWpVWpVWp1,              & 
-& cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3, & 
-& cplcVWpVPVWp,cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,             & 
-& cplFvFvVZL,cplFvFvVZR,cplhhcVWpVWp,cplhhhhcVWpVWp,cplhhhhVZVZ,cplhhHpcVWp,             & 
-& cplhhVZVZ,cplHpcHpcVWpVWp,cplHpcHpVZ,cplHpcHpVZVZ,cplHpcVWpVP,cplHpcVWpVZ,             & 
-& cplNv0Nv0VZL,cplNv0Nv0VZR,dRho)
+Call DeltaRho(MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,              & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhcVWpVWp,cplAhAhVZVZ,cplAhhhVZ,            & 
+& cplAhHpcVWp,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,           & 
+& cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFreChicVWpL,cplcFreChicVWpR,               & 
+& cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,           & 
+& cplcgAgWpcVWp,cplcgWCgAcVWp,cplcgWCgWCVZ,cplcgWCgZcVWp,cplcgWpgWpVZ,cplcgZgWpcVWp,     & 
+& cplChiChiVZL,cplChiChiVZR,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,    & 
+& cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
+& cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplhhcVWpVWp,cplhhhhcVWpVWp,           & 
+& cplhhhhVZVZ,cplhhHpcVWp,cplhhVZVZ,cplHpcHpcVWpVWp,cplHpcHpVZ,cplHpcHpVZVZ,             & 
+& cplHpcVWpVP,cplHpcVWpVZ,dRho)
 
-Call SolveTadpoleEquations(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,(/ ZeroC /))
-
-CalculateOneLoopMassesSave = CalculateOneLoopMasses 
-CalculateOneLoopMasses = .true. 
-Call OneLoopMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,           & 
-& Mhh,Mhh2,MHp,MHp2,MNv0,MNv02,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,               & 
-& ZUL,Vv,ZvN,ZW,ZZ,v,g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,kont)
-
-CalculateOneLoopMasses = CalculateOneLoopMassesSave 
-nuMasses = MFv 
-nuMixing = Vv 
-MVWp = mW 
-MVWp2 = mW2 
-MVZ = mZ 
-MVZ2 = mZ2 
-MFe(1:3) = mf_l 
-MFe2(1:3) = mf_l**2 
-MFu(1:3) = mf_u 
-MFu2(1:3) = mf_u**2 
-MFd(1:3) = mf_d 
-MFd2(1:3) = mf_d**2 
 If (WriteParametersAtQ) Then 
 scalein = SetRenormalizationScale(160._dp**2) 
 Else 

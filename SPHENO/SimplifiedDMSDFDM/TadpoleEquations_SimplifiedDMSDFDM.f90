@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:19 on 17.6.2016   
+! File created at 22:36 on 20.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -19,68 +19,68 @@ Use Mathematics
 Contains 
 
 
-Subroutine SolveTadpoleEquations(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,            & 
-& v,Tad1Loop)
+Subroutine SolveTadpoleEquations(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,             & 
+& mH2,v,Tad1Loop)
 
 Implicit None
-Real(dp),Intent(inout) :: g1,g2,g3,YR3,YR4,v
+Real(dp),Intent(inout) :: g1,g2,g3,lamd,lamu,MDF,v
 
-Complex(dp),Intent(inout) :: Lam,Yu(3,3),Yd(3,3),Ye(3,3),Mn,MDF,mu2
+Complex(dp),Intent(inout) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),Mn,mH2
 
 Complex(dp), Intent(in) :: Tad1Loop(1)
 
 ! For numerical routines 
-Real(dp) :: gC(68)
+Real(dp) :: gC(67)
 logical :: broycheck 
 Real(dp) :: broyx(1)
 
 If (HighScaleModel.Eq."LOW") Then 
-mu2 = -(Lam*v**2)/2._dp + Tad1Loop(1)/v
+mH2 = (-(lam1*v**3) + Tad1Loop(1))/v
 
  ! ----------- Check solutions for consistency  -------- 
 
  ! Check for NaNs 
-If (Real(mu2,dp).ne.Real(mu2,dp)) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for mu2" 
+If (Real(mH2,dp).ne.Real(mH2,dp)) Then 
+   Write(*,*) "NaN appearing in solution of tadpole equations for mH2" 
    Call TerminateProgram  
  End If 
- If (Abs(AImag(mu2)).gt.1.0E-04_dp) Then 
-   Write(*,*) "No real solution of tadpole equations for mu2" 
+ If (Abs(AImag(mH2)).gt.1.0E-04_dp) Then 
+   Write(*,*) "No real solution of tadpole equations for mH2" 
    !Call TerminateProgram  
-   mu2 = Real(mu2,dp) 
+   mH2 = Real(mH2,dp) 
   SignOfMuChanged= .True. 
 End If 
  Else 
-mu2 = -(Lam*v**2)/2._dp + Tad1Loop(1)/v
+mH2 = (-(lam1*v**3) + Tad1Loop(1))/v
 
  ! ----------- Check solutions for consistency  -------- 
 
  ! Check for NaNs 
-If (Real(mu2,dp).ne.Real(mu2,dp)) Then 
-   Write(*,*) "NaN appearing in solution of tadpole equations for mu2" 
+If (Real(mH2,dp).ne.Real(mH2,dp)) Then 
+   Write(*,*) "NaN appearing in solution of tadpole equations for mH2" 
    Call TerminateProgram  
  End If 
- If (Abs(AImag(mu2)).gt.1.0E-04_dp) Then 
-   Write(*,*) "No real solution of tadpole equations for mu2" 
+ If (Abs(AImag(mH2)).gt.1.0E-04_dp) Then 
+   Write(*,*) "No real solution of tadpole equations for mH2" 
    !Call TerminateProgram  
-   mu2 = Real(mu2,dp) 
+   mH2 = Real(mH2,dp) 
   SignOfMuChanged= .True. 
 End If 
  End if 
 End Subroutine SolveTadpoleEquations
 
-Subroutine CalculateTadpoles(g1,g2,g3,Lam,Yu,Yd,Ye,YR3,YR4,Mn,MDF,mu2,v,              & 
-& Tad1Loop,TadpoleValues)
+Subroutine CalculateTadpoles(g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,             & 
+& v,Tad1Loop,TadpoleValues)
 
-Real(dp),Intent(in) :: g1,g2,g3,YR3,YR4,v
+Real(dp),Intent(in) :: g1,g2,g3,lamd,lamu,MDF,v
 
-Complex(dp),Intent(in) :: Lam,Yu(3,3),Yd(3,3),Ye(3,3),Mn,MDF,mu2
+Complex(dp),Intent(in) :: lam1,Yu(3,3),Yd(3,3),Ye(3,3),Mn,mH2
 
 Complex(dp), Intent(in) :: Tad1Loop(1)
 
 Real(dp), Intent(out) :: TadpoleValues(1)
 
-TadpoleValues(1) = Real(mu2*v + (Lam*v**3)/2._dp - Tad1Loop(1),dp) 
+TadpoleValues(1) = Real(v*(mH2 + lam1*v**2) - Tad1Loop(1),dp) 
 End Subroutine CalculateTadpoles 
 
 End Module Tadpoles_SimplifiedDMSDFDM 

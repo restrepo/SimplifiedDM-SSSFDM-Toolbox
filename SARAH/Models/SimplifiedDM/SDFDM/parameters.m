@@ -1,107 +1,94 @@
+(* ::Package:: *)
+
 ParameterDefinitions = { 
 
 {g1,        { Description -> "Hypercharge-Coupling"}},
 {g2,        { Description -> "Left-Coupling"}},
 {g3,        { Description -> "Strong-Coupling"}},    
-{AlphaS,    { Description -> "Alpha Strong"}},	
-{e,         { Description -> "electric charge"}}, 
 
+{AlphaS,    {Description -> "Alpha Strong"}},	
+{e,         { Description -> "electric charge"}}, 
 {Gf,        { Description -> "Fermi's constant"}},
 {aEWinv,    { Description -> "inverse weak coupling constant at mZ"}},
 
 {Yu,        { Description -> "Up-Yukawa-Coupling",
-	      DependenceNum ->  Sqrt[2]/v* {{Mass[Fu,1],0,0},
-						{0, Mass[Fu,2],0},
-						{0, 0, Mass[Fu,3]}}}}, 
-             									
+              DependenceNum ->  Sqrt[2]/v*{ {Mass[Fu,1],0,0},
+					    {0,Mass[Fu,2],0},
+					    {0,0,Mass[Fu,3]}}}}, 
 {Yd,        { Description -> "Down-Yukawa-Coupling",
-			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fd,1],0,0},
-							{0, Mass[Fd,2],0},
-							{0, 0, Mass[Fd,3]}}}},
-							
+              DependenceNum ->  Sqrt[2]/v* {{Mass[Fd,1],0,0},
+					    {0, Mass[Fd,2],0},
+					    {0, 0, Mass[Fd,3]}}}},       									
 {Ye,        { Description -> "Lepton-Yukawa-Coupling",
-	      DependenceNum ->  Sqrt[2]/v* {{Mass[Fe,1],0,0},
-						{0, Mass[Fe,2],0},
-						{0, 0, Mass[Fe,3]}}}},                                                                                                             
-{v,         { Description -> "EW-VEV",
-              DependenceNum -> Sqrt[4*Mass[VWp]^2/(g2^2)],
-              DependenceSPheno -> None  }},
-
+			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fe,1],0,0},
+             						{0, Mass[Fe,2],0},
+             						{0, 0, Mass[Fe,3]}}}}, 
+                                                                            
 {ThetaW,    { Description -> "Weinberg-Angle",
               DependenceNum -> ArcSin[Sqrt[1 - Mass[VWp]^2/Mass[VZ]^2]]}},
 
-{ZZ,        { Description -> "Photon-Z Mixing Matrix"}},
-{ZW,        { Description -> "W Mixing Matrix",
-              Dependence ->   1/Sqrt[2] {{1, 1},
-                  {\[ImaginaryI],-\[ImaginaryI]}} }},
-
-{Vu,        { Description ->"Left-Up-Mixing-Matrix"}},
-{Vd,        { Description ->"Left-Down-Mixing-Matrix"}},
-{Uu,        { Description ->"Right-Up-Mixing-Matrix"}},
-{Ud,        { Description ->"Right-Down-Mixing-Matrix"}}, 
-{Ve,        { Description ->"Left-Lepton-Mixing-Matrix"}},
-{Ue,        { Description ->"Right-Lepton-Mixing-Matrix"}},
+{ZZ, {Description -> "Photon-Z Mixing Matrix"}},
+{ZW, {Description -> "W Mixing Matrix", Dependence -> 1/Sqrt[2] {{1, 1},{I,-I}} }},
+          
+{Vu,        {Description ->"Left-Up-Mixing-Matrix"}},
+{Vd,        {Description ->"Left-Down-Mixing-Matrix"}},
+{Uu,        {Description ->"Right-Up-Mixing-Matrix"}},
+{Ud,        {Description ->"Right-Down-Mixing-Matrix"}}, 
+{Ve,        {Description ->"Left-Lepton-Mixing-Matrix"}},
+{Ue,        {Description ->"Right-Lepton-Mixing-Matrix"}},
 
 (* Scalar sector *)
-{mu2,       { Description -> "SM Mu Parameter",
-              LaTeX -> "\\mu^2",
-	      OutputName -> mu2}},
 
-{MS2,       { Description -> "Softbreaking Up-Higgs Mass",
-              LaTeX -> "M_S^2",
-	      OutputName-> MS2}}, 
+{v,          { Description -> "EW-VEV",
+               DependenceNum -> Sqrt[4*Mass[VWp]^2/(g2^2)],
+               DependenceSPheno -> None  }},
 
-{Lambda1,   { Description -> "SM Higgs Selfcouplings",
-              DependenceNum -> Mass[hh]^2/(2 v^2)}},
+{mH2,        { Description -> "SM Higgs Mass Parameter"}},
 
-{LamSH,     { OutputName ->"LSH",
-              LesHouches -> LSH}},
+{mEt2, {LaTeX -> "m_\\eta^2",
+	LesHouches -> {HDM,1},
+	OutputName-> mEt2 }},
 
-{LamS,      { OutputName ->"LS",
-              Form -> Diagonal,
-              LesHouches -> LS}},
+{lambda1,   {LaTeX -> "\\lambda_1",
+	     LesHouches -> {HDM,2},
+	     OutputName-> lam1 }},
 
-(* New Mixing matrix in the scalar sector *)
-{VSs,       { LaTeX -> "VS",
-              LesHouches ->  VSs,
-	      OutputName-> VSs }},
+{lambda2,   {LaTeX -> "\\lambda_2",
+	     LesHouches -> {HDM,3},
+	     OutputName-> lam2 }},
 
-(*New Yukawas*)
+{lambda3,   {LaTeX -> "\\lambda_3",
+	     LesHouches -> {HDM,4},
+	     OutputName-> lam3 }},
 
-{YR1,       { LaTeX -> "hia",
-              LesHouches -> YR1,
-              Real->True,
-              OutputName-> YR1 }}, 
+{lambda4,   {LaTeX -> "\\lambda_4",
+	     LesHouches -> {HDM,5},
+	     OutputName-> lam4 }},
 
-{YR3,       { LaTeX -> "\\lambda_d",
-              Real->True,       
-              LesHouches -> YR3,
-              OutputName-> YR3 }}, 
+{lambda5,   {Real -> True,
+	     LaTeX -> "\\lambda_5",
+	     LesHouches -> {HDM,6},
+	     OutputName-> lam5 }},
 
-{YR4,       { LaTeX -> "\\lambda_u",
-              Real->True,       
-              LesHouches -> YR4,
-              OutputName-> YR4 }}, 
+(* Fermion sector *)
 
-(* Mixing matrices *)
-{Vv,        { Description ->"Neutrino-Mixing-Matrix",
-              LesHouches -> VVMIX,
-              OutputName-> Vv}},
+{Yn,   {LaTeX -> "Y_N",
+	LesHouches -> YN,
+	OutputName->Yn }},
 
-(* Doublet fermion *)
-{MDF,       { LaTeX -> "M_D",
-              OutputName -> MDF,
-              LesHouches -> MDF}},
+{Mn,   {LaTeX -> "M_N",
+	LesHouches -> MN,
+	OutputName->Mn }},
 
-(* Right handed neutrinos *)
-{Mn,        { LaTeX -> "M_N",
-              OutputName -> Mn,
-              LesHouches -> Mn}},
+{ZX, {LaTeX -> "Z^{\\chi^0}",
+      LesHouches -> ZXMIX,
+      OutputName -> ZX }},
 
-{ZvN,       { LaTeX -> "Z_\\mu^N",
-              LesHouches ->  ZvN,
-	      OutputName->ZvN }}
+{Vv, {Description ->"Neutrino-Mixing-Matrix"}},
 
- }; 
- 
+{MDF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}},
 
+{lamd, { LaTeX -> "\\lambda_d",Real->True,LesHouches -> {FDM,4},OutputName-> "lamd" }},   
+{lamu, { LaTeX -> "\\lambda_u",Real->True,LesHouches -> {FDM,5},OutputName-> "lamu" }}
+    
+};

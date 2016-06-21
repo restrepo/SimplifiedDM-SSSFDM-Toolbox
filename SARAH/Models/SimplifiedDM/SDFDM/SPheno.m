@@ -1,42 +1,39 @@
 OnlyLowEnergySPheno = True;
 
-
-MINPAR={{1,Lambda1IN}
-        };
-
-
-ParametersToSolveTadpoles = {mu2};
-
-(*BoundaryLowScaleInput={
-  {Lambda1,Lambda1IN}
-};*)
-
-(*In the old toolbox uncoment the previous block and comment the next one*)
-
-BoundaryLowScaleInput={
- {Lambda1,Lambda1IN},
- {v, vSM}, 
- {Ye, YeSM},
- {Yd, YdSM},
- {Yu, YuSM},
- {g1, g1SM},
- {g2, g2SM},
- {g3, g3SM}
+MINPAR={
+  {1,lambda1INPUT},
+  {2,MDFINPUT},
+  {3,MnINPUT},
+  {4,lamuINPUT},
+  {5,lamdINPUT}
 };
 
-(* Include block MSOFTIN also in not _low LesHouches input *)
-(*BoundaryEWSBScale={
-  {MS2, LHInput[MS2]},
-  {Mn, LHInput[Mn]}
-};*)
+ParametersToSolveTadpoles = {mH2};
 
+BoundaryLowScaleInput={
+  {v, vSM},
+  {Ye, YeSM},
+  {Yd, YdSM},
+  {Yu, YuSM},
+  {g1, g1SM},
+  {g2, g2SM},
+  {g3, g3SM},
+  {lambda1,lambda1INPUT},
+  {MDF,MDFINPUT},
+  {Mn,MnINPUT},
+  {lamu,lamuINPUT},
+  {lamd,lamdINPUT}
+};
 
-ListDecayParticles = {Fu,hh, Nv0, Fre};
-ListDecayParticles3B = {{Fu,"Fu.f90"},
-			{Nv0,"Nv0.f90"},
-                        {Fre,"Fre.f90"}};
+ListDecayParticles = {Fu,Fe,Fd,Fv,VZ,VWp,hh,Chi,Fre};
+ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"},{Chi,"Chi.f90"},{Fre,"Fre.f90"}};
 
-FlagLoopContributions = True;  
+(*ConditionGUTscale = g1 == g2;*)
 
-DefaultInputValues ={Lambda1IN -> 0.28(*, LSH[1,1]->1E-2,LSH[2,2]->1E-2,MS2[1,1]->1E3,MS2[2,2]->1E3,YR1[1,1]->1E-2,YR1[2,2]->1E-2,YR2[1,1]->1E-2,YR2[2,2]->1E-2,YR3->1E-2,Mn->1E2,MDF->550.*)};
-
+DefaultInputValues ={
+  lambda1INPUT -> 0.13,
+  MDFINPUT -> 200.,
+  MnINPUT -> 2000.,
+  lamuINPUT -> 0.1,  
+  lamdINPUT -> 0.1  
+  };

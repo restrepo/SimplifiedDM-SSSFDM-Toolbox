@@ -1,4 +1,4 @@
-SimplifiedDMSDFDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 23:19 on 17.6.2016
+SimplifiedDMSDFDM  % Created by SARAH v4.8.5 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 22:36 on 20.6.2016
 Parameters  
  Name               | Value              |> Comment          <|
 WZ                  |2.4952              | width 
@@ -12,9 +12,6 @@ Wu3                 |1.51                | width
 We1                 |0                   | width 
 We2                 |0                   | width 
 We3                 |0                   | width 
-Wnu1                |0                   | width 
-Wnu2                |0                   | width 
-Wnu3                |0                   | width 
 Maux                |1                   |  
 sqrt2               |1.41421356237310    |  
 Pi                  |3.14159265358979    |  
