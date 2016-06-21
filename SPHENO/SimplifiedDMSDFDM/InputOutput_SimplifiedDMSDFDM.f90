@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 22:36 on 20.6.2016   
+! File created at 11:02 on 21.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -184,17 +184,23 @@ InputValueforYe= .True.
    Else If (read_line(7:13).Eq."IMHDMIN") Then 
     Call Read_HDMIN(99,1,i_model,set_mod_par,kont) 
  
-   Else If (read_line(7:11).Eq."FDMIN") Then 
-    Call Read_FDMIN(99,0,i_model,set_mod_par,kont) 
+   Else If (read_line(7:14).Eq."FDMMIXIN") Then 
+    Call Read_FDMMIXIN(99,0,i_model,set_mod_par,kont) 
  
-   Else If (read_line(7:13).Eq."IMFDMIN") Then 
-    Call Read_FDMIN(99,1,i_model,set_mod_par,kont) 
+   Else If (read_line(7:16).Eq."IMFDMMIXIN") Then 
+    Call Read_FDMMIXIN(99,1,i_model,set_mod_par,kont) 
  
    Else If (read_line(7:10).Eq."MNIN") Then 
     Call Read_MNIN(99,0,i_model,set_mod_par,kont) 
  
    Else If (read_line(7:12).Eq."IMMNIN") Then 
     Call Read_MNIN(99,1,i_model,set_mod_par,kont) 
+ 
+   Else If (read_line(7:11).Eq."FDMIN") Then 
+    Call Read_FDMIN(99,0,i_model,set_mod_par,kont) 
+ 
+   Else If (read_line(7:13).Eq."IMFDMIN") Then 
+    Call Read_FDMIN(99,1,i_model,set_mod_par,kont) 
  
    Else If (read_line(7:10).Eq."SMIN") Then 
     Call Read_SMIN(99,0,i_model,set_mod_par,kont) 
@@ -1292,12 +1298,11 @@ Write(io_L,106) "Block IMHDM Q=",Q,"# (Renormalization Scale)"
 Write(io_L,104) 2,Aimag(lam1), "# lam1" 
 End if 
 WriteNextBlock = .false. 
-Write(io_L,106) "Block FDM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 4,Real(lamd,dp), "# lamd" 
-Write(io_L,104) 5,Real(lamu,dp), "# lamu" 
-Write(io_L,104) 1,Real(MDF,dp), "# MDF" 
+Write(io_L,106) "Block FDMMIX Q=",Q,"# (Renormalization Scale)" 
+Write(io_L,104) 1,Real(lamd,dp), "# lamd" 
+Write(io_L,104) 2,Real(lamu,dp), "# lamu" 
 If(WriteNextBlock) Then 
-Write(io_L,106) "Block IMFDM Q=",Q,"# (Renormalization Scale)" 
+Write(io_L,106) "Block IMFDMMIX Q=",Q,"# (Renormalization Scale)" 
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block MN Q=",Q,"# (Renormalization Scale)" 
@@ -1306,6 +1311,12 @@ If (Abs(Aimag(Mn)).gt.0._dp) WriteNextBlock = .True.
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block IMMN Q=",Q,"# (Renormalization Scale)" 
 Write(io_L,104) 1,Aimag(Mn), "# Mn" 
+End if 
+WriteNextBlock = .false. 
+Write(io_L,106) "Block FDM Q=",Q,"# (Renormalization Scale)" 
+Write(io_L,104) 1,Real(MDF,dp), "# MDF" 
+If(WriteNextBlock) Then 
+Write(io_L,106) "Block IMFDM Q=",Q,"# (Renormalization Scale)" 
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block SM Q=",Q,"# (Renormalization Scale)" 
@@ -1434,12 +1445,13 @@ Write(io_L,104) 2,Real(g2GUT,dp), "# g2"
 Write(io_L,104) 3,Real(g3GUT,dp), "# g3" 
 Write(io_L,106) "Block HDMGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 2,Real(lam1GUT,dp), "# lam1" 
-Write(io_L,106) "Block FDMGUT Q=",M_GUT,"# (GUT scale)" 
-Write(io_L,104) 4,Real(lamdGUT,dp), "# lamd" 
-Write(io_L,104) 5,Real(lamuGUT,dp), "# lamu" 
-Write(io_L,104) 1,Real(MDFGUT,dp), "# MDF" 
+Write(io_L,106) "Block FDMMIXGUT Q=",M_GUT,"# (GUT scale)" 
+Write(io_L,104) 1,Real(lamdGUT,dp), "# lamd" 
+Write(io_L,104) 2,Real(lamuGUT,dp), "# lamu" 
 Write(io_L,106) "Block MNGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 1,Real(MnGUT,dp), "# Mn" 
+Write(io_L,106) "Block FDMGUT Q=",M_GUT,"# (GUT scale)" 
+Write(io_L,104) 1,Real(MDFGUT,dp), "# MDF" 
 Write(io_L,106) "Block SMGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 3,Real(mH2GUT,dp), "# mH2" 
 Write(io_L,106) "Block YuGUT Q=",M_GUT,"# (GUT Scale)" 
@@ -5392,7 +5404,7 @@ End Do! i_par
 End Subroutine Read_HDMIN 
  
  
-Subroutine Read_FDMIN(io,i_c,i_model,set_mod_par,kont) 
+Subroutine Read_FDMMIXIN(io,i_c,i_model,set_mod_par,kont) 
 Implicit None 
 Integer,Intent(in)::io,i_c,i_model 
 Integer,Intent(inout)::kont,set_mod_par(:) 
@@ -5405,27 +5417,24 @@ If (read_line(1:1).Eq."#") Cycle! this loop
 Backspace(io)! resetting to the beginning of the line 
 If ((read_line(1:1).Eq."B").Or.(read_line(1:1).Eq."b")) Exit! this loop 
 Read(io,*) i_par,wert!,read_line 
-If (i_par.Eq.4) Then 
+If (i_par.Eq.1) Then 
 lamdIN= wert 
 InputValueforlamd= .True. 
-Else If (i_par.Eq.5) Then 
+Else If (i_par.Eq.2) Then 
 lamuIN= wert 
 InputValueforlamu= .True. 
-Else If (i_par.Eq.1) Then 
-MDFIN= wert 
-InputValueforMDF= .True. 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
-If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block FDMIN ",i_par
-If (i_c.Eq.1) Write(ErrCan,*) "Unknown entry for Block IMFDMIN ",i_par
-If (i_c.Eq.0) Write(*,*) "Unknown entry for Block FDMIN ",i_par
-If (i_c.Eq.1) Write(*,*) "Unknown entry for Block IMFDMIN ",i_par
+If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block FDMMIXIN ",i_par
+If (i_c.Eq.1) Write(ErrCan,*) "Unknown entry for Block IMFDMMIXIN ",i_par
+If (i_c.Eq.0) Write(*,*) "Unknown entry for Block FDMMIXIN ",i_par
+If (i_c.Eq.1) Write(*,*) "Unknown entry for Block IMFDMMIXIN ",i_par
 Call AddError(304)
 If (ErrorLevel.Eq.2) Call TerminateProgram
 End If
 End Do! i_par
 200 Return
-End Subroutine Read_FDMIN 
+End Subroutine Read_FDMMIXIN 
  
  
 Subroutine Read_MNIN(io,i_c,i_model,set_mod_par,kont) 
@@ -5457,6 +5466,36 @@ End If
 End Do! i_par
 200 Return
 End Subroutine Read_MNIN 
+ 
+ 
+Subroutine Read_FDMIN(io,i_c,i_model,set_mod_par,kont) 
+Implicit None 
+Integer,Intent(in)::io,i_c,i_model 
+Integer,Intent(inout)::kont,set_mod_par(:) 
+Integer::i_par 
+Real(dp)::wert 
+Character(len=80)::read_line 
+Do 
+Read(io,*,End=200) read_line 
+If (read_line(1:1).Eq."#") Cycle! this loop 
+Backspace(io)! resetting to the beginning of the line 
+If ((read_line(1:1).Eq."B").Or.(read_line(1:1).Eq."b")) Exit! this loop 
+Read(io,*) i_par,wert!,read_line 
+If (i_par.Eq.1) Then 
+MDFIN= wert 
+InputValueforMDF= .True. 
+Else
+Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
+If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block FDMIN ",i_par
+If (i_c.Eq.1) Write(ErrCan,*) "Unknown entry for Block IMFDMIN ",i_par
+If (i_c.Eq.0) Write(*,*) "Unknown entry for Block FDMIN ",i_par
+If (i_c.Eq.1) Write(*,*) "Unknown entry for Block IMFDMIN ",i_par
+Call AddError(304)
+If (ErrorLevel.Eq.2) Call TerminateProgram
+End If
+End Do! i_par
+200 Return
+End Subroutine Read_FDMIN 
  
  
 Subroutine Read_SMIN(io,i_c,i_model,set_mod_par,kont) 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 22:35 on 20.6.2016   
+! File created at 11:00 on 21.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1535,18 +1535,18 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'OneLoopMChi'
  
 mat1a(1,1) = 0._dp 
-mat1a(1,1) = mat1a(1,1)-1._dp*(Mn)
+mat1a(1,1) = mat1a(1,1)+Mn
 mat1a(1,2) = 0._dp 
-mat1a(1,2) = mat1a(1,2)+(lamd*v)/sqrt(2._dp)
+mat1a(1,2) = mat1a(1,2)-((lamd*v)/sqrt(2._dp))
 mat1a(1,3) = 0._dp 
-mat1a(1,3) = mat1a(1,3)-((lamu*v)/sqrt(2._dp))
+mat1a(1,3) = mat1a(1,3)+(lamu*v)/sqrt(2._dp)
 mat1a(2,1) = 0._dp 
-mat1a(2,1) = mat1a(2,1)+(lamd*v)/sqrt(2._dp)
+mat1a(2,1) = mat1a(2,1)-((lamd*v)/sqrt(2._dp))
 mat1a(2,2) = 0._dp 
 mat1a(2,3) = 0._dp 
 mat1a(2,3) = mat1a(2,3)-1._dp*(MDF)
 mat1a(3,1) = 0._dp 
-mat1a(3,1) = mat1a(3,1)-((lamu*v)/sqrt(2._dp))
+mat1a(3,1) = mat1a(3,1)+(lamu*v)/sqrt(2._dp)
 mat1a(3,2) = 0._dp 
 mat1a(3,2) = mat1a(3,2)-1._dp*(MDF)
 mat1a(3,3) = 0._dp 

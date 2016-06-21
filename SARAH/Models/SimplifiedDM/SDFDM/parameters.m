@@ -78,7 +78,7 @@ ParameterDefinitions = {
 
 {Mn,   {LaTeX -> "M_N",
 	LesHouches -> MN,
-	OutputName->Mn }},
+	OutputName->Mn }}, (* Matrix in general *)
 
 {ZX, {LaTeX -> "Z^{\\chi^0}",
       LesHouches -> ZXMIX,
@@ -86,9 +86,9 @@ ParameterDefinitions = {
 
 {Vv, {Description ->"Neutrino-Mixing-Matrix"}},
 
-{MDF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}},
+{MDF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}}, 
 
-{lamd, { LaTeX -> "\\lambda_d",Real->True,LesHouches -> {FDM,4},OutputName-> "lamd" }},   
-{lamu, { LaTeX -> "\\lambda_u",Real->True,LesHouches -> {FDM,5},OutputName-> "lamu" }}
+{lamd, { LaTeX -> "\\lambda_d",Real->True,LesHouches -> {FDMMIX,1},OutputName-> "lamd" }},   
+{lamu, { LaTeX -> "\\lambda_u",Real->True,LesHouches -> {FDMMIX,2},OutputName-> "lamu" }}
     
 };

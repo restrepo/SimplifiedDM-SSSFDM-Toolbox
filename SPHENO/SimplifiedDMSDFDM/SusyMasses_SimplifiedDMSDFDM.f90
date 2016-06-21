@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 22:35 on 20.6.2016   
+! File created at 11:00 on 21.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -739,11 +739,11 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMChi'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)-1._dp*(Mn)
+mat(1,1) = mat(1,1)+Mn
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(lamd*v)/sqrt(2._dp)
+mat(1,2) = mat(1,2)-((lamd*v)/sqrt(2._dp))
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)-((lamu*v)/sqrt(2._dp))
+mat(1,3) = mat(1,3)+(lamu*v)/sqrt(2._dp)
 mat(2,2) = 0._dp 
 mat(2,3) = 0._dp 
 mat(2,3) = mat(2,3)-1._dp*(MDF)
@@ -1466,11 +1466,11 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'CalculateMChi'
  
 mat(1,1) = 0._dp 
-mat(1,1) = mat(1,1)-1._dp*(Mn)
+mat(1,1) = mat(1,1)+Mn
 mat(1,2) = 0._dp 
-mat(1,2) = mat(1,2)+(lamd*v)/sqrt(2._dp)
+mat(1,2) = mat(1,2)-((lamd*v)/sqrt(2._dp))
 mat(1,3) = 0._dp 
-mat(1,3) = mat(1,3)-((lamu*v)/sqrt(2._dp))
+mat(1,3) = mat(1,3)+(lamu*v)/sqrt(2._dp)
 mat(2,2) = 0._dp 
 mat(2,3) = 0._dp 
 mat(2,3) = mat(2,3)-1._dp*(MDF)

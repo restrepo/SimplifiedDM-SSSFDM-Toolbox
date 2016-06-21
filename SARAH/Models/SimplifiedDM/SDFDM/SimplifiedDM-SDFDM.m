@@ -17,11 +17,13 @@ Model`Date      = "2015-04-28";
 Global[[1]] = {Z[2], Z2};
 
 (*--------------Gauge Groups-----------------*)
+
 Gauge[[1]]={B,   U[1], hypercharge, g1, False, 1};
 Gauge[[2]]={WB, SU[2], left,        g2, True , 1};
 Gauge[[3]]={G,  SU[3], color,       g3, False, 1};
 
 (*--------------Matter Fields----------------*)
+
 FermionFields[[1]] = {q , 3, {uL, dL},     1/6, 2,  3, 1};
 FermionFields[[2]] = {l , 3, {vL, eL},    -1/2, 2,  1, 1};
 FermionFields[[3]] = {d , 3, conj[dR],     1/3, 1, -3, 1};
@@ -47,10 +49,12 @@ DEFINITION[GaugeES][LagrangianInput]=
   {LagIFD, {AddHC->True}}  
 };
 
+(* With the conventions of arXiv:1504.07892 and arxiv:1509.06313 *)
+
 LagFer   = Yd conj[H].d.q + Ye conj[H].e.l + Yu H.u.q;
 LagH     = -(+ mH2 conj[H].H     +  lambda1 conj[H].H.conj[H].H );
-LagIFD =  MDF rd.ru + lamd H.n.rd + lamu conj[H].n.ru;
-LagNV    = Mn/2 n.n;
+LagIFD =  -(- MDF rd.ru + lamd H.n.rd + lamu conj[H].n.ru);
+LagNV    = - Mn/2 n.n;
 
 (* Gauge Sector *)
 

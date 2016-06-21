@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 22:35 on 20.6.2016   
+! File created at 11:00 on 21.6.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -2298,15 +2298,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
-resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL-((lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL-((lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
-resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR+(lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp)
+resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
 resL = -(0.,1.)*resL 
  
 resR = -(0.,1.)*resR 
@@ -2522,15 +2522,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
-resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
-resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
-resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
-resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
+resR = resR+(lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2566,9 +2566,9 @@ If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+lamd*Conjg(ZX(gt1,1))
+resL = resL-(lamd*Conjg(ZX(gt1,1)))
 resR = 0._dp 
-resR = resR-(lamu*ZX(gt1,1))
+resR = resR+lamu*ZX(gt1,1)
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -2604,9 +2604,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-(lamu*Conjg(ZX(gt2,1)))
+resL = resL+lamu*Conjg(ZX(gt2,1))
 resR = 0._dp 
-resR = resR+lamd*ZX(gt2,1)
+resR = resR-(lamd*ZX(gt2,1))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5120,15 +5120,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
-resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL-((lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL-((lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
-resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR+(lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp)
+resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
 resL = -(0.,1.)*resL 
  
 resR = -(0.,1.)*resR 
@@ -5344,15 +5344,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
-resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
-resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
-resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
-resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
+resR = resR+(lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5388,9 +5388,9 @@ If ((gt1.Lt.1).Or.(gt1.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+lamd*Conjg(ZX(gt1,1))
+resL = resL-(lamd*Conjg(ZX(gt1,1)))
 resR = 0._dp 
-resR = resR-(lamu*ZX(gt1,1))
+resR = resR+lamu*ZX(gt1,1)
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -5426,9 +5426,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-(lamu*Conjg(ZX(gt2,1)))
+resL = resL+lamu*Conjg(ZX(gt2,1))
 resR = 0._dp 
-resR = resR+lamd*ZX(gt2,1)
+resR = resR-(lamd*ZX(gt2,1))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -7719,29 +7719,29 @@ End If
 
 resL = 0._dp 
 If ((1.eq.gt1)) Then 
-resL = resL+(lamd*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt2,2)))/sqrt(2._dp))
 End If 
 If ((1.eq.gt1)) Then 
-resL = resL+(lamu*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 End If 
 If ((2.eq.gt1)) Then 
-resL = resL+(lamd*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt2,1)))/sqrt(2._dp))
 End If 
 If ((3.eq.gt1)) Then 
-resL = resL+(lamu*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt2,1)))/sqrt(2._dp))
 End If 
 resR = 0._dp 
 If ((2.eq.gt1)) Then 
-resR = resR-((lamd*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt2,1))/sqrt(2._dp)
 End If 
 If ((3.eq.gt1)) Then 
-resR = resR-((lamu*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt2,1))/sqrt(2._dp)
 End If 
 If ((1.eq.gt1)) Then 
-resR = resR-((lamd*ZX(gt2,2))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt2,2))/sqrt(2._dp)
 End If 
 If ((1.eq.gt1)) Then 
-resR = resR-((lamu*ZX(gt2,3))/sqrt(2._dp))
+resR = resR+(lamu*ZX(gt2,3))/sqrt(2._dp)
 End If 
 resL = -(0.,1.)*resL 
  
@@ -7791,29 +7791,29 @@ End If
 
 resL = 0._dp 
 If ((1.eq.gt1)) Then 
-resL = resL-((lamd*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt2,2)))/sqrt(2._dp)
 End If 
 If ((1.eq.gt1)) Then 
-resL = resL+(lamu*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 End If 
 If ((2.eq.gt1)) Then 
-resL = resL-((lamd*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt2,1)))/sqrt(2._dp)
 End If 
 If ((3.eq.gt1)) Then 
-resL = resL+(lamu*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt2,1)))/sqrt(2._dp))
 End If 
 resR = 0._dp 
 If ((2.eq.gt1)) Then 
-resR = resR-((lamd*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt2,1))/sqrt(2._dp)
 End If 
 If ((3.eq.gt1)) Then 
-resR = resR+(lamu*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt2,1))/sqrt(2._dp))
 End If 
 If ((1.eq.gt1)) Then 
-resR = resR-((lamd*ZX(gt2,2))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt2,2))/sqrt(2._dp)
 End If 
 If ((1.eq.gt1)) Then 
-resR = resR+(lamu*ZX(gt2,3))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt2,3))/sqrt(2._dp))
 End If 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -7917,11 +7917,11 @@ End If
 
 resL = 0._dp 
 If ((1.eq.gt1)) Then 
-resL = resL+lamd
+resL = resL-1._dp*(lamd)
 End If 
 resR = 0._dp 
 If ((1.eq.gt1)) Then 
-resR = resR-1._dp*(lamu)
+resR = resR+lamu
 End If 
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
@@ -7998,9 +7998,9 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-(lamu*Conjg(ZX(gt2,1)))
+resL = resL+lamu*Conjg(ZX(gt2,1))
 resR = 0._dp 
-resR = resR+lamd*ZX(gt2,1)
+resR = resR-(lamd*ZX(gt2,1))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
@@ -8703,15 +8703,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
-resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL-((lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
+resL = resL-((lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
-resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR+(lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp)
+resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
 resL = -(0.,1.)*resL 
  
 resR = -(0.,1.)*resR 
@@ -9138,15 +9138,15 @@ If ((gt2.Lt.1).Or.(gt2.Gt.3)) Then
 End If 
 
 resL = 0._dp 
-resL = resL-((lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
-resL = resL+(lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
-resL = resL-((lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp))
-resL = resL+(lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp)
+resL = resL+(lamd*Conjg(ZX(gt1,2))*Conjg(ZX(gt2,1)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt1,3))*Conjg(ZX(gt2,1)))/sqrt(2._dp))
+resL = resL+(lamd*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,2)))/sqrt(2._dp)
+resL = resL-((lamu*Conjg(ZX(gt1,1))*Conjg(ZX(gt2,3)))/sqrt(2._dp))
 resR = 0._dp 
-resR = resR-((lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp))
-resR = resR+(lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp)
-resR = resR-((lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp))
-resR = resR+(lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp)
+resR = resR+(lamd*ZX(gt1,2)*ZX(gt2,1))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt1,3)*ZX(gt2,1))/sqrt(2._dp))
+resR = resR+(lamd*ZX(gt1,1)*ZX(gt2,2))/sqrt(2._dp)
+resR = resR-((lamu*ZX(gt1,1)*ZX(gt2,3))/sqrt(2._dp))
 If ((Real(resL,dp).ne.Real(resL,dp)).or.(Real(resR,dp).ne.Real(resR,dp))) Then 
  Write(*,*) "NaN appearing in ",NameOfUnit(Iname) 
  Call TerminateProgram 
