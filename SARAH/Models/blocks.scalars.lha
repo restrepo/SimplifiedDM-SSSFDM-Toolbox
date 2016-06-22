@@ -45,3 +45,36 @@ Block DobletScalar-SPheno-DefaultInputValues
 5  lambda5Input -> -10^(-5)
 6  mEt2Input -> 100.
 
+#Triplet Scalar
+Block TripletScalar #Triplet fermion with Y=0 # Remember define RealScalars = {S3}
+ScalarFields[[1]] =  {S3, 1, {{SO/2, Sp/Sqrt[2]},{conj[Sp]/Sqrt[2] , -SO/2}}, 0,  3,  1,-1} # U(1)xSU(2)xSU(3)xZ_2
+Block TripletScalar-Lagrangian
+1  -( mu3 S3.S3 + lambda6 S3.S3.S3.S3 )  # {AddHC->False}
+2 -( lambda7 S3.S3.conj[H].H ) # {AddHC->False}
+Block TripletScalar-EWSB-VEVs
+1 {SO, {0, 0}, {0, 0},{S0, 1}}
+Block TripletScalar-particles-GaugeES
+1 {SO, { LaTeX -> "\\Delta_0", Width -> 0, Mass -> Automatic, OutputName -> "S0"}}
+2 {Sp, { LaTeX -> "\\Delta^+", Width -> 0, Mass -> Automatic, OutputName -> "Sp"}}  
+3 {Sm, { LaTeX -> "\\Deta^-",  Width -> 0, Mass -> Automatic, OutputName -> "Sm"}} 
+Block TripletScalar-particles-WeylFermionAndIndermediate
+1 {S0,     {LaTeX -> "S^0" }}
+Block TripletScalar-particles-EWSB
+1 {Sp,  {  Description -> "Charged eta scalar", PDG -> {1003}, Mass -> {LesHouches}, LaTeX->"\\kappa^+", ElectricCharge -> 1,  OutputName -> "XP"  }}
+2 {S0,  { Description -> "CP-even eta scalar",  PDG -> {1005}, Mass -> {LesHouches}, LaTeX->"\\kappa^0", ElectricCharge -> 0,  OutputName -> "XO"  }}
+Block TripletScalar-parameters
+1 {mu3,     { LaTeX -> "\\mu_{\\Delta}^2", OutputName -> mu3, Real -> True,  LesHouches -> {HDM,2}}}
+2 {lambda6, { LaTeX -> "\\lambda_{\\Delta}", OutputName -> lam6, Real -> True, LesHouches -> {HDM,4}}}
+3 {lambda7, { LaTeX -> "\\lambda_{\\Delta H_1}", OutputName -> lam7, Real -> True, LesHouches -> {HDM,5}}}
+Block TripletScalar-SPheno-MINPAR
+1  {1,lambda6Input}
+2  {2,lambda7Input}
+3  {3,mu3Input}
+Block tripletScalar-SPheno-BoundaryLowScaleInput
+1 {lambda6,lambda6Input} 
+2 {lambda7,lambda7Input}
+3 {mu3,mu3Input}
+Block TripletFermion-SPheno-ListDecayParticles
+1 S0
+2 Sp
+

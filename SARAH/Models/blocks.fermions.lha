@@ -60,6 +60,43 @@ Block SingletFermion-SPheno-ListDecayParticles3B
 1 {Chi,"Chi.f90"}
 Block SingletFermion-SPheno-DefaultInputValues
 1 MnINPUT -> 200.
+#Triplet Fermion
+Block TripletFermion #Triplet fermion with Y=0
+1 FermionFields[[1]] = {n, 1, { {T0, Sqrt[2] Tp},{Sqrt[2] Tm, -T0} },  0, 3,  1,-1} # U(1)xSU(2)xSU(3)xZ_2
+Block TripletFermion-Lagrangian
+1 - MTF/4 n.n  # {AddHC->False}
+Block TripletDoubletFermionMixings
+1 - A/Sqrt[2] n.H.rd  
+2 - B/Sqrt[2] n.ru.conj[H]
+Block TripletFermion-Mixing # for mixing with the fermion doublet
+1 { {T0,vd,vu}, {s1,Q1} } # neutral mixing
+2 { {{Tp,eu}, {Tm,ed}}, {{ch1,Q2},{ch2,Q3}} } # charged mixing
+Block TripletFermion-Dirac-MajoranaSpinors
+1 Nv ->{  s1, conj[s1]}
+2 Chi->{  ch1, conj[ch2]}
+Block TripletFermion-particles-WeylFermionAndIndermediate
+1 {s1,     {LaTeX -> "N_L" }},
+2 {ch1,    {LaTeX -> "\\chi_1" }},
+3 {ch2,    {LaTeX -> "\\chi_2" }},
+4 {n,      {LaTeX -> "N" }},
+5 {nR,     {LaTeX -> "\\nu_R"}}
+Block TripletFermion-particles-EWSB
+1 {Chi,  {Description ->"Vector-like cahrged fermions",PDG -> {210000601,210000602},LaTeX ->"\\chi",OutputName -> "ci"},Mass -> {LesHouches,LesHouches}, ElectricCharge -> -1 } 
+3 {NV,   {Description ->"Vector-like neutral fermions",PDG -> {310000601,310000602,310000603},PDG -> {310000601,310000602,310000603},ElectricCharge -> 0,OutputName -> "Nv"}} #Majorana
+Block TripletFermion-parameters
+1 {MTF,{ LaTeX -> "M_T",Real -> True,OutputName -> MTF,LesHouches -> MTF} 
+Block TripletFermion-SPheno-BoundaryLowScaleInput
+1 {MTF,LHInput[MTF]}
+Block TripletFermion-SPheno-ListDecayParticles
+1 Nv
+2 Chi
+Block TripletDoubletFermionMixings-parameters
+1 {A, { LaTeX -> "\\Pi_1",Real->True,LesHouches -> Pi1,OutputName-> "A" }} 
+2 {B, { LaTeX -> "\\Pi_2",Real->True,LesHouches -> Pi2,OutputName-> "B" }}
+Block SingletDoubletFermionMixings-SPheno-BoundaryLowScaleInput
+1 {A,LHInput[A]}
+2 {B,LHInput[B]}
+
 #mixings
 Block SingletDoubletFermionMixings
 1 + lamd H.n.rd
