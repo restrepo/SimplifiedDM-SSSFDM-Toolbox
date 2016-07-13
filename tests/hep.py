@@ -212,7 +212,7 @@ class hep(model):
         idcs=omgf.split(' ')
         if len(idcs)>1:
             if re.search(fltchk,idcs[-2]):
-                self.micromegas['ID']=eval(idcs[-2])
+                self.micromegas['sigmav']=eval(idcs[-2])
          
         idc=grep('^\s+~.*->.*[0-9]$',mo)
         if idc:
@@ -222,7 +222,7 @@ class hep(model):
                 if br:
                     br=br.group(0)
                     if re.search(fltchk,br):
-                        micromegas['ID:%s' %chnl]=eval(br)
+                        self.micromegas['ID_br:%s' %chnl]=eval(br)
                     
         return self.micromegas
     
