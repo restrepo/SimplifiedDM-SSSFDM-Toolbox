@@ -6,6 +6,7 @@ import re
 import pandas as pd
 import sys
 from cmdlike import *
+import pdg_series
 
 #expanda pyslha
 def _init_LHA(blocks=['NAME1','NAME2']):
@@ -60,7 +61,7 @@ def _readSLHAFile_with_comments(spcfile,ignorenomass=False,ignorenobr=True):
     return IF
 
 class model(object):
-    pdg=__import__('pdg')
+    pdg=pdg_series.pdg()
     G_F    =1.166370E-05    # G_F,Fermi constant
     alpha_s=1.187000E-01    #(MZ) SM MSbar
     M_Z    =9.118870E+01    # Z-boson pole mass'
@@ -70,7 +71,7 @@ class model(object):
     m_h0   =125. #Higg mass
     vev    =1./np.sqrt(np.sqrt(2)*G_F)
     #FIX pdgs
-    pdg.h0=25;pdg.H0=35;pdg.A0=36;pdg.Hp=37;pdg.Hm=-37
+    pdg['h0']=25;pdg['H0']=35;pdg['A0']=36;pdg['Hp']=37;pdg['Hm']=-37
     def __init__(self,MODEL='SM',ignorenobr=True,ignorenomass=True,updateSMINPUTS=False,\
                 SPHENO_PATH='../SPHENO',low=False):
         spcfile='%s/%s/LesHouches.in.%s' %(SPHENO_PATH,MODEL,MODEL)
@@ -168,8 +169,21 @@ class hep(model):
         #print a
         if a.find('Problem')==-1:
             self.LHA_out=pyslha.readSLHAFile('SPheno.spc.%s' %self.MODEL)
+            #with comments but without decays
+            a=commands.getoutput("cat  SPheno.spc.%s | grep -m 1 -i -B1000 '^decay' | grep -vi '^decay' >  SPheno.spc.%s_nodecays.spc" %(self.MODEL,self.MODEL))
+            if os.path.isfile("SPheno.spc.%s_nodecays.spc" %self.MODEL):
+                self.LHA_out_with_comments=_readSLHAFile_with_comments("SPheno.spc.%s_nodecays.spc" %self.MODEL)
+                #PDG for new particles
+                for pid in self.LHA_out_with_comments.blocks['MASS'].entries:
+                    if np.abs(pid)>25:
+                        pvalues=self.LHA_out_with_comments.blocks['MASS'].entries[pid].split('#')
+                        if len(pvalues)==2:
+                            self.pdg[pvalues[1].strip()]=pid
+
+            
         else:
             self.LHA_out=False
+            self.LHA_out_with_comments=False
         return self.LHA_out
         
     def branchings(self,SPCdecays):
