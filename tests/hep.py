@@ -183,11 +183,12 @@ class hep(model):
     
     def micromegas_output(self,mo):
         self.micromegas=pd.Series()
+        fltchk='^[0-9\.eE\-\+]+$'
         omgf=grep('^Xf=',mo)
         if len(omgf.split('n') )==1:
             omgl=omgf.split('=')
             if len(omgl)==3:
-                if re.search('^[0-9\.eE\-\+]*$',omgl[2]):
+                if re.search(fltchk,omgl[2]):
                     self.micromegas['Omega_h2']=eval(omgl[2])
                 else:    
                     self.micromegas['Omega_h2']=omgl[2]
@@ -202,10 +203,27 @@ class hep(model):
                 if len(ddporn)==5:
                     self.micromegas[ddporn[0]]=pd.Series()
                     for i in [1,3]:
-                        if re.search('^[0-9\.eE\-\+]*$',ddporn[i+1]):
+                        if re.search(fltchk,ddporn[i+1]):
                             self.micromegas[ddporn[0]][ddporn[i]]=eval(ddporn[i+1])
                         else:
                             self.micromegas[ddporn[0]][ddporn[i]]=ddporn[i+1]
+
+        omgf=grep('annihilation cross section',mo)
+        idcs=omgf.split(' ')
+        if len(idcs)>1:
+            if re.search(fltchk,idcs[-2]):
+                self.micromegas['ID']=eval(idcs[-2])
+         
+        idc=grep('^\s+~.*->.*[0-9]$',mo)
+        if idc:
+            for ch in idc.split('\n'):
+                chnl=re.sub('\s+$','',re.sub('^\s+','',re.sub('[0-9\.eE\-\+]+','',ch)))
+                br=re.search('[0-9]\.[0-9eE\-\+]+',ch)
+                if br:
+                    br=br.group(0)
+                    if re.search(fltchk,br):
+                        micromegas['ID:%s' %chnl]=eval(br)
+                    
         return self.micromegas
     
     def run_micromegas(self,func,param={},path='../micromegas',
