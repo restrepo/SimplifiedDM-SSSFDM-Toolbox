@@ -186,7 +186,7 @@ class hep(model):
             self.LHA_out_with_comments=False
         return self.LHA_out
         
-    def branchings(self,SPCdecays,newdecays=True):
+    def branchings(self,SPCdecays,min_pdg=26):
         "Convert decays blocks into widhts and branchings: Input: SPC.decays"
         for i in SPCdecays.keys():
             self.Br[i]={}
@@ -196,12 +196,9 @@ class hep(model):
                 
         self.Br_names=pd.Series()
 
-        kmin=0
-        if newdecays:
-            kmin=25
 
         for k in self.Br.keys():
-            if np.abs(k)>kmin:
+            if np.abs(k)>=min_pdg:
                 if k in self.pdg.pdg_id.index:
                     brchm='%s -> ' %self.pdg.pdg_id[k]
                 else: 
