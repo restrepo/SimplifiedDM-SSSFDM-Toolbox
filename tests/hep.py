@@ -186,13 +186,42 @@ class hep(model):
             self.LHA_out_with_comments=False
         return self.LHA_out
         
-    def branchings(self,SPCdecays):
+    def branchings(self,SPCdecays,newdecays=True):
         "Convert decays blocks into widhts and branchings: Input: SPC.decays"
         for i in SPCdecays.keys():
             self.Br[i]={}
             self.Gamma[i]=SPCdecays[i].totalwidth
             for j in range( len(SPCdecays[i].decays) ):
                 self.Br[i][tuple(SPCdecays[i].decays[j].ids)]=SPCdecays[i].decays[j].br
+                
+        self.Br_names=pd.Series()
+
+        kmin=0
+        if newdecays:
+            kmin=25
+
+        for k in self.Br.keys():
+            if np.abs(k)>kmin:
+                if k in self.pdg.pdg_id.index:
+                    brchm='%s -> ' %self.pdg.pdg_id[k]
+                else: 
+                    brchm='%unknown -> '
+                for kd in self.Br[k].keys():
+                    if len(kd)==2:
+                        if kd[0] in self.pdg.pdg_id.index and kd[1] in self.pdg.pdg_id.index:
+                            brch=brchm+' '+self.pdg.pdg_id[kd[0]]+' '+self.pdg.pdg_id[kd[1]]
+                        else:
+                            brch=brchm+' unknown'
+                
+                        self.Br_names[brch]=self.Br[k][kd]
+                    if len(kd)==3:
+                        if kd[0] in self.pdg.pdg_id.index and kd[1] in self.pdg.pdg_id.index and kd[2] in self.pdg.pdg_id.index:
+                            brch=brchm+' '+self.pdg.pdg_id[kd[0]]+' '+self.pdg.pdg_id[kd[1]]+' '+self.pdg.pdg_id[kd[2]]
+                        else:
+                            brch=brchm+' unknown'
+                            
+                        self.Br_names[brch]=self.Br[k][kd]
+
         return SPCdecays.keys()
     
     def micromegas_output(self,mo):
