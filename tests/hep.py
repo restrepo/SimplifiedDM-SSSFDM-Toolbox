@@ -221,7 +221,7 @@ class hep(model):
 
         return SPCdecays.keys()
     
-    def micromegas_output(self,mo):
+    def micromegas_output(self,mo,Omega_h2='Omega_h2'):
         self.micromegas=pd.Series()
         fltchk='^[0-9\.eE\-\+]+$'
         omgf=grep('^Xf=',mo)
@@ -229,9 +229,9 @@ class hep(model):
             omgl=omgf.split('=')
             if len(omgl)==3:
                 if re.search(fltchk,omgl[2]):
-                    self.micromegas['Omega_h2']=eval(omgl[2])
+                    self.micromegas[Omega_h2]=eval(omgl[2])
                 else:    
-                    self.micromegas['Omega_h2']=omgl[2]
+                    self.micromegas[Omega_h2]=omgl[2]
                     
         omgf=grep('^\s*[neuprotn]',mo)
         if len(omgf.split('n') )>1:
@@ -241,12 +241,12 @@ class hep(model):
                 ddpornl=re.sub('\s{2,}',' ',ddpornl)
                 ddporn=ddpornl.split(' ') #[ proton|neutron,SI,SI_value,SD,SD_value]
                 if len(ddporn)==5:
-                    self.micromegas[ddporn[0]]=pd.Series()
+                    #self.micromegas[ddporn[0]]=pd.Series()
                     for i in [1,3]:
                         if re.search(fltchk,ddporn[i+1]):
-                            self.micromegas[ddporn[0]][ddporn[i]]=eval(ddporn[i+1])
+                            self.micromegas['%s_%s' %(ddporn[0],ddporn[i])]=eval(ddporn[i+1])
                         else:
-                            self.micromegas[ddporn[0]][ddporn[i]]=ddporn[i+1]
+                            self.micromegas['%s_%s' %(ddporn[0],ddporn[i])]=ddporn[i+1]
 
         omgf=grep('annihilation cross section',mo)
         idcs=omgf.split(' ')
@@ -324,8 +324,8 @@ class hep(model):
         self.to_series()
         self.Series['Omega_h2']=mo.Omega_h2
         if Direct_Detection:
-            self.Series['proton_SI']=mo.proton.SI
-            self.Series['neutron_SI']=mo.neutron.SI
+            self.Series['proton_SI']=mo.proton_SI
+            self.Series['neutron_SI']=mo.neutron_SI
 
         return self.Series
 
