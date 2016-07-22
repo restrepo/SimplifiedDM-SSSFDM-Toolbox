@@ -322,12 +322,10 @@ class hep(model):
         oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,ddcmd,self.MODEL) )
         mo=self.micromegas_output(oh)
         self.to_series()
-        self.Series['Omega_h2']=mo.Omega_h2
-        if Direct_Detection:
-            self.Series['proton_SI']=mo.proton_SI
-            self.Series['neutron_SI']=mo.neutron_SI
+        for k in mo.keys():
+            self.Series[k]=mo[k]
 
-        return self.Series
+        return mo
 
     def scanmicromegas(self,func,param={},path='../micromegas',
                        var_min=60,var_max=1000,npoints=1,scale='log',CI=False,Direct_Detection=False):
