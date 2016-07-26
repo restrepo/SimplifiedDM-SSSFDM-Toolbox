@@ -2,6 +2,7 @@ OnlyLowEnergySPheno = True;
 
 MINPAR={{1,LambdaIN}};
 
+
 ParametersToSolveTadpoles = {mu2};
 
 BoundaryLowScaleInput={
@@ -14,6 +15,8 @@ BoundaryLowScaleInput={
  {g3, g3SM},
  {\[Lambda],LambdaIN}
 };
+
+
 
 ListDecayParticles = {Fu,Fe,Fd,hh};
 ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"}};
