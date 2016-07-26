@@ -74,7 +74,7 @@ class model(object):
     pdg['h0']=25;pdg['H0']=35;pdg['A0']=36;pdg['Hp']=37;pdg['Hm']=-37
     def __init__(self,MODEL='SM',ignorenobr=True,ignorenomass=True,updateSMINPUTS=False,\
                 SPHENO_PATH='../SPHENO',low=False):
-        spcfile='%s/%s/LesHouches.in.%s' %(SPHENO_PATH,MODEL,MODEL)
+        spcfile='%s/%s/Input_Files/LesHouches.in.%s' %(SPHENO_PATH,MODEL,MODEL)
         self.MODEL=MODEL
         self.low=''
         if low:
