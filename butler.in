@@ -220,7 +220,7 @@ if test "$enable_spheno" = "yes"; then
    echo $separator
    echo
    echo copying files...
-   cp  "$SPhenoDir"/* "$spheno_wd" || die
+   cp -R "$SPhenoDir"/* "$spheno_wd" || die
    echo building SPHENO...
    echo
    make -C "$spheno_dir" "Model=$spheno_wd" || die
