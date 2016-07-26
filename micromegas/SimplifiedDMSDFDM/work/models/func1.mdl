@@ -1,4 +1,4 @@
-SimplifiedDMSDFDM  % Created by SARAH v4.9.1 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 15:49 on 26.7.2016
+SimplifiedDMSDFDM  % Created by SARAH v4.9.1 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 16:14 on 26.7.2016
 Constraints  
  Name          |> Expression                                                                                                                                                                                <|
 rd             |slhaRead("SPheno.spc.SimplifiedDMSDFDM",0) 
@@ -85,9 +85,8 @@ ZX32           |slhaVal("ZXMIX",Q,2,3,2)
 ZX33           |slhaVal("ZXMIX",Q,2,3,3) 
 HPP1           | slhaVal("EFFHIGGSCOUPLINGS",Q,3,25,22,22) 
 HGG1           | slhaVal("EFFHIGGSCOUPLINGS",Q,3,25,21,21) 
-QCDok          |initQCD(alfSMZ,Mu2,Md3,Mu3) 
-g3             |sqrt(alphaQCD(Q)*4*3.1415927)*one(QCDok) 
 el             |2*sqrt(1/aEWinv)*sqrt(Pi) 
+g3             |2*sqrt(aS)*sqrt(Pi) 
 MWp            |sqrt(MZ^2/2. + sqrt(MZ^4/4. - (MZ^2*Pi)/(sqrt2*aEWinv*Gf))) 
 TW             |asin(sqrt(1 - MWp^2/MZ^2)) 
 STW            |sin(TW) 
@@ -104,7 +103,7 @@ Yd22           |(sqrt2*Md2)/v
 Yd23           |0 
 Yd31           |0 
 Yd32           |0 
-Yd33           |(sqrt2*MbEff(Q)*one(QCDok))/v 
+Yd33           |(sqrt2*Md3)/v 
 Ye11           |(sqrt2*Me1)/v 
 Ye12           |0 
 Ye13           |0 
@@ -118,11 +117,11 @@ Yu11           |(sqrt2*Mu1)/v
 Yu12           |0 
 Yu13           |0 
 Yu21           |0 
-Yu22           |(sqrt2*McEff(Q)*one(QCDok))/v 
+Yu22           |(sqrt2*Mu2)/v 
 Yu23           |0 
 Yu31           |0 
 Yu32           |0 
-Yu33           |(sqrt2*MtEff(Q)*one(QCDok))/v 
+Yu33           |(sqrt2*Mu3)/v 
 v0000          |-2*lam1*v 
 v0001          |-6*lam1*v 
 v0002          |-2*lam1*v 
