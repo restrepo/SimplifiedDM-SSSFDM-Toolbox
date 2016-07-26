@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.8.5 
+! This file was automatically created by SARAH version 4.9.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:00 on 21.6.2016   
+! File created at 15:48 on 26.7.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -18,9 +18,10 @@ Use Fe3Decays_SimplifiedDMSDFDM
 Use Fd3Decays_SimplifiedDMSDFDM 
 Use Chi3Decays_SimplifiedDMSDFDM 
 Use Fre3Decays_SimplifiedDMSDFDM 
-Use SUSYDecays_SimplifiedDMSDFDM 
- 
-Contains 
+Use TreeLevelDecays_SimplifiedDMSDFDM 
+
+
+ Contains 
  
 Subroutine CalculateBR(CTBD,fac3,epsI,deltaM,kont,MAh,MAh2,MChi,MChi2,MFd,            & 
 & MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,               & 
@@ -42,8 +43,8 @@ Complex(dp),Intent(in) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),
 
 Real(dp),Intent(in) :: v
 
-Real(dp),Intent(inout) :: gPFu(3,183),gTFu(3),BRFu(3,183),gPFe(3,180),gTFe(3),BRFe(3,180),gPFd(3,183),          & 
-& gTFd(3),BRFd(3,183),gPFv(3,3),gTFv(3),BRFv(3,3),gPVZ(1,45),gTVZ,BRVZ(1,45),            & 
+Real(dp),Intent(inout) :: gPFu(3,183),gTFu(3),BRFu(3,183),gPFe(3,183),gTFe(3),BRFe(3,183),gPFd(3,183),          & 
+& gTFd(3),BRFd(3,183),gPFv(3,6),gTFv(3),BRFv(3,6),gPVZ(1,45),gTVZ,BRVZ(1,45),            & 
 & gPVWp(1,23),gTVWp,BRVWp(1,23),gPhh(1,40),gThh,BRhh(1,40),gPChi(3,163),gTChi(3),        & 
 & BRChi(3,163),gPFre(1,58),gTFre,BRFre(1,58)
 
@@ -88,8 +89,8 @@ gTFe = 0._dp
 BRFe = 0._dp 
 Call FeTwoBodyDecay(-1,DeltaM,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,             & 
 & MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,               & 
-& ZEL,ZUL,ZW,ZX,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,gPFe(:,1:6)             & 
-& ,gTFe,BRFe(:,1:6))
+& ZEL,ZUL,ZW,ZX,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,gPFe(:,1:9)             & 
+& ,gTFe,BRFe(:,1:9))
 
 Do i1=1,3
 gTFe(i1) =Sum(gPFe(i1,:)) 
@@ -213,14 +214,14 @@ Call FeThreeBodyDecay(-1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,      
 & MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
 & ZW,ZX,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,gThh,gTVWp,gTVZ,gFeFeChiChi,    & 
 & gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFecFreFre,gFeFecFvFv,gFeFvFreChi,gFeFvcFuFd,       & 
-& epsI,deltaM,.False.,gTFe,gPFe(:,7:180),BRFe(:,7:180))
+& epsI,deltaM,.False.,gTFe,gPFe(:,10:183),BRFe(:,10:183))
 
 Else 
 Call FeThreeBodyDecay(-1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,            & 
 & MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
 & ZW,ZX,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,gThh,gTVWp,gTVZ,gFeFeChiChi,    & 
 & gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFecFreFre,gFeFecFvFv,gFeFvFreChi,gFeFvcFuFd,       & 
-& epsI,deltaM,.True.,gTFe,gPFe(:,7:180),BRFe(:,7:180))
+& epsI,deltaM,.True.,gTFe,gPFe(:,10:183),BRFe(:,10:183))
 
 End If 
  
@@ -230,7 +231,7 @@ Call FeThreeBodyDecay(-1,MAh,MAh2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFre,MFre2,      
 & MFu,MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
 & ZW,ZX,ZZ,g1,g2,g3,lam1,Yu,Yd,Ye,lamd,lamu,Mn,MDF,mH2,v,gThh,gTVWp,gTVZ,gFeFeChiChi,    & 
 & gFeFecFdFd,gFeFecFeFe,gFeFecFuFu,gFeFecFreFre,gFeFecFvFv,gFeFvFreChi,gFeFvcFuFd,       & 
-& epsI,deltaM,.False.,gTFe,gPFe(:,7:180),BRFe(:,7:180))
+& epsI,deltaM,.False.,gTFe,gPFe(:,10:183),BRFe(:,10:183))
 
 End If 
 Do i1=1,3

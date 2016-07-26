@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.8.5 
+! This file was automatically created by SARAH version 4.9.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:00 on 21.6.2016   
+! File created at 15:48 on 26.7.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -23,11 +23,17 @@ Logical, Save :: CalculateOneLoopMasses = .True.
 Logical, Save :: CalculateOneLoopMassesSave = .True. 
 Logical, Save :: CalculateTwoLoopHiggsMasses = .True. 
 Logical, Save :: SUSYrunningFromMZ = .True. 
+Logical, Save :: SquareFullAmplitudeDecays = .False. 
 Logical :: CalculateTwoLoopHiggsMassesSave = .True. 
 Logical, Save :: CalculateLowEnergy = .True. 
 Logical, Save :: WriteParametersAtQ = .False. 
+Logical, Save :: OutputForMO = .False. 
 Logical, Save :: TwoLoopRGE=.True.
+Logical, Save :: OneLoopDecays=.False.
 Logical, Save :: SMrunningLowScaleInput=.False.
+Real(dp), save :: rMS = 1._dp 
+Real(dp), save :: DerrMS = 0._dp 
+Real(dp), save :: Mass_Regulator_PhotonGluon = 1.0E-10_dp 
 Logical, Save :: RunningSUSYparametersLowEnergy=.True.
 Logical, Save :: RunningSMparametersLowEnergy=.True.
 Integer, Save :: MinimalNumberIterations = 5
@@ -42,6 +48,7 @@ Logical :: ForceRealMatrices = .False.
 Logical :: WriteGUTvalues 
 Logical :: TwoLoopSafeMode 
 Integer :: TwoLoopMethod = 3 
+Logical :: PoleMassesInLoops = .True. 
 Logical :: WriteTreeLevelTadpoleParameters = .false. 
 Logical :: IncludeDeltaVB = .True. 
 Logical :: IncludeBSMdeltaVB = .True. 
@@ -166,6 +173,78 @@ Complex(dp) :: coeffCRnu3nu3 = 0._dp
 Complex(dp) :: coeffCRPnu3nu3 = 0._dp
 Complex(dp) :: coeffCRnu3nu3NP = 0._dp
 Complex(dp) :: coeffCRPnu3nu3NP = 0._dp
+Complex(dp) :: coeffKK_SLL = 0._dp
+Complex(dp) :: coeffKK_SRR = 0._dp
+Complex(dp) :: coeffKK_SLR = 0._dp
+Complex(dp) :: coeffKK_VLL = 0._dp
+Complex(dp) :: coeffKK_VRR = 0._dp
+Complex(dp) :: coeffKK_VLR = 0._dp
+Complex(dp) :: coeffKK_TLL = 0._dp
+Complex(dp) :: coeffKK_TRR = 0._dp
+Complex(dp) :: coeffBB_SLL = 0._dp
+Complex(dp) :: coeffBB_SRR = 0._dp
+Complex(dp) :: coeffBB_SLR = 0._dp
+Complex(dp) :: coeffBB_VLL = 0._dp
+Complex(dp) :: coeffBB_VRR = 0._dp
+Complex(dp) :: coeffBB_VLR = 0._dp
+Complex(dp) :: coeffBB_TLL = 0._dp
+Complex(dp) :: coeffBB_TRR = 0._dp
+Complex(dp) :: coeffBsBs_SLL = 0._dp
+Complex(dp) :: coeffBsBs_SRR = 0._dp
+Complex(dp) :: coeffBsBs_SLR = 0._dp
+Complex(dp) :: coeffBsBs_VLL = 0._dp
+Complex(dp) :: coeffBsBs_VRR = 0._dp
+Complex(dp) :: coeffBsBs_VLR = 0._dp
+Complex(dp) :: coeffBsBs_TLL = 0._dp
+Complex(dp) :: coeffBsBs_TRR = 0._dp
+Complex(dp) :: coeffKK_SLLNP = 0._dp
+Complex(dp) :: coeffKK_SRRNP = 0._dp
+Complex(dp) :: coeffKK_SLRNP = 0._dp
+Complex(dp) :: coeffKK_VLLNP = 0._dp
+Complex(dp) :: coeffKK_VRRNP = 0._dp
+Complex(dp) :: coeffKK_VLRNP = 0._dp
+Complex(dp) :: coeffKK_TLLNP = 0._dp
+Complex(dp) :: coeffKK_TRRNP = 0._dp
+Complex(dp) :: coeffBB_SLLNP = 0._dp
+Complex(dp) :: coeffBB_SRRNP = 0._dp
+Complex(dp) :: coeffBB_SLRNP = 0._dp
+Complex(dp) :: coeffBB_VLLNP = 0._dp
+Complex(dp) :: coeffBB_VRRNP = 0._dp
+Complex(dp) :: coeffBB_VLRNP = 0._dp
+Complex(dp) :: coeffBB_TLLNP = 0._dp
+Complex(dp) :: coeffBB_TRRNP = 0._dp
+Complex(dp) :: coeffBsBs_SLLNP = 0._dp
+Complex(dp) :: coeffBsBs_SRRNP = 0._dp
+Complex(dp) :: coeffBsBs_SLRNP = 0._dp
+Complex(dp) :: coeffBsBs_VLLNP = 0._dp
+Complex(dp) :: coeffBsBs_VRRNP = 0._dp
+Complex(dp) :: coeffBsBs_VLRNP = 0._dp
+Complex(dp) :: coeffBsBs_TLLNP = 0._dp
+Complex(dp) :: coeffBsBs_TRRNP = 0._dp
+Complex(dp) :: coeffKK_SLLSM = 0._dp
+Complex(dp) :: coeffKK_SRRSM = 0._dp
+Complex(dp) :: coeffKK_SLRSM = 0._dp
+Complex(dp) :: coeffKK_VLLSM = 0._dp
+Complex(dp) :: coeffKK_VRRSM = 0._dp
+Complex(dp) :: coeffKK_VLRSM = 0._dp
+Complex(dp) :: coeffKK_TLLSM = 0._dp
+Complex(dp) :: coeffKK_TRRSM = 0._dp
+Complex(dp) :: coeffBB_SLLSM = 0._dp
+Complex(dp) :: coeffBB_SRRSM = 0._dp
+Complex(dp) :: coeffBB_SLRSM = 0._dp
+Complex(dp) :: coeffBB_VLLSM = 0._dp
+Complex(dp) :: coeffBB_VRRSM = 0._dp
+Complex(dp) :: coeffBB_VLRSM = 0._dp
+Complex(dp) :: coeffBB_TLLSM = 0._dp
+Complex(dp) :: coeffBB_TRRSM = 0._dp
+Complex(dp) :: coeffBsBs_SLLSM = 0._dp
+Complex(dp) :: coeffBsBs_SRRSM = 0._dp
+Complex(dp) :: coeffBsBs_SLRSM = 0._dp
+Complex(dp) :: coeffBsBs_VLLSM = 0._dp
+Complex(dp) :: coeffBsBs_VRRSM = 0._dp
+Complex(dp) :: coeffBsBs_VLRSM = 0._dp
+Complex(dp) :: coeffBsBs_TLLSM = 0._dp
+Complex(dp) :: coeffBsBs_TRRSM = 0._dp
 Real(dp) :: MW_SM 
 Real(dp) :: Alpha_160, AlphaS_160, SinW2_160, sinW2_MZ 
 Real(dp) :: mf_d_160(3), mf_u_160(3), mf_l_160(3), mf_d2_160(3), mf_u2_160(3), mf_l2_160(3) 
@@ -209,8 +288,8 @@ Real(dp) :: vIN
 
 Real(dp) :: vFix
 
-Real(dp) :: gPFu(3,183),gTFu(3),BRFu(3,183),gPFe(3,180),gTFe(3),BRFe(3,180),gPFd(3,183),          & 
-& gTFd(3),BRFd(3,183),gPFv(3,3),gTFv(3),BRFv(3,3),gPVZ(1,45),gTVZ,BRVZ(1,45),            & 
+Real(dp) :: gPFu(3,183),gTFu(3),BRFu(3,183),gPFe(3,183),gTFe(3),BRFe(3,183),gPFd(3,183),          & 
+& gTFd(3),BRFd(3,183),gPFv(3,6),gTFv(3),BRFv(3,6),gPVZ(1,45),gTVZ,BRVZ(1,45),            & 
 & gPVWp(1,23),gTVWp,BRVWp(1,23),gPhh(1,40),gThh,BRhh(1,40),gPChi(3,163),gTChi(3),        & 
 & BRChi(3,163),gPFre(1,58),gTFre,BRFre(1,58)
 
@@ -1000,4 +1079,6 @@ lamuINPUT=(0._dp,0._dp)
 lamdINPUT=(0._dp,0._dp) 
 End Subroutine Set_All_Parameters_0 
  
+
+
 End Module Model_Data_SimplifiedDMSDFDM

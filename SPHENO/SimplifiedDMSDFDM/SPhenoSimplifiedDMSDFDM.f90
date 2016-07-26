@@ -1,9 +1,9 @@
 ! -----------------------------------------------------------------------------  
-! This file was automatically created by SARAH version 4.8.5 
+! This file was automatically created by SARAH version 4.9.1 
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 11:02 on 21.6.2016   
+! File created at 15:49 on 26.7.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -21,6 +21,7 @@ Use Mathematics
 Use Model_Data_SimplifiedDMSDFDM
 Use Tadpoles_SimplifiedDMSDFDM 
  Use HiggsCS_SimplifiedDMSDFDM
+Use TreeLevelMasses_SimplifiedDMSDFDM
 Use LoopMasses_SimplifiedDMSDFDM
  
 Use BranchingRatios_SimplifiedDMSDFDM
@@ -295,6 +296,11 @@ End If
 End if 
  
 If ((FoundIterativeSolution).or.(WriteOutputForNonConvergence)) Then 
+If (OutputForMO) Then 
+Call RunningFermionMasses(MFe,MFe2,MFd,MFd2,MFu,MFu2,v,g1,g2,g3,lam1,Yu,              & 
+& Yd,Ye,lamd,lamu,Mn,MDF,mH2,kont)
+
+End if 
 Write(*,*) "Writing output files" 
 Call LesHouches_Out(67,11,kont,MGUT,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,               & 
 & BrBsGamma,ratioBsGamma,BrDmunu,ratioDmunu,BrDsmunu,ratioDsmunu,BrDstaunu,              & 
@@ -2910,6 +2916,78 @@ coeffCRnu3nu3 = OddvvVLR(3,2,3,3)
 coeffCRPnu3nu3 = OddvvVRR(3,2,3,3)
 coeffCRnu3nu3NP = OddvvVLR(3,2,3,3)
 coeffCRPnu3nu3NP = OddvvVRR(3,2,3,3)
+coeffKK_SLL = O4dSLL(2,1,2,1)/2._dp
+coeffKK_SRR = O4dSRR(2,1,2,1)/2._dp
+coeffKK_SLR = O4dSLR(2,1,2,1) + O4dSRL(2,1,2,1)
+coeffKK_VLL = O4dVLL(2,1,2,1)/2._dp
+coeffKK_VRR = O4dVRR(2,1,2,1)/2._dp
+coeffKK_VLR = O4dVLR(2,1,2,1) + O4dVRL(2,1,2,1)
+coeffKK_TLL = O4dTLL(2,1,2,1)/2._dp
+coeffKK_TRR = O4dTRR(2,1,2,1)/2._dp
+coeffBB_SLL = O4dSLL(3,1,3,1)/2._dp
+coeffBB_SRR = O4dSRR(3,1,3,1)/2._dp
+coeffBB_SLR = O4dSLR(3,1,3,1) + O4dSRL(3,1,3,1)
+coeffBB_VLL = O4dVLL(3,1,3,1)/2._dp
+coeffBB_VRR = O4dVRR(3,1,3,1)/2._dp
+coeffBB_VLR = O4dVLR(3,1,3,1) + O4dVRL(3,1,3,1)
+coeffBB_TLL = O4dTLL(3,1,3,1)/2._dp
+coeffBB_TRR = O4dTRR(3,1,3,1)/2._dp
+coeffBsBs_SLL = O4dSLL(3,2,3,2)/2._dp
+coeffBsBs_SRR = O4dSRR(3,2,3,2)/2._dp
+coeffBsBs_SLR = O4dSLR(3,2,3,2) + O4dSRL(3,2,3,2)
+coeffBsBs_VLL = O4dVLL(3,2,3,2)/2._dp
+coeffBsBs_VRR = O4dVRR(3,2,3,2)/2._dp
+coeffBsBs_VLR = O4dVLR(3,2,3,2) + O4dVRL(3,2,3,2)
+coeffBsBs_TLL = O4dTLL(3,2,3,2)/2._dp
+coeffBsBs_TRR = O4dTRR(3,2,3,2)/2._dp
+coeffKK_SLLNP = O4dSLL(2,1,2,1)/2._dp - O4dSLLSM(2,1,2,1)/2._dp
+coeffKK_SRRNP = O4dSRR(2,1,2,1)/2._dp - O4dSRRSM(2,1,2,1)/2._dp
+coeffKK_SLRNP = O4dSLR(2,1,2,1) - O4dSLRSM(2,1,2,1) + O4dSRL(2,1,2,1) - O4dSRLSM(2,1,2,1)
+coeffKK_VLLNP = O4dVLL(2,1,2,1)/2._dp - O4dVLLSM(2,1,2,1)/2._dp
+coeffKK_VRRNP = O4dVRR(2,1,2,1)/2._dp - O4dVRRSM(2,1,2,1)/2._dp
+coeffKK_VLRNP = O4dVLR(2,1,2,1) - O4dVLRSM(2,1,2,1) + O4dVRL(2,1,2,1) - O4dVRLSM(2,1,2,1)
+coeffKK_TLLNP = O4dTLL(2,1,2,1)/2._dp - O4dTLLSM(2,1,2,1)/2._dp
+coeffKK_TRRNP = O4dTRR(2,1,2,1)/2._dp - O4dTRRSM(2,1,2,1)/2._dp
+coeffBB_SLLNP = O4dSLL(3,1,3,1)/2._dp - O4dSLLSM(3,1,3,1)/2._dp
+coeffBB_SRRNP = O4dSRR(3,1,3,1)/2._dp - O4dSRRSM(3,1,3,1)/2._dp
+coeffBB_SLRNP = O4dSLR(3,1,3,1) - O4dSLRSM(3,1,3,1) + O4dSRL(3,1,3,1) - O4dSRLSM(3,1,3,1)
+coeffBB_VLLNP = O4dVLL(3,1,3,1)/2._dp - O4dVLLSM(3,1,3,1)/2._dp
+coeffBB_VRRNP = O4dVRR(3,1,3,1)/2._dp - O4dVRRSM(3,1,3,1)/2._dp
+coeffBB_VLRNP = O4dVLR(3,1,3,1) - O4dVLRSM(3,1,3,1) + O4dVRL(3,1,3,1) - O4dVRLSM(3,1,3,1)
+coeffBB_TLLNP = O4dTLL(3,1,3,1)/2._dp - O4dTLLSM(3,1,3,1)/2._dp
+coeffBB_TRRNP = O4dTRR(3,1,3,1)/2._dp - O4dTRRSM(3,1,3,1)/2._dp
+coeffBsBs_SLLNP = O4dSLL(3,2,3,2)/2._dp - O4dSLLSM(3,2,3,2)/2._dp
+coeffBsBs_SRRNP = O4dSRR(3,2,3,2)/2._dp - O4dSRRSM(3,2,3,2)/2._dp
+coeffBsBs_SLRNP = O4dSLR(3,2,3,2) - O4dSLRSM(3,2,3,2) + O4dSRL(3,2,3,2) - O4dSRLSM(3,2,3,2)
+coeffBsBs_VLLNP = O4dVLL(3,2,3,2)/2._dp - O4dVLLSM(3,2,3,2)/2._dp
+coeffBsBs_VRRNP = O4dVRR(3,2,3,2)/2._dp - O4dVRRSM(3,2,3,2)/2._dp
+coeffBsBs_VLRNP = O4dVLR(3,2,3,2) - O4dVLRSM(3,2,3,2) + O4dVRL(3,2,3,2) - O4dVRLSM(3,2,3,2)
+coeffBsBs_TLLNP = O4dTLL(3,2,3,2)/2._dp - O4dTLLSM(3,2,3,2)/2._dp
+coeffBsBs_TRRNP = O4dTRR(3,2,3,2)/2._dp - O4dTRRSM(3,2,3,2)/2._dp
+coeffKK_SLLSM = O4dSLLSM(2,1,2,1)/2._dp
+coeffKK_SRRSM = O4dSRRSM(2,1,2,1)/2._dp
+coeffKK_SLRSM = O4dSLRSM(2,1,2,1) + O4dSRLSM(2,1,2,1)
+coeffKK_VLLSM = O4dVLLSM(2,1,2,1)/2._dp
+coeffKK_VRRSM = O4dVRRSM(2,1,2,1)/2._dp
+coeffKK_VLRSM = O4dVLRSM(2,1,2,1) + O4dVRLSM(2,1,2,1)
+coeffKK_TLLSM = O4dTLLSM(2,1,2,1)/2._dp
+coeffKK_TRRSM = O4dTRRSM(2,1,2,1)/2._dp
+coeffBB_SLLSM = O4dSLLSM(3,1,3,1)/2._dp
+coeffBB_SRRSM = O4dSRRSM(3,1,3,1)/2._dp
+coeffBB_SLRSM = O4dSLRSM(3,1,3,1) + O4dSRLSM(3,1,3,1)
+coeffBB_VLLSM = O4dVLLSM(3,1,3,1)/2._dp
+coeffBB_VRRSM = O4dVRRSM(3,1,3,1)/2._dp
+coeffBB_VLRSM = O4dVLRSM(3,1,3,1) + O4dVRLSM(3,1,3,1)
+coeffBB_TLLSM = O4dTLLSM(3,1,3,1)/2._dp
+coeffBB_TRRSM = O4dTRRSM(3,1,3,1)/2._dp
+coeffBsBs_SLLSM = O4dSLLSM(3,2,3,2)/2._dp
+coeffBsBs_SRRSM = O4dSRRSM(3,2,3,2)/2._dp
+coeffBsBs_SLRSM = O4dSLRSM(3,2,3,2) + O4dSRLSM(3,2,3,2)
+coeffBsBs_VLLSM = O4dVLLSM(3,2,3,2)/2._dp
+coeffBsBs_VRRSM = O4dVRRSM(3,2,3,2)/2._dp
+coeffBsBs_VLRSM = O4dVLRSM(3,2,3,2) + O4dVRLSM(3,2,3,2)
+coeffBsBs_TLLSM = O4dTLLSM(3,2,3,2)/2._dp
+coeffBsBs_TRRSM = O4dTRRSM(3,2,3,2)/2._dp
 CKM = CKMsave 
 !-------------------------------------
 ! running to M_Z 
