@@ -264,7 +264,7 @@ class hep(model):
                     if re.search(fltchk,br):
                         self.micromegas['ID_br:%s' %chnl]=eval(br)
                     
-        return self.micromegas
+        return mo
     
     def run_micromegas(self,func,param={},path='../micromegas',
                   var_min=60,var_max=1000,npoints=1,scale='log',CI=False):
@@ -322,8 +322,8 @@ class hep(model):
         oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,ddcmd,self.MODEL) )
         mo=self.micromegas_output(oh)
         self.to_series()
-        for k in mo.keys():
-            self.Series[k]=mo[k]
+        for k in self.micromegas.keys():
+            self.Series[k]=self.micromegas[k]
 
         return mo
 
