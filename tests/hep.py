@@ -257,7 +257,7 @@ class hep(model):
         idc=grep('^\s+~.*->.*[0-9]$',mo)
         if idc:
             for ch in idc.split('\n'):
-                chnl=re.sub('\s{2}',':',re.sub('^\s+','',ch)).split(':') #values separated by 2 spaces
+                chnl=re.sub('\s{2,}',':',re.sub('^\s+','',ch)).split(':') #values separated by 2 spaces
                 if len(chnl)==2:
                     if re.search(fltchk,chnl[1]):
                         self.micromegas[ 'ID_br:%s' %chnl[0] ]=eval(chnl[1])
