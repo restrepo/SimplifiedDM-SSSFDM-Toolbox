@@ -260,12 +260,21 @@ class hep(model):
         idc=grep('^\s+~.*->.*[0-9]$',mo)
         if idc:
             for ch in idc.split('\n'):
-                chnl=re.sub('\s+$','',re.sub('^\s+','',re.sub('[0-9\.eE\-\+]+','',ch)))
-                br=re.search('[0-9]\.[0-9eE\-\+]+',ch)
-                if br:
-                    br=br.group(0)
-                    if re.search(fltchk,br):
-                        self.micromegas['ID_br:%s' %chnl]=eval(br)
+                chnl=re.sub('\s{2,}',':',re.sub('^\s+','',ch)).split(':') #values separated by 2 spaces
+                if len(chnl)==2:
+                    if re.search(fltchk,chnl[1]):
+                        self.micromegas[ 'ID_br:%s' %chnl[0] ]=eval(chnl[1])
+        
+        f='channels.out'
+        if os.path.isfile('channels.out'):
+            f=open(f,'r').read()
+            fvalues=re.sub(r'.*\s+(0\.[0-9]+)',r'\1', re.sub('#.*','',f)).split('\n')
+            if len(fvalues)>0:
+                fvalues=map(float,fvalues[:-1])
+                fkeys=re.sub('.*#\s+','O_chnl:',f).split('\n')[:-1]
+                Omega_channels=pd.Series(data=fvalues,index=fkeys)
+                if Omega_channels.shape[0]>0:
+                    self.micromegas=self.micromegas.append(Omega_channels)
                     
         return mo
     
@@ -324,9 +333,8 @@ class hep(model):
             
         oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,ddcmd,self.MODEL) )
         mo=self.micromegas_output(oh)
-        self.to_series()
-        for k in self.micromegas.keys():
-            self.Series[k]=self.micromegas[k]
+        self.to_series() #Fill to_Series pandas Series
+        self.Series=self.Series.append(self.micromegas)
 
         return mo
 
