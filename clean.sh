@@ -14,7 +14,9 @@ radinert+T13A
 SM+HighScale
 Zee
 SimplifiedDM+IDM
-SimplifiedDM+SDFDM"
+SimplifiedDM+SDFDM
+SimplifiedDM+TFDM
+"
 Nm=$(echo "$models" | wc -l)
 models=$(echo "$models" |sed 's/+/::/g' | egrep  -v '^'"$MODEL"'$' | sed 's/::/+/g')
 Nmn=$(echo "$models" | wc -l)
