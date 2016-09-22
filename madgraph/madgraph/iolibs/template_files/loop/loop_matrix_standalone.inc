@@ -268,6 +268,11 @@ C     RETURNCODE=100*RET_CODE_H+10*RET_CODE_T+RET_CODE_U
 	  DATA RET_CODE_H,RET_CODE_T,RET_CODE_U/1,1,0/
 	  common/%(proc_prefix)sACC/ACCURACY,RET_CODE_H,RET_CODE_T,RET_CODE_U
 
+C     Allows to forbid the zero helicity double check, no matter the value in MadLoopParams.dat
+C     This can be accessed with the SET_FORBID_HEL_DOUBLECHECK subroutine of MadLoopCommons.dat
+      LOGICAL FORBID_HEL_DOUBLECHECK
+	  COMMON/FORBID_HEL_DOUBLECHECK/FORBID_HEL_DOUBLECHECK
+
 	  LOGICAL MP_DONE_ONCE
 	  DATA MP_DONE_ONCE/.FALSE./
 	  common/%(proc_prefix)sMP_DONE_ONCE/MP_DONE_ONCE
@@ -288,10 +293,11 @@ IF(ML_INIT) THEN
   CALL SETMADLOOPPATH(TMP)
   CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
   CALL MADLOOPPARAMREADER(PARAMFN,.TRUE.)
+  IF (FORBID_HEL_DOUBLECHECK) THEN
+    DoubleCheckHelicityFilter = .False. 
+  ENDIF
   ML_INIT = .FALSE.
 ENDIF
-
-IF(NTRY.EQ.0) THEN
 
 C Setup the file paths
   CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
@@ -301,38 +307,7 @@ C Setup the file paths
   CALL JOINPATH(TMP,COLORNUMFNAME,COLORNUMFN)
   CALL JOINPATH(TMP,COLORDENOMFNAME,COLORDENOMFN)
   CALL JOINPATH(TMP,HELFILTERFNAME,HELFILTERFN)
-  
-  CALL %(proc_prefix)sSET_N_EVALS(N_DP_EVAL,N_QP_EVAL)
-  HELDOUBLECHECKED=.NOT.DoubleCheckHelicityFilter  
-  DO J=1,NCOMB
-    DO I=1,NCTAMPS
-	  GOODAMP(I,J)=.TRUE.
-	ENDDO
-  ENDDO
-OPEN(1, FILE=LoopFilterFN, err=100, status='OLD',           action='READ')
-  DO J=1,NCOMB
-    READ(1,*,END=101) (GOODAMP(I,J),I=NCTAMPS+1,NLOOPAMPS)
-  ENDDO
-  GOTO 101
-100  CONTINUE
-  FOUNDLOOPFILTER=.FALSE.
-  DO J=1,NCOMB
-    DO I=NCTAMPS+1,NLOOPAMPS
-	  GOODAMP(I,J)=(.NOT.USELOOPFILTER)
-	ENDDO
-  ENDDO
-101  CONTINUE
-CLOSE(1)
-OPEN(1, FILE=HelFilterFN, err=102, status='OLD',           action='READ')
-  READ(1,*,END=103) (GOODHEL(I),I=1,NCOMB)
-  GOTO 103
-102  CONTINUE
-  FOUNDHELFILTER=.FALSE.
-  DO J=1,NCOMB
-	GOODHEL(J)=.TRUE.
-  ENDDO
-103  CONTINUE
-CLOSE(1)
+
 OPEN(1, FILE=ColorNumFN, err=104, status='OLD',           action='READ')
   DO I=1,NLOOPAMPS
     READ(1,*,END=105) (CF_N(I,J),J=1,%(color_matrix_size)s)
@@ -361,9 +336,50 @@ OPEN(1, FILE=HelConfigFN, err=108, status='OLD',                  action='READ')
 109  CONTINUE
 CLOSE(1)
 IF(BOOTANDSTOP) THEN
-  WRITE(*,*) 'Stopped by user request.'
+  WRITE(*,*) '##Stopped by user request.'
   STOP
 ENDIF
+
+IF(NTRY.EQ.0) THEN
+  CALL %(proc_prefix)sSET_N_EVALS(N_DP_EVAL,N_QP_EVAL)
+  HELDOUBLECHECKED=(.NOT.DoubleCheckHelicityFilter).OR.(HelicityFilterLevel.eq.0)
+  DO J=1,NCOMB
+    DO I=1,NCTAMPS
+	  GOODAMP(I,J)=.TRUE.
+	ENDDO
+  ENDDO
+OPEN(1, FILE=LoopFilterFN, err=100, status='OLD',           action='READ')
+  DO J=1,NCOMB
+    READ(1,*,END=101) (GOODAMP(I,J),I=NCTAMPS+1,NLOOPAMPS)
+  ENDDO
+  GOTO 101
+100  CONTINUE
+  FOUNDLOOPFILTER=.FALSE.
+  DO J=1,NCOMB
+    DO I=NCTAMPS+1,NLOOPAMPS
+	  GOODAMP(I,J)=(.NOT.USELOOPFILTER)
+	ENDDO
+  ENDDO
+101  CONTINUE
+CLOSE(1)
+IF (HelicityFilterLevel.eq.0) then
+  FOUNDHELFILTER=.TRUE.
+  DO J=1,NCOMB
+	GOODHEL(J)=.TRUE.
+  ENDDO
+  GOTO 122
+ENDIF
+OPEN(1, FILE=HelFilterFN, err=102, status='OLD',           action='READ')
+  READ(1,*,END=103) (GOODHEL(I),I=1,NCOMB)
+  GOTO 103
+102  CONTINUE
+  FOUNDHELFILTER=.FALSE.
+  DO J=1,NCOMB
+	GOODHEL(J)=.TRUE.
+  ENDDO
+103  CONTINUE
+CLOSE(1)
+122  CONTINUE
 ENDIF
 
 MP_DONE=.FALSE.
@@ -606,8 +622,8 @@ C   SET THE LOOP FILTER
   ELSEIF (.NOT.HELDOUBLECHECKED)THEN
     IF ((.NOT.GOODHEL(HELPICKED)).AND.(.NOT.%(proc_prefix)sISZERO(ABS(ANS(1))+ABS(ANS(2))+ABS(ANS(3)),REF/DBLE(NCOMB),-1))) THEN
 	  write(*,*) '##W15 Helicity filter could not be successfully double checked.'
-	  write(*,*) 'One reason for this is that you have changed sensible parameters which affected what are the zero helicity configurations.'
-	  write(*,*) 'MadLoop will try to reset the Helicity filter with the next PS points it receives.'
+	  write(*,*) '##One reason for this is that you have changed sensible parameters which affected what are the zero helicity configurations.'
+	  write(*,*) '##MadLoop will try to reset the Helicity filter with the next PS points it receives.'
 	  NTRY=0
 	  OPEN(30,FILE=HelFilterFN,err=349)
 349   CONTINUE
@@ -705,19 +721,19 @@ C END OF THE DEFINITIONS OF THE DIFFERENT EVALUATION METHODS
 	  NEPS=NEPS+1
       CALL %(proc_prefix)sCOMPUTE_ACCURACY(DP_RES,N_DP_EVAL,TEMP1,TEMP)	  
       WRITE(*,*) '##W03 WARNING An unstable PS point was',       ' detected.'
-	  WRITE(*,*) '(DP,QP) accuracies : (',TEMP1,',',ACC,')'
-	  WRITE(*,*) 'Best estimate (fin,1eps,2eps) :',(ANS(I),I=1,3)
+	  WRITE(*,*) '##(DP,QP) accuracies : (',TEMP1,',',ACC,')'
+	  WRITE(*,*) '##Best estimate (fin,1eps,2eps) :',(ANS(I),I=1,3)
 	  IF(NEPS.LE.10) THEN
-	    WRITE(*,*) 'Double precision evaluations :',(DP_RES(1,I),I=1,N_DP_EVAL)
-	    WRITE(*,*) 'Quad   precision evaluations :',(QP_RES(1,I),I=1,N_QP_EVAL)		 
-	    WRITE(*,*) 'PS point specification :'
-	    WRITE(*,*) 'Renormalization scale MU_R=',MU_R	
+	    WRITE(*,*) '##Double precision evaluations :',(DP_RES(1,I),I=1,N_DP_EVAL)
+	    WRITE(*,*) '##Quad   precision evaluations :',(QP_RES(1,I),I=1,N_QP_EVAL)		 
+	    WRITE(*,*) '##PS point specification :'
+	    WRITE(*,*) '##Renormalization scale MU_R=',MU_R	
 	    DO I=1,NEXTERNAL
           WRITE (*,'(i2,1x,4e27.17)') i, P(0,i),P(1,i),P(2,i),P(3,i) 
         ENDDO
 	  ENDIF
 	  IF(NEPS.EQ.10) THEN
-	    WRITE(*,*) 'Further output of the details of these unstable PS points will now be suppressed.'
+	    WRITE(*,*) '##Further output of the details of these unstable PS points will now be suppressed.'
 	  ENDIF
     ENDIF
   ELSE
@@ -867,7 +883,7 @@ C     The following is used instead
 	  ENDIF
 
 	  IF(N_DP_EVALS.GT.20.OR.N_QP_EVALS.GT.20) THEN
-	    WRITE(*,*) 'ERROR:: Increase hardcoded maxstabilitylength.'
+	    WRITE(*,*) '##ERROR:: Increase hardcoded maxstabilitylength.'
 		STOP
 	  ENDIF
 
@@ -911,7 +927,7 @@ C
 C ----------
 C BEGIN CODE
 C ----------
-      write(*,*) 'WARNING:: Ignored, the possibility of selecting specific squared order contributions is not available in the default mode.'
+      write(*,*) '##WARNING:: Ignored, the possibility of selecting specific squared order contributions is not available in the default mode.'
 
 	  END
 

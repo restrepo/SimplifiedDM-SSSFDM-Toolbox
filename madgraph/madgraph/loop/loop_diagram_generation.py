@@ -23,16 +23,18 @@ import logging
 import madgraph.loop.loop_base_objects as loop_base_objects
 import madgraph.core.base_objects as base_objects
 import madgraph.core.diagram_generation as diagram_generation
+import madgraph.various.misc as misc
 
 from madgraph import MadGraph5Error
 from madgraph import InvalidCmd
 logger = logging.getLogger('madgraph.loop_diagram_generation')
 
-def ldg_debug_info(msg,val):
+def ldg_debug_info(msg,val, force=False):
     # This subroutine has typically quite large DEBUG info.
     # So even in debug mode, they are turned off by default.
     # Remove the line below for loop diagram generation diagnostic
-    return
+    if not force: return
+
     flag = "LoopGenInfo: "
     if len(msg)>40:
         logger.debug(flag+msg[:35]+" [...] = %s"%str(val))
@@ -72,13 +74,13 @@ class LoopAmplitude(diagram_generation.Amplitude):
         # subsequent diagram generation runs.
         self.lcutpartemployed=[]
 
-    def __init__(self, argument=None):
+    def __init__(self, argument=None, loop_filter=None):
         """Allow initialization with Process"""
         
         if isinstance(argument, base_objects.Process):
             super(LoopAmplitude, self).__init__()
             self.set('process', argument)
-            self.generate_diagrams()
+            self.generate_diagrams(loop_filter=loop_filter)
         elif argument != None:
             # call the mother routine
             super(LoopAmplitude, self).__init__(argument)
@@ -312,17 +314,80 @@ class LoopAmplitude(diagram_generation.Amplitude):
                 discarded_configurations.append(diag_config)
         self[diags] = newdiagselection
 
+    def remove_Furry_loops(self, model, structs):
+        """ Remove the loops which are zero because of Furry theorem. So as to
+        limit any possible mistake in case of BSM model, I limit myself here to
+        removing SM-quark loops with external legs with an odd number of photons,
+        possibly including exactly two gluons."""
 
-    def user_filter(self, model, structs):
+        new_diag_selection = base_objects.DiagramList()
+        
+        n_discarded = 0
+        for diag in self['loop_diagrams']:
+            if diag.get('tag')==[]:
+                raise MadGraph5Error, "The loop diagrams should have been tagged"+\
+                  " before going through the Furry filter."
+            
+            loop_line_pdgs = diag.get_loop_lines_pdgs()
+            attached_pdgs   = diag.get_pdgs_attached_to_loop(structs)
+            if (attached_pdgs.count(22)%2==1) and \
+               (attached_pdgs.count(21) in [0,2]) and \
+               (all(pdg in [22,21] for pdg in attached_pdgs)) and \
+               (abs(loop_line_pdgs[0]) in list(range(1,7))) and \
+               (all(abs(pdg)==abs(loop_line_pdgs[0]) for pdg in loop_line_pdgs)):
+                n_discarded += 1
+            else:
+                new_diag_selection.append(diag)
+                
+        self['loop_diagrams'] = new_diag_selection
+        
+        if n_discarded > 0:
+            logger.debug(("MadLoop discarded %i diagram%s because they appeared"+\
+              " to be zero because of Furry theorem.")%(n_discarded,'' if \
+                                                       n_discarded<=1 else 's'))
+    
+    @staticmethod   
+    def get_loop_filter(filterdef):
+        """ Returns a function which applies the filter corresponding to the 
+        conditional expression encoded in filterdef."""
+        
+        def filter(diag, structs, model, id):
+            """ The filter function generated '%s'."""%filterdef
+            
+            loop_pdgs   = diag.get_loop_lines_pdgs()
+            struct_pdgs = diag.get_pdgs_attached_to_loop(structs)
+            loop_masses = [model.get_particle(pdg).get('mass') for pdg in loop_pdgs]
+            struct_masses = [model.get_particle(pdg).get('mass') for pdg in struct_pdgs]
+            if not eval(filterdef.lower(),{'n':len(loop_pdgs),
+                                        'loop_pdgs':loop_pdgs,
+                                        'struct_pdgs':struct_pdgs,
+                                        'loop_masses':loop_masses,
+                                        'struct_masses':struct_masses,
+                                        'id':id}):
+                return False
+            else:
+                return True
+        
+        return filter
+        
+    def user_filter(self, model, structs, filter=None):
         """ User-defined user-filter. By default it is not called, but the expert
         user can turn it on and code here is own filter. Some default examples
         are provided here.
         The tagging of the loop diagrams must be performed before using this 
         user loop filter"""
         
-        # By default the user filter does nothing, if you want to turn it on
-        # and edit it then remove the print statement below.
-        return
+        # By default the user filter does nothing if filter is not set, 
+        # if you want to turn it on and edit it by hand, then set the 
+        # variable edit_filter_manually to True
+        edit_filter_manually = False
+        if not edit_filter_manually and filter in [None,'None']:
+            return
+
+        if filter not in [None,'None']:
+            filter_func = LoopAmplitude.get_loop_filter(filter)
+        else:
+            filter_func = None
 
         new_diag_selection = base_objects.DiagramList()
         discarded_diags = base_objects.DiagramList()
@@ -333,7 +398,14 @@ class LoopAmplitude(diagram_generation.Amplitude):
                        "make sure that the loop diagrams have been tagged first."
             valid_diag = True
             i=i+1
-
+    
+            # Apply the custom filter specified if any
+            if filter_func:
+                try:
+                    valid_diag = filter_func(diag, structs, model, i)
+                except Exception as e:
+                    raise InvalidCmd("The user-defined filter '%s' did not"%filter+
+                                 " returned the following error:\n       > %s"%str(e))
 #            if any([abs(i)!=1000021 for i in diag.get_loop_lines_pdgs()]):
 #                valid_diag=False
             
@@ -395,9 +467,14 @@ class LoopAmplitude(diagram_generation.Amplitude):
                 discarded_diags.append(diag)
                 
         self['loop_diagrams'] = new_diag_selection
-        warn_msg = """
+        if filter in [None,'None']:
+            warn_msg = """
     The user-defined loop diagrams filter is turned on and discarded %d loops."""\
     %len(discarded_diags)
+        else:
+            warn_msg = """
+    The loop diagrams filter '%s' is turned on and discarded %d loops."""\
+                                                  %(filter,len(discarded_diags))
         logger.warning(warn_msg)
 
     def filter_loop_for_perturbative_orders(self):
@@ -499,7 +576,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
                 res.append('%s=*'%order)
         return ','.join(res)
 
-    def generate_diagrams(self):
+    def generate_diagrams(self, loop_filter=None):
         """ Generates all diagrams relevant to this Loop Process """
 
         # Description of the algorithm to guess the leading contribution.
@@ -542,7 +619,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         else:
             self['born_diagrams'] = base_objects.DiagramList()
             bornsuccessful = True
-            logger.debug("# born diagrams generation skipped by user request.")        
+            logger.debug("Born diagrams generation skipped by user request.")
 
         # Make sure that all orders specified belong to the model:
         for order in self['process']['orders'].keys()+\
@@ -557,6 +634,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         # already asked for the loop squared.
         if self['process']['has_born']:
             self['process']['has_born'] = self['born_diagrams']!=[]
+        self['has_born'] = self['process']['has_born']
 
         ldg_debug_info("User input born orders",self['process']['orders'])
         ldg_debug_info("User input squared orders",
@@ -653,6 +731,8 @@ class LoopAmplitude(diagram_generation.Amplitude):
 
         # If there is no born neither loop diagrams, return now.
         if not self['process']['has_born'] and not self['loop_diagrams']:
+            self['process']['orders'].clear()
+            self['process']['orders'].update(user_orders)
             return False
 
         # We add here the UV renormalization contribution built in
@@ -738,8 +818,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         tag_selected=[]
         loop_basis=base_objects.DiagramList()
         for diag in self['loop_diagrams']:
-            diag.tag(self['structure_repository'],len(self['process']['legs'])+1\
-                                ,len(self['process']['legs'])+2,self['process'])
+            diag.tag(self['structure_repository'],model)
             # Make sure not to consider wave-function renormalization, vanishing tadpoles, 
             # or redundant diagrams
             if not diag.is_wf_correction(self['structure_repository'], \
@@ -760,16 +839,21 @@ class LoopAmplitude(diagram_generation.Amplitude):
                                                           ' order constraints.')
         # If there is no born neither loop diagrams after filtering, return now.
         if not self['process']['has_born'] and not self['loop_diagrams']:
+            self['process']['squared_orders'].clear()
+            self['process']['squared_orders'].update(user_squared_orders)
             return False
 
         # Set the necessary UV/R2 CounterTerms for each loop diagram generated
         self.set_LoopCT_vertices()
         
+        # Discard diagrams which are zero because of Furry theorem
+        self.remove_Furry_loops(model,self['structure_repository'])
+        
         # Apply here some user-defined filter.
         # For expert only, you can edit your own filter by modifying the
         # user_filter() function which by default does nothing but in which you
         # will find examples of common filters.
-        self.user_filter(model,self['structure_repository'])
+        self.user_filter(model,self['structure_repository'], filter=loop_filter)
 
         # Now revert the squared order. This function typically adds to the 
         # squared order list the target WEIGHTED order which has been detected.
@@ -798,15 +882,76 @@ class LoopAmplitude(diagram_generation.Amplitude):
             nCT['UV']+=len(ldiag.get_CT(model,'UV'))
             nCT['R2']+=len(ldiag.get_CT(model,'R2'))         
 
+        # The identification of numerically equivalent diagrams is done here.
+        # Simply comment the line above to remove it for testing purposes
+        # (i.e. to make sure it does not alter the result).
+        nLoopsIdentified = self.identify_loop_diagrams()
+        if nLoopsIdentified > 0:
+            logger.debug("A total of %d loop diagrams "%nLoopsIdentified+\
+                                        "were identified with equivalent ones.")            
         logger.info("Contributing diagrams generated: "+\
-                     "%d born, %d loop, %d R2, %d UV"%\
-                     (len(self['born_diagrams']),nLoopDiag,nCT['R2'],nCT['UV']))
+          "%d Born, %d%s loops, %d R2, %d UV"%(len(self['born_diagrams']),
+                    len(self['loop_diagrams']),'(+%d)'%nLoopsIdentified \
+                            if nLoopsIdentified>0 else '' ,nCT['R2'],nCT['UV']))
         
         ldg_debug_info("#Diags after filtering",len(self['loop_diagrams']))
         ldg_debug_info("# of different structures identified",\
                                               len(self['structure_repository']))
 
         return (bornsuccessful or totloopsuccessful)
+
+    def identify_loop_diagrams(self):
+        """ Uses a loop_tag characterizing the loop with only physical
+        information about it (mass, coupling, width, color, etc...) so as to 
+        recognize numerically equivalent diagrams and group them together,
+        such as massless quark loops in pure QCD gluon loop amplitudes."""
+
+        # This dictionary contains key-value pairs of the form 
+        # (loop_tag, DiagramList) where the loop_tag key unambiguously 
+        # characterizes a class of equivalent diagrams and the DiagramList value
+        # lists all the diagrams belonging to this class.
+        # In the end, the first diagram of this DiagramList will be used as
+        # the reference included in the numerical code for the loop matrix 
+        # element computations and all the others will be omitted, being
+        # included via a simple multiplicative factor applied to the first one.
+        diagram_identification = {}
+        
+        for i, loop_diag in enumerate(self['loop_diagrams']):
+            loop_tag = loop_diag.build_loop_tag_for_diagram_identification(
+                     self['process']['model'], self.get('structure_repository'),
+                                              use_FDStructure_ID_for_tag = True)
+            # We store the loop diagrams in a 2-tuple that keeps track of 'i'
+            # so that we don't lose their original order. It is just for 
+            # convenience, and not strictly necessary.
+            try:
+                diagram_identification[loop_tag].append((i+1,loop_diag))
+            except KeyError:
+                diagram_identification[loop_tag] = [(i+1,loop_diag)]
+                
+        # Now sort the loop_tag keys according to their order of appearance
+        sorted_loop_tag_keys = sorted(diagram_identification.keys(),
+                                   key=lambda k:diagram_identification[k][0][0])
+        
+        new_loop_diagram_base = base_objects.DiagramList([])
+        n_loops_identified = 0
+        for loop_tag in sorted_loop_tag_keys:
+            n_diag_in_class = len(diagram_identification[loop_tag])
+            n_loops_identified += n_diag_in_class-1
+            new_loop_diagram_base.append(diagram_identification[loop_tag][0][1])
+            # We must add the counterterms of all the identified loop diagrams
+            # to the reference one.
+            new_loop_diagram_base[-1]['multiplier'] = n_diag_in_class
+            for ldiag in diagram_identification[loop_tag][1:]:
+                new_loop_diagram_base[-1].get('CT_vertices').extend(
+                                         copy.copy(ldiag[1].get('CT_vertices')))
+            if n_diag_in_class > 1:
+                ldg_debug_info("# Diagram equivalence class detected","#(%s) -> #%d"\
+                %(','.join('%d'%diag[0] for diag in diagram_identification[loop_tag][1:])+
+                (',' if n_diag_in_class==2 else ''),diagram_identification[loop_tag][0][0]))
+
+        
+        self.set('loop_diagrams',new_loop_diagram_base)
+        return n_loops_identified
 
     def print_split_order_infos(self):
         """This function is solely for monitoring purposes. It reports what are
@@ -920,8 +1065,8 @@ class LoopAmplitude(diagram_generation.Amplitude):
         """ Generates all born diagrams relevant to this NLO Process """
 
         bornsuccessful, self['born_diagrams'] = \
-          super(LoopAmplitude, self).generate_diagrams(True)
-            
+                       diagram_generation.Amplitude.generate_diagrams(self,True)
+        
         return bornsuccessful
 
     def generate_loop_diagrams(self):
@@ -941,8 +1086,8 @@ class LoopAmplitude(diagram_generation.Amplitude):
                 (particle.is_perturbating(order, self['process']['model']) and \
                 particle.get_pdg_code() not in \
                                         self['process']['forbidden_particles'])]
-#            lcutPart = [lp for lp in lcutPart if abs(lp.get('pdg_code'))==1000021]
-#            print "lcutPart=",[part.get('name') for part in lcutPart]
+#            lcutPart = [lp for lp in lcutPart if abs(lp.get('pdg_code'))==6]
+#            misc.sprint("lcutPart=",[part.get('name') for part in lcutPart])
             for part in lcutPart:
                 if part.get_pdg_code() not in self.lcutpartemployed:
                     # First create the two L-cut particles to add to the process.
@@ -993,7 +1138,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
                     # Accordingly update the totloopsuccessful tag
                     if loopsuccessful:
                         totloopsuccessful=True
-        
+
         # Reset the l-cut particle list
         self.lcutpartemployed=[]
 
@@ -1139,7 +1284,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         # above.
         CT_interactions = {}
         for inter in self['process']['model']['interactions']:
-            if inter.is_UVmass() or inter.is_UVloop() or inter.is_R2() and \
+             if inter.is_UVmass() or inter.is_UVloop() or inter.is_R2() and \
                 len(inter['particles'])>1 and inter.is_perturbating(\
                                      self['process']['perturbation_couplings']):
                 # This interaction might have several possible loop particles 
@@ -1341,7 +1486,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         exlegs=[leg for leg in looplegs if leg['depth']==0]
         if(len(exlegs)==2):
             if(any([part['mass'].lower()=='zero' for pdg,part in model.get('particle_dict').items() if pdg==abs(exlegs[0]['id'])])):
-            	return []
+                return []
 
         # Correctly propagate the loopflow
         loopline=(len(looplegs)==1)    
@@ -1407,7 +1552,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         if(len(exlegs)==2):
             if(any([part['mass'].lower()=='zero' for pdg,part in \
               model.get('particle_dict').items() if pdg==abs(exlegs[0]['id'])])):
-            	return []
+                return []
 
 
         # Get rid of some wave-function renormalization diagrams already during
@@ -1569,3 +1714,17 @@ class LoopMultiProcess(diagram_generation.MultiProcess):
             of the process proc """
         return LoopAmplitude({"process": proc})
 
+
+
+
+#===============================================================================
+# LoopInducedMultiProcess
+#===============================================================================
+class LoopInducedMultiProcess(diagram_generation.MultiProcess):
+    """Special mode for the LoopInduced."""
+    
+    @classmethod
+    def get_amplitude_from_proc(cls,proc):
+        """ Return the correct amplitude type according to the characteristics of
+            the process proc """
+        return LoopAmplitude({"process": proc, 'has_born':False})   

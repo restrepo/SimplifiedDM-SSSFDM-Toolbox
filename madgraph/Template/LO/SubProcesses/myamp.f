@@ -271,8 +271,10 @@ c     For decay-chain syntax use BWcutoff here too (22/12/14)
             if (onshell .and. (lbw(nbw).eq. 2) .or.
      $          .not. onshell .and. (lbw(nbw).eq. 1)) then
                cut_bw=.true.
+               if (gForceBW(i, iconfig).eq.1) then
+                  return
+               endif
 c               write(*,*) 'cut_bw: ',nbw,xmass,onshell,lbw(nbw),cut_bw
-               return
             endif
          endif
 c         write(*,*) 'final cut_bw: ',nbw,lbw(nbw),xmass,onshell,OnBW(i),cut_bw
@@ -365,9 +367,9 @@ C     SPECIAL CUTS
 C
       LOGICAL  IS_A_J(NEXTERNAL),IS_A_L(NEXTERNAL)
       LOGICAL  IS_A_B(NEXTERNAL),IS_A_A(NEXTERNAL),IS_A_ONIUM(NEXTERNAL)
-      LOGICAL  IS_A_NU(NEXTERNAL),IS_HEAVY(NEXTERNAL)
+      LOGICAL  IS_A_NU(NEXTERNAL),IS_HEAVY(NEXTERNAL), DO_CUTS(NEXTERNAL)
       COMMON /TO_SPECISA/IS_A_J,IS_A_A,IS_A_L,IS_A_B,IS_A_NU,IS_HEAVY,
-     . IS_A_ONIUM
+     . IS_A_ONIUM,DO_CUTS
       integer njet
 
 
@@ -651,7 +653,7 @@ c      if (xo .gt. 0) call setgrid(-i,xo,a,1)
 
       write(*,*),'Impossible BW configuration'
       open(unit=66,file='results.dat',status='unknown')
-      write(66,'(3e12.5,2i9,i5,i9,3e10.3)')0.,0.,0.,0,0,1,0,0.,0.,0.
+      write(66,'(3e12.5,2i9,i5,i9,4e10.3)')0.,0.,0.,0,0,1,0,0.,0.,0.,0.
       write(66,'(i4,5e15.5)') 1,0.,0.,0.,0.,0.
       close(66)
       end

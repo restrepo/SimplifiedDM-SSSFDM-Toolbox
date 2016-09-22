@@ -116,8 +116,9 @@ C
       LOGICAL  IS_A_J(NEXTERNAL),IS_A_L(NEXTERNAL)
       LOGICAL  IS_A_B(NEXTERNAL),IS_A_A(NEXTERNAL),IS_A_ONIUM(NEXTERNAL)
       LOGICAL  IS_A_NU(NEXTERNAL),IS_HEAVY(NEXTERNAL)
+      logical  do_cuts(nexternal)
       COMMON /TO_SPECISA/IS_A_J,IS_A_A,IS_A_L,IS_A_B,IS_A_NU,IS_HEAVY,
-     . IS_A_ONIUM
+     . IS_A_ONIUM, do_cuts
 C
 C     Keep track of whether cuts already calculated for this event
 C
@@ -517,7 +518,7 @@ C RESET JET MOMENTA
       ENDDO
 
       do i=nincoming+1,nexternal
-         if(is_a_j(i)) then
+         if(is_a_j(i).and.do_cuts(i)) then
            njets=njets+1
            DO J=0,3
              PJET(NJETS,J) = P(J,I)
@@ -1005,13 +1006,15 @@ c
 c     Here we cluster event and reset factorization and renormalization
 c     scales on an event-by-event basis, as well as check xqcut for jets
 c
-      if(xqcut.gt.0d0.or.ickkw.gt.0.or.scale.eq.0.or.q2fact(1).eq.0)then
+c     Note the following condition is the first line of setclscales
+c      if(xqcut.gt.0d0.or.ickkw.gt.0.or.scale.eq.0.or.q2fact(1).eq.0)then
+c     Do not duplicate it since some variable are set for syscalc in the fct
         if(.not.setclscales(p))then
          if(debug) write (*,*) ' setclscales -> fails'
          passcuts=.false.
          return
        endif
-      endif
+c      endif
 
 c     Set couplings in model files
       if(.not.fixed_ren_scale.or..not.fixed_couplings) then

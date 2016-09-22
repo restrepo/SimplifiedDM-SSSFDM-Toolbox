@@ -45,20 +45,14 @@ c general MadFKS parameters
       data firsttime_run /.true./
       double precision qes2
       common /coupl_es/ qes2
-      integer nvtozero
-      logical doVirtTest 
-      common/cvirt2test/nvtozero,doVirtTest
-      integer ivirtpoints,ivirtpointsExcept
-      double precision  virtmax,virtmin,virtsum
-      common/cvirt3test/virtmax,virtmin,virtsum,ivirtpoints,
-     &     ivirtpointsExcept
       logical fksprefact
       parameter (fksprefact=.true.)
       integer ret_code
       double precision madfks_single, madfks_double
       double precision tolerance, prec_found
       double precision, allocatable :: accuracies(:)
-      integer i,j
+      integer i,j,IOErr, IOErrCounter
+      integer dt(8)
       integer nbad, nbadmax
       double precision target,ran2,accum
       external ran2
@@ -82,6 +76,8 @@ c statistics for MadLoop
 c masses
       include 'pmass.inc'
       data nbad / 0 /
+
+      IOErrCounter = 0
 c update the ren_scale for MadLoop and the couplings (should be the
 c Ellis-Sexton scale)
       mu_r = sqrt(QES2)
@@ -93,6 +89,11 @@ c Ellis-Sexton scale)
       double  = 0d0
       prec_found = 1.0d0
       if (firsttime_run) then
+c The helicity double check should have been performed during the
+c pole check, so we skip it here. It also makes sure that there is
+c no conflict on the write access to HelFilter.dat when running
+c locally in multicore without a cluster_tmp_path
+         call set_forbid_hel_doublecheck(.True.)
          call get_nsqso_loop(nsqso)
          call get_answer_dimension(MLResArrayDim)
          allocate(accuracies(0:nsqso))
@@ -132,29 +133,17 @@ c virtual as flat as possible
             born_wgt_recomputed=0d0
             do ihel=1,hel(0)
                born_wgt_recomputed=born_wgt_recomputed
-     $              +wgt_hel(hel(ihel))*dble(goodhel(ihel))
+     $              +abs(wgt_hel(hel(ihel))*dble(goodhel(ihel)))
             enddo
-            if (abs(1d0-born_wgt/born_wgt_recomputed).gt.1d-9) then
-               write (*,*) 'Borns not consistent in BinothLHA',born_wgt
-     $              ,born_wgt_recomputed
-               stop
-            endif
-            if (abs(1d0-born_wgt/born_wgt_recomp_direct).gt.1d-9) then
-               write (*,*) 'Borns not consistent in BinothLHA direct'
-     $              ,born_wgt,born_wgt_recomp_direct
-               stop
-            endif
             target=ran2()*born_wgt_recomputed
             ihel=1
-            accum=wgt_hel(hel(ihel))*dble(goodhel(ihel))
+            accum=abs(wgt_hel(hel(ihel))*dble(goodhel(ihel)))
             do while (accum.lt.target) 
                ihel=ihel+1
-               accum=accum+wgt_hel(hel(ihel))*dble(goodhel(ihel))
+               accum=accum+abs(wgt_hel(hel(ihel))*dble(goodhel(ihel)))
             enddo
-            volh=wgt_hel(hel(ihel))*dble(goodhel(ihel))
+            volh=abs(wgt_hel(hel(ihel))*dble(goodhel(ihel)))
      $           /born_wgt_recomputed
-c$$$            call get_MC_integer(2,hel(0),ihel,volh)
-c$$$            fillh=.true.
             fillh=.false.
             call sloopmatrixhel_thres(p,hel(ihel),virt_wgts_hel
      $           ,tolerance,accuracies,ret_code)
@@ -214,6 +203,7 @@ c MadLoop initialization PS points.
             write(*,*) "---- POLES CANCELLED ----"
             firsttime = .false.
             if (mc_hel.ne.0) then
+198            continue
 c Set-up the MC over helicities. This assumes that the 'HelFilter.dat'
 c exists, which should be the case when firsttime is false.
                if (NHelForMCoverHels.lt.0) then
@@ -221,7 +211,7 @@ c exists, which should be the case when firsttime is false.
                    goto 203
                endif
                open (unit=67,file='../MadLoop5_resources/HelFilter.dat',
-     $   status='old',err=201)
+     $   status='old',action='read',iostat=IOErr, err=201)
                hel(0)=0
                j=0
 c optimized loop output
@@ -236,6 +226,14 @@ c optimized loop output
                enddo
                goto 203
 201            continue
+               if (IOErr.eq.2.and.IOErrCounter.lt.10) then
+                 IOErrCounter = IOErrCounter+1
+                 write(*,*) "File HelFilter.dat busy, retrying for"//
+     &           " the ",IOErrCounter," time."
+                 call date_and_time(values=dt)
+                 call sleep(1+(dt(8)/200))
+                 goto 198
+               endif
                write (*,*) 'Cannot do MC over hel:'/
      &     /' "HelFilter.dat" does not exist'/
      &     /' or does not have the correct format.'/

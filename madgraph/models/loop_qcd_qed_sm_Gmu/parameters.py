@@ -62,6 +62,13 @@ MU_R = Parameter(name = 'MU_R',
               lhablock = 'LOOP',
               lhacode = [ 666 ])
 
+CMSParam = Parameter(name = 'CMSParam',
+                     nature = 'internal',
+                     type = 'real',
+                     # This means that the CMS is turned off by default since real masses are used in the expressions.
+                     value = '0.0',
+                     texname = 'CMSParam')
+
 # User-defined parameters.
 
 Gf = Parameter(name = 'Gf',
@@ -70,7 +77,7 @@ Gf = Parameter(name = 'Gf',
                value = 0.0000116637,
                texname = 'G_f',
                lhablock = 'SMINPUTS',
-               lhacode = [ 1 ])
+               lhacode = [ 2 ])
 
 MW = Parameter(name = 'MW',
                nature = 'external',
@@ -86,7 +93,7 @@ aS = Parameter(name = 'aS',
                value = 0.1184,
                texname = '\\alpha _s',
                lhablock = 'SMINPUTS',
-               lhacode = [ 2 ])
+               lhacode = [ 3 ])
 
 lamWS = Parameter(name = 'lamWS',
                   nature = 'external',
@@ -321,7 +328,7 @@ sw2 = Parameter(name = 'sw2',
 aEW = Parameter(name = 'aEW',
                 nature = 'internal',
                 type = 'real',
-                value = 'cmath.sqrt(2.)*Gf*MW**2*sw2/cmath.pi',
+                value = 'cmath.sqrt(2.)*Gf*re(MW**2)*(1-re(MW**2)/re(MZ**2))/cmath.pi',
                 texname = '\\alpha _{\\text{EW}}')
 
 aEWM1 = Parameter(name = 'aEWM1',

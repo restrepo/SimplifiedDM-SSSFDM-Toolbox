@@ -54,6 +54,7 @@ class Testmadweight(unittest.TestCase):
             pass
 
         interface = MGCmd.MasterCmd()
+        interface.no_notification()
         interface.onecmd('import model %s' % model)
         if isinstance(process, str):
             interface.onecmd('generate %s' % process)
@@ -162,6 +163,9 @@ class TestMadWeight(unittest.TestCase):
                  set nb_exp_events 4
                  set log_level weight
                  set nb_event_by_node 1
+                 set ebeam1 7000
+                 set ebeam2 7000
+                 set pdlabel cteq6l1
                  """
         open('/tmp/mg5_cmd','w').write(cmd)
         
@@ -222,6 +226,9 @@ class TestMadWeight(unittest.TestCase):
                  set nb_exp_events 4
                  set log_level debug
                  set nb_event_by_node 1
+                 set ebeam1 7000
+                 set ebeam2 7000
+                 set pdlabel cteq6l1
                  """
         open('/tmp/mg5_cmd','w').write(cmd)
         
@@ -262,3 +269,11 @@ class TestMadWeight(unittest.TestCase):
             shutil.rmtree(pjoin(MG5DIR,'TEST_MW_W2J_prod'))
         except Exception, error:
             pass
+        
+        import glob
+        if glob.glob('/tmp/run*'):
+            self.assertFalse(True, '''Path /tmp/run???? found on filesystem. 
+            This might indicates that the cluster cleaning are commented (in submit2). 
+            Please check''')
+        
+        

@@ -98,70 +98,70 @@ C
       LOGICAL GOODHEL(NCOMB)
       DATA NTRY/0/
       DATA GOODHEL/NCOMB*.FALSE./
-      DATA (NHEL(I,   1),I=1,6) /-1,-1,-1,-1,-1,-1/
-      DATA (NHEL(I,   2),I=1,6) /-1,-1,-1,-1,-1, 1/
-      DATA (NHEL(I,   3),I=1,6) /-1,-1,-1,-1, 1,-1/
-      DATA (NHEL(I,   4),I=1,6) /-1,-1,-1,-1, 1, 1/
-      DATA (NHEL(I,   5),I=1,6) /-1,-1,-1, 1,-1,-1/
-      DATA (NHEL(I,   6),I=1,6) /-1,-1,-1, 1,-1, 1/
-      DATA (NHEL(I,   7),I=1,6) /-1,-1,-1, 1, 1,-1/
-      DATA (NHEL(I,   8),I=1,6) /-1,-1,-1, 1, 1, 1/
-      DATA (NHEL(I,   9),I=1,6) /-1,-1, 1,-1,-1,-1/
-      DATA (NHEL(I,  10),I=1,6) /-1,-1, 1,-1,-1, 1/
-      DATA (NHEL(I,  11),I=1,6) /-1,-1, 1,-1, 1,-1/
-      DATA (NHEL(I,  12),I=1,6) /-1,-1, 1,-1, 1, 1/
-      DATA (NHEL(I,  13),I=1,6) /-1,-1, 1, 1,-1,-1/
-      DATA (NHEL(I,  14),I=1,6) /-1,-1, 1, 1,-1, 1/
-      DATA (NHEL(I,  15),I=1,6) /-1,-1, 1, 1, 1,-1/
-      DATA (NHEL(I,  16),I=1,6) /-1,-1, 1, 1, 1, 1/
-      DATA (NHEL(I,  17),I=1,6) /-1, 1,-1,-1,-1,-1/
-      DATA (NHEL(I,  18),I=1,6) /-1, 1,-1,-1,-1, 1/
-      DATA (NHEL(I,  19),I=1,6) /-1, 1,-1,-1, 1,-1/
-      DATA (NHEL(I,  20),I=1,6) /-1, 1,-1,-1, 1, 1/
-      DATA (NHEL(I,  21),I=1,6) /-1, 1,-1, 1,-1,-1/
-      DATA (NHEL(I,  22),I=1,6) /-1, 1,-1, 1,-1, 1/
-      DATA (NHEL(I,  23),I=1,6) /-1, 1,-1, 1, 1,-1/
-      DATA (NHEL(I,  24),I=1,6) /-1, 1,-1, 1, 1, 1/
-      DATA (NHEL(I,  25),I=1,6) /-1, 1, 1,-1,-1,-1/
-      DATA (NHEL(I,  26),I=1,6) /-1, 1, 1,-1,-1, 1/
-      DATA (NHEL(I,  27),I=1,6) /-1, 1, 1,-1, 1,-1/
-      DATA (NHEL(I,  28),I=1,6) /-1, 1, 1,-1, 1, 1/
-      DATA (NHEL(I,  29),I=1,6) /-1, 1, 1, 1,-1,-1/
-      DATA (NHEL(I,  30),I=1,6) /-1, 1, 1, 1,-1, 1/
-      DATA (NHEL(I,  31),I=1,6) /-1, 1, 1, 1, 1,-1/
-      DATA (NHEL(I,  32),I=1,6) /-1, 1, 1, 1, 1, 1/
-      DATA (NHEL(I,  33),I=1,6) / 1,-1,-1,-1,-1,-1/
-      DATA (NHEL(I,  34),I=1,6) / 1,-1,-1,-1,-1, 1/
-      DATA (NHEL(I,  35),I=1,6) / 1,-1,-1,-1, 1,-1/
-      DATA (NHEL(I,  36),I=1,6) / 1,-1,-1,-1, 1, 1/
-      DATA (NHEL(I,  37),I=1,6) / 1,-1,-1, 1,-1,-1/
-      DATA (NHEL(I,  38),I=1,6) / 1,-1,-1, 1,-1, 1/
-      DATA (NHEL(I,  39),I=1,6) / 1,-1,-1, 1, 1,-1/
-      DATA (NHEL(I,  40),I=1,6) / 1,-1,-1, 1, 1, 1/
-      DATA (NHEL(I,  41),I=1,6) / 1,-1, 1,-1,-1,-1/
-      DATA (NHEL(I,  42),I=1,6) / 1,-1, 1,-1,-1, 1/
-      DATA (NHEL(I,  43),I=1,6) / 1,-1, 1,-1, 1,-1/
-      DATA (NHEL(I,  44),I=1,6) / 1,-1, 1,-1, 1, 1/
-      DATA (NHEL(I,  45),I=1,6) / 1,-1, 1, 1,-1,-1/
-      DATA (NHEL(I,  46),I=1,6) / 1,-1, 1, 1,-1, 1/
-      DATA (NHEL(I,  47),I=1,6) / 1,-1, 1, 1, 1,-1/
-      DATA (NHEL(I,  48),I=1,6) / 1,-1, 1, 1, 1, 1/
-      DATA (NHEL(I,  49),I=1,6) / 1, 1,-1,-1,-1,-1/
-      DATA (NHEL(I,  50),I=1,6) / 1, 1,-1,-1,-1, 1/
-      DATA (NHEL(I,  51),I=1,6) / 1, 1,-1,-1, 1,-1/
-      DATA (NHEL(I,  52),I=1,6) / 1, 1,-1,-1, 1, 1/
-      DATA (NHEL(I,  53),I=1,6) / 1, 1,-1, 1,-1,-1/
-      DATA (NHEL(I,  54),I=1,6) / 1, 1,-1, 1,-1, 1/
-      DATA (NHEL(I,  55),I=1,6) / 1, 1,-1, 1, 1,-1/
-      DATA (NHEL(I,  56),I=1,6) / 1, 1,-1, 1, 1, 1/
-      DATA (NHEL(I,  57),I=1,6) / 1, 1, 1,-1,-1,-1/
-      DATA (NHEL(I,  58),I=1,6) / 1, 1, 1,-1,-1, 1/
-      DATA (NHEL(I,  59),I=1,6) / 1, 1, 1,-1, 1,-1/
-      DATA (NHEL(I,  60),I=1,6) / 1, 1, 1,-1, 1, 1/
-      DATA (NHEL(I,  61),I=1,6) / 1, 1, 1, 1,-1,-1/
-      DATA (NHEL(I,  62),I=1,6) / 1, 1, 1, 1,-1, 1/
-      DATA (NHEL(I,  63),I=1,6) / 1, 1, 1, 1, 1,-1/
-      DATA (NHEL(I,  64),I=1,6) / 1, 1, 1, 1, 1, 1/
+      DATA (NHEL(I,   1),I=1,6) / 1,-1,-1, 1,-1, 1/
+      DATA (NHEL(I,   2),I=1,6) / 1,-1,-1, 1,-1,-1/
+      DATA (NHEL(I,   3),I=1,6) / 1,-1,-1, 1, 1, 1/
+      DATA (NHEL(I,   4),I=1,6) / 1,-1,-1, 1, 1,-1/
+      DATA (NHEL(I,   5),I=1,6) / 1,-1,-1,-1,-1, 1/
+      DATA (NHEL(I,   6),I=1,6) / 1,-1,-1,-1,-1,-1/
+      DATA (NHEL(I,   7),I=1,6) / 1,-1,-1,-1, 1, 1/
+      DATA (NHEL(I,   8),I=1,6) / 1,-1,-1,-1, 1,-1/
+      DATA (NHEL(I,   9),I=1,6) / 1,-1, 1, 1,-1, 1/
+      DATA (NHEL(I,  10),I=1,6) / 1,-1, 1, 1,-1,-1/
+      DATA (NHEL(I,  11),I=1,6) / 1,-1, 1, 1, 1, 1/
+      DATA (NHEL(I,  12),I=1,6) / 1,-1, 1, 1, 1,-1/
+      DATA (NHEL(I,  13),I=1,6) / 1,-1, 1,-1,-1, 1/
+      DATA (NHEL(I,  14),I=1,6) / 1,-1, 1,-1,-1,-1/
+      DATA (NHEL(I,  15),I=1,6) / 1,-1, 1,-1, 1, 1/
+      DATA (NHEL(I,  16),I=1,6) / 1,-1, 1,-1, 1,-1/
+      DATA (NHEL(I,  17),I=1,6) / 1, 1,-1, 1,-1, 1/
+      DATA (NHEL(I,  18),I=1,6) / 1, 1,-1, 1,-1,-1/
+      DATA (NHEL(I,  19),I=1,6) / 1, 1,-1, 1, 1, 1/
+      DATA (NHEL(I,  20),I=1,6) / 1, 1,-1, 1, 1,-1/
+      DATA (NHEL(I,  21),I=1,6) / 1, 1,-1,-1,-1, 1/
+      DATA (NHEL(I,  22),I=1,6) / 1, 1,-1,-1,-1,-1/
+      DATA (NHEL(I,  23),I=1,6) / 1, 1,-1,-1, 1, 1/
+      DATA (NHEL(I,  24),I=1,6) / 1, 1,-1,-1, 1,-1/
+      DATA (NHEL(I,  25),I=1,6) / 1, 1, 1, 1,-1, 1/
+      DATA (NHEL(I,  26),I=1,6) / 1, 1, 1, 1,-1,-1/
+      DATA (NHEL(I,  27),I=1,6) / 1, 1, 1, 1, 1, 1/
+      DATA (NHEL(I,  28),I=1,6) / 1, 1, 1, 1, 1,-1/
+      DATA (NHEL(I,  29),I=1,6) / 1, 1, 1,-1,-1, 1/
+      DATA (NHEL(I,  30),I=1,6) / 1, 1, 1,-1,-1,-1/
+      DATA (NHEL(I,  31),I=1,6) / 1, 1, 1,-1, 1, 1/
+      DATA (NHEL(I,  32),I=1,6) / 1, 1, 1,-1, 1,-1/
+      DATA (NHEL(I,  33),I=1,6) /-1,-1,-1, 1,-1, 1/
+      DATA (NHEL(I,  34),I=1,6) /-1,-1,-1, 1,-1,-1/
+      DATA (NHEL(I,  35),I=1,6) /-1,-1,-1, 1, 1, 1/
+      DATA (NHEL(I,  36),I=1,6) /-1,-1,-1, 1, 1,-1/
+      DATA (NHEL(I,  37),I=1,6) /-1,-1,-1,-1,-1, 1/
+      DATA (NHEL(I,  38),I=1,6) /-1,-1,-1,-1,-1,-1/
+      DATA (NHEL(I,  39),I=1,6) /-1,-1,-1,-1, 1, 1/
+      DATA (NHEL(I,  40),I=1,6) /-1,-1,-1,-1, 1,-1/
+      DATA (NHEL(I,  41),I=1,6) /-1,-1, 1, 1,-1, 1/
+      DATA (NHEL(I,  42),I=1,6) /-1,-1, 1, 1,-1,-1/
+      DATA (NHEL(I,  43),I=1,6) /-1,-1, 1, 1, 1, 1/
+      DATA (NHEL(I,  44),I=1,6) /-1,-1, 1, 1, 1,-1/
+      DATA (NHEL(I,  45),I=1,6) /-1,-1, 1,-1,-1, 1/
+      DATA (NHEL(I,  46),I=1,6) /-1,-1, 1,-1,-1,-1/
+      DATA (NHEL(I,  47),I=1,6) /-1,-1, 1,-1, 1, 1/
+      DATA (NHEL(I,  48),I=1,6) /-1,-1, 1,-1, 1,-1/
+      DATA (NHEL(I,  49),I=1,6) /-1, 1,-1, 1,-1, 1/
+      DATA (NHEL(I,  50),I=1,6) /-1, 1,-1, 1,-1,-1/
+      DATA (NHEL(I,  51),I=1,6) /-1, 1,-1, 1, 1, 1/
+      DATA (NHEL(I,  52),I=1,6) /-1, 1,-1, 1, 1,-1/
+      DATA (NHEL(I,  53),I=1,6) /-1, 1,-1,-1,-1, 1/
+      DATA (NHEL(I,  54),I=1,6) /-1, 1,-1,-1,-1,-1/
+      DATA (NHEL(I,  55),I=1,6) /-1, 1,-1,-1, 1, 1/
+      DATA (NHEL(I,  56),I=1,6) /-1, 1,-1,-1, 1,-1/
+      DATA (NHEL(I,  57),I=1,6) /-1, 1, 1, 1,-1, 1/
+      DATA (NHEL(I,  58),I=1,6) /-1, 1, 1, 1,-1,-1/
+      DATA (NHEL(I,  59),I=1,6) /-1, 1, 1, 1, 1, 1/
+      DATA (NHEL(I,  60),I=1,6) /-1, 1, 1, 1, 1,-1/
+      DATA (NHEL(I,  61),I=1,6) /-1, 1, 1,-1,-1, 1/
+      DATA (NHEL(I,  62),I=1,6) /-1, 1, 1,-1,-1,-1/
+      DATA (NHEL(I,  63),I=1,6) /-1, 1, 1,-1, 1, 1/
+      DATA (NHEL(I,  64),I=1,6) /-1, 1, 1,-1, 1,-1/
       DATA IDEN/144/
 C     
 C     GLOBAL VARIABLES
@@ -182,7 +182,7 @@ C     ----------
       ENDDO
       DO IHEL=1,NCOMB
         IF (USERHEL.EQ.-1.OR.USERHEL.EQ.IHEL) THEN
-          IF (GOODHEL(IHEL) .OR. NTRY .LT. 2) THEN
+          IF (GOODHEL(IHEL) .OR. NTRY .LT. 2 .OR.USERHEL.NE.-1) THEN
             CALL MATRIX(P ,NHEL(1,IHEL),JC(1), T)
             BUFF=0D0
             DO I=1,NSQAMPSO
@@ -281,7 +281,7 @@ C
       REAL*8 DENOM(NCOLOR), CF(NCOLOR,NCOLOR)
       COMPLEX*16 AMP(NGRAPHS)
       COMPLEX*16 JAMP(NCOLOR,NAMPSO)
-      COMPLEX*16 W(18,NWAVEFUNCS)
+      COMPLEX*16 W(20,NWAVEFUNCS)
       COMPLEX*16 DUM0,DUM1
       DATA DUM0, DUM1/(0D0, 0D0), (1D0, 0D0)/
 C     
@@ -493,6 +493,49 @@ C     JAMPs contributing to orders WEIGHTED=4 QCD=4
 
       END
 
+      SUBROUTINE GET_ME(P, ALPHAS, NHEL ,ANS)
+      IMPLICIT NONE
+C     
+C     CONSTANT
+C     
+      INTEGER    NEXTERNAL
+      PARAMETER (NEXTERNAL=6)
+C     
+C     ARGUMENTS 
+C     
+      REAL*8 P(0:3,NEXTERNAL),ANS
+      INTEGER NHEL
+      DOUBLE PRECISION ALPHAS
+      REAL*8 PI
+CF2PY INTENT(OUT) :: ANS
+CF2PY INTENT(IN) :: NHEL
+CF2PY INTENT(IN) :: P(0:3,NEXTERNAL)
+CF2PY INTENT(IN) :: ALPHAS
+C     ROUTINE FOR F2PY to read the benchmark point.    
+C     the include file with the values of the parameters and masses 
+      INCLUDE 'coupl.inc'
+
+      PI = 3.141592653589793D0
+      G = 2* DSQRT(ALPHAS*PI)
+      CALL UPDATE_AS_PARAM()
+      IF (NHEL.NE.0) THEN
+        CALL SMATRIXHEL(P, NHEL, ANS)
+      ELSE
+        CALL SMATRIX(P, ANS)
+      ENDIF
+      RETURN
+      END
+
+      SUBROUTINE INITIALISE(PATH)
+C     ROUTINE FOR F2PY to read the benchmark point.    
+      IMPLICIT NONE
+      CHARACTER*180 PATH
+CF2PY INTENT(IN) :: PATH
+      CALL SETPARA(PATH)  !first call to setup the paramaters    
+      RETURN
+      END
+
+
 C     Set of functions to handle the array indices of the split orders
 
 
@@ -521,6 +564,7 @@ C
       INTEGER I, SQORDERS(NSO)
       INTEGER AMPSPLITORDERS(NAMPSO,NSO)
       DATA (AMPSPLITORDERS(  1,I),I=  1,  2) /    4,    4/
+      COMMON/AMPSPLITORDERS/AMPSPLITORDERS
 C     
 C     FUNCTION
 C     
@@ -556,6 +600,7 @@ C
       INTEGER I,J
       INTEGER SQSPLITORDERS(NSQSO,NSO)
       DATA (SQSPLITORDERS(  1,I),I=  1,  2) /    8,    8/
+      COMMON/SQPLITORDERS/SQPLITORDERS
 C     
 C     BEGIN CODE
 C     
@@ -568,7 +613,8 @@ C
  1009   CONTINUE
       ENDDO
 
-      WRITE(*,*) 'ERROR:: Stopping function SOINDEX_FOR_SQUARED_ORDERS'
+      WRITE(*,*) 'ERROR:: Stopping in function'
+      WRITE(*,*) 'SOINDEX_FOR_SQUARED_ORDERS'
       WRITE(*,*) 'Could not find squared orders ',(ORDERS(I),I=1,NSO)
       STOP
 
@@ -586,6 +632,127 @@ C
       INTEGER NSQSO
 
       NSQSO=NSQUAREDSO
+
+      END
+
+C     This is the inverse subroutine of SOINDEX_FOR_SQUARED_ORDERS.
+C      Not directly useful, but provided nonetheless.
+      SUBROUTINE GET_SQUARED_ORDERS_FOR_SOINDEX(SOINDEX,ORDERS)
+C     
+C     This functions returns the orders identified by the squared
+C      split order index in argument. Order values correspond to
+C      following list of couplings (and in this order):
+C     ['WEIGHTED', 'QCD']
+C     
+C     CONSTANTS
+C     
+      INTEGER    NSO, NSQSO
+      PARAMETER (NSO=2, NSQSO=1)
+C     
+C     ARGUMENTS
+C     
+      INTEGER SOINDEX, ORDERS(NSO)
+C     
+C     LOCAL VARIABLES
+C     
+      INTEGER I
+      INTEGER SQPLITORDERS(NSQSO,NSO)
+      COMMON/SQPLITORDERS/SQPLITORDERS
+C     
+C     BEGIN CODE
+C     
+      IF (SOINDEX.GT.0.AND.SOINDEX.LE.NSQSO) THEN
+        DO I=1,NSO
+          ORDERS(I) =  SQPLITORDERS(SOINDEX,I)
+        ENDDO
+        RETURN
+      ENDIF
+
+      WRITE(*,*) 'ERROR:: Stopping function GET_SQUARED_ORDERS_FOR_SOI'
+     $ //'NDEX'
+      WRITE(*,*) 'Could not find squared orders index ',SOINDEX
+      STOP
+
+      END SUBROUTINE
+
+C     This is the inverse subroutine of getting amplitude SO orders.
+C      Not directly useful, but provided nonetheless.
+      SUBROUTINE GET_ORDERS_FOR_AMPSOINDEX(SOINDEX,ORDERS)
+C     
+C     This functions returns the orders identified by the split order
+C      index in argument. Order values correspond to following list of
+C      couplings (and in this order):
+C     ['WEIGHTED', 'QCD']
+C     
+C     CONSTANTS
+C     
+      INTEGER    NSO, NAMPSO
+      PARAMETER (NSO=2, NAMPSO=1)
+C     
+C     ARGUMENTS
+C     
+      INTEGER SOINDEX, ORDERS(NSO)
+C     
+C     LOCAL VARIABLES
+C     
+      INTEGER I
+      INTEGER AMPSPLITORDERS(NAMPSO,NSO)
+      COMMON/AMPSPLITORDERS/AMPSPLITORDERS
+C     
+C     BEGIN CODE
+C     
+      IF (SOINDEX.GT.0.AND.SOINDEX.LE.NAMPSO) THEN
+        DO I=1,NSO
+          ORDERS(I) =  AMPSPLITORDERS(SOINDEX,I)
+        ENDDO
+        RETURN
+      ENDIF
+
+      WRITE(*,*) 'ERROR:: Stopping function GET_ORDERS_FOR_AMPSOINDEX'
+      WRITE(*,*) 'Could not find amplitude split orders index ',SOINDEX
+      STOP
+
+      END SUBROUTINE
+
+C     This function is not directly useful, but included for completene
+C     ss
+      INTEGER FUNCTION SOINDEX_FOR_AMPORDERS(ORDERS)
+C     
+C     This functions returns the integer index identifying the
+C      amplitude split orders passed in argument which correspond to
+C      the values of the following list of couplings (and in this
+C      order):
+C     ['WEIGHTED', 'QCD']
+C     
+C     CONSTANTS
+C     
+      INTEGER    NSO, NAMPSO
+      PARAMETER (NSO=2, NAMPSO=1)
+C     
+C     ARGUMENTS
+C     
+      INTEGER ORDERS(NSO)
+C     
+C     LOCAL VARIABLES
+C     
+      INTEGER I,J
+      INTEGER AMPSPLITORDERS(NAMPSO,NSO)
+      COMMON/AMPSPLITORDERS/AMPSPLITORDERS
+C     
+C     BEGIN CODE
+C     
+      DO I=1,NAMPSO
+        DO J=1,NSO
+          IF (ORDERS(J).NE.AMPSPLITORDERS(I,J)) GOTO 1009
+        ENDDO
+        SOINDEX_FOR_AMPORDERS = I
+        RETURN
+ 1009   CONTINUE
+      ENDDO
+
+      WRITE(*,*) 'ERROR:: Stopping function SOINDEX_FOR_AMPORDERS'
+      WRITE(*,*) 'Could not find squared orders ',(ORDERS(I),I=1,NSO)
+      STOP
 
       END
 

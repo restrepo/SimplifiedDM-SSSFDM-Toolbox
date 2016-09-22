@@ -7,7 +7,7 @@ C     Visit launchpad.net/madgraph5 and amcatnlo.web.cern.ch
 C     RETURNS PARTON LUMINOSITIES FOR MADFKS                          
 C        
 C     
-C     Process: g g > t t~ g WEIGHTED=3 [ QCD ]
+C     Process: g g > t t~ g WEIGHTED=3 [ real = QCD ]
 C     
 C     ****************************************************            
 C         
@@ -92,7 +92,11 @@ C
         PD(IPROC) = G1*G2
       ENDIF
       DO I=1,IPROC
-        LUM = LUM + PD(I) * CONV
+        IF (NINCOMING.EQ.2) THEN
+          LUM = LUM + PD(I) * CONV
+        ELSE
+          LUM = LUM + PD(I)
+        ENDIF
       ENDDO
       RETURN
       END

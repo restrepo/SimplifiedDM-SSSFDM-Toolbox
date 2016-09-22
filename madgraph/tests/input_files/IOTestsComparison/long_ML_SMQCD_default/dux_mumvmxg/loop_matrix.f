@@ -290,6 +290,13 @@ C     RETURNCODE=100*RET_CODE_H+10*RET_CODE_T+RET_CODE_U
       DATA RET_CODE_H,RET_CODE_T,RET_CODE_U/1,1,0/
       COMMON/ML5_0_ACC/ACCURACY,RET_CODE_H,RET_CODE_T,RET_CODE_U
 
+C     Allows to forbid the zero helicity double check, no matter the
+C      value in MadLoopParams.dat
+C     This can be accessed with the SET_FORBID_HEL_DOUBLECHECK
+C      subroutine of MadLoopCommons.dat
+      LOGICAL FORBID_HEL_DOUBLECHECK
+      COMMON/FORBID_HEL_DOUBLECHECK/FORBID_HEL_DOUBLECHECK
+
       LOGICAL MP_DONE_ONCE
       DATA MP_DONE_ONCE/.FALSE./
       COMMON/ML5_0_MP_DONE_ONCE/MP_DONE_ONCE
@@ -310,22 +317,63 @@ C     ----------
         CALL SETMADLOOPPATH(TMP)
         CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
         CALL MADLOOPPARAMREADER(PARAMFN,.TRUE.)
+        IF (FORBID_HEL_DOUBLECHECK) THEN
+          DOUBLECHECKHELICITYFILTER = .FALSE.
+        ENDIF
         ML_INIT = .FALSE.
       ENDIF
 
+C     Setup the file paths
+      CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
+      CALL JOINPATH(MLPATH,PROC_PREFIX,TMP)
+      CALL JOINPATH(TMP,HELCONFIGFNAME,HELCONFIGFN)
+      CALL JOINPATH(TMP,LOOPFILTERFNAME,LOOPFILTERFN)
+      CALL JOINPATH(TMP,COLORNUMFNAME,COLORNUMFN)
+      CALL JOINPATH(TMP,COLORDENOMFNAME,COLORDENOMFN)
+      CALL JOINPATH(TMP,HELFILTERFNAME,HELFILTERFN)
+
+      OPEN(1, FILE=COLORNUMFN, ERR=104, STATUS='OLD',          
+     $  ACTION='READ')
+      DO I=1,NLOOPAMPS
+        READ(1,*,END=105) (CF_N(I,J),J=1,NBORNAMPS)
+      ENDDO
+      GOTO 105
+ 104  CONTINUE
+      STOP 'Color factors could not be initialized from file ML5_0_Col'
+     $ //'orNumFactors.dat. File not found'
+ 105  CONTINUE
+      CLOSE(1)
+      OPEN(1, FILE=COLORDENOMFN, ERR=106, STATUS='OLD',          
+     $  ACTION='READ')
+      DO I=1,NLOOPAMPS
+        READ(1,*,END=107) (CF_D(I,J),J=1,NBORNAMPS)
+      ENDDO
+      GOTO 107
+ 106  CONTINUE
+      STOP 'Color factors could not be initialized from file ML5_0_Col'
+     $ //'orDenomFactors.dat. File not found'
+ 107  CONTINUE
+      CLOSE(1)
+      OPEN(1, FILE=HELCONFIGFN, ERR=108, STATUS='OLD',                
+     $   ACTION='READ')
+      DO H=1,NCOMB
+        READ(1,*,END=109) (HELC(I,H),I=1,NEXTERNAL)
+      ENDDO
+      GOTO 109
+ 108  CONTINUE
+      STOP 'Color helictiy configurations could not be initialize'
+     $ //'d from file ML5_0_HelConfigs.dat. File not found'
+ 109  CONTINUE
+      CLOSE(1)
+      IF(BOOTANDSTOP) THEN
+        WRITE(*,*) '##Stopped by user request.'
+        STOP
+      ENDIF
+
       IF(NTRY.EQ.0) THEN
-
-C       Setup the file paths
-        CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
-        CALL JOINPATH(MLPATH,PROC_PREFIX,TMP)
-        CALL JOINPATH(TMP,HELCONFIGFNAME,HELCONFIGFN)
-        CALL JOINPATH(TMP,LOOPFILTERFNAME,LOOPFILTERFN)
-        CALL JOINPATH(TMP,COLORNUMFNAME,COLORNUMFN)
-        CALL JOINPATH(TMP,COLORDENOMFNAME,COLORDENOMFN)
-        CALL JOINPATH(TMP,HELFILTERFNAME,HELFILTERFN)
-
         CALL ML5_0_SET_N_EVALS(N_DP_EVAL,N_QP_EVAL)
-        HELDOUBLECHECKED=.NOT.DOUBLECHECKHELICITYFILTER
+        HELDOUBLECHECKED=(.NOT.DOUBLECHECKHELICITYFILTER).OR.(HELICITYF
+     $   ILTERLEVEL.EQ.0)
         DO J=1,NCOMB
           DO I=1,NCTAMPS
             GOODAMP(I,J)=.TRUE.
@@ -346,6 +394,13 @@ C       Setup the file paths
         ENDDO
  101    CONTINUE
         CLOSE(1)
+        IF (HELICITYFILTERLEVEL.EQ.0) THEN
+          FOUNDHELFILTER=.TRUE.
+          DO J=1,NCOMB
+            GOODHEL(J)=.TRUE.
+          ENDDO
+          GOTO 122
+        ENDIF
         OPEN(1, FILE=HELFILTERFN, ERR=102, STATUS='OLD',          
      $    ACTION='READ')
         READ(1,*,END=103) (GOODHEL(I),I=1,NCOMB)
@@ -357,43 +412,7 @@ C       Setup the file paths
         ENDDO
  103    CONTINUE
         CLOSE(1)
-        OPEN(1, FILE=COLORNUMFN, ERR=104, STATUS='OLD',          
-     $    ACTION='READ')
-        DO I=1,NLOOPAMPS
-          READ(1,*,END=105) (CF_N(I,J),J=1,NBORNAMPS)
-        ENDDO
-        GOTO 105
- 104    CONTINUE
-        STOP 'Color factors could not be initialized from fil'
-     $   //'e ML5_0_ColorNumFactors.dat. File not found'
- 105    CONTINUE
-        CLOSE(1)
-        OPEN(1, FILE=COLORDENOMFN, ERR=106, STATUS='OLD',          
-     $    ACTION='READ')
-        DO I=1,NLOOPAMPS
-          READ(1,*,END=107) (CF_D(I,J),J=1,NBORNAMPS)
-        ENDDO
-        GOTO 107
- 106    CONTINUE
-        STOP 'Color factors could not be initialized from fil'
-     $   //'e ML5_0_ColorDenomFactors.dat. File not found'
- 107    CONTINUE
-        CLOSE(1)
-        OPEN(1, FILE=HELCONFIGFN, ERR=108, STATUS='OLD',              
-     $       ACTION='READ')
-        DO H=1,NCOMB
-          READ(1,*,END=109) (HELC(I,H),I=1,NEXTERNAL)
-        ENDDO
-        GOTO 109
- 108    CONTINUE
-        STOP 'Color helictiy configurations could not be initialize'
-     $   //'d from file ML5_0_HelConfigs.dat. File not found'
- 109    CONTINUE
-        CLOSE(1)
-        IF(BOOTANDSTOP) THEN
-          WRITE(*,*) 'Stopped by user request.'
-          STOP
-        ENDIF
+ 122    CONTINUE
       ENDIF
 
       MP_DONE=.FALSE.
@@ -667,59 +686,59 @@ C      automatically done.
 C     Loop amplitude for loop diagram with ID 3
       CALL ML5_0_LOOP_2_2(1,6,9,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_5
-     $ ,MP__GC_5,1,1,29,AMPL(1,29),S(29))
+     $ ,MP__GC_5,1,1,1,29,AMPL(1,29),S(29))
 C     Loop amplitude for loop diagram with ID 4
       CALL ML5_0_LOOP_3_3(2,2,7,6,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
-     $ O,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,2,1,30
+     $ O,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,2,1,1,30
      $ ,AMPL(1,30),S(30))
 C     Loop amplitude for loop diagram with ID 5
       CALL ML5_0_LOOP_3_3(3,1,7,8,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
-     $ O,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,2,1,31
+     $ O,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,2,1,1,31
      $ ,AMPL(1,31),S(31))
 C     Loop amplitude for loop diagram with ID 6
       CALL ML5_0_LOOP_4_4(4,1,2,5,7,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
      $ ,CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,GC_5,MP__GC_5,GC_5,MP__GC_5,GC_5,MP__GC_5,GC_47,MP__GC_47,3,1
-     $ ,32,AMPL(1,32),S(32))
+     $ ,1,32,AMPL(1,32),S(32))
 C     Loop amplitude for loop diagram with ID 7
       CALL ML5_0_LOOP_3_3(5,1,5,9,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
-     $ O,KIND=16),GC_5,MP__GC_5,GC_4,MP__GC_4,GC_5,MP__GC_5,2,1,33
+     $ O,KIND=16),GC_5,MP__GC_5,GC_4,MP__GC_4,GC_5,MP__GC_5,2,1,1,33
      $ ,AMPL(1,33),S(33))
 C     Loop amplitude for loop diagram with ID 8
       CALL ML5_0_LOOP_4_4(6,1,5,2,7,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
      $ ,CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,GC_5,MP__GC_5,GC_4,MP__GC_4,GC_5,MP__GC_5,GC_47,MP__GC_47,3,1
-     $ ,34,AMPL(1,34),S(34))
+     $ ,1,34,AMPL(1,34),S(34))
 C     Loop amplitude for loop diagram with ID 9
       CALL ML5_0_LOOP_4_4(7,1,2,7,5,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
      $ ,CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,GC_5,MP__GC_5,GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,3,1
-     $ ,35,AMPL(1,35),S(35))
+     $ ,1,35,AMPL(1,35),S(35))
 C     Loop amplitude for loop diagram with ID 10
       CALL ML5_0_LOOP_3_3(8,1,5,9,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
-     $ O,KIND=16),GC_5,MP__GC_5,GC_5,MP__GC_5,GC_5,MP__GC_5,2,1,36
+     $ O,KIND=16),GC_5,MP__GC_5,GC_5,MP__GC_5,GC_5,MP__GC_5,2,1,1,36
      $ ,AMPL(1,36),S(36))
 C     Loop amplitude for loop diagram with ID 11
       CALL ML5_0_LOOP_2_2(9,8,10,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_5
-     $ ,MP__GC_5,1,1,37,AMPL(1,37),S(37))
+     $ ,MP__GC_5,1,1,1,37,AMPL(1,37),S(37))
 C     Loop amplitude for loop diagram with ID 12
       CALL ML5_0_LOOP_3_3(10,2,5,10,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
      $ ,CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_4,MP__GC_4,GC_5
-     $ ,MP__GC_5,2,1,38,AMPL(1,38),S(38))
+     $ ,MP__GC_5,2,1,1,38,AMPL(1,38),S(38))
 C     Loop amplitude for loop diagram with ID 13
       CALL ML5_0_LOOP_3_3(11,2,5,10,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
      $ ,CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_5,MP__GC_5,GC_5
-     $ ,MP__GC_5,2,1,39,AMPL(1,39),S(39))
+     $ ,MP__GC_5,2,1,1,39,AMPL(1,39),S(39))
 
       DO I=NCTAMPS+1,NLOOPAMPS
         ANS(1)=ANS(1)+AMPL(1,I)
@@ -801,11 +820,11 @@ C         SET THE LOOP FILTER
      $     1))+ABS(ANS(2))+ABS(ANS(3)),REF/DBLE(NCOMB),-1))) THEN
             WRITE(*,*) '##W15 Helicity filter could not be successfull'
      $       //'y double checked.'
-            WRITE(*,*) 'One reason for this is that you have change'
+            WRITE(*,*) '##One reason for this is that you have change'
      $       //'d sensible parameters which affected what are the zer'
      $       //'o helicity configurations.'
-            WRITE(*,*) 'MadLoop will try to reset the Helicity filte'
-     $       //'r with the next PS points it receives.'
+            WRITE(*,*) '##MadLoop will try to reset the Helicit'
+     $       //'y filter with the next PS points it receives.'
             NTRY=0
             OPEN(30,FILE=HELFILTERFN,ERR=349)
  349        CONTINUE
@@ -913,22 +932,23 @@ C       END OF THE DEFINITIONS OF THE DIFFERENT EVALUATION METHODS
             CALL ML5_0_COMPUTE_ACCURACY(DP_RES,N_DP_EVAL,TEMP1,TEMP)
             WRITE(*,*) '##W03 WARNING An unstable PS point was'
      $       ,       ' detected.'
-            WRITE(*,*) '(DP,QP) accuracies : (',TEMP1,',',ACC,')'
-            WRITE(*,*) 'Best estimate (fin,1eps,2eps) :',(ANS(I),I=1,3)
+            WRITE(*,*) '##(DP,QP) accuracies : (',TEMP1,',',ACC,')'
+            WRITE(*,*) '##Best estimate (fin,1eps,2eps) :',(ANS(I),I=1
+     $       ,3)
             IF(NEPS.LE.10) THEN
-              WRITE(*,*) 'Double precision evaluations :',(DP_RES(1,I)
-     $         ,I=1,N_DP_EVAL)
-              WRITE(*,*) 'Quad   precision evaluations :',(QP_RES(1,I)
-     $         ,I=1,N_QP_EVAL)
-              WRITE(*,*) 'PS point specification :'
-              WRITE(*,*) 'Renormalization scale MU_R=',MU_R
+              WRITE(*,*) '##Double precision evaluations :',(DP_RES(1
+     $         ,I),I=1,N_DP_EVAL)
+              WRITE(*,*) '##Quad   precision evaluations :',(QP_RES(1
+     $         ,I),I=1,N_QP_EVAL)
+              WRITE(*,*) '##PS point specification :'
+              WRITE(*,*) '##Renormalization scale MU_R=',MU_R
               DO I=1,NEXTERNAL
                 WRITE (*,'(i2,1x,4e27.17)') I, P(0,I),P(1,I),P(2,I)
      $           ,P(3,I)
               ENDDO
             ENDIF
             IF(NEPS.EQ.10) THEN
-              WRITE(*,*) 'Further output of the details of thes'
+              WRITE(*,*) '##Further output of the details of thes'
      $         //'e unstable PS points will now be suppressed.'
             ENDIF
           ENDIF
@@ -1084,7 +1104,7 @@ C     The following is used instead
       ENDIF
 
       IF(N_DP_EVALS.GT.20.OR.N_QP_EVALS.GT.20) THEN
-        WRITE(*,*) 'ERROR:: Increase hardcoded maxstabilitylength.'
+        WRITE(*,*) '##ERROR:: Increase hardcoded maxstabilitylength.'
         STOP
       ENDIF
 
@@ -1131,7 +1151,7 @@ C
 C     ----------
 C     BEGIN CODE
 C     ----------
-      WRITE(*,*) 'WARNING:: Ignored, the possibility of selectin'
+      WRITE(*,*) '##WARNING:: Ignored, the possibility of selectin'
      $ //'g specific squared order contributions is not available i'
      $ //'n the default mode.'
 

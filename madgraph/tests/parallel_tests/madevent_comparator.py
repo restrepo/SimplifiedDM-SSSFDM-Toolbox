@@ -465,6 +465,7 @@ class MG5Runner(MadEventRunner):
         #proc_card = open(proc_card_location, 'r').read()
         new_proc_list = []
         cmd = cmd_interface.MasterCmd()
+        cmd.no_notification()
         cmd.exec_cmd('import command %s' %proc_card_location)
         #for line in proc_card.split('\n'):
         #    cmd.exec_cmd(line, errorhandling=False)
@@ -491,7 +492,13 @@ class MG5Runner(MadEventRunner):
                      os.path.join(self.mg5_path, self.temp_dir_name)
         v5_string += "launch -i --multicore\n"
         v5_string += " set automatic_html_opening False\n"
-        v5_string += "survey run_01; refine 0.01; refine 0.01" 
+        v5_string += "edit_cards\n"
+        v5_string += "set ickkw 0\n"
+        v5_string += "set LHC 13\n"
+        v5_string += "set xqcut 0\n"
+        v5_string += "set cut_decays True\n"
+        v5_string += "survey run_01; refine 0.01; refine 0.01\n" 
+        #v5_string += "print_results\n"
         return v5_string
     
     def get_values(self):
@@ -499,7 +506,8 @@ class MG5Runner(MadEventRunner):
         dir_name = os.path.join(self.mg5_path, self.temp_dir_name)
         SubProc=[name for name in os.listdir(dir_name + '/SubProcesses') 
                  if name[0]=='P' and 
-                 os.path.isdir(dir_name + '/SubProcesses/'+name)]
+                 os.path.isdir(dir_name + '/SubProcesses/'+name) and \
+                  name[1].isdigit()]
 
         output = {}
         

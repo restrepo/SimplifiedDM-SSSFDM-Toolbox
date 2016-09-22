@@ -25,7 +25,6 @@ c     LOCAL
 c
       integer i,j
       integer icollider,detail_level
-      logical  do_cuts(nexternal)
       integer ncheck
       logical done,fopened
       logical from_decay(-(nexternal+3):nexternal)
@@ -79,8 +78,9 @@ C
       LOGICAL  IS_A_J(NEXTERNAL),IS_A_L(NEXTERNAL)
       LOGICAL  IS_A_B(NEXTERNAL),IS_A_A(NEXTERNAL),IS_A_ONIUM(NEXTERNAL)
       LOGICAL  IS_A_NU(NEXTERNAL),IS_HEAVY(NEXTERNAL)
+      logical  do_cuts(nexternal)
       COMMON /TO_SPECISA/IS_A_J,IS_A_A,IS_A_L,IS_A_B,IS_A_NU,IS_HEAVY,
-     . IS_A_ONIUM 
+     . IS_A_ONIUM, do_cuts 
 c
 c
 c     reading parameters
@@ -102,7 +102,7 @@ c For checking the consistency of the grouping and the cuts defined here
      $     ,emin_save(nexternal) ,emax_save(nexternal)
      $     ,etamin_save(nexternal),etamax_save(nexternal)
       save  IS_A_J_SAVE,IS_A_L_SAVE,IS_A_B_SAVE,IS_A_A_SAVE
-     $     ,IS_A_ONIUM_SAVE,IS_A_NU_SAVE,IS_HEAVY_SAVE,DO_CUTS
+     $     ,IS_A_ONIUM_SAVE,IS_A_NU_SAVE,IS_HEAVY_SAVE
      $     ,r2min_save,r2max_save,s_min_save,s_max_save,ptll_min_save
      $     ,ptll_max_save,etmin_save,etmax_save,emin_save,emax_save
      $     ,etamin_save,etamax_save
@@ -110,7 +110,6 @@ c
 c     setup masses for the final-state particles
 c
       include 'pmass.inc'
-      include 'qmass.inc'
 
 C-----
 C  BEGIN CODE
@@ -185,7 +184,6 @@ c     check if I have to apply cuts on the particles
 c
       do i=nincoming+1,nexternal
          do_cuts(i)=.true.
-         if(nincoming.eq.1) do_cuts(i)=.false.
          if(.not.cut_decays.and.from_decay(i)) do_cuts(i)=.false.
          is_a_j(i)=.false.
          is_a_l(i)=.false.
@@ -322,7 +320,7 @@ c        BJET
             endif
 c        PHOTON
             if(is_a_a(i))then
-                 etmin(i) = max(pta, ptgmin, eamax)
+                 etmin(i) = max(pta, ptgmin, ea)
                  SMIN = SMIN + etmin(i)
                  etmax(i)=ptamax
                  emin(i)=ea
@@ -458,7 +456,7 @@ c
       inclHtmin=ihtmin
       inclHtmax=ihtmax
 
-      jetor = cutuse.eq.0d0
+      jetor = cutuse.eq.0
 
 c
 c   EXTRA LEPTON CUTS

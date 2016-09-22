@@ -1,5 +1,110 @@
 Update notes for MadGraph5_aMC@NLO (in reverse time order)
 
+
+2.3.3(25/10/15)
+        OM: Allow new syntax for the param_card: instead of an entry you can enter "scan:[val1, val2,...]"
+            To perform a scan on this parameter.
+        OM: Having two mode for "output pythia8" one (default) for pythia8.2 and one for pythia8.1 (with --version=8.1)
+	RF: Rewriting of job-control for NLO processes. Better accuracy estimates for FO processes
+	RF: Fix for factorisation scale setting in FxFx merging when very large difference in scale in the
+ 	    non-QCD part of a process. 
+	RF: Better discarding of numerical instabilities in the real-emission matrix elements. Only of interested for
+	    processes which have jets at Born level, but do not require generation cut (like t-channel single-top). 
+	RF: Added an option to the run_card to allow for easier variation of the shower starting scale (NLO only).
+	RF: Fixed a problem in the setting of the flavour map used for runs with iAPPL >= 1. 
+	RF: Allow for decay processes to compute (partial) decay widths at NLO accuracy (fixed order only).
+        OM: (SysCalc interface) Allow to bypass the pdf reweighting/alpsfact reweighting
+        MZ: fixed bug related to slurm clusters
+	OM: remove the addmasses.py script of running by default on gridpack mode. 
+            if you want to have it running, you just have to rename the file madevent/bin/internal/addmasses_optional.py to
+ 	    madevent/bin/internal/addmasses_optional.py and it will work as before. (Do not work with SysCalc tag)
+        OM: make the code compatible with "python -tt" option
+
+2.3.2.2 (06/09/15)
+        VH: Finalized the MG5aMC-GoSam interface
+
+2.3.2(20/08/15)   
+        OM: Improve reweighting module. (https://cp3.irmp.ucl.ac.be/projects/madgraph/wiki/Reweight)
+            New Capabilities: 
+             - allow to reweight by loop-induced processes
+             - allow to change model 
+             - allow to change process definition
+             - allow to unweight the sample to have an idea of the statistical power.
+             - allow to perform some crude reweighting on NLO sample (reweighting by LO matrix element). NLO
+               accuracy is not preserved (in general) for such computation.
+            New dependencies:
+	     - require the f2py module (part of numpy)
+	OM: change the kt-durham cut (at LO) such that particle comming from decay are not impacted if cut_decays
+            is on False.
+        VH: Fixed the check in helas wavefunction appearance order in an helas diagrams. It failed in cases
+	    where additional wf were created during the fix of fermion flow in presence of majorana fermions.         
+	RF: Fixed a bug in the aMCFast/ApplGrid interfaced introduced in the previous version.
+        OM: Fix a crash when using mssm-no_b_mass model (due to the SLHA1-SLHA2 conversion)
+        OM: Fix a bug in the add_time_of_flight function (not called by default) where the displaced vertex information
+            was written in second and not in mm as it should. Note that this function can now be run on the flight
+	    by adding the following line in the run_card: "  1e-2 = time_of_flight #threshold for the displaced vertex" 
+	RF: Small fix that leads to an improvement in the phase-space generation for NLO processes
+        OM: Fix a crash introduce in 2.3.0 when running sequentially in the same directory (thanks Gauthier)
+        OM: Improve aloha in the case of some expression reduces to pure float.
+        OM: In MadSpin, allow to specify cut for the 1>N decay in spinmode=none.
+	RF: Fixed a bug that gave bogus results for NLO runs when using an internal PDF which is not
+            NNPDF (like for the old cteq_6m, etc).
+	RF: Fixed a bug in the PDF combination in the HwU histograms: there was no consistent use if Hessian
+            and Gaussian approaches for MSTW/CTEQ and NNPDF, respectively.
+        OM: Fixed a small bug in EWdim6 which was removing a coupling in AZHH interaction.
+        OM: improve customize_model function to avoid problem with unity coupling.
+	RF: Improved the treatment of the bottom Yukawa. Thanks Marius Wiesemann. 
+
+2.3.1  
+     OM+VH: Automation of event generation for loop-induced processes.
+		OM: Automatic change of the p/j definition to include the b particle if the model has a massless b.
+	RF: Reduce the collision energy for the soft and collinear tests: for 100TeV collider many were failing
+	    due to numerical instabilities. 
+        OM: Fixing bug associate to the epsilon_ijk structure
+        OM+VH: Various bug fixing for the loop-induced processes
+        OM: Fix a crash in MadWidth which occurs for some 4 body decay
+        PT: Fixed a bug concerning the use of Herwig++ with LHAPDF. Bug was introduced in 2.3.0.beta
+	OM: Fix a crash in ALOHA for form-factor in presence of fermion flow violation
+
+2.3.0.beta(10/04/15) OM+VH: Adding the possibility to compute cross-section/generate events for loop-induced process
+		JB+OM: Addign matchbox output for matching in the Matchbox framework
+                OM+VH: Change the handling of the run_card.
+                      - The default value depends now of your running process
+                      - cut_decays is now on False by default
+                      - nhel can only take 0/1 value. 1 is a real MC over helicity (with importance sampling)
+                      - use_syst is set on by default (but for matching where it is keep off)                    
+                      - New options added: dynamical_scale_choice, it can take the following value
+		            -1 : MadGraph5_aMC@NLO default (different for LO/NLO/ ickkw mode) same as previous version. 
+                             0 : Tag reserved for user define dynamical scale (need to be added in setscales.f).
+                             1 : Total transverse energy of the event.
+                             2 : sum of the transverse mass 
+                             3 : sum of the transverse mass divide by 2 
+			     4 : \sqrt(s), partonic energy 
+                OM: Cuts are also applied for 1>N processes (but the default run_card doesn't have any cut).         
+                PT: Set command available for shower_card parameters
+                OM: New MultiCore class with better thread support
+                RF: Fixed a bug in the aMCfast/APPLGrid interface introduced in version 2.2.3
+		RF: Fixed a bug in the setting of the integration grids (LO process generation) for the minimum
+		    energy needed for photons. The bug did not lead to any bias in event generation.
+		RF: Re-factoring of the structure of the code for NLO+PS computations.
+		RF+VH: Replaced the default topdrawer histograms with HwU histograms for f(N)LO runs
+                    and allow it also for aMC@NLO runs.
+		RF+VB: Allow for variable bin-sizes in MG5_aMC+aMCfast+ApplGrid runs.
+                MZ+RF: Added 'LOonly' asNLO mode to export processes without any real and virtuals 
+                       (useful e.g. for higher multiplicities when merging)
+		RF: Added support for the computation of NLO+NNLL jet veto cross sections
+		RF: Fixed a bug in the Pythia8 interface: FxFx was not correctly initialized and all
+                    events were incorrectly kept (introduced in v.2.2.3)
+                OM: Improve the function "print_result" (in the running interface)
+                    add an option --format=short allowing to print the result in a multi-column format
+                OM: Possibility to not transfer pdf file to the node for each job. 
+                       This is done via a new option (cluster_local_path) which should contain the pdf set.
+                       This path is intented to point to a node specific filesystem.
+                    New way to submit job on cluster without writting the command file on the disk.
+                OM: Allowing MadSpin to have a mode without full spin-correlation but handling three (and more) 
+                    body decay. (set spinmode=none).
+                OM+PA: Fixing various bug in MadSpin.
+
 2.2.3(10/02/15) RF: Re-factoring of the structure of the code for fNLO computations.
                 OM: Fix a bug in MadWeight (correlated param_card was not creating the correct input file)
 		RF: When requiring more than 1M events for (N)LO+PS runs, do not go to higher precision than 0.001
@@ -17,10 +122,10 @@ Update notes for MadGraph5_aMC@NLO (in reverse time order)
                 OM: Fix a bug in the LO re-weighing  module which was removing the 
                     SysCalc weight from the lhe file (thanks Shin-Shan)
                 Team: Fixes to different small bugs / improvement in the error and warning messages
-		RF: For aMC runs, If a NAN is found, the code now skips that PS point and continues instead of leading to NAN.
-                RF: For fNLO runs the virtuals were included twice in the setting of the integration grids. This was not
-                    leading to any biais  in previous version of the code.
-
+		RF: For aMC runs, If a NAN is found, the code now skips that PS point and continues instead of
+		    leading to NAN.
+                RF: For fNLO runs the virtuals were included twice in the setting of the integration grids. 
+                    This was not leading to any bias in previous version of the code.
 
 2.2.2(06/11/14) OM: Correct a bug in the integration grid (introduces in 2.1.2). This was biasing the cross-section of 
                     processes like a a > mu+ mu- in the Effective Photon Approximation by three order of magnitude.

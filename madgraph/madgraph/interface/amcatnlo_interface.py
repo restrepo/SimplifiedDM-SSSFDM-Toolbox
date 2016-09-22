@@ -30,6 +30,7 @@ from madgraph import MG4DIR, MG5DIR, MadGraph5Error
 import madgraph.interface.extended_cmd as cmd
 import madgraph.interface.madgraph_interface as mg_interface
 import madgraph.interface.madevent_interface as me_interface
+import madgraph.interface.extended_cmd as extended_cmd
 import madgraph.interface.amcatnlo_run_interface as run_interface
 import madgraph.interface.launch_ext_program as launch_ext
 import madgraph.interface.loop_interface as Loop_interface
@@ -42,6 +43,7 @@ import madgraph.core.diagram_generation as diagram_generation
 import madgraph.core.helas_objects as helas_objects
 import madgraph.various.cluster as cluster
 import madgraph.various.misc as misc
+import madgraph.various.banner as banner_mod
 
 #usefull shortcut
 pjoin = os.path.join
@@ -403,7 +405,7 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
             line = ' '.join(args[1:])
             
         proc_type=self.extract_process_type(line)
-        if proc_type[1] != 'real':
+        if proc_type[1] not in ['real', 'LOonly']:
             run_interface.check_compiler(self.options, block=False)
         self.validate_model(proc_type[1])
 
@@ -417,17 +419,23 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
                 raise MadGraph5Error("Decay processes cannot be perturbed")
         else:
             myprocdef = mg_interface.MadGraphCmd.extract_process(self,line)
+
         self.proc_validity(myprocdef,'aMCatNLO_%s'%proc_type[1])
 
-        if myprocdef['perturbation_couplings']!=['QCD']:
-                raise self.InvalidCmd("FKS for reals only available in QCD for now, you asked %s" \
-                        % ', '.join(myprocdef['perturbation_couplings']))
+#        if myprocdef['perturbation_couplings']!=['QCD']:
+#            message = ""FKS for reals only available in QCD for now, you asked %s" \
+#                        % ', '.join(myprocdef['perturbation_couplings'])"
+#            logger.info("%s. Checking for loop induced")
+#            new_line = ln
+#                
+#                
+#                raise self.InvalidCmd("FKS for reals only available in QCD for now, you asked %s" \
+#                        % ', '.join(myprocdef['perturbation_couplings']))
         try:
             self._fks_multi_proc.add(fks_base.FKSMultiProcess(myprocdef,
                                    collect_mirror_procs,
                                    ignore_six_quark_processes,
                                    OLP=self.options['OLP']))
-            
         except AttributeError: 
             self._fks_multi_proc = fks_base.FKSMultiProcess(myprocdef,
                                    collect_mirror_procs,
@@ -451,11 +459,13 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
         except Exception:
             pass
 
-        self.options['group_subprocesses'] = False
+        # For NLO, the group_subprocesses is automatically set to false
+        group_processes = False
         # initialize the writer
         if self._export_format in ['NLO']:
-            self._curr_exporter = export_v4.ExportV4Factory(\
-                                          self, noclean, output_type='amcatnlo')
+            self._curr_exporter = export_v4.ExportV4Factory(self, noclean, 
+                      output_type='amcatnlo',group_subprocesses=group_processes)
+
         # check if a dir with the same name already exists
         if not force and not noclean and os.path.isdir(self._export_dir)\
                and self._export_format in ['NLO']:
@@ -480,7 +490,7 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
         self._done_export = False
 
         # Perform export and finalize right away
-        self.export(nojpeg, main_file_name)
+        self.export(nojpeg, main_file_name, group_processes=group_processes)
 
         # Automatically run finalize
         self.finalize(nojpeg)
@@ -497,10 +507,10 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
         self._export_dir = None
 
     # Export a matrix element  
-    def export(self, nojpeg = False, main_file_name = ""):
+    def export(self, nojpeg = False, main_file_name = "", group_processes=False):
         """Export a generated amplitude to file"""
 
-        def generate_matrix_elements(self):
+        def generate_matrix_elements(self, group=False):
             """Helper function to generate the matrix elements before
             exporting"""
 
@@ -509,19 +519,12 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
             self._curr_amps.sort(lambda a1, a2: a2.get_number_of_diagrams() - \
                                  a1.get_number_of_diagrams())
 
-            # Check if we need to group the SubProcesses or not
-            group = True
-            if self.options['group_subprocesses'] in [False]:
-                group = False
-            elif self.options['group_subprocesses'] == 'Auto' and \
-                                         self._curr_amps[0].get_ninitial() == 1:
-                   group = False 
-
             cpu_time1 = time.time()
             ndiags = 0
             if not self._curr_matrix_elements.get_matrix_elements():
                 if group:
-                    raise MadGraph5Error, "Cannot group subprocesses when exporting to NLO"
+                    raise MadGraph5Error, "Cannot group subprocesses when "+\
+                                                              "exporting to NLO"
                 else:
                     self._curr_matrix_elements = \
                              fks_helas.FKSHelasMultiProcess(\
@@ -538,10 +541,22 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
                     for me in self._curr_matrix_elements.get_matrix_elements():
                         uid += 1 # update the identification number
                         me.get('processes')[0].set('uid', uid)
+                        try:
+                            initial_states.append(sorted(list(set((p.get_initial_pdg(1),p.get_initial_pdg(2)) for \
+                                                                  p in me.born_matrix_element.get('processes')))))
+                        except IndexError:
+                            initial_states.append(sorted(list(set((p.get_initial_pdg(1)) for \
+                                                                  p in me.born_matrix_element.get('processes')))))
+                    
                         for fksreal in me.real_processes:
                         # Pick out all initial state particles for the two beams
-                            initial_states.append(sorted(list(set((p.get_initial_pdg(1),p.get_initial_pdg(2)) for \
+                            try:
+                                initial_states.append(sorted(list(set((p.get_initial_pdg(1),p.get_initial_pdg(2)) for \
                                                              p in fksreal.matrix_element.get('processes')))))
+                            except IndexError:
+                                initial_states.append(sorted(list(set((p.get_initial_pdg(1)) for \
+                                                             p in fksreal.matrix_element.get('processes')))))
+                                
                         
                     # remove doubles from the list
                     checked = []
@@ -557,7 +572,7 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
 
         # Start of the actual routine
 
-        ndiags, cpu_time = generate_matrix_elements(self)
+        ndiags, cpu_time = generate_matrix_elements(self, group=group_processes)
         calls = 0
 
         path = self._export_dir
@@ -567,14 +582,10 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
 
             #_curr_matrix_element is a FKSHelasMultiProcess Object 
             self._fks_directories = []
-            proc_characteristics = ''
+            proc_charac = self._curr_exporter.proc_characteristic 
             for charac in ['has_isr', 'has_fsr', 'has_loops']:
-                if self._curr_matrix_elements[charac]:
-                    proc_characteristics += '%s=true\n' % charac
-                else:
-                    proc_characteristics += '%s=false\n' % charac
+                proc_charac[charac] = self._curr_matrix_elements[charac]
 
-            open(pjoin(path, 'proc_characteristics'),'w').write(proc_characteristics)
 
             for ime, me in \
                 enumerate(self._curr_matrix_elements.get('matrix_elements')):
@@ -626,7 +637,7 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
 #            self.options['automatic_html_opening'] = False
 
         if options['interactive']:
-            if hasattr(self, 'do_shell'):
+            if isinstance(self, extended_cmd.CmdShell):
                 ME = run_interface.aMCatNLOCmdShell(me_dir=argss[0], options=self.options)
             else:
                 ME = run_interface.aMCatNLOCmd(me_dir=argss[0],options=self.options)
@@ -638,7 +649,9 @@ class aMCatNLOInterface(CheckFKS, CompleteFKS, HelpFKS, Loop_interface.CommonLoo
             stop = self.define_child_cmd_interface(ME)                
             return stop
 
-        ext_program = launch_ext.aMCatNLOLauncher(argss[0], self, run_mode=argss[1], **options)
+        ext_program = launch_ext.aMCatNLOLauncher(argss[0], self, run_mode=argss[1],
+                                                  shell = isinstance(self, extended_cmd.CmdShell),
+                                                  **options)
         ext_program.run()
         
                     
@@ -683,3 +696,10 @@ _launch_parser.add_option("-n", "--name", default=False, dest='name',
                             help="Provide a name to the run")
 _launch_parser.add_option("-a", "--appl_start_grid", default=False, dest='appl_start_grid',
                             help="For use with APPLgrid only: start from existing grids")
+_launch_parser.add_option("-R", "--reweight", default=False, action='store_true',
+                            help="Run the reweight module (reweighting by different model parameter")
+_launch_parser.add_option("-M", "--madspin", default=False, action='store_true',
+                            help="Run the madspin package")
+
+
+

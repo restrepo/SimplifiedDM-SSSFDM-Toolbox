@@ -7,10 +7,10 @@ C     Visit launchpad.net/madgraph5 and amcatnlo.web.cern.ch
 C     RETURNS PARTON LUMINOSITIES FOR MADFKS                          
 C        
 C     
-C     Process: u~ u > t t~ g WEIGHTED=3 [ QCD ]
-C     Process: c~ c > t t~ g WEIGHTED=3 [ QCD ]
-C     Process: d~ d > t t~ g WEIGHTED=3 [ QCD ]
-C     Process: s~ s > t t~ g WEIGHTED=3 [ QCD ]
+C     Process: u~ u > t t~ g WEIGHTED=3 [ real = QCD ]
+C     Process: c~ c > t t~ g WEIGHTED=3 [ real = QCD ]
+C     Process: d~ d > t t~ g WEIGHTED=3 [ real = QCD ]
+C     Process: s~ s > t t~ g WEIGHTED=3 [ real = QCD ]
 C     
 C     ****************************************************            
 C         
@@ -119,7 +119,11 @@ C
         PD(IPROC) = SX1*S2
       ENDIF
       DO I=1,IPROC
-        LUM = LUM + PD(I) * CONV
+        IF (NINCOMING.EQ.2) THEN
+          LUM = LUM + PD(I) * CONV
+        ELSE
+          LUM = LUM + PD(I)
+        ENDIF
       ENDDO
       RETURN
       END

@@ -1,20 +1,20 @@
 !
-! Copyright (C) 2014 Andreas van Hameren. 
+! Copyright (C) 2015 Andreas van Hameren. 
 !
-! This file is part of OneLOop-3.4.
+! This file is part of OneLOop-3.6.
 !
-! OneLOop-3.4 is free software: you can redistribute it and/or modify
+! OneLOop-3.6 is free software: you can redistribute it and/or modify
 ! it under the terms of the GNU General Public License as published by
 ! the Free Software Foundation, either version 3 of the License, or
 ! (at your option) any later version.
 !
-! OneLOop-3.4 is distributed in the hope that it will be useful,
+! OneLOop-3.6 is distributed in the hope that it will be useful,
 ! but WITHOUT ANY WARRANTY; without even the implied warranty of
 ! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ! GNU General Public License for more details.
 !
 ! You should have received a copy of the GNU General Public License
-! along with OneLOop-3.4.  If not, see <http://www.gnu.org/licenses/>.
+! along with OneLOop-3.6.  If not, see <http://www.gnu.org/licenses/>.
 !
 
 
@@ -28,12 +28,12 @@ contains
   if (done) return ;done=.true.
   write(*,'(a72)') '########################################################################'
   write(*,'(a72)') '#                                                                      #'
-  write(*,'(a72)') '#                      You are using OneLOop-3.4                       #'
+  write(*,'(a72)') '#                      You are using OneLOop-3.6                       #'
   write(*,'(a72)') '#                                                                      #'
   write(*,'(a72)') '# for the evaluation of 1-loop scalar 1-, 2-, 3- and 4-point functions #'
   write(*,'(a72)') '#                                                                      #'
   write(*,'(a72)') '# author: Andreas van Hameren <hamerenREMOVETHIS@ifj.edu.pl>           #'
-  write(*,'(a72)') '#   date: 02-01-2014                                                   #'
+  write(*,'(a72)') '#   date: 18-02-2015                                                   #'
   write(*,'(a72)') '#                                                                      #'
   write(*,'(a72)') '# Please cite                                                          #'
   write(*,'(a72)') '#    A. van Hameren,                                                   #'
@@ -49,10 +49,11 @@ end module
 
 module avh_olo_units
   implicit none
-  integer :: eunit=6
-  integer :: dunit=-1
-  integer :: wunit=6
-  integer :: munit=6
+! By default these values are set to 6. However, they can potentially clog
+! the logs so we want to force them off, unless explicitely turned on 
+  integer :: eunit=0
+  integer :: wunit=0
+  integer :: munit=0
   integer :: punit=0 ! print all
 contains
   subroutine set_unit( message ,val )
@@ -546,7 +547,7 @@ contains
   character(ndecim(prcpar)+nxtr+novh+1) :: cc
   character(10) :: aa,bb
   integer :: ndec
-  real(kindr2) :: xx     
+  double precision :: xx     
   xx = xx_in
   if (present(ndec_in)) then ;ndec=ndec_in
                         else ;ndec=ndecim(prcpar)+nxtr
@@ -781,22 +782,28 @@ contains
       gg=xd1*pq1 ;hh=yd1*uv1
       rx2 = gg+hh
       if (abs(rx2).lt.neglig(prcpar)*max(abs(gg),abs(hh))) rx2 = 0
-    else
+    elseif (abs(pq2).gt.abs(pq1)) then
       rx2 = pq2
       gg=xd2*pq2 ;hh=yd2*uv2
       rx1 = gg+hh
       if (abs(rx1).lt.neglig(prcpar)*max(abs(gg),abs(hh))) rx1 = 0
+    else
+      rx1 = pq1
+      rx2 = pq2
     endif
     if (abs(uv1).gt.abs(uv2)) then
       ix1 = uv1
       gg=yd1*pq1 ;hh=xd1*uv1
       ix2 = gg-hh
       if (abs(ix2).lt.neglig(prcpar)*max(abs(gg),abs(hh))) ix2 = 0
-    else
+    elseif (abs(uv2).gt.abs(uv1)) then
       ix2 = uv2
       gg=yd2*pq2 ;hh=xd2*uv2
       ix1 = gg-hh
       if (abs(ix1).lt.neglig(prcpar)*max(abs(gg),abs(hh))) ix1 = 0
+    else
+      ix1 = uv1
+      ix2 = uv2
     endif
     x1 = acmplx(rx1,ix1)
     x2 = acmplx(rx2,ix2)
@@ -1138,7 +1145,9 @@ module avh_olo_dp_olog
 !***********************************************************************
 ! Provides the functions
 !   olog(x,n) = log(x) + n*pi*imag  
-!   olog2(x,n) = olog(x,n)/(x-1)
+!   olog1(x,n) = olog(x,n)/(x-1)
+!   olog2(x,n) = ( olog1(x,n) - 1 )/(x-1)
+!   olog3(x,n) = ( olog2(x,n) + 1/2 )/(x-1)
 ! In the vicinity of x=1,n=0, the logarithm of complex argument is
 ! evaluated with a series expansion.
 !***********************************************************************
@@ -1148,7 +1157,7 @@ module avh_olo_dp_olog
   use avh_olo_dp_auxfun
   implicit none
   private
-  public :: update_olog,olog,olog2
+  public :: update_olog,olog,olog1,olog2,olog3
 
   real(kindr2) &  
          ,allocatable,save :: thrs(:,:)
@@ -1158,8 +1167,14 @@ module avh_olo_dp_olog
   interface olog
     module procedure log_c,log_r
   end interface
+  interface olog1
+    module procedure log1_c,log1_r
+  end interface
   interface olog2
     module procedure log2_c,log2_r
+  end interface
+  interface olog3
+    module procedure log3_c,log3_r
   end interface
 
 contains
@@ -1271,6 +1286,8 @@ contains
   elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
                                 else ;nn=ntrm(1,prcpar)
   endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 2 * ( z + z^3/3 + z^5/5 + z^7/7 + ... )  
   zz = zz/(yy+1)
   z2 = zz*zz
   aa = 2
@@ -1308,7 +1325,7 @@ contains
   end function
 
 
-  function log2_c(xx,iph) result(rslt)
+  function log1_c(xx,iph) result(rslt)
 !***********************************************************************
 !***********************************************************************
   complex(kindr2) &   
@@ -1325,9 +1342,9 @@ contains
 !
   if (abs(imx).le.EPSN*abs(rex)) then
     if (rex.ge.RZRO) then
-      rslt = log2_r( rex, iph )
+      rslt = log1_r( rex, iph )
     else
-      rslt = log2_r(-rex, iph+sgnRe(imx) )
+      rslt = log1_r(-rex, iph+sgnRe(imx) )
     endif
     return
   endif
@@ -1353,6 +1370,8 @@ contains
   elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
                                 else ;nn=ntrm(1,prcpar)
   endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 2/(y+1) * ( 1 + z^2/3 + z^4/5 + z^6/7 + ... )  
   zz = zz/(yy+1)
   z2 = zz*zz
   aa = 2
@@ -1365,7 +1384,7 @@ contains
   end function
 
 
-  function log2_r(xx,iph) result(rslt)
+  function log1_r(xx,iph) result(rslt)
 !***********************************************************************
 !***********************************************************************
   real(kindr2) &  
@@ -1381,7 +1400,7 @@ contains
 !  integer :: nn,ii
 !
   if (xx.eq.RZRO) then
-    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_r: ' &
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log1_r: ' &
        ,'xx =',trim(myprint(xx)),', returning 0'
     rslt = 0
     return
@@ -1393,7 +1412,7 @@ contains
 !
   if (abs(yy-1).le.10*EPSN) then
     if (jj.ne.0) then
-      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log1_r: ' &
         ,'rr,jj =',trim(myprint(rr)),jj,', putting jj to 0'
     endif
     rslt = 1 - (yy-1)/2
@@ -1403,7 +1422,149 @@ contains
   rslt = ( log(rr) + IPI*jj )/(yy-1)
   end function
 
+
+  function log2_r(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  real(kindr2) &  
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt
+  rslt = log2_c(xx*CONE,iph)
+  end function
+
+
+  function log2_c(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  complex(kindr2) &   
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt ,yy,zz,z2
+  real(kindr2) &  
+    :: aa,rex,imx
+  integer :: nn,ii,jj
+!
+  rex = areal(xx)
+  imx = aimag(xx)
+!
+  if (rex.eq.RZRO.and.imx.eq.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_c: ' &
+       ,'xx = 0, returning 0'
+    rslt = 0
+    return
+  endif
+!
+  if (mod(iph,2).eq.0) then ;yy= xx ;jj=iph
+                       else ;yy=-xx ;jj=iph+sgnRe(imx)
+  endif
+!
+  if (jj.ne.0) then
+    rslt = ( olog1(yy,jj) - 1 )/(yy-1)
+    return
+  endif
+!
+  zz = yy-1
+  aa = abs(zz)
+  if     (aa.ge.thrs(6,prcpar)) then
+    rslt = (log(yy)/zz-1)/zz
+    return
+  elseif (aa.ge.thrs(5,prcpar)) then ;nn=ntrm(6,prcpar)
+  elseif (aa.ge.thrs(4,prcpar)) then ;nn=ntrm(5,prcpar)
+  elseif (aa.ge.thrs(3,prcpar)) then ;nn=ntrm(4,prcpar)
+  elseif (aa.ge.thrs(2,prcpar)) then ;nn=ntrm(3,prcpar)
+  elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
+                                else ;nn=ntrm(1,prcpar)
+  endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = -1/(y+1) + 2/(y+1)^2 * ( z/3 + z^3/5 + z^5/7 + ... )  
+  zz = zz/(yy+1)
+  z2 = zz*zz
+  aa = 2
+  nn = 2*nn-1
+  rslt = aa/nn
+  do ii=nn-2,3,-2
+    rslt = aa/ii + z2*rslt
+  enddo
+  rslt = ( -1 + zz*rslt/(yy+1) )/(yy+1)
+  end function
+
+
+  function log3_r(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  real(kindr2) &  
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt
+  rslt = log3_c(xx*CONE,iph)
+  end function
+
+
+  function log3_c(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  complex(kindr2) &   
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt ,yy,zz,z2,HLF
+  real(kindr2) &  
+    :: aa,rex,imx
+  integer :: nn,ii,jj
+!
+  rex = areal(xx)
+  imx = aimag(xx)
+!
+  if (rex.eq.RZRO.and.imx.eq.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_c: ' &
+       ,'xx = 0, returning 0'
+    rslt = 0
+    return
+  endif
+!
+  HLF = CONE/2
+!
+  if (mod(iph,2).eq.0) then ;yy= xx ;jj=iph
+                       else ;yy=-xx ;jj=iph+sgnRe(imx)
+  endif
+!
+  if (jj.ne.0) then
+    rslt = ( olog2(xx,jj) + HLF )/(yy-1)
+    return
+  endif
+!
+  zz = yy-1
+  aa = abs(zz)
+  if     (aa.ge.thrs(6,prcpar)) then
+    rslt = ((log(yy)/zz-1)/zz+HLF)/zz
+    return
+  elseif (aa.ge.thrs(5,prcpar)) then ;nn=ntrm(6,prcpar)
+  elseif (aa.ge.thrs(4,prcpar)) then ;nn=ntrm(5,prcpar)
+  elseif (aa.ge.thrs(3,prcpar)) then ;nn=ntrm(4,prcpar)
+  elseif (aa.ge.thrs(2,prcpar)) then ;nn=ntrm(3,prcpar)
+  elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
+                                else ;nn=ntrm(1,prcpar)
+  endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 1/(2*(y+1)) + 2/(y+1)^3 * ( 1/3 + z^2/5 + z^4/7 + ... )
+  zz = zz/(yy+1)
+  z2 = zz*zz
+  aa = 2
+  nn = 2*nn-1
+  rslt = aa/nn
+  do ii=nn-2,3,-2
+    rslt = aa/ii + z2*rslt
+  enddo
+  rslt = ( HLF + rslt/(yy+1)**2 )/(yy+1)
+  end function
+
 end module
+
+
 
 
 module avh_olo_dp_dilog
@@ -1660,7 +1821,7 @@ contains
 ! 
   if (yy.eq.RONE.and.odd.eq.0) then
     if (ntwo.ne.0) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog_r: ' &
         ,'|x|,iph = ',trim(myprint(yy)),',',jj,', returning 0'
     endif
     rslt = 0
@@ -1768,7 +1929,7 @@ contains
 !
   if (j1.ne.j2) then
     if (r1.eq.r2) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'j1,j2,r1-r2',j1,j2,',',trim(myprint(r1-r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_c j1=/=j2,r1=r2' !DEBUG
@@ -1782,7 +1943,7 @@ contains
 !
   if (a1.lt.eps) then
     if (a2.lt.eps) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,r2 =',trim(myprint(r1)),',',trim(myprint(r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_c r1<eps,r2<eps' !DEBUG
@@ -1804,7 +1965,7 @@ contains
 !      write(*,*) 'dilog2_c ||1-y1|/|1-y2|-1|>0.1' !DEBUG
       return
     elseif (oo.eq.0.and.ao1.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,oo,nn =',trim(myprint(r1)),',',oo,nn,', putting nn=0'
       if (ao2.lt.eps) then
         rslt = -1
@@ -1814,7 +1975,7 @@ contains
         y1=1-eps ;nn=0 ;logr1=0 ;r1=1-eps
       endif
     elseif (oo.eq.0.and.ao2.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r2,oo,nn =',trim(myprint(r2)),',',oo,nn,', putting nn=0'
       y2=1-eps ;nn=0 ;logr2=0 ;r2=1-eps
     endif
@@ -1829,10 +1990,10 @@ contains
       if (a1.gt.RONE) ii = ii + (nn+pp(oo,sgnIm(y2)))
       if (a2.gt.RONE) ii = ii - (nn+pp(oo,sgnIm(y2)))
       ii = nn*ii
-      if (ii.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (ii.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,r2,nn =',trim(myprint(r1)),',',trim(myprint(r2)),',',nn &
         ,', putting nn=0'
-      rslt = -olog2(y2,0)
+      rslt = -olog1(y2,0)
 !      write(*,*) 'dilog2_c |logr1/lorg2|<eps' !DEBUG
       return
     endif
@@ -1844,8 +2005,8 @@ contains
     nn=-nn ;oo=-oo
   endif
 !
-  ff=y1/y2         ;ff=-olog2(ff,0)/y2
-  gg=(1-y1)/(1-y2) ;gg=-olog2(gg,0)/(1-y2)
+  ff=y1/y2         ;ff=-olog1(ff,0)/y2
+  gg=(1-y1)/(1-y2) ;gg=-olog1(gg,0)/(1-y2)
 !
   if (2*areal(y1).ge.RONE) then
 !    write(*,*) 'dilog2_c re>1/2' !DEBUG
@@ -1902,7 +2063,7 @@ contains
 !
   if (j1.ne.j2) then
     if (r1.eq.r2) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'j1,j2,r1-r2',j1,j2,',',trim(myprint(r1-r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_r j1=/=j2,r1=r2' !DEBUG
@@ -1916,7 +2077,7 @@ contains
 !
   if (r1.lt.eps) then
     if (r2.lt.eps) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,r2 =',trim(myprint(r1)),',',trim(myprint(r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_r r1<eps,r2<eps' !DEBUG
@@ -1938,7 +2099,7 @@ contains
 !      write(*,*) 'dilog2_r ||1-y1|/|1-y2|-1|>0.1' !DEBUG
       return
     elseif (oo.eq.0.and.ro1.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,oo,nn =',trim(myprint(r1)),',',oo,nn,', putting nn=0'
       if (ro2.lt.eps) then
         rslt = -1
@@ -1948,7 +2109,7 @@ contains
         y1=1-eps ;nn=0 ;logr1=0 ;r1=1-eps
       endif
     elseif (oo.eq.0.and.ro2.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r2,oo,nn =',trim(myprint(r2)),',',oo,nn,', putting nn=0'
       y2=1-eps ;nn=0 ;logr2=0 ;r2=1-eps
     endif
@@ -1963,10 +2124,10 @@ contains
       if (r1.gt.RONE) ii = ii + (nn+2*oo)
       if (r2.gt.RONE) ii = ii - (nn+2*oo)
       ii = nn*ii
-      if (ii.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (ii.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,r2,nn =',trim(myprint(r1)),',',trim(myprint(r2)),',',nn &
         ,', putting nn=0'
-      rslt = -olog2(y2,0)
+      rslt = -olog1(y2,0)
 !      write(*,*) 'dilog2_r |logr1/lorg2|<eps' !DEBUG
       return
     endif
@@ -1978,8 +2139,8 @@ contains
     nn=-nn ;oo=-oo
   endif
 !
-  ff=y1/y2         ;ff=-olog2(ff,0)/y2
-  gg=(1-y1)/(1-y2) ;gg=-olog2(gg,0)/(1-y2)
+  ff=y1/y2         ;ff=-olog1(ff,0)/y2
+  gg=(1-y1)/(1-y2) ;gg=-olog1(gg,0)/(1-y2)
 !
   if (2*y1.ge.RONE) then
 !    write(*,*) 'dilog2_r re>1/2' !DEBUG
@@ -2409,7 +2570,7 @@ module avh_olo_dp_qmplx
 
   implicit none
   private
-  public :: qmplx_type,qonv,directly,sheet,logc,logc2,li2c,li2c2
+  public :: qmplx_type,qonv,directly,sheet,logc,logc2,logc3,li2c,li2c2
   public :: operator (*) ,operator (/)
 
   type :: qmplx_type
@@ -2656,8 +2817,19 @@ contains
   type(qmplx_type) ,intent(in) :: xx
   complex(kindr2) &   
     :: rslt
-!  rslt = -olog2(acmplx(xx%c),xx%p)
-  rslt = -olog2(xx%c,xx%p)
+!  rslt = -olog1(acmplx(xx%c),xx%p)
+  rslt = -olog1(xx%c,xx%p)
+  end function
+
+  function logc3(xx) result(rslt)
+!*******************************************************************
+!  ( log(xx)/(1-xx) + 1 )/(1-xx)
+!*******************************************************************
+  type(qmplx_type) ,intent(in) :: xx
+  complex(kindr2) &   
+    :: rslt
+!  rslt = olog2(acmplx(xx%c),xx%p)
+  rslt = olog2(xx%c,xx%p)
   end function
 
   function li2c(xx) result(rslt)
@@ -2697,9 +2869,10 @@ module avh_olo_dp_bub
   use avh_olo_dp_auxfun
   use avh_olo_dp_bnlog
   use avh_olo_dp_qmplx
+  use avh_olo_dp_olog
   implicit none
   private
-  public :: tadp ,tadpn ,bub0 ,bub1 ,bub11 ,bub111 ,bub1111
+  public :: tadp ,tadpn ,bub0 ,dbub0 ,bub1 ,bub11 ,bub111 ,bub1111
 
 contains
 
@@ -3290,6 +3463,92 @@ contains
   b0011(0) = ( a0(0,0) - x1*b111(0) + x2*b11(0) + 4*b0011(1) )/10
   end subroutine
 
+
+!*******************************************************************
+! Derivative of B0
+! expects  m0<m1
+! only finite case, so input must not be  m0=0 & m1=pp
+!*******************************************************************
+
+  subroutine dbub0( rslt &
+                   ,pp,m0,m1 ,app,am0,am1 )
+  complex(kindr2) &   
+    ,intent(out) :: rslt
+  complex(kindr2) &   
+    ,intent(in)  :: pp,m0,m1
+  real(kindr2) &  
+    ,intent(in)  :: app,am0,am1
+  complex(kindr2) &   
+    :: ch,x1,x2,lambda
+  real(kindr2) &  
+    :: ax1,ax2,ax1x2,maxa
+  type(qmplx_type) :: q1,q2,q1o,q2o
+  integer :: sgn
+!
+  if (am1.eq.RZRO) then
+    if (app.eq.RZRO) then
+      rslt = 0
+      return
+    endif
+  endif
+!
+  if (app.eq.RZRO) then
+    if (abs(m0-m1).le.am1*EPSN*10) then
+      rslt = 1/(6*m1)
+    else
+      ch = m0/m1
+      rslt = ( CONE/2 - ch*olog3(ch,0) )/m1 
+    endif
+  elseif (am1.eq.RZRO) then
+    rslt =-1/pp
+  else
+    call solabc( x1,x2 ,lambda ,pp ,(m0-m1)-pp ,m1 ,0 )
+    sgn =-sgnRe(pp)*sgnRe(x2-x1)
+    q1  = qonv(x1  , sgn)
+    q1o = qonv(x1-1, sgn)
+    q2  = qonv(x2  ,-sgn)
+    q2o = qonv(x2-1,-sgn)
+    ax1 = abs(x1)
+    ax2 = abs(x2)
+    ax1x2 = abs(x1-x2)
+    maxa = max(ax1,ax2)
+    if (ax1x2.lt.maxa*EPSN*10) then
+      rslt = ( (x1+x2-1)*logc(q2/q2o) - 2 )/pp
+    elseif (ax1x2*2.lt.maxa) then
+      if     (x1.eq.CZRO.or.x1.eq.CONE) then
+        rslt = ( (x1+x2-1)*logc(q2/q2o) - 1 )/pp
+      elseif (x2.eq.CZRO.or.x2.eq.CONE) then
+        rslt = ( (x1+x2-1)*logc(q1/q1o) - 1 )/pp
+      else
+        rslt = x1*(x1-1)*( logc2(q1o/q2o)/(x2-1) - logc2(q1/q2)/x2 ) &
+             + (x1+x2-1)*logc(q2/q2o) - 1
+        rslt = rslt/pp
+      endif
+    else
+      rslt = 0
+      if (ax1.ne.RZRO) then
+        if (ax1.lt.2*RONE) then
+          rslt = rslt - x1
+          if (x1.ne.CONE) rslt = rslt - x1*logc2(q1/q1o)
+        else
+          rslt = rslt + x1/(x1-1)*logc3(q1/q1o)
+        endif
+      endif
+      if (ax2.ne.RZRO) then
+        if (ax2.lt.2*RONE) then
+          rslt = rslt + x2
+          if (x2.ne.CONE) rslt = rslt + x2*logc2(q2/q2o)
+        else
+          rslt = rslt - x2/(x2-1)*logc3(q2/q2o)
+        endif
+      endif
+      rslt = rslt/lambda
+    endif
+  endif
+!
+  end subroutine
+
+
 end module
 
 
@@ -3523,7 +3782,7 @@ contains
     log2 = olog( abs(rp2/rmu2) ,i2 )
     log3 = olog( abs(rp3/rmu2) ,i3 )
     rslt(2) = 0
-    rslt(1) = -olog2( abs(rp3/rp2) ,i3-i2 )/rp2
+    rslt(1) = -olog1( abs(rp3/rp2) ,i3-i2 )/rp2
     rslt(0) = -rslt(1)*(log3+log2)/2
   elseif (icase.eq.3) then
 ! 3 masses non-zero
@@ -6096,6 +6355,7 @@ contains
      ,intent(in) :: y1,y2
   complex(kindr2) &   
      :: rslt ,oy1,oy2
+!
    oy1 = 1-y1
    oy2 = 1-y2
    rslt = logc2( qonv(-y2)/qonv(-y1) )/y1 &
@@ -6164,17 +6424,10 @@ module avh_olo_dp
   private
   public :: olo_unit ,olo_scale ,olo_onshell ,olo_setting
   public :: olo_precision
-  public :: olo_a0 ,olo_b0 ,olo_b11 ,olo_c0 ,olo_d0
+  public :: olo_a0 ,olo_b0 ,olo_db0 ,olo_b11 ,olo_c0 ,olo_d0
   public :: olo_an ,olo_bn
   public :: olo
   public :: olo_get_scale ,olo_get_onshell ,olo_get_precision
-  public :: a0_r,a0rr,a0_c,a0cr
-  public :: an_r,anrr,an_c,ancr
-  public :: b0rr,b0rrr,b0rc,b0rcr,b0cc,b0ccr
-  public :: b11rr,b11rrr,b11rc,b11rcr,b11cc,b11ccr
-  public :: bnrr,bnrrr,bnrc,bnrcr,bncc,bnccr
-  public :: c0rr,c0rrr,c0rc,c0rcr,c0cc,c0ccr
-  public :: d0rr,d0rrr,d0rc,d0rcr,d0cc,d0ccr
 !
   integer ,public ,parameter :: olo_kind=kindr2    
 !
@@ -6199,6 +6452,9 @@ module avh_olo_dp
   end interface 
   interface olo_b0
     module procedure b0rr,b0rrr,b0rc,b0rcr,b0cc,b0ccr
+  end interface 
+  interface olo_db0
+    module procedure db0rr,db0rrr,db0rc,db0rcr,db0cc,db0ccr
   end interface 
   interface olo_b11
     module procedure b11rr,b11rrr,b11rc,b11rcr,b11cc,b11ccr
@@ -7185,6 +7441,520 @@ contains
     write(punit,*) 'b0(0):',trim(myprint(rslt(0)))
   endif
   end subroutine
+
+!*******************************************************************
+! Derivative of B0
+!*******************************************************************
+  subroutine db0cc( rslt ,pp,m1,m2 )
+!
+  use avh_olo_dp_bub ,only: dbub0
+  use avh_olo_dp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  complex(kindr2) &   
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = areal(ss)
+  if (aimag(ss).ne.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'ss has non-zero imaginary part, putting it to zero.'
+    ss = acmplx( app )
+  endif
+  app = abs(app)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0ccr( rslt ,pp,m1,m2 ,rmu )
+!
+  use avh_olo_dp_bub ,only: dbub0
+  use avh_olo_dp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  complex(kindr2) &   
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+  real(kindr2) &  
+   ,intent(in)  :: rmu       
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = areal(ss)
+  if (aimag(ss).ne.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'ss has non-zero imaginary part, putting it to zero.'
+    ss = acmplx( app )
+  endif
+  app = abs(app)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rc( rslt ,pp ,m1,m2 )
+!
+  use avh_olo_dp_bub ,only: dbub0
+  use avh_olo_dp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rcr( rslt ,pp,m1,m2 ,rmu )
+!
+  use avh_olo_dp_bub ,only: dbub0
+  use avh_olo_dp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+  real(kindr2) &  
+   ,intent(in)  :: rmu       
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rr( rslt ,pp ,m1,m2 )
+!
+  use avh_olo_dp_bub ,only: dbub0
+  use avh_olo_dp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  real(kindr2) &  
+    ,intent(in)  :: m1,m2
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = abs(m1)
+  am2 = abs(m2)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rrr( rslt ,pp ,m1,m2 ,rmu )
+!
+  use avh_olo_dp_bub ,only: dbub0
+  use avh_olo_dp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  real(kindr2) &  
+    ,intent(in)  :: m1,m2
+  real(kindr2) &  
+   ,intent(in)  :: rmu       
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = abs(m1)
+  am2 = abs(m2)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
 
 
 !*******************************************************************
@@ -9557,7 +10327,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -9573,9 +10344,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -9832,7 +10602,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -9848,9 +10619,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -10099,7 +10869,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -10115,9 +10886,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -10368,7 +11138,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -10384,9 +11155,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -10628,7 +11398,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -10644,9 +11415,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -10890,7 +11660,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -10906,9 +11677,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -11474,7 +12244,7 @@ contains
   character(ndecim(prcpar)+nxtr+novh+1) :: cc
   character(10) :: aa,bb
   integer :: ndec
-  real(kindr2) :: xx     
+  double precision :: xx     
   xx = xx_in
   if (present(ndec_in)) then ;ndec=ndec_in
                         else ;ndec=ndecim(prcpar)+nxtr
@@ -11482,7 +12252,7 @@ contains
   write(aa,'(i10)') min(len(cc),ndec+novh+1) ;aa=adjustl(aa)
   write(bb,'(i10)') min(len(cc),ndec       ) ;bb=adjustl(bb)
   aa = '(e'//trim(aa)//'.'//trim(bb)//')'
-  write(cc,aa) dble(xx)  ;cc=adjustl(cc)
+  write(cc,aa) xx  ;cc=adjustl(cc)
   if (cc(1:2).eq.'-0') then ;rslt = '-'//cc(3:len(cc))
   else                      ;rslt = ' '//cc(2:len(cc))
   endif
@@ -11709,22 +12479,28 @@ contains
       gg=xd1*pq1 ;hh=yd1*uv1
       rx2 = gg+hh
       if (abs(rx2).lt.neglig(prcpar)*max(abs(gg),abs(hh))) rx2 = 0
-    else
+    elseif (abs(pq2).gt.abs(pq1)) then
       rx2 = pq2
       gg=xd2*pq2 ;hh=yd2*uv2
       rx1 = gg+hh
       if (abs(rx1).lt.neglig(prcpar)*max(abs(gg),abs(hh))) rx1 = 0
+    else
+      rx1 = pq1
+      rx2 = pq2
     endif
     if (abs(uv1).gt.abs(uv2)) then
       ix1 = uv1
       gg=yd1*pq1 ;hh=xd1*uv1
       ix2 = gg-hh
       if (abs(ix2).lt.neglig(prcpar)*max(abs(gg),abs(hh))) ix2 = 0
-    else
+    elseif (abs(uv2).gt.abs(uv1)) then
       ix2 = uv2
       gg=yd2*pq2 ;hh=xd2*uv2
       ix1 = gg-hh
       if (abs(ix1).lt.neglig(prcpar)*max(abs(gg),abs(hh))) ix1 = 0
+    else
+      ix1 = uv1
+      ix2 = uv2
     endif
     x1 = acmplx(rx1,ix1)
     x2 = acmplx(rx2,ix2)
@@ -12066,7 +12842,9 @@ module avh_olo_qp_olog
 !***********************************************************************
 ! Provides the functions
 !   olog(x,n) = log(x) + n*pi*imag  
-!   olog2(x,n) = olog(x,n)/(x-1)
+!   olog1(x,n) = olog(x,n)/(x-1)
+!   olog2(x,n) = ( olog1(x,n) - 1 )/(x-1)
+!   olog3(x,n) = ( olog2(x,n) + 1/2 )/(x-1)
 ! In the vicinity of x=1,n=0, the logarithm of complex argument is
 ! evaluated with a series expansion.
 !***********************************************************************
@@ -12076,7 +12854,7 @@ module avh_olo_qp_olog
   use avh_olo_qp_auxfun
   implicit none
   private
-  public :: update_olog,olog,olog2
+  public :: update_olog,olog,olog1,olog2,olog3
 
   real(kindr2) &  
          ,allocatable,save :: thrs(:,:)
@@ -12086,8 +12864,14 @@ module avh_olo_qp_olog
   interface olog
     module procedure log_c,log_r
   end interface
+  interface olog1
+    module procedure log1_c,log1_r
+  end interface
   interface olog2
     module procedure log2_c,log2_r
+  end interface
+  interface olog3
+    module procedure log3_c,log3_r
   end interface
 
 contains
@@ -12199,6 +12983,8 @@ contains
   elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
                                 else ;nn=ntrm(1,prcpar)
   endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 2 * ( z + z^3/3 + z^5/5 + z^7/7 + ... )  
   zz = zz/(yy+1)
   z2 = zz*zz
   aa = 2
@@ -12236,7 +13022,7 @@ contains
   end function
 
 
-  function log2_c(xx,iph) result(rslt)
+  function log1_c(xx,iph) result(rslt)
 !***********************************************************************
 !***********************************************************************
   complex(kindr2) &   
@@ -12253,9 +13039,9 @@ contains
 !
   if (abs(imx).le.EPSN*abs(rex)) then
     if (rex.ge.RZRO) then
-      rslt = log2_r( rex, iph )
+      rslt = log1_r( rex, iph )
     else
-      rslt = log2_r(-rex, iph+sgnRe(imx) )
+      rslt = log1_r(-rex, iph+sgnRe(imx) )
     endif
     return
   endif
@@ -12281,6 +13067,8 @@ contains
   elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
                                 else ;nn=ntrm(1,prcpar)
   endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 2/(y+1) * ( 1 + z^2/3 + z^4/5 + z^6/7 + ... )  
   zz = zz/(yy+1)
   z2 = zz*zz
   aa = 2
@@ -12293,7 +13081,7 @@ contains
   end function
 
 
-  function log2_r(xx,iph) result(rslt)
+  function log1_r(xx,iph) result(rslt)
 !***********************************************************************
 !***********************************************************************
   real(kindr2) &  
@@ -12309,7 +13097,7 @@ contains
 !  integer :: nn,ii
 !
   if (xx.eq.RZRO) then
-    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_r: ' &
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log1_r: ' &
        ,'xx =',trim(myprint(xx)),', returning 0'
     rslt = 0
     return
@@ -12321,7 +13109,7 @@ contains
 !
   if (abs(yy-1).le.10*EPSN) then
     if (jj.ne.0) then
-      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log1_r: ' &
         ,'rr,jj =',trim(myprint(rr)),jj,', putting jj to 0'
     endif
     rslt = 1 - (yy-1)/2
@@ -12331,7 +13119,149 @@ contains
   rslt = ( log(rr) + IPI*jj )/(yy-1)
   end function
 
+
+  function log2_r(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  real(kindr2) &  
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt
+  rslt = log2_c(xx*CONE,iph)
+  end function
+
+
+  function log2_c(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  complex(kindr2) &   
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt ,yy,zz,z2
+  real(kindr2) &  
+    :: aa,rex,imx
+  integer :: nn,ii,jj
+!
+  rex = areal(xx)
+  imx = aimag(xx)
+!
+  if (rex.eq.RZRO.and.imx.eq.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_c: ' &
+       ,'xx = 0, returning 0'
+    rslt = 0
+    return
+  endif
+!
+  if (mod(iph,2).eq.0) then ;yy= xx ;jj=iph
+                       else ;yy=-xx ;jj=iph+sgnRe(imx)
+  endif
+!
+  if (jj.ne.0) then
+    rslt = ( olog1(yy,jj) - 1 )/(yy-1)
+    return
+  endif
+!
+  zz = yy-1
+  aa = abs(zz)
+  if     (aa.ge.thrs(6,prcpar)) then
+    rslt = (log(yy)/zz-1)/zz
+    return
+  elseif (aa.ge.thrs(5,prcpar)) then ;nn=ntrm(6,prcpar)
+  elseif (aa.ge.thrs(4,prcpar)) then ;nn=ntrm(5,prcpar)
+  elseif (aa.ge.thrs(3,prcpar)) then ;nn=ntrm(4,prcpar)
+  elseif (aa.ge.thrs(2,prcpar)) then ;nn=ntrm(3,prcpar)
+  elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
+                                else ;nn=ntrm(1,prcpar)
+  endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = -1/(y+1) + 2/(y+1)^2 * ( z/3 + z^3/5 + z^5/7 + ... )  
+  zz = zz/(yy+1)
+  z2 = zz*zz
+  aa = 2
+  nn = 2*nn-1
+  rslt = aa/nn
+  do ii=nn-2,3,-2
+    rslt = aa/ii + z2*rslt
+  enddo
+  rslt = ( -1 + zz*rslt/(yy+1) )/(yy+1)
+  end function
+
+
+  function log3_r(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  real(kindr2) &  
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt
+  rslt = log3_c(xx*CONE,iph)
+  end function
+
+
+  function log3_c(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  complex(kindr2) &   
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  complex(kindr2) &   
+    :: rslt ,yy,zz,z2,HLF
+  real(kindr2) &  
+    :: aa,rex,imx
+  integer :: nn,ii,jj
+!
+  rex = areal(xx)
+  imx = aimag(xx)
+!
+  if (rex.eq.RZRO.and.imx.eq.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_c: ' &
+       ,'xx = 0, returning 0'
+    rslt = 0
+    return
+  endif
+!
+  HLF = CONE/2
+!
+  if (mod(iph,2).eq.0) then ;yy= xx ;jj=iph
+                       else ;yy=-xx ;jj=iph+sgnRe(imx)
+  endif
+!
+  if (jj.ne.0) then
+    rslt = ( olog2(xx,jj) + HLF )/(yy-1)
+    return
+  endif
+!
+  zz = yy-1
+  aa = abs(zz)
+  if     (aa.ge.thrs(6,prcpar)) then
+    rslt = ((log(yy)/zz-1)/zz+HLF)/zz
+    return
+  elseif (aa.ge.thrs(5,prcpar)) then ;nn=ntrm(6,prcpar)
+  elseif (aa.ge.thrs(4,prcpar)) then ;nn=ntrm(5,prcpar)
+  elseif (aa.ge.thrs(3,prcpar)) then ;nn=ntrm(4,prcpar)
+  elseif (aa.ge.thrs(2,prcpar)) then ;nn=ntrm(3,prcpar)
+  elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
+                                else ;nn=ntrm(1,prcpar)
+  endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 1/(2*(y+1)) + 2/(y+1)^3 * ( 1/3 + z^2/5 + z^4/7 + ... )
+  zz = zz/(yy+1)
+  z2 = zz*zz
+  aa = 2
+  nn = 2*nn-1
+  rslt = aa/nn
+  do ii=nn-2,3,-2
+    rslt = aa/ii + z2*rslt
+  enddo
+  rslt = ( HLF + rslt/(yy+1)**2 )/(yy+1)
+  end function
+
 end module
+
+
 
 
 module avh_olo_qp_dilog
@@ -12588,7 +13518,7 @@ contains
 ! 
   if (yy.eq.RONE.and.odd.eq.0) then
     if (ntwo.ne.0) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog_r: ' &
         ,'|x|,iph = ',trim(myprint(yy)),',',jj,', returning 0'
     endif
     rslt = 0
@@ -12696,7 +13626,7 @@ contains
 !
   if (j1.ne.j2) then
     if (r1.eq.r2) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'j1,j2,r1-r2',j1,j2,',',trim(myprint(r1-r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_c j1=/=j2,r1=r2' !DEBUG
@@ -12710,7 +13640,7 @@ contains
 !
   if (a1.lt.eps) then
     if (a2.lt.eps) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,r2 =',trim(myprint(r1)),',',trim(myprint(r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_c r1<eps,r2<eps' !DEBUG
@@ -12732,7 +13662,7 @@ contains
 !      write(*,*) 'dilog2_c ||1-y1|/|1-y2|-1|>0.1' !DEBUG
       return
     elseif (oo.eq.0.and.ao1.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,oo,nn =',trim(myprint(r1)),',',oo,nn,', putting nn=0'
       if (ao2.lt.eps) then
         rslt = -1
@@ -12742,7 +13672,7 @@ contains
         y1=1-eps ;nn=0 ;logr1=0 ;r1=1-eps
       endif
     elseif (oo.eq.0.and.ao2.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r2,oo,nn =',trim(myprint(r2)),',',oo,nn,', putting nn=0'
       y2=1-eps ;nn=0 ;logr2=0 ;r2=1-eps
     endif
@@ -12757,10 +13687,10 @@ contains
       if (a1.gt.RONE) ii = ii + (nn+pp(oo,sgnIm(y2)))
       if (a2.gt.RONE) ii = ii - (nn+pp(oo,sgnIm(y2)))
       ii = nn*ii
-      if (ii.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (ii.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,r2,nn =',trim(myprint(r1)),',',trim(myprint(r2)),',',nn &
         ,', putting nn=0'
-      rslt = -olog2(y2,0)
+      rslt = -olog1(y2,0)
 !      write(*,*) 'dilog2_c |logr1/lorg2|<eps' !DEBUG
       return
     endif
@@ -12772,8 +13702,8 @@ contains
     nn=-nn ;oo=-oo
   endif
 !
-  ff=y1/y2         ;ff=-olog2(ff,0)/y2
-  gg=(1-y1)/(1-y2) ;gg=-olog2(gg,0)/(1-y2)
+  ff=y1/y2         ;ff=-olog1(ff,0)/y2
+  gg=(1-y1)/(1-y2) ;gg=-olog1(gg,0)/(1-y2)
 !
   if (2*areal(y1).ge.RONE) then
 !    write(*,*) 'dilog2_c re>1/2' !DEBUG
@@ -12830,7 +13760,7 @@ contains
 !
   if (j1.ne.j2) then
     if (r1.eq.r2) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'j1,j2,r1-r2',j1,j2,',',trim(myprint(r1-r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_r j1=/=j2,r1=r2' !DEBUG
@@ -12844,7 +13774,7 @@ contains
 !
   if (r1.lt.eps) then
     if (r2.lt.eps) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,r2 =',trim(myprint(r1)),',',trim(myprint(r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_r r1<eps,r2<eps' !DEBUG
@@ -12866,7 +13796,7 @@ contains
 !      write(*,*) 'dilog2_r ||1-y1|/|1-y2|-1|>0.1' !DEBUG
       return
     elseif (oo.eq.0.and.ro1.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,oo,nn =',trim(myprint(r1)),',',oo,nn,', putting nn=0'
       if (ro2.lt.eps) then
         rslt = -1
@@ -12876,7 +13806,7 @@ contains
         y1=1-eps ;nn=0 ;logr1=0 ;r1=1-eps
       endif
     elseif (oo.eq.0.and.ro2.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r2,oo,nn =',trim(myprint(r2)),',',oo,nn,', putting nn=0'
       y2=1-eps ;nn=0 ;logr2=0 ;r2=1-eps
     endif
@@ -12891,10 +13821,10 @@ contains
       if (r1.gt.RONE) ii = ii + (nn+2*oo)
       if (r2.gt.RONE) ii = ii - (nn+2*oo)
       ii = nn*ii
-      if (ii.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (ii.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,r2,nn =',trim(myprint(r1)),',',trim(myprint(r2)),',',nn &
         ,', putting nn=0'
-      rslt = -olog2(y2,0)
+      rslt = -olog1(y2,0)
 !      write(*,*) 'dilog2_r |logr1/lorg2|<eps' !DEBUG
       return
     endif
@@ -12906,8 +13836,8 @@ contains
     nn=-nn ;oo=-oo
   endif
 !
-  ff=y1/y2         ;ff=-olog2(ff,0)/y2
-  gg=(1-y1)/(1-y2) ;gg=-olog2(gg,0)/(1-y2)
+  ff=y1/y2         ;ff=-olog1(ff,0)/y2
+  gg=(1-y1)/(1-y2) ;gg=-olog1(gg,0)/(1-y2)
 !
   if (2*y1.ge.RONE) then
 !    write(*,*) 'dilog2_r re>1/2' !DEBUG
@@ -13337,7 +14267,7 @@ module avh_olo_qp_qmplx
 
   implicit none
   private
-  public :: qmplx_type,qonv,directly,sheet,logc,logc2,li2c,li2c2
+  public :: qmplx_type,qonv,directly,sheet,logc,logc2,logc3,li2c,li2c2
   public :: operator (*) ,operator (/)
 
   type :: qmplx_type
@@ -13584,8 +14514,19 @@ contains
   type(qmplx_type) ,intent(in) :: xx
   complex(kindr2) &   
     :: rslt
-!  rslt = -olog2(acmplx(xx%c),xx%p)
-  rslt = -olog2(xx%c,xx%p)
+!  rslt = -olog1(acmplx(xx%c),xx%p)
+  rslt = -olog1(xx%c,xx%p)
+  end function
+
+  function logc3(xx) result(rslt)
+!*******************************************************************
+!  ( log(xx)/(1-xx) + 1 )/(1-xx)
+!*******************************************************************
+  type(qmplx_type) ,intent(in) :: xx
+  complex(kindr2) &   
+    :: rslt
+!  rslt = olog2(acmplx(xx%c),xx%p)
+  rslt = olog2(xx%c,xx%p)
   end function
 
   function li2c(xx) result(rslt)
@@ -13625,9 +14566,10 @@ module avh_olo_qp_bub
   use avh_olo_qp_auxfun
   use avh_olo_qp_bnlog
   use avh_olo_qp_qmplx
+  use avh_olo_qp_olog
   implicit none
   private
-  public :: tadp ,tadpn ,bub0 ,bub1 ,bub11 ,bub111 ,bub1111
+  public :: tadp ,tadpn ,bub0 ,dbub0 ,bub1 ,bub11 ,bub111 ,bub1111
 
 contains
 
@@ -14218,6 +15160,92 @@ contains
   b0011(0) = ( a0(0,0) - x1*b111(0) + x2*b11(0) + 4*b0011(1) )/10
   end subroutine
 
+
+!*******************************************************************
+! Derivative of B0
+! expects  m0<m1
+! only finite case, so input must not be  m0=0 & m1=pp
+!*******************************************************************
+
+  subroutine dbub0( rslt &
+                   ,pp,m0,m1 ,app,am0,am1 )
+  complex(kindr2) &   
+    ,intent(out) :: rslt
+  complex(kindr2) &   
+    ,intent(in)  :: pp,m0,m1
+  real(kindr2) &  
+    ,intent(in)  :: app,am0,am1
+  complex(kindr2) &   
+    :: ch,x1,x2,lambda
+  real(kindr2) &  
+    :: ax1,ax2,ax1x2,maxa
+  type(qmplx_type) :: q1,q2,q1o,q2o
+  integer :: sgn
+!
+  if (am1.eq.RZRO) then
+    if (app.eq.RZRO) then
+      rslt = 0
+      return
+    endif
+  endif
+!
+  if (app.eq.RZRO) then
+    if (abs(m0-m1).le.am1*EPSN*10) then
+      rslt = 1/(6*m1)
+    else
+      ch = m0/m1
+      rslt = ( CONE/2 - ch*olog3(ch,0) )/m1 
+    endif
+  elseif (am1.eq.RZRO) then
+    rslt =-1/pp
+  else
+    call solabc( x1,x2 ,lambda ,pp ,(m0-m1)-pp ,m1 ,0 )
+    sgn =-sgnRe(pp)*sgnRe(x2-x1)
+    q1  = qonv(x1  , sgn)
+    q1o = qonv(x1-1, sgn)
+    q2  = qonv(x2  ,-sgn)
+    q2o = qonv(x2-1,-sgn)
+    ax1 = abs(x1)
+    ax2 = abs(x2)
+    ax1x2 = abs(x1-x2)
+    maxa = max(ax1,ax2)
+    if (ax1x2.lt.maxa*EPSN*10) then
+      rslt = ( (x1+x2-1)*logc(q2/q2o) - 2 )/pp
+    elseif (ax1x2*2.lt.maxa) then
+      if     (x1.eq.CZRO.or.x1.eq.CONE) then
+        rslt = ( (x1+x2-1)*logc(q2/q2o) - 1 )/pp
+      elseif (x2.eq.CZRO.or.x2.eq.CONE) then
+        rslt = ( (x1+x2-1)*logc(q1/q1o) - 1 )/pp
+      else
+        rslt = x1*(x1-1)*( logc2(q1o/q2o)/(x2-1) - logc2(q1/q2)/x2 ) &
+             + (x1+x2-1)*logc(q2/q2o) - 1
+        rslt = rslt/pp
+      endif
+    else
+      rslt = 0
+      if (ax1.ne.RZRO) then
+        if (ax1.lt.2*RONE) then
+          rslt = rslt - x1
+          if (x1.ne.CONE) rslt = rslt - x1*logc2(q1/q1o)
+        else
+          rslt = rslt + x1/(x1-1)*logc3(q1/q1o)
+        endif
+      endif
+      if (ax2.ne.RZRO) then
+        if (ax2.lt.2*RONE) then
+          rslt = rslt + x2
+          if (x2.ne.CONE) rslt = rslt + x2*logc2(q2/q2o)
+        else
+          rslt = rslt - x2/(x2-1)*logc3(q2/q2o)
+        endif
+      endif
+      rslt = rslt/lambda
+    endif
+  endif
+!
+  end subroutine
+
+
 end module
 
 
@@ -14451,7 +15479,7 @@ contains
     log2 = olog( abs(rp2/rmu2) ,i2 )
     log3 = olog( abs(rp3/rmu2) ,i3 )
     rslt(2) = 0
-    rslt(1) = -olog2( abs(rp3/rp2) ,i3-i2 )/rp2
+    rslt(1) = -olog1( abs(rp3/rp2) ,i3-i2 )/rp2
     rslt(0) = -rslt(1)*(log3+log2)/2
   elseif (icase.eq.3) then
 ! 3 masses non-zero
@@ -17024,6 +18052,7 @@ contains
      ,intent(in) :: y1,y2
   complex(kindr2) &   
      :: rslt ,oy1,oy2
+!
    oy1 = 1-y1
    oy2 = 1-y2
    rslt = logc2( qonv(-y2)/qonv(-y1) )/y1 &
@@ -17092,17 +18121,10 @@ module avh_olo_qp
   private
   public :: olo_unit ,olo_scale ,olo_onshell ,olo_setting
   public :: olo_precision
-  public :: olo_a0 ,olo_b0 ,olo_b11 ,olo_c0 ,olo_d0
+  public :: olo_a0 ,olo_b0 ,olo_db0 ,olo_b11 ,olo_c0 ,olo_d0
   public :: olo_an ,olo_bn
   public :: olo
   public :: olo_get_scale ,olo_get_onshell ,olo_get_precision
-  public :: a0_r,a0rr,a0_c,a0cr
-  public :: an_r,anrr,an_c,ancr
-  public :: b0rr,b0rrr,b0rc,b0rcr,b0cc,b0ccr
-  public :: b11rr,b11rrr,b11rc,b11rcr,b11cc,b11ccr
-  public :: bnrr,bnrrr,bnrc,bnrcr,bncc,bnccr
-  public :: c0rr,c0rrr,c0rc,c0rcr,c0cc,c0ccr
-  public :: d0rr,d0rrr,d0rc,d0rcr,d0cc,d0ccr
 !
   integer ,public ,parameter :: olo_kind=kindr2    
 !
@@ -17127,6 +18149,9 @@ module avh_olo_qp
   end interface 
   interface olo_b0
     module procedure b0rr,b0rrr,b0rc,b0rcr,b0cc,b0ccr
+  end interface 
+  interface olo_db0
+    module procedure db0rr,db0rrr,db0rc,db0rcr,db0cc,db0ccr
   end interface 
   interface olo_b11
     module procedure b11rr,b11rrr,b11rc,b11rcr,b11cc,b11ccr
@@ -18113,6 +19138,520 @@ contains
     write(punit,*) 'b0(0):',trim(myprint(rslt(0)))
   endif
   end subroutine
+
+!*******************************************************************
+! Derivative of B0
+!*******************************************************************
+  subroutine db0cc( rslt ,pp,m1,m2 )
+!
+  use avh_olo_qp_bub ,only: dbub0
+  use avh_olo_qp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  complex(kindr2) &   
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = areal(ss)
+  if (aimag(ss).ne.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'ss has non-zero imaginary part, putting it to zero.'
+    ss = acmplx( app )
+  endif
+  app = abs(app)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0ccr( rslt ,pp,m1,m2 ,rmu )
+!
+  use avh_olo_qp_bub ,only: dbub0
+  use avh_olo_qp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  complex(kindr2) &   
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+  real(kindr2) &  
+   ,intent(in)  :: rmu       
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = areal(ss)
+  if (aimag(ss).ne.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'ss has non-zero imaginary part, putting it to zero.'
+    ss = acmplx( app )
+  endif
+  app = abs(app)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rc( rslt ,pp ,m1,m2 )
+!
+  use avh_olo_qp_bub ,only: dbub0
+  use avh_olo_qp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rcr( rslt ,pp,m1,m2 ,rmu )
+!
+  use avh_olo_qp_bub ,only: dbub0
+  use avh_olo_qp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  complex(kindr2) &   
+    ,intent(in)  :: m1,m2
+  real(kindr2) &  
+   ,intent(in)  :: rmu       
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rr( rslt ,pp ,m1,m2 )
+!
+  use avh_olo_qp_bub ,only: dbub0
+  use avh_olo_qp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  real(kindr2) &  
+    ,intent(in)  :: m1,m2
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = abs(m1)
+  am2 = abs(m2)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rrr( rslt ,pp ,m1,m2 ,rmu )
+!
+  use avh_olo_qp_bub ,only: dbub0
+  use avh_olo_qp_olog ,only: olog
+!
+  complex(kindr2) &   
+    ,intent(out) :: rslt(0:2)
+  real(kindr2) &  
+    ,intent(in)  :: pp
+  real(kindr2) &  
+    ,intent(in)  :: m1,m2
+  real(kindr2) &  
+   ,intent(in)  :: rmu       
+!
+  complex(kindr2) &   
+    :: ss,r1,r2,ch
+  real(kindr2) &  
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = abs(m1)
+  am2 = abs(m2)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
 
 
 !*******************************************************************
@@ -20485,7 +22024,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -20501,9 +22041,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -20760,7 +22299,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -20776,9 +22316,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -21027,7 +22566,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -21043,9 +22583,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -21296,7 +22835,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -21312,9 +22852,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -21556,7 +23095,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -21572,9 +23112,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -21818,7 +23357,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -21834,9 +23374,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -22660,22 +24199,28 @@ contains
       gg=xd1*pq1 ;hh=yd1*uv1
       rx2 = gg+hh
       if (abs(rx2).lt.neglig(prcpar)*max(abs(gg),abs(hh))) rx2 = 0
-    else
+    elseif (abs(pq2).gt.abs(pq1)) then
       rx2 = pq2
       gg=xd2*pq2 ;hh=yd2*uv2
       rx1 = gg+hh
       if (abs(rx1).lt.neglig(prcpar)*max(abs(gg),abs(hh))) rx1 = 0
+    else
+      rx1 = pq1
+      rx2 = pq2
     endif
     if (abs(uv1).gt.abs(uv2)) then
       ix1 = uv1
       gg=yd1*pq1 ;hh=xd1*uv1
       ix2 = gg-hh
       if (abs(ix2).lt.neglig(prcpar)*max(abs(gg),abs(hh))) ix2 = 0
-    else
+    elseif (abs(uv2).gt.abs(uv1)) then
       ix2 = uv2
       gg=yd2*pq2 ;hh=xd2*uv2
       ix1 = gg-hh
       if (abs(ix1).lt.neglig(prcpar)*max(abs(gg),abs(hh))) ix1 = 0
+    else
+      ix1 = uv1
+      ix2 = uv2
     endif
     x1 = acmplx(rx1,ix1)
     x2 = acmplx(rx2,ix2)
@@ -23017,7 +24562,9 @@ module avh_olo_mp_olog
 !***********************************************************************
 ! Provides the functions
 !   olog(x,n) = log(x) + n*pi*imag  
-!   olog2(x,n) = olog(x,n)/(x-1)
+!   olog1(x,n) = olog(x,n)/(x-1)
+!   olog2(x,n) = ( olog1(x,n) - 1 )/(x-1)
+!   olog3(x,n) = ( olog2(x,n) + 1/2 )/(x-1)
 ! In the vicinity of x=1,n=0, the logarithm of complex argument is
 ! evaluated with a series expansion.
 !***********************************************************************
@@ -23027,7 +24574,7 @@ module avh_olo_mp_olog
   use avh_olo_mp_auxfun
   implicit none
   private
-  public :: update_olog,olog,olog2
+  public :: update_olog,olog,olog1,olog2,olog3
 
   type(mp_real) & 
          ,allocatable,save :: thrs(:,:)
@@ -23037,8 +24584,14 @@ module avh_olo_mp_olog
   interface olog
     module procedure log_c,log_r
   end interface
+  interface olog1
+    module procedure log1_c,log1_r
+  end interface
   interface olog2
     module procedure log2_c,log2_r
+  end interface
+  interface olog3
+    module procedure log3_c,log3_r
   end interface
 
 contains
@@ -23150,6 +24703,8 @@ contains
   elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
                                 else ;nn=ntrm(1,prcpar)
   endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 2 * ( z + z^3/3 + z^5/5 + z^7/7 + ... )  
   zz = zz/(yy+1)
   z2 = zz*zz
   aa = 2
@@ -23187,7 +24742,7 @@ contains
   end function
 
 
-  function log2_c(xx,iph) result(rslt)
+  function log1_c(xx,iph) result(rslt)
 !***********************************************************************
 !***********************************************************************
   type(mp_complex) &  
@@ -23204,9 +24759,9 @@ contains
 !
   if (abs(imx).le.EPSN*abs(rex)) then
     if (rex.ge.RZRO) then
-      rslt = log2_r( rex, iph )
+      rslt = log1_r( rex, iph )
     else
-      rslt = log2_r(-rex, iph+sgnRe(imx) )
+      rslt = log1_r(-rex, iph+sgnRe(imx) )
     endif
     return
   endif
@@ -23232,6 +24787,8 @@ contains
   elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
                                 else ;nn=ntrm(1,prcpar)
   endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 2/(y+1) * ( 1 + z^2/3 + z^4/5 + z^6/7 + ... )  
   zz = zz/(yy+1)
   z2 = zz*zz
   aa = 2
@@ -23244,7 +24801,7 @@ contains
   end function
 
 
-  function log2_r(xx,iph) result(rslt)
+  function log1_r(xx,iph) result(rslt)
 !***********************************************************************
 !***********************************************************************
   type(mp_real) & 
@@ -23260,7 +24817,7 @@ contains
 !  integer :: nn,ii
 !
   if (xx.eq.RZRO) then
-    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_r: ' &
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log1_r: ' &
        ,'xx =',trim(myprint(xx)),', returning 0'
     rslt = 0
     return
@@ -23272,7 +24829,7 @@ contains
 !
   if (abs(yy-1).le.10*EPSN) then
     if (jj.ne.0) then
-      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log1_r: ' &
         ,'rr,jj =',trim(myprint(rr)),jj,', putting jj to 0'
     endif
     rslt = 1 - (yy-1)/2
@@ -23282,7 +24839,149 @@ contains
   rslt = ( log(rr) + IPI*jj )/(yy-1)
   end function
 
+
+  function log2_r(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  type(mp_real) & 
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  type(mp_complex) &  
+    :: rslt
+  rslt = log2_c(xx*CONE,iph)
+  end function
+
+
+  function log2_c(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  type(mp_complex) &  
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  type(mp_complex) &  
+    :: rslt ,yy,zz,z2
+  type(mp_real) & 
+    :: aa,rex,imx
+  integer :: nn,ii,jj
+!
+  rex = areal(xx)
+  imx = aimag(xx)
+!
+  if (rex.eq.RZRO.and.imx.eq.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_c: ' &
+       ,'xx = 0, returning 0'
+    rslt = 0
+    return
+  endif
+!
+  if (mod(iph,2).eq.0) then ;yy= xx ;jj=iph
+                       else ;yy=-xx ;jj=iph+sgnRe(imx)
+  endif
+!
+  if (jj.ne.0) then
+    rslt = ( olog1(yy,jj) - 1 )/(yy-1)
+    return
+  endif
+!
+  zz = yy-1
+  aa = abs(zz)
+  if     (aa.ge.thrs(6,prcpar)) then
+    rslt = (log(yy)/zz-1)/zz
+    return
+  elseif (aa.ge.thrs(5,prcpar)) then ;nn=ntrm(6,prcpar)
+  elseif (aa.ge.thrs(4,prcpar)) then ;nn=ntrm(5,prcpar)
+  elseif (aa.ge.thrs(3,prcpar)) then ;nn=ntrm(4,prcpar)
+  elseif (aa.ge.thrs(2,prcpar)) then ;nn=ntrm(3,prcpar)
+  elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
+                                else ;nn=ntrm(1,prcpar)
+  endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = -1/(y+1) + 2/(y+1)^2 * ( z/3 + z^3/5 + z^5/7 + ... )  
+  zz = zz/(yy+1)
+  z2 = zz*zz
+  aa = 2
+  nn = 2*nn-1
+  rslt = aa/nn
+  do ii=nn-2,3,-2
+    rslt = aa/ii + z2*rslt
+  enddo
+  rslt = ( -1 + zz*rslt/(yy+1) )/(yy+1)
+  end function
+
+
+  function log3_r(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  type(mp_real) & 
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  type(mp_complex) &  
+    :: rslt
+  rslt = log3_c(xx*CONE,iph)
+  end function
+
+
+  function log3_c(xx,iph) result(rslt)
+!***********************************************************************
+!***********************************************************************
+  type(mp_complex) &  
+          ,intent(in) :: xx
+  integer ,intent(in) :: iph
+  type(mp_complex) &  
+    :: rslt ,yy,zz,z2,HLF
+  type(mp_real) & 
+    :: aa,rex,imx
+  integer :: nn,ii,jj
+!
+  rex = areal(xx)
+  imx = aimag(xx)
+!
+  if (rex.eq.RZRO.and.imx.eq.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop log2_c: ' &
+       ,'xx = 0, returning 0'
+    rslt = 0
+    return
+  endif
+!
+  HLF = CONE/2
+!
+  if (mod(iph,2).eq.0) then ;yy= xx ;jj=iph
+                       else ;yy=-xx ;jj=iph+sgnRe(imx)
+  endif
+!
+  if (jj.ne.0) then
+    rslt = ( olog2(xx,jj) + HLF )/(yy-1)
+    return
+  endif
+!
+  zz = yy-1
+  aa = abs(zz)
+  if     (aa.ge.thrs(6,prcpar)) then
+    rslt = ((log(yy)/zz-1)/zz+HLF)/zz
+    return
+  elseif (aa.ge.thrs(5,prcpar)) then ;nn=ntrm(6,prcpar)
+  elseif (aa.ge.thrs(4,prcpar)) then ;nn=ntrm(5,prcpar)
+  elseif (aa.ge.thrs(3,prcpar)) then ;nn=ntrm(4,prcpar)
+  elseif (aa.ge.thrs(2,prcpar)) then ;nn=ntrm(3,prcpar)
+  elseif (aa.ge.thrs(1,prcpar)) then ;nn=ntrm(2,prcpar)
+                                else ;nn=ntrm(1,prcpar)
+  endif
+! convergence acceleration using  z=(y-1)/(y+1)
+! rslt = 1/(2*(y+1)) + 2/(y+1)^3 * ( 1/3 + z^2/5 + z^4/7 + ... )
+  zz = zz/(yy+1)
+  z2 = zz*zz
+  aa = 2
+  nn = 2*nn-1
+  rslt = aa/nn
+  do ii=nn-2,3,-2
+    rslt = aa/ii + z2*rslt
+  enddo
+  rslt = ( HLF + rslt/(yy+1)**2 )/(yy+1)
+  end function
+
 end module
+
+
 
 
 module avh_olo_mp_dilog
@@ -23539,7 +25238,7 @@ contains
 ! 
   if (yy.eq.RONE.and.odd.eq.0) then
     if (ntwo.ne.0) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog_r: ' &
         ,'|x|,iph = ',trim(myprint(yy)),',',jj,', returning 0'
     endif
     rslt = 0
@@ -23647,7 +25346,7 @@ contains
 !
   if (j1.ne.j2) then
     if (r1.eq.r2) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'j1,j2,r1-r2',j1,j2,',',trim(myprint(r1-r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_c j1=/=j2,r1=r2' !DEBUG
@@ -23661,7 +25360,7 @@ contains
 !
   if (a1.lt.eps) then
     if (a2.lt.eps) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,r2 =',trim(myprint(r1)),',',trim(myprint(r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_c r1<eps,r2<eps' !DEBUG
@@ -23683,7 +25382,7 @@ contains
 !      write(*,*) 'dilog2_c ||1-y1|/|1-y2|-1|>0.1' !DEBUG
       return
     elseif (oo.eq.0.and.ao1.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,oo,nn =',trim(myprint(r1)),',',oo,nn,', putting nn=0'
       if (ao2.lt.eps) then
         rslt = -1
@@ -23693,7 +25392,7 @@ contains
         y1=1-eps ;nn=0 ;logr1=0 ;r1=1-eps
       endif
     elseif (oo.eq.0.and.ao2.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r2,oo,nn =',trim(myprint(r2)),',',oo,nn,', putting nn=0'
       y2=1-eps ;nn=0 ;logr2=0 ;r2=1-eps
     endif
@@ -23708,10 +25407,10 @@ contains
       if (a1.gt.RONE) ii = ii + (nn+pp(oo,sgnIm(y2)))
       if (a2.gt.RONE) ii = ii - (nn+pp(oo,sgnIm(y2)))
       ii = nn*ii
-      if (ii.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
+      if (ii.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_c: ' &
         ,'r1,r2,nn =',trim(myprint(r1)),',',trim(myprint(r2)),',',nn &
         ,', putting nn=0'
-      rslt = -olog2(y2,0)
+      rslt = -olog1(y2,0)
 !      write(*,*) 'dilog2_c |logr1/lorg2|<eps' !DEBUG
       return
     endif
@@ -23723,8 +25422,8 @@ contains
     nn=-nn ;oo=-oo
   endif
 !
-  ff=y1/y2         ;ff=-olog2(ff,0)/y2
-  gg=(1-y1)/(1-y2) ;gg=-olog2(gg,0)/(1-y2)
+  ff=y1/y2         ;ff=-olog1(ff,0)/y2
+  gg=(1-y1)/(1-y2) ;gg=-olog1(gg,0)/(1-y2)
 !
   if (2*areal(y1).ge.RONE) then
 !    write(*,*) 'dilog2_c re>1/2' !DEBUG
@@ -23781,7 +25480,7 @@ contains
 !
   if (j1.ne.j2) then
     if (r1.eq.r2) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'j1,j2,r1-r2',j1,j2,',',trim(myprint(r1-r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_r j1=/=j2,r1=r2' !DEBUG
@@ -23795,7 +25494,7 @@ contains
 !
   if (r1.lt.eps) then
     if (r2.lt.eps) then
-      if (dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,r2 =',trim(myprint(r1)),',',trim(myprint(r2)),', returning 0'
       rslt = 0
 !      write(*,*) 'dilog2_r r1<eps,r2<eps' !DEBUG
@@ -23817,7 +25516,7 @@ contains
 !      write(*,*) 'dilog2_r ||1-y1|/|1-y2|-1|>0.1' !DEBUG
       return
     elseif (oo.eq.0.and.ro1.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,oo,nn =',trim(myprint(r1)),',',oo,nn,', putting nn=0'
       if (ro2.lt.eps) then
         rslt = -1
@@ -23827,7 +25526,7 @@ contains
         y1=1-eps ;nn=0 ;logr1=0 ;r1=1-eps
       endif
     elseif (oo.eq.0.and.ro2.lt.eps) then
-      if (nn.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (nn.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r2,oo,nn =',trim(myprint(r2)),',',oo,nn,', putting nn=0'
       y2=1-eps ;nn=0 ;logr2=0 ;r2=1-eps
     endif
@@ -23842,10 +25541,10 @@ contains
       if (r1.gt.RONE) ii = ii + (nn+2*oo)
       if (r2.gt.RONE) ii = ii - (nn+2*oo)
       ii = nn*ii
-      if (ii.ne.0.and.dunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
+      if (ii.ne.0.and.eunit.gt.0) write(eunit,*) 'ERROR in OneLOop dilog2_r: ' &
         ,'r1,r2,nn =',trim(myprint(r1)),',',trim(myprint(r2)),',',nn &
         ,', putting nn=0'
-      rslt = -olog2(y2,0)
+      rslt = -olog1(y2,0)
 !      write(*,*) 'dilog2_r |logr1/lorg2|<eps' !DEBUG
       return
     endif
@@ -23857,8 +25556,8 @@ contains
     nn=-nn ;oo=-oo
   endif
 !
-  ff=y1/y2         ;ff=-olog2(ff,0)/y2
-  gg=(1-y1)/(1-y2) ;gg=-olog2(gg,0)/(1-y2)
+  ff=y1/y2         ;ff=-olog1(ff,0)/y2
+  gg=(1-y1)/(1-y2) ;gg=-olog1(gg,0)/(1-y2)
 !
   if (2*y1.ge.RONE) then
 !    write(*,*) 'dilog2_r re>1/2' !DEBUG
@@ -24288,7 +25987,7 @@ module avh_olo_mp_qmplx
 
   implicit none
   private
-  public :: qmplx_type,qonv,directly,sheet,logc,logc2,li2c,li2c2
+  public :: qmplx_type,qonv,directly,sheet,logc,logc2,logc3,li2c,li2c2
   public :: operator (*) ,operator (/)
 
   type :: qmplx_type
@@ -24535,8 +26234,19 @@ contains
   type(qmplx_type) ,intent(in) :: xx
   type(mp_complex) &  
     :: rslt
-!  rslt = -olog2(acmplx(xx%c),xx%p)
-  rslt = -olog2(xx%c,xx%p)
+!  rslt = -olog1(acmplx(xx%c),xx%p)
+  rslt = -olog1(xx%c,xx%p)
+  end function
+
+  function logc3(xx) result(rslt)
+!*******************************************************************
+!  ( log(xx)/(1-xx) + 1 )/(1-xx)
+!*******************************************************************
+  type(qmplx_type) ,intent(in) :: xx
+  type(mp_complex) &  
+    :: rslt
+!  rslt = olog2(acmplx(xx%c),xx%p)
+  rslt = olog2(xx%c,xx%p)
   end function
 
   function li2c(xx) result(rslt)
@@ -24576,9 +26286,10 @@ module avh_olo_mp_bub
   use avh_olo_mp_auxfun
   use avh_olo_mp_bnlog
   use avh_olo_mp_qmplx
+  use avh_olo_mp_olog
   implicit none
   private
-  public :: tadp ,tadpn ,bub0 ,bub1 ,bub11 ,bub111 ,bub1111
+  public :: tadp ,tadpn ,bub0 ,dbub0 ,bub1 ,bub11 ,bub111 ,bub1111
 
 contains
 
@@ -25169,6 +26880,92 @@ contains
   b0011(0) = ( a0(0,0) - x1*b111(0) + x2*b11(0) + 4*b0011(1) )/10
   end subroutine
 
+
+!*******************************************************************
+! Derivative of B0
+! expects  m0<m1
+! only finite case, so input must not be  m0=0 & m1=pp
+!*******************************************************************
+
+  subroutine dbub0( rslt &
+                   ,pp,m0,m1 ,app,am0,am1 )
+  type(mp_complex) &  
+    ,intent(out) :: rslt
+  type(mp_complex) &  
+    ,intent(in)  :: pp,m0,m1
+  type(mp_real) & 
+    ,intent(in)  :: app,am0,am1
+  type(mp_complex) &  
+    :: ch,x1,x2,lambda
+  type(mp_real) & 
+    :: ax1,ax2,ax1x2,maxa
+  type(qmplx_type) :: q1,q2,q1o,q2o
+  integer :: sgn
+!
+  if (am1.eq.RZRO) then
+    if (app.eq.RZRO) then
+      rslt = 0
+      return
+    endif
+  endif
+!
+  if (app.eq.RZRO) then
+    if (abs(m0-m1).le.am1*EPSN*10) then
+      rslt = 1/(6*m1)
+    else
+      ch = m0/m1
+      rslt = ( CONE/2 - ch*olog3(ch,0) )/m1 
+    endif
+  elseif (am1.eq.RZRO) then
+    rslt =-1/pp
+  else
+    call solabc( x1,x2 ,lambda ,pp ,(m0-m1)-pp ,m1 ,0 )
+    sgn =-sgnRe(pp)*sgnRe(x2-x1)
+    q1  = qonv(x1  , sgn)
+    q1o = qonv(x1-1, sgn)
+    q2  = qonv(x2  ,-sgn)
+    q2o = qonv(x2-1,-sgn)
+    ax1 = abs(x1)
+    ax2 = abs(x2)
+    ax1x2 = abs(x1-x2)
+    maxa = max(ax1,ax2)
+    if (ax1x2.lt.maxa*EPSN*10) then
+      rslt = ( (x1+x2-1)*logc(q2/q2o) - 2 )/pp
+    elseif (ax1x2*2.lt.maxa) then
+      if     (x1.eq.CZRO.or.x1.eq.CONE) then
+        rslt = ( (x1+x2-1)*logc(q2/q2o) - 1 )/pp
+      elseif (x2.eq.CZRO.or.x2.eq.CONE) then
+        rslt = ( (x1+x2-1)*logc(q1/q1o) - 1 )/pp
+      else
+        rslt = x1*(x1-1)*( logc2(q1o/q2o)/(x2-1) - logc2(q1/q2)/x2 ) &
+             + (x1+x2-1)*logc(q2/q2o) - 1
+        rslt = rslt/pp
+      endif
+    else
+      rslt = 0
+      if (ax1.ne.RZRO) then
+        if (ax1.lt.2*RONE) then
+          rslt = rslt - x1
+          if (x1.ne.CONE) rslt = rslt - x1*logc2(q1/q1o)
+        else
+          rslt = rslt + x1/(x1-1)*logc3(q1/q1o)
+        endif
+      endif
+      if (ax2.ne.RZRO) then
+        if (ax2.lt.2*RONE) then
+          rslt = rslt + x2
+          if (x2.ne.CONE) rslt = rslt + x2*logc2(q2/q2o)
+        else
+          rslt = rslt - x2/(x2-1)*logc3(q2/q2o)
+        endif
+      endif
+      rslt = rslt/lambda
+    endif
+  endif
+!
+  end subroutine
+
+
 end module
 
 
@@ -25402,7 +27199,7 @@ contains
     log2 = olog( abs(rp2/rmu2) ,i2 )
     log3 = olog( abs(rp3/rmu2) ,i3 )
     rslt(2) = 0
-    rslt(1) = -olog2( abs(rp3/rp2) ,i3-i2 )/rp2
+    rslt(1) = -olog1( abs(rp3/rp2) ,i3-i2 )/rp2
     rslt(0) = -rslt(1)*(log3+log2)/2
   elseif (icase.eq.3) then
 ! 3 masses non-zero
@@ -27975,6 +29772,7 @@ contains
      ,intent(in) :: y1,y2
   type(mp_complex) &  
      :: rslt ,oy1,oy2
+!
    oy1 = 1-y1
    oy2 = 1-y2
    rslt = logc2( qonv(-y2)/qonv(-y1) )/y1 &
@@ -28043,17 +29841,10 @@ module avh_olo_mp
   private
   public :: olo_unit ,olo_scale ,olo_onshell ,olo_setting
   public :: olo_precision
-  public :: olo_a0 ,olo_b0 ,olo_b11 ,olo_c0 ,olo_d0
+  public :: olo_a0 ,olo_b0 ,olo_db0 ,olo_b11 ,olo_c0 ,olo_d0
   public :: olo_an ,olo_bn
   public :: olo
   public :: olo_get_scale ,olo_get_onshell ,olo_get_precision
-  public :: a0_r,a0rr,a0_c,a0cr
-  public :: an_r,anrr,an_c,ancr
-  public :: b0rr,b0rrr,b0rc,b0rcr,b0cc,b0ccr
-  public :: b11rr,b11rrr,b11rc,b11rcr,b11cc,b11ccr
-  public :: bnrr,bnrrr,bnrc,bnrcr,bncc,bnccr
-  public :: c0rr,c0rrr,c0rc,c0rcr,c0cc,c0ccr
-  public :: d0rr,d0rrr,d0rc,d0rcr,d0cc,d0ccr
 !
  integer ,public ,parameter :: olo_kind=kind(1d0) 
 !
@@ -28078,6 +29869,9 @@ module avh_olo_mp
   end interface 
   interface olo_b0
     module procedure b0rr,b0rrr,b0rc,b0rcr,b0cc,b0ccr
+  end interface 
+  interface olo_db0
+    module procedure db0rr,db0rrr,db0rc,db0rcr,db0cc,db0ccr
   end interface 
   interface olo_b11
     module procedure b11rr,b11rrr,b11rc,b11rcr,b11cc,b11ccr
@@ -29064,6 +30858,520 @@ contains
     write(punit,*) 'b0(0):',trim(myprint(rslt(0)))
   endif
   end subroutine
+
+!*******************************************************************
+! Derivative of B0
+!*******************************************************************
+  subroutine db0cc( rslt ,pp,m1,m2 )
+!
+  use avh_olo_mp_bub ,only: dbub0
+  use avh_olo_mp_olog ,only: olog
+!
+  type(mp_complex) &  
+    ,intent(out) :: rslt(0:2)
+  type(mp_complex) &  
+    ,intent(in)  :: pp
+  type(mp_complex) &  
+    ,intent(in)  :: m1,m2
+!
+  type(mp_complex) &  
+    :: ss,r1,r2,ch
+  type(mp_real) & 
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = areal(ss)
+  if (aimag(ss).ne.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'ss has non-zero imaginary part, putting it to zero.'
+    ss = acmplx( app )
+  endif
+  app = abs(app)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0ccr( rslt ,pp,m1,m2 ,rmu )
+!
+  use avh_olo_mp_bub ,only: dbub0
+  use avh_olo_mp_olog ,only: olog
+!
+  type(mp_complex) &  
+    ,intent(out) :: rslt(0:2)
+  type(mp_complex) &  
+    ,intent(in)  :: pp
+  type(mp_complex) &  
+    ,intent(in)  :: m1,m2
+  type(mp_real) & 
+   ,intent(in)  :: rmu       
+!
+  type(mp_complex) &  
+    :: ss,r1,r2,ch
+  type(mp_real) & 
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = areal(ss)
+  if (aimag(ss).ne.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'ss has non-zero imaginary part, putting it to zero.'
+    ss = acmplx( app )
+  endif
+  app = abs(app)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rc( rslt ,pp ,m1,m2 )
+!
+  use avh_olo_mp_bub ,only: dbub0
+  use avh_olo_mp_olog ,only: olog
+!
+  type(mp_complex) &  
+    ,intent(out) :: rslt(0:2)
+  type(mp_real) & 
+    ,intent(in)  :: pp
+  type(mp_complex) &  
+    ,intent(in)  :: m1,m2
+!
+  type(mp_complex) &  
+    :: ss,r1,r2,ch
+  type(mp_real) & 
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rcr( rslt ,pp,m1,m2 ,rmu )
+!
+  use avh_olo_mp_bub ,only: dbub0
+  use avh_olo_mp_olog ,only: olog
+!
+  type(mp_complex) &  
+    ,intent(out) :: rslt(0:2)
+  type(mp_real) & 
+    ,intent(in)  :: pp
+  type(mp_complex) &  
+    ,intent(in)  :: m1,m2
+  type(mp_real) & 
+   ,intent(in)  :: rmu       
+!
+  type(mp_complex) &  
+    :: ss,r1,r2,ch
+  type(mp_real) & 
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = areal(r1)
+  hh  = aimag(r1)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop db0: ' &
+      ,'r1 has positive imaginary part, switching its sign.'
+    r1 = acmplx( am1 ,-hh )
+  endif
+  am1 = abs(am1) + abs(hh)
+!
+  am2 = areal(r2)
+  hh  = aimag(r2)
+  if (hh.gt.RZRO) then
+    if (eunit.gt.0) write(eunit,*) 'ERROR in OneLOop b0: ' &
+      ,'r2 has positive imaginary part, switching its sign.'
+    r2 = acmplx( am2 ,-hh )
+  endif
+  am2 = abs(am2) + abs(hh)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rr( rslt ,pp ,m1,m2 )
+!
+  use avh_olo_mp_bub ,only: dbub0
+  use avh_olo_mp_olog ,only: olog
+!
+  type(mp_complex) &  
+    ,intent(out) :: rslt(0:2)
+  type(mp_real) & 
+    ,intent(in)  :: pp
+  type(mp_real) & 
+    ,intent(in)  :: m1,m2
+!
+  type(mp_complex) &  
+    :: ss,r1,r2,ch
+  type(mp_real) & 
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = abs(m1)
+  am2 = abs(m2)
+!
+  mulocal = muscale 
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
+  subroutine db0rrr( rslt ,pp ,m1,m2 ,rmu )
+!
+  use avh_olo_mp_bub ,only: dbub0
+  use avh_olo_mp_olog ,only: olog
+!
+  type(mp_complex) &  
+    ,intent(out) :: rslt(0:2)
+  type(mp_real) & 
+    ,intent(in)  :: pp
+  type(mp_real) & 
+    ,intent(in)  :: m1,m2
+  type(mp_real) & 
+   ,intent(in)  :: rmu       
+!
+  type(mp_complex) &  
+    :: ss,r1,r2,ch
+  type(mp_real) & 
+    :: app,am1,am2,hh,mulocal,mulocal2,ssr2
+  character(26+99) ,parameter :: warning=&
+                     'WARNING from OneLOop db0: '//warnonshell
+  if (initz) call init
+  ss = pp
+  r1 = m1
+  r2 = m2
+!
+  app = abs(pp)
+!
+  am1 = abs(m1)
+  am2 = abs(m2)
+!
+  mulocal = rmu     
+!
+  mulocal2 = mulocal*mulocal
+!
+  if (am1.gt.am2) then
+    ch=r1 ; r1=r2 ; r2=ch
+    hh=am1;am1=am2;am2=hh
+  endif
+  ssr2 = abs(ss-r2)
+!
+  if (nonzerothrs) then
+    hh = onshellthrs
+    if (app.lt.hh) app = 0
+    if (am1.lt.hh) am1 = 0
+    if (am2.lt.hh) am2 = 0
+    if (ssr2.lt.hh) ssr2 = 0
+  elseif (wunit.gt.0) then
+    hh = onshellthrs*max(app,max(am1,am2))
+    if (RZRO.lt.app.and.app.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am1.and.am1.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.am2.and.am2.lt.hh) write(wunit,*) warning
+    if (RZRO.lt.ssr2.and.ssr2.lt.hh) write(wunit,*) warning
+  endif
+!
+  rslt(0)=0;rslt(1)=0;rslt(2)=0
+!
+  if (am1.eq.RZRO.and.ssr2.eq.RZRO) then
+    rslt(1) =-1/(2*ss)
+    rslt(0) =-( 1 + olog(mulocal2/ss,0)/2 )/ss
+  else
+    call dbub0( rslt(0) ,ss,r1,r2 ,app,am1,am2 )
+  endif
+!
+  if (punit.gt.0) then
+    if (nonzerothrs) write(punit,*) 'onshell:',trim(myprint(onshellthrs))
+    write(punit,*) ' pp:',trim(myprint(pp))
+    write(punit,*) ' m1:',trim(myprint(m1))
+    write(punit,*) ' m2:',trim(myprint(m2))
+    write(punit,*) 'db0(2):',trim(myprint(rslt(2)))
+    write(punit,*) 'db0(1):',trim(myprint(rslt(1)))
+    write(punit,*) 'db0(0):',trim(myprint(rslt(0)))
+  endif
+  end subroutine
+
 
 
 !*******************************************************************
@@ -31436,7 +33744,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -31452,9 +33761,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -31711,7 +34019,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -31727,9 +34036,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -31978,7 +34286,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -31994,9 +34303,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -32247,7 +34555,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -32263,9 +34572,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -32507,7 +34815,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -32523,9 +34832,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -32769,7 +35077,8 @@ contains
                .or.(     areal(ss(1)).ge.-small  &
                     .and.areal(ss(2)).ge.-small  &
                     .and.areal(ss(3)).ge.-small  &
-                    .and.areal(ss(4)).ge.-small) )
+                    .and.areal(ss(4)).ge.-small) &
+               .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
     if (useboxc) then
       call boxc( rslt ,ss,rr ,as ,smax )
     else
@@ -32785,9 +35094,8 @@ contains
                  .or.(     areal(ss(1)).ge.-small  &
                       .and.areal(ss(2)).ge.-small  &
                       .and.areal(ss(3)).ge.-small  &
-!OLD                      .and.areal(ss(4)).ge.-small) )
-                      .and.areal(ss(4)).ge.-small) & !NEW
-                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small)) !NEW
+                      .and.areal(ss(4)).ge.-small) &
+                 .or.(areal(ss(5)).ge.-small.and.areal(ss(6)).ge.-small))
       if (useboxc) then
         call boxc( rslt ,ss,rr ,as ,smax )
       else
@@ -32891,19 +35199,19 @@ module avh_olo
     ,olo_dp_scale=>olo_get_scale &
     ,olo_dp_onshell=>olo_get_onshell &
     ,olo_dp_precision=>olo_get_precision &
-    ,olo,olo_a0,olo_an,olo_b0,olo_b11,olo_bn,olo_c0,olo_d0
+    ,olo,olo_a0,olo_an,olo_b0,olo_db0,olo_b11,olo_bn,olo_c0,olo_d0
   use avh_olo_qp ,only: &
      olo_qp_kind=>olo_kind &
     ,olo_qp_scale=>olo_get_scale &
     ,olo_qp_onshell=>olo_get_onshell &
     ,olo_qp_precision=>olo_get_precision &
-    ,olo,olo_a0,olo_an,olo_b0,olo_b11,olo_bn,olo_c0,olo_d0
+    ,olo,olo_a0,olo_an,olo_b0,olo_db0,olo_b11,olo_bn,olo_c0,olo_d0
   use avh_olo_mp ,only: &
      olo_mp_kind=>olo_kind &
     ,olo_mp_scale=>olo_get_scale &
     ,olo_mp_onshell=>olo_get_onshell &
     ,olo_mp_precision=>olo_get_precision &
-    ,olo,olo_a0,olo_an,olo_b0,olo_b11,olo_bn,olo_c0,olo_d0
+    ,olo,olo_a0,olo_an,olo_b0,olo_db0,olo_b11,olo_bn,olo_c0,olo_d0
 
   implicit none
 

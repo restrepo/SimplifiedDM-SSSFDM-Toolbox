@@ -125,17 +125,23 @@ def setup_cpp_standalone_dir(dirpath, model):
 #===============================================================================
 def generate_subprocess_directory_standalone_cpp(matrix_element,
                                                  cpp_helas_call_writer,
-                                                 path = os.getcwd()):
+                                                 path = os.getcwd(),
+                                                 format='standalone_cpp'):
 
     """Generate the Pxxxxx directory for a subprocess in C++ standalone,
     including the necessary .h and .cc files"""
 
     cwd = os.getcwd()
-
     # Create the process_exporter
-    process_exporter_cpp = ProcessExporterCPP(matrix_element,
+    if format == 'standalone_cpp':
+        process_exporter_cpp = ProcessExporterCPP(matrix_element,
                                               cpp_helas_call_writer)
-
+    elif format == 'matchbox_cpp':
+        process_exporter_cpp = ProcessExporterMatchbox(matrix_element,
+                                              cpp_helas_call_writer)
+    else:
+        raise Exception, 'Unrecognized format %s' % format
+    
     # Create the directory PN_xx_xxxxx in the specified path
     dirpath = os.path.join(path, \
                    "P%d_%s" % (process_exporter_cpp.process_number,
@@ -192,6 +198,7 @@ class ProcessExporterCPP(object):
     process_definition_template = 'cpp_process_function_definitions.inc'
     process_wavefunction_template = 'cpp_process_wavefunctions.inc'
     process_sigmaKin_function_template = 'cpp_process_sigmaKin_function.inc'
+    single_process_template = 'cpp_process_matrix.inc'
 
     class ProcessExporterCPPError(Exception):
         pass
@@ -322,7 +329,12 @@ class ProcessExporterCPP(object):
                     ' directory %(dir)s' % {'dir': os.path.split(filename)[0]})
 
 
+    def get_default_converter(self):
+        
+        replace_dict = {}       
 
+        
+        return replace_dict
     #===========================================================================
     # write_process_h_file
     #===========================================================================
@@ -333,7 +345,7 @@ class ProcessExporterCPP(object):
             raise writers.CPPWriter.CPPWriterError(\
                 "writer not CPPWriter")
 
-        replace_dict = {}
+        replace_dict = self.get_default_converter()
 
         # Extract version number and date from VERSION file
         info_lines = get_mg5_info_lines()
@@ -366,7 +378,7 @@ class ProcessExporterCPP(object):
             raise writers.CPPWriter.CPPWriterError(\
                 "writer not CPPWriter")
 
-        replace_dict = {}
+        replace_dict = self.get_default_converter()
 
         # Extract version number and date from VERSION file
         info_lines = get_mg5_info_lines()
@@ -426,6 +438,11 @@ class ProcessExporterCPP(object):
         replace_dict['process_code'] = self.process_number
         replace_dict['nexternal'] = self.nexternal
         replace_dict['nprocesses'] = self.nprocesses
+        
+        
+        color_amplitudes = self.matrix_elements[0].get_color_amplitudes()
+        # Number of color flows
+        replace_dict['ncolor'] = len(color_amplitudes)
 
         if self.single_helicities:
             replace_dict['all_sigma_kin_definitions'] = \
@@ -761,13 +778,23 @@ class ProcessExporterCPP(object):
         replace_dict['color_matrix_lines'] = \
                                      self.get_color_matrix_lines(matrix_element)
 
+                                     
         replace_dict['jamp_lines'] = self.get_jamp_lines(color_amplitudes)
 
-        file = read_template_file('cpp_process_matrix.inc') % \
+
+        #specific exporter hack
+        replace_dict =  self.get_class_specific_definition_matrix(replace_dict, matrix_element)
+        
+        file = read_template_file(self.single_process_template) % \
                 replace_dict
 
         return file
 
+    def get_class_specific_definition_matrix(self, converter, matrix_element):
+        """place to add some specific hack to a given exporter.
+        Please always use Super in that case"""
+
+        return converter
 
     def get_sigmaHat_lines(self):
         """Get sigmaHat_lines for function definition for Pythia 8 .cc file"""
@@ -834,7 +861,7 @@ class ProcessExporterCPP(object):
         helicity_line = "static const int helicities[ncomb][nexternal] = {";
         helicity_line_list = []
 
-        for helicities in matrix_element.get_helicity_matrix():
+        for helicities in matrix_element.get_helicity_matrix(allow_reverse=False):
             helicity_line_list.append("{"+",".join(['%d'] * len(helicities)) % \
                                        tuple(helicities) + "}")
 
@@ -872,6 +899,11 @@ class ProcessExporterCPP(object):
                             ",".join(matrix_strings) + "};"
             return "\n".join([denom_string, matrix_string])
 
+
+
+
+
+            
     def get_jamp_lines(self, color_amplitudes):
         """Return the jamp = sum(fermionfactor * amp[i]) lines"""
 
@@ -927,7 +959,8 @@ class ProcessExporterCPP(object):
 #===============================================================================
 def generate_process_files_pythia8(multi_matrix_element, cpp_helas_call_writer,
                                    process_string = "",
-                                   process_number = 0, path = os.getcwd()):
+                                   process_number = 0, path = os.getcwd(),
+                                   version='8.2'):
 
     """Generate the .h and .cc files needed for Pythia 8, for the
     processes described by multi_matrix_element"""
@@ -936,7 +969,8 @@ def generate_process_files_pythia8(multi_matrix_element, cpp_helas_call_writer,
                                                       cpp_helas_call_writer,
                                                       process_string,
                                                       process_number,
-                                                      path)
+                                                      path,
+                                                      version=version)
 
     # Set process directory
     model = process_exporter_pythia8.model
@@ -947,6 +981,106 @@ def generate_process_files_pythia8(multi_matrix_element, cpp_helas_call_writer,
     process_exporter_pythia8.include_dir = process_exporter_pythia8.process_dir
     process_exporter_pythia8.generate_process_files()
     return process_exporter_pythia8
+
+
+class ProcessExporterMatchbox(ProcessExporterCPP):
+    """Class to take care of exporting a set of matrix elements to
+    Matchbox format."""
+
+    # Static variables (for inheritance)
+    process_class_template = 'matchbox_class.inc'
+    single_process_template = 'matchbox_matrix.inc'
+    process_definition_template = 'matchbox_function_definitions.inc'
+
+    def get_initProc_lines(self, matrix_element, color_amplitudes):
+        """Get initProc_lines for function definition for Pythia 8 .cc file"""
+
+        initProc_lines = []
+
+        initProc_lines.append("// Set external particle masses for this matrix element")
+
+        for part in matrix_element.get_external_wavefunctions():
+            initProc_lines.append("mME.push_back(pars->%s);" % part.get('mass'))
+        return "\n".join(initProc_lines)
+
+
+    def get_class_specific_definition_matrix(self, converter, matrix_element):
+        """ """
+        
+        converter = super(ProcessExporterMatchbox, self).get_class_specific_definition_matrix(converter, matrix_element)
+        
+        # T(....)
+        converter['color_sting_lines'] = \
+                                     self.get_color_string_lines(matrix_element)
+                                     
+        return converter
+        
+    def get_all_sigmaKin_lines(self, color_amplitudes, class_name):
+        """Get sigmaKin_process for all subprocesses for MAtchbox .cc file"""
+
+        ret_lines = []
+        if self.single_helicities:
+            ret_lines.append(\
+                "void %s::calculate_wavefunctions(const int perm[], const int hel[]){" % \
+                class_name)
+            ret_lines.append("// Calculate wavefunctions for all processes")
+            ret_lines.append(self.get_calculate_wavefunctions(\
+                self.wavefunctions, self.amplitudes))
+            ret_lines.append(self.get_jamp_lines(color_amplitudes[0]))
+            ret_lines.append("}")
+        else:
+            ret_lines.extend([self.get_sigmaKin_single_process(i, me) \
+                                  for i, me in enumerate(self.matrix_elements)])
+        ret_lines.extend([self.get_matrix_single_process(i, me,
+                                                         color_amplitudes[i],
+                                                         class_name) \
+                                for i, me in enumerate(self.matrix_elements)])
+        return "\n".join(ret_lines)
+
+
+    def get_color_string_lines(self, matrix_element):
+        """Return the color matrix definition lines for this matrix element. Split
+        rows in chunks of size n."""
+
+        if not matrix_element.get('color_matrix'):
+            return "\n".join(["static const double res[1][1] = {-1.};"])
+        
+        #start the real work
+        color_denominators = matrix_element.get('color_matrix').\
+                                                         get_line_denominators()
+        matrix_strings = []
+        my_cs = color.ColorString()
+                
+        for i_color in xrange(len(color_denominators)):
+            # Then write the numerators for the matrix elements
+            my_cs.from_immutable(sorted(matrix_element.get('color_basis').keys())[i_color])
+            t_str=repr(my_cs)
+            t_match=re.compile(r"(\w+)\(([\s\d+\,]*)\)")
+            # from '1 T(2,4,1) Tr(4,5,6) Epsilon(5,3,2,1) T(1,2)' returns with findall:
+            # [('T', '2,4,1'), ('Tr', '4,5,6'), ('Epsilon', '5,3,2,1'), ('T', '1,2')]
+            all_matches = t_match.findall(t_str)
+            tmp_color = [] 
+            for match in all_matches:
+                ctype, arg = match[0], [m.strip() for m in match[1].split(',')]
+                if ctype not in ['T', 'Tr']:
+                    raise self.ProcessExporterCPPError, 'Color Structure not handle by Matchbox'
+                tmp_color.append(arg)
+            #compute the maximal size of the vector
+            nb_index = sum(len(o) for o in tmp_color)
+            max_len = nb_index + (nb_index//2) -1
+            #create the list with the 0 separator
+            curr_color = tmp_color[0]
+            for tcolor in tmp_color[1:]:
+                curr_color += ['0'] + tcolor
+            curr_color += ['0'] * (max_len- len(curr_color)) 
+            #format the output
+            matrix_strings.append('{%s}' % ','.join(curr_color))
+
+        matrix_string = 'static const double res[%s][%s] = {%s};' % \
+            (len(color_denominators), max_len, ",".join(matrix_strings))    
+
+        return matrix_string
+
 
 #===============================================================================
 # ProcessExporterPythia8
@@ -966,6 +1100,11 @@ class ProcessExporterPythia8(ProcessExporterCPP):
     def __init__(self, *args, **opts):
         """Set process class name"""
 
+        if 'version' in opts:
+            self.version = opts['version']
+            del opts['version']
+        else:
+            self.version='8.2'
         super(ProcessExporterPythia8, self).__init__(*args, **opts)
 
         # Check if any processes are not 2->1,2,3
@@ -975,21 +1114,32 @@ class ProcessExporterPythia8(ProcessExporterCPP):
                 raise InvalidCmd,\
                       "Pythia 8 can only handle 2->1,2,3 processes, not %d->%d" % \
                       (nin,nex-nin)
-
+            
         self.process_class = self.process_name
         
     # Methods for generation of process files for Pythia 8
 
+    def get_default_converter(self):
+        
+        replace_dict = {}       
+        # Extract model name
+        replace_dict['model_name'] = self.model_name       
+        if self.version =="8.2":
+            replace_dict['include_prefix'] = 'Pythia8/'
+        else:
+            replace_dict['include_prefix'] = ''
+            
+        replace_dict['version'] = self.version
+        
+        return replace_dict
     #===========================================================================
     # Process export helper functions
     #===========================================================================
     def get_process_class_definitions(self):
         """The complete Pythia 8 class definition for the process"""
 
-        replace_dict = {}
+        replace_dict = self.get_default_converter()
 
-        # Extract model name
-        replace_dict['model_name'] = self.model_name
 
         # Extract process info lines for all processes
         process_lines = "\n".join([self.get_process_info_lines(me) for me in \
@@ -1057,10 +1207,8 @@ class ProcessExporterPythia8(ProcessExporterCPP):
     def get_process_function_definitions(self):
         """The complete Pythia 8 class definition for the process"""
 
-        replace_dict = {}
 
-        # Extract model name
-        replace_dict['model_name'] = self.model_name
+        replace_dict = self.get_default_converter()
 
         # Extract process info lines
         replace_dict['process_lines'] = \
@@ -1407,8 +1555,8 @@ class ProcessExporterPythia8(ProcessExporterCPP):
 
         for ime, me in enumerate(self.matrix_elements):
 
-            res_lines.append("if(%s){" % \
-                                 "||".join(["&&".join(["id%d == %d" % \
+            res_lines.append("if((%s)){" % \
+                                 ")||(".join(["&&".join(["id%d == %d" % \
                                             (i+1, l.get('id')) for (i, l) in \
                                             enumerate(p.get_legs_with_decays())])\
                                            for p in me.get('processes')]))
@@ -1461,8 +1609,8 @@ class ProcessExporterPythia8(ProcessExporterCPP):
         for ime, me in enumerate(self.matrix_elements):
             if not me.get('has_mirror_process'):
                 continue
-            res_lines.append("else if(%s){" % \
-                                 "||".join(["&&".join(["id%d == %d" % \
+            res_lines.append("else if((%s)){" % \
+                                 ")||(".join(["&&".join(["id%d == %d" % \
                                             (i+1, l.get('id')) for (i, l) in \
                                             enumerate(p.get_legs_with_decays())])\
                                            for p in me.get_mirror_processes()]))
@@ -1521,16 +1669,42 @@ class ProcessExporterPythia8(ProcessExporterCPP):
 
         return weightDecay_lines
 
+    #===============================================================================
+    # Routines to export/output UFO models in Pythia8 format
+    #===============================================================================
+    def convert_model_to_pythia8(self, model, pythia_dir):
+        """Create a full valid Pythia 8 model from an MG5 model (coming from UFO)"""
+    
+        if not os.path.isfile(os.path.join(pythia_dir, 'include', 'Pythia.h'))\
+           and not os.path.isfile(os.path.join(pythia_dir, 'include', 'Pythia8', 'Pythia.h')):
+            logger.warning('Directory %s is not a valid Pythia 8 main dir.' % pythia_dir)
+    
+        # create the model parameter files
+        model_builder = UFOModelConverterPythia8(model, pythia_dir, replace_dict=self.get_default_converter())
+        model_builder.cc_file_dir = "Processes_" + model_builder.model_name
+        model_builder.include_dir = model_builder.cc_file_dir
+    
+        model_builder.write_files()
+        # Write makefile
+        model_builder.write_makefile()
+        # Write param_card
+        model_builder.write_param_card()
+        return model_builder.model_name, model_builder.cc_file_dir
+
+
 #===============================================================================
 # Global helper methods
 #===============================================================================
-
 def read_template_file(filename):
     """Open a template file and return the contents."""
-
-    return open(os.path.join(_file_path, \
-                             'iolibs', 'template_files',
+    try:
+        return open(os.path.join(_file_path, \
+                             'iolibs', 'template_files', 'pythia8',
                              filename)).read()
+    except:
+        return open(os.path.join(_file_path, \
+                             'iolibs', 'template_files',
+                             filename)).read()        
 
 def get_mg5_info_lines():
     """Return info lines for MG5, suitable to place at beginning of
@@ -1627,14 +1801,14 @@ class UFOModelConverterCPP(object):
     copy_cc_files = []
 
     def __init__(self, model, output_path, wanted_lorentz = [],
-                 wanted_couplings = []):
+                 wanted_couplings = [], replace_dict={}):
         """ initialization of the objects """
 
         self.model = model
         self.model_name = ProcessExporterCPP.get_model_name(model['name'])
 
         self.dir_path = output_path
-
+        self.default_replace_dict = dict(replace_dict)
         # List of needed ALOHA routines
         self.wanted_lorentz = wanted_lorentz
 
@@ -1784,7 +1958,7 @@ class UFOModelConverterCPP(object):
     def generate_parameters_class_files(self):
         """Create the content of the Parameters_model.h and .cc files"""
 
-        replace_dict = {}
+        replace_dict = self.default_replace_dict
 
         replace_dict['info_lines'] = get_mg5_info_lines()
         replace_dict['model_name'] = self.model_name
@@ -1819,6 +1993,10 @@ class UFOModelConverterCPP(object):
                                self.write_print_parameters(self.params_dep)
         replace_dict['print_dependent_couplings'] = \
                                self.write_print_parameters(self.coups_dep.values())
+
+        if 'include_prefix' not in replace_dict:
+            replace_dict['include_prefix'] = ''
+
 
         file_h = read_template_file(self.param_template_h) % \
                  replace_dict
@@ -2004,7 +2182,8 @@ def generate_example_file_pythia8(path,
                                    process_names,
                                    exporter,
                                    main_file_name = "",
-                                   example_dir = "examples"):
+                                   example_dir = "examples",
+                                   version="8.2"):
     """Generate the main_model_name.cc file and Makefile in the examples dir"""
 
     filepath = os.path.join(path, example_dir)
@@ -2036,12 +2215,24 @@ def generate_example_file_pythia8(path,
                                               exporter.model_name)
 
     # Create the example main file
-    file = read_template_file('pythia8_main_example_cc.inc') % \
+    if version =="8.2":
+        template_path = 'pythia8.2_main_example_cc.inc'
+        makefile_path = 'pythia8.2_main_makefile.inc'
+        replace_dict['include_prefix'] = 'Pythia8/'
+    else:
+        template_path = 'pythia8_main_example_cc.inc'
+        makefile_path = 'pythia8_main_makefile.inc'
+        replace_dict['include_prefix'] = ''
+    
+    
+    file = read_template_file(template_path) % \
            replace_dict
 
     if not main_file_name:
         num = 1
         while os.path.exists(os.path.join(filepath,
+                                    'main_%s_%i.cc' % (exporter.model_name, num))) or \
+              os.path.exists(os.path.join(filepath,
                                     'main_%s_%i' % (exporter.model_name, num))):
             num += 1
         main_file_name = str(num)
@@ -2066,8 +2257,7 @@ def generate_example_file_pythia8(path,
     replace_dict['include_dir'] = exporter.include_dir
 
     # Create the makefile
-    file = read_template_file('pythia8_main_makefile.inc') % \
-           replace_dict
+    file = read_template_file(makefile_path) % replace_dict
 
     make_filename = os.path.join(filepath, 'Makefile_%s_%s' % \
                             (exporter.model_name, main_file_name))
@@ -2083,27 +2273,7 @@ def generate_example_file_pythia8(path,
 
     
 
-#===============================================================================
-# Routines to export/output UFO models in Pythia8 format
-#===============================================================================
 
-def convert_model_to_pythia8(model, pythia_dir):
-    """Create a full valid Pythia 8 model from an MG5 model (coming from UFO)"""
-
-    if not os.path.isfile(os.path.join(pythia_dir, 'include', 'Pythia.h')):
-        logger.warning('Directory %s is not a valid Pythia 8 main dir.' % pythia_dir)
-
-    # create the model parameter files
-    model_builder = UFOModelConverterPythia8(model, pythia_dir)
-    model_builder.cc_file_dir = "Processes_" + model_builder.model_name
-    model_builder.include_dir = model_builder.cc_file_dir
-
-    model_builder.write_files()
-    # Write makefile
-    model_builder.write_makefile()
-    # Write param_card
-    model_builder.write_param_card()
-    return model_builder.model_name, model_builder.cc_file_dir
 
 #===============================================================================
 # UFOModelConverterPythia8
@@ -2239,7 +2409,11 @@ class UFOModelConverterPythia8(UFOModelConverterCPP):
         replace_dict['info_lines'] = get_mg5_info_lines()
         replace_dict['model'] = self.model_name
 
-        makefile = read_template_file('pythia8_makefile.inc') % replace_dict
+        if self.default_replace_dict['version'] == "8.2":
+            path = 'pythia8.2_makefile.inc'
+        else:
+            path = 'pythia8_makefile.inc'
+        makefile = read_template_file(path) % replace_dict
 
         # Write the files
         open(makefilename, 'w').write(makefile)

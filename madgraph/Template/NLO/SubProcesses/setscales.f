@@ -213,6 +213,7 @@ c a scale to be used as a reference for renormalization scale
       include 'nexternal.inc'
       include 'reweight0.inc'
       include 'run.inc'
+      include 'cuts.inc'
       double precision muR_ref_dynamic,pp(0:3,nexternal)
       double precision tmp,scale_global_reference,pt,et,dot,sumdot
       external pt,et,dot,sumdot
@@ -236,7 +237,10 @@ c FxFx
      $     ,FxFx_fac_scale
 c
       tmp=0
-      if(ickkw.eq.3)then
+      if (nincoming.eq.1) then
+         tmp=pp(0,1) ! mass of the decaying particle
+         temp_scale_id='Mass of decaying particle'
+      elseif(ickkw.eq.3)then
 c FxFx merging scale:
 c     Note that nFxFx_ren_scales includes the one scale that corresponds
 c     to the real-emission one (and is zero for the n-body conf.). Skip
@@ -410,7 +414,7 @@ c
       tmp=0
       if(ickkw.eq.3)then
 c FxFx merging scale:
-        tmp=min(FxFx_fac_scale(1),FxFx_fac_scale(2))
+        tmp=(FxFx_fac_scale(1)+FxFx_fac_scale(2))/2d0
         temp_scale_id='FxFx merging scale'
       elseif(imuftype.eq.1)then
         tmp=scale_global_reference(pp)
@@ -489,7 +493,10 @@ c a scale to be used as a reference for Ellis-Sexton scale
       parameter (iQEStype=1)
 c
       tmp=0
-      if(iQEStype.eq.1)then
+      if (nincoming.eq.1) then
+         tmp=pp(0,1) ! mass of the decaying particle
+         temp_scale_id='Mass of decaying particle'
+      elseif(iQEStype.eq.1)then
         tmp=scale_global_reference(pp)
       elseif(iQEStype.eq.2)then
         do i=nincoming+1,nexternal
@@ -512,43 +519,69 @@ c a scale to be used as a reference for renormalization scale
       implicit none
       include 'genps.inc'
       include 'nexternal.inc'
+      include 'run.inc'
+      include 'cuts.inc'
       double precision scale_global_reference,pp(0:3,nexternal)
-      double precision tmp,pt,et,dot,xm2,sumdot,xmt2
+      double precision tmp,pt,et,dot,xm2,sumdot,xmt2,ptmp(0:3)
       external pt,et,dot,sumdot
-      integer i,itype
-      parameter (itype=3)
+      integer i,j
       character*80 temp_scale_id
       common/ctemp_scale_id/temp_scale_id
 c
       tmp=0
-      if(itype.eq.1)then
-c Sum of transverse energies
-        do i=nincoming+1,nexternal
-          tmp=tmp+et(pp(0,i))
-        enddo
-        temp_scale_id='sum_i eT(i), i=final state'
-      elseif(itype.eq.2)then
-c Sum of transverse masses
-        do i=nincoming+1,nexternal
-          xm2=dot(pp(0,i),pp(0,i))
-          if(xm2.le.0.d0)xm2=0.d0
-          tmp=tmp+sqrt(pt(pp(0,i))**2+xm2)
-        enddo
-        temp_scale_id='sum_i mT(i), i=final state'
-      elseif(itype.eq.3)then
-c Sum of transverse masses divided by 2
-         do i=nincoming+1,nexternal
-c     m^2+pt^2=p(0)^2-p(3)^2=(p(0)+p(3))*(p(0)-p(3))
-            xmt2=(pp(0,i)+pp(3,i))*(pp(0,i)-pp(3,i))
-c     take max() to avoid numerical instabilities
-            tmp=tmp+sqrt(max(xmt2,0d0))/2d0
-         enddo
-         temp_scale_id='H_T/2 := sum_i mT(i)/2, i=final state'
+      if(ickkw.eq.-1)then
+c Special for analytic resummation in veto'ed cross sections:
+         tmp=ptj
+         temp_scale_id='NLO+NNLL veto scale: ptj_max'
+      elseif(dynamical_scale_choice.eq.1) then
+c         Total transverse energy of the event.         
+          tmp=0d0
+          do i=3,nexternal
+             tmp=tmp+et(pp(0,i))
+          enddo      
+          temp_scale_id='sum_i eT(i), i=final state'
+      elseif(dynamical_scale_choice.eq.2) then
+c         sum of the transverse mass divide
+c         m^2+pt^2=p(0)^2-p(3)^2=(p(0)+p(3))*(p(0)-p(3))
+          tmp=0d0
+          do i=3,nexternal
+            tmp=tmp+dsqrt(max(0d0,(pp(0,i)+pp(3,i))*(pp(0,i)-pp(3,i))))
+          enddo
+          temp_scale_id='sum_i mT(i), i=final state'
+      elseif(dynamical_scale_choice.eq.3.or.dynamical_scale_choice.eq.-1) then
+c         sum of the transverse mass divide by 2
+c         m^2+pt^2=p(0)^2-p(3)^2=(p(0)+p(3))*(p(0)-p(3))
+          tmp=0d0
+          do i=3,nexternal
+            tmp=tmp+dsqrt(max(0d0,(pp(0,i)+pp(3,i))*(pp(0,i)-pp(3,i))))
+          enddo
+          tmp=tmp/2d0
+          temp_scale_id='H_T/2 := sum_i mT(i)/2, i=final state'
+      elseif(dynamical_scale_choice.eq.4) then
+c         \sqrt(s), partonic energy
+          tmp=dsqrt(2d0*dot(pp(0,1),pp(0,2)))
+          temp_scale_id='\sqrt(s), partonic energy'
+      elseif(dynamical_scale_choice.eq.0) then
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cc      USER-DEFINED SCALE: ENTER YOUR CODE HERE                                 cc
+cc      to use this code you must set                                            cc
+cc                 dynamical_scale_choice = 0                                    cc
+cc      in the run_card (run_card.dat)                                           cc
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+         write(*,*) "User-defined scale not set"
+         stop 1
+         temp_scale_id='User-defined dynamical scale' ! use a meaningful string
+         tmp = 0
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cc      USER-DEFINED SCALE: END OF USER CODE                                     cc
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       else
-        write(*,*)'Unknown option in scale_global_reference',itype
+        write(*,*)'Unknown option in scale_global_reference',dynamical_scale_choice
         stop
       endif
+
       scale_global_reference=tmp
 c
       return
       end
+

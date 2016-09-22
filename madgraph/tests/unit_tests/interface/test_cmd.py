@@ -23,13 +23,16 @@ import madgraph.various.misc as misc
 import os
 import logging
 
-import tests.unit_tests.various.test_aloha as test_aloha
+import tests.parallel_tests.test_aloha as test_aloha
+
+
 class TestValidCmd(unittest.TestCase):
     """ check if the ValidCmd works correctly """
     
     def setUp(self):
         if not hasattr(self, 'cmd'):
             TestValidCmd.cmd = cmd.MasterCmd()
+            TestValidCmd.cmd.no_notification()
     
     def wrong(self,*opt):
         self.assertRaises(madgraph.MadGraph5Error, *opt)
@@ -145,6 +148,7 @@ class TestValidCmd(unittest.TestCase):
         """test that the Invalid Command are dealt with correctly"""
         
         master = cmd.MasterCmd()
+        master.no_notification()
         self.assertRaises(master.InvalidCmd, master.do_generate,('aa'))
         try:
             master.run_cmd('aa')
@@ -154,6 +158,7 @@ class TestValidCmd(unittest.TestCase):
         
         # Madspin
         master = ms_cmd.MadSpinInterface()
+        master.no_notification()
         self.assertRaises(Exception, master.do_define,('aa'))
         
         with misc.MuteLogger(['fatalerror'], [40],['/tmp/fatalerror.log'], keep=False):

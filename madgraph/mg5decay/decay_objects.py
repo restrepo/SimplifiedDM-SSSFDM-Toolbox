@@ -85,7 +85,7 @@ class DecayParticle(base_objects.Particle):
     """
     sorted_keys = ['name', 'antiname', 'spin', 'color',
                    'charge', 'mass', 'width', 'pdg_code',
-                   'texname', 'antitexname', 'line', 'propagating',
+                   'line',
                    'is_part', 'self_antipart', 'is_stable',
                    'decay_vertexlist', 'decay_channels', 'apx_decaywidth',
                    'apx_decaywidth_err', '2body_massdiff',
@@ -159,13 +159,13 @@ class DecayParticle(base_objects.Particle):
             # call the mother routine
             return DecayParticle.__bases__[0].get(self, name)
 
-    def set(self, name, value, *args):
+    def set(self, name, value, *args,**opts):
         """assign a value"""
 
         if name == 'decay_amplitudes':
             self.decay_amplitudes = value
         else:
-            out = super(DecayParticle, self).set(name, value, *args)
+            out = super(DecayParticle, self).set(name, value, *args, **opts)
             return out
     def check_vertex_condition(self, partnum, onshell, 
                               value = base_objects.VertexList(), model = {}):
@@ -909,6 +909,8 @@ class DecayParticle(base_objects.Particle):
 
                 # Add width to total width if onshell
                 if temp_channel.get_onshell(model):
+                    if temp_channel.has_goldstone(model):
+                        continue
                     self['apx_decaywidth'] += temp_channel.get_apx_decaywidth(model)                    
 
                 # Append this channel after all the setups.
@@ -974,6 +976,9 @@ class DecayParticle(base_objects.Particle):
                                                              vert, model)
                         temp_c_o = temp_c.get_onshell(model)
                         
+                        if temp_c_o and temp_c.has_goldstone(model):
+                            continue
+                        
                         # Append this channel if it is new
                         rstart = time.time()
                         status = self.check_repeat(clevel, temp_c_o, temp_c)
@@ -1028,7 +1033,8 @@ class DecayParticle(base_objects.Particle):
                             #to be problematic for 4 body decay (for valid 2-body)
                             #so this should be fine.
                             continue
-                        
+                        elif temp_c.has_goldstone(model):
+                            continue
                         # Append this channel if it is new
                         rstart = time.time()
                         status = self.check_repeat(clevel, temp_c_o, temp_c)
@@ -1043,7 +1049,7 @@ class DecayParticle(base_objects.Particle):
                                     get_apx_decaywidth(model)
                             
                             self.get_channels(clevel, temp_c_o).append(temp_c)               
-            
+
             
             if hasattr(self, 'check_repeat_tag'):          
                 del self.check_repeat_tag
@@ -1073,7 +1079,7 @@ class DecayParticle(base_objects.Particle):
 
         # Copy the vertex to prevent the change of leg number
         new_vertex = copy.deepcopy(vertex)
-
+        
         # Setup the final leg number that is used in the channel.
         leg_num = max([l['number'] for l in sub_channel.get_final_legs()])
 
@@ -1105,8 +1111,7 @@ class DecayParticle(base_objects.Particle):
         new_vertex['legs'][-1]['number'] = \
             sub_channel.get_final_legs()[index]['number']
         new_vertex['legs'][0]['number'] = new_vertex['legs'][-1]['number']
-
-
+        
         # Combining vertex with channel
         new_channel = Channel()
 
@@ -1114,7 +1119,7 @@ class DecayParticle(base_objects.Particle):
         new_channel['vertices'].append(new_vertex)
 
         # Then extend the vertices of the old channel
-        # deepcopy is necessary to get new legs
+        # deepcopy is necessary to get new legs        
         new_channel['vertices'].extend(copy.deepcopy(sub_channel['vertices']))
 
 
@@ -1200,9 +1205,7 @@ class DecayParticle(base_objects.Particle):
                 # Do not include the first leg (initial id)
                 if sorted([l.get('id') for l in amplt['process']['legs'][1:]])\
                         == final_pid:
-                    #print 'before: ', channel.nice_string()
                     amplt.add_std_diagram(channel)
-                    #print 'after : ', channel.nice_string()
                     found = True
                     break
 
@@ -1987,7 +1990,7 @@ class DecayModel(model_reader.ModelReader):
 
     def running_externals(self, q, loopnum=2):
         """ Recalculate external parameters at the given scale. """
-
+        
         # Raise error for wrong type of q
         if not isinstance(q, int) and not isinstance(q, long) and \
                 not isinstance(q, float):
@@ -2110,7 +2113,8 @@ class DecayModel(model_reader.ModelReader):
             if loopnum == 3:
                 f = b0[nf]*t + f3(a_in) - f3(a_out)
                 fp = 1./(a_out**2 * (1. + c1[nf]*a_out + c2[nf]* a_out**2))
-
+            if fp == 0:
+                return a_in
             a_out = a_out - f/fp
             delta = abs(f/fp/a_out)
 
@@ -3572,6 +3576,15 @@ class Channel(base_objects.Diagram):
             self['onshell'] = ini_mass > sum(self['final_mass_list'])
 
         return self['onshell']
+    
+    def has_goldstone(self, model):
+
+            # Check if model is valid
+            assert isinstance(model, base_objects.Model), "The argument %s must be a model." % str(model)
+                    
+            return any(model.get_particle(l.get('id'))['type'] =='goldstone' \
+                       for l in self.get_final_legs())
+
 
     def get_helas_properties(self, model):
         """ return helastag and std_diagram, construct them if necessary. """
@@ -4668,6 +4681,7 @@ class DecayAmplitude(diagram_generation.Amplitude):
         non_std_numbers = [(l.get('id'),l.get('number')) \
                                for l in new_dia.get_final_legs()]
 
+
         # initial leg
         non_std_numbers.append((new_dia.get_initial_id(model), 1))
         non_std_numbers.sort(id_num_cmp)
@@ -4685,7 +4699,7 @@ class DecayAmplitude(diagram_generation.Amplitude):
         # Conversion from non_std_number to std_number
         converted_dict = dict([(num[1], std_numbers[i][1])\
                                    for i, num in enumerate(non_std_numbers)])
-
+        
         # 1st stage of converting all legs: change numbering without fixing
         # wrong number flows (e.g. number 3 2 > 3)
         all_numbers_goal = []
@@ -4696,26 +4710,24 @@ class DecayAmplitude(diagram_generation.Amplitude):
 
         # 2nd stage of converting all legs: fixing illegal number flows.
         # (except for the first one)
-        for vert in new_dia.get('vertices')[:-1]:
+        for pos,vert in enumerate(new_dia.get('vertices')[:-1]):
             lowest_num = vert.get('legs')[0]['number']
             for leg in vert.get('legs')[:-1]:
                 if leg['number'] < lowest_num:
                     lowest_num = leg['number']
 
             mother_leg = vert.get('legs')[-1]
-            old_id_number = (mother_leg['id'], mother_leg['number'])            
+            old_id_number = (mother_leg['id'], mother_leg['number'])
             if old_id_number[1] != lowest_num:
-
                 # Change the number of mother
                 mother_leg['number'] = lowest_num                
                 
                 # Find the leg associated with the mother of this vertex,
                 # and change its number to lowest number
                 found = False
-                for pre_vert in new_dia.get('vertices'):
+                for pre_vert in new_dia.get('vertices')[pos:]:
                     for child_leg in pre_vert['legs'][:-1]:
-                        if (child_leg['id'], child_leg['number'])\
-                                == old_id_number:
+                        if (child_leg['id'], child_leg['number']) == old_id_number:
                             child_leg['number'] = lowest_num
                             found = True
                             break
@@ -4726,7 +4738,6 @@ class DecayAmplitude(diagram_generation.Amplitude):
             vert['legs'][:-1] = sorted(vert['legs'][:-1],
                                        key=lambda leg: leg['id'],
                                        reverse = True)"""
-        
 
         new_dia.initial_setups(model, True)
 

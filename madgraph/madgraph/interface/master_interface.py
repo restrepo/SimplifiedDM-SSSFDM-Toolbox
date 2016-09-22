@@ -200,14 +200,26 @@ class Switcher(object):
                 if not nlo_mode in self._valid_nlo_modes: raise self.InvalidCMD( \
                     'The NLO mode %s is not valid. Please choose one among: %s' \
                     % (nlo_mode, ' '.join(self._valid_nlo_modes)))
-                elif nlo_mode == 'all':
+                elif nlo_mode in ['all', 'real', 'LOonly']:
                     self.change_principal_cmd('aMC@NLO')
-                elif nlo_mode == 'real':
-                    self.change_principal_cmd('aMC@NLO')
-                elif nlo_mode == 'virt' or nlo_mode == 'sqrvirt':
+                elif nlo_mode in ['virt', 'sqrvirt']:
                     self.change_principal_cmd('MadLoop')
-                    
-        return self.cmd.do_add(self, line, *args, **opts)
+                elif nlo_mode == 'noborn': 
+                    self.change_principal_cmd('MadLoop')
+                    self.cmd.validate_model(self, loop_type=nlo_mode,
+                                                            coupling_type=orders)
+                    self.change_principal_cmd('MadGraph')
+                    return self.cmd.create_loop_induced(self, line, *args, **opts)
+        try:
+            return  self.cmd.do_add(self, line, *args, **opts)
+        except fks_base.NoBornException:
+            logger.info("------------------------------------------------------------------------", '$MG:color:BLACK')
+            logger.info(" No Born diagrams found. Now switching to the loop-induced mode.        ", '$MG:color:BLACK')
+            logger.info(" Please cite ref. 'arXiv:1507.00020' when using results from this mode. ", '$MG:color:BLACK')
+            logger.info("------------------------------------------------------------------------", '$MG:color:BLACK')            
+            self.change_principal_cmd('MadGraph')
+            return self.cmd.create_loop_induced(self, line, *args, **opts)
+
         
     def do_check(self, line, *args, **opts):
 
@@ -219,8 +231,9 @@ class Switcher(object):
                 'The NLO mode %s is not valid. Please chose one among: %s' \
                 % (nlo_mode, ' '.join(self._valid_nlo_modes)))
             elif nlo_mode == 'all':
-                self.change_principal_cmd('aMC@NLO')
+                self.change_principal_cmd('MadLoop')
             elif nlo_mode == 'real':
+                raise self.InvalidCMD('Mode [real=...] not valid for checking processes.')
                 self.change_principal_cmd('aMC@NLO')
             elif nlo_mode == 'virt' or nlo_mode == 'sqrvirt':
                 self.change_principal_cmd('MadLoop')
@@ -240,7 +253,7 @@ class Switcher(object):
                 if not nlo_mode in self._valid_nlo_modes: raise self.InvalidCmd( \
                     'The NLO mode %s is not valid. Please chose one among: %s' \
                     % (nlo_mode, ' '.join(self._valid_nlo_modes)))
-                elif nlo_mode == 'all' or nlo_mode == 'real':
+                elif nlo_mode in ['all', 'real', 'LOonly']:
                     self._fks_multi_proc = fks_base.FKSMultiProcess()
                     self.change_principal_cmd('aMC@NLO')
                 elif nlo_mode == 'virt' or nlo_mode == 'virtsqr':
@@ -586,7 +599,7 @@ class MasterCmd(Switcher, LoopCmd.LoopInterface, amcatnloCmd.aMCatNLOInterface, 
             raise self.InvalidCmd("Invalid switch command or non existing interface %s."\
                             %args[0]+" Valid interfaces are %s"\
                             %','.join(interface_quick_name.keys()))
-
+        
     def change_principal_cmd(self, name):
         old_cmd=self.current_interface
         if name in self.interface_names.keys():
@@ -638,10 +651,18 @@ class MasterCmdWeb(MGcmd.MadGraphCmdWeb, Switcher, LoopCmd.LoopInterfaceWeb):
     def do_shell(self, *args):
         raise Exception
     
-    def finalize(self, nojpeg):
+    def finalize(self, nojpeg, flaglist=[]):
+        """Finalize web generation"""
+
+        if flaglist != []:
+            raise Exception
+        self.cmd.finalize(self, nojpeg, online = True)
+    
+    def finalize(self, nojpeg, **opts):
         """Finalize web generation""" 
         
-        self.cmd.finalize(self, nojpeg, online = True)
+        opts['online'] = True
+        self.cmd.finalize(self, nojpeg, opts)
 
     # Generate a new amplitude
     def do_generate(self, line):

@@ -6,9 +6,10 @@ c     Scales
 c
       real*8          scale,scalefact,ellissextonfact,alpsfact
       logical         fixed_ren_scale,fixed_fac_scale,fixed_couplings,hmult
-      integer         ickkw,nhmult
+      integer         ickkw,nhmult,dynamical_scale_choice
       common/to_scale/scale,scalefact,ellissextonfact,alpsfact,fixed_ren_scale,
-     $                fixed_fac_scale,fixed_couplings,ickkw,nhmult,hmult
+     $                fixed_fac_scale,fixed_couplings,ickkw,nhmult,hmult,
+     $                dynamical_scale_choice
 
 c
 c New stuff for scales (NLO)
@@ -38,6 +39,9 @@ c redundant with that of common block /to_scale/
       common/cscales_current_values/muR2_current,muF12_current,
      #                              muF22_current,QES2_current
 
+c Re-scale of the shower starting scale
+      double precision shower_scale_factor
+      common/cshower_scale_factor/shower_scale_factor
 c
 c     Collider
 c

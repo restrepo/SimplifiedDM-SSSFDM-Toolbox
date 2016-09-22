@@ -1,8 +1,10 @@
 import model mssm
 set automatic_html_opening False --no-save
+set notification_center False --no-save
 generate p p > go go
 output %(dir_name)s
 launch -i
+set automatic_html_opening False --no-save
 set madanalysis_path None --no_save
 set exrootanalysis_path None --no_save
 display options
@@ -15,8 +17,10 @@ done
 quit
 history %(dir_name)s/history
 launch -i
+set automatic_html_opening False --no-save
 set madanalysis_path None --no_save
 set exrootanalysis_path None --no_save
 generate_events
 parton
+set ptheavy 50
 done

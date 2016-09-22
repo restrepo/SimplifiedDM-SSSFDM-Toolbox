@@ -121,7 +121,7 @@ class Particle(UFOBaseClass):
         elif spin == 5:
             return 'double'
         elif spin == -1:
-	    return 'dashed' #            return 'dotted' ## not suported yet
+            return 'dashed' #            return 'dotted' ## not suported yet
         else:
             return 'dashed' # not supported yet
 
@@ -257,50 +257,11 @@ class Coupling(UFOBaseClass):
                 return self.value[-x]
             else:
                 return 'ZERO'
-
-        CTparam=None
-	numbermatch = None
-        for param in all_CTparameters:
-           pattern=re.compile(r"(?P<first>\A|\*|\+|\-|\(|\s)(?P<name>"+param.name+r")(?P<second>\Z|\*|\+|\-|\)|/|\\|\s)")
-           numberOfMatches=len(pattern.findall(self.value))
-           if numberOfMatches > 0:
-              if not CTparam:
-	           # CTparam = param
-                   CTparam=[param,]
-		   numbermatch = [numberOfMatches,]
-              else:
-		   CTparam = CTparam + [param,]
-		   numbermatch = numbermatch + [numberOfMatches,]
-                   # raise UFOError, "UFO does not support yet more than one occurence of CTParameters in the 			   # couplings values."+param.name+" "+self.name+" "+CTparam.name
-           #elif numberOfMatches>1:
-               #raise UFOError, "UFO does not support yet more than one occurence of CTParameters in the #couplings values."+param.name
-
-        if not CTparam:
+        else:
             if x==0:
                 return self.value
             else:
                 return 'ZERO'
-        else:
-	    tempvalue = self.value
-	    for i,ctpar in enumerate(CTparam):
-            	#if ctpar.pole(x)=='ZERO':
-                #   return 'ZERO'
-            	#else:
-                def substitution(matchedObj):
-                    return matchedObj.group('first')+"("+ctpar.pole(x)+")"+matchedObj.group('second')
-               	pattern=re.compile(r"(?P<first>\A|\*|\+|\-|\(|\s)(?P<name>"+ctpar.name+r")(?P<second>\Z|\*|\+|\-|\)|/|\\|\s)")
-		tempvalue2 = tempvalue
-		tempvalue = pattern.sub(substitution,tempvalue)
-		num = numbermatch[i]-1		
-		while tempvalue2 != tempvalue or num > 0:
-		      tempvalue2 = tempvalue
-                      tempvalue = pattern.sub(substitution,tempvalue)
-		      num = num - 1
-	    #for param in CTparam:
-            #	pattern=re.compile(r"(?P<first>\A|\*|\+|\-|\()(?P<name>"+param.name+r")(?P<second>\Z|\*|\+|\-|#\)|/|\\)")
-            #	numberOfMatches=len(pattern.findall(tempvalue))
-	    #	if numberOfMatches > 0: raise UFOError,"There is some problem with the substitution of #"+param.name+"."  
-	    return tempvalue
 
 all_lorentz = []
 
@@ -349,3 +310,18 @@ class CouplingOrder(object):
         self.expansion_order = expansion_order
         self.hierarchy = hierarchy
         self.perturbative_expansion = perturbative_expansion
+
+all_decays = []
+
+class Decay(UFOBaseClass):
+    require_args = ['particle','partial_widths']
+
+    def __init__(self, particle, partial_widths, **opt):
+        args = (particle, partial_widths)
+        UFOBaseClass.__init__(self, *args, **opt)
+
+        global all_decays
+        all_decays.append(self)
+
+        # Add the information directly to the particle
+        particle.partial_widths = partial_widths
