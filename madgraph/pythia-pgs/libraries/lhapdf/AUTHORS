@@ -1,0 +1,10 @@
+LHAPDF was written and is maintained by
+
+W. Giele, Fermilab <giele@fnal.gov> 
+M.R. Whalley, Durham University <m.r.whalley@durham.ac.uk>
+
+LHAGLUE interface routines by 
+D. Bourilkov and C. Group, University of Florida
+
+Conversion to GNU autotools and lhapdf-config system by
+Andy Buckley, Durham University <andy.buckley@durham.ac.uk>

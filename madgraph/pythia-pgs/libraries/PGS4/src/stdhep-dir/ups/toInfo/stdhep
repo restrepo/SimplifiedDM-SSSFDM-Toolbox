@@ -1,0 +1,10 @@
+StdHep 5.04 is now available.
+
+This version was created with common blocks from Herwig 6.507, Isajet 7.51, 
+Pythia 6.319, and QQ 9.2b, and reflects changes 
+in particle numbering in those releases of the event generators.
+
+Documentation is available from $STDHEP_DIR/doc or 
+http://cepa.fnal.gov/psm/stdhep/.
+
+Please send any complaints or comments to stdhep-users@fnal.gov.

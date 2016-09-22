@@ -1,0 +1,30 @@
+Author: Johan Alwall
+E-mail: alwall@fnal.gov
+
+Troubleshooting for Mac OS X
+============================
+
+1. If compilation fails with the following error message:
+
+make[3]: *** [stdhep] Error 2
+make[2]: *** [lib/libstdhep.a] Error 2
+make[1]: *** [../libraries/PGS4/examples/olympics] Error 2
+make: *** [all] Error 2
+
+this usually means that there is a mismatch between the number of bits
+in the computer architecture and the compiler. Please change the MBITS
+variable in src/make_opts from 64 to 32 or vice versa. Then run 
+
+make clean
+make
+
+2. If compilation fails with the linker not finding some subroutines,
+please add
+
+DARWINLIBS=-lSystemStubs 
+
+in the src/make_opts file, and run "make clean; make".
+
+3. If there are some other compilation problems that are not taken
+care of by the above fixes, please report this at
+https://bugs.launchpad.net/pythia-pgs-for-mg/+filebug

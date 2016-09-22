@@ -1,0 +1,25 @@
+#! /usr/bin/env bash
+
+# This variable needs to exist
+prefix=@prefix@
+
+if [[ -n $( echo $* | egrep -- "--help|-h" ) ]]; then
+    echo "lhapdf-config: configuration tool for the LHAPDF"
+    echo "               parton density function evolution library"
+    echo "               http://durpdg.dur.ac.uk/lhapdf/"
+    echo
+    echo "Usage: lhapdf-config [[--help|-h] | [--prefix] | [--pdfsets-path]]"
+    echo "Options:"
+    echo "  --help | -h   : show this help message"
+    echo "  --prefix      : show the installation prefix (cf. autoconf)"
+    echo "  --pdfsets-path : show the path to the directory containing the PDF set data files"
+    echo
+fi
+
+if [[ -n $( echo $* | egrep -- --prefix ) ]]; then
+    echo $prefix
+fi
+
+if [[ -n $( echo $* | egrep -- --pdfsets-path ) ]]; then
+    echo @datadir@/@PACKAGE_TARNAME@/PDFsets
+fi
