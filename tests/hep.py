@@ -316,7 +316,7 @@ class hep(model):
             df.to_csv('Scotogenic.csv')
         return df
 
-    def runmicromegas(self,path='../micromegas',Direct_Detection=False):
+    def runmicromegas(self,path='../micromegas',Direct_Detection=False,ddcmd='CalcOmega_with_DDetection_MOv4.2'):
         '''
         Run micromegas with output in MODEL.csv
         '''
@@ -324,14 +324,13 @@ class hep(model):
         spc=self.runSPheno()
         mocmd='CalcOmega'
         if Direct_Detection:
-            ddcmd='CalcOmega_with_DDetection_MOv4.2'
             if os.path.isfile( '%s/%s/%s' %(path,self.MODEL,ddcmd) ):
                 mocmd=ddcmd
             else:
                 sys.exit( 'ERROR: %s not found' %(ddcmd) )
                 
             
-        oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,ddcmd,self.MODEL) )
+        oh=commands.getoutput( '%s/%s/%s SPheno.spc.%s' %(path,self.MODEL,mocmd,self.MODEL) )
         mo=self.micromegas_output(oh)
         self.to_series() #Fill to_Series pandas Series
         self.Series=self.Series.append(self.micromegas)
@@ -339,7 +338,7 @@ class hep(model):
         return mo
 
     def scanmicromegas(self,func,param={},path='../micromegas',
-                       var_min=60,var_max=1000,npoints=1,scale='log',CI=False,Direct_Detection=False):
+                       var_min=60,var_max=1000,npoints=1,scale='log',CI=False,Direct_Detection=False,ddcmd='CalcOmega_with_DDetection_MOv4.2'):
         '''Run micromegas with output in MODEL.csv
          func -> func(x,lha,param={'block_key':'MINPAR',block_key=5}) and returns lha
          path='../micromegas';var_min=60;
@@ -349,7 +348,6 @@ class hep(model):
 
         mocmd='CalcOmega'
         if Direct_Detection:
-            ddcmd='CalcOmega_with_DDetection_MOv4.2'
             if os.path.isfile( '%s/%s/%s' %(path,self.MODEL,ddcmd) ):
                 mocmd=ddcmd
             else:
@@ -373,7 +371,7 @@ class hep(model):
                 h,U,Mnuin,phases=self.to_yukawas() #test Mnuin/0.9628#/0.968
 
             self.to_series()
-            mo=series.runmicromegas(path,Direct_Detection=Direct_Detection)
+            mo=series.runmicromegas(path,Direct_Detection=Direct_Detection,ddcmd=ddcmd)
             self.Series['Omega_h2']=mo.Omega_h2
             self.Series['proton_SI']=mo.proton.SI
             self.Series['neutron_SI']=mo.neutron.SI
