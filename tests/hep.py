@@ -60,6 +60,17 @@ def _readSLHAFile_with_comments(spcfile,ignorenomass=False,ignorenobr=True):
                     IF.blocks[block].entries[int(entries[0]),int(entries[1])]='%s%s#%s' %(entries[2],' '*spaces,fline[1])
     return IF
 
+def block_to_series(block):
+    bs={}
+    vk=[ re.sub('\s+','',l).split('#') for l in block.entries.values()]
+    for i in vk:
+        if len(i)>1:
+            key=re.sub('[^A-Za-z0-9]','',i[1])
+            key=re.sub('Input$','',key)
+            bs[key]=eval(i[0])
+
+    return pd.Series(bs)
+
 class model(object):
     pdg=pdg_series.pdg()
     G_F    =1.166370E-05    # G_F,Fermi constant
@@ -102,10 +113,12 @@ class model(object):
         if np.abs(self.lambda_sm).max()>8*np.pi:
             perturbativity=False
         return perturbativity
+
     def to_series(self):
-        bs={}
+        bs=pd.Series()
         for b in self.LHA.blocks.keys():
             if b not in ['MODSEL','SPHENOINPUT']:
+                bs=bs.append(block_to_series(self.LHA.blocks[b]))
                 vk=[ re.sub('\s+','',l).split('#') for l in self.LHA.blocks[b].entries.values()]
                 for i in vk:
                     if len(i)>1:
@@ -184,6 +197,8 @@ class hep(model):
         else:
             self.LHA_out=False
             self.LHA_out_with_comments=False
+
+        self.to_series() #Fill to_Series pandas Series    
         return self.LHA_out
         
     def branchings(self,SPCdecays,min_pdg=26):
