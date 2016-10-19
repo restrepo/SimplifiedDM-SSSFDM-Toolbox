@@ -180,6 +180,10 @@ class hep(model):
             print(a)
         assert os.path.isfile('SPheno.spc.%s' %self.MODEL)
         #print a
+        #exceptions
+        if a.find('Problem in OneLoop')>-1:
+            a=a.replace('Problem','No problem')
+
         if a.find('Problem')==-1:
             self.LHA_out=pyslha.readSLHAFile('SPheno.spc.%s' %self.MODEL)
             #with comments but without decays
@@ -557,7 +561,7 @@ def _neutrino_data(CL=3,IH=False):
 class CasasIbarra(hep):
     '''
     Fill SPhenoInput with Yukawas compatible with neutrino pysics
-    Define a function: func to calculate the Yukawa independent para of the
+    Define a function: func to calculate the Yukawa independent parameters of the
     analytical neutrino mass matrix with use a pyslha object as input, e.g
        def _Lambda(LHA_out):
        mH0=LHA.blocks['MASS'][1001]
@@ -627,14 +631,14 @@ class CasasIbarra(hep):
         #Inverse MR masses. M^R_3 -> infty corresponds to zero entry
         
         spc=self.runSPheno()
-        DMR=np.diag(  np.sqrt( np.abs( 1./ self.func(spc) ) ) )
+        DMR=np.diag(  np.sqrt( np.abs( 1./ self.func(self.LHA_out) ) ) )
         
         if massless_nulight and not IH:
             DMR[0,0]=0. 
         if massless_nulight and IH:
             DMR[2,2]=0. 
         
-        #print self.func(spc)
+        #print self.func(self.LHA_out)
         #print DMR
         #phases of the PMNS matrix
         
