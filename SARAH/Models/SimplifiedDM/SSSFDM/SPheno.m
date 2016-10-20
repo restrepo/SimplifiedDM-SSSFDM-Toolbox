@@ -23,8 +23,8 @@ BoundaryLowScaleInput={
   {LamSH,LamSHIN},
   {LamS,LamSIN},
   {MS2, MSInput},
-  {MDF,MDFinput}(*,
-  {Ys,LHInput[Ys]}*)
+  {MDF,MDFinput},
+  {Ys,LHInput[Ys]}
 
 };
 
@@ -37,4 +37,4 @@ ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"}};
 FlagLoopContributions = True;  
 
 DefaultInputValues ={Lambda1IN -> 0.28, LamSHIN -> 0.01, LamSIN -> 0, MSinput -> 200,
-		    MDFinput -> 400(*,Ysinput[a_] -> 0.1*)};
+		    MDFinput -> 400,Ysinput[a_] -> 0.1};
