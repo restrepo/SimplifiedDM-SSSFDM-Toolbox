@@ -31,7 +31,7 @@ BoundaryLowScaleInput={
 
 
 
-ListDecayParticles = {Fu,Fe,Fd,Fre,hh(*,ss*)};
+ListDecayParticles = {Fu,Fe,Fd,Fre,hh,ss};
 ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"}};
 
 FlagLoopContributions = True;  
