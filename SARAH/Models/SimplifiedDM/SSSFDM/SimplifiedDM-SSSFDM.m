@@ -66,8 +66,6 @@ DEFINITION[GaugeES][LagrangianInput]= {
 LagNoHC = -(mu2 conj[H].H + Lambda1/2 conj[H].H.conj[H].H + MS2/2 S.S + LamSH S.S.conj[H].H  + LamS/2 S.S.S.S);
 LagHC =  -(Yd conj[H].d.q + Ye conj[H].e.l + Yu H.u.q + MDF rd.ru + Ys S.e.ru );
 
-
-
 			  		  
 
 (* Gauge Sector *)
@@ -101,7 +99,7 @@ DEFINITION[EWSB][DiracSpinors]={
  Fd ->{  DL, conj[DR]},
  Fe ->{  EL, conj[ER]},
  Fu ->{  UL, conj[UR]},
- Fre ->{  ed, eu}, 
+ Fre ->{  eu, ed}, 
  Fv ->{  vL, 0}};
 
 DEFINITION[EWSB][GaugeES]={

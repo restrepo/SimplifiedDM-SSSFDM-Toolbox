@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:53 on 19.10.2016   
+! File created at 18:57 on 20.10.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -21,15 +21,17 @@ Private::F1,F2,F3,F4,F3Gamma
 Contains
 
 
-Subroutine Gminus2(Ifermion,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,cplcFeFeAhL,          & 
-& cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFeFeVPL,               & 
-& cplcFeFeVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,a_mu)
+Subroutine Gminus2(Ifermion,MAh,MAh2,MFe,MFe2,MFre,MFre2,Mhh,Mhh2,MHp,MHp2,           & 
+& Mss,Mss2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,      & 
+& cplcFreFessL,cplcFreFessR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFressL,cplcFeFressR,           & 
+& cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,a_mu)
 
-Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2
+Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),MFre,MFre2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2
 
 Complex(dp),Intent(in)  :: cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3), & 
-& cplcFvFeHpR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),& 
-& cplHpcHpVP
+& cplcFvFeHpR(3,3),cplcFreFessL(3),cplcFreFessR(3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),    & 
+& cplcFeFressL(3),cplcFeFressR(3),cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL(3,3),         & 
+& cplcFeFvcHpR(3,3),cplHpcHpVP
 
 Real(dp), Intent(out) :: a_mu 
 Integer, Intent(in) :: Ifermion 
@@ -109,25 +111,44 @@ End if
 End if 
 
 
+chargefactor = 1 
+If ((Include_in_loopss).and.(Include_in_loopFre).and.(Include_in_loopFre).and.IncludePenguins) Then 
+  If ((Mss2.gt.mz2).Or.(MFre2.gt.mz2).Or.(MFre2.gt.mz2)) Then
+coup1L = cplcFeFressL(gt1)
+coup1R = cplcFeFressR(gt1)
+coup2L = cplcFreFessL(gt2)
+coup2R = cplcFreFessR(gt2)
+ratio = Mss2/MFre2
+ If ((ratio.eq.ratio).and.(ratio.lt.1.0E+30_dp).and.(ratio.gt.1.0E-30_dp)) Then 
+a_mu = a_mu - Real(coup1L*Conjg(coup1R),dp)*F3gamma(ratio)/MFre& 
+      & + 2._dp*MFe(Ifermion)*(Abs(coup1L)**2 + Abs(coup1R)**2)*F2(ratio)/MFre2 
+End if 
+ 
+End if 
+End if 
+
+
 a_mu = a_mu*MFe(Ifermion)*oo16pi2 
 Iname = Iname -1 
  
 End Subroutine Gminus2 
  
  
-Subroutine LeptonEDM(Ifermion,MAh,MAh2,MFe,MFe2,Mhh,Mhh2,MHp,MHp2,MVWp,               & 
-& MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,            & 
-& cplcFvFeHpR,cplcFeFeVPL,cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,             & 
-& cplcFeFeVZR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplHpcHpVP,          & 
-& cplcVWpVPVWp,EDM)
+Subroutine LeptonEDM(Ifermion,MAh,MAh2,MFe,MFe2,MFre,MFre2,Mhh,Mhh2,MHp,              & 
+& MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,     & 
+& cplcFvFeHpL,cplcFvFeHpR,cplcFreFessL,cplcFreFessR,cplcFeFeVPL,cplcFeFeVPR,             & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,cplcFeFressR,           & 
+& cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,     & 
+& cplHpcHpVP,cplcVWpVPVWp,EDM)
 
 Implicit None
-Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),MFre,MFre2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in)  :: cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3), & 
-& cplcFvFeHpR(3,3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),& 
-& cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),cplcFeFvcVWpL(3,3),& 
-& cplcFeFvcVWpR(3,3),cplHpcHpVP,cplcVWpVPVWp
+& cplcFvFeHpR(3,3),cplcFreFessL(3),cplcFreFessR(3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),    & 
+& cplcFvFeVWpL(3,3),cplcFvFeVWpR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFressL(3), & 
+& cplcFeFressR(3),cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),       & 
+& cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplHpcHpVP,cplcVWpVPVWp
 
 Real(dp), Intent(out) :: EDM 
 Real(dp) :: ratio, chargefactor 
@@ -217,6 +238,23 @@ End if
  
 End if 
   End Do
+End if 
+
+
+chargefactor = 1 
+If ((Include_in_loopss).and.(Include_in_loopFre).and.(Include_in_loopFre).and.IncludePenguins) Then 
+  If ((Mss2.gt.mz2).Or.(MFre2.gt.mz2).Or.(MFre2.gt.mz2)) Then
+coup1L = cplcFeFressL(gt1)
+coup1R = cplcFeFressR(gt1)
+coup2L = cplcFreFessL(gt2)
+coup2R = cplcFreFessR(gt2)
+ratio = MFre2/Mss2
+ If ((ratio.eq.ratio).and.(ratio.lt.1.0E+30_dp).and.(ratio.gt.1.0E-30_dp)) Then 
+EDM = EDM -(-1)* Aimag(coup1R*Conjg(coup1L))*FeynFunctionA(ratio)*& 
+    &MFre/Mss2 
+End if 
+ 
+End if 
 End if 
 
 

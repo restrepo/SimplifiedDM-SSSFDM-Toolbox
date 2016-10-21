@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:53 on 19.10.2016   
+! File created at 18:57 on 20.10.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -158,8 +158,8 @@ Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),M
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),           & 
 & ZEL(3,3),ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFvcVWpL(3,3),& 
-& cplcFeFvcVWpR(3,3)
+Complex(dp) :: cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),cplcFeFressL(3),  & 
+& cplcFeFressR(3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3)
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT(:) 
@@ -203,7 +203,8 @@ If (m_in.Eq.0._dp) Cycle
 Call CouplingsFor_Fe_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
 & MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,              & 
 & ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,cplcFeFehhL,       & 
-& cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,deltaM)
+& cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,cplcFeFressR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,deltaM)
 
 i_count = 1 
 
@@ -240,6 +241,21 @@ gPartial(i1,i_count) = 1*gam
 gT(i1) = gT(i1) + gPartial(i1,i_count) 
 i_count = i_count +1 
   End Do 
+
+ 
+! ----------------------------------------------
+! Fre, ss
+! ----------------------------------------------
+
+ 
+m1out = MFre
+m2out = Mss
+coupL = cplcFeFressL(i1)
+coupR = cplcFeFressR(i1)
+Call FermionToFermionScalar(m_in,m1out,m2out,coupL,coupR,gam) 
+gPartial(i1,i_count) = 1*gam 
+gT(i1) = gT(i1) + gPartial(i1,i_count) 
+i_count = i_count +1 
 
  
 ! ----------------------------------------------
@@ -406,7 +422,7 @@ Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),M
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),           & 
 & ZEL(3,3),ZUL(3,3),ZW(2,2)
 
-Complex(dp) :: cplcFreFreVZL,cplcFreFreVZR
+Complex(dp) :: cplcFreFessL(3),cplcFreFessR(3),cplcFreFreVZL,cplcFreFreVZR
 
 Integer, Intent(in) :: i_in 
 Real(dp), Intent(inout) :: gPartial(:,:), gT 
@@ -443,10 +459,27 @@ i1=1
 m_in = MFre 
 Call CouplingsFor_Fre_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,              & 
 & MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,              & 
-& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,cplcFreFreVZL,     & 
-& cplcFreFreVZR,deltaM)
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,cplcFreFessL,      & 
+& cplcFreFessR,cplcFreFreVZL,cplcFreFreVZR,deltaM)
 
 i_count = 1 
+
+ 
+! ----------------------------------------------
+! Fe, ss
+! ----------------------------------------------
+
+ 
+Do gt1= 1, 3
+m1out = MFe(gt1)
+m2out = Mss
+coupL = cplcFreFessL(gt1)
+coupR = cplcFreFessR(gt1)
+Call FermionToFermionScalar(m_in,m1out,m2out,coupL,coupR,gam) 
+gPartial(1,i_count) = 1*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
+  End Do 
 
  
 ! ----------------------------------------------
@@ -757,6 +790,102 @@ Contains
 
   End  Function FFqcd
 End Subroutine hhTwoBodyDecay
+ 
+ 
+Subroutine ssTwoBodyDecay(i_in,deltaM,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,          & 
+& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,            & 
+& ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,gPartial,gT,BR)
+
+Implicit None 
+ 
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2,v,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,           & 
+& MFu(3),MFu2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+
+Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2,ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),           & 
+& ZEL(3,3),ZUL(3,3),ZW(2,2)
+
+Complex(dp) :: cplcFreFessL(3),cplcFreFessR(3),cplhhssss
+
+Integer, Intent(in) :: i_in 
+Real(dp), Intent(inout) :: gPartial(:,:), gT 
+Real(dp), Intent(in) :: deltaM 
+Real(dp), Optional, Intent(inout) :: BR(:,:) 
+Integer :: i1, i2, i3, i4, i_start, i_end, i_count, gt1, gt2, gt3, gt4 
+Real(dp) :: gam, m_in, m1out, m2out, coupReal 
+Complex(dp) :: coupC, coupR, coupL, coup 
+ 
+Iname = Iname + 1 
+NameOfUnit(Iname) = 'ssTwoBodyDecay'
+ 
+If (i_in.Lt.0) Then 
+  i_start = 1 
+  i_end = 1 
+  gT = 0._dp 
+  gPartial = 0._dp 
+Else 
+  If (ErrorLevel.Ge.-1) Then 
+     Write(ErrCan,*) 'Problem in subroutine '//NameOfUnit(Iname) 
+     Write(ErrCan,*) 'Value of i_in out of range, (i_in,i_max) = ', i_in,1
+
+     Write(*,*) 'Problem in subroutine '//NameOfUnit(Iname) 
+     Write(*,*) 'Value of i_in out of range, (i_in,i_max) = ', i_in,1
+
+  End If 
+  If (ErrorLevel.Gt.0) Call TerminateProgram 
+  If (Present(BR)) BR = 0._dp 
+  Iname = Iname -1 
+  Return 
+End If 
+ 
+i1=1 
+m_in = Mss 
+Call CouplingsFor_ss_decays_2B(m_in,i1,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,               & 
+& MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,              & 
+& ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,cplcFreFessL,      & 
+& cplcFreFessR,cplhhssss,deltaM)
+
+i_count = 1 
+
+ 
+! ----------------------------------------------
+! bar[Fre], Fe
+! ----------------------------------------------
+
+ 
+  Do gt2=1, 3
+m1out = MFre
+m2out = MFe(gt2)
+coupL = cplcFreFessL(gt2)
+coupR = cplcFreFessR(gt2)
+Call ScalarToTwoFermions(m_in,m1out,m2out,coupL,coupR,gam) 
+gPartial(1,i_count) = 2*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
+End Do 
+ 
+
+ 
+! ----------------------------------------------
+! ss, hh
+! ----------------------------------------------
+
+ 
+m1out = Mss
+m2out = Mhh
+coup = cplhhssss
+Call ScalarToTwoScalars(m_in,m1out,m2out,coup,gam) 
+gPartial(1,i_count) = 1*gam 
+gT = gT + gPartial(1,i_count) 
+i_count = i_count +1 
+If ((Present(BR)).And.(gT.Eq.0)) Then 
+  BR(1,:) = 0._dp 
+Else If (Present(BR)) Then 
+  BR(1,:) = gPartial(1,:)/gT 
+End if 
+ 
+Iname = Iname - 1 
+ 
+End Subroutine ssTwoBodyDecay
  
  
 Subroutine ScalarToTwoVectorbosonsNew(mS,mV1,mV2,coup,width)

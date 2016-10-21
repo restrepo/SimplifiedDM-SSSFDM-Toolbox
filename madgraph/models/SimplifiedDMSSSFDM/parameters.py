@@ -3,7 +3,7 @@
 # SARAH References: arXiv:0806.0538, arXiv:0909.2863, arXiv:1002.0840    
 # (c) Florian Staub, 2011  
 # ----------------------------------------------------------------------  
-# File created at 23:57 on 19.10.2016   
+# File created at 19:1 on 20.10.2016   
 # ----------------------------------------------------------------------  
  
  
@@ -160,6 +160,30 @@ WWp = 	 Parameter(name = 'WWp',
 	 texname = '\\text{WWp}', 
 	 lhablock = 'DECAY', 
 	 lhacode = [24]) 
+ 
+Ys1 = 	 Parameter(name='Ys1', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0., 
+	 texname = '\\text{Ys1}', 
+	 lhablock = 'YS', 
+	 lhacode = [1] ) 
+ 
+Ys2 = 	 Parameter(name='Ys2', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0., 
+	 texname = '\\text{Ys2}', 
+	 lhablock = 'YS', 
+	 lhacode = [2] ) 
+ 
+Ys3 = 	 Parameter(name='Ys3', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0., 
+	 texname = '\\text{Ys3}', 
+	 lhablock = 'YS', 
+	 lhacode = [3] ) 
  
 rLS = 	 Parameter(name='rLS', 
 	 nature = 'external', 

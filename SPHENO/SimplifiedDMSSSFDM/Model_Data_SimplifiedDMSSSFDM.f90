@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:53 on 19.10.2016   
+! File created at 18:57 on 20.10.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -288,8 +288,9 @@ Real(dp) :: vIN
 
 Real(dp) :: vFix
 
-Real(dp) :: gPFu(3,147),gTFu(3),BRFu(3,147),gPFe(3,147),gTFe(3),BRFe(3,147),gPFd(3,147),          & 
-& gTFd(3),BRFd(3,147),gPFre(1,1),gTFre,BRFre(1,1),gPhh(1,35),gThh,BRhh(1,35)
+Real(dp) :: gPFu(3,147),gTFu(3),BRFu(3,147),gPFe(3,151),gTFe(3),BRFe(3,151),gPFd(3,147),          & 
+& gTFd(3),BRFd(3,147),gPFre(1,4),gTFre,BRFre(1,4),gPhh(1,35),gThh,BRhh(1,35),            & 
+& gPss(1,4),gTss,BRss(1,4)
 
 Real(dp) :: ratioFd(1,3),ratioFe(1,3),ratioFu(1,3),ratioHp,ratioVWp
 
@@ -1069,6 +1070,9 @@ BRFre = 0._dp
 gPhh = 0._dp 
 gThh = 0._dp 
 BRhh = 0._dp 
+gPss = 0._dp 
+gTss = 0._dp 
+BRss = 0._dp 
 ratioFd =  0._dp  
 ratioFe =  0._dp  
 ratioFu =  0._dp  
