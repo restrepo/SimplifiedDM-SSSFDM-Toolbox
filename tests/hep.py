@@ -287,7 +287,7 @@ class hep(model):
         f='channels.out'
         if os.path.isfile('channels.out'):
             f=open(f,'r').read()
-            fvalues=re.sub(r'.*\s+(0\.[0-9]+)',r'\1', re.sub('#.*','',f)).split('\n')
+            fvalues=re.sub(r'.*\s+([01]\.[0-9]+)',r'\1', re.sub('#.*','',f)).split('\n')
             if len(fvalues)>0:
                 fvalues=map(float,fvalues[:-1])
                 fkeys=re.sub('.*#\s+','O_chnl:',f).split('\n')[:-1]
