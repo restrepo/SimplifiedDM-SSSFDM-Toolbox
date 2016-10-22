@@ -1,5 +1,5 @@
 : 
-  CALCHEP=/home/restrepo/prog/toolbox/toolbox/micromegas/CalcHEP_src 
+  CALCHEP=/home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/micromegas/CalcHEP_src 
 #---------------
 
 lib=$CALCHEP/lib
