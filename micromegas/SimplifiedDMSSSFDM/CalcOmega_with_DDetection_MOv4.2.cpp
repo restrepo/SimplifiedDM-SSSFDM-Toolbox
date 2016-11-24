@@ -123,20 +123,6 @@ printf("\n======== Direct Detection ========\n");
 }
 
 
-
-{
-  double Emin=1,/* Energy cut  in GeV   */  sigmaV;
-  double vcs_gz,vcs_gg;
-  char txt[100];
-  double SpA[NZ],SpE[NZ],SpP[NZ];
-  double FluxA[NZ],FluxE[NZ],FluxP[NZ];
-  double * SpNe=NULL,*SpNm=NULL,*SpNl=NULL;
-  double Etest=Mcdm/2;
-
-  printf("\n======== Indirect Detection ========\n"); 
-  sigmaV=calcSpectrum(1+2+4,SpA,SpE,SpP,SpNe,SpNm,SpNl ,&err);
-
-}
        fclose(channels);
        fclose(omega);
 
