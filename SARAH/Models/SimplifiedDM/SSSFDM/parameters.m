@@ -60,7 +60,7 @@ ParameterDefinitions = {
 
 {LamS,     {OutputName ->"LS",
 	    LesHouches -> {HDM,3}}},
-{MDF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}},
+{MSF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}},
 {Ys, { LaTeX -> "Y_S",Real->True,LesHouches -> YS, OutputName-> Ys }}
     
  }; 

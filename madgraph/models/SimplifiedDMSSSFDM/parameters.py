@@ -3,7 +3,7 @@
 # SARAH References: arXiv:0806.0538, arXiv:0909.2863, arXiv:1002.0840    
 # (c) Florian Staub, 2011  
 # ----------------------------------------------------------------------  
-# File created at 23:49 on 23.11.2016   
+# File created at 8:40 on 28.11.2016   
 # ----------------------------------------------------------------------  
  
  
@@ -216,6 +216,150 @@ iLSH = 	 Parameter(name='iLSH',
 	 texname = '\\text{LSH}', 
 	 lhablock = 'IMHDM', 
 	 lhacode = [2] ) 
+ 
+rVv11 = 	 Parameter(name='rVv11', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 1., 
+	 texname = '\\text{Vv11}', 
+	 lhablock = 'None', 
+	 lhacode = [1, 1] ) 
+ 
+iVv11 = 	 Parameter(name='iVv11', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 1., 
+	 texname = '\\text{Vv11}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [1, 1] ) 
+ 
+rVv12 = 	 Parameter(name='rVv12', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv12}', 
+	 lhablock = 'None', 
+	 lhacode = [1, 2] ) 
+ 
+iVv12 = 	 Parameter(name='iVv12', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv12}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [1, 2] ) 
+ 
+rVv13 = 	 Parameter(name='rVv13', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv13}', 
+	 lhablock = 'None', 
+	 lhacode = [1, 3] ) 
+ 
+iVv13 = 	 Parameter(name='iVv13', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv13}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [1, 3] ) 
+ 
+rVv21 = 	 Parameter(name='rVv21', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv21}', 
+	 lhablock = 'None', 
+	 lhacode = [2, 1] ) 
+ 
+iVv21 = 	 Parameter(name='iVv21', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv21}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [2, 1] ) 
+ 
+rVv22 = 	 Parameter(name='rVv22', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 1., 
+	 texname = '\\text{Vv22}', 
+	 lhablock = 'None', 
+	 lhacode = [2, 2] ) 
+ 
+iVv22 = 	 Parameter(name='iVv22', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 1., 
+	 texname = '\\text{Vv22}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [2, 2] ) 
+ 
+rVv23 = 	 Parameter(name='rVv23', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv23}', 
+	 lhablock = 'None', 
+	 lhacode = [2, 3] ) 
+ 
+iVv23 = 	 Parameter(name='iVv23', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv23}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [2, 3] ) 
+ 
+rVv31 = 	 Parameter(name='rVv31', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv31}', 
+	 lhablock = 'None', 
+	 lhacode = [3, 1] ) 
+ 
+iVv31 = 	 Parameter(name='iVv31', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv31}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [3, 1] ) 
+ 
+rVv32 = 	 Parameter(name='rVv32', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv32}', 
+	 lhablock = 'None', 
+	 lhacode = [3, 2] ) 
+ 
+iVv32 = 	 Parameter(name='iVv32', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 0, 
+	 texname = '\\text{Vv32}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [3, 2] ) 
+ 
+rVv33 = 	 Parameter(name='rVv33', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 1., 
+	 texname = '\\text{Vv33}', 
+	 lhablock = 'None', 
+	 lhacode = [3, 3] ) 
+ 
+iVv33 = 	 Parameter(name='iVv33', 
+	 nature = 'external', 
+	 type = 'real', 
+	 value = 1., 
+	 texname = '\\text{Vv33}', 
+	 lhablock = 'IMNone', 
+	 lhacode = [3, 3] ) 
  
 rZDL11 = 	 Parameter(name='rZDL11', 
 	 nature = 'external', 
@@ -1116,6 +1260,60 @@ LSH = 	 Parameter(name='LSH',
 	 type = 'complex', 
 	 value = 'rLSH + complex(0,1)*iLSH', 
 	 texname = '\\text{LSH}' ) 
+ 
+Vv11 = 	 Parameter(name='Vv11', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv11 + complex(0,1)*iVv11', 
+	 texname = '\\text{Vv11}' ) 
+ 
+Vv12 = 	 Parameter(name='Vv12', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv12 + complex(0,1)*iVv12', 
+	 texname = '\\text{Vv12}' ) 
+ 
+Vv13 = 	 Parameter(name='Vv13', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv13 + complex(0,1)*iVv13', 
+	 texname = '\\text{Vv13}' ) 
+ 
+Vv21 = 	 Parameter(name='Vv21', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv21 + complex(0,1)*iVv21', 
+	 texname = '\\text{Vv21}' ) 
+ 
+Vv22 = 	 Parameter(name='Vv22', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv22 + complex(0,1)*iVv22', 
+	 texname = '\\text{Vv22}' ) 
+ 
+Vv23 = 	 Parameter(name='Vv23', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv23 + complex(0,1)*iVv23', 
+	 texname = '\\text{Vv23}' ) 
+ 
+Vv31 = 	 Parameter(name='Vv31', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv31 + complex(0,1)*iVv31', 
+	 texname = '\\text{Vv31}' ) 
+ 
+Vv32 = 	 Parameter(name='Vv32', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv32 + complex(0,1)*iVv32', 
+	 texname = '\\text{Vv32}' ) 
+ 
+Vv33 = 	 Parameter(name='Vv33', 
+	 nature = 'internal', 
+	 type = 'complex', 
+	 value = 'rVv33 + complex(0,1)*iVv33', 
+	 texname = '\\text{Vv33}' ) 
  
 ZDL11 = 	 Parameter(name='ZDL11', 
 	 nature = 'internal', 

@@ -56,7 +56,7 @@ ${name}:  ${name}(Model_Data_SimplifiedDMSSSFDM.o)  \
  ${name}(Couplings_SimplifiedDMSSSFDM.o) ${name}(TreeLevelMasses_SimplifiedDMSSSFDM.o) ${name}(TadpoleEquations_SimplifiedDMSSSFDM.o) \
  ${name}(LoopCouplings_SimplifiedDMSSSFDM.o) ${name}(CouplingsForDecays_SimplifiedDMSSSFDM.o) \
  ${name}(TreeLevel_Decays_SimplifiedDMSSSFDM.o) \
- ${name}(Fu.o)  ${name}(Fe.o)  ${name}(Fd.o)  \
+ ${name}(Fu.o)  ${name}(Fe.o)  ${name}(Fd.o)  ${name}(Fre.o)  \
 ${name}(AddLoopFunctions.o) ${name}(Kinematics.o) \
  ${name}(LoopMasses_SimplifiedDMSSSFDM.o) \
  ${name}(BranchingRatios_SimplifiedDMSSSFDM.o) ${name}(HiggsCS_SimplifiedDMSSSFDM.o) ${name}(RunSM_SimplifiedDMSSSFDM.o) \

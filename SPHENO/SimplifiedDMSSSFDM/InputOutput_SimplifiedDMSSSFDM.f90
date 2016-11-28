@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:48 on 23.11.2016   
+! File created at 8:40 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -251,11 +251,11 @@ Else If (i_par.Eq.3) Then
 If (i_c.Eq.0) LamSIN= Cmplx(wert,Aimag(LamSIN),dp) 
 If (i_c.Eq.1) LamSIN= Cmplx(Real(LamSIN,dp),wert,dp) 
 Else If (i_par.Eq.4) Then 
-If (i_c.Eq.0) MSinput= Cmplx(wert,Aimag(MSinput),dp) 
-If (i_c.Eq.1) MSinput= Cmplx(Real(MSinput,dp),wert,dp) 
+If (i_c.Eq.0) MS2Input= Cmplx(wert,Aimag(MS2Input),dp) 
+If (i_c.Eq.1) MS2Input= Cmplx(Real(MS2Input,dp),wert,dp) 
 Else If (i_par.Eq.5) Then 
-If (i_c.Eq.0) MDFinput= Cmplx(wert,Aimag(MDFinput),dp) 
-If (i_c.Eq.1) MDFinput= Cmplx(Real(MDFinput,dp),wert,dp) 
+If (i_c.Eq.0) MSFIN= Cmplx(wert,Aimag(MSFIN),dp) 
+If (i_c.Eq.1) MSFIN= Cmplx(Real(MSFIN,dp),wert,dp) 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
 If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block MINPAR ",i_par
@@ -1061,48 +1061,6 @@ End Subroutine Read_EXTPAR
       End If
  
 
-Case(1101) 
-   If (wert.ne.1) Include_in_loopFv= .False. 
-Case(1102) 
-   If (wert.ne.1) Include_in_loopFre= .False. 
-Case(1103) 
-   If (wert.ne.1) Include_in_loopFd= .False. 
-Case(1104) 
-   If (wert.ne.1) Include_in_loopFu= .False. 
-Case(1105) 
-   If (wert.ne.1) Include_in_loopFe= .False. 
-Case(1201) 
-   If (wert.ne.1) Include_in_loopHp= .False. 
-Case(1202) 
-   If (wert.ne.1) Include_in_loopss= .False. 
-Case(1203) 
-   If (wert.ne.1) Include_in_loopAh= .False. 
-Case(1204) 
-   If (wert.ne.1) Include_in_loophh= .False. 
-Case(1301) 
-   If (wert.ne.1) Include_in_loopVG= .False. 
-Case(1302) 
-   If (wert.ne.1) Include_in_loopVP= .False. 
-Case(1303) 
-   If (wert.ne.1) Include_in_loopVZ= .False. 
-Case(1304) 
-   If (wert.ne.1) Include_in_loopVWp= .False. 
-Case(1401) 
-   If (wert.ne.1) Include_in_loopgG= .False. 
-Case(1402) 
-   If (wert.ne.1) Include_in_loopgA= .False. 
-Case(1403) 
-   If (wert.ne.1) Include_in_loopgZ= .False. 
-Case(1404) 
-   If (wert.ne.1) Include_in_loopgWp= .False. 
-Case(1405) 
-   If (wert.ne.1) Include_in_loopgWC= .False. 
-Case(1500) 
-   If (wert.ne.1) IncludeWave = .False. 
-Case(1501) 
-   If (wert.ne.1) IncludePenguins = .False. 
-Case(1502) 
-   If (wert.ne.1) IncludeBoxes = .False. 
     Case Default
       If (output_screen) Write(*,*) &
            & "Problem while reading SPhenoInput, ignoring unknown entry" &
@@ -1299,14 +1257,14 @@ Write(io_L,100) "Block MINPAR  # Input parameters"
 Write(io_L,101) 1, Real(Lambda1IN,dp) ,"# Lambda1IN"
 Write(io_L,101) 2, Real(LamSHIN,dp) ,"# LamSHIN"
 Write(io_L,101) 3, Real(LamSIN,dp) ,"# LamSIN"
-Write(io_L,101) 4, Real(MSinput,dp) ,"# MSinput"
-Write(io_L,101) 5, Real(MDFinput,dp) ,"# MDFinput"
+Write(io_L,101) 4, Real(MS2Input,dp) ,"# MS2Input"
+Write(io_L,101) 5, Real(MSFIN,dp) ,"# MSFIN"
 WriteNextBlock = .False. 
 If (Abs(Aimag(Lambda1IN)).gt.0._dp) WriteNextBlock = .True. 
 If (Abs(Aimag(LamSHIN)).gt.0._dp) WriteNextBlock = .True. 
 If (Abs(Aimag(LamSIN)).gt.0._dp) WriteNextBlock = .True. 
-If (Abs(Aimag(MSinput)).gt.0._dp) WriteNextBlock = .True. 
-If (Abs(Aimag(MDFinput)).gt.0._dp) WriteNextBlock = .True. 
+If (Abs(Aimag(MS2Input)).gt.0._dp) WriteNextBlock = .True. 
+If (Abs(Aimag(MSFIN)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,100) "Block IMMINPAR  # Input parameters"
 If (Abs(Aimag(Lambda1IN)).gt.0._dp) Then 
@@ -1318,11 +1276,11 @@ End if
 If (Abs(Aimag(LamSIN)).gt.0._dp) Then 
 Write(io_L,101) 3, Aimag(LamSIN) ,"# LamSIN"
 End if 
-If (Abs(Aimag(MSinput)).gt.0._dp) Then 
-Write(io_L,101) 4, Aimag(MSinput) ,"# MSinput"
+If (Abs(Aimag(MS2Input)).gt.0._dp) Then 
+Write(io_L,101) 4, Aimag(MS2Input) ,"# MS2Input"
 End if 
-If (Abs(Aimag(MDFinput)).gt.0._dp) Then 
-Write(io_L,101) 5, Aimag(MDFinput) ,"# MDFinput"
+If (Abs(Aimag(MSFIN)).gt.0._dp) Then 
+Write(io_L,101) 5, Aimag(MSFIN) ,"# MSFIN"
 End if 
 End if 
 Write(io_L,106) "Block gaugeGUT Q=",m_GUT,"# (GUT scale)" 
@@ -1624,6 +1582,9 @@ PDGLSP(2) = 210000601
 MassLSP(2) = Abs(MFre)
 End if 
 End if 
+ Write(io_L,102) INT(Abs(PDGFv(1))),MFv(1),"# "//Trim(NameParticleFv(1))// "" 
+ Write(io_L,102) INT(Abs(PDGFv(2))),MFv(2),"# "//Trim(NameParticleFv(2))// "" 
+ Write(io_L,102) INT(Abs(PDGFv(3))),MFv(3),"# "//Trim(NameParticleFv(3))// "" 
 
  
 Write(io_L,106) "Block UDLMIX Q=",Q,"# ()" 
@@ -3507,33 +3468,6 @@ End if
 
  
  !-------------------------------
-!Fre
-!-------------------------------
- 
-If(gTFre.gt.MinWidth) Then 
-Write(io_L,200) INT(PDGFre),gTFre,Trim(NameParticleFre) 
-Write(io_L,100) "#    BR                NDA      ID1      ID2" 
-icount = 1 
-Do gt1= 1, 3
-If (BRFre(1,icount).Gt.BrMin) Then 
-CurrentPDG2(1) = PDGFe(gt1) 
-CurrentPDG2(2) = PDGss 
-Write(io_L,201) BRFre(1,icount),2,CurrentPDG2, & 
- & Trim(NameParticleFre)//" -> "//Trim(NameParticleFe(gt1))//" "//Trim(NameParticless)//" "//")"
-End if 
-icount = icount +1 
-  End Do 
-If (BRFre(1,icount).Gt.BrMin) Then 
-CurrentPDG2(1) = PDGFre 
-CurrentPDG2(2) = PDGVZ 
-Write(io_L,201) BRFre(1,icount),2,CurrentPDG2, & 
- & Trim(NameParticleFre)//" -> "//Trim(NameParticleFre)//" "//Trim(NameParticleVZ)//" "//")"
-End if 
-icount = icount +1 
-End if 
-
- 
- !-------------------------------
 !hh
 !-------------------------------
  
@@ -3637,6 +3571,36 @@ Write(io_L,201) BRhh(1,icount),2,CurrentPDG2, &
  & Trim(NameParticlehh)//" -> "//Trim(NameParticleVZ)//" "//Trim(NameParticleVZ)//" "//")"
 End if 
 icount = icount +1 
+End if 
+
+ 
+ !-------------------------------
+!Fre
+!-------------------------------
+ 
+If(gTFre.gt.MinWidth) Then 
+Write(io_L,200) INT(PDGFre),gTFre,Trim(NameParticleFre) 
+Write(io_L,100) "#    BR                NDA      ID1      ID2" 
+icount = 1 
+Do gt1= 1, 3
+If (BRFre(1,icount).Gt.BrMin) Then 
+CurrentPDG2(1) = PDGFe(gt1) 
+CurrentPDG2(2) = PDGss 
+Write(io_L,201) BRFre(1,icount),2,CurrentPDG2, & 
+ & Trim(NameParticleFre)//" -> "//Trim(NameParticleFe(gt1))//" "//Trim(NameParticless)//" "//")"
+End if 
+icount = icount +1 
+  End Do 
+If (BRFre(1,icount).Gt.BrMin) Then 
+CurrentPDG2(1) = PDGFre 
+CurrentPDG2(2) = PDGVZ 
+Write(io_L,201) BRFre(1,icount),2,CurrentPDG2, & 
+ & Trim(NameParticleFre)//" -> "//Trim(NameParticleFre)//" "//Trim(NameParticleVZ)//" "//")"
+End if 
+icount = icount +1 
+If (Maxval(BRFre(1,5:4)).Gt.BRmin) Then 
+Write(io_L,100) "#    BR                NDA      ID1      ID2       ID3" 
+End If 
 End if 
 
  
@@ -3761,8 +3725,8 @@ Write(123,*) ""
  
 Write(123,*) "" 
 Write(123,*) "Wu3 = ",gTFu(3)
-Write(123,*) "WRe = ",gTFre
 Write(123,*) "Wh = ",gThh
+Write(123,*) "WRe = ",gTFre
 Write(123,*) "" 
 Write(123,*) "" 
 
@@ -3771,6 +3735,51 @@ Write(123,*) ""
  Write(123,*) "# Mixing matrices" 
  
 Write(123,*) "" 
+If (MFv(1).Gt.0._dp) Then 
+Write(123,*) "Vv11_r = ", Real(Vv(1,1),dp)
+Write(123,*) "Vv11_i = ", AImag(Vv(1,1))
+Write(123,*) "Vv12_r = ", Real(Vv(1,2),dp)
+Write(123,*) "Vv12_i = ", AImag(Vv(1,2))
+Write(123,*) "Vv13_r = ", Real(Vv(1,3),dp)
+Write(123,*) "Vv13_i = ", AImag(Vv(1,3))
+Else 
+Write(123,*) "Vv11_i = ", Real(Vv(1,1),dp)
+Write(123,*) "Vv11_r = ", -AImag(Vv(1,1))
+Write(123,*) "Vv12_i = ", Real(Vv(1,2),dp)
+Write(123,*) "Vv12_r = ", -AImag(Vv(1,2))
+Write(123,*) "Vv13_i = ", Real(Vv(1,3),dp)
+Write(123,*) "Vv13_r = ", -AImag(Vv(1,3))
+End if 
+If (MFv(2).Gt.0._dp) Then 
+Write(123,*) "Vv21_r = ", Real(Vv(2,1),dp)
+Write(123,*) "Vv21_i = ", AImag(Vv(2,1))
+Write(123,*) "Vv22_r = ", Real(Vv(2,2),dp)
+Write(123,*) "Vv22_i = ", AImag(Vv(2,2))
+Write(123,*) "Vv23_r = ", Real(Vv(2,3),dp)
+Write(123,*) "Vv23_i = ", AImag(Vv(2,3))
+Else 
+Write(123,*) "Vv21_i = ", Real(Vv(2,1),dp)
+Write(123,*) "Vv21_r = ", -AImag(Vv(2,1))
+Write(123,*) "Vv22_i = ", Real(Vv(2,2),dp)
+Write(123,*) "Vv22_r = ", -AImag(Vv(2,2))
+Write(123,*) "Vv23_i = ", Real(Vv(2,3),dp)
+Write(123,*) "Vv23_r = ", -AImag(Vv(2,3))
+End if 
+If (MFv(3).Gt.0._dp) Then 
+Write(123,*) "Vv31_r = ", Real(Vv(3,1),dp)
+Write(123,*) "Vv31_i = ", AImag(Vv(3,1))
+Write(123,*) "Vv32_r = ", Real(Vv(3,2),dp)
+Write(123,*) "Vv32_i = ", AImag(Vv(3,2))
+Write(123,*) "Vv33_r = ", Real(Vv(3,3),dp)
+Write(123,*) "Vv33_i = ", AImag(Vv(3,3))
+Else 
+Write(123,*) "Vv31_i = ", Real(Vv(3,1),dp)
+Write(123,*) "Vv31_r = ", -AImag(Vv(3,1))
+Write(123,*) "Vv32_i = ", Real(Vv(3,2),dp)
+Write(123,*) "Vv32_r = ", -AImag(Vv(3,2))
+Write(123,*) "Vv33_i = ", Real(Vv(3,3),dp)
+Write(123,*) "Vv33_r = ", -AImag(Vv(3,3))
+End if 
 Write(123,*) "ZDL11_r = ", Real(ZDL(1,1),dp)
 Write(123,*) "ZDL11_i = ", AImag(ZDL(1,1))
 Write(123,*) "ZDL12_r = ", Real(ZDL(1,2),dp)

@@ -74,8 +74,8 @@ DEFINITION[a_][MINPAR]={
 {{1},{Value->0}} (*Lambda1IN*), 
 {{2},{Value->0}} (*LamSHIN*), 
 {{3},{Value->0}} (*LamSIN*), 
-{{4},{Value->0}} (*MSinput*), 
-{{5},{Value->0}} (*MDFinput*)}; 
+{{4},{Value->0}} (*MS2Input*), 
+{{5},{Value->0}} (*MSFIN*)}; 
  
 DEFINITION[a_][SPhenoInput]={ 
 {{1},{Value->-1}}, (* error level *)

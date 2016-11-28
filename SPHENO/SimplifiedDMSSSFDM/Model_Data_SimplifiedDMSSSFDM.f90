@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:47 on 23.11.2016   
+! File created at 8:38 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -277,10 +277,10 @@ Real(dp) :: g1GUT,g2GUT,g3GUT,YsGUT(3),MDFGUT,MS2GUT
 
 Complex(dp) :: LSGUT,LSHGUT,LamGUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),mu2GUT
 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: v
 
@@ -289,7 +289,7 @@ Real(dp) :: vIN
 Real(dp) :: vFix
 
 Real(dp) :: gPFu(3,147),gTFu(3),BRFu(3,147),gPFe(3,151),gTFe(3),BRFe(3,151),gPFd(3,147),          & 
-& gTFd(3),BRFd(3,147),gPFre(1,4),gTFre,BRFre(1,4),gPhh(1,35),gThh,BRhh(1,35),            & 
+& gTFd(3),BRFd(3,147),gPhh(1,35),gThh,BRhh(1,35),gPFre(1,4),gTFre,BRFre(1,4),            & 
 & gPss(1,4),gTss,BRss(1,4)
 
 Real(dp) :: ratioFd(1,3),ratioFe(1,3),ratioFu(1,3),ratioHp,ratioVWp
@@ -322,28 +322,6 @@ Real (dp) :: FineTuningResults(0)
 Real (dp) :: FineTuningResultsAllVEVs(0) 
 Logical, Save :: OneLoopFT = .False. 
 Logical, Save :: CalcFT = .True. 
-Logical :: Include_in_loopFv = .true. 
-Logical :: Include_in_loopFre = .true. 
-Logical :: Include_in_loopFd = .true. 
-Logical :: Include_in_loopFu = .true. 
-Logical :: Include_in_loopFe = .true. 
-Logical :: Include_in_loopHp = .true. 
-Logical :: Include_in_loopss = .true. 
-Logical :: Include_in_loopAh = .true. 
-Logical :: Include_in_loophh = .true. 
-Logical :: Include_in_loopVG = .true. 
-Logical :: Include_in_loopVP = .true. 
-Logical :: Include_in_loopVZ = .true. 
-Logical :: Include_in_loopVWp = .true. 
-Logical :: Include_in_loopgG = .true. 
-Logical :: Include_in_loopgA = .true. 
-Logical :: Include_in_loopgZ = .true. 
-Logical :: Include_in_loopgWp = .true. 
-Logical :: Include_in_loopgWC = .true. 
-Logical :: IncludeBoxes = .true. 
-Logical :: IncludePenguins = .true. 
-Logical :: IncludeWave = .true. 
-Logical :: IncludeTriangle = .true. 
 Integer,save::YukawaScheme=1
 Logical, save :: CheckSugraDetails(10) =.False. & 
                         &, SugraErrors(10) =.False. &
@@ -373,12 +351,14 @@ Real(dp), save :: RXiG = 1._dp
 Real(dp), save :: RXiP = 1._dp 
 Real(dp), save :: RXiWp = 1._dp 
 Real(dp), save :: RXiZ = 1._dp 
+Real(dp) :: nuMasses(3) 
+Complex(dp) :: nuMixing(3,3) 
 Complex(dp) :: temporaryValue 
 Complex(dp) :: Lambda1IN
 Complex(dp) :: LamSHIN
 Complex(dp) :: LamSIN
-Complex(dp) :: MSinput
-Complex(dp) :: MDFinput
+Complex(dp) :: MS2Input
+Complex(dp) :: MSFIN
 Real(dp) :: vMZ 
 Real(dp) :: vSUSY 
 ! For HiggsBounds 
@@ -394,7 +374,7 @@ Real(dp) :: rHB_P_VP(1),rHB_S_VP(1)
 Real(dp) :: rHB_P_VZ(1),rHB_S_VZ(1)
 Real(dp) :: rHB_P_VG(1),rHB_S_VG(1)
 Real(dp) :: rHB_P_VWp(1),rHB_S_VWp(1)
-Real(dp) :: rHB_P_P_Fv(1),rHB_P_S_Fv(1),rHB_S_S_Fv(1),rHB_S_P_Fv(1)
+Real(dp) :: rHB_P_P_Fv(1,3),rHB_P_S_Fv(1,3),rHB_S_S_Fv(1,3),rHB_S_P_Fv(1,3)
 Complex(dp) :: CPL_A_H_Z 
  Complex(dp) :: CPL_H_H_Z(1,1) 
  Complex(dp) :: CoupHPP, CoupHGG 
@@ -1035,6 +1015,8 @@ MFre = 0._dp
 MFre2 = 0._dp 
 MFu = 0._dp 
 MFu2 = 0._dp 
+MFv = 0._dp 
+MFv2 = 0._dp 
 Mhh = 0._dp 
 Mhh2 = 0._dp 
 MHp = 0._dp 
@@ -1052,6 +1034,7 @@ ZUR = 0._dp
 ZDL = 0._dp 
 ZEL = 0._dp 
 ZUL = 0._dp 
+Vv = 0._dp 
 ZW = 0._dp 
 ZZ = 0._dp 
 v = 0._dp 
@@ -1064,12 +1047,12 @@ BRFe = 0._dp
 gPFd = 0._dp 
 gTFd = 0._dp 
 BRFd = 0._dp 
-gPFre = 0._dp 
-gTFre = 0._dp 
-BRFre = 0._dp 
 gPhh = 0._dp 
 gThh = 0._dp 
 BRhh = 0._dp 
+gPFre = 0._dp 
+gTFre = 0._dp 
+BRFre = 0._dp 
 gPss = 0._dp 
 gTss = 0._dp 
 BRss = 0._dp 
@@ -1090,8 +1073,8 @@ ratioPPP =  0._dp
 Lambda1IN=(0._dp,0._dp) 
 LamSHIN=(0._dp,0._dp) 
 LamSIN=(0._dp,0._dp) 
-MSinput=(0._dp,0._dp) 
-MDFinput=(0._dp,0._dp) 
+MS2Input=(0._dp,0._dp) 
+MSFIN=(0._dp,0._dp) 
 End Subroutine Set_All_Parameters_0 
  
 

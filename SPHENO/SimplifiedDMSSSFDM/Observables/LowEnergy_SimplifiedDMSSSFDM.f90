@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:47 on 23.11.2016   
+! File created at 8:38 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -21,12 +21,12 @@ Private::F1,F2,F3,F4,F3Gamma
 Contains
 
 
-Subroutine Gminus2(Ifermion,MAh,MAh2,MFe,MFe2,MFre,MFre2,Mhh,Mhh2,MHp,MHp2,           & 
-& Mss,Mss2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,      & 
-& cplcFreFessL,cplcFreFessR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFressL,cplcFeFressR,           & 
-& cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,a_mu)
+Subroutine Gminus2(Ifermion,MAh,MAh2,MFe,MFe2,MFre,MFre2,MFv,MFv2,Mhh,Mhh2,           & 
+& MHp,MHp2,Mss,Mss2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,cplcFvFeHpL,         & 
+& cplcFvFeHpR,cplcFreFessL,cplcFreFessR,cplcFeFeVPL,cplcFeFeVPR,cplcFeFressL,            & 
+& cplcFeFressR,cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplHpcHpVP,a_mu)
 
-Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),MFre,MFre2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2
+Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),MFre,MFre2,MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2
 
 Complex(dp),Intent(in)  :: cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3), & 
 & cplcFvFeHpR(3,3),cplcFreFessL(3),cplcFreFessR(3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),    & 
@@ -48,7 +48,6 @@ gt1 = Ifermion
 gt2 = Ifermion 
  
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
 Do i1= 2,1
   Do i2= 1,3
    i3 = i2
@@ -66,33 +65,29 @@ End if
 End if 
    End Do
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1= 1,3
   Do i2= 2,1
    i3 = i2
-  If ((0._dp.gt.mz2).Or.(MHp2.gt.mz2).Or.(MHp2.gt.mz2)) Then
+  If ((MFv2(i1).gt.mz2).Or.(MHp2.gt.mz2).Or.(MHp2.gt.mz2)) Then
 coup1L = cplcFeFvcHpL(gt1,i1)
 coup1R = cplcFeFvcHpR(gt1,i1)
 coup2L = cplcFvFeHpL(i1,gt2)
 coup2R = cplcFvFeHpR(i1,gt2)
-ratio = MHp2/0._dp
+ratio = MHp2/MFv2(i1)
  If ((ratio.eq.ratio).and.(ratio.lt.1.0E+30_dp).and.(ratio.gt.1.0E-30_dp)) Then 
-a_mu = a_mu - 2._dp*Real(coup1L*Conjg(coup1R),dp)*F4(ratio)/0.& 
-      & - 2._dp*MFe(Ifermion)*(Abs(coup1L)**2 + Abs(coup1R)**2)*F1(ratio)/0._dp 
+a_mu = a_mu - 2._dp*Real(coup1L*Conjg(coup1R),dp)*F4(ratio)/MFv(i1)& 
+      & - 2._dp*MFe(Ifermion)*(Abs(coup1L)**2 + Abs(coup1R)**2)*F1(ratio)/MFv2(i1) 
 End if 
  
 End if 
    End Do
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2= 1,3
    i3 = i2
   If ((Mhh2.gt.mz2).Or.(MFe2(i2).gt.mz2).Or.(MFe2(i3).gt.mz2)) Then
@@ -108,11 +103,9 @@ End if
  
 End if 
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopss).and.(Include_in_loopFre).and.(Include_in_loopFre).and.IncludePenguins) Then 
   If ((Mss2.gt.mz2).Or.(MFre2.gt.mz2).Or.(MFre2.gt.mz2)) Then
 coup1L = cplcFeFressL(gt1)
 coup1R = cplcFeFressR(gt1)
@@ -125,7 +118,6 @@ a_mu = a_mu - Real(coup1L*Conjg(coup1R),dp)*F3gamma(ratio)/MFre&
 End if 
  
 End if 
-End if 
 
 
 a_mu = a_mu*MFe(Ifermion)*oo16pi2 
@@ -134,15 +126,16 @@ Iname = Iname -1
 End Subroutine Gminus2 
  
  
-Subroutine LeptonEDM(Ifermion,MAh,MAh2,MFe,MFe2,MFre,MFre2,Mhh,Mhh2,MHp,              & 
-& MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,cplcFeFehhR,     & 
-& cplcFvFeHpL,cplcFvFeHpR,cplcFreFessL,cplcFreFessR,cplcFeFeVPL,cplcFeFeVPR,             & 
-& cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,cplcFeFressR,           & 
-& cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,cplcFeFvcVWpR,     & 
-& cplHpcHpVP,cplcVWpVPVWp,EDM)
+Subroutine LeptonEDM(Ifermion,MAh,MAh2,MFe,MFe2,MFre,MFre2,MFv,MFv2,Mhh,              & 
+& Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,cplcFeFeAhL,cplcFeFeAhR,cplcFeFehhL,        & 
+& cplcFeFehhR,cplcFvFeHpL,cplcFvFeHpR,cplcFreFessL,cplcFreFessR,cplcFeFeVPL,             & 
+& cplcFeFeVPR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,            & 
+& cplcFeFressR,cplcFreFreVPL,cplcFreFreVPR,cplcFeFvcHpL,cplcFeFvcHpR,cplcFeFvcVWpL,      & 
+& cplcFeFvcVWpR,cplHpcHpVP,cplcVWpVPVWp,EDM)
 
 Implicit None
-Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),MFre,MFre2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in)  :: MAh,MAh2,MFe(3),MFe2(3),MFre,MFre2,MFv(3),MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,              & 
+& Mss2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in)  :: cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFvFeHpL(3,3), & 
 & cplcFvFeHpR(3,3),cplcFreFessL(3),cplcFreFessR(3),cplcFeFeVPL(3,3),cplcFeFeVPR(3,3),    & 
@@ -165,7 +158,6 @@ gt1 = Ifermion
 gt2 = Ifermion 
  
 chargefactor = 1 
-If ((Include_in_loopAh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
 Do i1= 2,1
   Do i2= 1,3
    i3 = i2
@@ -183,46 +175,40 @@ End if
 End if 
    End Do
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopHp).and.(Include_in_loopHp).and.IncludePenguins) Then 
 Do i1= 1,3
   Do i2= 2,1
    i3 = i2
-  If ((0._dp.gt.mz2).Or.(MHp2.gt.mz2).Or.(MHp2.gt.mz2)) Then
+  If ((MFv2(i1).gt.mz2).Or.(MHp2.gt.mz2).Or.(MHp2.gt.mz2)) Then
 coup1L = cplcFeFvcHpL(gt1,i1)
 coup1R = cplcFeFvcHpR(gt1,i1)
 coup2L = cplcFvFeHpL(i1,gt2)
 coup2R = cplcFvFeHpR(i1,gt2)
-ratio = 0._dp/MHp2
+ratio = MFv2(i1)/MHp2
  If ((ratio.eq.ratio).and.(ratio.lt.1.0E+30_dp).and.(ratio.gt.1.0E-30_dp)) Then 
 EDM = EDM +(-1)* Aimag(coup1L*Conjg(coup1R))*FeynFunctionB(ratio)*& 
-    &0./MHp2 
+    &MFv(i1)/MHp2 
 End if 
  
 End if 
    End Do
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopFv).and.(Include_in_loopVWp).and.(Include_in_loopVWp).and.IncludePenguins) Then 
 Do i1= 1,3
-  If ((0._dp.gt.mz2).Or.(MVWp2.gt.mz2).Or.(MVWp2.gt.mz2)) Then
+  If ((MFv2(i1).gt.mz2).Or.(MVWp2.gt.mz2).Or.(MVWp2.gt.mz2)) Then
 coup1L = cplcFeFvcVWpL(gt1,i1)
 coup1R = cplcFeFvcVWpR(gt1,i1)
 coup2L = cplcFvFeVWpL(i1,gt2)
 coup2R = cplcFvFeVWpR(i1,gt2)
 End if 
    End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loophh).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2= 1,3
    i3 = i2
   If ((Mhh2.gt.mz2).Or.(MFe2(i2).gt.mz2).Or.(MFe2(i3).gt.mz2)) Then
@@ -238,11 +224,9 @@ End if
  
 End if 
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopss).and.(Include_in_loopFre).and.(Include_in_loopFre).and.IncludePenguins) Then 
   If ((Mss2.gt.mz2).Or.(MFre2.gt.mz2).Or.(MFre2.gt.mz2)) Then
 coup1L = cplcFeFressL(gt1)
 coup1R = cplcFeFressR(gt1)
@@ -255,11 +239,9 @@ EDM = EDM -(-1)* Aimag(coup1R*Conjg(coup1L))*FeynFunctionA(ratio)*&
 End if 
  
 End if 
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopVP).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2= 1,3
    i3 = i2
   If ((0._dp.gt.mz2).Or.(MFe2(i2).gt.mz2).Or.(MFe2(i3).gt.mz2)) Then
@@ -269,11 +251,9 @@ coup2L = cplcFeFeVPL(i3,gt2)
 coup2R = cplcFeFeVPR(i3,gt2)
 End if 
   End Do
-End if 
 
 
 chargefactor = 1 
-If ((Include_in_loopVZ).and.(Include_in_loopFe).and.(Include_in_loopFe).and.IncludePenguins) Then 
   Do i2= 1,3
    i3 = i2
   If ((MVZ2.gt.mz2).Or.(MFe2(i2).gt.mz2).Or.(MFe2(i3).gt.mz2)) Then
@@ -283,7 +263,6 @@ coup2L = cplcFeFeVZL(i3,gt2)
 coup2R = cplcFeFeVZR(i3,gt2)
 End if 
   End Do
-End if 
 
 
 EDM = ecmfactor*EDM*oo16pi2 
@@ -292,20 +271,20 @@ Iname = Iname -1
 End Subroutine LeptonEDM 
  
  
-Subroutine DeltaRho(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,               & 
-& Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhcVWpVWp,cplAhAhVZVZ,cplAhhhVZ,cplAhHpcVWp,    & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,cplcFeFeVZR,           & 
-& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL,cplcFuFuVZR,       & 
-& cplcFvFvVZL,cplcFvFvVZR,cplcgAgWpcVWp,cplcgWCgAcVWp,cplcgWCgWCVZ,cplcgWCgZcVWp,        & 
-& cplcgWpgWpVZ,cplcgZgWpcVWp,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,   & 
-& cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpVPVWp,cplcVWpVWpVZ,             & 
-& cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplhhcVWpVWp,cplhhhhcVWpVWp,           & 
-& cplhhhhVZVZ,cplhhHpcVWp,cplhhVZVZ,cplHpcHpcVWpVWp,cplHpcHpVZ,cplHpcHpVZVZ,             & 
-& cplHpcVWpVP,cplHpcVWpVZ,rho)
+Subroutine DeltaRho(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,               & 
+& MFv2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2,cplAhAhcVWpVWp,cplAhAhVZVZ,cplAhhhVZ,       & 
+& cplAhHpcVWp,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFeVZL,           & 
+& cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL,       & 
+& cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,cplcgAgWpcVWp,cplcgWCgAcVWp,cplcgWCgWCVZ,          & 
+& cplcgWCgZcVWp,cplcgWpgWpVZ,cplcgZgWpcVWp,cplcVWpcVWpVWpVWp1,cplcVWpcVWpVWpVWp2,        & 
+& cplcVWpcVWpVWpVWp3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,cplcVWpVPVPVWp3,cplcVWpVPVWp,       & 
+& cplcVWpVWpVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,cplhhcVWpVWp,             & 
+& cplhhhhcVWpVWp,cplhhhhVZVZ,cplhhHpcVWp,cplhhVZVZ,cplHpcHpcVWpVWp,cplHpcHpVZ,           & 
+& cplHpcHpVZVZ,cplHpcVWpVP,cplHpcVWpVZ,rho)
 
 Implicit None
-Real(dp),Intent(in)  :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
+Real(dp),Intent(in)  :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,MVZ,MVZ2
 
 Complex(dp),Intent(in)  :: cplAhAhcVWpVWp,cplAhAhVZVZ,cplAhhhVZ,cplAhHpcVWp,cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),   & 
 & cplcFdFucVWpL(3,3),cplcFdFucVWpR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),               & 
@@ -324,19 +303,19 @@ Complex(dp) ::  dmW2, dmz2
 mu_old = SetRenormalizationScale(mZ2) 
  
 Call Pi1LoopVZ(0._dp,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,              & 
-& MFu2,MVZ,MVZ2,MHp,MHp2,MVWp,MVWp2,cplAhhhVZ,cplcFdFdVZL,cplcFdFdVZR,cplcFeFeVZL,       & 
-& cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,           & 
-& cplcFvFvVZR,cplcgWpgWpVZ,cplcgWCgWCVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,cplcVWpVWpVZ,   & 
-& cplAhAhVZVZ,cplhhhhVZVZ,cplHpcHpVZVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,  & 
-& kont,dmZ2)
+& MFu2,MFv,MFv2,MVZ,MVZ2,MHp,MHp2,MVWp,MVWp2,cplAhhhVZ,cplcFdFdVZL,cplcFdFdVZR,          & 
+& cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFuVZL,cplcFuFuVZR,           & 
+& cplcFvFvVZL,cplcFvFvVZR,cplcgWpgWpVZ,cplcgWCgWCVZ,cplhhVZVZ,cplHpcHpVZ,cplHpcVWpVZ,    & 
+& cplcVWpVWpVZ,cplAhAhVZVZ,cplhhhhVZVZ,cplHpcHpVZVZ,cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,     & 
+& cplcVWpVWpVZVZ3,kont,dmZ2)
 
-Call Pi1LoopVWp(0._dp,MHp,MHp2,MAh,MAh2,MFd,MFd2,MFu,MFu2,MFe,MFe2,Mhh,               & 
-& Mhh2,MVWp,MVWp2,MVZ,MVZ2,cplAhHpcVWp,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFvcVWpL,        & 
-& cplcFeFvcVWpR,cplcgWCgAcVWp,cplcgAgWpcVWp,cplcgZgWpcVWp,cplcgWCgZcVWp,cplhhHpcVWp,     & 
-& cplhhcVWpVWp,cplHpcVWpVP,cplHpcVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,cplAhAhcVWpVWp,         & 
-& cplhhhhcVWpVWp,cplHpcHpcVWpVWp,cplcVWpVPVPVWp3,cplcVWpVPVPVWp1,cplcVWpVPVPVWp2,        & 
-& cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,cplcVWpcVWpVWpVWp1,cplcVWpVWpVZVZ1,              & 
-& cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,kont,dmW2)
+Call Pi1LoopVWp(0._dp,MHp,MHp2,MAh,MAh2,MFd,MFd2,MFu,MFu2,MFe,MFe2,MFv,               & 
+& MFv2,Mhh,Mhh2,MVWp,MVWp2,MVZ,MVZ2,cplAhHpcVWp,cplcFdFucVWpL,cplcFdFucVWpR,             & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,cplcgWCgAcVWp,cplcgAgWpcVWp,cplcgZgWpcVWp,cplcgWCgZcVWp,   & 
+& cplhhHpcVWp,cplhhcVWpVWp,cplHpcVWpVP,cplHpcVWpVZ,cplcVWpVPVWp,cplcVWpVWpVZ,            & 
+& cplAhAhcVWpVWp,cplhhhhcVWpVWp,cplHpcHpcVWpVWp,cplcVWpVPVPVWp3,cplcVWpVPVPVWp1,         & 
+& cplcVWpVPVPVWp2,cplcVWpcVWpVWpVWp2,cplcVWpcVWpVWpVWp3,cplcVWpcVWpVWpVWp1,              & 
+& cplcVWpVWpVZVZ1,cplcVWpVWpVZVZ2,cplcVWpVWpVZVZ3,kont,dmW2)
 
 Drho_top = 3*G_F*mf_u(3)**2*oosqrt2*oo8pi2 
  

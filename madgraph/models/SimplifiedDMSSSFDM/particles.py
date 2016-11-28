@@ -3,7 +3,7 @@
 # SARAH References: arXiv:0806.0538, arXiv:0909.2863, arXiv:1002.0840    
 # (c) Florian Staub, 2011  
 # ----------------------------------------------------------------------  
-# File created at 23:49 on 23.11.2016   
+# File created at 8:40 on 28.11.2016   
 # ----------------------------------------------------------------------  
  
  
@@ -12,6 +12,22 @@ from object_library import all_particles,Particle
 import parameters as Param 
 
 
+Re = Particle(pdg_code =210000601, 
+	 name = 'Re' ,
+	 antiname = 'Rebar' ,
+	 spin = 2 ,
+	 color = 1 ,
+	 mass = Param.MRe ,
+	 width = Param.WRe ,
+	 GhostNumber = 0, 
+	 line = 'swavy' ,
+	 charge = -1 ,
+	 texname = 'Re' ,
+	 antitexname = 'Rebar' ) 
+ 
+Rebar = Re.anti() 
+ 
+ 
 nu1 = Particle(pdg_code =12, 
 	 name = 'nu1' ,
 	 antiname = 'nu1bar' ,
@@ -58,22 +74,6 @@ nu3 = Particle(pdg_code =16,
 	 antitexname = 'nu3bar' ) 
  
 nu3bar = nu3.anti() 
- 
- 
-Re = Particle(pdg_code =210000601, 
-	 name = 'Re' ,
-	 antiname = 'Rebar' ,
-	 spin = 2 ,
-	 color = 1 ,
-	 mass = Param.MRe ,
-	 width = Param.WRe ,
-	 GhostNumber = 0, 
-	 line = 'swavy' ,
-	 charge = -1 ,
-	 texname = 'Re' ,
-	 antitexname = 'Rebar' ) 
- 
-Rebar = Re.anti() 
  
  
 d1 = Particle(pdg_code =1, 

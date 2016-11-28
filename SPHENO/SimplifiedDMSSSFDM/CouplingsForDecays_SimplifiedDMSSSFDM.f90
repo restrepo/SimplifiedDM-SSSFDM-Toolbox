@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:48 on 23.11.2016   
+! File created at 8:40 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -23,12 +23,12 @@ Contains
  
  
 Subroutine CouplingsFor_Fu_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFuFdVWpL,cplcFuFdVWpR,   & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,deltaM)
 
 Implicit None 
 
@@ -40,11 +40,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -54,10 +55,10 @@ Complex(dp),Intent(out) :: cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3),cplcFuFuhhL(3,3),
 & cplcFuFuVZR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -90,11 +91,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -109,6 +111,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -155,12 +159,13 @@ Iname = Iname - 1
 End subroutine CouplingsFor_Fu_decays_2B
  
 Subroutine CouplingsFor_Fe_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFeFehhL,cplcFeFehhR,     & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,cplcFeFressR,cplcFeFvcVWpL,cplcFeFvcVWpR,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,cplcFeFressR,      & 
+& cplcFeFvcVWpL,cplcFeFvcVWpR,deltaM)
 
 Implicit None 
 
@@ -172,11 +177,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -186,10 +192,10 @@ Complex(dp),Intent(out) :: cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cp
 & cplcFeFressR(3),cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -222,11 +228,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -241,6 +248,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -284,7 +293,7 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpT(gt1,gt2,g2,Vv,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -295,12 +304,12 @@ Iname = Iname - 1
 End subroutine CouplingsFor_Fe_decays_2B
  
 Subroutine CouplingsFor_Fd_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,deltaM)
 
 Implicit None 
 
@@ -312,11 +321,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -326,10 +336,10 @@ Complex(dp),Intent(out) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cp
 & cplcFdFucVWpR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -362,11 +372,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -381,6 +392,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -426,122 +439,15 @@ Iname = Iname - 1
  
 End subroutine CouplingsFor_Fd_decays_2B
  
-Subroutine CouplingsFor_Fre_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,            & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFreFessL,cplcFreFessR,   & 
-& cplcFreFreVZL,cplcFreFreVZR,deltaM)
-
-Implicit None 
-
-Real(dp), Intent(in) :: m_in 
-Real(dp), Intent(in) :: deltaM 
-Integer, Intent(in) :: i1 
-Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinput
-
-Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
-
-Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
-
-Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
-
-Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
-
-Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
-
-Complex(dp),Intent(out) :: cplcFreFessL(3),cplcFreFessR(3),cplcFreFreVZL,cplcFreFreVZR
-
-Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
-
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
-
-Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
-Iname = Iname + 1 
-NameOfUnit(Iname) = 'Couplings_Fre_2B'
- 
-sinW2=1._dp-mW2/mZ2 
-g1 = g1input 
-g2 = g2input 
-g3 = g3input 
-LS = LSinput 
-LSH = LSHinput 
-Lam = Laminput 
-Yu = Yuinput 
-Ys = Ysinput 
-Yd = Ydinput 
-Ye = Yeinput 
-MDF = MDFinput 
-MS2 = MS2input 
-mu2 = mu2input 
-v = vinput 
-Qin=sqrt(getRenormalizationScale()) 
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,               & 
-& v,(/ ZeroC /))
-
-! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
-
-! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
-ZW = ZWinput 
-ZZ = ZZinput 
-If (PoleMassesInLoops) Then 
-! --- Use the pole masses --- 
-MAh = MAhinput 
-MAh2 = MAh2input 
-MFd = MFdinput 
-MFd2 = MFd2input 
-MFe = MFeinput 
-MFe2 = MFe2input 
-MFre = MFreinput 
-MFre2 = MFre2input 
-MFu = MFuinput 
-MFu2 = MFu2input 
-Mhh = Mhhinput 
-Mhh2 = Mhh2input 
-MHp = MHpinput 
-MHp2 = MHp2input 
-Mss = Mssinput 
-Mss2 = Mss2input 
-MVWp = MVWpinput 
-MVWp2 = MVWp2input 
-MVZ = MVZinput 
-MVZ2 = MVZ2input 
-End if 
-cplcFreFessL = 0._dp 
-cplcFreFessR = 0._dp 
-Do gt2 = 1, 3
-Call CouplingcFreFessT(gt2,Ys,ZER,cplcFreFessL(gt2),cplcFreFessR(gt2))
-
-End Do 
-
-
-cplcFreFreVZL = 0._dp 
-cplcFreFreVZR = 0._dp 
-Call CouplingcFreFreVZT(g1,TW,cplcFreFreVZL,cplcFreFreVZR)
-
-
-
-Iname = Iname - 1 
- 
-End subroutine CouplingsFor_Fre_decays_2B
- 
 Subroutine CouplingsFor_hh_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplHiggsPP,cplHiggsGG,       & 
-& cplHiggsZZvirt,cplHiggsWWvirt,cplcFdFdhhL,cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,         & 
-& cplcFuFuhhL,cplcFuFuhhR,cplhhhhhh,cplhhssss,cplhhcVWpVWp,cplhhVZVZ,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplHiggsPP,cplHiggsGG,cplHiggsZZvirt,cplHiggsWWvirt,cplcFdFdhhL,cplcFdFdhhR,    & 
+& cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplhhhhhh,cplhhssss,cplhhcVWpVWp,      & 
+& cplhhVZVZ,deltaM)
 
 Implicit None 
 
@@ -553,11 +459,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -568,10 +475,10 @@ Complex(dp),Intent(out) :: cplHiggsPP,cplHiggsGG,cplHiggsZZvirt,cplHiggsWWvirt,c
 & cplhhssss,cplhhcVWpVWp,cplhhVZVZ
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Complex(dp) :: ratFd(3),ratFe(3),ratFu(3),ratHp,ratVWp
 
@@ -634,11 +541,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -653,6 +561,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -844,13 +754,13 @@ Iname = Iname - 1
  
 End subroutine CouplingsFor_hh_decays_2B
  
-Subroutine CouplingsFor_ss_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFreFessL,cplcFreFessR,   & 
-& cplhhssss,deltaM)
+Subroutine CouplingsFor_Fre_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,            & 
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFreFessL,cplcFreFessR,cplcFreFreVZL,cplcFreFreVZR,deltaM)
 
 Implicit None 
 
@@ -862,11 +772,124 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
+
+Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
+
+Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+
+Complex(dp),Intent(out) :: cplcFreFessL(3),cplcFreFessR(3),cplcFreFreVZL,cplcFreFreVZR
+
+Integer :: i2, i3, gt1, gt2, gt3, kont 
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+
+Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
+Iname = Iname + 1 
+NameOfUnit(Iname) = 'Couplings_Fre_2B'
+ 
+sinW2=1._dp-mW2/mZ2 
+g1 = g1input 
+g2 = g2input 
+g3 = g3input 
+LS = LSinput 
+LSH = LSHinput 
+Lam = Laminput 
+Yu = Yuinput 
+Ys = Ysinput 
+Yd = Ydinput 
+Ye = Yeinput 
+MDF = MDFinput 
+MS2 = MS2input 
+mu2 = mu2input 
+v = vinput 
+Qin=sqrt(getRenormalizationScale()) 
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,               & 
+& v,(/ ZeroC /))
+
+! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+
+! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
+ZW = ZWinput 
+ZZ = ZZinput 
+If (PoleMassesInLoops) Then 
+! --- Use the pole masses --- 
+MAh = MAhinput 
+MAh2 = MAh2input 
+MFd = MFdinput 
+MFd2 = MFd2input 
+MFe = MFeinput 
+MFe2 = MFe2input 
+MFre = MFreinput 
+MFre2 = MFre2input 
+MFu = MFuinput 
+MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
+Mhh = Mhhinput 
+Mhh2 = Mhh2input 
+MHp = MHpinput 
+MHp2 = MHp2input 
+Mss = Mssinput 
+Mss2 = Mss2input 
+MVWp = MVWpinput 
+MVWp2 = MVWp2input 
+MVZ = MVZinput 
+MVZ2 = MVZ2input 
+End if 
+cplcFreFessL = 0._dp 
+cplcFreFessR = 0._dp 
+Do gt2 = 1, 3
+Call CouplingcFreFessT(gt2,Ys,ZER,cplcFreFessL(gt2),cplcFreFessR(gt2))
+
+End Do 
+
+
+cplcFreFreVZL = 0._dp 
+cplcFreFreVZR = 0._dp 
+Call CouplingcFreFreVZT(g1,TW,cplcFreFreVZL,cplcFreFreVZR)
+
+
+
+Iname = Iname - 1 
+ 
+End subroutine CouplingsFor_Fre_decays_2B
+ 
+Subroutine CouplingsFor_ss_decays_2B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFreFessL,cplcFreFessR,cplhhssss,deltaM)
+
+Implicit None 
+
+Real(dp), Intent(in) :: m_in 
+Real(dp), Intent(in) :: deltaM 
+Integer, Intent(in) :: i1 
+Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinput
+
+Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
+
+Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
+
+Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -875,10 +898,10 @@ Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 Complex(dp),Intent(out) :: cplcFreFessL(3),cplcFreFessR(3),cplhhssss
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -904,11 +927,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -923,6 +947,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -952,15 +978,15 @@ Iname = Iname - 1
 End subroutine CouplingsFor_ss_decays_2B
  
 Subroutine CouplingsFor_Fu_decays_3B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFreFreVZL,cplcFreFreVZR,       & 
-& cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,             & 
-& cplcFvFvVZL,cplcFvFvVZR,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,    & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,           & 
+& cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,         & 
+& cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,deltaM)
 
 Implicit None 
 
@@ -972,11 +998,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -989,10 +1016,10 @@ Complex(dp),Intent(out) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cp
 & cplcFvFvVZL(3,3),cplcFvFvVZR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1025,11 +1052,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -1044,6 +1072,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -1155,7 +1185,7 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpT(gt1,gt2,g2,Vv,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -1166,15 +1196,16 @@ Iname = Iname - 1
 End subroutine CouplingsFor_Fu_decays_3B
  
 Subroutine CouplingsFor_Fe_decays_3B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,               & 
-& cplcFeFressL,cplcFeFressR,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFreFessL,cplcFreFessR,       & 
-& cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,         & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFeFehhL,cplcFeFehhR,        & 
+& cplcFeFeVZL,cplcFeFeVZR,cplcFeFressL,cplcFeFressR,cplcFeFvcVWpL,cplcFeFvcVWpR,         & 
+& cplcFreFessL,cplcFreFessR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,       & 
+& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
+& cplcFvFvVZL,cplcFvFvVZR,deltaM)
 
 Implicit None 
 
@@ -1186,11 +1217,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -1204,10 +1236,10 @@ Complex(dp),Intent(out) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cp
 & cplcFvFvVZR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1240,11 +1272,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -1259,6 +1292,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -1340,7 +1375,7 @@ cplcFvFeVWpL = 0._dp
 cplcFvFeVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFvFeVWpT(gt1,gt2,g2,ZEL,cplcFvFeVWpL(gt1,gt2),cplcFvFeVWpR(gt1,gt2))
+Call CouplingcFvFeVWpT(gt1,gt2,g2,Vv,ZEL,cplcFvFeVWpL(gt1,gt2),cplcFvFeVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -1386,7 +1421,7 @@ cplcFeFvcVWpL = 0._dp
 cplcFeFvcVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFeFvcVWpT(gt1,gt2,g2,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
+Call CouplingcFeFvcVWpT(gt1,gt2,g2,Vv,ZEL,cplcFeFvcVWpL(gt1,gt2),cplcFeFvcVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -1397,15 +1432,15 @@ Iname = Iname - 1
 End subroutine CouplingsFor_Fe_decays_3B
  
 Subroutine CouplingsFor_Fd_decays_3B(m_in,i1,MAhinput,MAh2input,MFdinput,             & 
-& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,Mhhinput,         & 
-& Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,         & 
-& MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,ZELinput,ZULinput,               & 
-& ZWinput,ZZinput,g1input,g2input,g3input,LSinput,LSHinput,Laminput,Yuinput,             & 
-& Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,cplcFdFdhhL,cplcFdFdhhR,     & 
-& cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,cplcFeFehhL,cplcFeFehhR,           & 
-& cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,         & 
-& cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFeVWpL,cplcFvFeVWpR,             & 
-& cplcFvFvVZL,cplcFvFvVZR,deltaM)
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,    & 
+& cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFreFreVZL,cplcFreFreVZR,           & 
+& cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,             & 
+& cplcFvFeVWpL,cplcFvFeVWpR,cplcFvFvVZL,cplcFvFvVZR,deltaM)
 
 Implicit None 
 
@@ -1417,11 +1452,12 @@ Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinp
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
 Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
-& MFre2input,MFuinput(3),MFu2input(3),Mhhinput,Mhh2input,MHpinput,MHp2input,             & 
-& Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,TWinput,ZZinput(2,2)
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
 
 Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
-& ZWinput(2,2)
+& Vvinput(3,3),ZWinput(2,2)
 
 Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
 
@@ -1434,10 +1470,10 @@ Complex(dp),Intent(out) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cp
 & cplcFvFvVZL(3,3),cplcFvFvVZR(3,3)
 
 Integer :: i2, i3, gt1, gt2, gt3, kont 
-Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
 Iname = Iname + 1 
@@ -1470,11 +1506,12 @@ Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,         
 & v,(/ ZeroC /))
 
 ! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
-Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,Mhh,Mhh2,              & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,v,              & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
 
 ! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
 ZW = ZWinput 
 ZZ = ZZinput 
 If (PoleMassesInLoops) Then 
@@ -1489,6 +1526,8 @@ MFre = MFreinput
 MFre2 = MFre2input 
 MFu = MFuinput 
 MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
 Mhh = Mhhinput 
 Mhh2 = Mhh2input 
 MHp = MHpinput 
@@ -1554,7 +1593,7 @@ cplcFvFeVWpL = 0._dp
 cplcFvFeVWpR = 0._dp 
 Do gt1 = 1, 3
  Do gt2 = 1, 3
-Call CouplingcFvFeVWpT(gt1,gt2,g2,ZEL,cplcFvFeVWpL(gt1,gt2),cplcFvFeVWpR(gt1,gt2))
+Call CouplingcFvFeVWpT(gt1,gt2,g2,Vv,ZEL,cplcFvFeVWpL(gt1,gt2),cplcFvFeVWpR(gt1,gt2))
 
  End Do 
 End Do 
@@ -1609,6 +1648,102 @@ End Do
 Iname = Iname - 1 
  
 End subroutine CouplingsFor_Fd_decays_3B
+ 
+Subroutine CouplingsFor_Fre_decays_3B(m_in,i1,MAhinput,MAh2input,MFdinput,            & 
+& MFd2input,MFeinput,MFe2input,MFreinput,MFre2input,MFuinput,MFu2input,MFvinput,         & 
+& MFv2input,Mhhinput,Mhh2input,MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,          & 
+& MVWp2input,MVZinput,MVZ2input,TWinput,ZDRinput,ZERinput,ZURinput,ZDLinput,             & 
+& ZELinput,ZULinput,Vvinput,ZWinput,ZZinput,g1input,g2input,g3input,LSinput,             & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,          & 
+& vinput,deltaM)
+
+Implicit None 
+
+Real(dp), Intent(in) :: m_in 
+Real(dp), Intent(in) :: deltaM 
+Integer, Intent(in) :: i1 
+Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinput
+
+Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
+
+Real(dp),Intent(in) :: MAhinput,MAh2input,MFdinput(3),MFd2input(3),MFeinput(3),MFe2input(3),MFreinput,       & 
+& MFre2input,MFuinput(3),MFu2input(3),MFvinput(3),MFv2input(3),Mhhinput,Mhh2input,       & 
+& MHpinput,MHp2input,Mssinput,Mss2input,MVWpinput,MVWp2input,MVZinput,MVZ2input,         & 
+& TWinput,ZZinput(2,2)
+
+Complex(dp),Intent(in) :: ZDRinput(3,3),ZERinput(3,3),ZURinput(3,3),ZDLinput(3,3),ZELinput(3,3),ZULinput(3,3),  & 
+& Vvinput(3,3),ZWinput(2,2)
+
+Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2,v
+
+Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+
+Integer :: i2, i3, gt1, gt2, gt3, kont 
+Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+
+Real(dp) :: gSM(11), sinW2, dt, tz, Qin 
+Iname = Iname + 1 
+NameOfUnit(Iname) = 'Couplings_Fre_3B'
+ 
+sinW2=1._dp-mW2/mZ2 
+g1 = g1input 
+g2 = g2input 
+g3 = g3input 
+LS = LSinput 
+LSH = LSHinput 
+Lam = Laminput 
+Yu = Yuinput 
+Ys = Ysinput 
+Yd = Ydinput 
+Ye = Yeinput 
+MDF = MDFinput 
+MS2 = MS2input 
+mu2 = mu2input 
+v = vinput 
+Qin=sqrt(getRenormalizationScale()) 
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,               & 
+& v,(/ ZeroC /))
+
+! --- Calculate running tree-level masses for loop induced couplings and Quark mixing matrices --- 
+Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
+& Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
+& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,.True.,kont)
+
+! --- Use the 1-loop mixing matrices calculated at M_SUSY in the vertices --- 
+Vv = Vvinput 
+ZW = ZWinput 
+ZZ = ZZinput 
+If (PoleMassesInLoops) Then 
+! --- Use the pole masses --- 
+MAh = MAhinput 
+MAh2 = MAh2input 
+MFd = MFdinput 
+MFd2 = MFd2input 
+MFe = MFeinput 
+MFe2 = MFe2input 
+MFre = MFreinput 
+MFre2 = MFre2input 
+MFu = MFuinput 
+MFu2 = MFu2input 
+MFv = MFvinput 
+MFv2 = MFv2input 
+Mhh = Mhhinput 
+Mhh2 = Mhh2input 
+MHp = MHpinput 
+MHp2 = MHp2input 
+Mss = Mssinput 
+Mss2 = Mss2input 
+MVWp = MVWpinput 
+MVWp2 = MVWp2input 
+MVZ = MVZinput 
+MVZ2 = MVZ2input 
+End if 
+Iname = Iname - 1 
+ 
+End subroutine CouplingsFor_Fre_decays_3B
  
 Function NFlav(m_in) 
 Implicit None 

@@ -54,14 +54,15 @@ NameOfStates={GaugeES, EWSB};
 
 (* ----- Before EWSB ----- *)
 
-DEFINITION[GaugeES][LagrangianInput]= {
-	{LagHC, {AddHC->True}},
-	{LagNoHC,{AddHC->False}}
+DEFINITION[GaugeES][LagrangianInput]= 
+{
+	{LagHC,    {AddHC->True}},
+	{LagNoHC,  {AddHC->False}}
 };
 
 
 LagNoHC = -(mu2 conj[H].H + Lambda1/2 conj[H].H.conj[H].H + MS2/2 S.S + LamSH S.S.conj[H].H  + LamS/2 S.S.S.S);
-LagHC =  -(Yd conj[H].d.q + Ye conj[H].e.l + Yu H.u.q + MDF rd.ru + Ys S.e.ru );
+LagHC =  -(Yd conj[H].d.q + Ye conj[H].e.l + Yu H.u.q + MSF rd.ru + Ys S.e.ru );
 
 			  		  
 
@@ -83,7 +84,7 @@ DEFINITION[EWSB][VEVs]=
 };
  
 
-(DEFINITION[EWSB][MatterSector]=   
+DEFINITION[EWSB][MatterSector]=   
 {
     {{vL}, {VL, Vv}},
     {{{dL}, {conj[dR]}}, {{DL,Vd}, {DR,Ud}}},
@@ -96,21 +97,24 @@ DEFINITION[EWSB][VEVs]=
 (* Dirac-Spinors *)
 (*------------------------------------------------------*)
 
-DEFINITION[EWSB][DiracSpinors]={
- Fd ->{  DL, conj[DR]},
- Fe ->{  EL, conj[ER]},
- Fu ->{  UL, conj[UR]},
- Fv ->{  VL, 0}
- Fre ->{ eu, conj[ed]}
- };
+DEFINITION[EWSB][DiracSpinors]=
+{
+ Fd  -> {  DL, conj[DR]},
+ Fe  -> {  EL, conj[ER]},
+ Fu  -> {  UL, conj[UR]},
+ Fv  -> {  VL, 0},
+ Fre -> {  eu, conj[ed]}
+};
 
-DEFINITION[EWSB][GaugeES]={
+DEFINITION[EWSB][GaugeES]=
+{
  Fd1 ->{  FdL, 0},
  Fd2 ->{  0, FdR},
  Fu1 ->{  Fu1, 0},
  Fu2 ->{  0, Fu2},
  Fe1 ->{  Fe1, 0},
- Fe2 ->{  0, Fe2}};
+ Fe2 ->{  0, Fe2}
+};
 
 
 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 23:47 on 23.11.2016   
+! File created at 8:38 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -16,17 +16,17 @@ Use ThreeBodyPhaseSpace
 Contains 
  
 Subroutine FuThreeBodyDecay(n_in,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,               & 
-& MFu,MFu2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,            & 
-& ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,gThh,gTVWp,gTVZ,           & 
-& gFuFucFdFd,gFuFdcFeFv,gFuFucFeFe,gFuFucFuFu,gFuFucFreFre,gFuFucFvFv,epsI,              & 
-& deltaM,CheckRealStates,gT,gPartial,BR)
+& MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,               & 
+& ZER,ZUR,ZDL,ZEL,ZUL,Vv,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,              & 
+& v,gThh,gTVWp,gTVZ,gFuFucFdFd,gFuFdcFeFv,gFuFucFeFe,gFuFucFuFu,gFuFucFreFre,            & 
+& gFuFucFvFv,epsI,deltaM,CheckRealStates,gT,gPartial,BR)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),Mhh,Mhh2,            & 
-& MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
+Real(dp),Intent(in) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
+& MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp),Intent(in) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),ZW(2,2)
+Complex(dp),Intent(in) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
 
 Complex(dp) :: cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVZL(3,3),cplcFdFdVZR(3,3),cplcFdFucVWpL(3,3),& 
 & cplcFdFucVWpR(3,3),cplcFeFehhL(3,3),cplcFeFehhR(3,3),cplcFeFeVZL(3,3),cplcFeFeVZR(3,3),& 
@@ -107,12 +107,12 @@ End If
 Do i_run = i_start, i_end 
  
 Call CouplingsFor_Fu_decays_3B(MFu(i_run),i_run,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
-& MFre,MFre2,MFu,MFu2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,             & 
-& ZER,ZUR,ZDL,ZEL,ZUL,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,               & 
-& cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,cplcFdFucVWpR,           & 
-& cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcVWpL,cplcFeFvcVWpR,           & 
-& cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,cplcFuFuhhR,         & 
-& cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,deltaM)
+& MFre,MFre2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,           & 
+& TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,Vv,ZW,ZZ,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,               & 
+& MS2,mu2,v,cplcFdFdhhL,cplcFdFdhhR,cplcFdFdVZL,cplcFdFdVZR,cplcFdFucVWpL,               & 
+& cplcFdFucVWpR,cplcFeFehhL,cplcFeFehhR,cplcFeFeVZL,cplcFeFeVZR,cplcFeFvcVWpL,           & 
+& cplcFeFvcVWpR,cplcFreFreVZL,cplcFreFreVZR,cplcFuFdVWpL,cplcFuFdVWpR,cplcFuFuhhL,       & 
+& cplcFuFuhhR,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,deltaM)
 
 IntegralVs = 0._dp 
 NVs = 0  
@@ -145,9 +145,9 @@ gFuFucFdFd(i_run,:,:,:) = gFuFucFdFdi
 gT(i_run) = gT(i_run) + Sum(gFuFucFdFdi) 
  
 gFuFdcFeFvi = 0._dp 
-Call FuToFdcFeFv(i_run,MFd,MFe,MVWp,MFu,cplcFeFvcVWpL,cplcFeFvcVWpR,cplcFuFdVWpL,     & 
-& cplcFuFdVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,deltaM,epsI,check,            & 
-& gFuFdcFeFvi)
+Call FuToFdcFeFv(i_run,MFd,MFe,MFv,MVWp,MFu,cplcFeFvcVWpL,cplcFeFvcVWpR,              & 
+& cplcFuFdVWpL,cplcFuFdVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWptemp,deltaM,          & 
+& epsI,check,gFuFdcFeFvi)
 
 gFuFdcFeFv(i_run,:,:,:) = gFuFdcFeFvi 
 gT(i_run) = gT(i_run) + Sum(gFuFdcFeFvi) 
@@ -179,8 +179,9 @@ gFuFucFreFre(i_run,:,:,:) = gFuFucFreFrei
 gT(i_run) = gT(i_run) + Sum(gFuFucFreFrei) 
  
 gFuFucFvFvi = 0._dp 
-Call FuToFucFvFv(i_run,MFu,MVZ,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,cplcFvFvVZR,       & 
-& IntegralVs,IntegralVVss,NVs,NVVss,gTVZtemp,deltaM,epsI,check,gFuFucFvFvi)
+Call FuToFucFvFv(i_run,MFu,MFv,MVZ,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,               & 
+& cplcFvFvVZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZtemp,deltaM,epsI,check,              & 
+& gFuFucFvFvi)
 
 gFuFucFvFv(i_run,:,:,:) = gFuFucFvFvi 
 gT(i_run) = gT(i_run) + Sum(gFuFucFvFvi) 
@@ -589,13 +590,13 @@ End If
 End Subroutine FuToFucFdFd 
  
  
-Subroutine FuToFdcFeFv(iIN,MFd,MFe,MVWp,MFu,cplcFeFvcVWpL,cplcFeFvcVWpR,              & 
+Subroutine FuToFdcFeFv(iIN,MFd,MFe,MFv,MVWp,MFu,cplcFeFvcVWpL,cplcFeFvcVWpR,          & 
 & cplcFuFdVWpL,cplcFuFdVWpR,IntegralVs,IntegralVVss,NVs,NVVss,gTVWp,deltaM,              & 
 & epsI,check,g,WriteContributions)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MFd(3),MFe(3),MVWp,MFu(3)
+Real(dp),Intent(in) :: MFd(3),MFe(3),MFv(3),MVWp,MFu(3)
 
 Complex(dp),Intent(in) :: cplcFeFvcVWpL(3,3),cplcFeFvcVWpR(3,3),cplcFuFdVWpL(3,3),cplcFuFdVWpR(3,3)
 
@@ -631,7 +632,7 @@ Isum = 0
         Do gt3=1,3
 Isum = 0 
  
-If(Abs(MFu(iIN)).gt.(Abs(0.)+Abs(MFe(gt2))+Abs(MFd(gt1)))) Then 
+If(Abs(MFu(iIN)).gt.(Abs(MFv(gt3))+Abs(MFe(gt2))+Abs(MFd(gt1)))) Then 
 !-------------- 
 !  VWp 
 !-------------- 
@@ -649,7 +650,7 @@ resD=0._dp
  
 mass(2) = MFd(gt1) 
 mass(3) = -MFe(gt2) 
-mass(4) = 0. 
+mass(4) = MFv(gt3) 
  
 coup(2) = Conjg(cplcFuFdVWpL(iIN,gt1)) 
 coup(1) = Conjg(cplcFuFdVWpR(iIN,gt1)) 
@@ -1339,12 +1340,12 @@ End If
 End Subroutine FuToFucFreFre 
  
  
-Subroutine FuToFucFvFv(iIN,MFu,MVZ,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,               & 
+Subroutine FuToFucFvFv(iIN,MFu,MFv,MVZ,cplcFuFuVZL,cplcFuFuVZR,cplcFvFvVZL,           & 
 & cplcFvFvVZR,IntegralVs,IntegralVVss,NVs,NVVss,gTVZ,deltaM,epsI,check,g,WriteContributions)
 
 Implicit None 
  
-Real(dp),Intent(in) :: MFu(3),MVZ
+Real(dp),Intent(in) :: MFu(3),MFv(3),MVZ
 
 Complex(dp),Intent(in) :: cplcFuFuVZL(3,3),cplcFuFuVZR(3,3),cplcFvFvVZL(3,3),cplcFvFvVZR(3,3)
 
@@ -1380,7 +1381,7 @@ Isum = 0
         Do gt3=1,3
 Isum = 0 
  
-If(Abs(MFu(iIN)).gt.(Abs(0.)+Abs(0.)+Abs(MFu(gt1)))) Then 
+If(Abs(MFu(iIN)).gt.(Abs(MFv(gt3))+Abs(MFv(gt2))+Abs(MFu(gt1)))) Then 
 !-------------- 
 !  VZ 
 !-------------- 
@@ -1397,8 +1398,8 @@ resS=0._dp
 resD=0._dp 
  
 mass(2) = MFu(gt1) 
-mass(3) = -0. 
-mass(4) = 0. 
+mass(3) = -MFv(gt2) 
+mass(4) = MFv(gt3) 
  
 coup(2) = Conjg(cplcFuFuVZL(iIN,gt1)) 
 coup(1) = Conjg(cplcFuFuVZR(iIN,gt1)) 
