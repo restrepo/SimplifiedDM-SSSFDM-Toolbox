@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 8:40 on 28.11.2016   
+! File created at 10:36 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -20,16 +20,16 @@ Logical,Private,Save::OnlyDiagonal
 Contains 
  
  Subroutine RunSM_and_SUSY_RGEs(Qout,g1input,g2input,g3input,LSinput,LSHinput,         & 
-& Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,            & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,CKMout,sinW2_out,Alpha_out,              & 
+& Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,mu2input,vinput,            & 
+& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v,CKMout,sinW2_out,Alpha_out,              & 
 & AlphaS_out,realCKM)
 
 Implicit None 
-Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MDFinput,MS2input,vinput
+Real(dp),Intent(in) :: g1input,g2input,g3input,Ysinput(3),MFSinput,MS2input,vinput
 
 Complex(dp),Intent(in) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
 
-Real(dp),Intent(out) :: g1,g2,g3,Ys(3),MDF,MS2,v
+Real(dp),Intent(out) :: g1,g2,g3,Ys(3),MFS,MS2,v
 
 Complex(dp),Intent(out) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -50,9 +50,9 @@ Real(dp) :: scale_save, Qin, tz, dt, g1D(71), g62_SM(62)
 Qin=sqrt(getRenormalizationScale()) 
 scale_save = Qin 
 Call ParametersToG71(g1input,g2input,g3input,LSinput,LSHinput,Laminput,               & 
-& Yuinput,Ysinput,Ydinput,Yeinput,MDFinput,MS2input,mu2input,vinput,g1D)
+& Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,mu2input,vinput,g1D)
 
-Call GToParameters71(g1D,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v)
+Call GToParameters71(g1D,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v)
 
 g1 = Sqrt(3._dp/5._dp)*g1 
 

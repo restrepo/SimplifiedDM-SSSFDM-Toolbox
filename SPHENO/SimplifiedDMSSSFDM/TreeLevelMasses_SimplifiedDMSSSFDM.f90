@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 8:38 on 28.11.2016   
+! File created at 10:34 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -22,11 +22,11 @@ Contains
  
 Subroutine TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,             & 
 & MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,            & 
-& ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,GenerationMixing,kont)
+& ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -51,7 +51,7 @@ Call CalculateVWp(g2,v,ZW,MVWp,MVWp2,kont)
 
 ! ------------------------------- 
 ! Mass of Fre 
-MFreC = MDF 
+MFreC = MFS 
 If (RotateNegativeFermionMasses) Then 
 MFre = Abs(MFreC) 
 MFre2 = MFre**2 
@@ -217,12 +217,12 @@ End Subroutine  TreeMasses
  
  
 Subroutine RunningFermionMasses(MFeIN,MFe2IN,MFdIN,MFd2IN,MFuIN,MFu2IN,               & 
-& v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,kont)
+& v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,kont)
 
 Implicit None 
  
 Integer, Intent(inout) :: kont 
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -251,11 +251,11 @@ End Subroutine RunningFermionMasses
 
 Subroutine TreeMassesEffPot(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,           & 
 & MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,            & 
-& ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,GenerationMixing,kont)
+& ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -280,7 +280,7 @@ Call CalculateVWpEffPot(g2,v,ZW,MVWp,MVWp2,kont)
 
 ! ------------------------------- 
 ! Mass of Fre 
-MFreC = MDF 
+MFreC = MFS 
 If (RotateNegativeFermionMasses) Then 
 MFre = Abs(MFreC) 
 MFre2 = MFre**2 
@@ -1814,11 +1814,11 @@ End Subroutine CalculateVWpEffPot
 
 Subroutine TreeMassesSM(MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVWp,MVWp2,               & 
 & MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,              & 
-& Yd,Ye,MDF,MS2,mu2,GenerationMixing,kont)
+& Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 

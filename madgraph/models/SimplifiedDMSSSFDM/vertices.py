@@ -3,7 +3,7 @@
 # SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223   
 # (c) Florian Staub, 2013  
 # -------------------------------------------------------------------------------  
-# File created at 8:40 on 28.11.2016   
+# File created at 10:36 on 28.11.2016   
 # ----------------------------------------------------------------------  
  
  
@@ -686,42 +686,42 @@ V_96 = Vertex(name = 'V_96',
  
  
 V_97 = Vertex(name = 'V_97', 
-	 particles = [P.Rebar, P.e1, P.Ss], 
+	 particles = [P.Frebar, P.e1, P.Ss], 
 	 color = ['1'], 
 	 lorentz = [L.FFS2], 
 	 couplings = {(0,0):C.GC_151}) 
  
  
 V_98 = Vertex(name = 'V_98', 
-	 particles = [P.Rebar, P.e2, P.Ss], 
+	 particles = [P.Frebar, P.e2, P.Ss], 
 	 color = ['1'], 
 	 lorentz = [L.FFS2], 
 	 couplings = {(0,0):C.GC_152}) 
  
  
 V_99 = Vertex(name = 'V_99', 
-	 particles = [P.Rebar, P.e3, P.Ss], 
+	 particles = [P.Frebar, P.e3, P.Ss], 
 	 color = ['1'], 
 	 lorentz = [L.FFS2], 
 	 couplings = {(0,0):C.GC_153}) 
  
  
 V_100 = Vertex(name = 'V_100', 
-	 particles = [P.e1bar, P.Re, P.Ss], 
+	 particles = [P.e1bar, P.Fre, P.Ss], 
 	 color = ['1'], 
 	 lorentz = [L.FFS1], 
 	 couplings = {(0,0):C.GC_154}) 
  
  
 V_101 = Vertex(name = 'V_101', 
-	 particles = [P.e2bar, P.Re, P.Ss], 
+	 particles = [P.e2bar, P.Fre, P.Ss], 
 	 color = ['1'], 
 	 lorentz = [L.FFS1], 
 	 couplings = {(0,0):C.GC_155}) 
  
  
 V_102 = Vertex(name = 'V_102', 
-	 particles = [P.e3bar, P.Re, P.Ss], 
+	 particles = [P.e3bar, P.Fre, P.Ss], 
 	 color = ['1'], 
 	 lorentz = [L.FFS1], 
 	 couplings = {(0,0):C.GC_156}) 
@@ -1148,14 +1148,14 @@ V_162 = Vertex(name = 'V_162',
  
  
 V_163 = Vertex(name = 'V_163', 
-	 particles = [P.Rebar, P.Re, P.A], 
+	 particles = [P.Frebar, P.Fre, P.A], 
 	 color = ['1'], 
 	 lorentz = [L.FFV2,L.FFV3], 
 	 couplings = {(0,1):C.GC_250,(0,0):C.GC_251}) 
  
  
 V_164 = Vertex(name = 'V_164', 
-	 particles = [P.Rebar, P.Re, P.Z], 
+	 particles = [P.Frebar, P.Fre, P.Z], 
 	 color = ['1'], 
 	 lorentz = [L.FFV2,L.FFV3], 
 	 couplings = {(0,1):C.GC_252,(0,0):C.GC_253}) 

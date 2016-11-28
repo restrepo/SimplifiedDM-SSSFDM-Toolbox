@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 8:38 on 28.11.2016   
+! File created at 10:34 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -24,11 +24,11 @@ Real(dp),Parameter::id3R(3,3)=&
 Contains 
 
 
-Subroutine GToParameters70(g,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2)
+Subroutine GToParameters70(g,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2)
 
 Implicit None 
 Real(dp), Intent(in) :: g(70) 
-Real(dp),Intent(out) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp),Intent(out) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp),Intent(out) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -72,7 +72,7 @@ Ye(i1,i2) = Cmplx( g(SumI+49), g(SumI+50), dp)
 End Do 
  End Do 
  
-MDF= g(67) 
+MFS= g(67) 
 MS2= g(68) 
 mu2= Cmplx(g(69),g(70),dp) 
 Do i1=1,70 
@@ -86,11 +86,11 @@ Iname = Iname - 1
  
 End Subroutine GToParameters70
 
-Subroutine ParametersToG70(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,g)
+Subroutine ParametersToG70(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,g)
 
 Implicit None 
 Real(dp), Intent(out) :: g(70) 
-Real(dp), Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp), Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp), Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -140,7 +140,7 @@ g(SumI+50) = Aimag(Ye(i1,i2))
 End Do 
 End Do 
 
-g(67) = MDF  
+g(67) = MFS  
 g(68) = MS2  
 g(69) = Real(mu2,dp)  
 g(70) = Aimag(mu2)  
@@ -157,7 +157,7 @@ Integer :: i1,i2,i3,i4
 Integer :: j1,j2,j3,j4,j5,j6,j7 
 Real(dp) :: q 
 Real(dp) :: g1,betag11,betag12,Dg1,g2,betag21,betag22,Dg2,g3,betag31,betag32,         & 
-& Dg3,Ys(3),betaYs1(3),betaYs2(3),DYs(3),MDF,betaMDF1,betaMDF2,DMDF,MS2,betaMS21,        & 
+& Dg3,Ys(3),betaYs1(3),betaYs2(3),DYs(3),MFS,betaMFS1,betaMFS2,DMFS,MS2,betaMS21,        & 
 & betaMS22,DMS2
 Complex(dp) :: LS,betaLS1,betaLS2,DLS,LSH,betaLSH1,betaLSH2,DLSH,Lam,betaLam1,        & 
 & betaLam2,DLam,Yu(3,3),betaYu1(3,3),betaYu2(3,3),DYu(3,3),adjYu(3,3),Yd(3,3)            & 
@@ -169,7 +169,7 @@ NameOfUnit(Iname) = 'rge70'
 OnlyDiagonal = .Not.GenerationMixing 
 q = t 
  
-Call GToParameters70(gy,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2)
+Call GToParameters70(gy,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2)
 
 Call Adjungate(Yu,adjYu)
 Call Adjungate(Yd,adjYd)
@@ -393,22 +393,22 @@ End If
 Call Chop(DYe) 
 
 !-------------------- 
-! MDF 
+! MFS 
 !-------------------- 
  
-betaMDF1  = 0
+betaMFS1  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betaMDF2 = 0
+betaMFS2 = 0
 
  
-DMDF = oo16pi2*( betaMDF1 + oo16pi2 * betaMDF2 ) 
+DMFS = oo16pi2*( betaMFS1 + oo16pi2 * betaMFS2 ) 
 
  
 Else 
-DMDF = oo16pi2* betaMDF1 
+DMFS = oo16pi2* betaMFS1 
 End If 
  
  
@@ -454,17 +454,17 @@ End If
  
 Call Chop(Dmu2) 
 
-Call ParametersToG70(Dg1,Dg2,Dg3,DLS,DLSH,DLam,DYu,DYs,DYd,DYe,DMDF,DMS2,Dmu2,f)
+Call ParametersToG70(Dg1,Dg2,Dg3,DLS,DLSH,DLam,DYu,DYs,DYd,DYe,DMFS,DMS2,Dmu2,f)
 
 Iname = Iname - 1 
  
 End Subroutine rge70  
 
-Subroutine GToParameters71(g,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v)
+Subroutine GToParameters71(g,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v)
 
 Implicit None 
 Real(dp), Intent(in) :: g(71) 
-Real(dp),Intent(out) :: g1,g2,g3,Ys(3),MDF,MS2,v
+Real(dp),Intent(out) :: g1,g2,g3,Ys(3),MFS,MS2,v
 
 Complex(dp),Intent(out) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -508,7 +508,7 @@ Ye(i1,i2) = Cmplx( g(SumI+49), g(SumI+50), dp)
 End Do 
  End Do 
  
-MDF= g(67) 
+MFS= g(67) 
 MS2= g(68) 
 mu2= Cmplx(g(69),g(70),dp) 
 v= g(71) 
@@ -523,11 +523,11 @@ Iname = Iname - 1
  
 End Subroutine GToParameters71
 
-Subroutine ParametersToG71(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v,g)
+Subroutine ParametersToG71(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v,g)
 
 Implicit None 
 Real(dp), Intent(out) :: g(71) 
-Real(dp), Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2,v
+Real(dp), Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2,v
 
 Complex(dp), Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -577,7 +577,7 @@ g(SumI+50) = Aimag(Ye(i1,i2))
 End Do 
 End Do 
 
-g(67) = MDF  
+g(67) = MFS  
 g(68) = MS2  
 g(69) = Real(mu2,dp)  
 g(70) = Aimag(mu2)  
@@ -595,7 +595,7 @@ Integer :: i1,i2,i3,i4
 Integer :: j1,j2,j3,j4,j5,j6,j7 
 Real(dp) :: q 
 Real(dp) :: g1,betag11,betag12,Dg1,g2,betag21,betag22,Dg2,g3,betag31,betag32,         & 
-& Dg3,Ys(3),betaYs1(3),betaYs2(3),DYs(3),MDF,betaMDF1,betaMDF2,DMDF,MS2,betaMS21,        & 
+& Dg3,Ys(3),betaYs1(3),betaYs2(3),DYs(3),MFS,betaMFS1,betaMFS2,DMFS,MS2,betaMS21,        & 
 & betaMS22,DMS2,v,betav1,betav2,Dv
 Complex(dp) :: LS,betaLS1,betaLS2,DLS,LSH,betaLSH1,betaLSH2,DLSH,Lam,betaLam1,        & 
 & betaLam2,DLam,Yu(3,3),betaYu1(3,3),betaYu2(3,3),DYu(3,3),adjYu(3,3),Yd(3,3)            & 
@@ -607,7 +607,7 @@ NameOfUnit(Iname) = 'rge71'
 OnlyDiagonal = .Not.GenerationMixing 
 q = t 
  
-Call GToParameters71(gy,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,v)
+Call GToParameters71(gy,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v)
 
 Call Adjungate(Yu,adjYu)
 Call Adjungate(Yd,adjYd)
@@ -831,22 +831,22 @@ End If
 Call Chop(DYe) 
 
 !-------------------- 
-! MDF 
+! MFS 
 !-------------------- 
  
-betaMDF1  = 0
+betaMFS1  = 0
 
  
  
 If (TwoLoopRGE) Then 
-betaMDF2 = 0
+betaMFS2 = 0
 
  
-DMDF = oo16pi2*( betaMDF1 + oo16pi2 * betaMDF2 ) 
+DMFS = oo16pi2*( betaMFS1 + oo16pi2 * betaMFS2 ) 
 
  
 Else 
-DMDF = oo16pi2* betaMDF1 
+DMFS = oo16pi2* betaMFS1 
 End If 
  
  
@@ -912,7 +912,7 @@ Dv = oo16pi2* betav1
 End If 
  
  
-Call ParametersToG71(Dg1,Dg2,Dg3,DLS,DLSH,DLam,DYu,DYs,DYd,DYe,DMDF,DMS2,             & 
+Call ParametersToG71(Dg1,Dg2,Dg3,DLS,DLSH,DLam,DYu,DYs,DYd,DYe,DMFS,DMS2,             & 
 & Dmu2,Dv,f)
 
 Iname = Iname - 1 

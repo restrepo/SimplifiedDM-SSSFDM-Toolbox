@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 8:40 on 28.11.2016   
+! File created at 10:36 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -1122,7 +1122,7 @@ Real(dp) :: Q, MassLSP(2), facPP, facGG, facPZ
 Integer :: CurrentPDG2(2), CurrentPDG3(3), PDGlsp(2) 
 Integer::ierr,i_errors(1100),gt1,gt2,gt3,icount
 Complex(dp) :: PDGhh,PDGss,PDGAh,PDGHp,PDGVP,PDGVZ,PDGVG,PDGVWp,PDGgP,PDGgWp,PDGgWpC,PDGgZ,          & 
-& PDGgG,PDGFd(3),PDGFu(3),PDGFe(3),PDGFre,PDGFv(3)
+& PDGgG,PDGFd(3),PDGFu(3),PDGFe(3),PDGFv(3),PDGFre
 
 Character(len=30) :: NameParticlehh
 Character(len=30) :: NameParticless
@@ -1140,8 +1140,8 @@ Character(len=30) :: NameParticlegG
 Character(len=30),Dimension(3):: NameParticleFd
 Character(len=30),Dimension(3):: NameParticleFu
 Character(len=30),Dimension(3):: NameParticleFe
-Character(len=30) :: NameParticleFre
 Character(len=30),Dimension(3):: NameParticleFv
+Character(len=30) :: NameParticleFre
 Complex(dp) :: Zbottom(2,2), Ztop(2,2), Ztau(2,2) 
 
  
@@ -1192,14 +1192,14 @@ PDGFe(2)=13
 NameParticleFe(2)="Fe_2"
 PDGFe(3)=15
 NameParticleFe(3)="Fe_3"
-PDGFre=210000601
-NameParticleFre="Fre"
 PDGFv(1)=12
 NameParticleFv(1)="Fv_1"
 PDGFv(2)=14
 NameParticleFv(2)="Fv_2"
 PDGFv(3)=16
 NameParticleFv(3)="Fv_3"
+PDGFre=6000061
+NameParticleFre="Fre"
 
  
  
@@ -1327,7 +1327,7 @@ Write(io_L,104) 1,Aimag(mu2), "# mu2"
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block FDM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Real(MDF,dp), "# MDF" 
+Write(io_L,104) 1,Real(MFS,dp), "# MFS" 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block IMFDM Q=",Q,"# (Renormalization Scale)" 
 End if 
@@ -1465,7 +1465,7 @@ Write(io_L,106) "Block SMGUT Q=",M_GUT,"# (GUT scale)"
 Write(io_L,104) 2,Real(LamGUT,dp), "# Lam" 
 Write(io_L,104) 1,Real(mu2GUT,dp), "# mu2" 
 Write(io_L,106) "Block FDMGUT Q=",M_GUT,"# (GUT scale)" 
-Write(io_L,104) 1,Real(MDFGUT,dp), "# MDF" 
+Write(io_L,104) 1,Real(MFSGUT,dp), "# MFS" 
 Write(io_L,106) "Block MSOFTGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 22,Real(MS2GUT,dp), "# MS2" 
 Write(io_L,106) "Block YuGUT Q=",M_GUT,"# (GUT Scale)" 
@@ -1570,21 +1570,21 @@ End if
  Write(io_L,102) INT(Abs(PDGFe(1))),MFe(1),"# "//Trim(NameParticleFe(1))// "" 
  Write(io_L,102) INT(Abs(PDGFe(2))),MFe(2),"# "//Trim(NameParticleFe(2))// "" 
  Write(io_L,102) INT(Abs(PDGFe(3))),MFe(3),"# "//Trim(NameParticleFe(3))// "" 
- Write(io_L,102) 210000601,MFre,"# Fre" 
+ Write(io_L,102) INT(Abs(PDGFv(1))),MFv(1),"# "//Trim(NameParticleFv(1))// "" 
+ Write(io_L,102) INT(Abs(PDGFv(2))),MFv(2),"# "//Trim(NameParticleFv(2))// "" 
+ Write(io_L,102) INT(Abs(PDGFv(3))),MFv(3),"# "//Trim(NameParticleFv(3))// "" 
+ Write(io_L,102) 6000061,MFre,"# Fre" 
 If (MassLSP(1).gt.Abs(MFre)) Then 
 PDGLSP(2) = PDGLSP(1) 
-PDGLSP(1) = 210000601 
+PDGLSP(1) = 6000061 
 MassLSP(2) = MassLSP(1) 
 MassLSP(1) = Abs(MFre)
 Else 
 If (MassLSP(2).gt.Abs(MFre)) Then 
-PDGLSP(2) = 210000601 
+PDGLSP(2) = 6000061 
 MassLSP(2) = Abs(MFre)
 End if 
 End if 
- Write(io_L,102) INT(Abs(PDGFv(1))),MFv(1),"# "//Trim(NameParticleFv(1))// "" 
- Write(io_L,102) INT(Abs(PDGFv(2))),MFv(2),"# "//Trim(NameParticleFv(2))// "" 
- Write(io_L,102) INT(Abs(PDGFv(3))),MFv(3),"# "//Trim(NameParticleFv(3))// "" 
 
  
 Write(io_L,106) "Block UDLMIX Q=",Q,"# ()" 
@@ -3715,7 +3715,7 @@ Write(123,*) "Mu3= ", Abs(MFu(3))
 Write(123,*) "Me1= ", Abs(MFe(1)) 
 Write(123,*) "Me2= ", Abs(MFe(2)) 
 Write(123,*) "Me3= ", Abs(MFe(3)) 
-Write(123,*) "MRe= ", Abs(MFre) 
+Write(123,*) "MFre= ", Abs(MFre) 
 Write(123,*) "" 
 Write(123,*) "" 
 
@@ -3726,7 +3726,7 @@ Write(123,*) ""
 Write(123,*) "" 
 Write(123,*) "Wu3 = ",gTFu(3)
 Write(123,*) "Wh = ",gThh
-Write(123,*) "WRe = ",gTFre
+Write(123,*) "WFre = ",gTFre
 Write(123,*) "" 
 Write(123,*) "" 
 
@@ -4708,8 +4708,8 @@ Backspace(io)! resetting to the beginning of the line
 If ((read_line(1:1).Eq."B").Or.(read_line(1:1).Eq."b")) Exit! this loop 
 Read(io,*) i_par,wert!,read_line 
 If (i_par.Eq.1) Then 
-MDFIN= wert 
-InputValueforMDF= .True. 
+MFSIN= wert 
+InputValueforMFS= .True. 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
 If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block FDMIN ",i_par

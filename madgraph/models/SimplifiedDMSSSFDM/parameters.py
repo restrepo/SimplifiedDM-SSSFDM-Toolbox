@@ -3,7 +3,7 @@
 # SARAH References: arXiv:0806.0538, arXiv:0909.2863, arXiv:1002.0840    
 # (c) Florian Staub, 2011  
 # ----------------------------------------------------------------------  
-# File created at 8:40 on 28.11.2016   
+# File created at 10:36 on 28.11.2016   
 # ----------------------------------------------------------------------  
  
  
@@ -17,21 +17,21 @@ ZERO=Parameter(name='ZERO',
                       value='0.0', 
                       texname='0') 
  
-MRe = 	 Parameter(name = 'MRe', 
+MFre = 	 Parameter(name = 'MFre', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 100., 
-	 texname = '\\text{MRe}', 
+	 texname = '\\text{MFre}', 
 	 lhablock = 'MASS', 
-	 lhacode = [210000601]) 
+	 lhacode = [6000061]) 
  
-WRe = 	 Parameter(name = 'WRe', 
+WFre = 	 Parameter(name = 'WFre', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0., 
-	 texname = '\\text{WRe}', 
+	 texname = '\\text{WFre}', 
 	 lhablock = 'DECAY', 
-	 lhacode = [210000601]) 
+	 lhacode = [6000061]) 
  
 Md1 = 	 Parameter(name = 'Md1', 
 	 nature = 'external', 

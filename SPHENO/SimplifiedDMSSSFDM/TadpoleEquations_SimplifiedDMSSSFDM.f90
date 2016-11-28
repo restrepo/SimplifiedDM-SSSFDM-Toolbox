@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 8:40 on 28.11.2016   
+! File created at 10:36 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -19,11 +19,11 @@ Use Mathematics
 Contains 
 
 
-Subroutine SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,             & 
+Subroutine SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,             & 
 & mu2,v,Tad1Loop)
 
 Implicit None
-Real(dp),Intent(inout) :: g1,g2,g3,Ys(3),MDF,MS2,v
+Real(dp),Intent(inout) :: g1,g2,g3,Ys(3),MFS,MS2,v
 
 Complex(dp),Intent(inout) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
@@ -69,10 +69,10 @@ End If
  End if 
 End Subroutine SolveTadpoleEquations
 
-Subroutine CalculateTadpoles(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MDF,MS2,mu2,             & 
+Subroutine CalculateTadpoles(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,             & 
 & v,Tad1Loop,TadpoleValues)
 
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MDF,MS2,v
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2,v
 
 Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 

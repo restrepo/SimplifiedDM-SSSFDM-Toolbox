@@ -1,11 +1,11 @@
-SimplifiedDMSSSFDM  % Created by SARAH v4.9.1 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 8:40 on 28.11.2016
+SimplifiedDMSSSFDM  % Created by SARAH v4.9.1 (arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223) at 10:36 on 28.11.2016
 Constraints  
  Name          |> Expression                                                                                                                                                                                <|
 rd             |slhaRead("SPheno.spc.SimplifiedDMSSSFDM",0) 
 MSs            |slhaVal("MASS",Q,1,6666635) 
 Mh             |slhaVal("MASS",Q,1,25) 
 MZ             |slhaVal("MASS",Q,1,23) 
-MRe            |slhaVal("MASS",Q,1,210000601) 
+MFre           |slhaVal("MASS",Q,1,6000061) 
 Mnu1           |slhaVal("MASS",Q,1,12) 
 Mnu2           |slhaVal("MASS",Q,1,14) 
 Mnu3           |slhaVal("MASS",Q,1,16) 

@@ -2,7 +2,8 @@ ParameterDefinitions = {
 
 {g1,        { Description -> "Hypercharge-Coupling"}},
 {g2,        { Description -> "Left-Coupling"}},
-{g3,        { Description -> "Strong-Coupling"}},    
+{g3,        { Description -> "Strong-Coupling"}},  
+
 {AlphaS,    {Description -> "Alpha Strong"}},	
 {e,         { Description -> "electric charge"}}, 
 
@@ -10,22 +11,18 @@ ParameterDefinitions = {
 {aEWinv,    { Description -> "inverse weak coupling constant at mZ"}},
 
 {Yu,        { Description -> "Up-Yukawa-Coupling",
-			 DependenceNum ->  Sqrt[2]/v* {{Mass[Fu,1],0,0},
-             									{0, Mass[Fu,2],0},
-             									{0, 0, Mass[Fu,3]}}}}, 
-             									
+		 DependenceNum ->  Sqrt[2]/v* {{Mass[Fu,1],0,0},
+						{0, Mass[Fu,2],0},
+						{0, 0, Mass[Fu,3]}}}}, 
 {Yd,        { Description -> "Down-Yukawa-Coupling",
-			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fd,1],0,0},
-             									{0, Mass[Fd,2],0},
-             									{0, 0, Mass[Fd,3]}}}},
-             									
+		  DependenceNum ->  Sqrt[2]/v* {{Mass[Fd,1],0,0},
+						{0, Mass[Fd,2],0},
+						{0, 0, Mass[Fd,3]}}}},
 {Ye,        { Description -> "Lepton-Yukawa-Coupling",
-			  DependenceNum ->  Sqrt[2]/v* {{Mass[Fe,1],0,0},
-             									{0, Mass[Fe,2],0},
-             									{0, 0, Mass[Fe,3]}}}},                                                                                                             
-{v,          { Description -> "EW-VEV",
-               DependenceNum -> Sqrt[4*Mass[VWp]^2/(g2^2)],
-               DependenceSPheno -> None  }},
+		  DependenceNum ->  Sqrt[2]/v* {{Mass[Fe,1],0,0},
+                                                {0, Mass[Fe,2],0},
+             					{0, 0, Mass[Fe,3]}}}}, 
+                                                                   
 
 {ThetaW,    { Description -> "Weinberg-Angle",
               DependenceNum -> ArcSin[Sqrt[1 - Mass[VWp]^2/Mass[VZ]^2]]}},
@@ -44,23 +41,27 @@ ParameterDefinitions = {
 {Ue,        {Description ->"Right-Lepton-Mixing-Matrix"}},
 
 (* Scalar sector *)
+{v,          { Description -> "EW-VEV",
+               DependenceNum -> Sqrt[4*Mass[VWp]^2/(g2^2)],
+               DependenceSPheno -> None  }},
+
 {mu2,         { Description -> "SM Mu Parameter",
                 LaTeX -> "\\mu^2",
 	        OutputName -> mu2}},
 
+{Lambda1, { Description -> "SM Higgs Selfcouplings",
+               DependenceNum -> Mass[hh]^2/(v^2)}},
+
 {MS2,       {Description -> "Softbreaking Up-Higgs Mass",
              LaTeX -> "M_S^2",
 	     OutputName-> MS2}}, 
-
-{Lambda1, { Description -> "SM Higgs Selfcouplings",
-               DependenceNum -> Mass[hh]^2/(v^2)}},
 
 {LamSH,     {OutputName ->"LSH",
              LesHouches -> {HDM,2}}},
 
 {LamS,     {OutputName ->"LS",
 	    LesHouches -> {HDM,3}}},
-{MSF,{ LaTeX -> "M_D",Real -> True,OutputName -> MDF,LesHouches -> {FDM,1}}},
+{MSF,{ LaTeX -> "M_F",Real -> True,OutputName -> MFS,LesHouches -> {FDM,1}}},
 {Ys, { LaTeX -> "Y_S",Real->True,LesHouches -> YS, OutputName-> Ys }}
     
  }; 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 8:38 on 28.11.2016   
+! File created at 10:34 on 28.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -261,19 +261,19 @@ Complex(dp) :: mu21L
 Complex(dp) :: mu22L 
 Integer :: SolutionTadpoleNr = 1 
 Character(len=15)::HighScaleModel
-Real(dp) :: g1,g2,g3,Ys(3),MDF,MS2
+Real(dp) :: g1,g2,g3,Ys(3),MFS,MS2
 
 Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
 
-Real(dp) :: g1IN,g2IN,g3IN,YsIN(3),MDFIN,MS2IN
+Real(dp) :: g1IN,g2IN,g3IN,YsIN(3),MFSIN,MS2IN
 
 Complex(dp) :: LSIN,LSHIN,LamIN,YuIN(3,3),YdIN(3,3),YeIN(3,3),mu2IN
 
-Real(dp) :: g1MZ,g2MZ,g3MZ,YsMZ(3),MDFMZ,MS2MZ
+Real(dp) :: g1MZ,g2MZ,g3MZ,YsMZ(3),MFSMZ,MS2MZ
 
 Complex(dp) :: LSMZ,LSHMZ,LamMZ,YuMZ(3,3),YdMZ(3,3),YeMZ(3,3),mu2MZ
 
-Real(dp) :: g1GUT,g2GUT,g3GUT,YsGUT(3),MDFGUT,MS2GUT
+Real(dp) :: g1GUT,g2GUT,g3GUT,YsGUT(3),MFSGUT,MS2GUT
 
 Complex(dp) :: LSGUT,LSHGUT,LamGUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),mu2GUT
 
@@ -340,7 +340,7 @@ Logical, save :: InputValueforYu =.False.
 Logical, save :: InputValueforYs =.False. 
 Logical, save :: InputValueforYd =.False. 
 Logical, save :: InputValueforYe =.False. 
-Logical, save :: InputValueforMDF =.False. 
+Logical, save :: InputValueforMFS =.False. 
 Logical, save :: InputValueforMS2 =.False. 
 Logical, save :: InputValueformu2 =.False. 
 Complex(dp) :: CKMcomplex(3,3) 
@@ -975,7 +975,7 @@ YuIN = 0._dp
 YsIN = 0._dp 
 YdIN = 0._dp 
 YeIN = 0._dp 
-MDFIN = 0._dp 
+MFSIN = 0._dp 
 MS2IN = 0._dp 
 mu2IN = 0._dp 
 g1 = 0._dp 
@@ -998,8 +998,8 @@ Yd = 0._dp
 YdMZ = 0._dp 
 Ye = 0._dp 
 YeMZ = 0._dp 
-MDF = 0._dp 
-MDFMZ = 0._dp 
+MFS = 0._dp 
+MFSMZ = 0._dp 
 MS2 = 0._dp 
 MS2MZ = 0._dp 
 mu2 = 0._dp 
