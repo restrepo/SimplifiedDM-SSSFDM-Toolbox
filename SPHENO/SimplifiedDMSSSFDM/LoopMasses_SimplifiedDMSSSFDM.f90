@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:34 on 28.11.2016   
+! File created at 3:16 on 29.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -21,7 +21,7 @@ Use Tadpoles_SimplifiedDMSSSFDM
  Use TreeLevelMasses_SimplifiedDMSSSFDM 
  
 Real(dp), Private :: MFv_1L(3), MFv2_1L(3)  
-Complex(dp), Private :: Vv_1L(3,3)  
+Complex(dp), Private :: UV_1L(3,3)  
 Real(dp), Private :: MFre_1L, MFre2_1L  
 Real(dp), Private :: MHp_1L, MHp2_1L  
 Real(dp), Private :: Mss_1L, Mss2_1L  
@@ -33,17 +33,17 @@ Contains
  
 Subroutine OneLoopMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,              & 
 & MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,            & 
-& ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,kont)
+& ZEL,ZUL,UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,kont)
 
 Implicit None 
-Real(dp),Intent(inout) :: g1,g2,g3,Ys(3),MFS,MS2
+Real(dp),Intent(inout) :: g1,g2,g3,Ys(3),MS2
 
-Complex(dp),Intent(inout) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp),Intent(inout) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
 Real(dp),Intent(inout) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
 & MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp),Intent(inout) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp),Intent(inout) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
 Real(dp),Intent(inout) :: v
 
@@ -99,14 +99,14 @@ RXiZ = RXi
  
 Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
-mu2Tree  = mu2
+MuTree  = Mu
 
  
  If (CalculateOneLoopMasses) Then 
  
-Call CouplingsForVectorBosons(g1,TW,g2,v,ZDL,ZUL,Vv,ZEL,cplcFreFreVZL,cplcFreFreVZR,  & 
+Call CouplingsForVectorBosons(g1,TW,g2,v,ZDL,ZUL,UV,ZEL,cplcFreFreVZL,cplcFreFreVZR,  & 
 & cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplHpcHpcVWpVWp,            & 
 & cplHpcHpVZVZ,cplAhhhVZ,cplAhHpcVWp,cplAhAhcVWpVWp,cplAhAhVZVZ,cplhhHpcVWp,             & 
 & cplhhcVWpVWp,cplhhVZVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,cplcFdFdVZL,cplcFdFdVZR,             & 
@@ -126,14 +126,14 @@ Call Pi1LoopVZ(mZ2,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,     
 
 vev2=4._dp*Real(mZ2+dmz2,dp)/(g1**2+g2**2) -0 
 vSM=sqrt(vev2) 
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,              & 
+& (/ ZeroC /))
 
 Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
-Call CouplingsForLoopMasses(Ye,ZER,g2,ZEL,g1,Vv,TW,Yd,ZDL,ZDR,g3,Yu,ZUL,              & 
+Call CouplingsForLoopMasses(Ye,ZER,g2,ZEL,g1,UV,TW,Yd,ZDL,ZDR,g3,Yu,ZUL,              & 
 & ZUR,Ys,v,Lam,LSH,LS,cplcUFvFeHpL,cplcUFvFeHpR,cplcUFvFeVWpL,cplcUFvFeVWpR,             & 
 & cplcUFvFvVZL,cplcUFvFvVZR,cplcUFdFdAhL,cplcUFdFdAhR,cplcUFdFdhhL,cplcUFdFdhhR,         & 
 & cplcUFdFdVGL,cplcUFdFdVGR,cplcUFdFdVPL,cplcUFdFdVPR,cplcUFdFdVZL,cplcUFdFdVZR,         & 
@@ -164,20 +164,19 @@ Call OneLoopTadpoleshh(v,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,MFu2,Mhh,Mhh2,MHp,      
 & cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,cplcgWCgWChh,cplcgZgZhh,              & 
 & cplhhhhhh,cplhhHpcHp,cplhhssss,cplhhcVWpVWp,cplhhVZVZ,Tad1Loop(1:1))
 
-mu2Tree  = mu2
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,Tad1Loop)
+MuTree  = Mu
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,Tad1Loop)
 
-mu21L = mu2
+Mu1L = Mu
 Call OneLoopFv(MHp,MHp2,MFe,MFe2,MVWp,MVWp2,MVZ,MVZ2,MFv,MFv2,cplcUFvFeHpL,           & 
 & cplcUFvFeHpR,cplcUFvFeVWpL,cplcUFvFeVWpR,cplcUFvFvVZL,cplcUFvFvVZR,0.1_dp*delta_mass,  & 
-& MFv_1L,MFv2_1L,Vv_1L,kont)
+& MFv_1L,MFv2_1L,UV_1L,kont)
 
 Call OneLoopFre(MFS,Mss,Mss2,MFe,MFe2,MFre,MFre2,MVZ,MVZ2,cplcFreFessL,               & 
 & cplcFreFessR,cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,cplcFreFreVZR,0.1_dp*delta_mass,& 
 & MFre_1L,MFre2_1L,kont)
 
-Call OneLoopHp(g2,mu2,Lam,v,MVWp,MVWp2,MAh,MAh2,MFd,MFd2,MFu,MFu2,MFe,MFe2,           & 
+Call OneLoopHp(g2,Mu,Lam,v,MVWp,MVWp2,MAh,MAh2,MFd,MFd2,MFu,MFu2,MFe,MFe2,            & 
 & MFv,MFv2,MHp,MHp2,Mhh,Mhh2,MVZ,MVZ2,Mss,Mss2,cplAhcHpVWp,cplcFdFucHpL,cplcFdFucHpR,    & 
 & cplcFeFvcHpL,cplcFeFvcHpR,cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,cplcgZgWCHp,           & 
 & cplhhHpcHp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplAhAhHpcHp,     & 
@@ -188,13 +187,13 @@ Call OneLoopss(MS2,LSH,v,MFre,MFre2,MFe,MFe2,Mss,Mss2,Mhh,Mhh2,MAh,MAh2,        
 & MHp,MHp2,cplcFreFessL,cplcFreFessR,cplhhssss,cplAhAhssss,cplhhhhssss,cplHpsssscHp,     & 
 & cplssssssss,0.1_dp*delta_mass,Mss_1L,Mss2_1L,kont)
 
-Call OneLoopAh(g1,g2,mu2,Lam,v,TW,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,            & 
+Call OneLoopAh(g1,g2,Mu,Lam,v,TW,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,MFe2,MFu,             & 
 & MFu2,MVZ,MVZ2,MVWp,MVWp2,MHp,MHp2,Mss,Mss2,cplAhAhhh,cplcFdFdAhL,cplcFdFdAhR,          & 
 & cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplcgWpgWpAh,cplcgWCgWCAh,             & 
 & cplAhhhVZ,cplAhHpcVWp,cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,cplAhAhssss,cplAhAhcVWpVWp, & 
 & cplAhAhVZVZ,0.1_dp*delta_mass,MAh_1L,MAh2_1L,kont)
 
-Call OneLoophh(mu2,Lam,v,MAh,MAh2,MVZ,MVZ2,MFd,MFd2,MFe,MFe2,MFu,MFu2,Mhh,            & 
+Call OneLoophh(Mu,Lam,v,MAh,MAh2,MVZ,MVZ2,MFd,MFd2,MFe,MFe2,MFu,MFu2,Mhh,             & 
 & Mhh2,MHp,MHp2,MVWp,MVWp2,Mss,Mss2,cplAhAhhh,cplAhhhVZ,cplcFdFdhhL,cplcFdFdhhR,         & 
 & cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,cplcgWCgWChh,             & 
 & cplcgZgZhh,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhssss,cplhhcVWpVWp,cplhhVZVZ,          & 
@@ -203,7 +202,7 @@ Call OneLoophh(mu2,Lam,v,MAh,MAh2,MVZ,MVZ2,MFd,MFd2,MFe,MFe2,MFu,MFu2,Mhh,      
 
 MFv = MFv_1L 
 MFv2 = MFv2_1L 
-Vv = Vv_1L 
+UV = UV_1L 
 MFre = MFre_1L 
 MFre2 = MFre2_1L 
 MHp = MHp_1L 
@@ -218,7 +217,7 @@ End If
  
 Call SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,               & 
 & MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,            & 
-& ZUL,Vv,ZW,ZZ,kont)
+& ZUL,UV,ZW,ZZ,kont)
 
 ! Set pole masses 
 MVWp = mW 
@@ -248,7 +247,7 @@ mf_l2 = mf_l**2
 
  If (WriteTreeLevelTadpoleSolutions) Then 
 ! Saving tree-level parameters for output
-mu2  = mu2Tree 
+Mu  = MuTree 
 End if 
 
 
@@ -1868,7 +1867,7 @@ Subroutine OneLoopFre(MFS,Mss,Mss2,MFe,MFe2,MFre,MFre2,MVZ,MVZ2,cplcFreFessL,   
 
 Real(dp), Intent(in) :: Mss,Mss2,MFe(3),MFe2(3),MFre,MFre2,MVZ,MVZ2
 
-Real(dp), Intent(in) :: MFS
+Complex(dp), Intent(in) :: MFS
 
 Complex(dp), Intent(in) :: cplcFreFessL(3),cplcFreFessR(3),cplcFreFreVPL,cplcFreFreVPR,cplcFreFreVZL,            & 
 & cplcFreFreVZR
@@ -2025,7 +2024,7 @@ SigL = oo16pi2*SigL
  
 End Subroutine Sigma1LoopFre 
  
-Subroutine OneLoopHp(g2,mu2,Lam,v,MVWp,MVWp2,MAh,MAh2,MFd,MFd2,MFu,MFu2,              & 
+Subroutine OneLoopHp(g2,Mu,Lam,v,MVWp,MVWp2,MAh,MAh2,MFd,MFd2,MFu,MFu2,               & 
 & MFe,MFe2,MFv,MFv2,MHp,MHp2,Mhh,Mhh2,MVZ,MVZ2,Mss,Mss2,cplAhcHpVWp,cplcFdFucHpL,        & 
 & cplcFdFucHpR,cplcFeFvcHpL,cplcFeFvcHpR,cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,          & 
 & cplcgZgWCHp,cplhhHpcHp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,      & 
@@ -2037,7 +2036,7 @@ Real(dp), Intent(in) :: MVWp,MVWp2,MAh,MAh2,MFd(3),MFd2(3),MFu(3),MFu2(3),MFe(3)
 
 Real(dp), Intent(in) :: g2,v
 
-Complex(dp), Intent(in) :: mu2,Lam
+Complex(dp), Intent(in) :: Mu,Lam
 
 Complex(dp), Intent(in) :: cplAhcHpVWp,cplcFdFucHpL(3,3),cplcFdFucHpR(3,3),cplcFeFvcHpL(3,3),cplcFeFvcHpR(3,3),  & 
 & cplcgZgWpcHp,cplcgWpgZHp,cplcgWCgZcHp,cplcgZgWCHp,cplhhHpcHp,cplhhcHpVWp,              & 
@@ -2053,7 +2052,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopHp'
  
-mi2 = (4._dp*(mu2) + 2*Lam*v**2 + g2**2*v**2*RXiWp)/4._dp 
+mi2 = (4._dp*(Mu) + 2*Lam*v**2 + g2**2*v**2*RXiWp)/4._dp 
 
  
 p2 = 0._dp 
@@ -2499,18 +2498,18 @@ res = oo16pi2*res
  
 End Subroutine Pi1Loopss 
  
-Subroutine OneLoopAh(g1,g2,mu2,Lam,v,TW,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,               & 
-& MFe2,MFu,MFu2,MVZ,MVZ2,MVWp,MVWp2,MHp,MHp2,Mss,Mss2,cplAhAhhh,cplcFdFdAhL,             & 
-& cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplcgWpgWpAh,              & 
-& cplcgWCgWCAh,cplAhhhVZ,cplAhHpcVWp,cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,               & 
-& cplAhAhssss,cplAhAhcVWpVWp,cplAhAhVZVZ,delta,mass,mass2,kont)
+Subroutine OneLoopAh(g1,g2,Mu,Lam,v,TW,Mhh,Mhh2,MAh,MAh2,MFd,MFd2,MFe,MFe2,           & 
+& MFu,MFu2,MVZ,MVZ2,MVWp,MVWp2,MHp,MHp2,Mss,Mss2,cplAhAhhh,cplcFdFdAhL,cplcFdFdAhR,      & 
+& cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,cplcgWpgWpAh,cplcgWCgWCAh,             & 
+& cplAhhhVZ,cplAhHpcVWp,cplAhAhAhAh,cplAhAhhhhh,cplAhAhHpcHp,cplAhAhssss,cplAhAhcVWpVWp, & 
+& cplAhAhVZVZ,delta,mass,mass2,kont)
 
 Real(dp), Intent(in) :: Mhh,Mhh2,MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MVZ,MVZ2,              & 
 & MVWp,MVWp2,MHp,MHp2,Mss,Mss2
 
 Real(dp), Intent(in) :: g1,g2,v,TW
 
-Complex(dp), Intent(in) :: mu2,Lam
+Complex(dp), Intent(in) :: Mu,Lam
 
 Complex(dp), Intent(in) :: cplAhAhhh,cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFeFeAhL(3,3),cplcFeFeAhR(3,3),        & 
 & cplcFuFuAhL(3,3),cplcFuFuAhR(3,3),cplcgWpgWpAh,cplcgWCgWCAh,cplAhhhVZ,cplAhHpcVWp,     & 
@@ -2525,7 +2524,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoopAh'
  
-mi2 = (2*(2._dp*(mu2) + Lam*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
+mi2 = (2*(2._dp*(Mu) + Lam*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))**2)/4._dp 
 
  
 p2 = 0._dp 
@@ -2772,19 +2771,19 @@ res = oo16pi2*res
  
 End Subroutine Pi1LoopAh 
  
-Subroutine OneLoophh(mu2,Lam,v,MAh,MAh2,MVZ,MVZ2,MFd,MFd2,MFe,MFe2,MFu,               & 
-& MFu2,Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,Mss,Mss2,cplAhAhhh,cplAhhhVZ,cplcFdFdhhL,            & 
-& cplcFdFdhhR,cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,              & 
-& cplcgWCgWChh,cplcgZgZhh,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhssss,cplhhcVWpVWp,       & 
-& cplhhVZVZ,cplAhAhhhhh,cplhhhhhhhh,cplhhhhHpcHp,cplhhhhssss,cplhhhhcVWpVWp,             & 
-& cplhhhhVZVZ,delta,mass,mass2,kont)
+Subroutine OneLoophh(Mu,Lam,v,MAh,MAh2,MVZ,MVZ2,MFd,MFd2,MFe,MFe2,MFu,MFu2,           & 
+& Mhh,Mhh2,MHp,MHp2,MVWp,MVWp2,Mss,Mss2,cplAhAhhh,cplAhhhVZ,cplcFdFdhhL,cplcFdFdhhR,     & 
+& cplcFeFehhL,cplcFeFehhR,cplcFuFuhhL,cplcFuFuhhR,cplcgWpgWphh,cplcgWCgWChh,             & 
+& cplcgZgZhh,cplhhhhhh,cplhhHpcHp,cplhhHpcVWp,cplhhssss,cplhhcVWpVWp,cplhhVZVZ,          & 
+& cplAhAhhhhh,cplhhhhhhhh,cplhhhhHpcHp,cplhhhhssss,cplhhhhcVWpVWp,cplhhhhVZVZ,           & 
+& delta,mass,mass2,kont)
 
 Real(dp), Intent(in) :: MAh,MAh2,MVZ,MVZ2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),Mhh,Mhh2,              & 
 & MHp,MHp2,MVWp,MVWp2,Mss,Mss2
 
 Real(dp), Intent(in) :: v
 
-Complex(dp), Intent(in) :: mu2,Lam
+Complex(dp), Intent(in) :: Mu,Lam
 
 Complex(dp), Intent(in) :: cplAhAhhh,cplAhhhVZ,cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFeFehhL(3,3),               & 
 & cplcFeFehhR(3,3),cplcFuFuhhL(3,3),cplcFuFuhhR(3,3),cplcgWpgWphh,cplcgWCgWChh,          & 
@@ -2800,7 +2799,7 @@ Real(dp), Intent(out) :: mass, mass2
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'OneLoophh'
  
-mi2 = mu2 + (3*Lam*v**2)/2._dp 
+mi2 = Mu + (3*Lam*v**2)/2._dp 
 
  
 p2 = Mhh2

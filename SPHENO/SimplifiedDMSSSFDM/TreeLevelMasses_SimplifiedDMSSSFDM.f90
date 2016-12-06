@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:34 on 28.11.2016   
+! File created at 3:16 on 29.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -22,18 +22,18 @@ Contains
  
 Subroutine TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,             & 
 & MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,            & 
-& ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& ZUL,UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MS2
 
-Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
 Real(dp),Intent(out) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
 & MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
 Real(dp),Intent(in) :: v
 
@@ -60,7 +60,7 @@ MFre = Real(MFreC,dp)
 MFre2 = MFre**2 
 End if
 ! ------------------------------- 
-MHp2 = (4._dp*(mu2) + 2*Lam*v**2 + g2**2*v**2*RXiWp)/4._dp 
+MHp2 = (4._dp*(Mu) + 2*Lam*v**2 + g2**2*v**2*RXiWp)/4._dp 
   If (MHp2.ne.MHp2) Then 
       Write(*,*) 'NaN appearing in MHp2' 
       Call TerminateProgram 
@@ -114,7 +114,7 @@ Mss = sqrt(Mss2)
 
 
 ! ------------------------------- 
-MAh2 = (2*(2._dp*(mu2) + Lam*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))              & 
+MAh2 = (2*(2._dp*(Mu) + Lam*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))               & 
 & **2)/4._dp 
   If (MAh2.ne.MAh2) Then 
       Write(*,*) 'NaN appearing in MAh2' 
@@ -142,7 +142,7 @@ MAh = sqrt(MAh2)
 
 
 ! ------------------------------- 
-Mhh2 = mu2 + (3*Lam*v**2)/2._dp 
+Mhh2 = Mu + (3*Lam*v**2)/2._dp 
   If (Mhh2.ne.Mhh2) Then 
       Write(*,*) 'NaN appearing in Mhh2' 
       Call TerminateProgram 
@@ -169,7 +169,7 @@ Mhh = sqrt(Mhh2)
 
 
 ! ------------------------------- 
-Call CalculateMFv(Vv,MFv,kont)
+Call CalculateMFv(UV,MFv,kont)
 
 MFv2 = MFv**2 
 Call CalculateMFd(Yd,v,ZDL,ZDR,MFd,kont)
@@ -185,7 +185,7 @@ MFe2 = MFe**2
  
  Call SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,               & 
 & MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,            & 
-& ZUL,Vv,ZW,ZZ,kont)
+& ZUL,UV,ZW,ZZ,kont)
 
 If (SignOfMassChanged) Then  
  If (.Not.IgnoreNegativeMasses) Then 
@@ -217,14 +217,14 @@ End Subroutine  TreeMasses
  
  
 Subroutine RunningFermionMasses(MFeIN,MFe2IN,MFdIN,MFd2IN,MFuIN,MFu2IN,               & 
-& v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,kont)
+& v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,kont)
 
 Implicit None 
  
 Integer, Intent(inout) :: kont 
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MS2
 
-Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
 Real(dp),Intent(in) :: v
 
@@ -251,18 +251,18 @@ End Subroutine RunningFermionMasses
 
 Subroutine TreeMassesEffPot(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,           & 
 & MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,            & 
-& ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& ZEL,ZUL,UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MS2
 
-Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
 Real(dp),Intent(out) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
 & MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
 Real(dp),Intent(in) :: v
 
@@ -289,7 +289,7 @@ MFre = Real(MFreC,dp)
 MFre2 = MFre**2 
 End if
 ! ------------------------------- 
-MHp2 = (4._dp*(mu2) + 2*Lam*v**2 + g2**2*v**2*RXiWp)/4._dp 
+MHp2 = (4._dp*(Mu) + 2*Lam*v**2 + g2**2*v**2*RXiWp)/4._dp 
   If (MHp2.ne.MHp2) Then 
       Write(*,*) 'NaN appearing in MHp2' 
       Call TerminateProgram 
@@ -313,7 +313,7 @@ Mss = sqrt(Mss2)
 
 
 ! ------------------------------- 
-MAh2 = (2*(2._dp*(mu2) + Lam*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))              & 
+MAh2 = (2*(2._dp*(Mu) + Lam*v**2) + v**2*RXiZ*(g2*Cos(TW) + g1*Sin(TW))               & 
 & **2)/4._dp 
   If (MAh2.ne.MAh2) Then 
       Write(*,*) 'NaN appearing in MAh2' 
@@ -326,7 +326,7 @@ MAh = sqrt(MAh2)
 
 
 ! ------------------------------- 
-Mhh2 = mu2 + (3*Lam*v**2)/2._dp 
+Mhh2 = Mu + (3*Lam*v**2)/2._dp 
   If (Mhh2.ne.Mhh2) Then 
       Write(*,*) 'NaN appearing in Mhh2' 
       Call TerminateProgram 
@@ -338,7 +338,7 @@ Mhh = sqrt(Mhh2)
 
 
 ! ------------------------------- 
-Call CalculateMFvEffPot(Vv,MFv,kont)
+Call CalculateMFvEffPot(UV,MFv,kont)
 
 MFv2 = MFv**2 
 Call CalculateMFdEffPot(Yd,v,ZDL,ZDR,MFd,kont)
@@ -375,18 +375,18 @@ Iname = Iname - 1
 End Subroutine  TreeMassesEffPot 
  
  
-Subroutine CalculateMFv(Vv,MFv,kont)
+Subroutine CalculateMFv(UV,MFv,kont)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
 Logical :: SecondDiagonalisationNeeded 
 Real(dp), Intent(out) :: MFv(3) 
-Complex(dp), Intent(out) ::  Vv(3,3) 
+Complex(dp), Intent(out) ::  UV(3,3) 
                               
 Complex(dp) :: mat(3,3), mat2(3,3), phaseM, E3(3) 
 
-Real(dp) :: Vva(3,3), test(2), eig(3) 
+Real(dp) :: UVa(3,3), test(2), eig(3) 
 
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'CalculateMFv'
@@ -407,15 +407,15 @@ End do
 
  
 If (Maxval(Abs(Aimag(mat))).Eq.0._dp) Then 
-Call EigenSystem(Real(mat,dp),Eig,Vva,ierr,test) 
+Call EigenSystem(Real(mat,dp),Eig,UVa,ierr,test) 
  
    Do i1=1,3
    If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
     MFv(i1) = - Eig(i1) 
-    Vv(i1,:) = (0._dp,1._dp)*Vva(i1,:) 
+    UV(i1,:) = (0._dp,1._dp)*UVa(i1,:) 
    Else 
     MFv(i1) = Eig(i1) 
-    Vv(i1,:) = Vva(i1,:)
+    UV(i1,:) = UVa(i1,:)
     End If 
    End Do 
  
@@ -425,9 +425,9 @@ Do i1=1,2
       Eig(1) = MFv(i1) 
       MFv(i1) = MFv(i2) 
       MFv(i2) =  Eig(1) 
-      E3 = Vv(i1,:) 
-      Vv(i1,:) = Vv(i2,:) 
-      Vv(i2,:) = E3
+      E3 = UV(i1,:) 
+      UV(i1,:) = UV(i2,:) 
+      UV(i2,:) = E3
     End If 
    End Do 
 End Do 
@@ -435,8 +435,8 @@ End Do
 Else 
  
 mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
-Call Eigensystem(mat2, Eig, Vv, ierr, test) 
-mat2 = Matmul( Conjg(Vv), Matmul( mat, Transpose( Conjg(Vv)))) 
+Call Eigensystem(mat2, Eig, UV, ierr, test) 
+mat2 = Matmul( Conjg(UV), Matmul( mat, Transpose( Conjg(UV)))) 
 ! Special efforts are needed for matrices like the Higgsinos one 
 SecondDiagonalisationNeeded = .False. 
 Do i1=1,3-1
@@ -469,16 +469,16 @@ If (MaxVal(Abs(mat2(i1,(i1+1):3))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNee
  End if 
 End do 
 If (SecondDiagonalisationNeeded) Then 
-Call EigenSystem(Real(mat2,dp),Eig,Vva,ierr,test) 
+Call EigenSystem(Real(mat2,dp),Eig,UVa,ierr,test) 
  
-     Vv = MatMul(Vv,Vva)
+     UV = MatMul(UV,UVa)
   Do i1=1,3
    If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
     MFv(i1) = - Eig(i1) 
-    Vv(i1,:) = (0._dp,1._dp)*Vva(i1,:) 
+    UV(i1,:) = (0._dp,1._dp)*UVa(i1,:) 
    Else 
     MFv(i1) = Eig(i1) 
-    Vv(i1,:) = Vva(i1,:)
+    UV(i1,:) = UVa(i1,:)
     End If 
    End Do 
  
@@ -490,7 +490,7 @@ Do i1=1,3
     End If 
 If (Abs(mat2(i1,i1)).gt.0._dp) Then 
   phaseM = Sqrt( mat2(i1,i1) / Abs(mat2(i1,i1))) 
-  Vv(i1,:)= phaseM * Vv(i1,:) 
+  UV(i1,:)= phaseM * UV(i1,:) 
 End if 
   If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
   If (Eig(i1).Le.0._dp) Then 
@@ -1145,18 +1145,18 @@ MVWp2 = VWp2(1)
  
 End Subroutine CalculateVWp 
 
-Subroutine CalculateMFvEffPot(Vv,MFv,kont)
+Subroutine CalculateMFvEffPot(UV,MFv,kont)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1,i2,i3,i4, ierr, pos 
 Integer :: j1,j2,j3,j4 
 Logical :: SecondDiagonalisationNeeded 
 Real(dp), Intent(out) :: MFv(3) 
-Complex(dp), Intent(out) ::  Vv(3,3) 
+Complex(dp), Intent(out) ::  UV(3,3) 
                               
 Complex(dp) :: mat(3,3), mat2(3,3), phaseM, E3(3) 
 
-Real(dp) :: Vva(3,3), test(2), eig(3) 
+Real(dp) :: UVa(3,3), test(2), eig(3) 
 
 Iname = Iname + 1 
 NameOfUnit(Iname) = 'CalculateMFv'
@@ -1177,27 +1177,27 @@ End do
 
  
 If (Maxval(Abs(Aimag(mat))).Eq.0._dp) Then 
-Call EigenSystem(Real(mat,dp),Eig,Vva,ierr,test) 
+Call EigenSystem(Real(mat,dp),Eig,UVa,ierr,test) 
  
    Do i1=1,3
    If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
     MFv(i1) = - Eig(i1) 
-    Vv(i1,:) = (0._dp,1._dp)*Vva(i1,:) 
+    UV(i1,:) = (0._dp,1._dp)*UVa(i1,:) 
    Else 
     MFv(i1) = Eig(i1) 
-    Vv(i1,:) = Vva(i1,:)
+    UV(i1,:) = UVa(i1,:)
     End If 
    End Do 
  
   Do i1=1,3
-   pos=Maxloc(Abs(Vv(i1,:)),1) 
-   If (Abs(Real(Vv(i1,pos),dp)).gt.Abs(Aimag(Vv(i1,pos)))) Then 
-      If (Real(Vv(i1,pos),dp).lt.0._dp) Then 
-        Vv(i1,:)=-Vv(i1,:) 
+   pos=Maxloc(Abs(UV(i1,:)),1) 
+   If (Abs(Real(UV(i1,pos),dp)).gt.Abs(Aimag(UV(i1,pos)))) Then 
+      If (Real(UV(i1,pos),dp).lt.0._dp) Then 
+        UV(i1,:)=-UV(i1,:) 
        End If 
     Else 
-      If (Aimag(Vv(i1,pos)).lt.0._dp) Then 
-        Vv(i1,:)=-Vv(i1,:) 
+      If (Aimag(UV(i1,pos)).lt.0._dp) Then 
+        UV(i1,:)=-UV(i1,:) 
       End If 
     End If 
  End Do 
@@ -1208,9 +1208,9 @@ Do i1=1,2
       Eig(1) = MFv(i1) 
       MFv(i1) = MFv(i2) 
       MFv(i2) =  Eig(1) 
-      E3 = Vv(i1,:) 
-      Vv(i1,:) = Vv(i2,:) 
-      Vv(i2,:) = E3
+      E3 = UV(i1,:) 
+      UV(i1,:) = UV(i2,:) 
+      UV(i2,:) = E3
     End If 
    End Do 
 End Do 
@@ -1218,8 +1218,8 @@ End Do
 Else 
  
 mat2 = Matmul( Transpose(Conjg( mat) ), mat ) 
-Call Eigensystem(mat2, Eig, Vv, ierr, test) 
-mat2 = Matmul( Conjg(Vv), Matmul( mat, Transpose( Conjg(Vv)))) 
+Call Eigensystem(mat2, Eig, UV, ierr, test) 
+mat2 = Matmul( Conjg(UV), Matmul( mat, Transpose( Conjg(UV)))) 
 ! Special efforts are needed for matrices like the Higgsinos one 
 SecondDiagonalisationNeeded = .False. 
 Do i1=1,3-1
@@ -1235,16 +1235,16 @@ If (MaxVal(Abs(mat2(i1,(i1+1):3))).gt.Abs(mat2(i1,i1))) SecondDiagonalisationNee
  End if 
 End do 
 If (SecondDiagonalisationNeeded) Then 
-Call EigenSystem(Real(mat2,dp),Eig,Vva,ierr,test) 
+Call EigenSystem(Real(mat2,dp),Eig,UVa,ierr,test) 
  
-     Vv = MatMul(Vv,Vva)
+     UV = MatMul(UV,UVa)
   Do i1=1,3
    If ((Eig(i1).Lt.0._dp).or.(Abs(eig(i1)).lt.1E-15)) Then 
     MFv(i1) = - Eig(i1) 
-    Vv(i1,:) = (0._dp,1._dp)*Vva(i1,:) 
+    UV(i1,:) = (0._dp,1._dp)*UVa(i1,:) 
    Else 
     MFv(i1) = Eig(i1) 
-    Vv(i1,:) = Vva(i1,:)
+    UV(i1,:) = UVa(i1,:)
     End If 
    End Do 
  
@@ -1256,7 +1256,7 @@ Do i1=1,3
     End If 
 If (Abs(mat2(i1,i1)).gt.0._dp) Then 
   phaseM = Sqrt( mat2(i1,i1) / Abs(mat2(i1,i1))) 
-  Vv(i1,:)= phaseM * Vv(i1,:) 
+  UV(i1,:)= phaseM * UV(i1,:) 
 End if 
   If ((Abs(Eig(i1)).Le.MaxMassNumericalZero).and.(Eig(i1).lt.0._dp)) Eig(i1) = Abs(Eig(i1))+1.E-10_dp 
   If (Eig(i1).Le.0._dp) Then 
@@ -1813,19 +1813,19 @@ MVWp2 = VWp2(1)
 End Subroutine CalculateVWpEffPot 
 
 Subroutine TreeMassesSM(MFd,MFd2,MFe,MFe2,MFu,MFu2,MFv,MFv2,MVWp,MVWp2,               & 
-& MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,              & 
-& Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,              & 
+& Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
 Implicit None 
  
-Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MFS,MS2
+Real(dp),Intent(in) :: g1,g2,g3,Ys(3),MS2
 
-Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp),Intent(in) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
 Real(dp),Intent(out) :: MFd(3),MFd2(3),MFe(3),MFe2(3),MFu(3),MFu2(3),MFv(3),MFv2(3),MVWp,MVWp2,               & 
 & MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp),Intent(out) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
 Real(dp),Intent(in) :: v
 
@@ -1836,7 +1836,7 @@ Iname = Iname + 1
 NameOfUnit(Iname) = 'TreeMassesSimplifiedDM/SSSFDM'
  
 kont = 0 
-Call CalculateMFv(Vv,MFv,kont)
+Call CalculateMFv(UV,MFv,kont)
 
 MFv2 = MFv**2 
 Call CalculateMFd(Yd,v,ZDL,ZDR,MFd,kont)
@@ -1861,12 +1861,12 @@ End Subroutine  TreeMassesSM
  
 Subroutine SortGoldstones(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,             & 
 & MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,            & 
-& ZEL,ZUL,Vv,ZW,ZZ,kont)
+& ZEL,ZUL,UV,ZW,ZZ,kont)
 
 Real(dp),Intent(inout) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
 & MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp),Intent(inout) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp),Intent(inout) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
 Integer, Intent(inout) :: kont 
 Integer :: i1, i2, pos 

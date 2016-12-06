@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:36 on 28.11.2016   
+! File created at 3:18 on 29.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -194,12 +194,6 @@ InputValueforYe= .True.
  
    Else If (read_line(7:12).Eq."IMSMIN") Then 
     Call Read_SMIN(99,1,i_model,set_mod_par,kont) 
- 
-   Else If (read_line(7:11).Eq."FDMIN") Then 
-    Call Read_FDMIN(99,0,i_model,set_mod_par,kont) 
- 
-   Else If (read_line(7:13).Eq."IMFDMIN") Then 
-    Call Read_FDMIN(99,1,i_model,set_mod_par,kont) 
  
    Else If (read_line(7:13).Eq."MSOFTIN") Then 
     Call Read_MSOFTIN(99,0,i_model,set_mod_par,kont) 
@@ -1309,27 +1303,24 @@ Write(io_L,104) 3,Real(LS,dp), "# LS"
 If (Abs(Aimag(LS)).gt.0._dp) WriteNextBlock = .True. 
 Write(io_L,104) 2,Real(LSH,dp), "# LSH" 
 If (Abs(Aimag(LSH)).gt.0._dp) WriteNextBlock = .True. 
+Write(io_L,104) 1,Real(MFS,dp), "# MFS" 
+If (Abs(Aimag(MFS)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block IMHDM Q=",Q,"# (Renormalization Scale)" 
 Write(io_L,104) 3,Aimag(LS), "# LS" 
 Write(io_L,104) 2,Aimag(LSH), "# LSH" 
+Write(io_L,104) 1,Aimag(MFS), "# MFS" 
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block SM Q=",Q,"# (Renormalization Scale)" 
 Write(io_L,104) 2,Real(Lam,dp), "# Lam" 
 If (Abs(Aimag(Lam)).gt.0._dp) WriteNextBlock = .True. 
-Write(io_L,104) 1,Real(mu2,dp), "# mu2" 
-If (Abs(Aimag(mu2)).gt.0._dp) WriteNextBlock = .True. 
+Write(io_L,104) 1,Real(Mu,dp), "# Mu" 
+If (Abs(Aimag(Mu)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block IMSM Q=",Q,"# (Renormalization Scale)" 
 Write(io_L,104) 2,Aimag(Lam), "# Lam" 
-Write(io_L,104) 1,Aimag(mu2), "# mu2" 
-End if 
-WriteNextBlock = .false. 
-Write(io_L,106) "Block FDM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Real(MFS,dp), "# MFS" 
-If(WriteNextBlock) Then 
-Write(io_L,106) "Block IMFDM Q=",Q,"# (Renormalization Scale)" 
+Write(io_L,104) 1,Aimag(Mu), "# Mu" 
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block MSOFT Q=",Q,"# (Renormalization Scale)" 
@@ -1347,36 +1338,36 @@ If (WriteTreeLevelTadpoleParameters) Then
 If (HighScaleModel.Eq."LOW") Then 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block TREESM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Real(mu2Tree,dp), "# mu2" 
-If (Abs(Aimag(mu2Tree)).gt.0._dp) WriteNextBlock = .True. 
+Write(io_L,104) 1,Real(MuTree,dp), "# Mu" 
+If (Abs(Aimag(MuTree)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block TREEIMSM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Aimag(mu2Tree), "# mu2" 
+Write(io_L,104) 1,Aimag(MuTree), "# Mu" 
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block LOOPSM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Real(mu21L,dp), "# mu2" 
-If (Abs(Aimag(mu21L)).gt.0._dp) WriteNextBlock = .True. 
+Write(io_L,104) 1,Real(Mu1L,dp), "# Mu" 
+If (Abs(Aimag(Mu1L)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block LOOPIMSM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Aimag(mu21L), "# mu2" 
+Write(io_L,104) 1,Aimag(Mu1L), "# Mu" 
 End if 
 Else 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block TREESM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Real(mu2Tree,dp), "# mu2" 
-If (Abs(Aimag(mu2Tree)).gt.0._dp) WriteNextBlock = .True. 
+Write(io_L,104) 1,Real(MuTree,dp), "# Mu" 
+If (Abs(Aimag(MuTree)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block TREEIMSM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Aimag(mu2Tree), "# mu2" 
+Write(io_L,104) 1,Aimag(MuTree), "# Mu" 
 End if 
 WriteNextBlock = .false. 
 Write(io_L,106) "Block LOOPSM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Real(mu21L,dp), "# mu2" 
-If (Abs(Aimag(mu21L)).gt.0._dp) WriteNextBlock = .True. 
+Write(io_L,104) 1,Real(Mu1L,dp), "# Mu" 
+If (Abs(Aimag(Mu1L)).gt.0._dp) WriteNextBlock = .True. 
 If(WriteNextBlock) Then 
 Write(io_L,106) "Block LOOPIMSM Q=",Q,"# (Renormalization Scale)" 
-Write(io_L,104) 1,Aimag(mu21L), "# mu2" 
+Write(io_L,104) 1,Aimag(Mu1L), "# Mu" 
 End if 
 End if 
 End if 
@@ -1461,11 +1452,10 @@ Write(io_L,104) 3,Real(g3GUT,dp), "# g3"
 Write(io_L,106) "Block HDMGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 3,Real(LSGUT,dp), "# LS" 
 Write(io_L,104) 2,Real(LSHGUT,dp), "# LSH" 
+Write(io_L,104) 1,Real(MFSGUT,dp), "# MFS" 
 Write(io_L,106) "Block SMGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 2,Real(LamGUT,dp), "# Lam" 
-Write(io_L,104) 1,Real(mu2GUT,dp), "# mu2" 
-Write(io_L,106) "Block FDMGUT Q=",M_GUT,"# (GUT scale)" 
-Write(io_L,104) 1,Real(MFSGUT,dp), "# MFS" 
+Write(io_L,104) 1,Real(MuGUT,dp), "# Mu" 
 Write(io_L,106) "Block MSOFTGUT Q=",M_GUT,"# (GUT scale)" 
 Write(io_L,104) 22,Real(MS2GUT,dp), "# MS2" 
 Write(io_L,106) "Block YuGUT Q=",M_GUT,"# (GUT Scale)" 
@@ -1587,6 +1577,29 @@ End if
 End if 
 
  
+Write(io_L,106) "Block UVMIX Q=",Q,"# ()" 
+Write(io_L,107)1,1,Real(UV(1,1),dp), "# Real(UV(1,1),dp)" 
+Write(io_L,107)1,2,Real(UV(1,2),dp), "# Real(UV(1,2),dp)" 
+Write(io_L,107)1,3,Real(UV(1,3),dp), "# Real(UV(1,3),dp)" 
+Write(io_L,107)2,1,Real(UV(2,1),dp), "# Real(UV(2,1),dp)" 
+Write(io_L,107)2,2,Real(UV(2,2),dp), "# Real(UV(2,2),dp)" 
+Write(io_L,107)2,3,Real(UV(2,3),dp), "# Real(UV(2,3),dp)" 
+Write(io_L,107)3,1,Real(UV(3,1),dp), "# Real(UV(3,1),dp)" 
+Write(io_L,107)3,2,Real(UV(3,2),dp), "# Real(UV(3,2),dp)" 
+Write(io_L,107)3,3,Real(UV(3,3),dp), "# Real(UV(3,3),dp)" 
+If (MaxVal(Abs(AImag(UV))).gt.0._dp) Then 
+Write(io_L,106) "Block IMUVMIX Q=",Q,"# ()" 
+Write(io_L,107)1,1,Aimag(UV(1,1)), "# Aimag(UV(1,1))" 
+Write(io_L,107)1,2,Aimag(UV(1,2)), "# Aimag(UV(1,2))" 
+Write(io_L,107)1,3,Aimag(UV(1,3)), "# Aimag(UV(1,3))" 
+Write(io_L,107)2,1,Aimag(UV(2,1)), "# Aimag(UV(2,1))" 
+Write(io_L,107)2,2,Aimag(UV(2,2)), "# Aimag(UV(2,2))" 
+Write(io_L,107)2,3,Aimag(UV(2,3)), "# Aimag(UV(2,3))" 
+Write(io_L,107)3,1,Aimag(UV(3,1)), "# Aimag(UV(3,1))" 
+Write(io_L,107)3,2,Aimag(UV(3,2)), "# Aimag(UV(3,2))" 
+Write(io_L,107)3,3,Aimag(UV(3,3)), "# Aimag(UV(3,3))" 
+End If 
+
 Write(io_L,106) "Block UDLMIX Q=",Q,"# ()" 
 Write(io_L,107)1,1,Real(ZDL(1,1),dp), "# Real(ZDL(1,1),dp)" 
 Write(io_L,107)1,2,Real(ZDL(1,2),dp), "# Real(ZDL(1,2),dp)" 
@@ -3736,49 +3749,49 @@ Write(123,*) ""
  
 Write(123,*) "" 
 If (MFv(1).Gt.0._dp) Then 
-Write(123,*) "Vv11_r = ", Real(Vv(1,1),dp)
-Write(123,*) "Vv11_i = ", AImag(Vv(1,1))
-Write(123,*) "Vv12_r = ", Real(Vv(1,2),dp)
-Write(123,*) "Vv12_i = ", AImag(Vv(1,2))
-Write(123,*) "Vv13_r = ", Real(Vv(1,3),dp)
-Write(123,*) "Vv13_i = ", AImag(Vv(1,3))
+Write(123,*) "UV11_r = ", Real(UV(1,1),dp)
+Write(123,*) "UV11_i = ", AImag(UV(1,1))
+Write(123,*) "UV12_r = ", Real(UV(1,2),dp)
+Write(123,*) "UV12_i = ", AImag(UV(1,2))
+Write(123,*) "UV13_r = ", Real(UV(1,3),dp)
+Write(123,*) "UV13_i = ", AImag(UV(1,3))
 Else 
-Write(123,*) "Vv11_i = ", Real(Vv(1,1),dp)
-Write(123,*) "Vv11_r = ", -AImag(Vv(1,1))
-Write(123,*) "Vv12_i = ", Real(Vv(1,2),dp)
-Write(123,*) "Vv12_r = ", -AImag(Vv(1,2))
-Write(123,*) "Vv13_i = ", Real(Vv(1,3),dp)
-Write(123,*) "Vv13_r = ", -AImag(Vv(1,3))
+Write(123,*) "UV11_i = ", Real(UV(1,1),dp)
+Write(123,*) "UV11_r = ", -AImag(UV(1,1))
+Write(123,*) "UV12_i = ", Real(UV(1,2),dp)
+Write(123,*) "UV12_r = ", -AImag(UV(1,2))
+Write(123,*) "UV13_i = ", Real(UV(1,3),dp)
+Write(123,*) "UV13_r = ", -AImag(UV(1,3))
 End if 
 If (MFv(2).Gt.0._dp) Then 
-Write(123,*) "Vv21_r = ", Real(Vv(2,1),dp)
-Write(123,*) "Vv21_i = ", AImag(Vv(2,1))
-Write(123,*) "Vv22_r = ", Real(Vv(2,2),dp)
-Write(123,*) "Vv22_i = ", AImag(Vv(2,2))
-Write(123,*) "Vv23_r = ", Real(Vv(2,3),dp)
-Write(123,*) "Vv23_i = ", AImag(Vv(2,3))
+Write(123,*) "UV21_r = ", Real(UV(2,1),dp)
+Write(123,*) "UV21_i = ", AImag(UV(2,1))
+Write(123,*) "UV22_r = ", Real(UV(2,2),dp)
+Write(123,*) "UV22_i = ", AImag(UV(2,2))
+Write(123,*) "UV23_r = ", Real(UV(2,3),dp)
+Write(123,*) "UV23_i = ", AImag(UV(2,3))
 Else 
-Write(123,*) "Vv21_i = ", Real(Vv(2,1),dp)
-Write(123,*) "Vv21_r = ", -AImag(Vv(2,1))
-Write(123,*) "Vv22_i = ", Real(Vv(2,2),dp)
-Write(123,*) "Vv22_r = ", -AImag(Vv(2,2))
-Write(123,*) "Vv23_i = ", Real(Vv(2,3),dp)
-Write(123,*) "Vv23_r = ", -AImag(Vv(2,3))
+Write(123,*) "UV21_i = ", Real(UV(2,1),dp)
+Write(123,*) "UV21_r = ", -AImag(UV(2,1))
+Write(123,*) "UV22_i = ", Real(UV(2,2),dp)
+Write(123,*) "UV22_r = ", -AImag(UV(2,2))
+Write(123,*) "UV23_i = ", Real(UV(2,3),dp)
+Write(123,*) "UV23_r = ", -AImag(UV(2,3))
 End if 
 If (MFv(3).Gt.0._dp) Then 
-Write(123,*) "Vv31_r = ", Real(Vv(3,1),dp)
-Write(123,*) "Vv31_i = ", AImag(Vv(3,1))
-Write(123,*) "Vv32_r = ", Real(Vv(3,2),dp)
-Write(123,*) "Vv32_i = ", AImag(Vv(3,2))
-Write(123,*) "Vv33_r = ", Real(Vv(3,3),dp)
-Write(123,*) "Vv33_i = ", AImag(Vv(3,3))
+Write(123,*) "UV31_r = ", Real(UV(3,1),dp)
+Write(123,*) "UV31_i = ", AImag(UV(3,1))
+Write(123,*) "UV32_r = ", Real(UV(3,2),dp)
+Write(123,*) "UV32_i = ", AImag(UV(3,2))
+Write(123,*) "UV33_r = ", Real(UV(3,3),dp)
+Write(123,*) "UV33_i = ", AImag(UV(3,3))
 Else 
-Write(123,*) "Vv31_i = ", Real(Vv(3,1),dp)
-Write(123,*) "Vv31_r = ", -AImag(Vv(3,1))
-Write(123,*) "Vv32_i = ", Real(Vv(3,2),dp)
-Write(123,*) "Vv32_r = ", -AImag(Vv(3,2))
-Write(123,*) "Vv33_i = ", Real(Vv(3,3),dp)
-Write(123,*) "Vv33_r = ", -AImag(Vv(3,3))
+Write(123,*) "UV31_i = ", Real(UV(3,1),dp)
+Write(123,*) "UV31_r = ", -AImag(UV(3,1))
+Write(123,*) "UV32_i = ", Real(UV(3,2),dp)
+Write(123,*) "UV32_r = ", -AImag(UV(3,2))
+Write(123,*) "UV33_i = ", Real(UV(3,3),dp)
+Write(123,*) "UV33_r = ", -AImag(UV(3,3))
 End if 
 Write(123,*) "ZDL11_r = ", Real(ZDL(1,1),dp)
 Write(123,*) "ZDL11_i = ", AImag(ZDL(1,1))
@@ -4645,6 +4658,10 @@ Else If (i_par.Eq.2) Then
 If (i_c.Eq.0) LSHIN= Cmplx(wert,Aimag(LSHIN),dp) 
 If (i_c.Eq.1) LSHIN= Cmplx(Real(LSHIN,dp),wert,dp) 
 InputValueforLSH= .True. 
+Else If (i_par.Eq.1) Then 
+If (i_c.Eq.0) MFSIN= Cmplx(wert,Aimag(MFSIN),dp) 
+If (i_c.Eq.1) MFSIN= Cmplx(Real(MFSIN,dp),wert,dp) 
+InputValueforMFS= .True. 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
 If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block HDMIN ",i_par
@@ -4677,9 +4694,9 @@ If (i_c.Eq.0) LamIN= Cmplx(wert,Aimag(LamIN),dp)
 If (i_c.Eq.1) LamIN= Cmplx(Real(LamIN,dp),wert,dp) 
 InputValueforLam= .True. 
 Else If (i_par.Eq.1) Then 
-If (i_c.Eq.0) mu2IN= Cmplx(wert,Aimag(mu2IN),dp) 
-If (i_c.Eq.1) mu2IN= Cmplx(Real(mu2IN,dp),wert,dp) 
-InputValueformu2= .True. 
+If (i_c.Eq.0) MuIN= Cmplx(wert,Aimag(MuIN),dp) 
+If (i_c.Eq.1) MuIN= Cmplx(Real(MuIN,dp),wert,dp) 
+InputValueforMu= .True. 
 Else
 Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
 If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block SMIN ",i_par
@@ -4692,36 +4709,6 @@ End If
 End Do! i_par
 200 Return
 End Subroutine Read_SMIN 
- 
- 
-Subroutine Read_FDMIN(io,i_c,i_model,set_mod_par,kont) 
-Implicit None 
-Integer,Intent(in)::io,i_c,i_model 
-Integer,Intent(inout)::kont,set_mod_par(:) 
-Integer::i_par 
-Real(dp)::wert 
-Character(len=80)::read_line 
-Do 
-Read(io,*,End=200) read_line 
-If (read_line(1:1).Eq."#") Cycle! this loop 
-Backspace(io)! resetting to the beginning of the line 
-If ((read_line(1:1).Eq."B").Or.(read_line(1:1).Eq."b")) Exit! this loop 
-Read(io,*) i_par,wert!,read_line 
-If (i_par.Eq.1) Then 
-MFSIN= wert 
-InputValueforMFS= .True. 
-Else
-Write(ErrCan,*) "Error in routine "//NameOfUnit(Iname)
-If (i_c.Eq.0) Write(ErrCan,*) "Unknown entry for Block FDMIN ",i_par
-If (i_c.Eq.1) Write(ErrCan,*) "Unknown entry for Block IMFDMIN ",i_par
-If (i_c.Eq.0) Write(*,*) "Unknown entry for Block FDMIN ",i_par
-If (i_c.Eq.1) Write(*,*) "Unknown entry for Block IMFDMIN ",i_par
-Call AddError(304)
-If (ErrorLevel.Eq.2) Call TerminateProgram
-End If
-End Do! i_par
-200 Return
-End Subroutine Read_FDMIN 
  
  
 Subroutine Read_MSOFTIN(io,i_c,i_model,set_mod_par,kont) 

@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:34 on 28.11.2016   
+! File created at 3:16 on 29.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -256,31 +256,31 @@ Logical :: KineticMixingSave = .True.
 Logical :: WriteTreeLevelTadpoleSolutions = .False. 
 Logical :: WriteHiggsDiphotonLoopContributions = .False. 
 Logical :: WriteEffHiggsCouplingRatios = .True. 
-Complex(dp) :: mu2Tree 
-Complex(dp) :: mu21L 
-Complex(dp) :: mu22L 
+Complex(dp) :: MuTree 
+Complex(dp) :: Mu1L 
+Complex(dp) :: Mu2L 
 Integer :: SolutionTadpoleNr = 1 
 Character(len=15)::HighScaleModel
-Real(dp) :: g1,g2,g3,Ys(3),MFS,MS2
+Real(dp) :: g1,g2,g3,Ys(3),MS2
 
-Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
-Real(dp) :: g1IN,g2IN,g3IN,YsIN(3),MFSIN,MS2IN
+Real(dp) :: g1IN,g2IN,g3IN,YsIN(3),MS2IN
 
-Complex(dp) :: LSIN,LSHIN,LamIN,YuIN(3,3),YdIN(3,3),YeIN(3,3),mu2IN
+Complex(dp) :: LSIN,LSHIN,LamIN,YuIN(3,3),YdIN(3,3),YeIN(3,3),MFSIN,MuIN
 
-Real(dp) :: g1MZ,g2MZ,g3MZ,YsMZ(3),MFSMZ,MS2MZ
+Real(dp) :: g1MZ,g2MZ,g3MZ,YsMZ(3),MS2MZ
 
-Complex(dp) :: LSMZ,LSHMZ,LamMZ,YuMZ(3,3),YdMZ(3,3),YeMZ(3,3),mu2MZ
+Complex(dp) :: LSMZ,LSHMZ,LamMZ,YuMZ(3,3),YdMZ(3,3),YeMZ(3,3),MFSMZ,MuMZ
 
-Real(dp) :: g1GUT,g2GUT,g3GUT,YsGUT(3),MFSGUT,MS2GUT
+Real(dp) :: g1GUT,g2GUT,g3GUT,YsGUT(3),MS2GUT
 
-Complex(dp) :: LSGUT,LSHGUT,LamGUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),mu2GUT
+Complex(dp) :: LSGUT,LSHGUT,LamGUT,YuGUT(3,3),YdGUT(3,3),YeGUT(3,3),MFSGUT,MuGUT
 
 Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
 & MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
 Real(dp) :: v
 
@@ -300,7 +300,7 @@ Real(dp) :: ratioPFd(1,3),ratioPFe(1,3),ratioPFu(1,3),ratioPHp,ratioPVWp
 
 Complex(dp) :: ratioPGG,ratioPPP
 
-Real(dp) :: gForTadpoles(71)
+Real(dp) :: gForTadpoles(72)
 Complex(dp) :: tForTadpoles(1)
 Real(dp) :: g1_saveEP 
 Real(dp) :: g2_saveEP 
@@ -342,7 +342,7 @@ Logical, save :: InputValueforYd =.False.
 Logical, save :: InputValueforYe =.False. 
 Logical, save :: InputValueforMFS =.False. 
 Logical, save :: InputValueforMS2 =.False. 
-Logical, save :: InputValueformu2 =.False. 
+Logical, save :: InputValueforMu =.False. 
 Complex(dp) :: CKMcomplex(3,3) 
 Real(dp) :: Xi = 1._dp 
 Real(dp) :: RXi = 1._dp 
@@ -977,7 +977,7 @@ YdIN = 0._dp
 YeIN = 0._dp 
 MFSIN = 0._dp 
 MS2IN = 0._dp 
-mu2IN = 0._dp 
+MuIN = 0._dp 
 g1 = 0._dp 
 g1MZ = 0._dp 
 g2 = 0._dp 
@@ -1002,8 +1002,8 @@ MFS = 0._dp
 MFSMZ = 0._dp 
 MS2 = 0._dp 
 MS2MZ = 0._dp 
-mu2 = 0._dp 
-mu2MZ = 0._dp 
+Mu = 0._dp 
+MuMZ = 0._dp 
 vIN = 0._dp 
 MAh = 0._dp 
 MAh2 = 0._dp 
@@ -1034,7 +1034,7 @@ ZUR = 0._dp
 ZDL = 0._dp 
 ZEL = 0._dp 
 ZUL = 0._dp 
-Vv = 0._dp 
+UV = 0._dp 
 ZW = 0._dp 
 ZZ = 0._dp 
 v = 0._dp 

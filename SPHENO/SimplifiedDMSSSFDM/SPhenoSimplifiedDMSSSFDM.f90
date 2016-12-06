@@ -3,7 +3,7 @@
 ! SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223  
 ! (c) Florian Staub, 2013  
 ! ------------------------------------------------------------------------------  
-! File created at 10:36 on 28.11.2016   
+! File created at 3:18 on 29.11.2016   
 ! ----------------------------------------------------------------------  
  
  
@@ -179,7 +179,7 @@ Call ReadingData(kont)
  Ye = YeIN 
  MFS = MFSIN 
  MS2 = MS2IN 
- mu2 = mu2IN 
+ Mu = MuIN 
  v = vSM
 Ye = YeSM
 Yd = YdSM
@@ -227,12 +227,12 @@ LS = LamSIN
 MS2 = MS2Input
 Ys = YsIN
 MFS = MSFIN
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,              & 
+& (/ ZeroC /))
 
 Call OneLoopMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,           & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,kont)
 
 
  If (SignOfMassChanged) Then  
@@ -264,15 +264,15 @@ TW = ACos(Abs(ZZ(1,1)))
 If ((L_BR).And.(kont.Eq.0)) Then 
  Call CalculateBR(CalcTBD,ratioWoM,epsI,deltaM,kont,MAh,MAh2,MFd,MFd2,MFe,             & 
 & MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,               & 
-& MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,              & 
-& Yd,Ye,MFS,MS2,mu2,gPFu,gTFu,BRFu,gPFe,gTFe,BRFe,gPFd,gTFd,BRFd,gPhh,gThh,              & 
+& MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,              & 
+& Yd,Ye,MFS,MS2,Mu,gPFu,gTFu,BRFu,gPFe,gTFe,BRFe,gPFd,gTFd,BRFd,gPhh,gThh,               & 
 & BRhh,gPFre,gTFre,BRFre,gPss,gTss,BRss)
 
 End If 
  
  If (CalculateLowEnergy) then 
 Call CalculateLowEnergyConstraints(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,               & 
-& MS2,mu2,v,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,           & 
+& MS2,Mu,v,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,            & 
 & ratioDmunu,BrDsmunu,ratioDsmunu,BrDstaunu,ratioDstaunu,BrBmunu,ratioBmunu,             & 
 & BrBtaunu,ratioBtaunu,BrKmunu,ratioKmunu,RK,RKSM,muEgamma,tauEgamma,tauMuGamma,         & 
 & CRmuEAl,CRmuETi,CRmuESr,CRmuESb,CRmuEAu,CRmuEPb,BRmuTo3e,BRtauTo3e,BRtauTo3mu,         & 
@@ -292,17 +292,18 @@ MVWp2 = mW2
 If (WriteParametersAtQ) Then 
 Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
 End If 
  
 MFv = nuMasses  
+UV = nuMixing  
 End if 
  
 If ((FoundIterativeSolution).or.(WriteOutputForNonConvergence)) Then 
 If (OutputForMO) Then 
 Call RunningFermionMasses(MFe,MFe2,MFd,MFd2,MFu,MFu2,v,g1,g2,g3,LS,LSH,               & 
-& Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,kont)
+& Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,kont)
 
 End if 
 Write(*,*) "Writing output files" 
@@ -343,7 +344,7 @@ End Subroutine ReadingData
 
  
 Subroutine CalculateLowEnergyConstraints(g1input,g2input,g3input,LSinput,             & 
-& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,mu2input,          & 
+& LSHinput,Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,Muinput,           & 
 & vinput,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,BrBsGamma,ratioBsGamma,BrDmunu,              & 
 & ratioDmunu,BrDsmunu,ratioDsmunu,BrDstaunu,ratioDstaunu,BrBmunu,ratioBmunu,             & 
 & BrBtaunu,ratioBtaunu,BrKmunu,ratioKmunu,RK,RKSM,muEgamma,tauEgamma,tauMuGamma,         & 
@@ -357,18 +358,18 @@ Subroutine CalculateLowEnergyConstraints(g1input,g2input,g3input,LSinput,       
 & BrBtoDnunu,ratioBtoDnunu,BrKptoPipnunu,ratioKptoPipnunu,BrKltoPinunu,ratioKltoPinunu,  & 
 & DelMK,ratioDelMK,epsK,ratioepsK)
 
-Real(dp),Intent(inout) :: g1input,g2input,g3input,Ysinput(3),MFSinput,MS2input,vinput
+Real(dp),Intent(inout) :: g1input,g2input,g3input,Ysinput(3),MS2input,vinput
 
-Complex(dp),Intent(inout) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),mu2input
+Complex(dp),Intent(inout) :: LSinput,LSHinput,Laminput,Yuinput(3,3),Ydinput(3,3),Yeinput(3,3),MFSinput,Muinput
 
 Real(dp) :: MAh,MAh2,MFd(3),MFd2(3),MFe(3),MFe2(3),MFre,MFre2,MFu(3),MFu2(3),MFv(3),              & 
 & MFv2(3),Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZZ(2,2)
 
-Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),Vv(3,3),ZW(2,2)
+Complex(dp) :: ZDR(3,3),ZER(3,3),ZUR(3,3),ZDL(3,3),ZEL(3,3),ZUL(3,3),UV(3,3),ZW(2,2)
 
-Real(dp) :: g1,g2,g3,Ys(3),MFS,MS2,v
+Real(dp) :: g1,g2,g3,Ys(3),MS2,v
 
-Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),mu2
+Complex(dp) :: LS,LSH,Lam,Yu(3,3),Yd(3,3),Ye(3,3),MFS,Mu
 
 Complex(dp) :: cplAhAhcVWpVWp,cplAhAhhh,cplAhAhVZVZ,cplAhcHpVWp,cplAhhhVZ,cplAhHpcVWp,               & 
 & cplcFdFdAhL(3,3),cplcFdFdAhR(3,3),cplcFdFdhhL(3,3),cplcFdFdhhR(3,3),cplcFdFdVGL(3,3),  & 
@@ -713,19 +714,19 @@ Write(*,*) "Calculating low energy constraints"
 Qin=sqrt(getRenormalizationScale()) 
 scale_save = Qin 
 Call RunSM_and_SUSY_RGEs(160._dp,g1input,g2input,g3input,LSinput,LSHinput,            & 
-& Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,mu2input,vinput,            & 
-& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v,CKM_160,sinW2_160,Alpha_160,             & 
+& Laminput,Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,Muinput,vinput,             & 
+& g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,CKM_160,sinW2_160,Alpha_160,              & 
 & AlphaS_160,.false.)
 
 
 ! ## All contributions ## 
 
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,              & 
+& (/ ZeroC /))
 
 Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
  mf_d_160 = MFd(1:3) 
  mf_d2_160 = MFd(1:3)**2 
@@ -747,7 +748,7 @@ Ydinput = Yd
 Yeinput = Ye
 MFSinput = MFS
 MS2input = MS2
-mu2input = mu2
+Muinput = Mu
 vinput = v
 End If 
  
@@ -760,7 +761,7 @@ MAh2=MVZ2
 MHp=MVWp
 MHp2=MVWp2
 Call AllCouplings(Lam,v,LSH,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,ZUR,             & 
-& Vv,Ys,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplhhssss,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,      & 
+& UV,Ys,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplhhssss,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,      & 
 & cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,cplHpcVWpVP,      & 
 & cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,               & 
 & cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
@@ -3024,15 +3025,15 @@ CKM = CKMsave
 !-------------------------------------
 
 Call RunSM_and_SUSY_RGEs(mz,g1input,g2input,g3input,LSinput,LSHinput,Laminput,        & 
-& Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,mu2input,vinput,g1,g2,               & 
-& g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,v,CKM_MZ,sinW2_MZ,Alpha_MZ,AlphaS_MZ,.true.)
+& Yuinput,Ysinput,Ydinput,Yeinput,MFSinput,MS2input,Muinput,vinput,g1,g2,g3,             & 
+& LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,CKM_MZ,sinW2_MZ,Alpha_MZ,AlphaS_MZ,.true.)
 
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,              & 
+& (/ ZeroC /))
 
 Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
 mzsave  = sqrt(mz2) 
  mf_d_mz = MFd(1:3) 
@@ -3042,7 +3043,7 @@ mzsave  = sqrt(mz2)
  mf_l_MZ = MFe(1:3) 
  mf_l2_MZ = MFe(1:3)**2 
 Call AllCouplings(Lam,v,LSH,g1,g2,TW,g3,Yd,ZDL,ZDR,Ye,ZEL,ZER,Yu,ZUL,ZUR,             & 
-& Vv,Ys,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplhhssss,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,      & 
+& UV,Ys,cplAhAhhh,cplhhhhhh,cplhhHpcHp,cplhhssss,cplAhhhVZ,cplAhHpcVWp,cplAhcHpVWp,      & 
 & cplhhHpcVWp,cplhhcHpVWp,cplHpcHpVP,cplHpcHpVZ,cplhhcVWpVWp,cplhhVZVZ,cplHpcVWpVP,      & 
 & cplHpcVWpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplVGVGVG,cplcVWpVPVWp,cplcVWpVWpVZ,               & 
 & cplcFdFdAhL,cplcFdFdAhR,cplcFeFeAhL,cplcFeFeAhR,cplcFuFuAhL,cplcFuFuAhR,               & 
@@ -4670,12 +4671,12 @@ g1=g2*Sqrt(sinW2/(1._dp-sinW2))
 mW2=(1._dp-sinW2)*mz2 + 0
 vev2=Sqrt(mZ2*(1._dp-sinW2)*SinW2/(pi*alpha)) +0 
 v=vev2 
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,              & 
+& (/ ZeroC /))
 
 Call TreeMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,              & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,GenerationMixing,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,GenerationMixing,kont)
 
 MVWp = mW 
 MVWp2 = mW2 
@@ -4687,7 +4688,7 @@ MFu(1:3) = mf_u
 MFu2(1:3) = mf_u**2 
 MFd(1:3) = mf_d 
 MFd2(1:3) = mf_d**2 
-Call CouplingsForVectorBosons(g1,TW,g2,v,ZDL,ZUL,Vv,ZEL,cplcFreFreVZL,cplcFreFreVZR,  & 
+Call CouplingsForVectorBosons(g1,TW,g2,v,ZDL,ZUL,UV,ZEL,cplcFreFreVZL,cplcFreFreVZR,  & 
 & cplAhcHpVWp,cplhhcHpVWp,cplHpcHpVZ,cplcHpVPVWp,cplcHpVWpVZ,cplHpcHpcVWpVWp,            & 
 & cplHpcHpVZVZ,cplAhhhVZ,cplAhHpcVWp,cplAhAhcVWpVWp,cplAhAhVZVZ,cplhhHpcVWp,             & 
 & cplhhcVWpVWp,cplhhVZVZ,cplhhhhcVWpVWp,cplhhhhVZVZ,cplcFdFdVZL,cplcFdFdVZR,             & 
@@ -4709,17 +4710,18 @@ Call DeltaRho(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,Mhh,      
 & cplhhhhVZVZ,cplhhHpcVWp,cplhhVZVZ,cplHpcHpcVWpVWp,cplHpcHpVZ,cplHpcHpVZVZ,             & 
 & cplHpcVWpVP,cplHpcVWpVZ,dRho)
 
-Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,               & 
-& v,(/ ZeroC /))
+Call SolveTadpoleEquations(g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,v,              & 
+& (/ ZeroC /))
 
 CalculateOneLoopMassesSave = CalculateOneLoopMasses 
 CalculateOneLoopMasses = .true. 
 Call OneLoopMasses(MAh,MAh2,MFd,MFd2,MFe,MFe2,MFre,MFre2,MFu,MFu2,MFv,MFv2,           & 
 & Mhh,Mhh2,MHp,MHp2,Mss,Mss2,MVWp,MVWp2,MVZ,MVZ2,TW,ZDR,ZER,ZUR,ZDL,ZEL,ZUL,             & 
-& Vv,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,mu2,kont)
+& UV,ZW,ZZ,v,g1,g2,g3,LS,LSH,Lam,Yu,Ys,Yd,Ye,MFS,MS2,Mu,kont)
 
 CalculateOneLoopMasses = CalculateOneLoopMassesSave 
 nuMasses = MFv 
+nuMixing = UV 
 MVWp = mW 
 MVWp2 = mW2 
 MVZ = mZ 

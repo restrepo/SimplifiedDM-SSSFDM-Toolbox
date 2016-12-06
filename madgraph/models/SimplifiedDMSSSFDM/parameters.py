@@ -3,7 +3,7 @@
 # SARAH References: arXiv:0806.0538, arXiv:0909.2863, arXiv:1002.0840    
 # (c) Florian Staub, 2011  
 # ----------------------------------------------------------------------  
-# File created at 10:36 on 28.11.2016   
+# File created at 3:18 on 29.11.2016   
 # ----------------------------------------------------------------------  
  
  
@@ -217,148 +217,148 @@ iLSH = 	 Parameter(name='iLSH',
 	 lhablock = 'IMHDM', 
 	 lhacode = [2] ) 
  
-rVv11 = 	 Parameter(name='rVv11', 
+rUV11 = 	 Parameter(name='rUV11', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 1., 
-	 texname = '\\text{Vv11}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV11}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [1, 1] ) 
  
-iVv11 = 	 Parameter(name='iVv11', 
+iUV11 = 	 Parameter(name='iUV11', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 1., 
-	 texname = '\\text{Vv11}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV11}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [1, 1] ) 
  
-rVv12 = 	 Parameter(name='rVv12', 
+rUV12 = 	 Parameter(name='rUV12', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv12}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV12}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [1, 2] ) 
  
-iVv12 = 	 Parameter(name='iVv12', 
+iUV12 = 	 Parameter(name='iUV12', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv12}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV12}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [1, 2] ) 
  
-rVv13 = 	 Parameter(name='rVv13', 
+rUV13 = 	 Parameter(name='rUV13', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv13}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV13}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [1, 3] ) 
  
-iVv13 = 	 Parameter(name='iVv13', 
+iUV13 = 	 Parameter(name='iUV13', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv13}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV13}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [1, 3] ) 
  
-rVv21 = 	 Parameter(name='rVv21', 
+rUV21 = 	 Parameter(name='rUV21', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv21}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV21}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [2, 1] ) 
  
-iVv21 = 	 Parameter(name='iVv21', 
+iUV21 = 	 Parameter(name='iUV21', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv21}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV21}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [2, 1] ) 
  
-rVv22 = 	 Parameter(name='rVv22', 
+rUV22 = 	 Parameter(name='rUV22', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 1., 
-	 texname = '\\text{Vv22}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV22}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [2, 2] ) 
  
-iVv22 = 	 Parameter(name='iVv22', 
+iUV22 = 	 Parameter(name='iUV22', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 1., 
-	 texname = '\\text{Vv22}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV22}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [2, 2] ) 
  
-rVv23 = 	 Parameter(name='rVv23', 
+rUV23 = 	 Parameter(name='rUV23', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv23}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV23}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [2, 3] ) 
  
-iVv23 = 	 Parameter(name='iVv23', 
+iUV23 = 	 Parameter(name='iUV23', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv23}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV23}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [2, 3] ) 
  
-rVv31 = 	 Parameter(name='rVv31', 
+rUV31 = 	 Parameter(name='rUV31', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv31}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV31}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [3, 1] ) 
  
-iVv31 = 	 Parameter(name='iVv31', 
+iUV31 = 	 Parameter(name='iUV31', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv31}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV31}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [3, 1] ) 
  
-rVv32 = 	 Parameter(name='rVv32', 
+rUV32 = 	 Parameter(name='rUV32', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv32}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV32}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [3, 2] ) 
  
-iVv32 = 	 Parameter(name='iVv32', 
+iUV32 = 	 Parameter(name='iUV32', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 0, 
-	 texname = '\\text{Vv32}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV32}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [3, 2] ) 
  
-rVv33 = 	 Parameter(name='rVv33', 
+rUV33 = 	 Parameter(name='rUV33', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 1., 
-	 texname = '\\text{Vv33}', 
-	 lhablock = 'None', 
+	 texname = '\\text{UV33}', 
+	 lhablock = 'UVMIX', 
 	 lhacode = [3, 3] ) 
  
-iVv33 = 	 Parameter(name='iVv33', 
+iUV33 = 	 Parameter(name='iUV33', 
 	 nature = 'external', 
 	 type = 'real', 
 	 value = 1., 
-	 texname = '\\text{Vv33}', 
-	 lhablock = 'IMNone', 
+	 texname = '\\text{UV33}', 
+	 lhablock = 'IMUVMIX', 
 	 lhacode = [3, 3] ) 
  
 rZDL11 = 	 Parameter(name='rZDL11', 
@@ -1261,59 +1261,59 @@ LSH = 	 Parameter(name='LSH',
 	 value = 'rLSH + complex(0,1)*iLSH', 
 	 texname = '\\text{LSH}' ) 
  
-Vv11 = 	 Parameter(name='Vv11', 
+UV11 = 	 Parameter(name='UV11', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv11 + complex(0,1)*iVv11', 
-	 texname = '\\text{Vv11}' ) 
+	 value = 'rUV11 + complex(0,1)*iUV11', 
+	 texname = '\\text{UV11}' ) 
  
-Vv12 = 	 Parameter(name='Vv12', 
+UV12 = 	 Parameter(name='UV12', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv12 + complex(0,1)*iVv12', 
-	 texname = '\\text{Vv12}' ) 
+	 value = 'rUV12 + complex(0,1)*iUV12', 
+	 texname = '\\text{UV12}' ) 
  
-Vv13 = 	 Parameter(name='Vv13', 
+UV13 = 	 Parameter(name='UV13', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv13 + complex(0,1)*iVv13', 
-	 texname = '\\text{Vv13}' ) 
+	 value = 'rUV13 + complex(0,1)*iUV13', 
+	 texname = '\\text{UV13}' ) 
  
-Vv21 = 	 Parameter(name='Vv21', 
+UV21 = 	 Parameter(name='UV21', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv21 + complex(0,1)*iVv21', 
-	 texname = '\\text{Vv21}' ) 
+	 value = 'rUV21 + complex(0,1)*iUV21', 
+	 texname = '\\text{UV21}' ) 
  
-Vv22 = 	 Parameter(name='Vv22', 
+UV22 = 	 Parameter(name='UV22', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv22 + complex(0,1)*iVv22', 
-	 texname = '\\text{Vv22}' ) 
+	 value = 'rUV22 + complex(0,1)*iUV22', 
+	 texname = '\\text{UV22}' ) 
  
-Vv23 = 	 Parameter(name='Vv23', 
+UV23 = 	 Parameter(name='UV23', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv23 + complex(0,1)*iVv23', 
-	 texname = '\\text{Vv23}' ) 
+	 value = 'rUV23 + complex(0,1)*iUV23', 
+	 texname = '\\text{UV23}' ) 
  
-Vv31 = 	 Parameter(name='Vv31', 
+UV31 = 	 Parameter(name='UV31', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv31 + complex(0,1)*iVv31', 
-	 texname = '\\text{Vv31}' ) 
+	 value = 'rUV31 + complex(0,1)*iUV31', 
+	 texname = '\\text{UV31}' ) 
  
-Vv32 = 	 Parameter(name='Vv32', 
+UV32 = 	 Parameter(name='UV32', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv32 + complex(0,1)*iVv32', 
-	 texname = '\\text{Vv32}' ) 
+	 value = 'rUV32 + complex(0,1)*iUV32', 
+	 texname = '\\text{UV32}' ) 
  
-Vv33 = 	 Parameter(name='Vv33', 
+UV33 = 	 Parameter(name='UV33', 
 	 nature = 'internal', 
 	 type = 'complex', 
-	 value = 'rVv33 + complex(0,1)*iVv33', 
-	 texname = '\\text{Vv33}' ) 
+	 value = 'rUV33 + complex(0,1)*iUV33', 
+	 texname = '\\text{UV33}' ) 
  
 ZDL11 = 	 Parameter(name='ZDL11', 
 	 nature = 'internal', 

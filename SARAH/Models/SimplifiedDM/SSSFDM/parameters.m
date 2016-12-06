@@ -40,16 +40,14 @@ ParameterDefinitions = {
 {Ve,        {Description ->"Left-Lepton-Mixing-Matrix"}},
 {Ue,        {Description ->"Right-Lepton-Mixing-Matrix"}},
 
-(* Scalar sector *)
+{Vv,        {Description ->"Neutrino-Mixing-Matrix"}},
+
 {v,          { Description -> "EW-VEV",
                DependenceNum -> Sqrt[4*Mass[VWp]^2/(g2^2)],
                DependenceSPheno -> None  }},
 
-{mu2,         { Description -> "SM Mu Parameter",
-                LaTeX -> "\\mu^2",
-	        OutputName -> mu2}},
-
-{Lambda1, { Description -> "SM Higgs Selfcouplings",
+{mu2,        { Description -> "SM Mu Parameter"}},                                        
+{Lambda1,  { Description -> "SM Higgs Selfcouplings",
                DependenceNum -> Mass[hh]^2/(v^2)}},
 
 {MS2,       {Description -> "Softbreaking Up-Higgs Mass",
@@ -61,9 +59,20 @@ ParameterDefinitions = {
 
 {LamS,     {OutputName ->"LS",
 	    LesHouches -> {HDM,3}}},
-{MSF,{ LaTeX -> "M_F",Real -> True,OutputName -> MFS,LesHouches -> {FDM,1}}},
+
+(* New Fermion Sector *) 
+
+        
+{MSF,   {(*Description -> "Triplet-Mass",*)
+         LaTeX -> "M_F",
+	 Real -> True;
+         OutputName->MFS,
+         LesHouches-> {HDM,1} }},
+
+
 {Ys, { LaTeX -> "Y_S",Real->True,LesHouches -> YS, OutputName-> Ys }}
-    
+
+
  }; 
  
 
