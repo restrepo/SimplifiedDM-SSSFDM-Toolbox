@@ -1,4 +1,0 @@
-
-gfortran  -fno-automatic                                \
-     -o $1 pgs_$1.f                                                 \
-     -L$PGS/lib -lpgslib  -ltauola  -lpythia -lherwig -lstdhep -lexthep  -lFmcfio    
