@@ -32,4 +32,4 @@ ListDecayParticles3B = {{Fu,"Fu.f90"},{Fe,"Fe.f90"},{Fd,"Fd.f90"}, {Fre,"Fre.f90
 
 DefaultInputValues ={Lambda1IN -> 0.255,MSFIN -> 200,
 		     LamSHIN -> 0., LamSIN -> 0,
-		     MS2Input -> 200., Ysinput[a_] -> 0.1};
+		     MS2Input -> 200., Ys[1] -> 0.01};

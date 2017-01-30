@@ -49,6 +49,6 @@ Block SPhenoInput   # SPheno specific input
 525 0.              # Write loop contributions to diphoton decay of Higgs 
 530 1.              # Write Blocks for Vevacious 
 Block YSIN    #  
-1   0.000000E+00         # Ys(1)
+1   1.0000000E-02         # Ys(1)
 2   0.000000E+00         # Ys(2)
 3   0.000000E+00         # Ys(3)
