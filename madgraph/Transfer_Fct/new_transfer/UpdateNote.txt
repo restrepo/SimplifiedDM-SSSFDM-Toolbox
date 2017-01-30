@@ -1,0 +1,11 @@
+#################################################################
+##                           MadWeight                         ##
+#################################################################
+##   author:                                                   ##
+##       pierre.artoisenet@uclouvain.be                        ##
+##       olivier.mattelaer@uclouvain.be                        ##
+#################################################################
+##  Update are put in inverse time order                       ##
+#################################################################
+
+22/09/08:v1.3: (OM)add specific transfer function for tau particle
