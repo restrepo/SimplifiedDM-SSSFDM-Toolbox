@@ -153,8 +153,8 @@ c
    
             do i = 1,4
    	       do j=1,4
-                  yiov(i,j) = fi(3)*gc(2)*(fo(2)*(-((KTVC*r4*MET(i,j)*(-pt(2)
-     &	    - cone*pt(3)))/(r3*Tmass**2)) - 
+                  yiov(i,j) = fi(3)*gc(2)*(fo(2)*(-((KTVC*r4*MET(i,j)*
+     &      (-pt(2) - cone*pt(3)))/(r3*Tmass**2)) - 
      &      (KTVC*r8*(-pt(2) - cone*pt(3))*pt(i)*pt(j))/(r3*Tmass**4) +
      &          (pt2*r4*MET(i,j)*(-vc(2) - cone*vc(3)))/(r3*Tmass**2) + 
      &          (pt2*r8*pt(i)*pt(j)*(-vc(2) - cone*vc(3)))/(r3*Tmass**4)

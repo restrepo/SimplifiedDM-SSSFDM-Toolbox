@@ -1,39 +1,45 @@
-MadGraph/MadEvent 4
-By Fabio Maltoni, Tim Stelzer and the CP3 development team
+************************************************************
+*                                                          *
+*   W E L C O M E  to  M A D G R A P H 5 _ a M C @ N L O   *
+*                                                          *
+*                                                          *
+*                 *                       *                *
+*                   *        * *        *                  *
+*                     * * * * 5 * * * *                    *
+*                   *        * *        *                  *
+*                 *                       *                *
+*                                                          *
+*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+*                            and                           *
+*                  http://amcatnlo.cern.ch                 *
+*                                                          *
+*                   Code download from:                    *
+*             https://launchpad.net/madgraph5              *
+*                                                          *
+*    Please refer to: MadGraph5_aMC@NLO                    *
+*                     J. Alwall, M. Herquet, F. Maltoni,   *
+*                     O. Mattelaer, T. Stelzer             *
+*                     JHEP 1106 (2011) 128                 *
+*                     arXiv:1106.0522 [hep-ph]             *
+************************************************************
 
-http://madgraph.phys.ucl.ac.be/
-http://madgraph.hep.uiuc.edu/
-http://madgraph.roma2.infn.it/
-
-To set up a new process:
-------------------------
-1) Run "make" to compile MadGraph (and pythia-pgs and analysis packages, 
-if downloaded and untarred)
-
-2) Copy the Template directory to some other name, e.g. MyProcDir, in
-order to always keep a clean copy of the Template.
-
-3) Edit the file proc_card.dat in the MyProcDir/Cards directory to set
-up one or more processes to be run simultaneously. Don't forget to
-specify choice of model.
-
-4) Go to the MyProcDir directory and run bin/newprocess to set up the
-specified process. Please notice that this will replace the file
-Cards/param_card.dat by the default param_card.dat for the model.
-
-5) Check that the generation worked, using your web browser, by
-looking at index.html in the MyProcDir directory.
-
-To generate events with the process already set up:
+To run MadGraph5_aMC@NLO using the command line interface 
 ---------------------------------------------------
-Please see the README file in the MyProcDir directory.
+This mode of running hols both for Leading-Order computations and handling
+of loop processes.
+./bin/mg5_aMC
+Type "help" for list of commands and "help [command]" for help
+on individual commands. 
+Type "tutorial" for an interactive quick-start tutorial for LO computations.
+Type "tutorial aMCatNLO" for a tutorial on aMC@NLO runs for NLO computations.
+Type "tutorial MadLoop" for a tutorial on MadLoop for learning how to output
+standalone codes for loop process evaluation for given PS points.
 
-To set up a new process using MadGraph "stand alone" (i.e. without MadEvent)
-----------------------------------------------------------------------------
-Follow the above instructions but execute ./bin/standalone before ./bin/newprocess
 
-To use the DECAY package (DECAY directory)
-------------------------------------------
-To compile it: make
-To use it:
-./decay and follow the instructions
+To run using the Template bin/newprocess_mg5 script
+---------------------------------------------------
+Not available anymore (since v2.0.0).
+But you can still run MadGraph5_aMC@NLO by doing the following:
+./bin/mg5_aMC proc_card.dat
+

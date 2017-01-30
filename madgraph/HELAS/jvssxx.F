@@ -19,7 +19,8 @@ c
       implicit none
       double complex vc(6),s1(3),s2(3),gc,jvss(6),dg
       double complex cm2        ! mass**2- I Gamma mass (Fabio)
-      double precision q(0:3),vmass,vwidth,q2,vk,vm2
+      double precision q(0:3),vmass,vwidth,q2,vm2
+      double complex vk
 
       double precision rZero
       parameter( rZero = 0.0d0 )
