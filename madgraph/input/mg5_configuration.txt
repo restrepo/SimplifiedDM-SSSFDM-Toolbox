@@ -59,14 +59,14 @@
 #!  Defines the path to the pythia8 installation directory (i.e. the
 #!  on containing the lib, bin and include directories) .
 #!  If using a relative path, that starts from the mg5 directory
-# pythia8_path = ./HEPTools/pythia8
+pythia8_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/None #  
 
 #! MG5aMC_PY8_interface path
 #!  Defines the path of the C++ driver file that is used by MG5_aMC to
 #!  steer the Pythia8 shower.
 #!  Can be installed directly from within MG5_aMC with the following command:
 #!     MG5_aMC> install mg5amc_py8_interface
-# mg5amc_py8_interface_path = ./HEPTools/MG5aMC_PY8_interface 
+mg5amc_py8_interface_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/None #  
 
 #! Herwig++/Herwig7 paths
 #!  specify here the paths also to HepMC ant ThePEG
@@ -75,9 +75,9 @@
 #!  WARNING: if Herwig7 has been installed with the bootstrap script,
 #!  then please set thepeg_path and hepmc_path to the same value as
 #!  hwpp_path
-# hwpp_path = 
-# thepeg_path = 
-# hepmc_path = 
+hwpp_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/None #  
+thepeg_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/None #  
+hepmc_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/None #  
 
 #! Control when MG5 checks if he is up-to-date.
 #! Enter the number of day between two check (0 means never)
@@ -148,7 +148,7 @@
 
 #! MadAnalysis5 python-based Package [For advanced analysis]
 #!  relative path start from main directory
-# madanalysis5_path = ./HEPTools/madanalysis5/madanalysis5
+madanalysis5_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/None #  
 
 #! ExRootAnalysis Package
 #!  relative path start from main directory
@@ -165,7 +165,7 @@
 
 #! fastjet-config
 #!  If None: try to find one available on the system
-# fastjet = fastjet-config
+fastjet = None #  
 
 #! MCatNLO-utilities 
 #!  relative path starting from main directory
@@ -178,14 +178,14 @@
 #! if auto: try to find it automatically on the system (default)
 #! if '' or None: disabling pjfry
 #! if pjfry=/PATH/TO/pjfry/lib: use that specific installation path for PJFry++
-# pjfry = auto
+pjfry = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph/PJFry/lib #  
 
 #! Set the Golem95 directory containing golem's library
 #! It only supports version higher than 1.3.0
 #! if auto: try to find it automatically on the system (default)
 #! if '' or None: disabling Golem95
 #! if golem=/PATH/TO/golem/lib: use that speficif installation path for Golem95
-# golem = auto
+golem = None #  
 
 #! Set the samurai directory containing samurai's library
 #! It only supports version higher than 2.0.0
@@ -221,3 +221,6 @@
 # amcfast = amcfast-config
 
 
+
+# MG5 MAIN DIRECTORY
+mg5_path = /home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/madgraph
