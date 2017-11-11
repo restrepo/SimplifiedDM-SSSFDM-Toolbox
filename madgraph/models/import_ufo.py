@@ -49,6 +49,7 @@ sys.path.append(os.path.join(root_path, os.path.pardir, 'Template', 'bin', 'inte
 import check_param_card 
 
 pjoin = os.path.join
+logger = logging.getLogger("madgraph.model")
 
 # Suffixes to employ for the various poles of CTparameters
 pole_dict = {-2:'2EPS',-1:'1EPS',0:'FIN'}
@@ -59,32 +60,18 @@ class UFOImportError(MadGraph5Error):
 class InvalidModel(MadGraph5Error):
     """ a class for invalid Model """
 
-last_model_path =''
 def find_ufo_path(model_name):
     """ find the path to a model """
 
-    global last_model_path
-
     # Check for a valid directory
     if model_name.startswith('./') and os.path.isdir(model_name):
-        return model_name
+        model_path = model_name
     elif os.path.isdir(os.path.join(MG5DIR, 'models', model_name)):
-        return os.path.join(MG5DIR, 'models', model_name)
-    elif 'PYTHONPATH' in os.environ:
-        for p in os.environ['PYTHONPATH'].split(':'):
-            if os.path.isdir(os.path.join(MG5DIR, p, model_name)):
-                if last_model_path != os.path.join(MG5DIR, p, model_name):
-                    logger.info("model loaded from PYTHONPATH: %s", os.path.join(MG5DIR, p, model_name))
-                    last_model_path = os.path.join(MG5DIR, p, model_name)
-                return os.path.join(MG5DIR, p, model_name)
-    if os.path.isdir(model_name):
-        if last_model_path != os.path.join(MG5DIR, model_name):
-            logger.info("model loaded from: %s", os.path.join(os.getcwd(), model_name))
-            last_model_path = os.path.join(MG5DIR, model_name)
-        return model_name   
+        model_path = os.path.join(MG5DIR, 'models', model_name)
+    elif os.path.isdir(model_name):
+        model_path = model_name
     else:
-        raise UFOImportError("Path %s is not a valid pathname" % model_name)    
-    
+        raise UFOImportError("Path %s is not a valid pathname" % model_name)
 
     return model_path
 
@@ -166,17 +153,10 @@ def import_model(model_name, decay=False, restrict=True, prefix='mdl_',
             # It might be that the default of the model is CMS.
             model.change_mass_to_complex_scheme(toCMS=False)
 
-        blocks = model.get_param_block()
         if model_name == 'mssm' or os.path.basename(model_name) == 'mssm':
             keep_external=True
-        elif all( b in blocks for b in ['USQMIX', 'SL2', 'MSOFT', 'YE', 'NMIX', 'TU','MSE2','UPMNS']):
-            keep_external=True
-        elif model_name == 'MSSM_SLHA2' or os.path.basename(model_name) == 'MSSM_SLHA2':
-            keep_external=True            
         else:
             keep_external=False
-        if keep_external:
-            logger.info('Detect SLHA2 format. keeping restricted parameter in the param_card')
         model.restrict_model(restrict_file, rm_parameter=not decay,
            keep_external=keep_external, complex_mass_scheme=complex_mass_scheme)
         model.path = model_path
@@ -205,7 +185,7 @@ def import_full_model(model_path, decay=False, prefix=''):
     # Check the validity of the model
     files_list_prov = ['couplings.py','lorentz.py','parameters.py',
                        'particles.py', 'vertices.py', 'function_library.py',
-                       'propagators.py', 'coupling_orders.py']
+                       'propagators.py' ]
     
     if decay:
         files_list_prov.append('decays.py')    
@@ -214,10 +194,11 @@ def import_full_model(model_path, decay=False, prefix=''):
     for filename in files_list_prov:
         filepath = os.path.join(model_path, filename)
         if not os.path.isfile(filepath):
-            if filename not in ['propagators.py', 'decays.py', 'coupling_orders.py']:
+            if filename not in ['propagators.py', 'decays.py']:
                 raise UFOImportError,  "%s directory is not a valid UFO model: \n %s is missing" % \
                                                          (model_path, filename)
         files_list.append(filepath)
+    
     # use pickle files if defined and up-to-date
     if aloha.unitary_gauge: 
         pickle_name = 'model.pkl'
@@ -517,8 +498,7 @@ class UFOMG5Converter(object):
         particle = base_objects.Particle()
 
         # MG5 doesn't use goldstone boson 
-        if (hasattr(particle_info, 'GoldstoneBoson') and particle_info.GoldstoneBoson) \
-                or (hasattr(particle_info, 'goldstoneboson') and particle_info.goldstoneboson):
+        if hasattr(particle_info, 'GoldstoneBoson') and particle_info.GoldstoneBoson:
             particle.set('type', 'goldstone')
         elif hasattr(particle_info, 'goldstone') and particle_info.goldstone:
             particle.set('type', 'goldstone')
@@ -691,16 +671,14 @@ class UFOMG5Converter(object):
                                'Parenthesis of expression %s are malformed'%expr
             return [expr[:start],expr[start+1:end],expr[end+1:]]
         
-        start_parenthesis = re.compile(r".*\s*[\+\-\*\/\)\(]\s*$")
-
+        start_parenthesis = re.compile(r".*\s*[\+\-\*\/\)\(]\s*$")        
         def is_value_zero(value):
             """Check whether an expression like ((A+B)*ZERO+C)*ZERO is zero.
             Only +,-,/,* operations are allowed and 'ZERO' is a tag for an
             analytically zero quantity."""
-
-            curr_value = value
-            parenthesis = find_parenthesis(curr_value)
-            while parenthesis:
+            
+            parenthesis = find_parenthesis(value)
+            if parenthesis:
                 # Allow the complexconjugate function
                 if parenthesis[0].endswith('complexconjugate'):
                     # Then simply remove it
@@ -713,10 +691,11 @@ class UFOMG5Converter(object):
                         new_parenthesis = 'PARENTHESIS'
                 else:
                     new_parenthesis = '_FUNCTIONARGS'
-                curr_value = parenthesis[0]+new_parenthesis+parenthesis[2]
-                parenthesis = find_parenthesis(curr_value)
-            return is_expr_zero(curr_value)
-
+                new_value = parenthesis[0]+new_parenthesis+parenthesis[2] 
+                return is_value_zero(new_value)
+            else:
+               return is_expr_zero(value)
+            
         def CTCoupling_pole(CTCoupling, pole):
             """Compute the pole of the CTCoupling in two cases:
                a) Its value is a dictionary, then just return the corresponding
@@ -761,7 +740,7 @@ class UFOMG5Converter(object):
             # Remember that when the value of a CT_coupling is not a dictionary
             # then the only operators allowed in the definition are +,-,*,/
             # and each term added or subtracted must contain *exactly one*
-            # CTParameter and never at the denominator.   
+            # CTParameter and never at the denominator. 
             if n_CTparams > 0 and is_value_zero(new_expression):
                 return 'ZERO', [], n_CTparams
             else:
@@ -829,67 +808,51 @@ class UFOMG5Converter(object):
 
         # Now we create a couplings dictionary for each element of the loop_particles list
         # and for each expansion order of the laurent serie in the coupling.
-        # and for each coupling order
         # Format is new_couplings[loop_particles][laurent_order] and each element
         # is a couplings dictionary.
-        order_to_interactions= {}
-        # will contains the new coupling of form
-        #new_couplings=[[{} for j in range(0,3)] for i in \
-        #               range(0,max(1,len(interaction_info.loop_particles)))]
+        new_couplings=[[{} for j in range(0,3)] for i in \
+                       range(0,max(1,len(interaction_info.loop_particles)))]
         # So sort all entries in the couplings dictionary to put them a the
         # correct place in new_couplings.
-        for key, couplings in interaction_info.couplings.items():
-            if not isinstance(couplings, list):
-                couplings = [couplings]
-            for coupling in couplings:
-                order = tuple(coupling.order.items())
-                if order not in order_to_interactions:
-                    order_to_interactions[order] = [
-                           [{} for j in range(0,3)] for i in \
-                           range(0,max(1,len(interaction_info.loop_particles)))]
-                    new_couplings = order_to_interactions[order]
-                else:
-                    new_couplings = order_to_interactions[order]
-                    
-                for poleOrder in range(0,3):
-                    expression = coupling.pole(poleOrder)
-                    if expression!='ZERO':
-                        if poleOrder==2:
-                            raise InvalidModel, """
-    The CT coupling %s was found with a contribution to the double pole. 
-    This is either an error in the model or a parsing error in the function 'is_value_zero'.
-    The expression of the non-zero double pole coupling is:
-    %s
-    """%(coupling.name,str(coupling.value))
-                        # It is actually safer that the new coupling associated to
-                        # the interaction added is not a reference to an original 
-                        # coupling in the ufo model. So copy.copy is right here.   
-                        newCoupling = copy.copy(coupling)
-                        if poleOrder!=0:
-                            newCoupling.name=newCoupling.name+"_"+str(poleOrder)+"eps"
-                        newCoupling.value = expression
-                        # assign the CT parameter dependences
-                        #if hasattr(coupling,'CTparam_dependence') and \
-                        #        (-poleOrder in coupling.CTparam_dependence) and \
-                        #        coupling.CTparam_dependence[-poleOrder]:
-                        #    newCoupling.CTparam_dependence = coupling.CTparam_dependence[-poleOrder]
-                        #elif hasattr(newCoupling,'CTparam_dependence'):
-                        #    delattr(newCoupling,"CTparam_dependence")
-                        new_couplings[key[2]][poleOrder][(key[0],key[1])] = newCoupling  
-            
-        for new_couplings in order_to_interactions.values():
-            # Now we can add an interaction for each.         
-            for i, all_couplings in enumerate(new_couplings):
-                loop_particles=[[]]
-                if len(interaction_info.loop_particles)>0:
-                    loop_particles=[[part.pdg_code for part in loop_parts] \
-                        for loop_parts in interaction_info.loop_particles[i]]
-                for poleOrder in range(0,3):
-                    if all_couplings[poleOrder]!={}:
-                        interaction_info.couplings=all_couplings[poleOrder]
-                        self.add_interaction(interaction_info, color_info,\
-                          (intType if poleOrder==0 else (intType+str(poleOrder)+\
-                                                             'eps')),loop_particles)
+        for key, coupling in interaction_info.couplings.items():
+            for poleOrder in range(0,3):
+                expression = coupling.pole(poleOrder)
+                if expression!='ZERO':
+                    if poleOrder==2:
+                        raise InvalidModel, """
+The CT coupling %s was found with a contribution to the double pole. 
+This is either an error in the model or a parsing error in the function 'is_value_zero'.
+The expression of the non-zero double pole coupling is:
+%s
+"""%(coupling.name,str(coupling.value))
+                    # It is actually safer that the new coupling associated to
+                    # the interaction added is not a reference to an original 
+                    # coupling in the ufo model. So copy.copy is right here.   
+                    newCoupling = copy.copy(coupling)
+                    if poleOrder!=0:
+                        newCoupling.name=newCoupling.name+"_"+str(poleOrder)+"eps"
+                    newCoupling.value = expression
+                    # assign the CT parameter dependences
+                    #if hasattr(coupling,'CTparam_dependence') and \
+                    #        (-poleOrder in coupling.CTparam_dependence) and \
+                    #        coupling.CTparam_dependence[-poleOrder]:
+                    #    newCoupling.CTparam_dependence = coupling.CTparam_dependence[-poleOrder]
+                    #elif hasattr(newCoupling,'CTparam_dependence'):
+                    #    delattr(newCoupling,"CTparam_dependence")
+                    new_couplings[key[2]][poleOrder][(key[0],key[1])] = newCoupling  
+              
+        # Now we can add an interaction for each.         
+        for i, all_couplings in enumerate(new_couplings):
+            loop_particles=[[]]
+            if len(interaction_info.loop_particles)>0:
+                loop_particles=[[part.pdg_code for part in loop_parts] \
+                    for loop_parts in interaction_info.loop_particles[i]]
+            for poleOrder in range(0,3):
+                if all_couplings[poleOrder]!={}:
+                    interaction_info.couplings=all_couplings[poleOrder]
+                    self.add_interaction(interaction_info, color_info,\
+                      (intType if poleOrder==0 else (intType+str(poleOrder)+\
+                                                         'eps')),loop_particles)
 
 
     def find_color_anti_color_rep(self, output=None):
@@ -1582,7 +1545,6 @@ class RestrictModel(model_reader.ModelReader):
         
         if self.get('name') == "mssm" and not keep_external:
             raise Exception
-
         self.restrict_card = param_card
         # Reset particle dict to ensure synchronized particles and interactions
         self.set('particles', self.get('particles'))
@@ -1599,7 +1561,7 @@ class RestrictModel(model_reader.ModelReader):
         # Simplify conditional statements
         logger.debug('Simplifying conditional expressions')
         modified_params, modified_couplings = \
-            self.detect_conditional_statements_simplifications(model_definitions)
+           self.detect_conditional_statements_simplifications(model_definitions)
         
         # Apply simplifications
         self.apply_conditional_simplifications(modified_params, modified_couplings)
@@ -1785,7 +1747,7 @@ class RestrictModel(model_reader.ModelReader):
         
         # define usefull variable to detect identical input
         block_value_to_var={} #(lhablok, value): list_of_var
-        mult_param = set([])  # key of the previous dict with more than one
+        mult_param = set([])       # key of the previous dict with more than one
                               #parameter.
                               
         #detect identical parameter and remove the duplicate parameter
@@ -1795,9 +1757,9 @@ class RestrictModel(model_reader.ModelReader):
                 continue
             if param.lhablock.lower() == 'decay':
                 continue
+            
             key = (param.lhablock, value)
             mkey =  (param.lhablock, -value)
-
             if key in block_value_to_var:
                 block_value_to_var[key].append((param,1))
                 mult_param.add(key)
@@ -1845,13 +1807,6 @@ class RestrictModel(model_reader.ModelReader):
                     if value == coupling:
                         pct[0]['counterterm'][pct[1]][key] = main
 
-
-                
-    def get_param_block(self):
-        """return the list of block defined in the param_card"""
-        
-        blocks = set([p.lhablock for p in self['parameters'][('external',)]])
-        return blocks
          
     def merge_iden_parameters(self, parameters, keep_external=False):
         """ merge the identical parameters given in argument.
@@ -1924,12 +1879,6 @@ class RestrictModel(model_reader.ModelReader):
                     if coupling in zero_couplings:
                         modify=True
                         del vertex['couplings'][key]
-                    elif coupling.startswith('-'):
-                        coupling = coupling[1:]
-                        if coupling in zero_couplings:
-                            modify=True
-                            del vertex['couplings'][key]                      
-                        
                 if modify:
                     mod_vertex.append(vertex)
             
@@ -1956,7 +1905,7 @@ class RestrictModel(model_reader.ModelReader):
                 self['interactions'].remove(vertex)
             else:
                 logger_mod.debug('modify interactions: %s at order: %s' % \
-                                (' '.join(part_name),', '.join(orders)))
+                                (' '.join(part_name),', '.join(orders)))       
 
         # print useful log and clean the empty counterterm values
         for pct in mod_particle_ct:
@@ -1978,7 +1927,7 @@ class RestrictModel(model_reader.ModelReader):
 
         return
                 
-    def remove_couplings(self, couplings):               
+    def remove_couplings(self, couplings):                
         #clean the coupling list:
         for name, data in self['couplings'].items():
             for coupling in data[:]:

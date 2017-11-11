@@ -41,10 +41,12 @@ c
       character*8 HwUtype(2)
       data HwUtype/'|T@NOCUT','|T@CUT  '/
       integer j,jpr
-      integer nwgt_analysis
+      integer nwgt,max_weight,nwgt_analysis
+      common/cnwgt/nwgt
       common/c_analysis/nwgt_analysis
-      character*50 weights_info(max_weight_shower)
-     $     ,wwwi(max_weight_shower)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
+      character*15 weights_info(max_weight),wwwi(max_weight)
+      common/cwgtsinfo/weights_info
       integer nsingle,ncorr,nlepton,nplots,ncuts
       common/cplots/nsingle,ncorr,nlepton,nplots,ncuts
       integer MAXELM,MAXELP,MAXMUM,MAXMUP
@@ -62,10 +64,11 @@ c
       integer i,kk,l,icuts,nnn
       integer l0,ilep1,ilep2,io,ipair
 c
-      do i=1,nnn
-         weights_info(i)=wwwi(i)
+      weights_info(1)="central value  "
+      do i=1,nnn+1
+         weights_info(i+1)=wwwi(i)
       enddo
-      nwgt=nnn
+      nwgt=nnn+1
 c Initialize histograms
       call HwU_inithist(nwgt,weights_info)
 c Set method for error estimation to '0', i.e., use Poisson statistics
@@ -195,10 +198,7 @@ C----------------------------------------------------------------------
       LOGICAL DIDSOF
       integer nwgt_analysis,max_weight
       common/c_analysis/nwgt_analysis
-      integer maxRWGT
-      parameter (maxRWGT=100)
-      double precision wgtxsecRWGT(maxRWGT)
-      parameter (max_weight=maxscales*maxscales+maxpdfs+maxRWGT+1)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
       double precision ww(max_weight),www(max_weight),xww(max_weight)
       common/cww/ww
 c
@@ -213,8 +213,9 @@ c
      # PELM(4,25),PELP(4,25),PMUM(4,25),PMUP(4,25),PLEP(4,25),
      # obs(100)
 c
+      ww(1)=xww(2)
       if(nnn.eq.0)ww(1)=1d0
-      do i=1,nnn
+      do i=2,nnn+1
          ww(i)=xww(i)
       enddo
 c

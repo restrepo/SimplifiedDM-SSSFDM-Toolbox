@@ -106,7 +106,8 @@ class AbstractRoutine(object):
             assert isinstance(self.expr, aloha_lib.SplitCoefficient)
             rank= 1
             for coeff in self.expr:
-                rank = max(sum(coeff), rank)
+                if max(sum(coeff), rank):
+                    rank = sum(coeff)
             return rank -1 # due to the coefficient associate to the wavefunctions
         else:
             raise ALOHAERROR, '%s is not a valid information that can be computed' % info
@@ -252,7 +253,7 @@ in presence of majorana particle/flow violation"""
             expr = self.lorentz_expr
         
         if need_P_sign:
-            expr = re.sub(r'\b(P|PSlash)\(', r'-\1(', expr)
+            expr = re.sub(r'\b(P|PSlash)\(', r'-\1\(', expr)
         
         calc = aloha_parsers.ALOHAExpressionParser()
         lorentz_expr = calc.parse(expr)
@@ -470,7 +471,7 @@ in presence of majorana particle/flow violation"""
         numerator = self.mod_propagator_expression(tag, numerator)
         if denominator:
             denominator = self.mod_propagator_expression(tag, denominator)      
-        
+                
         numerator = self.parse_expression(numerator, needPflipping)
         if denominator:
             self.denominator = self.parse_expression(denominator, needPflipping)
@@ -664,7 +665,7 @@ class AbstractALOHAModel(dict):
         # Check that all routine are generated at default places:
         for (name, outgoing), abstract in self.items():
             routine_name = AbstractRoutineBuilder.get_routine_name(name, outgoing)
-            if not os.path.exists(os.path.join(output_dir, routine_name) + '.' + ext[format]):
+            if not glob.glob(os.path.join(output_dir, routine_name) + '.' + ext[format]):
                 abstract.write(output_dir, format) 
             else:
                 logger.info('File for %s already present, skip the writing of this file' % routine_name)
@@ -1045,7 +1046,7 @@ class AbstractALOHAModel(dict):
 
         ext_files  = []
         for path in paths:
-            ext_files = misc.glob('%s.%s' % (name, ext), path)
+            ext_files = glob.glob(os.path.join(path, '%s.%s' % (name, ext)))
             if ext_files:
                 break
         else: 

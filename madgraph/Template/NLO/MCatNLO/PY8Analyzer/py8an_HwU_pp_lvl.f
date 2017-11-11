@@ -45,15 +45,18 @@ c
       integer j,kk,l,jpr,i,nnn
       character*5 cc(2)
       data cc/'     ','Born '/
-      integer nwgt_analysis
+      integer nwgt,max_weight,nwgt_analysis
+      common/cnwgt/nwgt
       common/c_analysis/nwgt_analysis
-      character*50 weights_info(max_weight_shower)
-     $     ,wwwi(max_weight_shower)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
+      character*15 weights_info(max_weight),wwwi(max_weight)
+      common/cwgtsinfo/weights_info
 c
-      do i=1,nnn
-         weights_info(i)=wwwi(i)
+      weights_info(1)="central value  "
+      do i=1,nnn+1
+         weights_info(i+1)=wwwi(i)
       enddo
-      nwgt=nnn
+      nwgt=nnn+1
 c Initialize histograms
       call HwU_inithist(nwgt,weights_info)
 c Set method for error estimation to '0', i.e., use Poisson statistics
@@ -61,7 +64,6 @@ c for the uncertainty estimate
       call set_error_estimation(0)
       nwgt_analysis=nwgt
       do i=1,1
-        l=0
         call HwU_book(l+1,'total rate   '//HwUtype(i),2,-2.d0,2.d0)
         call HwU_book(l+2,'lep rapidity '//HwUtype(i),40,-9d0,9d0)
         call HwU_book(l+3,'lep pt       '//HwUtype(i),100,0d0,200d0)
@@ -112,15 +114,13 @@ C----------------------------------------------------------------------
       DATA TINY/.1D-5/
       integer nwgt_analysis,max_weight
       common/c_analysis/nwgt_analysis
-      integer maxRWGT
-      parameter (maxRWGT=100)
-      double precision wgtxsecRWGT(maxRWGT)
-      parameter (max_weight=maxscales*maxscales+maxpdfs+maxRWGT+1)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
       double precision ww(max_weight),www(max_weight),xww(max_weight)
       common/cww/ww
 c
+      ww(1)=xww(2)
       if(nnn.eq.0)ww(1)=1d0
-      do i=1,nnn
+      do i=2,nnn+1
          ww(i)=xww(i)
       enddo
 c

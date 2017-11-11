@@ -26,8 +26,7 @@
    use combinatorics
    use scale
    use countdigits
-   use avh_olo_forCutTools
-   use avh_olo_forCutTools_units
+   use avh_olo
    include 'cts_mprec.h'
    implicit none 
    integer, intent(in) :: scaloopin
@@ -74,7 +73,6 @@
 !
    scaloop= scaloopin 
    ext_num_for_r1= ext_num_for_r1in
-   call set_unit('all',-1)
    if    (scaloop.eq.2) then
 !                               
 !    avh initialization:

@@ -75,10 +75,6 @@ C     CONSTANTS
 C     
       INTEGER    NEXTERNAL
       PARAMETER (NEXTERNAL=4)
-      INTEGER    NINITIAL
-      PARAMETER (NINITIAL=2)
-      INTEGER NPOLENTRIES
-      PARAMETER (NPOLENTRIES=(NEXTERNAL+1)*6)
       INTEGER                 NCOMB
       PARAMETER (             NCOMB=16)
       INTEGER NSQAMPSO
@@ -95,21 +91,13 @@ C
 C     
 C     LOCAL VARIABLES 
 C     
-      INTEGER NTRY
+      INTEGER NHEL(NEXTERNAL,NCOMB),NTRY
       REAL*8 T(NSQAMPSO), BUFF
-      INTEGER IHEL,IDEN, I, J
-C     For a 1>N process, them BEAMTWO_HELAVGFACTOR would be set to 1.
-      INTEGER BEAMS_HELAVGFACTOR(2)
-      DATA (BEAMS_HELAVGFACTOR(I),I=1,2)/2,2/
+      INTEGER IHEL,IDEN, I
       INTEGER JC(NEXTERNAL)
       LOGICAL GOODHEL(NCOMB)
       DATA NTRY/0/
       DATA GOODHEL/NCOMB*.FALSE./
-      DATA IDEN/256/
-C     
-C     GLOBAL VARIABLES
-C     
-      INTEGER NHEL(NEXTERNAL,NCOMB)
       DATA (NHEL(I,   1),I=1,4) /-1,-1,-1, 1/
       DATA (NHEL(I,   2),I=1,4) /-1,-1,-1,-1/
       DATA (NHEL(I,   3),I=1,4) /-1,-1, 1, 1/
@@ -126,19 +114,13 @@ C
       DATA (NHEL(I,  14),I=1,4) / 1, 1,-1,-1/
       DATA (NHEL(I,  15),I=1,4) / 1, 1, 1, 1/
       DATA (NHEL(I,  16),I=1,4) / 1, 1, 1,-1/
-      COMMON/ML5_0_BORN_HEL_CONFIGS/NHEL
-
+      DATA IDEN/256/
+C     
+C     GLOBAL VARIABLES
+C     
       INTEGER USERHEL
       DATA USERHEL/-1/
       COMMON/ML5_0_HELUSERCHOICE/USERHEL
-
-      INTEGER POLARIZATIONS(0:NEXTERNAL,0:5)
-      DATA ((POLARIZATIONS(I,J),I=0,NEXTERNAL),J=0,5)/NPOLENTRIES*-1/
-      COMMON/ML5_0_BORN_BEAM_POL/POLARIZATIONS
-C     
-C     FUNCTIONS
-C     
-      LOGICAL ML5_0_IS_BORN_HEL_SELECTED
 
 C     ----------
 C     BEGIN CODE
@@ -150,37 +132,13 @@ C     ----------
       DO I=1,NSQAMPSO
         ANS(I) = 0D0
       ENDDO
-C     When spin-2 particles are involved, the Helicity filtering is
-C      dangerous for the 2->1 topology.
-C     This is because depending on the MC setup the initial PS points
-C      have back-to-back initial states
-C     for which some of the spin-2 helicity configurations are zero.
-C      But they are no longer zero
-C     if the point is boosted on the z-axis. Remember that HELAS
-C      helicity amplitudes are no longer
-C     lorentz invariant with expternal spin-2 particles (only the
-C      helicity sum is).
-C     For this reason, we simply remove the filterin when there is
-C      only three external particles.
-      IF (NEXTERNAL.LE.3) THEN
-        DO IHEL=1,NCOMB
-          GOODHEL(IHEL)=.TRUE.
-        ENDDO
-      ENDIF
       DO IHEL=1,NCOMB
         IF (USERHEL.EQ.-1.OR.USERHEL.EQ.IHEL) THEN
           IF (GOODHEL(IHEL) .OR. NTRY .LT. 2 .OR.USERHEL.NE.-1) THEN
-            IF(NTRY.GE.2.AND.POLARIZATIONS(0,0).NE.
-     $       -1.AND.(.NOT.ML5_0_IS_BORN_HEL_SELECTED(IHEL))) THEN
-              CYCLE
-            ENDIF
             CALL ML5_0_MATRIX(P ,NHEL(1,IHEL),JC(1), T)
             BUFF=0D0
             DO I=1,NSQAMPSO
-              IF(POLARIZATIONS(0,0).EQ.-1.OR.ML5_0_IS_BORN_HEL_SELECTED
-     $(IHEL)) THEN
-                ANS(I)=ANS(I)+T(I)
-              ENDIF
+              ANS(I)=ANS(I)+T(I)
               BUFF=BUFF+T(I)
             ENDDO
             IF (BUFF .NE. 0D0 .AND. .NOT.    GOODHEL(IHEL)) THEN
@@ -197,17 +155,9 @@ C      only three external particles.
         ENDIF
       ENDDO
       IF(USERHEL.NE.-1) THEN
-        DO I=0,NSQAMPSO
+        ANS(0)=ANS(0)*HELAVGFACTOR
+        DO I=1,NSQAMPSO
           ANS(I)=ANS(I)*HELAVGFACTOR
-        ENDDO
-      ELSE
-        DO J=1,NINITIAL
-          IF (POLARIZATIONS(J,0).NE.-1) THEN
-            DO I=0,NSQAMPSO
-              ANS(I)=ANS(I)*BEAMS_HELAVGFACTOR(J)
-              ANS(I)=ANS(I)/POLARIZATIONS(J,0)
-            ENDDO
-          ENDIF
         ENDDO
       ENDIF
       END
@@ -283,7 +233,7 @@ C
       REAL*8 DENOM(NCOLOR), CF(NCOLOR,NCOLOR)
       COMPLEX*16 AMP(NGRAPHS)
       COMPLEX*16 JAMP(NCOLOR,NAMPSO)
-      COMPLEX*16 W(20,NWAVEFUNCS)
+      COMPLEX*16 W(18,NWAVEFUNCS)
       COMPLEX*16 DUM0,DUM1
       DATA DUM0, DUM1/(0D0, 0D0), (1D0, 0D0)/
 C     
@@ -331,8 +281,8 @@ C     JAMPs contributing to orders QCD=2
             ZTEMP = ZTEMP + CF(J,I)*JAMP(J,M)
           ENDDO
           DO N = 1, NAMPSO
-            RES(ML5_0_SQSOINDEX(M,N)) = RES(ML5_0_SQSOINDEX(M,N)) +
-     $        ZTEMP*DCONJG(JAMP(I,N))/DENOM(I)
+            RES(ML5_0_SQSOINDEX(M,N)) = RES(ML5_0_SQSOINDEX(M,N)) 
+     $       + ZTEMP*DCONJG(JAMP(I,N))/DENOM(I)
           ENDDO
         ENDDO
       ENDDO
@@ -381,61 +331,6 @@ CF2PY INTENT(IN) :: PATH
       RETURN
       END
 
-      LOGICAL FUNCTION ML5_0_IS_BORN_HEL_SELECTED(HELID)
-      IMPLICIT NONE
-C     
-C     CONSTANTS
-C     
-      INTEGER    NEXTERNAL
-      PARAMETER (NEXTERNAL=4)
-      INTEGER    NCOMB
-      PARAMETER (NCOMB=16)
-C     
-C     ARGUMENTS
-C     
-      INTEGER HELID
-C     
-C     LOCALS
-C     
-      INTEGER I,J
-      LOGICAL FOUNDIT
-C     
-C     GLOBALS
-C     
-      INTEGER HELC(NEXTERNAL,NCOMB)
-      COMMON/ML5_0_BORN_HEL_CONFIGS/HELC
-
-      INTEGER POLARIZATIONS(0:NEXTERNAL,0:5)
-      COMMON/ML5_0_BORN_BEAM_POL/POLARIZATIONS
-C     ----------
-C     BEGIN CODE
-C     ----------
-
-      ML5_0_IS_BORN_HEL_SELECTED = .TRUE.
-      IF (POLARIZATIONS(0,0).EQ.-1) THEN
-        RETURN
-      ENDIF
-
-      DO I=1,NEXTERNAL
-        IF (POLARIZATIONS(I,0).EQ.-1) THEN
-          CYCLE
-        ENDIF
-        FOUNDIT = .FALSE.
-        DO J=1,POLARIZATIONS(I,0)
-          IF (HELC(I,HELID).EQ.POLARIZATIONS(I,J)) THEN
-            FOUNDIT = .TRUE.
-            EXIT
-          ENDIF
-        ENDDO
-        IF(.NOT.FOUNDIT) THEN
-          ML5_0_IS_BORN_HEL_SELECTED = .FALSE.
-          RETURN
-        ENDIF
-      ENDDO
-
-      RETURN
-      END
-
 
 C     Set of functions to handle the array indices of the split orders
 
@@ -446,8 +341,8 @@ C     This functions plays the role of the interference matrix. It can
 C      be hardcoded or 
 C     made more elegant using hashtables if its execution speed ever
 C      becomes a relevant
-C     factor. From two split order indices, it return the
-C      corresponding index in the squared 
+C     factor. From two split order indices, it return the corresponding
+C      index in the squared 
 C     order canonical ordering.
 C     
 C     CONSTANTS
@@ -475,7 +370,7 @@ C     BEGIN CODE
 C     
       DO I=1,NSO
         SQORDERS(I)=AMPSPLITORDERS(ORDERINDEXA,I)+AMPSPLITORDERS(ORDERI
-     $NDEXB,I)
+     $   NDEXB,I)
       ENDDO
       ML5_0_SQSOINDEX=ML5_0_SOINDEX_FOR_SQUARED_ORDERS(SQORDERS)
       END
@@ -569,8 +464,8 @@ C
         RETURN
       ENDIF
 
-      WRITE(*,*) 'ERROR:: Stopping function ML5_0_GET_SQUARED_ORDERS_FO'
-     $ //'R_SOINDEX'
+      WRITE(*,*) 'ERROR:: Stopping function ML5_0_GET_SQUARED_ORDERS_F'
+     $ //'OR_SOINDEX'
       WRITE(*,*) 'Could not find squared orders index ',SOINDEX
       STOP
 
@@ -609,15 +504,15 @@ C
         RETURN
       ENDIF
 
-      WRITE(*,*) 'ERROR:: Stopping function ML5_0_GET_ORDERS_FOR_AMPSOI'
-     $ //'NDEX'
+      WRITE(*,*) 'ERROR:: Stopping function ML5_0_GET_ORDERS_FOR_AMPSO'
+     $ //'INDEX'
       WRITE(*,*) 'Could not find amplitude split orders index ',SOINDEX
       STOP
 
       END SUBROUTINE
 
-C     This function is not directly useful, but included for
-C      completeness
+C     This function is not directly useful, but included for completene
+C     ss
       INTEGER FUNCTION ML5_0_SOINDEX_FOR_AMPORDERS(ORDERS)
 C     
 C     This functions returns the integer index identifying the
@@ -652,8 +547,8 @@ C
  1009   CONTINUE
       ENDDO
 
-      WRITE(*,*) 'ERROR:: Stopping function ML5_0_SOINDEX_FOR_AMPORDERS'
-     $ //''
+      WRITE(*,*) 'ERROR:: Stopping function ML5_0_SOINDEX_FOR_AMPORDER'
+     $ //'S'
       WRITE(*,*) 'Could not find squared orders ',(ORDERS(I),I=1,NSO)
       STOP
 

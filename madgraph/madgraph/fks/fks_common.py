@@ -101,7 +101,6 @@ def link_rb_configs(born_amp, real_amp, i, j, ij):
     good_diags = []
 
     # find the real diagrams that have i and j attached to the same vertex
-    # check that the order of the interaction is QCD
     # cehck also that the id of the third leg is id_ij
     real_confs_new = copy.deepcopy(real_confs)
     for diag in real_confs_new:
@@ -134,9 +133,17 @@ def link_rb_configs(born_amp, real_amp, i, j, ij):
     #  the same criterion. Once we removed i-j, we have to re-label the
     #  real legs to match the born numbering.
 
-    # now relabel the legs according to shift_dict
-    # replace from lower to higher leg number, in order not to 
-    # overwrite
+    legs = []
+
+    for d in good_diags: 
+        for v in d['diagram'].get('vertices'):
+            for l in v.get('legs'):
+                if l not in legs:
+                    legs.append(copy.copy(l))
+
+# now relabel the legs according to shift_dict
+# replace from lower to higher leg number, in order not to 
+# overwrite
     for ir in range(1, nlegs_r + 1):
         for good_diag in good_diags:
             for vert in good_diag['diagram'].get('vertices'):
@@ -149,31 +156,6 @@ def link_rb_configs(born_amp, real_amp, i, j, ij):
         return [{'real_conf': good_diags[0]['number'],
                           'born_conf': born_confs[0]['number']}]
 
-    # this is a rather ugly fix for some problems with 2->1 processes
-    # count the occurrence of the leg numbers:
-    if nlegs_b ==3:
-        for diag in good_diags:
-            counts = []
-            for il in range(nlegs_b):
-                counts.append([l['number'] for v in diag['diagram']['vertices'] for l in v['legs']].count(il+1))
-            # normally all the occurences should be odd (and !=0)
-            # (each entry should be 1 for the external leg +2 for each internal one)
-            even_list = [c / 2 * 2 == c for c in counts]
-            if any(even_list):
-                if not even_list.count(True) == 2:
-                    raise FKSProcessError('Linking: Don\'t know what to do in this case')
-                # find the leg number corresponding to the largest even count
-                ilmax = counts.index(max([c for c in counts if even_list[counts.index(c)]]))
-                ilmin = counts.index(min([c for c in counts if even_list[counts.index(c)]]))
-
-                # finally do the replacement in the first occurrence of ilmax
-                replaced = False
-                for vert in diag['diagram']['vertices']:
-                    for leg in vert['legs']:
-                        if leg['number'] == ilmax + 1 and not replaced:
-                            leg['number'] = ilmin + 1
-                            replaced = True
-
     # now create the tags
     born_tags = [FKSDiagramTag(d['diagram'], 
                                born_amp.get('process').get('model')) \
@@ -183,20 +165,13 @@ def link_rb_configs(born_amp, real_amp, i, j, ij):
     real_tags = [FKSDiagramTag(d['diagram'], 
                                real_amp.get('process').get('model')) \
                                for d in good_diags ]
-    real_tags = []
-    for d in good_diags:
-        tag = FKSDiagramTag(d['diagram'], real_amp.get('process').get('model'))
-        if not tag in real_tags:
-            real_tags.append(tag)
 
     # and compare them
     if len(born_tags) != len(real_tags):
-        print '\n'.join([str(r) for r in real_tags]) + '\n'
         raise FKSProcessError('Cannot map born/real configurations between \
-                %s and %s (i,j=%d,%d): not same number of configurations: %d %d' % \
+                %s and %s: not same number of configurations: %d %d' % \
                 (born_amp.get('process').nice_string().replace('Process:',''), 
                  real_amp.get('process').nice_string().replace('Process:',''),
-                               i,j,
                                len(born_tags),
                                len(real_tags)))
     

@@ -22,61 +22,6 @@ C     ----------
       CALL ML5_0_SLOOPMATRIX(P,ANS)
       END
 
-      LOGICAL FUNCTION ML5_0_IS_HEL_SELECTED(HELID)
-      IMPLICIT NONE
-C     
-C     CONSTANTS
-C     
-      INTEGER    NEXTERNAL
-      PARAMETER (NEXTERNAL=5)
-      INTEGER    NCOMB
-      PARAMETER (NCOMB=32)
-C     
-C     ARGUMENTS
-C     
-      INTEGER HELID
-C     
-C     LOCALS
-C     
-      INTEGER I,J
-      LOGICAL FOUNDIT
-C     
-C     GLOBALS
-C     
-      INTEGER HELC(NEXTERNAL,NCOMB)
-      COMMON/ML5_0_HELCONFIGS/HELC
-
-      INTEGER POLARIZATIONS(0:NEXTERNAL,0:5)
-      COMMON/ML5_0_BEAM_POL/POLARIZATIONS
-C     ----------
-C     BEGIN CODE
-C     ----------
-
-      ML5_0_IS_HEL_SELECTED = .TRUE.
-      IF (POLARIZATIONS(0,0).EQ.-1) THEN
-        RETURN
-      ENDIF
-
-      DO I=1,NEXTERNAL
-        IF (POLARIZATIONS(I,0).EQ.-1) THEN
-          CYCLE
-        ENDIF
-        FOUNDIT = .FALSE.
-        DO J=1,POLARIZATIONS(I,0)
-          IF (HELC(I,HELID).EQ.POLARIZATIONS(I,J)) THEN
-            FOUNDIT = .TRUE.
-            EXIT
-          ENDIF
-        ENDDO
-        IF(.NOT.FOUNDIT) THEN
-          ML5_0_IS_HEL_SELECTED = .FALSE.
-          RETURN
-        ENDIF
-      ENDDO
-      RETURN
-
-      END
-
       LOGICAL FUNCTION ML5_0_ISZERO(TOTEST, REFERENCE_VALUE, AMPLN)
       IMPLICIT NONE
 C     
@@ -102,17 +47,17 @@ C     BEGIN CODE
 C     ----------
       IF(ABS(REFERENCE_VALUE).EQ.0.0D0) THEN
         ML5_0_ISZERO=.FALSE.
-        WRITE(*,*) '##E02 ERRROR Reference value for comparison is'
-     $   //' zero.'
+        WRITE(*,*) '##E02 ERRROR Reference value for comparison i'
+     $   //'s zero.'
         STOP
       ELSE
         ML5_0_ISZERO=((ABS(TOTEST)/ABS(REFERENCE_VALUE)).LT.ZEROTHRES)
       ENDIF
       IF(AMPLN.NE.-1) THEN
         IF((.NOT.ML5_0_ISZERO).AND.(.NOT.S(AMPLN))) THEN
-          WRITE(*,*) '##W01 WARNING Contribution ',AMPLN,' is detected'
-     $     //' as contributing with CR=',(ABS(TOTEST)
-     $     /ABS(REFERENCE_VALUE)),' but is unstable.'
+          WRITE(*,*) '##W01 WARNING Contribution ',AMPLN,' is detecte'
+     $     //'d as contributing with CR=',(ABS(TOTEST)/ABS(REFERENCE_VA
+     $     LUE)),' but is unstable.'
         ENDIF
       ENDIF
 
@@ -128,7 +73,7 @@ C     Returns amplitude squared summed/avg over colors
 C     and helicities for the point in phase space P(0:3,NEXTERNAL)
 C     and external lines W(0:6,NEXTERNAL)
 C     
-C     Process: d u~ > m- vm~ g QCD<=1 QED<=2 [ virt = QCD ]
+C     Process: d u~ > m- vm~ g QED=2 QCD=1 [ virt = QCD ]
 C     
       IMPLICIT NONE
 C     
@@ -151,8 +96,6 @@ C
       PARAMETER (NLOOPAMPS=39, NCTAMPS=28)
       INTEGER    NEXTERNAL
       PARAMETER (NEXTERNAL=5)
-      INTEGER NINITIAL
-      PARAMETER (NINITIAL=2)
       INTEGER    NWAVEFUNCS
       PARAMETER (NWAVEFUNCS=10)
       INTEGER    NCOMB
@@ -224,8 +167,6 @@ C     the previous points
       DATA NEXTREF/ZERO/
       INTEGER NPSPOINTS
       DATA NPSPOINTS/0/
-      LOGICAL FOUND_VALID_REDUCTION_METHOD
-      DATA FOUND_VALID_REDUCTION_METHOD/.FALSE./
 
       REAL*8 ACC
       REAL*8 DP_RES(3,MAXSTABILITYLENGTH)
@@ -245,9 +186,6 @@ C      DIFFERENT EVALUATION METHODS IN ORDER TO ASSESS STABILITY.
       DATA IDEN/36/
       INTEGER HELAVGFACTOR
       DATA HELAVGFACTOR/4/
-C     For a 1>N process, them BEAMTWO_HELAVGFACTOR would be set to 1.
-      INTEGER BEAMS_HELAVGFACTOR(2)
-      DATA (BEAMS_HELAVGFACTOR(I),I=1,2)/2,2/
       LOGICAL DONEHELDOUBLECHECK
       DATA DONEHELDOUBLECHECK/.FALSE./
       INTEGER NEPS
@@ -264,11 +202,9 @@ C
 C     FUNCTIONS
 C     
       LOGICAL ML5_0_ISZERO
-      LOGICAL ML5_0_IS_HEL_SELECTED
 C     
 C     GLOBAL VARIABLES
 C     
-      INCLUDE 'process_info.inc'
       INCLUDE 'coupl.inc'
       INCLUDE 'mp_coupl.inc'
       INCLUDE 'MadLoopParams.inc'
@@ -371,26 +307,6 @@ C      subroutine of MadLoopCommons.dat
       LOGICAL ML_INIT
       COMMON/ML_INIT/ML_INIT
 
-C     This variable controls the *local* initialization of this
-C      particular SubProcess.
-C     For example, the reading of the filters must be done
-C      independently by each SubProcess.
-      LOGICAL LOCAL_ML_INIT
-      DATA LOCAL_ML_INIT/.TRUE./
-
-C     Variables related to turning off the Lorentz rotation test when
-C      spin-2 particles are external
-      LOGICAL WARNED_LORENTZ_STAB_TEST_OFF
-      DATA WARNED_LORENTZ_STAB_TEST_OFF/.FALSE./
-      INTEGER NROTATIONS_DP_BU,NROTATIONS_QP_BU
-
-C     This array specify potential special requirements on the
-C      helicities to
-C     consider. POLARIZATIONS(0,0) is -1 if there is not such
-C      requirement.
-      INTEGER POLARIZATIONS(0:NEXTERNAL,0:5)
-      COMMON/ML5_0_BEAM_POL/POLARIZATIONS
-
 C     ----------
 C     BEGIN CODE
 C     ----------
@@ -405,112 +321,59 @@ C     ----------
           DOUBLECHECKHELICITYFILTER = .FALSE.
         ENDIF
         ML_INIT = .FALSE.
-C       For now only CutTools is interfaced in the default mode.
-C        Samurai could follow.
-        DO I=1,SIZE(MLREDUCTIONLIB)
-          IF (MLREDUCTIONLIB(I).EQ.1) THEN
-            FOUND_VALID_REDUCTION_METHOD = .TRUE.
-          ENDIF
-        ENDDO
-        IF (.NOT.FOUND_VALID_REDUCTION_METHOD) THEN
-          WRITE(*,*) 'ERROR:: For now, only CutTools is interfaced to'
-     $     //' MadLoop in the non-optimized output.'
-          WRITE(*,*) 'ERROR:: Make sure to include 1 in the parameter'
-     $     //' MLReductionLib of the card MadLoopParams.dat'
-          STOP 1
-        ENDIF
-      ENDIF
-      IF (LOCAL_ML_INIT) THEN
-C       Setup the file paths
-        CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
-        CALL JOINPATH(MLPATH,PROC_PREFIX,TMP)
-        CALL JOINPATH(TMP,HELCONFIGFNAME,HELCONFIGFN)
-        CALL JOINPATH(TMP,LOOPFILTERFNAME,LOOPFILTERFN)
-        CALL JOINPATH(TMP,COLORNUMFNAME,COLORNUMFN)
-        CALL JOINPATH(TMP,COLORDENOMFNAME,COLORDENOMFN)
-        CALL JOINPATH(TMP,HELFILTERFNAME,HELFILTERFN)
-
-C       Make sure that the loop filter is disabled when there is
-C        spin-2 particles for 2>1 or 1>2 processes
-        IF(MAX_SPIN_EXTERNAL_PARTICLE.GT.3.AND.(NEXTERNAL.LE.3.AND.HELI
-     $CITYFILTERLEVEL.NE.0)) THEN
-          WRITE(*,*) '##INFO: Helicity filter deactivated for 2>1'
-     $     //' processes involving spin 2 particles.'
-          HELICITYFILTERLEVEL = 0
-C         We write a dummy filter for structural reasons here
-          OPEN(1, FILE=HELFILTERFN, ERR=6116, STATUS='NEW'
-     $     ,ACTION='WRITE')
-          DO I=1,NCOMB
-            WRITE(1,*) 'T'
-          ENDDO
- 6116     CONTINUE
-          CLOSE(1)
-        ENDIF
-
-        OPEN(1, FILE=COLORNUMFN, ERR=104, STATUS='OLD',          
-     $    ACTION='READ')
-        DO I=1,NLOOPAMPS
-          READ(1,*,END=105) (CF_N(I,J),J=1,NBORNAMPS)
-        ENDDO
-        GOTO 105
- 104    CONTINUE
-        STOP 'Color factors could not be initialized from file'
-     $   //' ML5_0_ColorNumFactors.dat. File not found'
- 105    CONTINUE
-        CLOSE(1)
-        OPEN(1, FILE=COLORDENOMFN, ERR=106, STATUS='OLD',          
-     $    ACTION='READ')
-        DO I=1,NLOOPAMPS
-          READ(1,*,END=107) (CF_D(I,J),J=1,NBORNAMPS)
-        ENDDO
-        GOTO 107
- 106    CONTINUE
-        STOP 'Color factors could not be initialized from file'
-     $   //' ML5_0_ColorDenomFactors.dat. File not found'
- 107    CONTINUE
-        CLOSE(1)
-        OPEN(1, FILE=HELCONFIGFN, ERR=108, STATUS='OLD',              
-     $       ACTION='READ')
-        DO H=1,NCOMB
-          READ(1,*,END=109) (HELC(I,H),I=1,NEXTERNAL)
-        ENDDO
-        GOTO 109
- 108    CONTINUE
-        STOP 'Color helictiy configurations could not be initialized'
-     $   //' from file ML5_0_HelConfigs.dat. File not found'
- 109    CONTINUE
-        CLOSE(1)
-        IF(BOOTANDSTOP) THEN
-          WRITE(*,*) '##Stopped by user request.'
-          STOP
-        ENDIF
-        LOCAL_ML_INIT = .FALSE.
       ENDIF
 
-C     Make sure that lorentz rotation tests are not used if there is
-C      external loop wavefunction of spin 2 and that one specific
-C      helicity is asked
-      NROTATIONS_DP_BU = NROTATIONS_DP
-      NROTATIONS_QP_BU = NROTATIONS_QP
-      IF(MAX_SPIN_EXTERNAL_PARTICLE.GT.3.AND.USERHEL.NE.-1) THEN
-        IF(.NOT.WARNED_LORENTZ_STAB_TEST_OFF) THEN
-          WRITE(*,*) '##WARNING: Evaluation of a specific helicity was'
-     $     //' asked for this PS point, and there is a spin-2 (or'
-     $     //' higher) particle in the external states.'
-          WRITE(*,*) '##WARNING: As a result, MadLoop disabled the'
-     $     //' Lorentz rotation test for this phase-space point only.'
-          WRITE(*,*) '##WARNING: Further warning of that type'
-     $     //' suppressed.'
-          WARNED_LORENTZ_STAB_TEST_OFF = .FALSE.
-        ENDIF
-        NROTATIONS_QP=0
-        NROTATIONS_DP=0
+C     Setup the file paths
+      CALL JOINPATH(MLPATH,PARAMFNAME,PARAMFN)
+      CALL JOINPATH(MLPATH,PROC_PREFIX,TMP)
+      CALL JOINPATH(TMP,HELCONFIGFNAME,HELCONFIGFN)
+      CALL JOINPATH(TMP,LOOPFILTERFNAME,LOOPFILTERFN)
+      CALL JOINPATH(TMP,COLORNUMFNAME,COLORNUMFN)
+      CALL JOINPATH(TMP,COLORDENOMFNAME,COLORDENOMFN)
+      CALL JOINPATH(TMP,HELFILTERFNAME,HELFILTERFN)
+
+      OPEN(1, FILE=COLORNUMFN, ERR=104, STATUS='OLD',          
+     $  ACTION='READ')
+      DO I=1,NLOOPAMPS
+        READ(1,*,END=105) (CF_N(I,J),J=1,NBORNAMPS)
+      ENDDO
+      GOTO 105
+ 104  CONTINUE
+      STOP 'Color factors could not be initialized from file ML5_0_Col'
+     $ //'orNumFactors.dat. File not found'
+ 105  CONTINUE
+      CLOSE(1)
+      OPEN(1, FILE=COLORDENOMFN, ERR=106, STATUS='OLD',          
+     $  ACTION='READ')
+      DO I=1,NLOOPAMPS
+        READ(1,*,END=107) (CF_D(I,J),J=1,NBORNAMPS)
+      ENDDO
+      GOTO 107
+ 106  CONTINUE
+      STOP 'Color factors could not be initialized from file ML5_0_Col'
+     $ //'orDenomFactors.dat. File not found'
+ 107  CONTINUE
+      CLOSE(1)
+      OPEN(1, FILE=HELCONFIGFN, ERR=108, STATUS='OLD',                
+     $   ACTION='READ')
+      DO H=1,NCOMB
+        READ(1,*,END=109) (HELC(I,H),I=1,NEXTERNAL)
+      ENDDO
+      GOTO 109
+ 108  CONTINUE
+      STOP 'Color helictiy configurations could not be initialize'
+     $ //'d from file ML5_0_HelConfigs.dat. File not found'
+ 109  CONTINUE
+      CLOSE(1)
+      IF(BOOTANDSTOP) THEN
+        WRITE(*,*) '##Stopped by user request.'
+        STOP
       ENDIF
 
       IF(NTRY.EQ.0) THEN
         CALL ML5_0_SET_N_EVALS(N_DP_EVAL,N_QP_EVAL)
-        HELDOUBLECHECKED=(.NOT.DOUBLECHECKHELICITYFILTER)
-     $   .OR.(HELICITYFILTERLEVEL.EQ.0)
+        HELDOUBLECHECKED=(.NOT.DOUBLECHECKHELICITYFILTER).OR.(HELICITYF
+     $   ILTERLEVEL.EQ.0)
         DO J=1,NCOMB
           DO I=1,NCTAMPS
             GOODAMP(I,J)=.TRUE.
@@ -589,23 +452,23 @@ C        trust the evaluation for checks.
         DONEHELDOUBLECHECK=.FALSE.
       ENDIF
 
-      CHECKPHASE=(NTRY.LE.CHECKCYCLE).AND.(((.NOT.FOUNDLOOPFILTER)
-     $ .AND.USELOOPFILTER).OR.(.NOT.FOUNDHELFILTER))
+      CHECKPHASE=(NTRY.LE.CHECKCYCLE).AND.(((.NOT.FOUNDLOOPFILTER
+     $ ).AND.USELOOPFILTER).OR.(.NOT.FOUNDHELFILTER))
 
       IF (WRITEOUTFILTERS) THEN
         IF ((.NOT. CHECKPHASE).AND.(.NOT.FOUNDHELFILTER)) THEN
-          OPEN(1, FILE=HELFILTERFN, ERR=110, STATUS='NEW'
-     $     ,ACTION='WRITE')
+          OPEN(1, FILE=HELFILTERFN, ERR=110, STATUS='NEW',ACTION='WRIT'
+     $     //'E')
           WRITE(1,*) (GOODHEL(I),I=1,NCOMB)
  110      CONTINUE
           CLOSE(1)
           FOUNDHELFILTER=.TRUE.
         ENDIF
 
-        IF ((.NOT. CHECKPHASE).AND.(.NOT.FOUNDLOOPFILTER)
-     $   .AND.USELOOPFILTER) THEN
-          OPEN(1, FILE=LOOPFILTERFN, ERR=111, STATUS='NEW'
-     $     ,ACTION='WRITE')
+        IF ((.NOT. CHECKPHASE).AND.(.NOT.FOUNDLOOPFILTER).AND.USELOOPFI
+     $   LTER) THEN
+          OPEN(1, FILE=LOOPFILTERFN, ERR=111, STATUS='NEW',ACTION='WRI'
+     $     //'TE')
           DO J=1,NCOMB
             WRITE(1,*) (GOODAMP(I,J),I=NCTAMPS+1,NLOOPAMPS)
           ENDDO
@@ -659,8 +522,8 @@ C        trust the evaluation for checks.
       ENDDO
 
       IF (IMPROVEPSPOINT.GE.0) THEN
-C       Make the input PS more precise (exact onshell and
-C        energy-momentum conservation)
+C       Make the input PS more precise (exact onshell and energy-moment
+C       um conservation)
         CALL ML5_0_IMPROVE_PS_POINT_PRECISION(PS)
       ENDIF
 
@@ -701,14 +564,7 @@ C     We chose to use the born evaluation for the reference
       VALIDH=-1
       DO H=1,NCOMB
         IF ((HELPICKED.EQ.H).OR.((HELPICKED.EQ.-1).AND.(CHECKPHASE.OR.(
-     $.NOT.HELDOUBLECHECKED).OR.GOODHEL(H)))) THEN
-
-C         Handle the possible requirement of specific polarizations
-          IF ((.NOT.CHECKPHASE).AND.HELDOUBLECHECKED.AND.POLARIZATIONS(
-     $0,0).EQ.0.AND.(.NOT.ML5_0_IS_HEL_SELECTED(H))) THEN
-            CYCLE
-          ENDIF
-
+     $   .NOT.HELDOUBLECHECKED).OR.GOODHEL(H)))) THEN
           IF (VALIDH.EQ.-1) VALIDH=H
           DO I=1,NEXTERNAL
             NHEL(I)=HELC(I,H)
@@ -750,17 +606,17 @@ C         Counter-term amplitude(s) for loop diagram number 4
 C         Counter-term amplitude(s) for loop diagram number 5
           CALL FFV2_0(W(1,1,H),W(1,8,H),W(1,7,H),R2_SXCW,AMPL(1,3))
 C         Counter-term amplitude(s) for loop diagram number 7
-          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2,4)
-     $     )
-          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2,5)
-     $     )
-          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2,6)
-     $     )
-          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2,7)
-     $     )
+          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2
+     $     ,4))
+          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2
+     $     ,5))
+          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2
+     $     ,6))
+          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2
+     $     ,7))
           CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQB,AMPL(1,8))
-          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2,9)
-     $     )
+          CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2
+     $     ,9))
           CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQT,AMPL(1,10))
           CALL FFV1_0(W(1,1,H),W(1,9,H),W(1,5,H),UV_GQQQ_1EPS,AMPL(2
      $     ,11))
@@ -833,14 +689,14 @@ C     Loop amplitude for loop diagram with ID 3
      $ ,MP__GC_5,1,1,1,29,AMPL(1,29),S(29))
 C     Loop amplitude for loop diagram with ID 4
       CALL ML5_0_LOOP_3_3(2,2,7,6,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
-     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
-     $ ,CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5
-     $ ,MP__GC_5,2,1,1,30,AMPL(1,30),S(30))
+     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
+     $ O,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,2,1,1,30
+     $ ,AMPL(1,30),S(30))
 C     Loop amplitude for loop diagram with ID 5
       CALL ML5_0_LOOP_3_3(3,1,7,8,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
-     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
-     $ ,CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5
-     $ ,MP__GC_5,2,1,1,31,AMPL(1,31),S(31))
+     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
+     $ O,KIND=16),GC_5,MP__GC_5,GC_47,MP__GC_47,GC_5,MP__GC_5,2,1,1,31
+     $ ,AMPL(1,31),S(31))
 C     Loop amplitude for loop diagram with ID 6
       CALL ML5_0_LOOP_4_4(4,1,2,5,7,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
@@ -849,9 +705,9 @@ C     Loop amplitude for loop diagram with ID 6
      $ ,1,32,AMPL(1,32),S(32))
 C     Loop amplitude for loop diagram with ID 7
       CALL ML5_0_LOOP_3_3(5,1,5,9,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
-     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
-     $ ,CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_4,MP__GC_4,GC_5
-     $ ,MP__GC_5,2,1,1,33,AMPL(1,33),S(33))
+     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
+     $ O,KIND=16),GC_5,MP__GC_5,GC_4,MP__GC_4,GC_5,MP__GC_5,2,1,1,33
+     $ ,AMPL(1,33),S(33))
 C     Loop amplitude for loop diagram with ID 8
       CALL ML5_0_LOOP_4_4(6,1,5,2,7,DCMPLX(ZERO),CMPLX(MP__ZERO
      $ ,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
@@ -866,9 +722,9 @@ C     Loop amplitude for loop diagram with ID 9
      $ ,1,35,AMPL(1,35),S(35))
 C     Loop amplitude for loop diagram with ID 10
       CALL ML5_0_LOOP_3_3(8,1,5,9,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
-     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO)
-     $ ,CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_5,MP__GC_5,GC_5
-     $ ,MP__GC_5,2,1,1,36,AMPL(1,36),S(36))
+     $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),DCMPLX(ZERO),CMPLX(MP__ZER
+     $ O,KIND=16),GC_5,MP__GC_5,GC_5,MP__GC_5,GC_5,MP__GC_5,2,1,1,36
+     $ ,AMPL(1,36),S(36))
 C     Loop amplitude for loop diagram with ID 11
       CALL ML5_0_LOOP_2_2(9,8,10,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16)
      $ ,DCMPLX(ZERO),CMPLX(MP__ZERO,KIND=16),GC_5,MP__GC_5,GC_5
@@ -915,9 +771,9 @@ C         SET THE HELICITY FILTER
                 WRITE(*,*) '##W02A WARNING Inconsistent helicity '
      $           ,HELPICKED
                 IF(HELINITSTARTOVER) THEN
-                  WRITE(*,*) '##I01 INFO Initialization starting over'
-     $             //' because of inconsistency in the helicity filter'
-     $             //' setup.'
+                  WRITE(*,*) '##I01 INFO Initialization starting ove'
+     $             //'r because of inconsistency in the helicit'
+     $             //'y filter setup.'
                   NTRY=0
                 ENDIF
               ENDIF
@@ -926,9 +782,9 @@ C         SET THE HELICITY FILTER
                 WRITE(*,*) '##W02B WARNING Inconsistent helicity '
      $           ,HELPICKED
                 IF(HELINITSTARTOVER) THEN
-                  WRITE(*,*) '##I01 INFO Initialization starting over'
-     $             //' because of inconsistency in the helicity filter'
-     $             //' setup.'
+                  WRITE(*,*) '##I01 INFO Initialization starting ove'
+     $             //'r because of inconsistency in the helicit'
+     $             //'y filter setup.'
                   NTRY=0
                 ELSE
                   GOODHEL(HELPICKED)=.TRUE.
@@ -948,9 +804,9 @@ C         SET THE LOOP FILTER
                   WRITE(*,*) '##W02 WARNING Inconsistent loop amp ',I
      $             ,' for helicity ',HELPICKED,'.'
                   IF(LOOPINITSTARTOVER) THEN
-                    WRITE(*,*) '##I01 INFO Initialization starting'
-     $               //' over because of inconsistency in the loop'
-     $               //' filter setup.'
+                    WRITE(*,*) '##I01 INFO Initialization startin'
+     $               //'g over because of inconsistency in the loo'
+     $               //'p filter setup.'
                     NTRY=0
                   ELSE
                     GOODAMP(I,HELPICKED)=.TRUE.
@@ -961,24 +817,24 @@ C         SET THE LOOP FILTER
           ENDIF
         ELSEIF (.NOT.HELDOUBLECHECKED)THEN
           IF ((.NOT.GOODHEL(HELPICKED)).AND.(.NOT.ML5_0_ISZERO(ABS(ANS(
-     $1))+ABS(ANS(2))+ABS(ANS(3)),REF/DBLE(NCOMB),-1))) THEN
-            WRITE(*,*) '##W15 Helicity filter could not be'
-     $       //' successfully double checked.'
-            WRITE(*,*) '##One reason for this is that you have changed'
-     $       //' sensible parameters which affected what are the zero'
-     $       //' helicity configurations.'
-            WRITE(*,*) '##MadLoop will try to reset the Helicity'
-     $       //' filter with the next PS points it receives.'
+     $     1))+ABS(ANS(2))+ABS(ANS(3)),REF/DBLE(NCOMB),-1))) THEN
+            WRITE(*,*) '##W15 Helicity filter could not be successfull'
+     $       //'y double checked.'
+            WRITE(*,*) '##One reason for this is that you have change'
+     $       //'d sensible parameters which affected what are the zer'
+     $       //'o helicity configurations.'
+            WRITE(*,*) '##MadLoop will try to reset the Helicit'
+     $       //'y filter with the next PS points it receives.'
             NTRY=0
             OPEN(30,FILE=HELFILTERFN,ERR=349)
  349        CONTINUE
             CLOSE(30,STATUS='delete')
           ENDIF
 C         SET HELDOUBLECHECKED TO .TRUE. WHEN DONE
-C         even if it failed we do not want to redo the check
-C          afterwards if HELINITSTARTOVER=.FALSE.
+C         even if it failed we do not want to redo the check afterwards
+C          if HELINITSTARTOVER=.FALSE.
           IF (HELPICKED.EQ.NCOMB.AND.(NTRY.NE.0.OR..NOT.HELINITSTARTOVE
-     $R)) THEN
+     $     R)) THEN
             DONEHELDOUBLECHECK=.TRUE.
           ENDIF
         ENDIF
@@ -993,14 +849,14 @@ C       GOTO NEXT HELICITY OR FINISH
           ANS(2)=BUFFR(2)
           ANS(3)=BUFFR(3)
 C         We add one here to the number of PS points used for building
-C          the reference scale for comparison (used only for
-C          loop-induced processes).
+C          the reference scale for comparison (used only for loop-induc
+C         ed processes).
           NPSPOINTS = NPSPOINTS+1
           IF(NTRY.EQ.0) THEN
             NATTEMPTS=NATTEMPTS+1
             IF(NATTEMPTS.EQ.MAXATTEMPTS) THEN
-              WRITE(*,*) '##E01 ERROR Could not initialize the filters'
-     $         //' in ',MAXATTEMPTS,' trials'
+              WRITE(*,*) '##E01 ERROR Could not initialize the filter'
+     $         //'s in ',MAXATTEMPTS,' trials'
               STOP
             ENDIF
           ENDIF
@@ -1012,18 +868,11 @@ C          loop-induced processes).
         ANS(K)=ANS(K)/DBLE(IDEN)
         IF (USERHEL.NE.-1) THEN
           ANS(K)=ANS(K)*HELAVGFACTOR
-        ELSE
-          DO J=1,NINITIAL
-            IF (POLARIZATIONS(J,0).NE.-1) THEN
-              ANS(K)=ANS(K)*BEAMS_HELAVGFACTOR(J)
-              ANS(K)=ANS(K)/POLARIZATIONS(J,0)
-            ENDIF
-          ENDDO
         ENDIF
       ENDDO
 
-      IF(.NOT.CHECKPHASE.AND.HELDOUBLECHECKED.AND.(CTMODERUN.LE.-1))
-     $  THEN
+      IF(.NOT.CHECKPHASE.AND.HELDOUBLECHECKED.AND.(CTMODERUN.LE.
+     $ -1)) THEN
         STAB_INDEX=STAB_INDEX+1
         IF(DOING_QP_EVALS) THEN
           QP_RES(1,STAB_INDEX)=ANS(1)
@@ -1053,7 +902,7 @@ C        METHODS
         CTMODE=BASIC_CT_MODE
 
         IF(.NOT.EVAL_DONE(3).AND. ((DOING_QP_EVALS.AND.NROTATIONS_QP.GE
-     $.1).OR.((.NOT.DOING_QP_EVALS).AND.NROTATIONS_DP.GE.1)) ) THEN
+     $   .1).OR.((.NOT.DOING_QP_EVALS).AND.NROTATIONS_DP.GE.1)) ) THEN
           EVAL_DONE(3)=.TRUE.
           CALL ML5_0_ROTATE_PS(PS,P,1)
           IF (DOING_QP_EVALS) CALL ML5_0_MP_ROTATE_PS(MP_PS,MP_P,1)
@@ -1061,7 +910,7 @@ C        METHODS
         ENDIF
 
         IF(.NOT.EVAL_DONE(4).AND. ((DOING_QP_EVALS.AND.NROTATIONS_QP.GE
-     $.2).OR.((.NOT.DOING_QP_EVALS).AND.NROTATIONS_DP.GE.2)) ) THEN
+     $   .2).OR.((.NOT.DOING_QP_EVALS).AND.NROTATIONS_DP.GE.2)) ) THEN
           EVAL_DONE(4)=.TRUE.
           CALL ML5_0_ROTATE_PS(PS,P,2)
           IF (DOING_QP_EVALS) CALL ML5_0_MP_ROTATE_PS(MP_PS,MP_P,2)
@@ -1081,8 +930,8 @@ C       END OF THE DEFINITIONS OF THE DIFFERENT EVALUATION METHODS
             RET_CODE_H=4
             NEPS=NEPS+1
             CALL ML5_0_COMPUTE_ACCURACY(DP_RES,N_DP_EVAL,TEMP1,TEMP)
-            WRITE(*,*) '##W03 WARNING An unstable PS point was',      
-     $        ' detected.'
+            WRITE(*,*) '##W03 WARNING An unstable PS point was'
+     $       ,       ' detected.'
             WRITE(*,*) '##(DP,QP) accuracies : (',TEMP1,',',ACC,')'
             WRITE(*,*) '##Best estimate (fin,1eps,2eps) :',(ANS(I),I=1
      $       ,3)
@@ -1099,8 +948,8 @@ C       END OF THE DEFINITIONS OF THE DIFFERENT EVALUATION METHODS
               ENDDO
             ENDIF
             IF(NEPS.EQ.10) THEN
-              WRITE(*,*) '##Further output of the details of these'
-     $         //' unstable PS points will now be suppressed.'
+              WRITE(*,*) '##Further output of the details of thes'
+     $         //'e unstable PS points will now be suppressed.'
             ENDIF
           ENDIF
         ELSE
@@ -1150,11 +999,6 @@ C      user
         CTMODEINIT=CTMODEINIT_BU
       ENDIF
 
-C     Reinitialize the Lorentz test if it had been disabled because
-C      spin-2 particles are in the external states.
-      NROTATIONS_DP = NROTATIONS_DP_BU
-      NROTATIONS_QP = NROTATIONS_QP_BU
-
 C     Conform to the returned synthax of split orders even though the
 C      default output does not support it (this then done only for
 C      compatibility purpose).
@@ -1180,8 +1024,8 @@ C      bypassed
 
       END
 
-      SUBROUTINE ML5_0_COMPUTE_ACCURACY(FULLLIST, LENGTH, ACC,
-     $  ESTIMATE)
+      SUBROUTINE ML5_0_COMPUTE_ACCURACY(FULLLIST, LENGTH, ACC
+     $ , ESTIMATE)
       IMPLICIT NONE
 C     
 C     PARAMETERS 
@@ -1307,9 +1151,9 @@ C
 C     ----------
 C     BEGIN CODE
 C     ----------
-      WRITE(*,*) '##WARNING:: Ignored, the possibility of selecting'
-     $ //' specific squared order contributions is not available in'
-     $ //' the default mode.'
+      WRITE(*,*) '##WARNING:: Ignored, the possibility of selectin'
+     $ //'g specific squared order contributions is not available i'
+     $ //'n the default mode.'
 
       END
 
@@ -1359,120 +1203,6 @@ C
 
       END
 
-      SUBROUTINE ML5_0_SET_LEG_POLARIZATION(LEG_ID, LEG_POLARIZATION)
-      IMPLICIT NONE
-C     
-C     ARGUMENTS
-C     
-      INTEGER LEG_ID
-      INTEGER LEG_POLARIZATION
-C     
-C     LOCALS
-C     
-      INTEGER I
-      INTEGER LEG_POLARIZATIONS(0:5)
-C     ----------
-C     BEGIN CODE
-C     ----------
-
-      IF (LEG_POLARIZATION.EQ.-10000) THEN
-        LEG_POLARIZATIONS(0)=-1
-        DO I=1,5
-          LEG_POLARIZATIONS(I)=-10000
-        ENDDO
-      ELSE
-        LEG_POLARIZATIONS(0)=1
-        LEG_POLARIZATIONS(1)=LEG_POLARIZATION
-        DO I=2,5
-          LEG_POLARIZATIONS(I)=-10000
-        ENDDO
-      ENDIF
-      CALL ML5_0_SET_LEG_POLARIZATIONS(LEG_ID,LEG_POLARIZATIONS)
-
-      END
-
-      SUBROUTINE ML5_0_SET_LEG_POLARIZATIONS(LEG_ID, LEG_POLARIZATIONS)
-      IMPLICIT NONE
-C     
-C     CONSTANTS
-C     
-      INTEGER    NEXTERNAL
-      PARAMETER (NEXTERNAL=5)
-      INTEGER NPOLENTRIES
-      PARAMETER (NPOLENTRIES=(NEXTERNAL+1)*6)
-      INTEGER    NCOMB
-      PARAMETER (NCOMB=32)
-C     
-C     ARGUMENTS
-C     
-      INTEGER LEG_ID
-      INTEGER LEG_POLARIZATIONS(0:5)
-C     
-C     LOCALS
-C     
-      INTEGER I,J
-      LOGICAL ALL_SUMMED_OVER
-C     
-C     GLOBALS
-C     
-C     Entry 0 of the first dimension is all -1 if there is no
-C      polarization requirement.
-C     Then for each leg with ID legID, it is either summed over if
-C     POLARIZATIONS(legID,0) is -1, or the list of helicity considered
-C      for that
-C     leg is POLARIZATIONS(legID,1: POLARIZATIONS(legID,0)   ).
-      INTEGER POLARIZATIONS(0:NEXTERNAL,0:5)
-      DATA ((POLARIZATIONS(I,J),I=0,NEXTERNAL),J=0,5)/NPOLENTRIES*-1/
-      COMMON/ML5_0_BEAM_POL/POLARIZATIONS
-
-      INTEGER BORN_POLARIZATIONS(0:NEXTERNAL,0:5)
-      COMMON/ML5_0_BORN_BEAM_POL/BORN_POLARIZATIONS
-
-C     ----------
-C     BEGIN CODE
-C     ----------
-
-      IF (LEG_POLARIZATIONS(0).EQ.-1) THEN
-        DO I=0,5
-          POLARIZATIONS(LEG_ID,I)=-1
-        ENDDO
-      ELSE
-        DO I=0,LEG_POLARIZATIONS(0)
-          POLARIZATIONS(LEG_ID,I)=LEG_POLARIZATIONS(I)
-        ENDDO
-        DO I=LEG_POLARIZATIONS(0)+1,5
-          POLARIZATIONS(LEG_ID,I)=-10000
-        ENDDO
-      ENDIF
-
-      ALL_SUMMED_OVER = .TRUE.
-      DO I=1,NEXTERNAL
-        IF (POLARIZATIONS(I,0).NE.-1) THEN
-          ALL_SUMMED_OVER = .FALSE.
-          EXIT
-        ENDIF
-      ENDDO
-      IF (ALL_SUMMED_OVER) THEN
-        DO I=0,5
-          POLARIZATIONS(0,I)=-1
-        ENDDO
-      ELSE
-        DO I=0,5
-          POLARIZATIONS(0,I)=0
-        ENDDO
-      ENDIF
-
-      DO I=0,NEXTERNAL
-        DO J=0,5
-          BORN_POLARIZATIONS(I,J) = POLARIZATIONS(I,J)
-        ENDDO
-      ENDDO
-
-
-      RETURN
-
-      END
-
       SUBROUTINE ML5_0_SLOOPMATRIXHEL_THRES(P,HEL,ANS,PREC_ASKED
      $ ,PREC_FOUND,RET_CODE)
       IMPLICIT NONE
@@ -1509,8 +1239,8 @@ C     BEGIN CODE
 C     ----------
       USER_STAB_PREC = PREC_ASKED
       CALL ML5_0_SLOOPMATRIXHEL(P,HEL,ANS)
-      IF(ALWAYS_TEST_STABILITY.AND.(H.EQ.1.OR.ACCURACY(0).LT.0.0D0))
-     $  THEN
+      IF(ALWAYS_TEST_STABILITY.AND.(H.EQ.1.OR.ACCURACY(0).LT.0.0D0)
+     $ ) THEN
         BYPASS_CHECK = .TRUE.
         CALL ML5_0_SLOOPMATRIXHEL(P,HEL,ANS)
         BYPASS_CHECK = .FALSE.
@@ -1532,8 +1262,8 @@ C     Reset it to default value not to affect next runs
      $ ,RET_CODE)
 C     
 C     Inputs are:
-C     P(0:3, Nexternal)  double  :: Kinematic configuration
-C      (E,px,py,pz)
+C     P(0:3, Nexternal)  double  :: Kinematic configuration (E,px,py,pz
+C     )
 C     PEC_ASKED          double  :: Target relative accuracy, -1 for
 C      default
 C     
@@ -1605,8 +1335,8 @@ C     BEGIN CODE
 C     ----------
       USER_STAB_PREC = PREC_ASKED
       CALL ML5_0_SLOOPMATRIX(P,ANS)
-      IF(ALWAYS_TEST_STABILITY.AND.(H.EQ.1.OR.ACCURACY(0).LT.0.0D0))
-     $  THEN
+      IF(ALWAYS_TEST_STABILITY.AND.(H.EQ.1.OR.ACCURACY(0).LT.0.0D0)
+     $ ) THEN
         BYPASS_CHECK = .TRUE.
         CALL ML5_0_SLOOPMATRIX(P,ANS)
         BYPASS_CHECK = .FALSE.

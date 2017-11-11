@@ -50,7 +50,6 @@ c
       double precision p1_cnt_save(0:3,nexternal,-2:2),p_born_save(0:3
      &     ,nexternal-1),p_ev_red1(0:3,nexternal-1)
       integer ninvar, ndim, iconfig, minconfig, maxconfig
-      common/tosigint/ndim
       integer ncall,itmax,nconfigs,ntry, ngraphs
       integer icb(nexternal-1,maxswitch),jc(12),nswitch
       double precision saveamp(maxamps)
@@ -125,8 +124,6 @@ c helicity stuff
       logical nbody
       common/cnbody/nbody
 
-      logical new_point
-      common /c_new_point/new_point
 c-----
 c  Begin Code
 c-----
@@ -212,14 +209,12 @@ c Set-up helicities
       do j=1,ndim
          x(j)=ran2()
       enddo
-      new_point=.true.
       call generate_momenta(ndim,iconfig,wgt,x,p)
       do while ((.not.passcuts(p,rwgt) .or. wgt.lt.0 .or. p(0,1).le.0d0
      &           .or. p_born(0,1).le.0d0) .and. ntry.lt.10000)
          do j=1,ndim
             x(j)=ran2()
          enddo
-         new_point=.true.
          wgt=1d0
          call generate_momenta(ndim,iconfig,wgt,x,p)
          ntry=ntry+1
@@ -370,9 +365,9 @@ c
       integer maxflow
       parameter (maxflow=999)
       integer idup(nexternal,maxproc),mothup(2,nexternal,maxproc),
-     &     icolup(2,nexternal,maxflow),niprocs
+     &     icolup(2,nexternal,maxflow)
 c      include 'leshouche.inc'
-      common /c_leshouche_inc/idup,mothup,icolup,niprocs
+      common /c_leshouche_inc/idup,mothup,icolup
 c------
 c Begin Code
 c-----

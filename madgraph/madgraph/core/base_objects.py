@@ -237,7 +237,7 @@ class Particle(PhysicsObject):
         elif name == 'goldstone':
             return self['type'] == 'goldstone'
         elif name == 'propagating':
-            return self['line'] not in ['None',None] 
+            return self['line'] is not None
         else:
             return super(Particle, self).get(name)
 
@@ -348,7 +348,7 @@ class Particle(PhysicsObject):
             if not isinstance(value, str):
                 raise self.PhysicsObjectError, \
                     "Line type %s is not a string" % repr(value)
-            if value not in ['None','dashed', 'straight', 'wavy', 'curly', 'double','swavy','scurly','dotted']:
+            if value not in ['dashed', 'straight', 'wavy', 'curly', 'double','swavy','scurly','dotted']:
                 raise self.PhysicsObjectError, \
                    "Line type %s is unknown" % value
 
@@ -1021,8 +1021,6 @@ class InteractionList(PhysicsObjectList):
 class Model(PhysicsObject):
     """A class to store all the model information."""
     
-    mg5_name = False #store if particle name follow mg5 convention
-    
     def default_setup(self):
 
         self['name'] = ""
@@ -1046,7 +1044,6 @@ class Model(PhysicsObject):
         self['case_sensitive'] = True
         # attribute which might be define if needed
         #self['name2pdg'] = {'name': pdg}
-        
         
 
     def filter(self, name, value):
@@ -1145,7 +1142,6 @@ class Model(PhysicsObject):
         if name == 'modelpath':
             modeldir = self.get('version_tag').rsplit('##',1)[0]
             if os.path.exists(modeldir):
-                modeldir = os.path.expanduser(modeldir)
                 return modeldir
             else:
                 raise Exception, "path %s not valid anymore." % modeldir
@@ -1161,7 +1157,6 @@ class Model(PhysicsObject):
                 raise Exception, "path %s not valid anymore" % modeldir
             modeldir = os.path.dirname(modeldir)
             modeldir = pjoin(modeldir, modelname)
-            modeldir = os.path.expanduser(modeldir)
             return modeldir
         elif name == 'restrict_name':
             modeldir = self.get('version_tag').rsplit('##',1)[0]
@@ -1254,7 +1249,7 @@ class Model(PhysicsObject):
             if isinstance(id, int):
                 try:
                     return self.get("particle_dict")[id]
-                except Exception, error:
+                except Exception,error:
                     return None
             else:
                 if not hasattr(self, 'name2part'):
@@ -1270,8 +1265,9 @@ class Model(PhysicsObject):
         self.name2part = {}
         for part in self.get("particle_dict").values():
             self.name2part[part.get('name')] = part
-            self.name2part[part.get('antiname')] = part
+        
             
+
     def get_lorentz(self, name):
         """return the lorentz object from the associate name"""
         if hasattr(self, 'lorentz_name2obj'):
@@ -1433,9 +1429,7 @@ class Model(PhysicsObject):
     def pass_particles_name_in_mg_default(self):
         """Change the name of the particles such that all SM and MSSM particles
         follows the MG convention"""
-        
-        self.mg5_name = True
-        
+
         # Check that default name/antiname is not already use 
         def check_name_free(self, name):
             """ check if name is not use for a particle in the model if it is 
@@ -1586,20 +1580,15 @@ class Model(PhysicsObject):
         return [c for c in range(1, len(self.get('particles')) + 1) if \
                 c not in self.get('particle_dict').keys()][0]
                 
-
-    def write_param_card(self, filepath=None):
+    def write_param_card(self):
         """Write out the param_card, and return as string."""
         
         import models.write_param_card as writer
-        if not filepath:
-            out = StringIO.StringIO() # it's suppose to be written in a file
-        else:
-            out = filepath
-        param = writer.ParamCardWriter(self, filepath=out)
-        if not filepath:
-            return out.getvalue()
-        else:
-            return param
+        out = StringIO.StringIO() # it's suppose to be written in a file
+        param = writer.ParamCardWriter(self)
+        param.define_output_file(out)
+        param.write_card()
+        return out.getvalue()
         
     @ staticmethod
     def load_default_name():
@@ -2682,22 +2671,6 @@ class DiagramList(PhysicsObjectList):
                     break
         return new_diag_list
 
-    def filter_constrained_orders(self, order, value, operator):
-        """ This function modifies the current object and remove the diagram
-        which do not obey the condition """ 
-        
-        new = []
-        for tested_diag in self:
-            if operator == '==':
-                if tested_diag['orders'][order] == value:
-                    new.append(tested_diag)
-            elif operator == '>':
-                if tested_diag['orders'][order] > value:
-                    new.append(tested_diag)                
-        self[:] = new
-        return self
-
-
     def get_min_order(self,order):
         """ Return the order of the diagram in the list with the mimimum coupling
         order for the coupling specified """
@@ -2770,8 +2743,6 @@ class Process(PhysicsObject):
         # in the user input. This choice is stored in the dictionary below.
         # Notice that the upper bound is the default
         self['sqorders_types'] = {}
-        # other type of constraint at amplitude level
-        self['constrained_orders'] = {} # {QED: (4,'>')}
         self['has_born'] = True
         # The NLO_mode is always None for a tree-level process and can be
         # 'all', 'real', 'virt' for a loop process.
@@ -2797,11 +2768,6 @@ class Process(PhysicsObject):
 
         if name in ['orders', 'overall_orders','squared_orders']:
             Interaction.filter(Interaction(), 'orders', value)
-
-        if name == 'constrained_orders':
-            if not isinstance(value, dict):
-                raise self.PhysicsObjectError, \
-                        "%s is not a valid dictionary" % str(value)            
 
         if name == 'sqorders_types':
             if not isinstance(value, dict):
@@ -2953,23 +2919,19 @@ class Process(PhysicsObject):
         """Return process property names as a nicely sorted list."""
 
         return ['legs', 'orders', 'overall_orders', 'squared_orders',
-                'constrained_orders',
                 'model', 'id', 'required_s_channels', 
                 'forbidden_onsh_s_channels', 'forbidden_s_channels',
                 'forbidden_particles', 'is_decay_chain', 'decay_chains',
                 'legs_with_decays', 'perturbation_couplings', 'has_born', 
                 'NLO_mode','split_orders']
 
-    def nice_string(self, indent=0, print_weighted = True, prefix=True):
+    def nice_string(self, indent=0, print_weighted = True):
         """Returns a nicely formated string about current process
         content. Since the WEIGHTED order is automatically set and added to 
         the user-defined list of orders, it can be ommitted for some info
         displays."""
 
-        if prefix:
-            mystr = " " * indent + "Process: "
-        else:
-            mystr = ""
+        mystr = " " * indent + "Process: "
         prevleg = None
         for leg in self['legs']:
             mypart = self['model'].get('particle_dict')[leg['id']]
@@ -2992,33 +2954,9 @@ class Process(PhysicsObject):
 
         # Add orders
         if self['orders']:
-            to_add = []
-            for key in sorted(self['orders'].keys()):
-                if not print_weighted and key == 'WEIGHTED':
-                    continue
-                value = int(self['orders'][key])
-                if key in self['squared_orders']:
-                    if self.get_squared_order_type(key) in ['<=', '==', '='] and \
-                        self['squared_orders'][key] == value:
-                        continue 
-                    if self.get_squared_order_type(key) in ['>'] and value == 99:
-                        continue
-                if key in self['constrained_orders']:
-                    if value == self['constrained_orders'][key][0] and\
-                       self['constrained_orders'][key][1] in ['=', '<=', '==']:
-                        continue
-                if value == 0:
-                    to_add.append('%s=0' % key)
-                else:
-                    to_add.append('%s<=%s' % (key,value))
-                 
-            if to_add:
-                mystr = mystr + " ".join(to_add) + ' '
-
-        if self['constrained_orders']:
-            mystr = mystr + " ".join('%s%s%d' % (key, 
-              self['constrained_orders'][key][1], self['constrained_orders'][key][0]) 
-                    for key in sorted(self['constrained_orders'].keys()))  + ' '
+            mystr = mystr + " ".join([key + '=' + repr(self['orders'][key]) \
+              for key in self['orders'] if (print_weighted or key!='WEIGHTED') \
+              and not key in self['squared_orders'].keys()]) + ' '
 
         # Add perturbation_couplings
         if self['perturbation_couplings']:
@@ -3034,20 +2972,10 @@ class Process(PhysicsObject):
 
         # Add squared orders
         if self['squared_orders']:
-            to_add = []
-            for key in sorted(self['squared_orders'].keys()):
-                if not print_weighted and key == 'WEIGHTED':
-                    continue
-                if key in self['constrained_orders']:
-                    if self['constrained_orders'][key][0] == self['squared_orders'][key]/2 and \
-                       self['constrained_orders'][key][1] == self.get_squared_order_type(key):
-                        continue
-                to_add.append(key + '^2%s%d'%\
-                (self.get_squared_order_type(key),self['squared_orders'][key]))
-            
-            if to_add:
-                mystr = mystr + " ".join(to_add) + ' '
-            
+            mystr = mystr + " ".join([key + '^2%s%d'%\
+                (self.get_squared_order_type(key),self['squared_orders'][key]) \
+              for key in self['squared_orders'].keys() \
+                                    if print_weighted or key!='WEIGHTED']) + ' '
 
         # Add forbidden s-channels
         if self['forbidden_onsh_s_channels']:
@@ -3665,42 +3593,11 @@ class ProcessDefinition(Process):
 
         return max_order_now, particles, hierarchy
 
-    def __iter__(self):
-        """basic way to loop over all the process definition. 
-           not used by MG which used some smarter version (use by ML)"""
-        
-        isids = [leg['ids'] for leg in self['legs'] \
-                 if leg['state'] == False]
-        fsids = [leg['ids'] for leg in self['legs'] \
-                 if leg['state'] == True]
-
-        red_isidlist = []
-        # Generate all combinations for the initial state
-        for prod in itertools.product(*isids):
-            islegs = [Leg({'id':id, 'state': False}) for id in prod]  
-            if tuple(sorted(prod)) in red_isidlist:
-                    continue        
-            red_isidlist.append(tuple(sorted(prod)))      
-            red_fsidlist = []
-            for prod in itertools.product(*fsids):
-                # Remove double counting between final states
-                if tuple(sorted(prod)) in red_fsidlist:
-                    continue        
-                red_fsidlist.append(tuple(sorted(prod)))
-                leg_list = [copy.copy(leg) for leg in islegs]
-                leg_list.extend([Leg({'id':id, 'state': True}) for id in prod])
-                legs = LegList(leg_list)
-                process = self.get_process_with_legs(legs)
-                yield process
-
-    def nice_string(self, indent=0, print_weighted=False, prefix=True):
+    def nice_string(self, indent=0, print_weighted=False):
         """Returns a nicely formated string about current process
         content"""
 
-        if prefix:
-            mystr = " " * indent + "Process: "
-        else:
-            mystr=""
+        mystr = " " * indent + "Process: "
         prevleg = None
         for leg in self['legs']:
             myparts = \
@@ -3747,11 +3644,6 @@ class ProcessDefinition(Process):
         if self['orders']:
             mystr = mystr + " ".join([key + '=' + repr(self['orders'][key]) \
                        for key in sorted(self['orders'])]) + ' '
-
-        if self['constrained_orders']:
-            mystr = mystr + " ".join('%s%s%d' % (key, operator, value) for 
-                                     (key,(value, operator)) 
-                                   in self['constrained_orders'].items()) + ' '
 
         # Add perturbation_couplings
         if self['perturbation_couplings']:
@@ -3801,7 +3693,6 @@ class ProcessDefinition(Process):
             'orders': self.get('orders'),
             'sqorders_types': self.get('sqorders_types'),
             'squared_orders': self.get('squared_orders'),
-            'constrained_orders': self.get('constrained_orders'),
             'has_born': self.get('has_born'),
             'required_s_channels': self.get('required_s_channels'),
             'forbidden_onsh_s_channels': self.get('forbidden_onsh_s_channels'),            

@@ -6,7 +6,8 @@ C CONSTANTS
 C 
       INTEGER    NLOOPGROUPS
       PARAMETER (NLOOPGROUPS=%(nloop_groups)d)
-      include 'loop_max_coefs.inc'
+      INTEGER LOOPMAXCOEFS
+	  PARAMETER (LOOPMAXCOEFS=%(loop_max_coefs)d)
 C     These are constants related to the split orders
       INTEGER    NSQUAREDSO
 	  PARAMETER (NSQUAREDSO=%(nSquaredSO)d)
@@ -54,7 +55,8 @@ C
       PARAMETER (NLOOPGROUPS=%(nloop_groups)d)
 	  INTEGER    NEXTERNAL
       PARAMETER (NEXTERNAL=%(nexternal)d)
-      include 'loop_max_coefs.inc'
+	  INTEGER LOOPMAXCOEFS
+	  PARAMETER (LOOPMAXCOEFS=%(loop_max_coefs)d)
 C     These are constants related to the split orders
       INTEGER    NSQUAREDSO
 	  PARAMETER (NSQUAREDSO=%(nSquaredSO)d)

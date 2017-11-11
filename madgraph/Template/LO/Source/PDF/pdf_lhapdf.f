@@ -11,7 +11,6 @@ c
       INTEGER IH,I
       double precision  photon
       LOGICAL has_photon
-      double precision epa_electron,epa_proton
 C
 C     Include
 C
@@ -29,11 +28,11 @@ C
          do i=-6,6
             pdf(i)=f(i)/x
          enddo
-      elseif(ih .eq. 2) then  !from a proton without breaking
-          pdf(7) = epa_proton(x, q * q)
       else
          write (*,*) 'beam type not supported in lhadpf'
-         stop 1
+         do i=-6,6
+            pdf(i)=0d0
+         enddo
       endif
 
       return	

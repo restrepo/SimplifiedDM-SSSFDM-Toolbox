@@ -49,7 +49,8 @@ c
       integer nwgt,max_weight,nwgt_analysis
       common/cnwgt/nwgt
       common/c_analysis/nwgt_analysis
-      character*50 weights_info(max_weight_shower)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
+      character*15 weights_info(max_weight)
       common/cwgtsinfo/weights_info
 c Initialize histograms
       call HwU_inithist(nwgt,weights_info)
@@ -111,10 +112,7 @@ C----------------------------------------------------------------------
       DATA XME/5.11D-4/
       integer nwgt_analysis,max_weight
       common/c_analysis/nwgt_analysis
-      integer maxRWGT
-      parameter (maxRWGT=100)
-      double precision wgtxsecRWGT(maxRWGT)
-      parameter (max_weight=maxscales*maxscales+maxpdfs+maxRWGT+1)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
       double precision ww(max_weight),www(max_weight)
       common/cww/ww
 c
@@ -125,7 +123,7 @@ c
       ENDIF
 c
 c CHOOSE IDENT=24 FOR W+, IDENT=-24 FOR W-, IDENT=23 FOR Z0
-      IDENT=23
+      IDENT=24
 C INCOMING PARTONS MAY TRAVEL IN THE SAME DIRECTION: IT''S A POWER-SUPPRESSED
 C EFFECT, SO THROW THE EVENT AWAY
       IF(SIGN(1.D0,PHEP(3,4)).EQ.SIGN(1.D0,PHEP(3,5)))THEN

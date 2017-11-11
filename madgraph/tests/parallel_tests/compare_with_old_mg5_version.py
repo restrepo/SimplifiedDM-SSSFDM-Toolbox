@@ -38,7 +38,7 @@ class OLDMG5Comparator(unittest.TestCase):
     """A class to compare the value of a old MG5 version and the current one"""
     
     old_mg5 = None # link to the previous version of MG5 (prevent multiple build)
-    reference_number = 263 #2.4.0
+    reference_number = 350 #2.0.0
     nb_test = 0
     
     
@@ -220,12 +220,11 @@ class OLDMG5Comparator(unittest.TestCase):
            in the model. In consequence, you need to change the old MG5 comparison
            point. (Since the default use another model)."""
 
-        return # By default no need this
+#        return # By default no need this
         self.create_short_parallel_sqso()
         self.create_short_paralel_sm()
         self.create_short_paralel_mssm()
         self.create_short_paralel_heft()
-        self.assertTrue(False)
         
 
     def create_short_paralel_sm(self):
@@ -264,7 +263,7 @@ class OLDMG5Comparator(unittest.TestCase):
         # Store list of non-zero processes and results in file
         pickle_file = os.path.join(_pickle_path, "mg5_short_paralleltest_mssm.pkl")
         self.compare_processes(my_proc_list,
-                             model='MSSM_SLHA2',
+                             model='mssm',
                              orders = {'QED':99, 'QCD':99},
                              filename = "short_mssm.log",
                              pickle_file = pickle_file)
@@ -372,7 +371,7 @@ class OLDMG5Comparator(unittest.TestCase):
 
             # Run the actual comparison
             my_comp.run_comparison(stored_runner.proc_list,
-                                   'MSSM_SLHA2',
+                                   'mssm',
                                    stored_runner.orders,
                                    stored_runner.energy)
 
@@ -429,7 +428,7 @@ class OLDMG5Comparator(unittest.TestCase):
         # Create a list of processes to check automatically                                                                                                                             
         my_proc_list = ['p p > j j']
         values = {'number_of_P0': '1',
-                  'cross_P0_qq_qq': '6.269e+04'}
+                  'cross_P0_qq_qq': '1.987E+05'}
 
         # Store list of non-zero processes and results in file                                                                                                                          
         self.compare_cross_section_to_values(values, my_proc_list,
@@ -466,7 +465,7 @@ class OLDMG5Comparator(unittest.TestCase):
         values = {'number_of_P0': '1', 'cross_P0_gg_gogo': '0.46066E+01'}
         
         self.compare_cross_section_to_values(values, my_proc_list,
-                             model='MSSM_SLHA2',
+                             model='mssm',
                              orders = {'QED':99, 'QCD':99},
                              filename = "short_cs_sm3.log")        
         
@@ -494,7 +493,7 @@ class OLDMG5Comparator(unittest.TestCase):
         my_proc_list = ['g g > go go', 'e+ e-  > n1 n2', 'g t~ > go t1~']
         # Store list of non-zero processes and results in file
         #pickle_file = "mg4_sm_%sminitest.pkl" % self.suffix_name
-        self.compare_processes(my_proc_list, model='MSSM_SLHA2',
+        self.compare_processes(my_proc_list, model='mssm',
                              orders = {'QED':2, 'QCD':2},
                              filename = "mssm_mini.log",
                              energy = 2000)
@@ -513,7 +512,7 @@ class OLDMG5Comparator(unittest.TestCase):
             ['w+', 'w-', 'a', 'z', 'h', 'g', 'u', 'u~', 'd', 'd~',
             'b', 'b~', 't', 't~', 'ta+', 'ta-', 'vt', 'vt~'],
             initial=2, final=2)
-        #my_proc_list = ['t t > t t']
+        #my_proc_list = ['e+ e- > e+ e-','e+ e- > e+ e- a']
         
         # Store list of non-zero processes and results in file
         for i in range(len(my_proc_list)//500):
@@ -523,8 +522,7 @@ class OLDMG5Comparator(unittest.TestCase):
                              orders = {'QED':2, 'QCD':2},
                              model = "sm",
                              energy = 1000,
-                             filename = "sm_22.log") 
-        self.assertTrue(len(my_proc_list) > 5000)  
+                             filename = "sm_22.log")   
             
     def test_mg5_sm_13(self):
         """Test a semi-complete list of sm 1->3 processes"""
@@ -665,7 +663,7 @@ class OLDMG5Comparator(unittest.TestCase):
         # Store list of non-zero processes and results in file
             self.compare_processes(my_proc_list[500*i:500*(i+1)],
                              orders = {'QED':2, 'QCD':2},
-                             model = "MSSM_SLHA2",
+                             model = "mssm",
                              energy = 2000,
                              filename = "mssm_22.log")   
 
@@ -683,7 +681,7 @@ class OLDMG5Comparator(unittest.TestCase):
         # Store list of non-zero processes and results in file
         self.compare_processes(my_proc_list,
                              orders = {'QED':4, 'QCD':4},
-                             model = "MSSM_SLHA2",
+                             model = "mssm",
                              energy = 2000,
                              filename = "mssm_13_%s.log") 
 
@@ -719,7 +717,7 @@ class OLDMG5Comparator(unittest.TestCase):
         # Store list of non-zero processes and results in file
             self.compare_processes(my_proc_list[500*i:500*(i+1)],
                              orders = {'QED':3, 'QCD':3},
-                             model = "MSSM_SLHA2",
+                             model = "mssm",
                              energy = 2000,
                              filename = "mssm_23_p1.log")    
 
@@ -744,7 +742,7 @@ class OLDMG5Comparator(unittest.TestCase):
         # Store list of non-zero processes and results in file
             self.compare_processes(my_proc_list[500*i:500*(i+1)],
                              orders = {'QED':3, 'QCD':3},
-                             model = "MSSM_SLHA2",
+                             model = "mssm",
                              energy = 2000,
                              filename = "mssm_23_p2.log")   
 
@@ -776,8 +774,7 @@ class OLDMG5Comparator(unittest.TestCase):
         """Test a short list of sm processes"""
         # Create a list of processes to check automatically                                                                                                                             
         proc_lists = [['p p > t t~'], ['u d~ > W+ j', 'u d~ > W+ j j']]
-        #proc_lists = [['p p > t t~']]
-        #proc_lists = [['u d~ > W+ j', 'u d~ > W+ j j']]
+
         # Store list of non-zero processes and results in file                                                                                                                          
         pickle_file = os.path.join(_pickle_path, "mg5_short_parraleltest_cross_sm.pkl")
         for my_proc_list in proc_lists:
@@ -786,7 +783,6 @@ class OLDMG5Comparator(unittest.TestCase):
                              orders = {'QED':99, 'QCD':99},
                              filename = "short_cs_sm.log")
 
-        self.assertTrue(len(proc_lists)==2)
 
 
 

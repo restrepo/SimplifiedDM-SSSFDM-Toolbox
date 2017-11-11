@@ -39,7 +39,7 @@ ZERO = 0
 # Logger for model_reader
 #===============================================================================
 
-logger = logging.getLogger('madgraph.models')
+logger = logging.getLogger('models.model_reader')
 
 #===============================================================================
 # ModelReader: Used to read a param_card and calculate parameters and
@@ -81,8 +81,7 @@ class ModelReader(loop_base_objects.LoopModel):
                 if not os.path.isfile(param_card):
                     raise MadGraph5Error, "No such file %s" % param_card
                 param_card = card_reader.ParamCard(param_card)
-#            misc.sprint(type(param_card), card_reader.ParamCard,  isinstance(param_card, card_reader.ParamCard))
-#            assert isinstance(param_card, card_reader.ParamCard),'%s is not a ParamCard: %s' % (type(param_card),  isinstance(param_card, card_reader.ParamCard))    
+            assert isinstance(param_card, card_reader.ParamCard)    
             
             if complex_mass_scheme is None:
                 if aloha.complex_mass:
@@ -99,22 +98,15 @@ class ModelReader(loop_base_objects.LoopModel):
             if set(key) != set(parameter_dict.keys()):
                 # the two card are different. check if this critical
 
-                fail = True
-                missing_block = ','.join(set(parameter_dict.keys()).difference(set(key)))
-                unknow_block = ','.join(set(key).difference(set(parameter_dict.keys())))
-                
-                
-                    
+                fail = True    
                 msg = '''Invalid restriction card (not same block)
     %s != %s.
     Missing block: %s
     Unknown block : %s''' % (set(key), set(parameter_dict.keys()),
-                             missing_block, unknow_block)
-                if not missing_block:
-                    logger.warning("Unknow type of information in the card: %s" % unknow_block)
-                    fail = False
-                elif msg =="Invalid restriction card (not same block)\n    set(['yu', 'umix', 'ae', 'ad', 'decay', 'nmix', 'ye', 'sbotmix', 'msoft', 'yd', 'vmix', 'au', 'mass', 'alpha', 'modsel', 'sminputs', 'staumix', 'stopmix', 'hmix']) != set(['umix', 'msoft', 'msu2', 'fralpha', 'msd2', 'msl2', 'decay', 'tu', 'selmix', 'td', 'te', 'usqmix', 'dsqmix', 'ye', 'yd', 'sminputs', 'yu', 'mse2', 'nmix', 'vmix', 'msq2', 'mass', 'hmix']).\n    Missing block: te,msl2,dsqmix,tu,selmix,msu2,msq2,usqmix,td,fralpha,mse2,msd2\n    Unknown block : ae,ad,sbotmix,au,alpha,modsel,staumix,stopmix" \
-                  or self['name'].startswith('mssm-') or self['name'] == 'mssm':
+                             ','.join(set(parameter_dict.keys()).difference(set(key))),
+                             ','.join(set(key).difference(set(parameter_dict.keys()))))
+                if msg =="Invalid restriction card (not same block)\n    set(['yu', 'umix', 'ae', 'ad', 'decay', 'nmix', 'ye', 'sbotmix', 'msoft', 'yd', 'vmix', 'au', 'mass', 'alpha', 'modsel', 'sminputs', 'staumix', 'stopmix', 'hmix']) != set(['umix', 'msoft', 'msu2', 'fralpha', 'msd2', 'msl2', 'decay', 'tu', 'selmix', 'td', 'te', 'usqmix', 'dsqmix', 'ye', 'yd', 'sminputs', 'yu', 'mse2', 'nmix', 'vmix', 'msq2', 'mass', 'hmix']).\n    Missing block: te,msl2,dsqmix,tu,selmix,msu2,msq2,usqmix,td,fralpha,mse2,msd2\n    Unknown block : ae,ad,sbotmix,au,alpha,modsel,staumix,stopmix" \
+                or self['name'].startswith('mssm-') or self['name'] == 'mssm':
                     if not set(parameter_dict.keys()).difference(set(key)):
                         fail = False
                     else:
@@ -218,23 +210,7 @@ class ModelReader(loop_base_objects.LoopModel):
                                         for coup in couplings]))
         
         return locals()
-    
-    def get_mass(self, pdg_code):
-        """easy way to have access to a mass value"""
-        
-        if isinstance(pdg_code, (int,str)):
-            return self.get('parameter_dict')[self.get_particle(pdg_code).get('mass')].real
-        else:
-            return self.get('parameter_dict')[pdg_code.get('mass')].real
-            
-    def get_width(self, pdg_code):
-        """easy way to have access to a width value"""
-        if isinstance(pdg_code, (int,str)):
-            return self.get('parameter_dict')[self.get_particle(pdg_code).get('width')].real
-        else:
-            return self.get('parameter_dict')[pdg_code.get('mass')].real
-    
-    
+
 class Alphas_Runner(object):
     """Evaluation of strong coupling constant alpha_S"""
     #     Author: Olivier Mattelaer translated from a fortran routine 
@@ -325,8 +301,6 @@ class Alphas_Runner(object):
                 FP=1/(AS**2*(1+c1*AS))
             elif nloop == 3:
                 FP=1/(AS**2*(1+c1*AS + c2 * AS**2))
-            if FP == 0:
-               return AS
             a_out = AS - F/FP
             delta = abs(F/FP/AS)
             if delta < tol:

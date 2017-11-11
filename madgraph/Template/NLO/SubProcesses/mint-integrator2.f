@@ -96,8 +96,6 @@ c others: same as 1 (for now)
       double precision average_virtual,virtual_fraction
       common/c_avg_virt/average_virtual,virtual_fraction
       character*13 title(nintegrals)
-      logical new_point
-      common /c_new_point/ new_point
       data title(1)/'ABS integral '/
       data title(2)/'Integral     '/
       data title(3)/'Virtual      '/
@@ -239,7 +237,6 @@ c Reset the accumulated results for grid updating
 c Loop over PS points
  2    kpoint_iter=kpoint_iter+1
       do kpoint=1,ncalls
-         new_point=.true.
 c find random x, and its random cell
          do kdim=1,ndim
             kfold(kdim)=1
@@ -261,7 +258,7 @@ c if(even), we should compute the ncell and the rand from the ran3()
          ifirst=0
  1       continue
          vol=1
-c c convert 'flat x' ('rand') to 'vegas x' ('x') and include jacobian ('vol')
+c compute jacobian ('vol') for the PS point
          do kdim=1,ndim
             nintcurr=nint_used/ifold(kdim)
             icell(kdim)=ncell(kdim)+(kfold(kdim)-1)*nintcurr
@@ -363,8 +360,7 @@ c Special for the computation of the 'computed virtual'
       endif
 c Goto beginning of loop over PS points until enough points have found
 c that pass cuts.
-      if (non_zero_point(1).lt.int(0.99*ncalls)
-     &                        .and. double_events) goto 2
+      if (non_zero_point(1).lt.ncalls .and. double_events) goto 2
 
 c Iteration done. Update the accumulated results and print them to the
 c screen
@@ -656,54 +652,38 @@ c Do next iteration
       include "mint.inc"
       integer  ninter,nhits(nintervals)
       real * 8 xacc(0:nintervals),xgrid(0:nintervals)
-      real * 8 xn(nintervals),r,tiny,xl,xu,nl,nu,sum
+      real * 8 xn(nintervals),r,tiny,xl,xu,nl,nu
       parameter ( tiny=1d-8 )
       integer kint,jint
-c Use the same smoothing as in VEGAS uses for the grids, i.e. use the
-c average of the central and the two neighbouring grid points: (Only do
-c this if we are already at the maximum intervals, because the doubling
-c of the grids also includes a smoothing).
-      if (ninter.eq.nintervals) then
-         xl=xacc(1)
-         xu=xacc(2)
-         xacc(1)=(xl+xu)/2d0
-         nl=nhits(1)
-         nu=nhits(2)
-         nhits(1)=nint((nl+nu)/2d0)
-         do kint=2,ninter-1
-            xacc(kint)=xl+xu
-            xl=xu
-            xu=xacc(kint+1)
-            xacc(kint)=(xacc(kint)+xu)/3d0
-            nhits(kint)=nl+nu
-            nl=nu
-            nu=nhits(kint+1)
-            nhits(kint)=nint((nhits(kint)+nu)/3d0)
-         enddo
-         xacc(ninter)=(xu+xl)/2d0
-         nhits(ninter)=nint((nu+nl)/2d0)
-      endif
-c
-      sum=0d0
-      do kint=1,ninter
-         if (nhits(kint).ne.0) then
-            xacc(kint)=abs(xacc(kint))/nhits(kint)
-            sum=sum+xacc(kint)
-         endif
+      logical plot_grid
+      parameter (plot_grid=.false.)
+c Use the same smoothing as in VEGAS uses for the grids (i.e. use the
+c average of the central and the two neighbouring grid points):
+      xl=xacc(1)
+      xu=xacc(2)
+      xacc(1)=(xl+xu)/2d0
+      nl=nhits(1)
+      nu=nhits(2)
+      nhits(1)=nint((nl+nu)/2d0)
+      do kint=2,ninter-1
+         xacc(kint)=xl+xu
+         xl=xu
+         xu=xacc(kint+1)
+         xacc(kint)=(xacc(kint)+xu)/3d0
+         nhits(kint)=nl+nu
+         nl=nu
+         nu=nhits(kint+1)
+         nhits(kint)=nint((nhits(kint)+nu)/3d0)
       enddo
+      xacc(ninter)=(xu+xl)/2d0
+      nhits(ninter)=nint((nu+nl)/2d0)
 c
       do kint=1,ninter
 c xacc (xerr) already contains a factor equal to the interval size
 c Thus the integral of rho is performed by summing up
          if(nhits(kint).ne.0) then
-c     take logarithm to help convergence (taken from LO dsample.f)
-            if (xacc(kint).ne.sum) then
-               xacc(kint)=((xacc(kint)/sum-1d0)/
-     &                        log(xacc(kint)/sum))**1.5
-            else
-               xacc(kint)=1d0
-            endif
-            xacc(kint)= xacc(kint-1) + abs(xacc(kint))
+            xacc(kint)= xacc(kint-1)
+     #           + abs(xacc(kint))/nhits(kint)
          else
             xacc(kint)=xacc(kint-1)
          endif
@@ -711,26 +691,49 @@ c     take logarithm to help convergence (taken from LO dsample.f)
       do kint=1,ninter
          xacc(kint)=xacc(kint)/xacc(ninter)
       enddo
-c Check that we have a reasonable result and update the accumulated
+cRF: Check that we have a reasonable result and update the accumulated
 c results if need be
       do kint=1,ninter
          if (xacc(kint).lt.(xacc(kint-1)+tiny)) then
+c            write (*,*) 'Accumulated results need adaptation #1:'
+c            write (*,*) xacc(kint),xacc(kint-1),' become'
             xacc(kint)=xacc(kint-1)+tiny
+c            write (*,*) xacc(kint),xacc(kint-1)
          endif
       enddo
 c it could happen that the change above yielded xacc() values greater
-c than 1: one more update needed
+c than 1; should be fixed once more.
       xacc(ninter)=1d0
       do kint=1,ninter
          if (xacc(ninter-kint).gt.(xacc(ninter-kint+1)-tiny)) then
+c            write (*,*) 'Accumulated results need adaptation #2:'
+c            write (*,*) xacc(ninter-kint),xacc(ninter-kint+1),' become'
             xacc(ninter-kint)=1d0-dble(kint)*tiny
+c            write (*,*) xacc(ninter-kint),xacc(ninter-kint+1)
          else
             exit
          endif
       enddo
+cend RF
+
+      if (plot_grid) then
+         write(11,*) 'set limits x 0 1 y 0 1'
+         write(11,*) 0, 0
+         do kint=1,ninter
+            write(11,*) xgrid(kint),xacc(kint)
+         enddo
+         write(11,*) 'join 1'
+      endif
 
       do kint=1,ninter
          r=dble(kint)/dble(ninter)
+
+         if (plot_grid) then
+            write(11,*) 0, r
+            write(11,*) 1, r
+            write(11,*) ' join'
+         endif
+
          do jint=1,ninter
             if(r.lt.xacc(jint)) then
                xn(kint)=xgrid(jint-1)+(r-xacc(jint-1))
@@ -747,7 +750,13 @@ c than 1: one more update needed
       enddo
       do kint=1,ninter
          xgrid(kint)=xn(kint)
+         if (plot_grid) then
+            write(11,*) xgrid(kint), 0
+            write(11,*) xgrid(kint), 1
+            write(11,*) ' join'
+         endif
       enddo
+      if (plot_grid) write(11,*) ' newplot'
       end
 
       subroutine nextlexi(ndim,iii,kkk,iret)
@@ -813,8 +822,6 @@ c imode=3 store generation efficiency in x(1)
       common/c_avg_virt/average_virtual,virtual_fraction
       save icalls,mcalls,icalls_virt,mcalls_virt,xmmm,icalls_nz
      $     ,icalls_virt_nz
-      logical new_point
-      common /c_new_point/ new_point
       if(imode.eq.0) then
          do kdim=1,ndim
             nintcurr=nintervals/ifold(kdim)
@@ -868,7 +875,6 @@ c imode=3 store generation efficiency in x(1)
          stop
       endif
  10   continue
-      new_point=.true.
       if (vn.eq.1) then
          icalls_virt=icalls_virt+1
       elseif(vn.eq.2 .or. vn.eq.3) then
@@ -1051,10 +1057,7 @@ c Recompute the number of calls. Uses the algorithm from VEGAS
       implicit none
       integer ncalls0,ndim,ncalls,i
       integer dim,ng,npg,k
-      logical firsttime
-      common /even_ran/dim,ng,npg,k,firsttime
-c Make sure that hypercubes are newly initialized
-      firsttime=.true.
+      common /even_ran/dim,ng,npg,k
 c Number of dimension of the integral
       dim=ndim
 c Number of elements in which we can split one dimension
@@ -1073,9 +1076,10 @@ c Number of PS points for this iteration
       implicit none
       double precision ran2,dng
       external ran2
-      integer dim,ng,npg,k
       logical firsttime
-      common /even_ran/dim,ng,npg,k,firsttime
+      data firsttime/.true./
+      integer dim,ng,npg,k
+      common /even_ran/dim,ng,npg,k
       integer maxdim
       parameter (maxdim=100)
       integer iii(maxdim),kkk(maxdim),i,iret
@@ -1177,7 +1181,7 @@ c Got random numbers for all dimensions, update kkk() for the next call
      $     ,ndimmax)
       double precision ave_virt(nintervals_virt,ndimmax)
      $     ,ave_virt_acc(nintervals_virt,ndimmax)
-     $     ,ave_born_acc(nintervals_virt,ndimmax)
+     $     ,ave_born_acc(nintervals_virt ,ndimmax)
       common/c_ave_virt/ave_virt,ave_virt_acc,ave_born_acc,nvirt
      $     ,nvirt_acc
 c need to solve for k_new = (virt+k_old*born)/born

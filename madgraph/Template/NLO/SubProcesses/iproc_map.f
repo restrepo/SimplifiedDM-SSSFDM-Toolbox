@@ -15,8 +15,8 @@ c absolute value).
       integer maxflow
       parameter (maxflow=999)
       integer idup(nexternal,maxproc),mothup(2,nexternal,maxproc),
-     &     icolup(2,nexternal,maxflow),niprocs
-      common /c_leshouche_inc/idup,mothup,icolup,niprocs
+     &     icolup(2,nexternal,maxflow)
+      common /c_leshouche_inc/idup,mothup,icolup
       integer i_fks,j_fks
       common/fks_indices/i_fks,j_fks
       integer fks_j_from_i(nexternal,0:nexternal)
@@ -227,8 +227,8 @@ c Print the map to the screen
       integer maxflow
       parameter (maxflow=999)
       integer idup(nexternal,maxproc),mothup(2,nexternal,maxproc),
-     &     icolup(2,nexternal,maxflow),niprocs
-      common /c_leshouche_inc/idup,mothup,icolup,niprocs
+     &     icolup(2,nexternal,maxflow)
+      common /c_leshouche_inc/idup,mothup,icolup
       logical pass
       logical flav_map_debug
       parameter(flav_map_debug=.false.)
@@ -331,10 +331,9 @@ c Print the map to the screen
 
          if(flav_map_debug) then
             write(6,*) " "
-            write(6,*) " nFKSprocess  = ",nFKSprocess 
+            write(6,*) " nFKSprocess = ",nFKSprocess 
             write(6,*) " maxproc_used = ",maxproc_used
-            write(6,*) " niprocs      = ",niprocs
-            do l=1,niprocs
+            do l=1,MAXPROC_USED
                write(6,*) l,IDUP(1,l),IDUP(2,l)
             enddo
             write(6,*) " "
@@ -348,7 +347,7 @@ c Print the map to the screen
             do l=1,nproc(kpdflumi)
                found_appl(l) = .false.
             enddo
-            do ll=1,niprocs
+            do ll=1,maxproc_used
                found_mg(ll) = .false.
             enddo
             found_a=0
@@ -359,7 +358,7 @@ c Print the map to the screen
 *     b) IDUP(1,ll),  IDUP(2,ll)
 *     with kpdflumi fixed
             do l=1,nproc(kpdflumi)
-               do ll=1,niprocs
+               do ll=1,maxproc_used
                   if ( ( pdgs(1,l,kpdflumi).eq.
      1                 IDUP(1,ll).and.pdgs(2,l,kpdflumi).
      2                 eq.IDUP(2,ll) ) ) 
@@ -378,12 +377,12 @@ c Print the map to the screen
             do l=1,nproc(kpdflumi)
                if (found_appl(l)) found_a=found_a+1
             enddo
-            do ll=1,niprocs
+            do ll=1,maxproc_used
                if (found_mg(ll)) found_m=found_m+1
             enddo
 *
             if ( found_a.eq.nproc(kpdflumi) .and.
-     &           found_m.eq.niprocs ) then
+     &           found_m.eq.maxproc_used ) then
                if(flav_map_debug) then
                   write(6,*) " ------------------------------- "
                   write(6,*) "         Match found!"

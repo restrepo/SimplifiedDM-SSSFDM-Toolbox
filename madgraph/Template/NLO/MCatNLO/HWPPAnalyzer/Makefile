@@ -1,29 +1,51 @@
+# -*- Makefile -*- (for emacs)
+# src/Makefile-UserModules.  Generated from Makefile-UserModules.in by configure.
+#
+# Herwig++ 2.3.2
+#
+# This Makefile is intended for compiling Herwig++ plugins
+# You can find example plugins in the Contrib directory
+#
+# This Makefile received very little testing, 
+# any bug reports are very welcome!
+#
+
+#
+# C++ flags
+# 
+
+# Comment out the following variables to eliminate HepMC by brute force
 HEPMC  = $(HEPMCPATH)
-INCDIR = ../include
+HEPMCINCLUDE = -I$(HEPMC)/include
+HEPMCLIB =   -L$(HEPMC)/lib -lHepMC 
+HEPMCFIO =   -L$(HEPMC)/lib -lHepMCfio 
+TOPDIR = ../
+INCDIR = include
+CXX = g++
+F77 = gfortran -w -fno-automatic -ffixed-line-length-132
 
--include ../../Source/make_opts
+CXXFLAGS = -g -W -Wall -O3
 
-DEBUG=
-FF=$(FC)   $(FFLAGS)   $(DEBUG)
-CPP=$(CXX) $(CXXFLAGS) $(DEBUG)
-CC=$(CXX)  $(CFLAGS)   $(DEBUG)
+# add additional package header directories here
 CXXFLAGS += $(shell $(HWPPPATH)/bin/herwig-config --cppflags )
 
+ALLCCFILES=$(shell echo *.cc)
 all : HepMCFortran.so
 
-%.o: ../srcCommon/%.f 
-	$(FF) -c $< -fPIC -I$(INCDIR) -o $@	
+%.o: ../HWAnalyzer/%.f
+	$(F77) -c $< -fPIC -I$(TOPDIR)/$(INCDIR) -o $@
+
+%.o: ../srcHerwig/%.f
+	$(F77) -c $< -fPIC -I$(TOPDIR)/$(INCDIR) -o $@
+
 %.o: %.f
-	$(FF) -c $< -fPIC -I$(INCDIR) -o $@   
-	
-%.o: ../srcCommon/%.cc
-	$(CPP) -c $< -fPIC $(INCLOPTION) -I$(INCDIR) -o $@
+	$(F77) -c $< -fPIC -I$(TOPDIR)/$(INCDIR) -o $@
+
 %.o: %.cc
-	$(CPP) -c $< -fPIC $(INCLOPTION) -I$(INCDIR) -o $@
+	$(CXX) -c $< -fPIC $(INCLOPTION) -I$(TOPDIR)/$(INCDIR) -o $@
 
 HepMCFortran.so : HepMCFortran.cc HepMCFortran.h $(FORFILE)
-	$(CPP) -shared -fPIC $(CXXFLAGS) $(LDFLAGS) $(EXTRAPATHS) $(EXTRALIBS) \
-	-I$(HEPMC)/include -L$(HEPMC)/lib -lHepMC -lHepMCfio $< -o $@ $(FORFILE)
+	$(CXX) -shared -fPIC $(CXXFLAGS) $(LDFLAGS) $(EXTRAPATHS) $(EXTRALIBS) $(INCLOPTION) $(HEPMCINCLUDE) $(HEPMCLIB) $(HEPMCFIO) $< -o $@ $(FORFILE)
 
 clean:
-	rm -f *.o *.so
+	rm -f $(ALLCCFILES:.cc=.so)

@@ -47,8 +47,8 @@ C      against
 C     MadLoop internal ones.
       INTEGER GOLEM_RUN_MODE
       PARAMETER (GOLEM_RUN_MODE=1)
-C     The following is the acceptance threshold used for
-C      GOLEM_RUN_MODE = 3
+C     The following is the acceptance threshold used for GOLEM_RUN_MODE
+C      = 3
       REAL*8 COEF_CHECK_THRS
       DATA COEF_CHECK_THRS/1.0D-13/
       COMMON/ML5_0_COEF_CHECK_THRS/COEF_CHECK_THRS
@@ -59,8 +59,7 @@ C     ARGUMENTS
 C     
       INTEGER NLOOPLINE, RANK
       REAL*8 PL(0:3,NLOOPLINE)
-      REAL*8 PCT(0:3,0:NLOOPLINE-1), ABSPCT(0:3)
-      REAL*8 REF_P
+      REAL*8 PCT(0:3,0:NLOOPLINE-1)
       REAL(KI) PGOLEM(NLOOPLINE,0:3)
       COMPLEX*16 M2L(NLOOPLINE)
       COMPLEX(KI) M2LGOLEM(NLOOPLINE)
@@ -106,16 +105,15 @@ C
       INTEGER ID,SQSOINDEX,R
       COMMON/ML5_0_LOOP/ID,SQSOINDEX,R
 
-      LOGICAL CTINIT, TIRINIT, GOLEMINIT, SAMURAIINIT, NINJAINIT
-     $ ,COLLIERINIT
-      COMMON/REDUCTIONCODEINIT/CTINIT, TIRINIT,GOLEMINIT,SAMURAIINIT
-     $ ,NINJAINIT,COLLIERINIT
+      LOGICAL CTINIT, TIRINIT, GOLEMINIT
+      COMMON/REDUCTIONCODEINIT/CTINIT, TIRINIT,GOLEMINIT
 
       INTEGER NLOOPGROUPS
       PARAMETER (NLOOPGROUPS=26)
+      INTEGER LOOPMAXCOEFS
+      PARAMETER (LOOPMAXCOEFS=35)
       INTEGER NSQUAREDSO
       PARAMETER (NSQUAREDSO=1)
-      INCLUDE 'loop_max_coefs.inc'
 
       COMPLEX*16 LOOPCOEFS(0:LOOPMAXCOEFS-1,NSQUAREDSO,NLOOPGROUPS)
       COMMON/ML5_0_LCOEFS/LOOPCOEFS
@@ -123,15 +121,7 @@ C     ----------
 C     BEGIN CODE
 C     ----------
 
-C     The CT initialization is also performed here if not done already
-C      because it calls MPINIT of OneLOop which is necessary on some
-C      system
-      IF (CTINIT) THEN
-        CTINIT=.FALSE.
-        CALL ML5_0_INITCT()
-      ENDIF
-
-C     INITIALIZE GOLEM IF NEEDED
+C     INITIALIZE CUTTOOLS IF NEEDED
       IF (GOLEMINIT) THEN
         GOLEMINIT=.FALSE.
         CALL ML5_0_INITGOLEM()
@@ -155,7 +145,6 @@ C     CONVERT THE MASSES TO BE COMPLEX
 
 C     CONVERT THE MOMENTA FLOWING IN THE LOOP LINES TO CT CONVENTIONS
       DO I=0,3
-        ABSPCT(I) = 0.D0
         DO J=0,(NLOOPLINE-1)
           PCT(I,J)=0.D0
         ENDDO
@@ -163,24 +152,19 @@ C     CONVERT THE MOMENTA FLOWING IN THE LOOP LINES TO CT CONVENTIONS
       DO I=0,3
         DO J=1,NLOOPLINE
           PCT(I,0)=PCT(I,0)+PL(I,J)
-          ABSPCT(I)=ABSPCT(I)+ABS(PL(I,J))
         ENDDO
       ENDDO
-      REF_P = MAX(ABSPCT(0), ABSPCT(1),ABSPCT(2),ABSPCT(3))
-      DO I=0,3
-        ABSPCT(I) = MAX(REF_P*1E-6, ABSPCT(I))
-      ENDDO
-      IF (CHECKPCONSERVATION.AND.REF_P.GT.1D-8) THEN
-        IF ((PCT(0,0)/ABSPCT(0)).GT.1.D-6) THEN
+      IF (CHECKPCONSERVATION) THEN
+        IF (PCT(0,0).GT.1.D-6) THEN
           WRITE(*,*) 'energy is not conserved ',PCT(0,0)
           STOP 'energy is not conserved'
-        ELSEIF ((PCT(1,0)/ABSPCT(1)).GT.1.D-6) THEN
+        ELSEIF (PCT(1,0).GT.1.D-6) THEN
           WRITE(*,*) 'px is not conserved ',PCT(1,0)
           STOP 'px is not conserved'
-        ELSEIF ((PCT(2,0)/ABSPCT(2)).GT.1.D-6) THEN
+        ELSEIF (PCT(2,0).GT.1.D-6) THEN
           WRITE(*,*) 'py is not conserved ',PCT(2,0)
           STOP 'py is not conserved'
-        ELSEIF ((PCT(3,0)/ABSPCT(3)).GT.1.D-6) THEN
+        ELSEIF (PCT(3,0).GT.1.D-6) THEN
           WRITE(*,*) 'pz is not conserved ',PCT(3,0)
           STOP 'pz is not conserved'
         ENDIF
@@ -476,21 +460,55 @@ C
       INTEGER NLOOPLINE
       REAL(KI) PGOLEM(NLOOPLINE,0:3)
       COMPLEX(KI) M2L(NLOOPLINE)
+
+C     
+C     GLOBAL VARIABLES
+C     
+      INCLUDE 'MadLoopParams.inc'
+      INTEGER CTMODE
+      REAL*8 LSCALE
+      COMMON/ML5_0_CT/LSCALE,CTMODE
+      REAL*8 REF_NORMALIZATION
 C     
 C     LOCAL VARIABLES
 C     
-      INTEGER I,J
-      COMPLEX*16 S_MAT_FROM_MG(NLOOPLINE,NLOOPLINE)
+      INTEGER I,J,K
+      COMPLEX(KI) DIFFSQ
 C     ----------
 C     BEGIN CODE
 C     ----------
 
-      CALL ML5_0_BUILD_KINEMATIC_MATRIX(NLOOPLINE,PGOLEM,M2L
-     $ ,S_MAT_FROM_MG)
-
       DO I=1,NLOOPLINE
         DO J=1,NLOOPLINE
-          S_MAT(I,J)=S_MAT_FROM_MG(I,J)
+          IF(I.EQ.J)THEN
+            S_MAT(I,J)=-(M2L(I)+M2L(J))
+          ELSE
+            DIFFSQ = (CMPLX(PGOLEM(I,0),0.0_KI,KIND=KI)-CMPLX(PGOLEM(J
+     $       ,0),0.0_KI,KIND=KI))**2
+            DO K=1,3
+              DIFFSQ = DIFFSQ-(CMPLX(PGOLEM(I,K),0.0_KI,KIND=KI)
+     $         -CMPLX(PGOLEM(J,K),0.0_KI,KIND=KI))**2
+            ENDDO
+            S_MAT(I,J)=DIFFSQ-M2L(I)-M2L(J)
+            IF(M2L(I).NE.0.0D0)THEN
+              IF(ABS((DIFFSQ-M2L(I))/M2L(I)).LT.OSTHRES)THEN
+                S_MAT(I,J)=-M2L(J)
+              ENDIF
+            ENDIF
+            IF(M2L(J).NE.0.0D0)THEN
+              IF(ABS((DIFFSQ-M2L(J))/M2L(J)).LT.OSTHRES)THEN
+                S_MAT(I,J)=-M2L(I)
+              ENDIF
+            ENDIF
+C           Chose what seems the most appropriate way to compare
+C           massless onshellness. (here we pick the energy component)
+            REF_NORMALIZATION=(PGOLEM(I,0)+PGOLEM(J,0))**2
+            IF(REF_NORMALIZATION.NE.0.0D0)THEN
+              IF(ABS(DIFFSQ/REF_NORMALIZATION).LT.OSTHRES)THEN
+                S_MAT(I,J)=-(M2L(I)+M2L(J))
+              ENDIF
+            ENDIF
+          ENDIF
         ENDDO
       ENDDO
 
@@ -525,8 +543,8 @@ C     ----------
       LOGICAL ML5_0_COMPARE_COEFS_1
 
       NUM = ABS(COEFS_A%%C0-COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1-COEFS_B%%C1))
-      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1)
-     $ )
+      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1
+     $ ))
 
       IF(DENOM.GT.0D0)THEN
         ML5_0_COMPARE_COEFS_1=((NUM/DENOM).LT.COEF_CHECK_THRS)
@@ -547,8 +565,8 @@ C     ----------
 
       NUM = ABS(COEFS_A%%C0-COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1-COEFS_B%%C1))
      $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))
-      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1)
-     $ )+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))
+      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1
+     $ ))+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))
       IF(DENOM.GT.0D0)THEN
         ML5_0_COMPARE_COEFS_2=((NUM/DENOM).LT.COEF_CHECK_THRS)
       ELSE
@@ -568,9 +586,9 @@ C     ----------
 
       NUM = ABS(COEFS_A%%C0-COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1-COEFS_B%%C1))
      $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3))
-      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1)
-     $ )+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3)
-     $ )
+      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1
+     $ ))+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3
+     $ ))
       IF(DENOM.GT.0D0)THEN
         ML5_0_COMPARE_COEFS_3=((NUM/DENOM).LT.COEF_CHECK_THRS)
       ELSE
@@ -589,11 +607,11 @@ C     ----------
       LOGICAL ML5_0_COMPARE_COEFS_4
 
       NUM = ABS(COEFS_A%%C0-COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1-COEFS_B%%C1))
-     $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3))
-     $ +SUM(ABS(COEFS_A%%C4-COEFS_B%%C4))
-      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1)
-     $ )+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3)
-     $ )+SUM(ABS(COEFS_A%%C4+COEFS_B%%C4))
+     $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3)
+     $ )+SUM(ABS(COEFS_A%%C4-COEFS_B%%C4))
+      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1
+     $ ))+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3
+     $ ))+SUM(ABS(COEFS_A%%C4+COEFS_B%%C4))
       IF(DENOM.GT.0D0)THEN
         ML5_0_COMPARE_COEFS_4=((NUM/DENOM).LT.COEF_CHECK_THRS)
       ELSE
@@ -612,11 +630,11 @@ C     ----------
       LOGICAL ML5_0_COMPARE_COEFS_5
 
       NUM = ABS(COEFS_A%%C0-COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1-COEFS_B%%C1))
-     $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3))
-     $ +SUM(ABS(COEFS_A%%C4-COEFS_B%%C4))
-      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1)
-     $ )+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3)
-     $ )+SUM(ABS(COEFS_A%%C4+COEFS_B%%C4))
+     $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3)
+     $ )+SUM(ABS(COEFS_A%%C4-COEFS_B%%C4))
+      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1
+     $ ))+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3
+     $ ))+SUM(ABS(COEFS_A%%C4+COEFS_B%%C4))
       IF(DENOM.GT.0D0)THEN
         ML5_0_COMPARE_COEFS_5=((NUM/DENOM).LT.COEF_CHECK_THRS)
       ELSE
@@ -635,11 +653,11 @@ C     ----------
       LOGICAL ML5_0_COMPARE_COEFS_6
 
       NUM = ABS(COEFS_A%%C0-COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1-COEFS_B%%C1))
-     $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3))
-     $ +SUM(ABS(COEFS_A%%C4-COEFS_B%%C4))
-      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1)
-     $ )+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3)
-     $ )+SUM(ABS(COEFS_A%%C4+COEFS_B%%C4))
+     $ +SUM(ABS(COEFS_A%%C2-COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3-COEFS_B%%C3)
+     $ )+SUM(ABS(COEFS_A%%C4-COEFS_B%%C4))
+      DENOM = ABS(COEFS_A%%C0+COEFS_B%%C0)+SUM(ABS(COEFS_A%%C1+COEFS_B%%C1
+     $ ))+SUM(ABS(COEFS_A%%C2+COEFS_B%%C2))+SUM(ABS(COEFS_A%%C3+COEFS_B%%C3
+     $ ))+SUM(ABS(COEFS_A%%C4+COEFS_B%%C4))
       IF(DENOM.GT.0D0)THEN
         ML5_0_COMPARE_COEFS_6=((NUM/DENOM).LT.COEF_CHECK_THRS)
       ELSE
@@ -652,8 +670,7 @@ C     ----------
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_0(ML_COEFS,GOLEM_COEFS)
       USE PRECISION_GOLEM, ONLY: KI
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       COMPLEX(KI) GOLEM_COEFS
       GOLEM_COEFS=ML_COEFS(0)
       END
@@ -661,8 +678,7 @@ C     ----------
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_1(ML_COEFS,GOLEM_COEFS)
       USE TENS_REC, ONLY: COEFF_TYPE_1
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       TYPE(COEFF_TYPE_1) GOLEM_COEFS
 C     Constant coefficient 
       GOLEM_COEFS%%C0=ML_COEFS(0)
@@ -679,8 +695,7 @@ C     Coefficient q(3)
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_2(ML_COEFS,GOLEM_COEFS)
       USE TENS_REC, ONLY: COEFF_TYPE_2
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       TYPE(COEFF_TYPE_2) GOLEM_COEFS
 C     Constant coefficient 
       GOLEM_COEFS%%C0=ML_COEFS(0)
@@ -717,8 +732,7 @@ C     Coefficient q(2)*q(3)
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_3(ML_COEFS,GOLEM_COEFS)
       USE TENS_REC, ONLY: COEFF_TYPE_3
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       TYPE(COEFF_TYPE_3) GOLEM_COEFS
 C     Constant coefficient 
       GOLEM_COEFS%%C0=ML_COEFS(0)
@@ -795,8 +809,7 @@ C     Coefficient q(1)*q(2)*q(3)
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_4(ML_COEFS,GOLEM_COEFS)
       USE TENS_REC, ONLY: COEFF_TYPE_4
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       TYPE(COEFF_TYPE_4) GOLEM_COEFS
 C     Dummy routine for ML5_0_FILL_GOLEM_COEFS_4
       STOP 'ERROR: 4 > 3'
@@ -805,8 +818,7 @@ C     Dummy routine for ML5_0_FILL_GOLEM_COEFS_4
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_5(ML_COEFS,GOLEM_COEFS)
       USE TENS_REC, ONLY: COEFF_TYPE_5
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       TYPE(COEFF_TYPE_5) GOLEM_COEFS
 C     Dummy routine for ML5_0_FILL_GOLEM_COEFS_5
       STOP 'ERROR: 5 > 3'
@@ -815,8 +827,7 @@ C     Dummy routine for ML5_0_FILL_GOLEM_COEFS_5
       SUBROUTINE ML5_0_FILL_GOLEM_COEFFS_6(ML_COEFS,GOLEM_COEFS)
       USE TENS_REC, ONLY: COEFF_TYPE_6
       INCLUDE 'coef_specs.inc'
-      INCLUDE 'loop_max_coefs.inc'
-      COMPLEX*16 ML_COEFS(0:LOOPMAXCOEFS-1)
+      COMPLEX*16 ML_COEFS(0:LOOP_MAXCOEFS-1)
       TYPE(COEFF_TYPE_6) GOLEM_COEFS
 C     Dummy routine for ML5_0_FILL_GOLEM_COEFS_6
       STOP 'ERROR: 6 > 3'

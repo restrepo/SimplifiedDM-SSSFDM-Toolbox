@@ -13,7 +13,6 @@ c
       include 'nFKSconfigs.inc'
       include 'fks_info.inc'
       include 'run.inc'
-      include 'cuts.inc'
       
       double precision ZERO,one
       parameter       (ZERO = 0d0)
@@ -69,7 +68,6 @@ c
       double complex wgt1(2)
       double precision p1(0:3,99),xx(maxinvar)
       integer ninvar, ndim, iconfig, minconfig, maxconfig
-      common/tosigint/ndim
       integer ncall,itmax,nconfigs,ntry, ngraphs
       integer ic(nexternal,maxswitch), jc(12),nswitch
       double precision saveamp(maxamps)
@@ -146,9 +144,6 @@ c helicity stuff
       integer fks_conf_number,fks_loop_min,fks_loop_max,fks_loop
       INTEGER NFKSPROCESS
       COMMON/C_NFKSPROCESS/NFKSPROCESS
-      LOGICAL  IS_A_J(NEXTERNAL),IS_A_LP(NEXTERNAL),IS_A_LM(NEXTERNAL)
-      LOGICAL  IS_A_PH(NEXTERNAL)
-      COMMON /TO_SPECISA/IS_A_J,IS_A_LP,IS_A_LM,IS_A_PH
       
       character*10 MonteCarlo
       common/cMonteCarloType/MonteCarlo
@@ -159,10 +154,7 @@ c helicity stuff
       common /cshowerscale2/shower_S_scale,shower_H_scale,ref_H_scale
      &     ,pt_hardness
 
-      logical new_point
-      common /c_new_point/new_point
-
-c     integer icomp
+c      integer icomp
 c
 c     DATA
 c
@@ -229,14 +221,8 @@ c When doing hadron-hadron collision reduce the effect collision energy.
 c Note that tests are always performed at fixed energy with Bjorken x=1.
       totmass = 0.0d0
       include 'pmass.inc' ! make sure to set the masses after the model has been included
-      do i=nincoming+1,nexternal
-         if (is_a_j(i) .and. i.ne.nexternal) then
-            totmass = totmass + max(ptj,pmass(i))
-         elseif ((is_a_lp(i).or.is_a_lm(i)) .and. i.ne.nexternal) then
-            totmass = totmass + max(mll/2d0,mll_sf/2d0,ptl,pmass(i))
-         else
-            totmass = totmass + pmass(i)
-         endif
+      do i=1,nexternal
+        totmass = totmass + pmass(i)
       enddo
       if (lpp(1).ne.0) ebeam(1)=max(ebeam(1)/20d0,totmass)
       if (lpp(2).ne.0) ebeam(2)=max(ebeam(2)/20d0,totmass)
@@ -268,7 +254,7 @@ c
          write (*,*) 'with PDGs:       i=',PDG_type(i_fks),'  j='
      $        ,PDG_type(j_fks)
 c
-      ndim = 55
+      ndim = 22
       ncall = 10000
       itmax = 10
       ninvar = 35
@@ -345,7 +331,6 @@ c x_to_f_arg subroutine
       do jj=1,ndim
          x(jj)=ran2()
       enddo
-      new_point=.true.
       call generate_momenta(ndim,iconfig,wgt,x,p)
       calculatedBorn=.false.
       do while (( wgt.lt.0 .or. p(0,1).le.0d0 .or. p_born(0,1).le.0d0
@@ -353,7 +338,6 @@ c x_to_f_arg subroutine
          do jj=1,ndim
             x(jj)=ran2()
          enddo
-         new_point=.true.
          wgt=1d0
          call generate_momenta(ndim,iconfig,wgt,x,p)
          calculatedBorn=.false.
@@ -393,14 +377,12 @@ c x_to_f_arg subroutine
          do jj=1,ndim
             x(jj)=ran2()
          enddo
-         new_point=.true.
          call generate_momenta(ndim,iconfig,wgt,x,p)
          do while (( wgt.lt.0 .or. p(0,1).le.0d0) .and. ntry.lt.1000)
             wgt=1d0
             do jj=1,ndim
                x(jj)=ran2()
             enddo
-            new_point=.true.
             call generate_momenta(ndim,iconfig,wgt,x,p)
             ntry=ntry+1
          enddo
@@ -411,6 +393,7 @@ c configurations close to the soft-collinear limit
          wgt=1d0
          call generate_momenta(ndim,iconfig,wgt,x,p)
          calculatedBorn=.false.
+
          call set_cms_stuff(0)
          calculatedBorn=.false.
 
@@ -542,14 +525,12 @@ c in genps_fks_test.f
          do jj=1,ndim
             x(jj)=ran2()
          enddo
-         new_point=.true.
          call generate_momenta(ndim,iconfig,wgt,x,p)
          do while (( wgt.lt.0 .or. p(0,1).le.0d0) .and. ntry.lt.1000)
             wgt=1d0
             do jj=1,ndim
                x(jj)=ran2()
             enddo
-            new_point=.true.
             call generate_momenta(ndim,iconfig,wgt,x,p)
             ntry=ntry+1
          enddo

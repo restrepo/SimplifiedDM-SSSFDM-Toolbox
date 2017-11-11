@@ -17,12 +17,10 @@ c handling_lhe_events.f fill_MC_mshell.f
       character*140 buff
       character*10 MonteCarlo
       character*3 str
-      logical back
       integer evts,leftover,loc,loc1,loc2,isc,ipdf,jmax
-      integer numscales,numPDFpairs,numPDFs
-      common/cwgxsec1/numscales,numPDFpairs,numPDFs
+      integer numscales,numPDFpairs
+      common/cwgxsec1/numscales,numPDFpairs
 c
-      back=.true.
       write (*,*) 'Give the name of the original event file'
       read (*,*) event_file
       ifile=34
@@ -59,7 +57,7 @@ c$$$      read (*,*) inputfile
       executable=' '
       inputfile=' '
 
-      loc=index(event_file,'.',back)
+      loc=index(event_file,'.')
       loc1=index(executable,' ')
       loc2=index(inputfile,' ')
          

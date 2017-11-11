@@ -32,7 +32,7 @@ import madgraph.various.banner as banner_mod
 
 from madgraph import MG4DIR, MG5DIR, MadGraph5Error
 from madgraph.iolibs.files import cp
-pjoin = os.path.join
+
 
 
 logger = logging.getLogger('cmdprint.ext_program')
@@ -175,7 +175,7 @@ class MadLoopLauncher(ExtLauncher):
                                os.path.join(self.card_dir, 'MadLoopParams.dat'))   
                 # Unless user asked for it, don't doublecheck the helicity filter.
                 MadLoopparam.set('DoubleCheckHelicityFilter', False, 
-                                                             changeifuserset=False)
+                                                             ifnotdefault=False)
                 MadLoopparam.write(os.path.join(self.card_dir,os.path.pardir, 
                                            'SubProcesses', 'MadLoopParams.dat'))
 
@@ -217,6 +217,7 @@ class MadLoopLauncher(ExtLauncher):
                 try:
                     rFile=open(os.path.join(curr_path,'result.dat'), 'r')
                 except IOError:
+                    rFile.close()
                     raise MadGraph5Error,"Could not find result file %s."%\
                                        str(os.path.join(curr_path,'result.dat'))
                 # The result are returned as a dictionary.
@@ -531,6 +532,7 @@ class aMCatNLOLauncher(ExtLauncher):
             arg = line.split()
             if arg[1] not in all_options:
                 continue
+            misc.sprint(line)
             try:
                 usecmd.exec_cmd(line)
             except Exception, error:
@@ -669,7 +671,7 @@ see arXiv:1402.1178.'''
         try:
             os.remove('ME5_debug')
         except:
-            pass
+           pass
 
         launch.run_cmd(command)
         launch.run_cmd('quit')
@@ -705,7 +707,7 @@ class Pythia8Launcher(ExtLauncher):
 
         # Find all main_model_process.cc files
         date_file_list = []
-        for file in misc.glob('main_*_*.cc', self.running_dir):
+        for file in glob.glob(os.path.join(self.running_dir,'main_*_*.cc')):
             # retrieves the stats for the current file as a tuple
             # (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime)
             # the tuple element mtime at index 8 is the last-modified-date
@@ -743,7 +745,8 @@ class Pythia8Launcher(ExtLauncher):
             raise MadGraph5Error, 'too many runs in this directory'
 
         # Find all exported models
-        models = misc.glob("Processes_*", pjoin(self.running_dir,os.path.pardir))
+        models = glob.glob(os.path.join(self.running_dir,os.path.pardir,
+                                        "Processes_*"))
         models = [os.path.split(m)[-1].replace("Processes_","") for m in models]
         # Extract model name from executable
         models.sort(key=len)
@@ -766,6 +769,7 @@ class Pythia8Launcher(ExtLauncher):
 
         # Make pythia8
         print "Running make for pythia8 directory"
+        misc.compile(cwd=os.path.join(self.running_dir, os.path.pardir), mode='cpp')
         if self.model_dir:
             print "Running make in %s" % self.model_dir
             misc.compile(cwd=self.model_dir, mode='cpp')

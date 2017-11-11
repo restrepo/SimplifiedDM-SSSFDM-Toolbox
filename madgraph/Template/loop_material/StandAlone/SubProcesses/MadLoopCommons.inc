@@ -30,89 +30,6 @@
 
       end
 
-
-## if(collier_available){
-	  SUBROUTINE INITCOLLIER()
-C 
-C INITIALISATION OF COLLIER
-C
-C  
-C MODULE
-C
-	  USE COLLIER 
-C
-C CONSTANTS
-C
-	  character(len=*) no_folder 
-      parameter (no_folder='')
-	  character(len=*) folderOutput
-      parameter (folderOutput='COLLIER_output')
-
-C     Force COLLIER to completely reset from scratch
-      logical noreset
-      parameter (noreset=.FALSE.)
-C
-C LOCAL VARIABLES 
-C    
-      INTEGER N_CACHES
-C  
-C GLOBAL VARIABLES 
-C
-      include 'MadLoopParams.inc'
-C     Now obtain the overall maximum rank, maximum external lines
-C     and maximal number of processes.
-      include 'global_specs.inc'
-
-C ----------
-C BEGIN CODE
-C ----------
-
-C     Initialize Collier
-      IF (.NOT.COLLIERCanOutput) THEN
-        CALL Init_cll(MAXNEXTERNAL,OVERALLMAXRANK,no_folder,noreset)
-      ELSE
-        CALL Init_cll(MAXNEXTERNAL,OVERALLMAXRANK,folderOutput,noreset)
-	  ENDIF
-
-C     Set target accuracy, be conservative w.r.t user request
-C     Keep in mind that COLLIER has been optimized for 1d-8.
-      IF (COLLIERRequiredAccuracy.eq.-1.0d0) THEN
-        CALL SetReqAcc_cll(MLStabThres*1.0d-3)
-      ELSE
-        CALL SetReqAcc_cll(COLLIERRequiredAccuracy)
-	  ENDIF
-
-C     Set COLLIER mode
-      CALL SetMode_cll(COLLIERMode)
-
-C     Set the global cache strategy
-C     If we use the caches for the poles as well, then it is a total of
-C     4 caches per process.
-      IF (COLLIERUseCacheForPoles) THEN
-	    N_CACHES =4*NPROCS
-	  ELSE
-	    N_CACHES =NPROCS
-	  ENDIF
-      IF (COLLIERGlobalCache.eq.-1) THEN
-	    CALL InitCacheSystem_cll(N_CACHES,MAXNEXTERNAL)
-	  ELSEIF(COLLIERGlobalCache.gt.0) THEN
-	    CALL InitCacheSystem_cll(N_CACHES,COLLIERGlobalCache)
-	  ENDIF
-
-C     Make sure to start by first switching off all cache
-      IF (COLLIERGlobalCache.ne.0) THEN
-        call SwitchOffCacheSystem_cll()
-      ENDIF
-
-C     Make sure no COLLIER error can interrupt the code
-	  call SwitchOffErrStop_cll()
-
-C     Specify below your other custom COLLIER parameter settings 
-C     [user_specific_COLLIER_settings]
-	  
-	  END
-## }
-
       SUBROUTINE SET_FORBID_HEL_DOUBLECHECK(ONOFF)
 C
 C Give the possibility to overwrite the value of MadLoopParams.dat
@@ -150,10 +67,9 @@ C ----------
       DATA ML_INIT/.TRUE./
       common/ML_INIT/ML_INIT
 
-      LOGICAL CTINIT,TIRINIT,GOLEMINIT,SAMURAIINIT,NINJAINIT,COLLIERINIT
-      DATA CTINIT,TIRINIT,GOLEMINIT,SAMURAIINIT,NINJAINIT,COLLIERINIT/.TRUE.,.TRUE.,.TRUE.,.TRUE.,.TRUE.,.TRUE./
-      COMMON/REDUCTIONCODEINIT/CTINIT, TIRINIT, GOLEMINIT, SAMURAIINIT, NINJAINIT, COLLIERINIT
-
+      LOGICAL CTINIT,TIRINIT,GOLEMINIT
+      DATA CTINIT,TIRINIT,GOLEMINIT/.TRUE.,.TRUE.,.TRUE./
+      COMMON/REDUCTIONCODEINIT/CTINIT, TIRINIT, GOLEMINIT
 
       character(512) MLPath
       data MLPath/'[[NA]]'/      
@@ -242,15 +158,7 @@ C         Stable with PJFry++.
 C     U == 3
 C         Stable with IREGI.
 C     U == 4
-C         Stable with Golem95.
-C     U == 5
-C         Stable with Samurai.
-C     U == 6
-C         Stable with Ninja in double precision.
-C     U == 7
-C         Stable with COLLIER.
-C     U == 8
-C         Stable with Ninja in quadruple precision.
+C         Stable with Golem95
 C     U == 9
 C         Stable with CutTools in quadruple precision.
 C
@@ -280,21 +188,18 @@ C
          IF(MLRed.EQ.1)THEN
             SET_RET_CODE_U=9
             RETURN
-         ELSEIF(MLRed.EQ.6)THEN
-            SET_RET_CODE_U=8
-            RETURN
-		 ELSE
-            STOP 'Only CutTools and Ninja can use quardruple precision'
+         ELSE
+            STOP 'Only CutTools can use quardruple precision'
          ENDIF
       ENDIF
-      IF(MLRed.GE.1.AND.MLRed.LE.7)THEN
+      IF(MLRed.GE.1.AND.MLRed.LE.4)THEN
          SET_RET_CODE_U=MLRed
       ELSE
-         STOP 'Only CutTools, PJFry++, IREGI, Golem95, Samurai, Ninja and COLLIER are available'
+         STOP 'Only CutTools,PJFry++,IREGI,Golem95 are available'
       ENDIF
       END
 
-      SUBROUTINE DETECT_LOOPLIB(LIBNUM,NLOOPLINE,RANK,complex_mass,HAS_HEFT_VERTEX,MAX_SPIN_CONNECTED_TO_LOOP,LPASS)
+      SUBROUTINE DETECT_LOOPLIB(LIBNUM,NLOOPLINE,RANK,complex_mass,LPASS)
 C
 C DETECT WHICH LOOP LIB PASSED
 C
@@ -305,9 +210,8 @@ C
 C
 C ARGUMENTS
 C
-      INTEGER LIBNUM,NLOOPLINE,RANK,MAX_SPIN_CONNECTED_TO_LOOP
-C     The argument HAS_HEFT_VERTEX is only to implement correctly CutTools limitation
-      LOGICAL complex_mass,LPASS,HAS_HEFT_VERTEX
+      INTEGER LIBNUM,NLOOPLINE,RANK
+      LOGICAL complex_mass,LPASS
 C     
 C LOCAL VARIABLES
 C
@@ -319,7 +223,7 @@ C BEGIN CODE
 C ----------
       IF(LIBNUM.EQ.1)THEN
 C CutTools
-         CALL DETECT_CUTTOOLS(NLOOPLINE,RANK,complex_mass,HAS_HEFT_VERTEX,MAX_SPIN_CONNECTED_TO_LOOP,LPASS)
+         CALL DETECT_CUTTOOLS(NLOOPLINE,RANK,complex_mass,LPASS)
       ELSEIF(LIBNUM.EQ.2)THEN
 C PJFry++
          CALL DETECT_PJFRY(NLOOPLINE,RANK,complex_mass,LPASS)
@@ -329,65 +233,15 @@ C IREGI
       ELSEIF(LIBNUM.EQ.4)THEN
 C Golem95
          CALL DETECT_GOLEM(NLOOPLINE,RANK,complex_mass,LPASS)
-      ELSEIF(LIBNUM.EQ.5)THEN
-C Samurai
-         CALL DETECT_SAMURAI(NLOOPLINE,RANK,complex_mass,LPASS)
-      ELSEIF(LIBNUM.EQ.6)THEN
-C Ninja 
-         CALL DETECT_NINJA(NLOOPLINE,RANK,complex_mass,LPASS)
-      ELSEIF(LIBNUM.EQ.7)THEN
-C Collier 
-         CALL DETECT_COLLIER(NLOOPLINE,RANK,complex_mass,LPASS)
       ELSE
-         STOP 'Only CutTools, PJFry++, IREGI, Golem95, Samurai, Ninja and COLLIER are available'
+         STOP 'ONLY CUTTOOLS,PJFry++,IREGI,Golem95 are provided'
       ENDIF
       RETURN
       END
 
-      SUBROUTINE DETECT_CUTTOOLS(NLOOPLINE,RANK,complex_mass,HAS_HEFT_VERTEX,MAX_SPIN_CONNECTED_TO_LOOP,LPASS)
+      SUBROUTINE DETECT_CUTTOOLS(NLOOPLINE,RANK,complex_mass,LPASS)
 C
-C DETECT whether CUTTOOLS CAN BE USED OR NOT
-C
-      IMPLICIT NONE
-
-C
-C CONSTANTS
-C
-C
-C ARGUMENTS
-C
-      INTEGER NLOOPLINE,RANK
-	  INTEGER MAX_SPIN_CONNECTED_TO_LOOP
-      LOGICAL complex_mass,LPASS,HAS_HEFT_VERTEX
-C
-C LOCAL VARIABLES
-C
-      INTEGER MAX_RANK
-C ----------
-C BEGIN CODE
-C ----------
-      LPASS=.TRUE.
-C     The limit of 10 loop lines is just a parameter hardcoded in CutTools sources.
-C     It can easily be increased if necessary.
-C     Also in the presence of spin2 particles, RANK=NLOOPLINE+1 is not supported,
-C     or in general whenever the higher rank doesn't come from the Higgs effective vertex.
-
-      IF (MAX_SPIN_CONNECTED_TO_LOOP.le.3.AND.HAS_HEFT_VERTEX) THEN
-	    MAX_RANK = NLOOPLINE+1
-	  ELSE
-	    MAX_RANK = NLOOPLINE
-	  ENDIF
-
-      IF( (RANK.GT.MAX_RANK).OR.(NLOOPLINE.gt.10) ) THEN
-	    LPASS=.FALSE.	  
-	  endif
-
-      RETURN
-      END
-
-      SUBROUTINE DETECT_SAMURAI(NLOOPLINE,RANK,complex_mass,LPASS)
-C
-C DETECT whether Samurai CAN BE USED OR NOT
+C DETECT THE CUTTOOLS CAN BE USED OR NOT
 C
       IMPLICIT NONE
 C
@@ -408,107 +262,13 @@ C ----------
 C BEGIN CODE
 C ----------
       LPASS=.TRUE.
-C     The limit of 8 loop lines is just a parameter hardcoded in Samurai sources.
-C     It can easily be increased if necessary.
-      IF((NLOOPLINE+1.LT.RANK).OR.(NLOOPLINE.gt.8)) then
-	    LPASS=.FALSE.
-      endif
+      IF(NLOOPLINE+1.LT.RANK)LPASS=.FALSE.
       RETURN
       END
-
-      SUBROUTINE DETECT_NINJA(NLOOPLINE,RANK,complex_mass,LPASS)
-C
-C Detect whether Ninja can be used or not
-C
-      IMPLICIT NONE
-C
-C CONSTANTS
-C
-C
-C ARGUMENTS
-C
-      INTEGER NLOOPLINE,RANK
-      LOGICAL complex_mass,LPASS
-C
-C LOCAL VARIABLES
-C
-C
-C GLOBAL VARIABLES
-C
-C ----------
-C BEGIN CODE
-C ----------
-      LPASS=.TRUE.
-C     The limit of rank 20 is just a parameter hardcoded in Ninja sources.
-C     It can easily be increased if necessary.
-      IF((NLOOPLINE+1.LT.RANK).OR.(RANK.GE.20)) then
-	    LPASS=.FALSE.
-      endif
-      RETURN
-      END
-
-## if(collier_available){
-      SUBROUTINE DETECT_COLLIER(NLOOPLINE,RANK,complex_mass,LPASS)
-C
-C Detect whether Collier can be used or not
-C
-      USE COLLIER
-      IMPLICIT NONE
-C
-C CONSTANTS
-C
-C
-C ARGUMENTS
-C
-      INTEGER NLOOPLINE,RANK
-      LOGICAL complex_mass,LPASS
-C
-C LOCAL VARIABLES
-C
-      INTEGER CURRENT_COLLIERMODE
-C
-C GLOBAL VARIABLES
-C
-      LOGICAL CTINIT,TIRINIT,GOLEMINIT,SAMURAIINIT,NINJAINIT,COLLIERINIT
-      COMMON/REDUCTIONCODEINIT/CTINIT, TIRINIT, GOLEMINIT, SAMURAIINIT, NINJAINIT, COLLIERINIT
-      include 'MadLoopParams.inc'
-C ----------
-C BEGIN CODE
-C ----------
-      if (.NOT.COLLIERINIT) THEN
-        CALL GETMODE_CLL(CURRENT_COLLIERMODE)
-      ELSE
-        CURRENT_COLLIERMODE = COLLIERMODE
-      ENDIF
-      LPASS=.TRUE.
-	  IF (CURRENT_COLLIERMODE.NE.1) THEN
-C       The DD branch is used and it has limitations
-        IF((NLOOPLINE.GT.6).OR.(RANK.GT.NLOOPLINE)) then
-	      LPASS=.FALSE.
-        endif
-      ELSE
-C       Limitations of the COLI branch are academic.
-        LPASS=.TRUE. 
-	  ENDIF
-      RETURN
-      END
-## }else{
-      SUBROUTINE DETECT_COLLIER(NLOOPLINE,RANK,complex_mass,LPASS)
-C
-C ARGUMENTS
-C
-      INTEGER NLOOPLINE,RANK
-      LOGICAL complex_mass,LPASS
-C
-C     COLLIER is not available in this output. This subroutine is dummy.
-C
-      LPASS=.True.
-      END
-## }
 
       SUBROUTINE DETECT_PJFRY(NLOOPLINE,RANK,complex_mass,LPASS)
 C
-C DETECT whether PJFRY++ CAN BE USED OR NOT
+C DETECT THE PJFRY++ CAN BE USED OR NOT
 C
       IMPLICIT NONE
 C
@@ -537,7 +297,7 @@ C ----------
 
       SUBROUTINE DETECT_IREGI(NLOOPLINE,RANK,complex_mass,LPASS)
 C     
-C DETECT whether IREGI CAN BE USED OR NOT
+C DETECT THE IREGI CAN BE USED OR NOT
 C
       IMPLICIT NONE
 C
@@ -557,15 +317,14 @@ C
 C ----------
 C BEGIN CODE
 C ----------
-C     Stability studies show that IREGI is completely unstable at rank 7 and above.
       LPASS=.TRUE.
-      IF(NLOOPLINE.GE.8.OR.RANK.GE.7)LPASS=.FALSE.
+      IF(NLOOPLINE.GE.8.OR.RANK.GE.8)LPASS=.FALSE.
       RETURN
       END
 
       SUBROUTINE DETECT_GOLEM(NLOOPLINE,RANK,complex_mass,LPASS)
 C
-C DETECT whether Golem95 CAN BE USED OR NOT
+C DETECT THE Golem95 CAN BE USED OR NOT
 C
             IMPLICIT NONE
 C

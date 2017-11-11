@@ -30,7 +30,6 @@ import tests.unit_tests.iolibs.test_file_writers as test_file_writers
 import madgraph.interface.master_interface as Cmd
 import madgraph.interface.launch_ext_program as launch_ext
 import madgraph.iolibs.files as files
-import madgraph.core.diagram_generation as diagram_generation
 import madgraph.various.misc as misc
 _file_path = os.path.split(os.path.dirname(os.path.realpath(__file__)))[0]
 _pickle_path =os.path.join(_file_path, 'input_files')
@@ -63,7 +62,7 @@ class TestCmdShell1(unittest.TestCase):
         
         self.do('import model sm')
         self.cmd._curr_model.pass_particles_name_in_mg_default()
-        self.do('generate e+ e- > e+ e- QED<=2')
+        self.do('generate e+ e- > e+ e-')
         self.assertTrue(self.cmd._curr_amps)
         self.do('define P Z u')
         self.do('define J P g')
@@ -100,24 +99,7 @@ class TestCmdShell1(unittest.TestCase):
         
         self.do('generate e+ ve > V2 > e+ ve mu+ mu-')
         self.assertEqual(len(self.cmd._curr_amps[0].get('diagrams')), 8)
-        
-        self.do('generate e+ e- > e+ e- QED=2 [tree=QCD] QCD=0')
-        self.assertEqual(len(self.cmd._curr_amps[0].get('diagrams')), 4)
-
-        self.do('generate e+ e- > e+ e- @0 QCD<=2')
-        self.assertEqual(len(self.cmd._curr_amps[0].get('diagrams')), 4)   
-        
-        self.do('generate u u~ > d d~ QED>0')
-        self.assertEqual(len(self.cmd._curr_amps[0].get('diagrams')), 3)           
-        
-        self.assertRaises(diagram_generation.NoDiagramException, self.do, 'generate u u~ > d d~ QED>0 QED^2==0')
-        self.do('generate u u~ > d d~ QED==0 QCD>1 QED^2<=4')
-        self.assertEqual(len(self.cmd._curr_amps[0].get('diagrams')), 1)
-        
-        self.do('generate u u~ > d d~ c c~ QED==2')
-        self.assertEqual(len(self.cmd._curr_amps[0].get('diagrams')), 28)
-        
-            
+       
     def test_import_model(self):
         """check that old UFO model are loaded correctly"""
         
@@ -172,9 +154,7 @@ class TestCmdShell1(unittest.TestCase):
                     'exrootanalysis_path': './ExRootAnalysis', 
                     'eps_viewer': None, 
                     'automatic_html_opening': True, 
-                    'pythia8_path': './HEPTools/pythia8',
-                    'mg5amc_py8_interface_path': './HEPTools/MG5aMC_PY8_interface',
-                    'madanalysis5_path': './HEPTools/madanalysis5/madanalysis5',
+                    'pythia8_path': './pythia8',
                     'group_subprocesses': 'Auto',
                     'complex_mass_scheme': False,
                     'gauge': 'unitary',
@@ -191,7 +171,6 @@ class TestCmdShell1(unittest.TestCase):
                     'f2py_compiler':None,
                     'cluster_retry_wait': 300,
                     'syscalc_path':'./SysCalc',
-                    'collier':'./HEPTools/lib',
                     'hepmc_path': './hepmc',
                     'hwpp_path': './herwigPP',
                     'thepeg_path': './thepeg',
@@ -199,11 +178,8 @@ class TestCmdShell1(unittest.TestCase):
                     'applgrid': 'applgrid-config',
                     'cluster_size': 100,
                     'loop_color_flows': False,
-                    'cluster_local_path': None,
-                    'max_npoint_for_channel': 0,
-                    'low_mem_multicore_nlo_generation': False,
-                    'ninja': './HEPTools/lib',
-                    'samurai': None,
+                    'cluster_local_path': '/cvmfs/cp3.uclouvain.be/madgraph/',
+                    'max_npoint_for_channel': 0
                     }
 
         self.assertEqual(config, expected)
@@ -262,9 +238,7 @@ class TestCmdShell2(unittest.TestCase,
         self.do('generate e+ e- > e+ e-')
 #        self.do('load processes %s' % self.join_path(_pickle_path,'e+e-_e+e-.pkl'))
         self.do('output %s -nojpeg' % self.out_dir)
-        
         self.assertTrue(os.path.exists(self.out_dir))
-        self.assertTrue(os.path.exists(pjoin(self.out_dir, 'Cards', 'me5_configuration.txt')))
         self.assertTrue(os.path.exists(os.path.join(self.out_dir,
                                                'SubProcesses', 'P0_epem_epem')))
         self.assertTrue(os.path.exists(os.path.join(self.out_dir,
@@ -308,10 +282,9 @@ class TestCmdShell2(unittest.TestCase,
                         stdout=devnull, stderr=devnull, 
                         cwd=os.path.join(self.out_dir, 'temp'))
 
-        self.assertTrue(os.path.exists(pjoin(self.out_dir,'temp', 'Cards', 'me5_configuration.txt')))
         # Check that the Source directory compiles
         status = subprocess.call(['make'],
-                                stdout=devnull, stderr=devnull, 
+                                 stdout=devnull, stderr=devnull, 
                                  cwd=os.path.join(self.out_dir, 'temp', 'Source'))
         self.assertEqual(status, 0)
         self.assertTrue(os.path.exists(os.path.join(self.out_dir, 'temp',
@@ -571,23 +544,23 @@ class TestCmdShell2(unittest.TestCase,
         if os.path.isdir(self.out_dir):
             shutil.rmtree(self.out_dir)
 
-        self.do('import model MSSM_SLHA2-full')
+        self.do('import model mssm-full')
         self.do('generate g g > go go QED=2')
         self.do('output standalone_cpp %s ' % self.out_dir)
         devnull = open(os.devnull,'w')
     
-        logfile = os.path.join(self.out_dir,'SubProcesses', 'P0_Sigma_MSSM_SLHA2_full_gg_gogo',
+        logfile = os.path.join(self.out_dir,'SubProcesses', 'P0_Sigma_mssm_full_gg_gogo',
                                'check.log')
         # Check that check_sa.cc compiles
         subprocess.call(['make'],
                         stdout=devnull, stderr=devnull, 
                         cwd=os.path.join(self.out_dir, 'SubProcesses',
-                                         'P0_Sigma_MSSM_SLHA2_full_gg_gogo'))
+                                         'P0_Sigma_mssm_full_gg_gogo'))
         
         subprocess.call('./check', 
                         stdout=open(logfile, 'w'), stderr=subprocess.STDOUT,
                         cwd=os.path.join(self.out_dir, 'SubProcesses',
-                                         'P0_Sigma_MSSM_SLHA2_full_gg_gogo'), shell=True)
+                                         'P0_Sigma_mssm_full_gg_gogo'), shell=True)
     
         log_output = open(logfile, 'r').read()
         me_re = re.compile('Matrix element\s*=\s*(?P<value>[\d\.eE\+-]+)\s*GeV',
@@ -792,15 +765,15 @@ C
       P3(1) = -DBLE(V3(2))
       P3(2) = -DIMAG(V3(2))
       P3(3) = -DIMAG(V3(1))
-      DENOM = COUP/(P3(0)**2-P3(1)**2-P3(2)**2-P3(3)**2 - M3 * (M3 -CI
-     $ * W3))
-      V3(3)= DENOM*(-CI)*(F1(3)*F2(5)+F1(4)*F2(6)+F1(5)*F2(3)+F1(6)
+      DENOM = COUP/(P3(0)**2-P3(1)**2-P3(2)**2-P3(3)**2 - M3 * (M3 
+     $ -CI* W3))
+      V3(3)= DENOM*-CI*(F1(3)*F2(5)+F1(4)*F2(6)+F1(5)*F2(3)+F1(6)
      $ *F2(4))
-      V3(4)= DENOM*(-CI)*(F1(5)*F2(4)+F1(6)*F2(3)-F1(3)*F2(6)-F1(4)
+      V3(4)= DENOM*-CI*(F1(5)*F2(4)+F1(6)*F2(3)-F1(3)*F2(6)-F1(4)
      $ *F2(5))
-      V3(5)= DENOM*(-CI)*(-CI*(F1(3)*F2(6)+F1(6)*F2(3))+CI*(F1(4)*F2(5)
+      V3(5)= DENOM*-CI*(-CI*(F1(3)*F2(6)+F1(6)*F2(3))+CI*(F1(4)*F2(5)
      $ +F1(5)*F2(4)))
-      V3(6)= DENOM*(-CI)*(F1(4)*F2(6)+F1(5)*F2(3)-F1(3)*F2(5)-F1(6)
+      V3(6)= DENOM*-CI*(F1(4)*F2(6)+F1(5)*F2(3)-F1(3)*F2(5)-F1(6)
      $ *F2(4))
       END
 
@@ -840,13 +813,13 @@ C
       P3(3) = -DIMAG(V3(1))
       TMP1 = (F1(3)*(F2(5)*(P3(0)+P3(3))+F2(6)*(P3(1)+CI*(P3(2))))
      $ +F1(4)*(F2(5)*(P3(1)-CI*(P3(2)))+F2(6)*(P3(0)-P3(3))))
-      DENOM = COUP/(P3(0)**2-P3(1)**2-P3(2)**2-P3(3)**2 - M3 * (M3 -CI
-     $ * W3))
-      V3(3)= DENOM*(-CI)*(F1(3)*F2(5)+F1(4)*F2(6)-P3(0)*OM3*TMP1)
-      V3(4)= DENOM*(-CI)*(-F1(3)*F2(6)-F1(4)*F2(5)-P3(1)*OM3*TMP1)
-      V3(5)= DENOM*(-CI)*(-CI*(F1(3)*F2(6))+CI*(F1(4)*F2(5))-P3(2)*OM3
+      DENOM = COUP/(P3(0)**2-P3(1)**2-P3(2)**2-P3(3)**2 - M3 * (M3 
+     $ -CI* W3))
+      V3(3)= DENOM*-CI*(F1(3)*F2(5)+F1(4)*F2(6)-P3(0)*OM3*TMP1)
+      V3(4)= DENOM*-CI*(-F1(3)*F2(6)-F1(4)*F2(5)-P3(1)*OM3*TMP1)
+      V3(5)= DENOM*-CI*(-CI*(F1(3)*F2(6))+CI*(F1(4)*F2(5))-P3(2)*OM3
      $ *TMP1)
-      V3(6)= DENOM*(-CI)*(F1(4)*F2(6)-F1(3)*F2(5)-P3(3)*OM3*TMP1)
+      V3(6)= DENOM*-CI*(F1(4)*F2(6)-F1(3)*F2(5)-P3(3)*OM3*TMP1)
       END
 
 
@@ -935,8 +908,6 @@ C
                                                'lib', 'libdsample.a')))
         self.assertTrue(os.path.exists(os.path.join(self.out_dir,
                                                'lib', 'libpdf.a')))
-        self.assertTrue(os.path.exists(os.path.join(self.out_dir,
-                                               'lib', 'libbias.a')))
         # Check that gensym compiles
         status = subprocess.call(['make', 'gensym'],
                                  stdout=devnull, 
@@ -1426,13 +1397,13 @@ P1_qq_wp_wp_lvl
         self.assertEqual(len(self.cmd._curr_model.get('particles')), 17)
         self.assertEqual(len(self.cmd._curr_model.get('interactions')), 56)
         self.do('save model /tmp/model.pkl')
-        self.do('import model MSSM_SLHA2-full')
+        self.do('import model mssm-full')
         self.do('load model /tmp/model.pkl')
         self.assertEqual(len(self.cmd._curr_model.get('particles')), 17)
         self.assertEqual(len(self.cmd._curr_model.get('interactions')), 56)
         self.do('generate mu+ mu- > ta+ ta-') 
         self.assertEqual(len(self.cmd._curr_amps), 1)
-        nicestring = """Process: mu+ mu- > ta+ ta- WEIGHTED<=4
+        nicestring = """Process: mu+ mu- > ta+ ta- WEIGHTED=4
 2 diagrams:
 1  ((1(13),2(-13)>1(22),id:35),(3(-15),4(15),1(22),id:36)) (QCD=0,QED=2,WEIGHTED=4)
 2  ((1(13),2(-13)>1(23),id:41),(3(-15),4(15),1(23),id:42)) (QCD=0,QED=2,WEIGHTED=4)"""

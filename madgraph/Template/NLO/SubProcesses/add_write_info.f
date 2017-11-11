@@ -73,9 +73,9 @@ c LesHouches info
       integer maxflow
       parameter (maxflow=999)
       integer idup(nexternal,maxproc),mothup(2,nexternal,maxproc),
-     &     icolup(2,nexternal,maxflow),niprocs
+     &     icolup(2,nexternal,maxflow)
 c      include "leshouche.inc"
-      common /c_leshouche_inc/idup,mothup,icolup,niprocs
+      common /c_leshouche_inc/idup,mothup,icolup
 
 c Common block to check if we are doing MC over helicities.
       integer           isum_hel

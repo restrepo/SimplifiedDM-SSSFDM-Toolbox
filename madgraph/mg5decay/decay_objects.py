@@ -1297,8 +1297,7 @@ class DecayParticleList(base_objects.ParticleList):
                 "Object %s is not a valid object for the current list" %repr(object)
 
         if isinstance(object, DecayParticle):
-            if object.get('type') != 'ghost':
-                list.append(self, object)
+            list.append(self, object)
         else:
             list.append(self, DecayParticle(object, force))
 

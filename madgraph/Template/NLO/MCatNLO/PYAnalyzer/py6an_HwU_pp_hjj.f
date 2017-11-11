@@ -52,7 +52,8 @@ c
       common /to_veto_hist/vetomin,vetomax,nbinveto
       common/cnwgt/nwgt
       common/c_analysis/nwgt_analysis
-      character*50 weights_info(max_weight_shower)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
+      character*15 weights_info(max_weight)
       common/cwgtsinfo/weights_info
 c
 c Initialize histograms
@@ -210,10 +211,7 @@ c jet stuff
       double precision pt_veto, pjveto(4), xsecup2
       integer nwgt_analysis,max_weight
       common/c_analysis/nwgt_analysis
-      integer maxRWGT
-      parameter (maxRWGT=100)
-      double precision wgtxsecRWGT(maxRWGT)
-      parameter (max_weight=maxscales*maxscales+maxpdfs+maxRWGT+1)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
       double precision ww(max_weight),www(max_weight)
       common/cww/ww
 c

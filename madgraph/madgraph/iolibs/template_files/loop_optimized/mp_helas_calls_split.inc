@@ -1,6 +1,5 @@
       SUBROUTINE %(proc_prefix)s%(bunch_name)s_%(bunch_number)d(P,NHEL,H,IC)
-C       
-      use %(proc_prefix)sPOLYNOMIAL_CONSTANTS      
+C  
       IMPLICIT NONE
 C  
 C CONSTANTS
@@ -20,6 +19,10 @@ C
 	  PARAMETER (NLOOPAMPS=%(nloopamps)d)
       INTEGER    NWAVEFUNCS,NLOOPWAVEFUNCS
       PARAMETER (NWAVEFUNCS=%(nwavefuncs)d,NLOOPWAVEFUNCS=%(nloopwavefuncs)d)
+	  INTEGER MAXLWFSIZE
+	  PARAMETER (MAXLWFSIZE=%(max_lwf_size)d)
+	  INTEGER LOOPMAXCOEFS, VERTEXMAXCOEFS
+	  PARAMETER (LOOPMAXCOEFS=%(loop_max_coefs)d, VERTEXMAXCOEFS=%(vertex_max_coefs)d)
 	  %(real_mp_format)s     ZERO
       PARAMETER (ZERO=0.0e0_16)
 	  %(complex_mp_format)s     IZERO
@@ -37,7 +40,7 @@ C
 C LOCAL VARIABLES
 C
 	  INTEGER I,J,K
-	  %(complex_mp_format)s COEFS(MAXLWFSIZE,0:VERTEXMAXCOEFS-1,MAXLWFSIZE)	  
+	  %(complex_mp_format)s COEFS(MAXLWFSIZE,0:VERTEXMAXCOEFS-1,MAXLWFSIZE)
 C  
 C GLOBAL VARIABLES
 C  

@@ -496,7 +496,7 @@ class Amplitude(base_objects.PhysicsObject):
         
         return self.get('process').get('perturbation_couplings')
 
-    def generate_diagrams(self, returndiag=False, diagram_filter=False):
+    def generate_diagrams(self, returndiag=False):
         """Generate diagrams. Algorithm:
 
         1. Define interaction dictionaries:
@@ -792,9 +792,6 @@ class Amplitude(base_objects.PhysicsObject):
         if not returndiag and len(res)>0:
             res = self.apply_squared_order_constraints(res)
 
-        if diagram_filter:
-            res = self.apply_user_filter(res)
-
         # Replace final id=0 vertex if necessary
         if not process.get('is_decay_chain'):
             for diagram in res:
@@ -844,16 +841,11 @@ class Amplitude(base_objects.PhysicsObject):
         list in argument."""
 
         res = copy.copy(diag_list)                  
-        
-        # Apply the filtering  on constrained amplitude (== and >)
-        # No need to iterate on this one
-        for name, (value, operator) in self['process'].get('constrained_orders').items():
-            res.filter_constrained_orders(name, value, operator)
-            
+
         # Iterate the filtering since the applying the constraint on one
         # type of coupling order can impact what the filtering on a previous
         # one (relevant for the '==' type of constraint).
-        while True: 
+        while True:   
             new_res = res.apply_positive_sq_orders(res, 
                                           self['process'].get('squared_orders'), 
                                               self['process']['sqorders_types'])
@@ -865,8 +857,6 @@ class Amplitude(base_objects.PhysicsObject):
                  'Inconsistency in function apply_squared_order_constraints().')
             # Actualizing the list of diagram for the next iteration
             res = new_res
-            
-
 
         # Now treat the negative squared order constraint (at most one)
         neg_orders = [(order, value) for order, value in \
@@ -886,41 +876,6 @@ class Amplitude(base_objects.PhysicsObject):
                                    ' can be specified, not %s.'%str(neg_orders))
 
         return res
-
-    def apply_user_filter(self, diag_list):
-        """Applies the user specified squared order constraints on the diagram
-        list in argument."""
-
-        if True:
-            try:
-                from PLUGIN.user_filter import remove_diag
-            except ImportError:
-                raise MadGraph5Error, 'user filter required to be defined in PLUGIN/user_filter.py with the function remove_diag(ONEDIAG) which returns True if the daigram has to be removed'
-        else:
-            #example and simple tests
-            def remove_diag(diag):
-                for vertex in diag['vertices']: #last 
-                    if vertex['id'] == 0: #special final vertex
-                        continue 
-                    if vertex['legs'][-1]['number'] < 3: #this means T-channel
-                        if abs(vertex['legs'][-1]['id']) <6:
-                            return True
-                return False                
-
-        res = diag_list.__class__()                
-        nb_removed = 0 
-        for diag in diag_list:
-            if remove_diag(diag):
-                nb_removed +=1
-            else:
-                res.append(diag)
-
-        if nb_removed:
-            logger.warning('Diagram filter is ON and removed %s diagrams for this subprocess.' % nb_removed)
-            
-        return res
-
-
 
     def create_diagram(self, vertexlist):
         """ Return a Diagram created from the vertex list. This function can be
@@ -1333,7 +1288,7 @@ class DecayChainAmplitude(Amplitude):
         self['decay_chains'] = DecayChainAmplitudeList()
 
     def __init__(self, argument = None, collect_mirror_procs = False,
-                 ignore_six_quark_processes = False, loop_filter=None):
+                 ignore_six_quark_processes = False):
         """Allow initialization with Process and with ProcessDefinition"""
 
         if isinstance(argument, base_objects.Process):
@@ -1347,12 +1302,10 @@ class DecayChainAmplitude(Amplitude):
                 self['amplitudes'].extend(\
                   MultiProcessClass.generate_multi_amplitudes(argument,
                                                     collect_mirror_procs,
-                                                    ignore_six_quark_processes,
-                                                    loop_filter=loop_filter))
+                                                    ignore_six_quark_processes))
             else:
                 self['amplitudes'].append(\
-                  MultiProcessClass.get_amplitude_from_proc(argument,
-                                                       loop_filter=loop_filter))
+                  MultiProcessClass.get_amplitude_from_proc(argument))
                 # Clean decay chains from process, since we haven't
                 # combined processes with decay chains yet
                 process = copy.copy(self.get('amplitudes')[0].get('process'))
@@ -1563,8 +1516,7 @@ class MultiProcess(base_objects.PhysicsObject):
         self['use_numerical'] = False
         
     def __init__(self, argument=None, collect_mirror_procs = False,
-                 ignore_six_quark_processes = [], optimize=False,
-                 loop_filter=None, diagram_filter=None):
+                 ignore_six_quark_processes = [], optimize=False):
         """Allow initialization with ProcessDefinition or
         ProcessDefinitionList
         optimize allows to use param_card information. (usefull for 1-.N)"""
@@ -1585,8 +1537,6 @@ class MultiProcess(base_objects.PhysicsObject):
         self['collect_mirror_procs'] = collect_mirror_procs
         self['ignore_six_quark_processes'] = ignore_six_quark_processes
         self['use_numerical'] = optimize
-        self['loop_filter'] = loop_filter
-        self['diagram_filter'] = diagram_filter # only True/False so far
         
         if isinstance(argument, base_objects.ProcessDefinition) or \
                isinstance(argument, base_objects.ProcessDefinitionList):
@@ -1636,9 +1586,7 @@ class MultiProcess(base_objects.PhysicsObject):
                        self.generate_multi_amplitudes(process_def,
                                        self.get('collect_mirror_procs'),
                                        self.get('ignore_six_quark_processes'),
-                                       self['use_numerical'],
-                                       loop_filter=self['loop_filter'],
-                                       diagram_filter=self['diagram_filter']))
+                                       self['use_numerical']))
 
         return MultiProcess.__bases__[0].get(self, name) # call the mother routine
 
@@ -1651,9 +1599,7 @@ class MultiProcess(base_objects.PhysicsObject):
     def generate_multi_amplitudes(cls,process_definition,
                                   collect_mirror_procs = False,
                                   ignore_six_quark_processes = [],
-                                  use_numerical=False,
-                                  loop_filter=None,
-                                  diagram_filter=False):
+                                  use_numerical=False):
         """Generate amplitudes in a semi-efficient way.
         Make use of crossing symmetry for processes that fail diagram
         generation, but not for processes that succeed diagram
@@ -1723,7 +1669,6 @@ class MultiProcess(base_objects.PhysicsObject):
                 sorted_legs = sorted([(l,i+1) for (i,l) in \
                                    enumerate(legs.get_outgoing_id_list(model))])
                 permutation = [l[1] for l in sorted_legs]
-                
                 sorted_legs = array.array('i', [l[0] for l in sorted_legs])
 
                 # Check for six-quark processes
@@ -1807,11 +1752,10 @@ class MultiProcess(base_objects.PhysicsObject):
                         continue
                     
                 # Create new amplitude
-                amplitude = cls.get_amplitude_from_proc(process,
-                                                        loop_filter=loop_filter)
+                amplitude = cls.get_amplitude_from_proc(process)
 
                 try:
-                    result = amplitude.generate_diagrams(diagram_filter=diagram_filter)
+                    result = amplitude.generate_diagrams()
                 except InvalidCmd as error:
                     failed_procs.append(sorted_legs)
                 else:
@@ -1839,13 +1783,11 @@ class MultiProcess(base_objects.PhysicsObject):
         return amplitudes
 
     @classmethod
-    def get_amplitude_from_proc(cls,proc,**opts):
+    def get_amplitude_from_proc(cls,proc):
         """ Return the correct amplitude type according to the characteristics of
-            the process proc. The only option that could be specified here is
-            loop_filter and it is of course not relevant for a tree amplitude."""
-            
+            the process proc """
         return Amplitude({"process": proc})
-        
+
 
     @staticmethod
     def find_optimal_process_orders(process_definition):
@@ -1921,21 +1863,11 @@ class MultiProcess(base_objects.PhysicsObject):
         max_WEIGHTED_order = \
                         (len(fsids + isids) - 2)*int(model.get_max_WEIGHTED())
 
-        # get the definition of the WEIGHTED
-        hierarchydef = process_definition['model'].get('order_hierarchy')
-        tmp = []
-        hierarchy = hierarchydef.items()
-        hierarchy.sort()
-        for key, value in hierarchydef.items():
-            if value>1:
-                tmp.append('%s*%s' % (value,key))
-            else:
-                tmp.append('%s' % key)
-        wgtdef = '+'.join(tmp)
         # Run diagram generation with increasing max_order_now until
         # we manage to get diagrams
         while max_order_now < max_WEIGHTED_order:
-            logger.info("Trying coupling order WEIGHTED<=%d: WEIGTHED IS %s" % (max_order_now, wgtdef))
+
+            logger.info("Trying coupling order WEIGHTED=%d" % max_order_now)
 
             oldloglevel = logger.level
             logger.setLevel(logging.WARNING)

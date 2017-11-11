@@ -16,7 +16,6 @@
 """A set of functions performing routine administrative I/O tasks."""
 
 import contextlib
-import itertools
 import logging
 import os
 import re
@@ -45,6 +44,7 @@ else:
     import madgraph.iolibs.files as files
     MADEVENT = False
 
+
     
 logger = logging.getLogger('cmdprint.ext_program')
 logger_stderr = logging.getLogger('madevent.misc')
@@ -71,12 +71,6 @@ def parse_info_str(fsock):
 
     return info_dict
 
-
-def glob(name, path=''):
-    """call to glob.glob with automatic security on path"""
-    import glob as glob_module
-    path = re.sub('(?P<name>\?|\*|\[|\])', '[\g<name>]', path)
-    return glob_module.glob(pjoin(path, name))
 
 #===============================================================================
 # mute_logger (designed to be a decorator)
@@ -153,41 +147,14 @@ def find_includes_path(start_path, extension):
     one found which contains at least one file ending with the string extension
     given in argument."""
     
-    if not os.path.isdir(start_path):
-        return None
     subdirs=[pjoin(start_path,dir) for dir in os.listdir(start_path)]
     for subdir in subdirs:
         if os.path.isfile(subdir):
             if os.path.basename(subdir).endswith(extension):
                 return start_path
         elif os.path.isdir(subdir):
-            path = find_includes_path(subdir, extension)
-            if path:
-                return path
+            return find_includes_path(subdir, extension)
     return None
-
-#===============================================================================
-# Given the path of a ninja installation, this function determines if it 
-# supports quadruple precision or not. 
-#===============================================================================
-def get_ninja_quad_prec_support(ninja_lib_path):
-    """ Get whether ninja supports quad prec in different ways"""
-    
-    # First try with the ninja-config executable if present
-    ninja_config = os.path.abspath(pjoin(
-                                 ninja_lib_path,os.pardir,'bin','ninja-config'))
-    if os.path.exists(ninja_config):
-        try:    
-            p = Popen([ninja_config, '-quadsupport'], stdout=subprocess.PIPE, 
-                                                         stderr=subprocess.PIPE)
-            output, error = p.communicate()
-            return 'TRUE' in output.upper()
-        except Exception:
-            pass
-    
-    # If no ninja-config is present, then simply use the presence of
-    # 'quadninja' in the include
-    return False
 
 #===============================================================================
 # find a executable
@@ -241,12 +208,12 @@ def deactivate_dependence(dependency, cmd=None, log = None):
             log(msg)
     
 
-    if dependency in ['pjfry','golem','samurai','ninja','collier']:
+    if dependency in ['pjfry','golem']:
         if cmd.options[dependency] not in ['None',None,'']:
             tell("Deactivating MG5_aMC dependency '%s'"%dependency)
-            cmd.options[dependency] = None
+            cmd.options[dependency] = 'None'
 
-def activate_dependence(dependency, cmd=None, log = None, MG5dir=None):
+def activate_dependence(dependency, cmd=None, log = None):
     """ Checks whether the specfieid MG dependency can be activated if it was
     not turned off in MG5 options."""
     
@@ -273,23 +240,6 @@ def activate_dependence(dependency, cmd=None, log = None, MG5dir=None):
             tell("Installing Golem95...")
             cmd.do_install('Golem95')
     
-    if dependency=='samurai':
-        raise MadGraph5Error, 'Samurai cannot yet be automatically installed.' 
-
-    if dependency=='ninja':
-        if cmd.options['ninja'] in ['None',None,''] or\
-         (cmd.options['ninja'] == './HEPTools/lib' and not MG5dir is None and\
-         which_lib(pjoin(MG5dir,cmd.options['ninja'],'libninja.a')) is None):
-            tell("Installing ninja...")
-            cmd.do_install('ninja')
- 
-    if dependency=='collier':
-        if cmd.options['collier'] in ['None',None,''] or\
-         (cmd.options['collier'] == 'auto' and which_lib('libcollier.a') is None) or\
-         which_lib(pjoin(cmd.options['collier'],'libcollier.a')) is None:
-            tell("Installing COLLIER...")
-            cmd.do_install('collier')
-
 #===============================================================================
 # find a library
 #===============================================================================
@@ -379,8 +329,8 @@ def get_scan_name(first, last):
     # find the common string at the beginning     
     base = [first[i] for i in range(len(first)) if first[:i+1] == last[:i+1]]
     # remove digit even if in common
-    while base and base[0].isdigit():
-        base = base[1:] 
+    while base[-1].isdigit():
+        base = base[:-1] 
     # find the common string at the end 
     end = [first[-(i+1)] for i in range(len(first)) if first[-(i+1):] == last[-(i+1):]]
     # remove digit even if in common    
@@ -400,18 +350,6 @@ def get_scan_name(first, last):
 #===============================================================================
 def compile(arg=[], cwd=None, mode='fortran', job_specs = True, nb_core=1 ,**opt):
     """compile a given directory"""
-
-    if 'nocompile' in opt:
-        if opt['nocompile'] == True:
-            if not arg:
-                return
-            if cwd:
-                executable = pjoin(cwd, arg[0])
-            else:
-                executable = arg[0]
-            if os.path.exists(executable):
-                return
-        del opt['nocompile']
 
     cmd = ['make']
     try:
@@ -439,7 +377,7 @@ def compile(arg=[], cwd=None, mode='fortran', job_specs = True, nb_core=1 ,**opt
         if not cwd:
             cwd = os.getcwd()
         all_file = [f.lower() for f in os.listdir(cwd)]
-        if 'makefile' not in all_file and '-f' not in arg:
+        if 'makefile' not in all_file:
             raise OSError, 'no makefile present in %s' % os.path.realpath(cwd)
 
         if mode == 'fortran' and  not (which('g77') or which('gfortran')):
@@ -470,8 +408,8 @@ def compile(arg=[], cwd=None, mode='fortran', job_specs = True, nb_core=1 ,**opt
         error_text += 'The compilation fails with the following output message:\n'
         error_text += '    '+out.replace('\n','\n    ')+'\n'
         error_text += 'Please try to fix this compilations issue and retry.\n'
-        error_text += 'Help might be found at https://answers.launchpad.net/mg5amcnlo.\n'
-        error_text += 'If you think that this is a bug, you can report this at https://bugs.launchpad.net/mg5amcnlo'
+        error_text += 'Help might be found at https://answers.launchpad.net/madgraph5.\n'
+        error_text += 'If you think that this is a bug, you can report this at https://bugs.launchpad.net/madgraph5'
         raise MadGraph5Error, error_text
     return p.returncode
 
@@ -510,14 +448,9 @@ def mod_compilator(directory, new='gfortran', current=None, compiler_type='gfort
         for iline, line in enumerate(lines):
             result = comp_re.match(line)
             if result:
-                if new != result.group(2) and '$' not in result.group(2):
+                if new != result.group(2):
                     mod = True
-                    lines[iline] = result.group(1) + var + "=" + new
-            elif compiler_type == 'gfortran' and line.startswith('DEFAULT_F_COMPILER'):
-                lines[iline] = "DEFAULT_F_COMPILER = %s" % new
-            elif compiler_type == 'cpp' and line.startswith('DEFAULT_CPP_COMPILER'):    
-                lines[iline] = "DEFAULT_CPP_COMPILER = %s" % new
-                
+                lines[iline] = result.group(1) + var + "=" + new
         if mod:
             open(name,'w').write('\n'.join(lines))
             # reset it to change the next file
@@ -556,16 +489,14 @@ class MuteLogger(object):
         self.levels = old_levels
         
     def __exit__(self, ctype, value, traceback ):
-        for name, level, path in zip(self.names, self.levels, self.files):
-
-            if path:
-                if 'keep' in self.opts and not self.opts['keep']:
-                    self.restore_logFile_for_logger(name, level, path=path)
-                else:
-                    self.restore_logFile_for_logger(name, level)
+        for name, level, path, level in zip(self.names, self.levels, self.files, self.levels):
+            if 'keep' in self.opts and not self.opts['keep']:
+                self.restore_logFile_for_logger(name, level, path=path)
             else:
-                log_module = logging.getLogger(name)
-                log_module.setLevel(level)         
+                self.restore_logFile_for_logger(name, level)
+            
+            log_module = logging.getLogger(name)
+            log_module.setLevel(level)         
         
     def setup_logFile_for_logger(self, path, full_logname, **opts):
         """ Setup the logger by redirecting them all to logfiles in tmp """
@@ -658,41 +589,6 @@ def get_open_fds():
         
     return nprocs
 
-def detect_if_cpp_compiler_is_clang(cpp_compiler):
-    """ Detects whether the specified C++ compiler is clang."""
-    
-    try:
-        p = Popen([cpp_compiler, '--version'], stdout=subprocess.PIPE, 
-                    stderr=subprocess.PIPE)
-        output, error = p.communicate()
-    except Exception, error:
-        # Cannot probe the compiler, assume not clang then
-        return False
-    return 'LLVM' in output
-
-def detect_cpp_std_lib_dependence(cpp_compiler):
-    """ Detects if the specified c++ compiler will normally link against the C++
-    standard library -lc++ or -libstdc++."""
-
-    is_clang = detect_if_cpp_compiler_is_clang(cpp_compiler)
-    if is_clang:
-        try:
-            import platform
-            v, _,_ = platform.mac_ver()
-            if not v:
-                # We will not attempt to support clang elsewhere than on macs, so
-                # we venture a guess here.
-                return '-lc++'
-            else:
-                v = float(v.rsplit('.')[1])
-                if v >= 9:
-                   return '-lc++'
-                else:
-                   return '-lstdc++'
-        except:
-            return '-lstdc++'
-    return '-lstdc++'
-
 def detect_current_compiler(path, compiler_type='fortran'):
     """find the current compiler for the current directory"""
     
@@ -709,10 +605,6 @@ def detect_current_compiler(path, compiler_type='fortran'):
         if comp.search(line):
             compiler = comp.search(line).groups()[0]
             return compiler
-        elif compiler_type == 'fortran' and line.startswith('DEFAULT_F_COMPILER'):
-            return line.split('=')[1].strip()
-        elif compiler_type == 'cpp' and line.startswith('DEFAULT_CPP_COMPILER'):
-            return line.split('=')[1].strip()
 
 def find_makefile_in_dir(directory):
     """ return a list of all file starting with makefile in the given directory"""
@@ -827,6 +719,7 @@ def mult_try_open(filepath, *args, **opt):
     """try to open a file with multiple try to ensure that filesystem is sync"""  
     return open(filepath, *args, ** opt)
 
+
 ################################################################################
 # TAIL FUNCTION
 ################################################################################
@@ -851,17 +744,6 @@ def tail(f, n, offset=None):
         avg_line_length *= 1.3
         avg_line_length = int(avg_line_length)
 
-def mkfifo(fifo_path):
-    """ makes a piping fifo (First-in First-out) file and nicely intercepts 
-    error in case the file format of the target drive doesn't suppor tit."""
-
-    try:
-        os.mkfifo(fifo_path)
-    except:
-        raise OSError('MadGraph5_aMCatNLO could not create a fifo file at:\n'+
-          '   %s\n'%fifo_path+'Make sure that this file does not exist already'+
-          ' and that the file format of the target drive supports fifo file (i.e not NFS).')
-
 ################################################################################
 # LAST LINE FUNCTION
 ################################################################################
@@ -869,7 +751,7 @@ def get_last_line(fsock):
     """return the last line of a file"""
     
     return tail(fsock, 1)[0]
-
+    
 class BackRead(file):
     """read a file returning the lines in reverse order for each call of readline()
 This actually just reads blocks (4096 bytes by default) of data from the end of
@@ -990,25 +872,15 @@ class TMP_variable(object):
     """
 
     def __init__(self, cls, attribute, value):
-
+        
+        self.old_value = getattr(cls, attribute)
         self.cls = cls
-        self.attribute = attribute        
-        if isinstance(attribute, list):
-            self.old_value = []
-            for key, onevalue in zip(attribute, value):
-                self.old_value.append(getattr(cls, key))
-                setattr(self.cls, key, onevalue)
-        else:
-            self.old_value = getattr(cls, attribute)
-            setattr(self.cls, self.attribute, value)
+        self.attribute = attribute
+        setattr(self.cls, self.attribute, value)
     
     def __exit__(self, ctype, value, traceback ):
-        
-        if isinstance(self.attribute, list):
-            for key, old_value in zip(self.attribute, self.old_value):
-                setattr(self.cls, key, old_value)
-        else:
-            setattr(self.cls, self.attribute, self.old_value)
+
+        setattr(self.cls, self.attribute, self.old_value)
         
     def __enter__(self):
         return self.old_value 
@@ -1229,39 +1101,6 @@ class open_file(object):
             # not shell program
             os.system('open -a %s %s' % (program, file_path))
 
-def get_HEPTools_location_setter(HEPToolsDir,type):
-    """ Checks whether mg5dir/HEPTools/<type> (which is 'lib', 'bin' or 'include')
-    is in the environment paths of the user. If not, it returns a preamble that
-    sets it before calling the exectuable, for example:
-       <preamble> ./my_exe
-    with <preamble> -> DYLD_LIBRARY_PATH=blabla:$DYLD_LIBRARY_PATH"""
-    
-    assert(type in ['bin','include','lib'])
-    
-    target_env_var = 'PATH' if type in ['bin','include'] else \
-          ('DYLD_LIBRARY_PATH' if sys.platform=='darwin' else 'LD_LIBRARY_PATH')
-    
-    target_path = os.path.abspath(pjoin(HEPToolsDir,type))
-    
-    if target_env_var not in os.environ or \
-                target_path not in os.environ[target_env_var].split(os.pathsep):
-        return "%s=%s:$%s "%(target_env_var,target_path,target_env_var)
-    else:
-        return ''
-
-def get_shell_type():
-    """ Try and guess what shell type does the user use."""
-    try:
-        if os.environ['SHELL'].endswith('bash'):
-            return 'bash'
-        elif os.environ['SHELL'].endswith('tcsh'):
-            return 'tcsh'
-        else:
-            # If unknown, return None
-            return None 
-    except KeyError:
-        return None
-
 def is_executable(path):
     """ check if a path is executable"""
     try: 
@@ -1284,11 +1123,7 @@ def sprint(*args, **opt):
     if not __debug__:
         return
     
-    use_print = False
     import inspect
-    if opt.has_key('cond') and not opt['cond']:
-        return
-    
     if opt.has_key('log'):
         log = opt['log']
     else:
@@ -1297,17 +1132,10 @@ def sprint(*args, **opt):
         level = opt['level']
     else:
         level = logging.getLogger('madgraph').level
-        if level == 0:
-            use_print = True
         #print  "madgraph level",level
         #if level == 20:
         #    level = 10 #avoid info level
         #print "use", level
-    if opt.has_key('wait'):
-        wait = bool(opt['wait'])
-    else:
-        wait = False
-        
     lineno  =  inspect.currentframe().f_back.f_lineno
     fargs =  inspect.getframeinfo(inspect.currentframe().f_back)
     filename, lineno = fargs[:2]
@@ -1331,17 +1159,9 @@ def sprint(*args, **opt):
     else:
         intro = ''
     
-    
-    if not use_print:
-        log.log(level, ' '.join([intro]+[str(a) for a in args]) + \
+
+    log.log(level, ' '.join([intro]+[str(a) for a in args]) + \
                    ' \033[1;30m[%s at line %s]\033[0m' % (os.path.basename(filename), lineno))
-    else:
-        print ' '.join([intro]+[str(a) for a in args]) + \
-                   ' \033[1;30m[%s at line %s]\033[0m' % (os.path.basename(filename), lineno)
-
-    if wait:
-        raw_input('press_enter to continue')
-
     return 
 
 ################################################################################
@@ -1363,9 +1183,6 @@ def equal(a,b,sig_fig=6, zero_limit=True):
 
 ################################################################################
 # class to change directory with the "with statement"
-# Exemple:
-# with chdir(path) as path:
-#     pass
 ################################################################################
 class chdir:
     def __init__(self, newPath):
@@ -1470,11 +1287,8 @@ class ProcessTimer:
       return False
 
     self.t1 = time.time()
-    # I redirect stderr to void, because from MacOX snow leopard onward, this
-    # ps -p command writes a million times the following stupid warning
-    # dyld: DYLD_ environment variables being ignored because main executable (/bin/ps) is setuid or setgid
     flash = subprocess.Popen("ps -p %i -o rss"%self.p.pid,
-                  shell=True,stdout=subprocess.PIPE,stderr=open(os.devnull,"w"))
+                                              shell=True,stdout=subprocess.PIPE)
     stdout_list = flash.communicate()[0].split('\n')
     rss_memory = int(stdout_list[1])
     # for now we ignore vms
@@ -1544,7 +1358,7 @@ class ProcessTimer:
 #    except psutil.error.NoSuchProcess:
 #      pass
 
-## Define apple_notify (in a way which is system independent
+
 try:
     import Foundation
     import objc
@@ -1564,175 +1378,3 @@ try:
 except:
     def apple_notify(subtitle, info_text, userInfo={}):
         return
-## End apple notify
-
-
-def get_older_version(v1, v2):
-    """ return v2  if v1>v2
-        return v1 if v1<v2
-        return v1 if v1=v2 
-        return v1 if v2 is not in 1.2.3.4.5 format
-        return v2 if v1 is not in 1.2.3.4.5 format
-    """
-    from itertools import izip_longest
-    for a1, a2 in izip_longest(v1, v2, fillvalue=0):
-        try:
-            a1= int(a1)
-        except:
-            return v2
-        try:
-            a2= int(a2)
-        except:
-            return v1        
-        if a1 > a2:
-            return v2
-        elif a1 < a2:
-            return v1
-    return v1
-
-    
-
-plugin_support = {}
-def is_plugin_supported(obj):
-    global plugin_support
-    
-    name = obj.__name__
-    if name in plugin_support:
-        return plugin_support[name]
-    
-    # get MG5 version
-    if '__mg5amcnlo__' in plugin_support:
-        mg5_ver = plugin_support['__mg5amcnlo__']
-    else:
-        info = get_pkg_info()
-        mg5_ver = info['version'].split('.')
-    try:
-        min_ver = obj.minimal_mg5amcnlo_version
-        max_ver = obj.maximal_mg5amcnlo_version
-        val_ver = obj.latest_validated_version
-    except:
-        logger.error("Plugin %s misses some required info to be valid. It is therefore discarded" % name)
-        plugin_support[name] = False
-        return
-    
-    if get_older_version(min_ver, mg5_ver) == min_ver and \
-       get_older_version(mg5_ver, max_ver) == mg5_ver:
-        plugin_support[name] = True
-        if get_older_version(mg5_ver, val_ver) == val_ver:
-            logger.warning("""Plugin %s has marked as NOT being validated with this version. 
-It has been validated for the last time with version: %s""",
-                                        name, '.'.join(str(i) for i in val_ver))
-    else:
-        logger.error("Plugin %s is not supported by this version of MG5aMC." % name)
-        plugin_support[name] = False
-    return plugin_support[name]
-    
-
-#decorator
-def set_global(loop=False, unitary=True, mp=False, cms=False):
-    from functools import wraps
-    import aloha
-    import aloha.aloha_lib as aloha_lib
-    def deco_set(f):
-        @wraps(f)
-        def deco_f_set(*args, **opt):
-            old_loop = aloha.loop_mode
-            old_gauge = aloha.unitary_gauge
-            old_mp = aloha.mp_precision
-            old_cms = aloha.complex_mass
-            aloha.loop_mode = loop
-            aloha.unitary_gauge = unitary
-            aloha.mp_precision = mp
-            aloha.complex_mass = cms
-            aloha_lib.KERNEL.clean()
-            try:
-                out =  f(*args, **opt)
-            except:
-                aloha.loop_mode = old_loop
-                aloha.unitary_gauge = old_gauge
-                aloha.mp_precision = old_mp
-                aloha.complex_mass = old_cms
-                raise
-            aloha.loop_mode = old_loop
-            aloha.unitary_gauge = old_gauge
-            aloha.mp_precision = old_mp
-            aloha.complex_mass = old_cms
-            aloha_lib.KERNEL.clean()
-            return out
-        return deco_f_set
-    return deco_set
-   
-    
-    
-
-
-
-
-python_lhapdf=None
-def import_python_lhapdf(lhapdfconfig):
-    """load the python module of lhapdf return None if it can not be loaded"""
-
-    #save the result to have it faster and avoid the segfault at the second try if lhapdf is not compatible
-    global python_lhapdf
-    if python_lhapdf:
-        if python_lhapdf == -1:
-            return None
-        else:
-            return python_lhapdf
-        
-    use_lhapdf=False
-    try:
-        lhapdf_libdir=subprocess.Popen([lhapdfconfig,'--libdir'],\
-                                           stdout=subprocess.PIPE).stdout.read().strip()
-    except:
-        use_lhapdf=False
-        return False
-    else:
-        try:
-            candidates=[dirname for dirname in os.listdir(lhapdf_libdir) \
-                            if os.path.isdir(os.path.join(lhapdf_libdir,dirname))]
-        except OSError:
-            candidates=[]
-        for candidate in candidates:
-            if os.path.isfile(os.path.join(lhapdf_libdir,candidate,'site-packages','lhapdf.so')):
-                sys.path.insert(0,os.path.join(lhapdf_libdir,candidate,'site-packages'))
-                try:
-                    import lhapdf
-                    use_lhapdf=True
-                    break
-                except ImportError:
-                    sys.path.pop(0)
-                    continue
-    if not use_lhapdf:
-        try:
-            candidates=[dirname for dirname in os.listdir(lhapdf_libdir+'64') \
-                            if os.path.isdir(os.path.join(lhapdf_libdir+'64',dirname))]
-        except OSError:
-            candidates=[]
-        for candidate in candidates:
-            if os.path.isfile(os.path.join(lhapdf_libdir+'64',candidate,'site-packages','lhapdf.so')):
-                sys.path.insert(0,os.path.join(lhapdf_libdir+'64',candidate,'site-packages'))
-                try:
-                    import lhapdf
-                    use_lhapdf=True
-                    break
-                except ImportError:
-                    sys.path.pop(0)
-                    continue
-        if not use_lhapdf:
-            try:
-                import lhapdf
-                use_lhapdf=True
-            except ImportError:
-                print 'fail'
-                logger.warning("Failed to access python version of LHAPDF: "\
-                                   "If the python interface to LHAPDF is available on your system, try "\
-                                   "adding its location to the PYTHONPATH environment variable and the"\
-                                   "LHAPDF library location to LD_LIBRARY_PATH (linux) or DYLD_LIBRARY_PATH (mac os x).")
-        
-    if use_lhapdf:
-        python_lhapdf = lhapdf
-        python_lhapdf.setVerbosity(0)
-    else:
-        python_lhapdf = None
-    return python_lhapdf

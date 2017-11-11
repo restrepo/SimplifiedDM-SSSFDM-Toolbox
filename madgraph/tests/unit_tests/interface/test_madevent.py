@@ -34,10 +34,8 @@ class TestMadEventCmd(unittest.TestCase):
     def test_card_type_recognition(self):
         """Check that the different card are recognize correctly"""
 
-        #detect = mecmd.MadEventCmd.detect_card_type
-        def detect(p):
-            #print p
-            return mecmd.MadEventCmd.detect_card_type(p)
+        detect = mecmd.MadEventCmd.detect_card_type
+
         # run_card
         card_dir= pjoin(root_path,'..','Template/LO', 'Cards')
         self.assertEqual(detect(pjoin(card_dir, 'run_card.dat')),
@@ -48,10 +46,6 @@ class TestMadEventCmd(unittest.TestCase):
         # PYTHIA_CARD
         self.assertEqual(detect(pjoin(card_dir, 'pythia_card_default.dat')),
                          'pythia_card.dat')
-
-        # PYTHIA8_CARD
-        self.assertEqual(detect(pjoin(card_dir, 'pythia8_card_default.dat')),
-                                                             'pythia8_card.dat')
 
         # PARAM_CARD
         self.assertEqual(detect(pjoin(card_dir, 'param_card.dat')),
@@ -102,16 +96,6 @@ class TestMadEventCmd(unittest.TestCase):
                          'shower_card.dat')
         self.assertEqual(detect(pjoin(card_dir, 'FO_analyse_card.dat')),
                          'FO_analyse_card.dat')
-        
-        #MA5 card        
-        card_dir= pjoin(root_path,'input_files')
-        self.assertEqual(detect(pjoin(card_dir, 'madanalysis5_hadron_card.dat')),
-                         'madanalysis5_hadron_card.dat')
-        self.assertEqual(detect(pjoin(card_dir, 'madanalysis5_parton_card.dat')),
-                         'madanalysis5_parton_card.dat')
-        
-        
-        
         
     def test_help_category(self):
         """Check that no help category are introduced by mistake.

@@ -46,7 +46,6 @@ import math
 
 import madgraph.core.base_objects as base_objects
 import madgraph.loop.loop_base_objects as loop_objects
-import madgraph.various.misc as misc
 
 #===============================================================================
 # FeynmanLine
@@ -69,9 +68,6 @@ class FeynmanLine(object):
             setattr(self, key, value)
         self.begin = 0
         self.end = 0
-
-    def __str__(self):
-        return 'FeynmanLine((%s,%s), (%s,%s), id=%s, number=%s)' % (self.begin.pos_x, self.begin.pos_y, self.end.pos_x, self.end.pos_y, self.id, self.number)
 
 #    def is_valid_prop(self, name):
 #        """Check if a given property name is valid."""
@@ -674,7 +670,7 @@ class FeynmanDiagram(object):
         assert isinstance(diagram, base_objects.Diagram), \
                            'first argument should derivate from Diagram object'
         assert isinstance(model, base_objects.Model), \
-                            'second argument should derivate from Model object, get %s' % type(model)
+                            'second argument should derivate from Model object'
         
        
         self.diagram = diagram
@@ -709,14 +705,10 @@ class FeynmanDiagram(object):
         # Define all the vertex/line 
         # Define self.vertexList,self.lineList
         self.load_diagram(contract=self.opt.contract_non_propagating)
-        #misc.sprint(self._debug_load_diagram())
         # Define the level of each vertex
         self.define_level()
-        #misc.sprint(self._debug_level())
-        self._debug_level()
         # Define position for each vertex
         self.find_initial_vertex_position()
-        #misc.sprint(self._debug_position())
         # Adjust some 'not beautifull' position
         self.adjust_position()
         # Flip the particle orientation such that fermion-flow is correct
@@ -963,6 +955,7 @@ class FeynmanDiagram(object):
         This routine is foreseen for an auto-recursive mode. So as soon as a 
         vertex have his level defined. We launch this routine for this vertex.
         """
+        
         level = vertex.level
         for line in vertex.lines:
             if line.end.level is not None:
@@ -2337,7 +2330,7 @@ class LoopFeynmanDiagram(FeynmanDiagram):
         This routine is foreseen for an auto-recursive mode. So as soon as a 
         vertex have his level defined. We launch this routine for this vertex.
         """
-                
+        
         level = vertex.level
         if direction == -1:     
             nb_Tloop = len([line for line in vertex.lines if line.loop_line and \
@@ -2369,7 +2362,7 @@ class LoopFeynmanDiagram(FeynmanDiagram):
             
             # Check if T-channel or not. Note that T-channel tag is wrongly 
             #define if only one particle in initial state.
-            if line.state == False and len(self.initial_vertex)==2:
+            if line.state == False:
                 # This is T vertex. => level is 1
                 next.def_level(1)
                 if line.loop_line:

@@ -116,8 +116,6 @@ c ie. which is a Born+g real-emission process
 c Make sure that stability checks are always used by MadLoop, even for
 c initialization
       CALL FORCE_STABILITY_CHECK(.TRUE.)
-      CALL COLLIER_COMPUTE_UV_POLES(.TRUE.)
-      CALL COLLIER_COMPUTE_IR_POLES(.TRUE.)
 
 200   continue
           calculatedborn = .false.
@@ -184,9 +182,9 @@ c initialization
      1 accuracies,return_code)
           accuracy=accuracies(0)
 
-          finite = virt_wgts(1,0)
-          single = virt_wgts(2,0)
-          double = virt_wgts(3,0)
+          finite = virt_wgts(1,0)/dble(ngluons)
+          single = virt_wgts(2,0)/dble(ngluons)
+          double = virt_wgts(3,0)/dble(ngluons)
 
 C         If MadLoop was still in initialization mode, then skip this
 C         point for the checks

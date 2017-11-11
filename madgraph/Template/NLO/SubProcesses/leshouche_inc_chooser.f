@@ -10,13 +10,13 @@ c leshouche.inc information
       integer maxflow
       parameter (maxflow=999)
       integer idup(nexternal,maxproc),mothup(2,nexternal,maxproc),
-     &     icolup(2,nexternal,maxflow),niprocs
-      common /c_leshouche_inc/idup,mothup,icolup,niprocs
+     &     icolup(2,nexternal,maxflow)
+      common /c_leshouche_inc/idup,mothup,icolup
       logical firsttime
       data firsttime /.true./
       include 'leshouche_decl.inc'
       common/c_leshouche_idup_d/ idup_d
-      save mothup_d, icolup_d, niprocs_d
+      save mothup_d, icolup_d
       
 c
       if (maxproc_used.gt.maxproc) then
@@ -31,12 +31,11 @@ c
       endif
 
       if (firsttime) then
-        call read_leshouche_info(idup_d,mothup_d,icolup_d,niprocs_d)
+        call read_leshouche_info(idup_d,mothup_d,icolup_d)
         firsttime = .false.
       endif
 
-      niprocs=niprocs_d(nFKSprocess)
-      do j=1,niprocs
+      do j=1,maxproc_used
          do i=1,nexternal
             IDUP(i,j)=IDUP_D(nFKSprocess,i,j)
             MOTHUP(1,i,j)=MOTHUP_D(nFKSprocess,1,i,j)
@@ -55,7 +54,7 @@ c
       end
 
 
-      subroutine read_leshouche_info(idup_d,mothup_d,icolup_d,niprocs_d)
+      subroutine read_leshouche_info(idup_d,mothup_d,icolup_d)
 C read the various information from the configs_and_props_info.dat file
       implicit none
       include "nexternal.inc"
@@ -92,7 +91,6 @@ c born_leshouche.inc file.
                icolup_d(1,1,nexternal,j)=-99999 ! should not be used
                icolup_d(1,2,nexternal,j)=-99999
             enddo
-            niprocs_d(1)=maxproc_used
             return
          endif
       endif
@@ -108,7 +106,6 @@ c born_leshouche.inc file.
           do k=1,nexternal
             idup_d(i,k,j)=itmp_array(k)
           enddo
-          niprocs_d(i)=j
         else if (buff(:1).eq.'M') then
         ! idup
         ! I  i   j   l   id1 ..idn -> MOTHUP_D(i,j,k,l)=idk

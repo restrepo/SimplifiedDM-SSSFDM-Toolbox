@@ -75,16 +75,12 @@ class LoopAmplitude(diagram_generation.Amplitude):
         self.lcutpartemployed=[]
 
     def __init__(self, argument=None, loop_filter=None):
-        """Allow initialization with Process.
-        If loop_filter is not None, then it will be applied to all subsequent
-        diagram generation from this LoopAmplitude."""
-        
-        self.loop_filter = loop_filter
+        """Allow initialization with Process"""
         
         if isinstance(argument, base_objects.Process):
             super(LoopAmplitude, self).__init__()
             self.set('process', argument)
-            self.generate_diagrams()
+            self.generate_diagrams(loop_filter=loop_filter)
         elif argument != None:
             # call the mother routine
             super(LoopAmplitude, self).__init__(argument)
@@ -387,10 +383,6 @@ class LoopAmplitude(diagram_generation.Amplitude):
         edit_filter_manually = False
         if not edit_filter_manually and filter in [None,'None']:
             return
-        if isinstance(filter,str) and  filter.lower() == 'true':
-            edit_filter_manually = True
-            filter=None
-            
 
         if filter not in [None,'None']:
             filter_func = LoopAmplitude.get_loop_filter(filter)
@@ -416,16 +408,14 @@ class LoopAmplitude(diagram_generation.Amplitude):
                                  " returned the following error:\n       > %s"%str(e))
 #            if any([abs(i)!=1000021 for i in diag.get_loop_lines_pdgs()]):
 #                valid_diag=False
-#            if len(diag.get_loop_lines_pdgs())<4:
-#                    valid_diag = False
-
-             # Ex. 0: Chose a specific diagram number, here the 8th one for ex.     
+            
+            # Ex. 0: Chose a specific diagram number, here the 8th one for ex.     
 #            if i not in [31]:
 #                valid_diag = False                
 
             # Ex. 0: Keeps only the top quark loops.
 #            if any([pdg not in [6,-6] for pdg in diag.get_loop_lines_pdgs()]):
-#                 valid_diag = False
+#                valid_diag = False
 
             # Ex. 1: Chose the topology, i.e. number of loop line.
             #        Notice that here particles and antiparticles are not 
@@ -437,9 +427,9 @@ class LoopAmplitude(diagram_generation.Amplitude):
             
             # Ex. 2: Use the pdgs of the particles directly attached to the loop.
             #        In this example, we forbid the Z to branch off the loop.
-#            connected_id = diag.get_pdgs_attached_to_loop(structs)
-#            if 22 not in connected_id:
-#                valid_diag=False
+#            if any([pdg not in [6,-6] for pdg in diag.get_loop_lines_pdgs()]) or \
+#                                25 not in diag.get_pdgs_attached_to_loop(structs):
+#                 valid_diag=False
             
             # Ex. 3: Filter based on the mass of the particles running in the
             #        loop. It shows how to access the particles properties from
@@ -586,7 +576,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
                 res.append('%s=*'%order)
         return ','.join(res)
 
-    def generate_diagrams(self, loop_filter=None, diagram_filter=None):
+    def generate_diagrams(self, loop_filter=None):
         """ Generates all diagrams relevant to this Loop Process """
 
         # Description of the algorithm to guess the leading contribution.
@@ -609,10 +599,6 @@ class LoopAmplitude(diagram_generation.Amplitude):
         # consider loop perturbation, in this case 2*2 wich gives us a 
         # target_weighted_order of 8. based on this we will now keep all born 
         # contributions and exclude the NLO contributions (QED=6) and (QED=4,QCD=2)        
-        
-        # Use the globally defined loop_filter if the locally defined one is empty
-        if (not self.loop_filter is None) and (loop_filter is None):
-            loop_filter = self.loop_filter
 
         logger.debug("Generating %s "\
                    %self['process'].nice_string().replace('Process', 'process'))
@@ -765,8 +751,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
         # based on the minimum weighted order of the loop contributions, if it
         # was not specified by the user.
         if not self['process']['has_born'] and not \
-                                self['process']['squared_orders'] and not\
-                                self['process']['orders'] and hierarchy: 
+                                self['process']['squared_orders'] and hierarchy: 
             pert_order_weights=[hierarchy[order] for order in \
                                       self['process']['perturbation_couplings']]
             self['process']['squared_orders']['WEIGHTED']=2*(\
@@ -858,18 +843,17 @@ class LoopAmplitude(diagram_generation.Amplitude):
             self['process']['squared_orders'].update(user_squared_orders)
             return False
 
-
+        # Set the necessary UV/R2 CounterTerms for each loop diagram generated
+        self.set_LoopCT_vertices()
+        
         # Discard diagrams which are zero because of Furry theorem
         self.remove_Furry_loops(model,self['structure_repository'])
-       
+        
         # Apply here some user-defined filter.
         # For expert only, you can edit your own filter by modifying the
         # user_filter() function which by default does nothing but in which you
         # will find examples of common filters.
         self.user_filter(model,self['structure_repository'], filter=loop_filter)
-
-        # Set the necessary UV/R2 CounterTerms for each loop diagram generated
-        self.set_LoopCT_vertices()
 
         # Now revert the squared order. This function typically adds to the 
         # squared order list the target WEIGHTED order which has been detected.
@@ -1413,7 +1397,7 @@ class LoopAmplitude(diagram_generation.Amplitude):
             # Now we look for a CT which might correspond to this loop by looking
             # for its searchingKey in CT_interactions
 
-            # misc.sprint("I have the following CT_interactions=",CT_interactions)
+            #print "I have the following CT_interactions=",CT_interactions  
             try:
                 CTIDs=copy.copy(CT_interactions[searchingKeySimple])
             except KeyError:
@@ -1725,10 +1709,13 @@ class LoopMultiProcess(diagram_generation.MultiProcess):
     """
 
     @classmethod
-    def get_amplitude_from_proc(cls, proc, **opts):
+    def get_amplitude_from_proc(cls, proc):
         """ Return the correct amplitude type according to the characteristics
             of the process proc """
-        return LoopAmplitude({"process": proc},**opts)
+        return LoopAmplitude({"process": proc})
+
+
+
 
 #===============================================================================
 # LoopInducedMultiProcess
@@ -1737,7 +1724,7 @@ class LoopInducedMultiProcess(diagram_generation.MultiProcess):
     """Special mode for the LoopInduced."""
     
     @classmethod
-    def get_amplitude_from_proc(cls,proc,**opts):
+    def get_amplitude_from_proc(cls,proc):
         """ Return the correct amplitude type according to the characteristics of
             the process proc """
-        return LoopAmplitude({"process": proc, 'has_born':False},**opts)   
+        return LoopAmplitude({"process": proc, 'has_born':False})   

@@ -8,7 +8,7 @@
 ! the maximum number of denominators    !
 ! (it can be changed by the user)       ! 
 !                                       !
-  integer, public, parameter :: maxden= 10
+  integer, public, parameter :: maxden= 8
  end module maxnumden
 ! 
  module mbnvalues

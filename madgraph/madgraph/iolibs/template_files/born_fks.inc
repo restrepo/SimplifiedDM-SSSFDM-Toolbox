@@ -57,8 +57,6 @@ C
       common/ccalculatedBorn/calculatedBorn
       integer nfksprocess
       common/c_nfksprocess/nfksprocess
-      double precision       wgt_ME_born,wgt_ME_real
-      common /c_wgt_ME_tree/ wgt_ME_born,wgt_ME_real
 C ----------
 C BEGIN CODE
 C ----------
@@ -117,7 +115,6 @@ C ----------
       ENDDO
       ANS(1)=ANS(1)/DBLE(IDEN)
       ANS(2)=ANS(2)/DBLE(IDEN)
-      wgt_me_born=dble(ans(1))
       calculatedBorn=.true.
       END
        

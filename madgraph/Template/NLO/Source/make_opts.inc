@@ -1,38 +1,19 @@
-STDLIB = -lc++
-STDLIB_FLAG = -stdlib=libc++
-MACFLAG = -mmacosx-version-min=10.7
-DEFAULT_F_COMPILER = gfortran
-DEFAULT_F2PY_COMPILER = f2py
-DEFAULT_CPP_COMPILER = g++
-#end_of_make_opts_variables
+# Environment variables
 
-# Rest of the makefile
 ifeq ($(origin FFLAGS),undefined)
   #FFLAGS= -O -w
   FFLAGS = -O -fno-automatic
   #FFLAGS+= -g -fbounds-check -ffpe-trap=invalid,zero,overflow,underflow,denormal -Wall
 endif
 
-# REMOVE MACFLAG IF NOT ON MAC 
-UNAME := $(shell uname -s)
-ifneq ($(UNAME), Darwin)
-    MACFLAG=  
-endif
-
-
 ifeq ($(origin CXXFLAGS),undefined)
   #CXXFLAGS= -g 
-  CXXFLAGS = -O $(STDLIB_FLAG) $(MACFLAG)
+  CXXFLAGS = -O 
 endif
 
 ifeq ($(origin CFLAGS),undefined)
   #CFLAGS= -g 
-  CFLAGS = -O  $(STDLIB_FLAG) $(MACFLAG)
-endif
-
-# REMOVE MACFLAG IF IN F2PY mode
-ifdef f2pymode
-    MACFLAG= 
+  CFLAGS = -O 
 endif
 
 # Increase the number of allowed charcters in a Fortran line
@@ -41,22 +22,18 @@ FFLAGS+= -ffixed-line-length-132
 # Set FC unless it's defined by an environment variable
 ifeq ($(origin FC),default)
 #  FC=g77
-  FC=$(DEFAULT_F_COMPILER)
+  FC=gfortran
 endif
 # Set F2PY unless it's defined by an environment variable
 ifeq ($(origin F2PY),undefined)
-  F2PY=$(DEFAULT_F2PY_COMPILER)
+  F2PY=f2py
 endif
 
 # Set CXX unless it's defined by an environment variable
 ifeq ($(origin CXX),default)
-  CXX=$(DEFAULT_CPP_COMPILER)
+  CXX=g++
 endif
 
-UNAME := $(shell uname -s)
-ifeq ($(origin LDFLAGS), undefined)
-     LDFLAGS=$(STDLIB) $(MACFLAG)
-endif
 # Options: dynamic, lhapdf
 
 UNAME := $(shell uname)
@@ -89,19 +66,18 @@ endif
 
 # Option lhapdf
 
-ifneq ($(lhapdf),)
-  CXXFLAGS += $(shell $(lhapdf) --cppflags)
+ifdef lhapdf
   alfas_functions=alfas_functions_lhapdf
-  llhapdf = $(shell $(lhapdf) --libs)
+  lhapdf=-lLHAPDF -lstdc++
   reweight_xsec_events_pdf_dummy=
 else
   alfas_functions=alfas_functions
-  llhapdf=
+  lhapdf=
   reweight_xsec_events_pdf_dummy=reweight_xsec_events_pdf_dummy.o
 endif
 
 # Option APPLGrid
-ifneq ($(applgrid),)
+ifdef applgrid
   APPLLIBS=$(shell applgrid-config --ldcflags) $(shell amcfast-config --ldflags)
   applgrid_interface=appl_interface.o
 else

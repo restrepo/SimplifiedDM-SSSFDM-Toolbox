@@ -51,7 +51,8 @@ c
       integer nwgt,max_weight,nwgt_analysis
       common/cnwgt/nwgt
       common/c_analysis/nwgt_analysis
-      character*50 weights_info(max_weight_shower)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
+      character*15 weights_info(max_weight)
       common/cwgtsinfo/weights_info
 c Initialize histograms
       call HwU_inithist(nwgt,weights_info)
@@ -123,10 +124,7 @@ C----------------------------------------------------------------------
       common/c_analysis/nwgt_analysis
       DOUBLE PRECISION EVWEIGHT
       COMMON/CEVWEIGHT/EVWEIGHT
-      integer maxRWGT
-      parameter (maxRWGT=100)
-      double precision wgtxsecRWGT(maxRWGT)
-      parameter (max_weight=maxscales*maxscales+maxpdfs+maxRWGT+1)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
       double precision ww(max_weight),www(max_weight)
       common/cww/ww
       INTEGER IFAIL

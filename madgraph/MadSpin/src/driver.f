@@ -907,11 +907,7 @@ c      write(*,*) 'nt_channel ',nt_channel
                 if (index_p2.gt.0) then
                    m2_tchan(i)=m(index_p2)
                 else
-                   if (m(index_p2).gt.5d-2)then
-                       m2_tchan(i) = 0d0
-                   else 
-        write(*,*) 'Warning: m_2^2 is negative in t-channel branching ',m2_tchan(i)
-                   endif 
+        write(*,*) 'Warning: m_2^2 is negative in t-channel branching '
                 endif
             endif
          ! extract phi

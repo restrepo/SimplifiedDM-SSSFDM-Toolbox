@@ -19,10 +19,12 @@ C----------------------------------------------------------------------
       integer j,kk,l,jpr,i,nnn
       character*5 cc(2)
       data cc/'     ','cuts '/
-      integer nwgt_analysis
+      integer nwgt,max_weight,nwgt_analysis
+      common/cnwgt/nwgt
       common/c_analysis/nwgt_analysis
-      character*50 weights_info(max_weight_shower)
-     $     ,wwwi(max_weight_shower)
+      parameter (max_weight=maxscales*maxscales+maxpdfs+1)
+      character*15 weights_info(max_weight),wwwi(max_weight)
+      common/cwgtsinfo/weights_info
 c
       call inihist
       weights_info(1)="central value  "
@@ -240,7 +242,7 @@ c
       etalb=getpseudorap(pplb(4),pplb(1),pplb(2),pplb(3))
 c
       ptpair=ptv
-      azi=getdelphi(ppl(1),ppl(2),pplb(1),pplb(2))
+      azi=getdelphi(ppl(1),pplb(1),ppl(2),pplb(2))
       azinorm=(pi-azi)/pi
       xmll=xmv
       detallb=etal-etalb
