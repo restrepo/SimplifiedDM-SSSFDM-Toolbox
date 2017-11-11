@@ -1,5 +1,5 @@
 : 
-  CALCHEP=/home/restrepo/prog/toolbox/mybinders/SimplifiedDM/SSSFDM/calchep 
+  CALCHEP=  
 #---------------
 #======================================
 bin=$CALCHEP/bin
